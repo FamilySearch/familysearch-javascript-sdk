@@ -14,7 +14,8 @@
 	        //app_id:  'KB2L-BVD1-3Q6S-J7X4-GKFZ-4168-QPZ6-NJRK', // production/staging
 	        app_id: 'WCQY-7J1Q-GKVV-7DNM-SQ5M-9Q5H-JX3H-CMJK', // Sandbox
 	        environment 	: 'sandbox',
-	        cookies			:  true,                    
+	        cookies			:  true,
+	        auth_callback	:  '/', // Set to your Callback URL
 	        logging			: true                    
 	    });
 
@@ -47,7 +48,8 @@
 		function loadPersonDetails(url) {
 			if (!url) { url = '/users/current'; }
 			url = url.replace("https://www.familysearch.com/platform", "");
-			
+			console.log('Have the access_token, now requesting URL: '+url);
+			console.log(FamilySearch);
 			FamilySearch.api(url, function (response) {
 				console.log(response);
 			});			
