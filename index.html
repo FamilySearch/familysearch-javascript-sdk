@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<script src="jsdk.js"></script>
+</head>
+
+<body>
+	<script>
+		// ******************************************************************************************
+		// Initialize GENI JS Client SDK
+		// ******************************************************************************************
+	    FamilySearch.init({
+	        //app_id:  'KB2L-BVD1-3Q6S-J7X4-GKFZ-4168-QPZ6-NJRK', // production/staging
+	        app_id: 'WCQY-7J1Q-GKVV-7DNM-SQ5M-9Q5H-JX3H-CMJK', // Sandbox
+	        environment 	: 'sandbox',
+	        cookies			:  true,                    
+	        logging			: true                    
+	    });
+
+		// ******************************************************************************************
+		// Helper methods 
+		// ******************************************************************************************
+		function $(id) {
+			return document.getElementById(id);
+		}
+		
+		// ******************************************************************************************
+		// Connection methods 
+		// ******************************************************************************************
+   		function connectWithFamilySearch() {
+			FamilySearch.connect(function(response) {
+        		if(response.status == 'authorized') {
+					$("login_link").style.display = "none";	
+					$("loading").style.display = "";	
+					//loadNameCloud();
+					loadPersonDetails('/users/current');
+        		} else {
+					$("login_link").style.display = "";	
+        		}
+			});
+		}
+
+		// ******************************************************************************************
+		// Load person methods 
+		// ******************************************************************************************
+		function loadPersonDetails(url) {
+			if (!url) { url = '/users/current'; }
+			url = url.replace("https://www.familysearch.com/platform", "");
+			
+			FamilySearch.api(url, function (response) {
+				console.log(response);
+			});			
+		}		
+	</script>
+	
+	<div style="text-align:center; padding:30px; font-size:24px;">
+		<div id="login_link">
+			<a href="#" onClick="connectWithFamilySearch()">Connect with FamilySearch.</a>
+		</div>	
+
+		<div id="loading" style="display:none;">
+			Please wait...
+		</div>	
+		
+	</div>
+	
+</body>
+
+</html>
