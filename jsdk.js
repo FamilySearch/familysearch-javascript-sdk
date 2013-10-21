@@ -19,6 +19,7 @@
 		_cookies		: false,
 		_code 			: null,
 		_access_token 	: null,
+		_auth_callback  : '',
 		_api_format 	: '.json',
 		_environment 	: 'staging',
 		_host : {
@@ -40,7 +41,7 @@
 			logout		: '/oauth/logout'
 		},
 		
-		// creates a quick and dirty unique id for use in callbacks
+		// creates a quick and dirty unique id for use in states
 		uuid:function() {
 			return 'g' + (((1+Math.random())*0x10000)|0).toString(16).substring(1);
 		},
@@ -78,8 +79,14 @@
 			
 			// authorize app if we already have an access token
 			if(opts.access_token) {
+				console.log('access token in INIT');
 				this._access_token 	= opts.access_token;
 				this._status = "authorized";
+			}
+
+			// set the callback URL
+			if(opts.auth_callback) {
+				this._auth_callback = opts.auth_callback;
 			}
 			
 			this._logging 	= (window.location.toString().indexOf('familysearch_debug=1') > 0)  || opts.logging || this._logging;
@@ -88,8 +95,7 @@
 			
 			// oAuth callback function
 			if ( (window.location.toString().indexOf('state=') > 0) ) {
-				var u = document.URL.split('?');
-				console.log(u);
+				var u = window.location.toString().split('?');
 				(window.opener || window.parent || window.top).postMessage(u[1], u[0]);	
 			}
 
@@ -139,8 +145,8 @@
 	
 	}
 	
-  //  FamilySearch custom events. You may 'bind' or 'unbind' a callback function to an event;
-  // 'triggering'-ing an event fires all callbacks in succession.
+  //  FamilySearch custom events. You may 'bind' or 'unbind' a state function to an event;
+  // 'triggering'-ing an event fires all states in succession.
   //
   //		function showStatus(status){
   //			alert(status)
@@ -153,21 +159,21 @@
 
 		_events:{},
 
-		// Bind an event, specified by a string name, 'event', to a callback, 'cb', function.
+		// Bind an event, specified by a string name, 'event', to a state, 'cb', function.
 		bind: function(event, cb){
 			this._events[event] = this._events[event]	|| [];
 			this._events[event].push(cb);
 		},
 		
-		// Remove one or many callbacks. If callback is null, all
-    // callbacks for the event wil be removed.
+		// Remove one or many states. If state is null, all
+    // states for the event wil be removed.
 		unbind: function(event, cb){
 			if(event in this._events === false)	return;
 			this._events[event].splice(this._events[event].indexOf(cb), 1);
 			if(!cb) delete this._events[event];
 		},
 		
-		// Trigger an event, firing all bound callbacks. Callbacks are passed the
+		// Trigger an event, firing all bound states. Callbacks are passed the
     // same arguments as 'trigger' is, apart from the event name.
 		trigger: function(event){
 			if( event in this._events === false  )	return;
@@ -179,112 +185,84 @@
 	}
 
   //  APIs for making requests against FamilySearch's Server. 
-	//	All request types take the same arguments; url, parameters and a callback.
+	//	All request types take the same arguments; url, parameters and a state.
   //	
 
 	FamilySearch.Request = {
 		
-		callbacks : {},
+		states : {},
 		
 		// Standard JSONP request
 		//
-		// 		FamilySearch.Request.jsonp(url[, paramerters, callback])
+		// 		FamilySearch.Request.jsonp(url[, paramerters, state])
 		//
 		jsonp:function(url,params,cb) {
-			console.log(url);
-			console.log(params);
-			console.log(cb);
 			var 
 				self 	= this,
 				script 	= document.createElement('script'),
 				uuid	= FamilySearch.uuid(),
-				params 	= FamilySearch.Util.extend((params||{}),{state:'FamilySearch.Request.callbacks.' + uuid}),
+				params 	= FamilySearch.Util.extend((params||{}),{state:'FamilySearch.Request.states.' + uuid}),
 				url 	= url + (url.indexOf('?')>-1 ? '&' : '?') + FamilySearch.Util.encodeQueryString(params);
 				url = url.replace('?', FamilySearch._api_format+'?');
 
-			this.callbacks[uuid] = function(data) {
+			this.states[uuid] = function(data) {
 				if(data.error) {
 					FamilySearch.log([data.error,data.error_description].join(' : '));
 				}
 				if(cb) cb(data);
-				delete self.callbacks[uuid];
+				delete self.states[uuid];
 			}
 			script.src = url;
-
-
-			
-
 			document.getElementsByTagName('head')[0].appendChild(script);
 		},
-		corsjson:function(url,params,cb) {
-
-			var 
-				self 	= this,
-				script 	= document.createElement('script'),
-				uuid	= FamilySearch.uuid(),
-				params 	= FamilySearch.Util.extend((params||{}),{state:'FamilySearch.Request.callbacks.' + uuid}),
-				nurl 	= url + (url.indexOf('?')>-1 ? '&' : '?') + FamilySearch.Util.encodeQueryString(params);
-				nurl 	= nurl.replace('?', FamilySearch._api_format+'?');
-
-			this.callbacks[uuid] = function(data) {
-				if(data.error) {
-					FamilySearch.log([data.error,data.error_description].join(' : '));
-				}
-				if(cb) cb(data);
-				delete self.callbacks[uuid];
-			}
-			script.src = url;
-
-			console.log(url);
-			console.log(params);
-			// GET the CORS code return, and append to the head. Having issues with the callback
-			// Why can't FS use JSONP?
 
 
-			document.getElementsByTagName('head')[0].appendChild(script);
-
+		corsjson:function(url,params, cb) {
 			var 
 				method 	= ("_method" in params ? params._method : "GET"),
-				async 	= ("_async" in params ? params._async : "false"),
 				requestHeader = {
 					type : "Accept",
 					value : "application/json"
 				};
+
 			if ("_method" in params) { // Don't keep this for our post string
 				delete params._method;
+
 			}
 			if (method == "POST") { // Change the content type to get the appropriate response
 				requestHeader = {
 					type : "Content-type",
 					value : "application/x-www-form-urlencoded"
 				};
-			} else {
-				url = nurl;
-			}
+			}		
+
 			var xhr = new XMLHttpRequest();
 			if ("withCredentials" in xhr) {
 				// Check if the XMLHttpRequest object has a "withCredentials" property.
 				// "withCredentials" only exists on XMLHTTPRequest2 objects.
-				xhr.open(method, url, async);
+				xhr.open(method, url);
 				xhr.setRequestHeader(requestHeader.type, requestHeader.value);
 				xhr.send(FamilySearch.Util.encodeQueryString(params));
+
 			} else if (typeof XDomainRequest != "undefined") {
 				// Otherwise, check if XDomainRequest.
 				// XDomainRequest only exists in IE, and is IE's way of making CORS requests.
 				xhr = new XDomainRequest();
-				xhr.open(method, url, async);
+				xhr.open(method, url);
 				xhr.setRequestHeader(requestHeader.type, requestHeader.value);
 				xhr.send(FamilySearch.Util.encodeQueryString(params));
 			} else {
 				// Otherwise, CORS is not supported by the browser.
 				xhr = null;
 			}
-			xhr.onreadycallbackchange = function() {
+
+			xhr.onreadystatechange = function() {
 				if (this.status == 200 && this.readyState == 4) {
 					if (this.responseText != "") {
 						var data = FamilySearch.Util.parseJSON(this.responseText);
-						(window.opener || window.parent || window.top).postMessage("access_token=", "http://sumoapp.dev")					
-    					return ;	
+						for (var attrname in data) { params[attrname] = data[attrname]; }
+						cb(params);
+						//delete FamilySearch.states[params.state];	 // Not needed?
 					}
   				}
 			};
@@ -301,7 +279,7 @@
 				requestHeader = new Array("Accept","application/json"),
 				script 	= document.createElement('script'),
 				uuid	= FamilySearch.uuid(),
-				params 	= FamilySearch.Util.extend((params||{}),{state:'FamilySearch.Request.callbacks.' + uuid}),
+				params 	= FamilySearch.Util.extend((params||{}),{state:'FamilySearch.Request.states.' + uuid}),
 				url 	= url + (url.indexOf('?')>-1 ? '&' : '?') + FamilySearch.Util.encodeQueryString(params);
 				url = url.replace('?', FamilySearch._api_format+'?');
 			console.log(params);
@@ -312,12 +290,12 @@
 				requestHeader = new Array("Content-type","application/x-www-form-urlencoded");
 			}
 
-			this.callbacks[uuid] = function(data) {
+			this.states[uuid] = function(data) {
 				if(data.error) {
 					FamilySearch.log([data.error,data.error_description].join(' : '));
 				}
 				if(cb) cb(data);
-				delete self.callbacks[uuid];
+				delete self.states[uuid];
 			}			
 
 			var xhr = new XMLHttpRequest();
@@ -338,7 +316,7 @@
 				// Otherwise, CORS is not supported by the browser.
 				xhr = null;
 			}
-			xhr.onreadycallbackchange = function() {
+			xhr.onreadystatechange = function() {
 				if (this.status == 200 && this.readyState == 4) {
     				var data = FamilySearch.Util.parseJSON(this.responseText);
 					return data;
@@ -376,7 +354,7 @@
 		
   	// Same as a jsonp request but with an access token for oauth authentication
   	//
-		// 		FamilySearch.Request.oauth(url[, paramerters, callback])
+		// 		FamilySearch.Request.oauth(url[, paramerters, state])
 		//
 		oauth:function(url,params,cb) {
 			params || (params = {});
@@ -395,7 +373,7 @@
    	// be called on a user event like a click as many browsers block popups 
    	// if not initiated by a user. 
   	//
-		// 		FamilySearch.Request.popup(url[, paramerters, callback])
+		// 		FamilySearch.Request.popup(url[, paramerters, state])
 		//
 		popup: function(url,params,cb) {
 			this.registerXDHandler();
@@ -409,49 +387,49 @@
 				height   		= params.height || 500,
 				left     		= parseInt(screenX + ((outerWidth - width) / 2), 10),
 				top      		= parseInt(screenY + ((outerHeight - height) / 2.5), 10),
-				features 	= (
-					'width=' 	+ width +
-					',height=' 	+ height +
-					',left=' 	+ left +
-					',top=' 	+ top
+				features = (
+					'width=' + width +
+					',height=' + height +
+					',left=' + left +
+					',top=' + top
 				);
 			var 
 				uuid		= FamilySearch.uuid(),
-				params 		= FamilySearch.Util.extend((params||{}),{
-					state		: uuid,
+				params 	= FamilySearch.Util.extend((params||{}),{
+					state	: uuid,
 					display		: 'popup',
 					origin		: this._origin()
 				}),
 				url 		= url + (url.indexOf('?')>-1 ? '&' : '?') + FamilySearch.Util.encodeQueryString(params);
 			var win = window.open(url,uuid,features);
 
-			this.callbacks[uuid] = function(data) {
+			this.states[uuid] = function(data) {
 				if(cb) cb(data,win);
-				delete FamilySearch.Request.callbacks[uuid];
+				delete FamilySearch.Request.states[uuid];
 			}
 		},
 
   	// Creates and inserts a hidden iframe with the given url then removes 
   	// the iframe from the DOM
   	//
-		// 		FamilySearch.Request.hidden(url[, paramerters, callback])
+		// 		FamilySearch.Request.hidden(url[, paramerters, state])
 		//
 		hidden:function(url,params,cb) {
 			this.registerXDHandler();
 			var 
 				iframe 	= document.createElement('iframe'),
-				uuid	= FamilySearch.uuid(),
+				uuid		= FamilySearch.uuid(),
 				params 	= FamilySearch.Util.extend((params||{}),{
-					state		: uuid,
+					state	: uuid,
 					display		: 'hidden',
 					origin		: this._origin()
 				}),
-				url 	= url + (url.indexOf('?')>-1 ? '&' : '?') + FamilySearch.Util.encodeQueryString(params);
+				url 		= url + (url.indexOf('?')>-1 ? '&' : '?') + FamilySearch.Util.encodeQueryString(params);
 				
 			iframe.style.display = "none";
-			this.callbacks[uuid] = function(data) {
+			this.states[uuid] = function(data) {
 				if(cb) cb(data);
-				delete FamilySearch.Request.callbacks[uuid];
+				delete FamilySearch.Request.states[uuid];
 				iframe.parentNode.removeChild(iframe);
 			}
 			iframe.src = url;
@@ -471,7 +449,7 @@
 			this.xd_registered = true;
 		},
 	
-		// handles message events sent via postMessage, and fires the appropriate callback
+		// handles message events sent via postMessage, and fires the appropriate state
 		onMessage:function(e) {
 			var data = {};
 			if (e.data && typeof e.data == 'string') {
@@ -483,13 +461,13 @@
 			}
 			
 			if(data.state) {
-				var cb = this.callbacks[data.state];
+				var cb = this.states[data.state];
 				if(cb) {
 					if (data.code != "") {
-						data.code = FamilySearch.Auth.getToken(data, cb);
+						FamilySearch.Auth.getToken(data.code, data, cb);
 					} else {
 						cb(data);
-						delete this.callbacks[data.state];
+						delete this.states[data.state];	
 					}
 				}
 			}
@@ -559,14 +537,18 @@
 					parts = host.split('?');
 					host = parts[0];	
 				}
+				if ( FamilySearch._auth_callback.indexOf(host) <= 0 ) {
+					host = host.slice(0,-1) + FamilySearch._auth_callback; // Put the host URL if not present
+				} else {
+					host = FamilySearch._auth_callback;
+				}
 				var url = FamilySearch._oauth[FamilySearch._environment] + FamilySearch._url.connect,
 					params = {
 						response_type	: 'code',
 						client_id		: FamilySearch._appid,
-						redirect_uri	: host, //
+						redirect_uri	: host
 						//lng				:  // Language code
 					};
-
 				FamilySearch.Request.popup(url,params,function(data,win){
 					FamilySearch.Auth.setStatus(data);
 					if(win) win.close();
@@ -618,11 +600,15 @@
 		setStatus:function(data) {
 			data || (data = {});
 			
-			if(data.code) {
-				FamilySearch._access_token = data.code;
+			if(data.access_token) {
+				FamilySearch._access_token = data.access_token;
 				FamilySearch.Cookie('familysearch'+FamilySearch._appid, FamilySearch._access_token);
 				data.status = "authorized";
 			} else {
+				if(data.code) {
+					FamilySearch._code = data.code;
+					console.log('set the code!');
+				}
 				FamilySearch._access_token = null;
 				FamilySearch.Cookie('familysearch'+FamilySearch._appid, null);
 				data.status = data.status || "unknown";
@@ -632,19 +618,35 @@
 			}
 			return (FamilySearch._status = data.status);
 		},
-		getToken:function(data, cb) {
+		getToken:function(code, data, cb) {
 			var url = FamilySearch._oauth[FamilySearch._environment]  + FamilySearch._url.token,
-				params = FamilySearch.Util.extend((params||{}),{
+				params 	= FamilySearch.Util.extend((params||{}),{
 					_method		: "POST",
 					grant_type	: "authorization_code",
-					code		: data.code,
+					code		: code,
+					client_id	: FamilySearch._appid,
+					state 		: data.state
+				});
+			FamilySearch.Request.corsjson(url, params, cb);
+		},
+		setToken:function(code) {
+			var url = FamilySearch._oauth[FamilySearch._environment]  + FamilySearch._url.token,
+				params 	= FamilySearch.Util.extend((params||{}),{
+					_method		: "POST",
+					grant_type	: "authorization_code",
+					code		: code,
 					client_id	: FamilySearch._appid
 				});
-			if (data.state != "") {
-				params._callback = data.state;
+				console.log(code);
+				console.log('Now get the token!');
+				return;
+			var data = FamilySearch.Util.parseJSON(FamilySearch.Request.corsjson(url, params));
+			console.log(data);
+			if (data.access_token != "") {
+				return data.access_token;
 			}
-			FamilySearch.Request.corsjson(url, params, cb);
-		}
+			return code;
+		}		
 	}
 	
 	
@@ -720,7 +722,7 @@
 	//
 	FamilySearch.Cookie = function (key, value, options) {
 		if(!FamilySearch._cookies) return;
-    	if (arguments.length > 1 && String(value) !== "[object Object]") {
+    if (arguments.length > 1 && String(value) !== "[object Object]") {
 			options = FamilySearch.Util.extend({}, options);
 			if (value === null || value === undefined) options.expires = -1;
 			if (typeof options.expires === 'number') {
@@ -730,26 +732,26 @@
 			value = String(value);
 			return (document.cookie = [
 				encodeURIComponent(key), '=',
-				options.raw 	? value : encodeURIComponent(value),
+				options.raw 		? value : encodeURIComponent(value),
 				options.expires ? '; expires=' + options.expires.toUTCString() : '',
-				options.path 	? '; path=' + options.path : '',
+				options.path 		? '; path=' + options.path : '',
 				options.domain 	? '; domain=' + options.domain : '',
 				options.secure 	? '; secure' : ''
 			].join(''));
-	    }
-	    options = value || {};
-	    var result, decode = options.raw ? function (s) { return s; } : decodeURIComponent;
-	    return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decode(result[1]) : null;
+    }
+    options = value || {};
+    var result, decode = options.raw ? function (s) { return s; } : decodeURIComponent;
+    return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decode(result[1]) : null;
 	}
 	
 	// shortcuts to make things easier
 
 	window.FamilySearch = window.$g = FamilySearch.Util.extend(FamilySearch,{
-		getStatus	: FamilySearch.Auth.getStatus,
-		connect		: FamilySearch.Auth.connect,
+		getStatus		: FamilySearch.Auth.getStatus,
+		connect			: FamilySearch.Auth.connect,
 		disconnect	: FamilySearch.Auth.disconnect,
-		logout		: FamilySearch.Auth.logout,
-		api			: FamilySearch.Api.get 					//most api calls are gets
+		logout			: FamilySearch.Auth.logout,
+		api					: FamilySearch.Api.get 					//most api calls are gets
 	});
 
 }).call(this);
