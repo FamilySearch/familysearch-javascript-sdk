@@ -213,6 +213,10 @@
 				delete self.states[uuid];
 			}
 			script.src = url;
+
+
+			
+
 			document.getElementsByTagName('head')[0].appendChild(script);
 		},
 
@@ -227,7 +231,6 @@
 
 			if ("_method" in params) { // Don't keep this for our post string
 				delete params._method;
-
 			}
 			if (method == "POST") { // Change the content type to get the appropriate response
 				requestHeader = {
@@ -263,6 +266,7 @@
 						for (var attrname in data) { params[attrname] = data[attrname]; }
 						cb(params);
 						//delete FamilySearch.states[params.state];	 // Not needed?
+
 					}
   				}
 			};
@@ -464,7 +468,7 @@
 				var cb = this.states[data.state];
 				if(cb) {
 					if (data.code != "") {
-						FamilySearch.Auth.getToken(data.code, data, cb);
+						FamilySearch.Auth.getToken(data, cb);
 					} else {
 						cb(data);
 						delete this.states[data.state];	
@@ -605,10 +609,6 @@
 				FamilySearch.Cookie('familysearch'+FamilySearch._appid, FamilySearch._access_token);
 				data.status = "authorized";
 			} else {
-				if(data.code) {
-					FamilySearch._code = data.code;
-					console.log('set the code!');
-				}
 				FamilySearch._access_token = null;
 				FamilySearch.Cookie('familysearch'+FamilySearch._appid, null);
 				data.status = data.status || "unknown";
@@ -618,12 +618,13 @@
 			}
 			return (FamilySearch._status = data.status);
 		},
-		getToken:function(code, data, cb) {
+		getToken:function(data, cb) {
+			FamilySearch._code = data.code;
 			var url = FamilySearch._oauth[FamilySearch._environment]  + FamilySearch._url.token,
 				params 	= FamilySearch.Util.extend((params||{}),{
 					_method		: "POST",
 					grant_type	: "authorization_code",
-					code		: code,
+					code		: data.code,
 					client_id	: FamilySearch._appid,
 					state 		: data.state
 				});
