@@ -2,69 +2,66 @@
 
 <html>
 <head>
-	<script src="jsdk.js"></script>
+  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  <script src="familysearch-javascript-sdk.js"></script>
 </head>
 
 <body>
 	<script>
-		// ******************************************************************************************
-		// Initialize GENI JS Client SDK
-		// ******************************************************************************************
-	    FamilySearch.init({
-	        app_id:  'KB2L-BVD1-3Q6S-J7X4-GKFZ-4168-QPZ6-NJRK', // production/staging
-	        //app_id: 'WCQY-7J1Q-GKVV-7DNM-SQ5M-9Q5H-JX3H-CMJK', // Sandbox
-	        environment 	: 'production',
-	        cookies			:  true,
-	        auth_callback	:  '/', // Set to your Callback URL
-	        logging			: true                    
-	    });
+    // ******************************************************************************************
+    // Initialize the SDK
+    // ******************************************************************************************
+    FS.init({
+      //app_key: 'KB2L-BVD1-3Q6S-J7X4-GKFZ-4168-QPZ6-NJRK', // production/staging
+      app_key: 'WCQY-7J1Q-GKVV-7DNM-SQ5M-9Q5H-JX3H-CMJK', // Sandbox
+      environment: 'sandbox',
+      // auth_callback is the URI you registered with FamilySearch; it does not need to exist but it must have the same
+      // host and port as the server for familysearch-javascript-sdk.js
+      auth_callback: 'http://localhost:9000/#!/auth',
+      http_function: jQuery.ajax,
+      deferred_function: jQuery.Deferred,
+      logging: true
+    });
 
-		// ******************************************************************************************
-		// Helper methods 
-		// ******************************************************************************************
-		function $(id) {
-			return document.getElementById(id);
-		}
-		
-		// ******************************************************************************************
-		// Connection methods 
-		// ******************************************************************************************
-   		function connectWithFamilySearch() {
-			FamilySearch.connect(function(response) {
-        		if(response.status == 'authorized') {
-					$("login_link").style.display = "none";	
-					$("loading").style.display = "";	
-					//loadNameCloud();
-					loadPersonDetails('/users/current');
-        		} else {
-					$("login_link").style.display = "";	
-        		}
-			});
-		}
-
-		// ******************************************************************************************
-		// Load person methods 
-		// ******************************************************************************************
-		function loadPersonDetails(url) {
-			if (!url) { url = '/users/current'; }
-			url = url.replace("https://www.familysearch.com/platform", "");
-			console.log('Have the access_token, now requesting URL: '+url);
-			console.log(FamilySearch);
-			FamilySearch.api(url, function (response) {
-				console.log(response);
-			});			
-		}		
+    // ******************************************************************************************
+    // Get the access token
+    // ******************************************************************************************
+    function connect() {
+      FS.getAccessToken().then(function(response) {
+        console.log('accessToken response=',response);
+        $("#login_link").hide();
+        $("#loading").show();
+        // ******************************************************************************************
+        // Load current user
+        // ******************************************************************************************
+        FS.get('/platform/users/current').then(function(response) {
+          console.log('current user response=',response);
+          $("#loading").hide();
+          $("#user_data").show();
+          $("#user_name").text(response.users[0].contactName);
+          $("#user_id").text(response.users[0].id);
+        });
+      });
+    }
 	</script>
 	
 	<div style="text-align:center; padding:30px; font-size:24px;">
 		<div id="login_link">
-			<a href="#" onClick="connectWithFamilySearch()">Connect with FamilySearch.</a>
+			<a href="#" onClick="connect()">Connect with FamilySearch.</a>
 		</div>	
 
 		<div id="loading" style="display:none;">
 			Please wait...
-		</div>	
-		
+		</div>
+    <div id="user_data" style="display:none">
+      <h2>User information</h2>
+      <p>
+        <span style="color: lightgray">User name:</span> <span id="user_name"></span>
+      </p>
+      <p>
+        <span style="color: lightgray">User id:</span> <span id="user_id"></span>
+      </p>
+    </div>
 	</div>
 	
 </body>
