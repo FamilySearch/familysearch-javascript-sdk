@@ -277,7 +277,7 @@
     return httpWrapper(method, url, headers, data, opts);
   }
 
-  window.FS = {
+  window.FamilySearch = {
     init: init,
     getAuthCode: getAuthCode,
     getAccessToken: getAccessToken,
