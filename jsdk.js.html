@@ -62,8 +62,9 @@
       <div class="row">
         <div class="span3 bs-docs-sidebar">
           <ul class="nav nav-list bs-docs-sidenav affix-top">
-            <li class="active"><a href="index.html">Main</a></li>
+            <li class=""><a href="index.html">Main</a></li>
             <li class=""><a href="familysearch-javascript-sdk.js.html">familysearch-javascript-sdk.js</a></li>
+            <li class="active"><a href="jsdk.js.html">jsdk.js</a></li>
           </ul>
           <div class="scrollspy">
             <ul class="nav nav-list bs-docs-sidenav affix-top">
@@ -71,33 +72,6 @@
           </div>
         </div>
         <div class="span9">
-          <section id="Main"><h1>Overview</h1>
-<p>To use the SDK, you need to</p>
-<ol>
-<li><p>init the SDK; e.g.,</p>
-<pre><code> FamilySearch.init({
-   app_key: &#39;YOUR_ACCESS_KEY_GOES_HERE&#39;,
-   environment: &#39;sandbox&#39;,
-   // auth_callback is the URI you registered with FamilySearch;
-   // it does not need to exist but it must have the same host and port as the server for familysearch-javascript-sdk.js
-   auth_callback: &#39;REDIRECT_GOES_HERE&#39;,
-   http_function: jQuery.ajax,
-   deferred_function: jQuery.Deferred,
-   logging: true
- });</code></pre>
-</li>
-<li><p>get an access token; e.g.,</p>
-<pre><code> FamilySearch.getAccessToken().then(function(response) {
-   // now you have an access token
- });</code></pre>
-</li>
-<li><p>make API calls; e.g.,</p>
-<pre><code> FamilySearch.get(&#39;/platform/users/current&#39;).then(function(response) {
-   // now you have the response
- });</code></pre>
-</li>
-</ol>
-</section>
         </div>
       </div>
     </div>

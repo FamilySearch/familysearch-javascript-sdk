@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width" charset="utf-8">
+    <title>Title Not Set</title>
+    <link rel="stylesheet" href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="http://getbootstrap.com/2.3.2/assets/css/bootstrap-responsive.css">
+    <link rel="stylesheet" href="http://getbootstrap.com/2.3.2/assets/css/docs.css">
+    <style>
+      body > .navbar .brand {
+        float:left;
+        text-shadow: rgba(255, 255, 255, 0.0980392) 0px 1px 0px, rgba(255, 255, 255, 0.4) 0px 0px 30px;
+        color: white;
+        margin-left:0px;
+        font-weight:normal;
+      }
+      
+      .bs-docs-sidenav i{
+        width: 8px;
+        height: 8px;
+        padding: 0px;
+        margin: 0px;
+        display: inline-block;
+        margin-right:0.5em;
+      }
+      
+      .bs-docs-sidenav > li:first-child > a {
+        border-top-right-radius: 6px;
+        border-top-left-radius: 6px;
+      }
+      
+      code[class*="language-"],pre[class*="language-"]{color:black;text-shadow:0 1px white;font-family:Consolas,Monaco,'Andale Mono',monospace;direction:ltr;text-align:left;white-space:pre;word-spacing:normal;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*="language-"]{padding:1em;margin:.5em 0;overflow:auto}:not(pre)>code[class*="language-"],pre[class*="language-"]{background:#f5f2f0}:not(pre)>code[class*="language-"]{padding:.1em;border-radius:.3em}.token.comment,.token.prolog,.token.doctype,.token.cdata{color:slategray}.token.punctuation{color:#999}.namespace{opacity:.7}.token.property,.token.tag,.token.boolean,.token.number{color:#905}.token.selector,.token.attr-name,.token.string{color:#690}.token.operator,.token.entity,.token.url,.language-css .token.string,.style .token.string{color:#a67f59;background:hsla(0,0%,100%,.5)}.token.atrule,.token.attr-value,.token.keyword{color:#07a}.token.regex,.token.important{color:#e90}.token.important{font-weight:bold}.token.entity{cursor:help}
+      div.description {margin: 14px 0; padding-top: 14px; border-bottom:1px solid #eee; }
+      .tags {}
+      .ctx-type {
+        display:inline-block;
+        margin-right:0.5em;
+        //- float:right; margin-top:8px
+      }
+      
+      footer iframe{vertical-align:middle;}
+      
+    </style>
+  </head>
+  <body data-spy="scroll" data-target=".scrollspy">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container"><a class="brand">Doxx</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav pull-right sponsored"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <header id="overview" class="jumbotron subhead">
+      <div class="container">
+        <h1>Title Not Set</h1>
+        <p class="lead"></p>
+      </div>
+    </header>
+    <div class="container">
+      <div class="row">
+        <div class="span3 bs-docs-sidebar">
+          <ul class="nav nav-list bs-docs-sidenav affix-top">
+            <li class=""><a href="index.html">Main</a></li>
+            <li class="active"><a href="familysearch-javascript-sdk.js.html">familysearch-javascript-sdk.js</a></li>
+          </ul>
+          <div class="scrollspy">
+            <ul class="nav nav-list bs-docs-sidenav affix-top">
+              <li><a href="#init"><i class="alert alert-info"></i>init</a>
+              </li>
+              <li><a href="#getAuthCode"><i class="alert alert-info"></i>getAuthCode</a>
+              </li>
+              <li><a href="#getAccessToken"><i class="alert alert-info"></i>getAccessToken</a>
+              </li>
+              <li><a href="#invalidateAccessToken"><i class="alert alert-info"></i>invalidateAccessToken</a>
+              </li>
+              <li><a href="#get"><i class="alert alert-info"></i>get</a>
+              </li>
+              <li><a href="#post"><i class="alert alert-info"></i>post</a>
+              </li>
+              <li><a href="#put"><i class="alert alert-info"></i>put</a>
+              </li>
+              <li><a href="#del"><i class="alert alert-info"></i>del</a>
+              </li>
+              <li><a href="#http"><i class="alert alert-info"></i>http</a>
+              </li>
+              <li><a href="#FamilySearch"><i class="alert alert-success"></i>FamilySearch</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="span9">
+          <section id="init">
+            <h1>init</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">function</div><span>init()</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>opts</td>
+                <td>Object</td>
+                <td>options (see description)</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Initialize the FamilySearch object</p>
+
+<p>Options<br />* app_key -- the developer key you received from FamilySearch<br />* environment -- sandbox, staging, or production<br />* http_function -- a function for issuing http requests: jQuery.ajax, and eventually angular's $http, or node.js's ...<br />* deferred_function -- a function for creating deferred's: jQuery.Deferred, and eventually angular's $q or Q<br />* auth_callback -- the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist, but must have the same host and port as the server of this file<br />* access_token -- pass this in if you already have an access token<br />* logging -- not currently used</p> </div>
+          <pre><code class="language-javascript">function init(opts) {
+    opts = opts || {};
+
+    if(!opts['app_key']) {
+      throw 'app_key must be set';
+    }
+    appKey = opts['app_key'];
+
+    if(!opts['environment']) {
+      throw 'environment must be set';
+    }
+    environment = opts['environment'];
+
+    if(!opts['http_function']) {
+      throw 'http must be set; e.g., jQuery.ajax';
+    }
+    httpWrapper = jqueryHttpWrapper(opts['http_function']);
+
+    if(!opts['deferred_function']) {
+      throw 'deferred_function must be set; e.g., jQuery.Deferred';
+    }
+    deferredWrapper = jqueryDeferredWrapper(opts['deferred_function']);
+
+    if(opts['auth_callback']) {
+      authCallback = opts['auth_callback'];
+    }
+
+    if(opts['access_token']) {
+      console.log('access token in init');
+      accessToken = opts['access_token'];
+    }
+
+    logging = opts['logging'];
+
+    return this;
+  }</code></pre>
+          <section id="getAuthCode">
+            <h1>getAuthCode</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">function</div><span>getAuthCode()</span>
+            </p>
+          </section>
+          <div class="description"><p>Open a popup window to allow the user to authenticate and authorize this application</p> </div>
+          <pre><code class="language-javascript">function getAuthCode() {
+    var popup = openPopup(getAbsoluteUrl(oauthServer[environment], 'authorization'), {
+      'response_type' : 'code',
+      'client_id'     : appKey,
+      'redirect_uri'  : authCallback
+    });
+    return pollForAuthCode(popup);
+  }</code></pre>
+          <section id="getAccessToken">
+            <h1>getAccessToken</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">function</div><span>getAccessToken()</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>authCode</td>
+                <td>String</td>
+                <td>optional auth code from getAuthCode; if not passed in, this function will call getAuthCode first</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Get the access token for the user.</p>
+
+<p>Call this function before making any calls that require authentication.<br />The SDK caches the access token returned so you can ignore it; you just need to ensure that the promise that is<br />returned by this function resolves before making calls that require authentication</p> </div>
+          <pre><code class="language-javascript">function getAccessToken(authCode) {
+    // get auth code if not passed in
+    var authCodeDeferred;
+    if (authCode) {
+      authCodeDeferred = deferredWrapper();
+      authCodeDeferred.resolve(authCode);
+    }
+    else {
+      authCodeDeferred = getAuthCode();
+    }
+    var accessTokenDeferred = deferredWrapper();
+    authCodeDeferred.then(function(authCode) {
+      // get the access token given the auth code
+      accessToken = null; // clear the current access token if there is one
+      post(getAbsoluteUrl(oauthServer[environment], 'token'), {
+        'grant_type' : 'authorization_code',
+        'code'       : authCode,
+        'client_id'  : appKey
+      }).then(function(response) {
+        console.log('accessToken=',response);
+        accessToken = response['access_token'];
+        if (accessToken) {
+          accessTokenDeferred.resolve(accessToken);
+        }
+        else {
+          accessTokenDeferred.reject(response['error']);
+        }
+      }, function(error) {
+        accessTokenDeferred.reject(error);
+      });
+    }, function(error) {
+      accessTokenDeferred.reject(error);
+    });
+    return accessTokenDeferred.promise;
+  }</code></pre>
+          <section id="invalidateAccessToken">
+            <h1>invalidateAccessToken</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">function</div><span>invalidateAccessToken()</span>
+            </p>
+          </section>
+          <div class="description"><p>Invalidate the current access token</p> </div>
+          <pre><code class="language-javascript">function invalidateAccessToken() {
+    accessToken = null;
+    return del(getAbsoluteUrl(oauthServer[environment], 'token'));
+  }</code></pre>
+          <section id="get">
+            <h1>get</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">function</div><span>get()</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>url</td>
+                <td>String</td>
+                <td>may be relative; e.g., /platform/users/current</td>
+              </tr>
+              <tr>
+                <td>params</td>
+                <td>Object</td>
+                <td>optional query parameters</td>
+              </tr>
+              <tr>
+                <td>opts</td>
+                <td>Object</td>
+                <td>optional options to pass to the http function specified during init</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Low-level call to get a specific REST endpoint from FamilySearch</p> </div>
+          <pre><code class="language-javascript">function get(url, params, opts) {
+    return http('GET', appendQueryParameters(url, params), {}, {}, opts);
+  }</code></pre>
+          <section id="post">
+            <h1>post</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">function</div><span>post()</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>url</td>
+                <td>String</td>
+                <td>may be relative</td>
+              </tr>
+              <tr>
+                <td>data</td>
+                <td>Object</td>
+                <td>optional post data</td>
+              </tr>
+              <tr>
+                <td>opts</td>
+                <td>Object</td>
+                <td>optional options to pass to the http function specified during init</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Low-level call to post to a specific REST endpoint from FamilySearch</p> </div>
+          <pre><code class="language-javascript">function post(url, data, opts) {
+    return http('POST', url, {'Content-type': 'application/x-www-form-urlencoded'}, data, opts);
+  }</code></pre>
+          <section id="put">
+            <h1>put</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">function</div><span>put()</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>url</td>
+                <td>String</td>
+                <td>may be relative</td>
+              </tr>
+              <tr>
+                <td>data</td>
+                <td>Object</td>
+                <td>optional post data</td>
+              </tr>
+              <tr>
+                <td>opts</td>
+                <td>Object</td>
+                <td>optional options to pass to the http function specified during init</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Low-level call to put to a specific REST endpoint from FamilySearch</p> </div>
+          <pre><code class="language-javascript">function put(url, data, opts) {
+    return http('PUT', url, {'Content-type': 'application/x-www-form-urlencoded'}, data, opts);
+  }</code></pre>
+          <section id="del">
+            <h1>del</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">function</div><span>del()</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>url</td>
+                <td>String</td>
+                <td>may be relative</td>
+              </tr>
+              <tr>
+                <td>opts</td>
+                <td>Object</td>
+                <td>optional options to pass to the http function specified during init</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Low-level call to delete to a specific REST endpoint from FamilySearch</p> </div>
+          <pre><code class="language-javascript">function del(url, opts) {
+    return http('DELETE', url, {}, {}, opts);
+  }</code></pre>
+          <section id="http">
+            <h1>http</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">function</div><span>http()</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>method</td>
+                <td>String</td>
+                <td>GET, POST, PUT, or DELETE</td>
+              </tr>
+              <tr>
+                <td>url</td>
+                <td>String</td>
+                <td>may be relative</td>
+              </tr>
+              <tr>
+                <td>headers</td>
+                <td>Object</td>
+                <td>optional headers object</td>
+              </tr>
+              <tr>
+                <td>data</td>
+                <td>Object</td>
+                <td>optional post data</td>
+              </tr>
+              <tr>
+                <td>opts</td>
+                <td>Object</td>
+                <td>optional options to pass to the http function specified during init</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Low-level call to issue an http request to a specific REST endpoint from FamilySearch</p> </div>
+          <pre><code class="language-javascript">function http(method, url, headers, data, opts) {
+    // prepend the server
+    url = getAbsoluteUrl(server[environment], url);
+
+    // append the access token as a query parameter to avoid cors pre-flight
+    // this is detrimental to browser caching across sessions, which seems less bad than cors pre-flight requests
+    // TODO investigate this further
+    if (accessToken) {
+      url = appendQueryParameters(url, {'access_token': accessToken});
+    }
+
+    // add headers
+    headers = extend({
+      'Accept': 'application/x-gedcomx-v1+json'
+    }, headers);
+
+    // call the http wrapper
+    return httpWrapper(method, url, headers, data, opts);
+  }</code></pre>
+          <section id="FamilySearch">
+            <h1>FamilySearch</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-success radius ctx-type">property</div><span>window.FamilySearch</span>
+            </p>
+          </section>
+          <div class="description"><p>Public API</p> </div>
+          <pre><code class="language-javascript">window.FamilySearch = {
+    init: init,
+    getAuthCode: getAuthCode,
+    getAccessToken: getAccessToken,
+    invalidateAccessToken: invalidateAccessToken,
+    get: get,
+    post: post,
+    put: put,
+    del: del,
+    http: http
+  };
+})();</code></pre>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="container">
+        <p>Documentation generated with <a href="https://github.com/FGRibreau/doxx">Doxx </a>created by <a href="https://twitter.com/FGRibreau" data-show-count="false" class="twitter-follow-button">Francois-Guillaume Ribreau</a></p>
+        <p>Doxx is sponsored by <a href="http://bringr.net/?btt" title="Outil d'analyse des réseaux sociaux" class="bringr">Bringr </a>and <a href="https://redsmin.com/?btt" title="Full Redis GUI" class="redsmin">Redsmin</a></p>
+        <p>Theme borrowed from Twitter Bootstrap</p>
+      </div>
+    </footer>
+    <script src="http://platform.twitter.com/widgets.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <script src="http://leaverou.github.com/prefixfree/prefixfree.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-transition.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-dropdown.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-collapse.js"></script>
+    <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap-affix.js"></script>
+    <script>
+      /**
+       * Prism: Lightweight, robust, elegant syntax highlighting
+       * MIT license http://www.opensource.org/licenses/mit-license.php/
+       * @author Lea Verou http://lea.verou.me
+       */(function(){var e=/\blang(?:uage)?-(?!\*)(\w+)\b/i,t=self.Prism={util:{type:function(e){return Object.prototype.toString.call(e).match(/\[object (\w+)\]/)[1]},clone:function(e){var n=t.util.type(e);switch(n){case"Object":var r={};for(var i in e)e.hasOwnProperty(i)&&(r[i]=t.util.clone(e[i]));return r;case"Array":return e.slice()}return e}},languages:{extend:function(e,n){var r=t.util.clone(t.languages[e]);for(var i in n)r[i]=n[i];return r},insertBefore:function(e,n,r,i){i=i||t.languages;var s=i[e],o={};for(var u in s)if(s.hasOwnProperty(u)){if(u==n)for(var a in r)r.hasOwnProperty(a)&&(o[a]=r[a]);o[u]=s[u]}return i[e]=o},DFS:function(e,n){for(var r in e){n.call(e,r,e[r]);t.util.type(e)==="Object"&&t.languages.DFS(e[r],n)}}},highlightAll:function(e,n){var r=document.querySelectorAll('code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code');for(var i=0,s;s=r[i++];)t.highlightElement(s,e===!0,n)},highlightElement:function(r,i,s){var o,u,a=r;while(a&&!e.test(a.className))a=a.parentNode;if(a){o=(a.className.match(e)||[,""])[1];u=t.languages[o]}if(!u)return;r.className=r.className.replace(e,"").replace(/\s+/g," ")+" language-"+o;a=r.parentNode;/pre/i.test(a.nodeName)&&(a.className=a.className.replace(e,"").replace(/\s+/g," ")+" language-"+o);var f=r.textContent;if(!f)return;f=f.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\u00a0/g," ");var l={element:r,language:o,grammar:u,code:f};t.hooks.run("before-highlight",l);if(i&&self.Worker){var c=new Worker(t.filename);c.onmessage=function(e){l.highlightedCode=n.stringify(JSON.parse(e.data));l.element.innerHTML=l.highlightedCode;s&&s.call(l.element);t.hooks.run("after-highlight",l)};c.postMessage(JSON.stringify({language:l.language,code:l.code}))}else{l.highlightedCode=t.highlight(l.code,l.grammar);l.element.innerHTML=l.highlightedCode;s&&s.call(r);t.hooks.run("after-highlight",l)}},highlight:function(e,r){return n.stringify(t.tokenize(e,r))},tokenize:function(e,n){var r=t.Token,i=[e],s=n.rest;if(s){for(var o in s)n[o]=s[o];delete n.rest}e:for(var o in n){if(!n.hasOwnProperty(o)||!n[o])continue;var u=n[o],a=u.inside,f=!!u.lookbehind||0;u=u.pattern||u;for(var l=0;l<i.length;l++){var c=i[l];if(i.length>e.length)break e;if(c instanceof r)continue;u.lastIndex=0;var h=u.exec(c);if(h){f&&(f=h[1].length);var p=h.index-1+f,h=h[0].slice(f),d=h.length,v=p+d,m=c.slice(0,p+1),g=c.slice(v+1),y=[l,1];m&&y.push(m);var b=new r(o,a?t.tokenize(h,a):h);y.push(b);g&&y.push(g);Array.prototype.splice.apply(i,y)}}}return i},hooks:{all:{},add:function(e,n){var r=t.hooks.all;r[e]=r[e]||[];r[e].push(n)},run:function(e,n){var r=t.hooks.all[e];if(!r||!r.length)return;for(var i=0,s;s=r[i++];)s(n)}}},n=t.Token=function(e,t){this.type=e;this.content=t};n.stringify=function(e){if(typeof e=="string")return e;if(Object.prototype.toString.call(e)=="[object Array]"){for(var r=0;r<e.length;r++)e[r]=n.stringify(e[r]);return e.join("")}var i={type:e.type,content:n.stringify(e.content),tag:"span",classes:["token",e.type],attributes:{}};i.type=="comment"&&(i.attributes.spellcheck="true");t.hooks.run("wrap",i);var s="";for(var o in i.attributes)s+=o+'="'+(i.attributes[o]||"")+'"';return"<"+i.tag+' class="'+i.classes.join(" ")+'" '+s+">"+i.content+"</"+i.tag+">"};if(!self.document){self.addEventListener("message",function(e){var n=JSON.parse(e.data),r=n.language,i=n.code;self.postMessage(JSON.stringify(t.tokenize(i,t.languages[r])));self.close()},!1);return}var r=document.getElementsByTagName("script");r=r[r.length-1];if(r){t.filename=r.src;document.addEventListener&&!r.hasAttribute("data-manual")&&document.addEventListener("DOMContentLoaded",t.highlightAll)}})();;
+      Prism.languages.markup={comment:/&lt;!--[\w\W]*?--(&gt;|&gt;)/g,prolog:/&lt;\?.+?\?&gt;/,doctype:/&lt;!DOCTYPE.+?&gt;/,cdata:/&lt;!\[CDATA\[[\w\W]+?]]&gt;/i,tag:{pattern:/&lt;\/?[\w:-]+\s*(?:\s+[\w:-]+(?:=(?:("|')(\\?[\w\W])*?\1|\w+))?\s*)*\/?&gt;/gi,inside:{tag:{pattern:/^&lt;\/?[\w:-]+/i,inside:{punctuation:/^&lt;\/?/,namespace:/^[\w-]+?:/}},"attr-value":{pattern:/=(?:('|")[\w\W]*?(\1)|[^\s>]+)/gi,inside:{punctuation:/=|&gt;|"/g}},punctuation:/\/?&gt;/g,"attr-name":{pattern:/[\w:-]+/g,inside:{namespace:/^[\w-]+?:/}}}},entity:/&amp;#?[\da-z]{1,8};/gi};Prism.hooks.add("wrap",function(e){e.type==="entity"&&(e.attributes.title=e.content.replace(/&amp;/,"&"))});;
+      Prism.languages.css={comment:/\/\*[\w\W]*?\*\//g,atrule:/@[\w-]+?(\s+[^;{]+)?(?=\s*{|\s*;)/gi,url:/url\((["']?).*?\1\)/gi,selector:/[^\{\}\s][^\{\}]*(?=\s*\{)/g,property:/(\b|\B)[a-z-]+(?=\s*:)/ig,string:/("|')(\\?.)*?\1/g,important:/\B!important\b/gi,ignore:/&(lt|gt|amp);/gi,punctuation:/[\{\};:]/g};Prism.languages.markup&&Prism.languages.insertBefore("markup","tag",{style:{pattern:/(&lt;|<)style[\w\W]*?(>|&gt;)[\w\W]*?(&lt;|<)\/style(>|&gt;)/ig,inside:{tag:{pattern:/(&lt;|<)style[\w\W]*?(>|&gt;)|(&lt;|<)\/style(>|&gt;)/ig,inside:Prism.languages.markup.tag.inside},rest:Prism.languages.css}}});;
+      Prism.languages.clike={comment:{pattern:/(^|[^\\])(\/\*[\w\W]*?\*\/|\/\/.*?(\r?\n|$))/g,lookbehind:!0},string:/("|')(\\?.)*?\1/g,keyword:/\b(if|else|while|do|for|return|in|instanceof|function|new|try|catch|finally|null|break|continue)\b/g,"boolean":/\b(true|false)\b/g,number:/\b-?(0x)?\d*\.?[\da-f]+\b/g,operator:/[-+]{1,2}|!|=?&lt;|=?&gt;|={1,2}|(&amp;){1,2}|\|?\||\?|\*|\//g,ignore:/&(lt|gt|amp);/gi,punctuation:/[{}[\];(),.:]/g};;
+      Prism.languages.javascript=Prism.languages.extend("clike",{keyword:/\b(var|let|if|else|while|do|for|return|in|instanceof|function|new|with|typeof|try|catch|finally|null|break|continue)\b/g,number:/\b(-?(0x)?\d*\.?[\da-f]+|NaN|-?Infinity)\b/g});Prism.languages.insertBefore("javascript","keyword",{regex:{pattern:/(^|[^/])\/(?!\/)(\[.+?]|\\.|[^/\r\n])+\/[gim]{0,3}(?=\s*($|[\r\n,.;})]))/g,lookbehind:!0}});Prism.languages.markup&&Prism.languages.insertBefore("markup","tag",{script:{pattern:/(&lt;|<)script[\w\W]*?(>|&gt;)[\w\W]*?(&lt;|<)\/script(>|&gt;)/ig,inside:{tag:{pattern:/(&lt;|<)script[\w\W]*?(>|&gt;)|(&lt;|<)\/script(>|&gt;)/ig,inside:Prism.languages.markup.tag.inside},rest:Prism.languages.javascript}}});;
+      
+    </script>
+    <!-- App js-->
+    <script>
+      $(function(){
+        var $window = $(window);
+        $('.scrollspy .nav').affix({
+          offset: {
+            top: function () { return $window.width() <= 980 ? 480 : 400 }
+          , bottom: 50
+          }
+        });
+      })
+    </script>
+  </body>
+</html>
