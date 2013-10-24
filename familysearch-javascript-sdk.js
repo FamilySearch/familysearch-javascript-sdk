@@ -112,6 +112,21 @@
     }
   }
 
+  /**
+   * Initialize the FamilySearch object
+   *
+   * Options
+   * * app_key -- the developer key you received from FamilySearch
+   * * environment -- sandbox, staging, or production
+   * * http_function -- a function for issuing http requests: jQuery.ajax, and eventually angular's $http, or node.js's ...
+   * * deferred_function -- a function for creating deferred's: jQuery.Deferred, and eventually angular's $q or Q
+   * * auth_callback -- the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist, but must have the same host and port as the server of this file
+   * * access_token -- pass this in if you already have an access token
+   * * logging -- not currently used
+   *
+   * @param {Object} opts options (see description)
+   * @returns this for chaining
+   */
   function init(opts) {
     opts = opts || {};
 
@@ -149,7 +164,15 @@
     return this;
   }
 
-  function openPopup(url,params) {
+  /**
+   * Open a popup window for user to authenticate and authorize this app
+   *
+   * @private
+   * @param {String} url window url
+   * @param {Object} params query parameters to append to the window url
+   * @returns {window} reference to the popup window
+   */
+  function openPopup(url, params) {
     // figure out where the center is
     var
       screenX    	= typeof window.screenX != 'undefined' ? window.screenX : window.screenLeft,
@@ -169,6 +192,13 @@
     return window.open(appendQueryParameters(url, params),'',features);
   }
 
+  /**
+   * Polls the popup window location for the auth code
+   *
+   * @private
+   * @param {window} popup window to poll
+   * @returns a promise of the auth code
+   */
   function pollForAuthCode(popup) {
     var d = deferredWrapper();
     var i = setInterval(function() {
@@ -191,6 +221,11 @@
     return d.promise;
   }
 
+  /**
+   * Open a popup window to allow the user to authenticate and authorize this application
+   *
+   * @returns a promise of the auth code
+   */
   function getAuthCode() {
     var popup = openPopup(getAbsoluteUrl(oauthServer[environment], 'authorization'), {
       'response_type' : 'code',
@@ -200,6 +235,16 @@
     return pollForAuthCode(popup);
   }
 
+  /**
+   * Get the access token for the user.
+   *
+   * Call this function before making any calls that require authentication.
+   * The SDK caches the access token returned so you can ignore it; you just need to ensure that the promise that is
+   * returned by this function resolves before making calls that require authentication
+   *
+   * @param {String} authCode optional auth code from getAuthCode; if not passed in, this function will call getAuthCode first
+   * @returns a promise of the access token.
+   */
   function getAccessToken(authCode) {
     // get auth code if not passed in
     var authCodeDeferred;
@@ -236,27 +281,73 @@
     return accessTokenDeferred.promise;
   }
 
+  /**
+   * Invalidate the current access token
+   *
+   * @returns a promise that is resolved once the access token has been invalidated
+   */
   function invalidateAccessToken() {
     accessToken = null;
     return del(getAbsoluteUrl(oauthServer[environment], 'token'));
   }
 
+  /**
+   * Low-level call to get a specific REST endpoint from FamilySearch
+   *
+   * @param {String} url may be relative; e.g., /platform/users/current
+   * @param {Object} params optional query parameters
+   * @param {Object} opts optional options to pass to the http function specified during init
+   * @returns a promise, which is the promise returned by the http function specified during init
+   */
   function get(url, params, opts) {
     return http('GET', appendQueryParameters(url, params), {}, {}, opts);
   }
 
+  /**
+   * Low-level call to post to a specific REST endpoint from FamilySearch
+   *
+   * @param {String} url may be relative
+   * @param {Object} data optional post data
+   * @param {Object} opts optional options to pass to the http function specified during init
+   * @returns a promise, which is the promise returned by the http function specified during init
+   */
   function post(url, data, opts) {
     return http('POST', url, {'Content-type': 'application/x-www-form-urlencoded'}, data, opts);
   }
 
+  /**
+   * Low-level call to put to a specific REST endpoint from FamilySearch
+   *
+   * @param {String} url may be relative
+   * @param {Object} data optional post data
+   * @param {Object} opts optional options to pass to the http function specified during init
+   * @returns a promise, which is the promise returned by the http function specified during init
+   */
   function put(url, data, opts) {
     return http('PUT', url, {'Content-type': 'application/x-www-form-urlencoded'}, data, opts);
   }
 
+  /**
+   * Low-level call to delete to a specific REST endpoint from FamilySearch
+   *
+   * @param {String} url may be relative
+   * @param {Object} opts optional options to pass to the http function specified during init
+   * @returns a promise, which is the promise returned by the http function specified during init
+   */
   function del(url, opts) {
     return http('DELETE', url, {}, {}, opts);
   }
 
+  /**
+   * Low-level call to issue an http request to a specific REST endpoint from FamilySearch
+   *
+   * @param {String} method GET, POST, PUT, or DELETE
+   * @param {String} url may be relative
+   * @param {Object} headers optional headers object
+   * @param {Object} data optional post data
+   * @param {Object} opts optional options to pass to the http function specified during init
+   * @returns a promise, which is the promise returned by the http function specified during init
+   */
   function http(method, url, headers, data, opts) {
     // prepend the server
     url = getAbsoluteUrl(server[environment], url);
@@ -277,6 +368,9 @@
     return httpWrapper(method, url, headers, data, opts);
   }
 
+  /**
+   * Public API
+   */
   window.FamilySearch = {
     init: init,
     getAuthCode: getAuthCode,
