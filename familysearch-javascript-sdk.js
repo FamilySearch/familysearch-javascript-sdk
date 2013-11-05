@@ -1,116 +1,39 @@
-/*!
+/**
  * FamilySearch JavaScript SDK
- * Copyright 2012, Dallan Quass & Dovy Paukstys
- * For all api documentation:
- * https://familysearch.org/developers/
+ * @preserve Copyright 2012, Dallan Quass & Dovy Paukstys
+ * MIT license
  */
+/*jshint sub:true*/
+/*global console:false */
 
 ;(function() {
-  var appKey
-    , environment
-    , httpWrapper
-    , deferredWrapper
-    , authCallback
-    , accessToken
-    , logging
-    , server = {
-      'sandbox' 	: 'https://sandbox.familysearch.org',
-      'staging'		: 'https://stage.familysearch.org',
+  'use strict';
+
+  var appKey,
+    environment,
+    httpWrapper,
+    deferredWrapper,
+    authCallbackUri,
+    autoSignin,
+    accessToken,
+    logging,
+    server = {
+      'sandbox'   : 'https://sandbox.familysearch.org',
+      'staging'   : 'https://stage.familysearch.org',
       'production': 'https://familysearch.org'
-    }
-    , oauthServer = {
-      'sandbox' 	: 'https://sandbox.familysearch.org/cis-web/oauth2/v3',
-      'staging' 	: 'https://identbeta.familysearch.org/cis-web/oauth2/v3',
+    },
+    oauthServer = {
+      'sandbox'   : 'https://sandbox.familysearch.org/cis-web/oauth2/v3',
+      'staging'   : 'https://identbeta.familysearch.org/cis-web/oauth2/v3',
       'production': 'https://ident.familysearch.org/cis-web/oauth2/v3'
-    }
-    , pollDelay = 50
-  ;
+    },
+    authCodePollDelay = 50,
+    throttleRetryDelay = 500,
+    maxHttpRequestRetries = 5;
 
-  function extend(dest) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-      for (var prop in source) {
-        //noinspection JSUnfilteredForInLoop
-        dest[prop] = source[prop];
-      }
-    }
-    return dest;
-  }
-
-  function getAbsoluteUrl(server, path) {
-    if (!path.match(/^https?:\/\//)) {
-      return server + (path.charAt(0) !== '/' ? '/' : '') + path;
-    }
-    else {
-      return path;
-    }
-  }
-
-  // Create a URL-encoded query string from an object
-  function encodeQueryString(params) {
-    var arr = [];
-    for(var param in params) {
-      if (params.hasOwnProperty(param)) {
-        arr.push(encodeURIComponent(param) + "=" + encodeURIComponent(params[param]));
-      }
-    }
-    return arr.join("&");
-  }
-
-  function appendQueryParameters(url, params) {
-    return url + (url.indexOf('?') >= 0 ? '&' : '?') + encodeQueryString(params);
-  }
-
-  function decodeQueryString(qs) {
-    var obj = {}
-      , segments = qs.substring(qs.indexOf('?')+1).split('&')
-    ;
-    for (var i=0; i < segments.length; i++) {
-      var kv = segments[i].split('=', 2);
-      if (kv && kv[0]) {
-        obj[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1]);
-      }
-    }
-    return obj;
-  }
-
-  function jqueryHttpWrapper(ajax) {
-    return function(method, url, headers, data, opts) {
-      if (typeof opts !== 'object') {
-        opts = {};
-      }
-      opts = extend({
-        url: url,
-        type: method,
-        data: data,
-        dataType: 'json'
-      }, opts);
-      opts.headers = (opts.headers ? extend({}, headers, opts.headers) : headers);
-      return ajax(opts);
-    }
-  }
-
-  function jqueryDeferredWrapper(deferred) {
-    return function() {
-      var d = deferred();
-      return {
-        promise: d.promise(),
-        resolve: d.resolve,
-        reject: d.reject
-      }
-    }
-  }
-
-  function qDeferredWrapper(deferred) {
-    return function() {
-      var d = deferred();
-      return {
-        promise: d.promise,
-        resolve: d.resolve,
-        reject: d.reject
-      }
-    }
-  }
+  //---------------
+  // INITIALIZATION
+  //---------------
 
   /**
    * Initialize the FamilySearch object
@@ -121,11 +44,11 @@
    * * http_function -- a function for issuing http requests: jQuery.ajax, and eventually angular's $http, or node.js's ...
    * * deferred_function -- a function for creating deferred's: jQuery.Deferred, and eventually angular's $q or Q
    * * auth_callback -- the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist, but must have the same host and port as the server of this file
+   * * auto_signin -- set to true if you want the user to be prompted to sign in when a call returns 401 unauthorized (must be false for node.js, and may require the user to enable popups in their browser)
    * * access_token -- pass this in if you already have an access token
    * * logging -- not currently used
    *
    * @param {Object} opts options (see description)
-   * @returns this for chaining
    */
   function init(opts) {
     opts = opts || {};
@@ -151,18 +74,577 @@
     deferredWrapper = jqueryDeferredWrapper(opts['deferred_function']);
 
     if(opts['auth_callback']) {
-      authCallback = opts['auth_callback'];
+      authCallbackUri = opts['auth_callback'];
+    }
+
+    if(opts['auto_signin']) {
+      autoSignin = opts['auto_signin'];
     }
 
     if(opts['access_token']) {
-      console.log('access token in init');
       accessToken = opts['access_token'];
     }
 
     logging = opts['logging'];
-
-    return this;
   }
+
+  //---------------
+  // AUTHENTICATION
+  //---------------
+
+  /**
+   * Open a popup window to allow the user to authenticate and authorize this application
+   *
+   * @returns a promise of the auth code
+   */
+  function getAuthCode() {
+    var popup = openPopup(getAbsoluteUrl(oauthServer[environment], 'authorization'), {
+      'response_type' : 'code',
+      'client_id'     : appKey,
+      'redirect_uri'  : authCallbackUri
+    });
+    return pollForAuthCode(popup);
+  }
+
+  /**
+   * Get the access token for the user.
+   *
+   * Call this function before making any calls that require authentication.
+   * The SDK caches the access token returned so you don't need to; you just need to ensure that the promise that is
+   * returned by this function resolves before making calls that require authentication
+   *
+   * @param {String=} authCode optional auth code from getAuthCode; if not passed in, this function will call getAuthCode first
+   * @returns a promise of the access token.
+   */
+  function getAccessToken(authCode) {
+    var accessTokenDeferred = deferredWrapper();
+    if (accessToken) {
+      nextTick(function() {
+        accessTokenDeferred.resolve(accessToken);
+      });
+    }
+    else {
+      // get auth code if not passed in
+      var authCodePromise;
+      if (authCode) {
+        authCodePromise = refPromise(authCode);
+      }
+      else {
+        authCodePromise = getAuthCode();
+      }
+      authCodePromise.then(function(authCode) {
+        // get the access token given the auth code
+        var promise = post(getAbsoluteUrl(oauthServer[environment], 'token'), {
+          'grant_type' : 'authorization_code',
+          'code'       : authCode,
+          'client_id'  : appKey
+        });
+        promise.then(function() {
+          var data = promise.getData();
+          console.log('accessToken=',data);
+          accessToken = data['access_token'];
+          if (accessToken) {
+            accessTokenDeferred.resolve(accessToken);
+          }
+          else {
+            accessTokenDeferred.reject(data['error']);
+          }
+        }, function(error) {
+          accessTokenDeferred.reject(error);
+        });
+      }, function(error) {
+        accessTokenDeferred.reject(error);
+      });
+    }
+    return accessTokenDeferred.promise;
+  }
+
+  /**
+   * Invalidate the current access token
+   *
+   * @returns a promise that is resolved once the access token has been invalidated
+   */
+  function invalidateAccessToken() {
+    accessToken = null;
+    return del(getAbsoluteUrl(oauthServer[environment], 'token'));
+  }
+
+  //----
+  // API
+  //----
+
+  /**
+   * Get the current user
+   * @param {Object=} opts optional options to pass to the http function specified during init
+   * @returns a promise for the current user {@link https://familysearch.org/developers/docs/api/tree/Read_Current_User_usecase?ru=users/Current_User_resource&rt=Current%20User example}
+   */
+  function getCurrentUser(opts) {
+    console.log('getCurrentUser');
+    return get('/platform/users/current', {}, opts);
+  }
+
+  /**
+   * Get the id of the current user person
+   * @param {Object=} opts optional options to pass to the http function specified during init
+   * @returns a promise for the (string) Id of the current user person
+   */
+  function getCurrentUserPerson(opts) {
+    console.log('getCurrentUserPerson');
+    // TODO fix this
+    var promise = get('/platform/tree/current-person', {}, opts);
+    var d = deferredWrapper();
+    var returnedPromise = d.promise;
+    extendHttpPromise(returnedPromise, promise);
+    promise.then(function() {
+      var id = null;
+      var data = promise.getData();
+      if (data && data.persons && data.persons.length) {
+        // this is the expected situation for jQuery in Firefox
+        id = data.persons[0].id;
+      }
+      if (id === null) {
+        var location = promise.getResponseHeader('Location');
+        if (location) {
+          var matchResult = location.match('/persons/([^?]*)');
+          if (matchResult) {
+            // this is the expected result for Node.js because it doesn't follow redirects
+            id = matchResult[1];
+          }
+        }
+      }
+
+      if (id) {
+        d.resolve(id);
+      }
+      else {
+        d.reject('not found');
+      }
+    },
+    function() {
+      // on failure, getData contains raw response data
+      var matchResult = promise.getData().match('<gx:person id="([^"]*)">');
+      if (matchResult) {
+        // this is the expected result for jQuery in Chrome due to a bug in Chrome https://bugzilla.mozilla.org/show_bug.cgi?id=401564
+        // Chrome doesn't send the Accept header requesting json when it follows redirects
+        d.resolve(matchResult[1]);
+      }
+      else {
+        d.reject('not found');
+      }
+    });
+    return returnedPromise;
+  }
+
+  /**
+   * Get the specified person
+   * @param {String} id of the person to read
+   * @param {Object=} opts optional options to pass to the http function specified during init
+   * @returns a promise for the person {@link https://familysearch.org/developers/docs/api/tree/Read_Person_usecase?ru=tree/Person_resource&rt=Person example}
+   */
+  function getPerson(id, opts) {
+    return get('/platform/tree/persons/'+encodeURI(id), {}, opts);
+  }
+
+  /**
+   * Get an array of people
+   * @param ids {Array} ids of the people to read
+   * @param {Object=} opts optional options to pass to the http function specified during init
+   * @returns a promise that is fulfilled when all of the people have been read, returning a map of person id to response
+   */
+  function getMultiPerson(ids, opts) {
+    var promises = {};
+    forEach(ids, function(id) {
+      promises[id] = getPerson(id, opts);
+    });
+    return promiseAll(promises);
+  }
+
+  /**
+   * Get the ancestors of a specified person and optionally a specified spouse
+   * @param {String} id of the person
+   * @param {Number} generations number of generations to retrieve (max 8)
+   * @param {String=} spouseId optional spouse id
+   * @param {Object=} opts optional options to pass to the http function specified during init
+   * @return a promise for the ancestry {@link https://familysearch.org/developers/docs/api/tree/Read_Person_Ancestry_usecase?ru=tree/Ancestry_resource&rt=Ancestry example}
+   */
+  function getAncestry(id, generations, spouseId, opts) {
+    return get('/platform/tree/ancestry', removeEmptyProperties({
+        'person': id,
+        'generations': generations,
+        'spouse': spouseId}),
+      opts);
+  }
+
+  //---------
+  // PLUMBING
+  //---------
+
+  /**
+   * Low-level call to get a specific REST endpoint from FamilySearch
+   *
+   * @param {String} url may be relative; e.g., /platform/users/current
+   * @param {Object=} params optional query parameters
+   * @param {Object=} opts optional options to pass to the http function specified during init
+   * @returns a promise, which is the promise returned by the http function specified during init
+   */
+  function get(url, params, headers, opts) {
+    return http('GET', appendQueryParameters(url, params), extend({'Accept': 'application/x-gedcomx-v1+json'},headers), {}, opts);
+  }
+
+  /**
+   * Low-level call to post to a specific REST endpoint from FamilySearch
+   *
+   * @param {String} url may be relative
+   * @param {Object=} data optional post data
+   * @param {Object=} opts optional options to pass to the http function specified during init
+   * @returns a promise, which is the promise returned by the http function specified during init
+   */
+  function post(url, data, headers, opts) {
+    return http('POST', url, extend({'Content-type': 'application/x-www-form-urlencoded'},headers), data, opts);
+  }
+
+  /**
+   * Low-level call to put to a specific REST endpoint from FamilySearch
+   *
+   * @param {String} url may be relative
+   * @param {Object=} data optional post data
+   * @param {Object=} opts optional options to pass to the http function specified during init
+   * @returns a promise, which is the promise returned by the http function specified during init
+   */
+  function put(url, data, headers, opts) {
+    return http('PUT', url, extend({'Content-type': 'application/x-www-form-urlencoded'},headers), data, opts);
+  }
+
+  /**
+   * Low-level call to delete to a specific REST endpoint from FamilySearch
+   *
+   * @param {String} url may be relative
+   * @param {Object=} opts optional options to pass to the http function specified during init
+   * @returns a promise, which is the promise returned by the http function specified during init
+   */
+  function del(url, headers, opts) {
+    return http('DELETE', url, headers, {}, opts);
+  }
+
+  /**
+   * Low-level call to issue an http request to a specific REST endpoint from FamilySearch
+   *
+   * @param {String} method GET, POST, PUT, or DELETE
+   * @param {String} url may be relative
+   * @param {Object=} headers optional headers object
+   * @param {Object=} data optional post data
+   * @param {Object=} opts optional options to pass to the http function specified during init
+   * @param {Number=} retries optional number of times to retry
+   * @returns a promise, which is the promise returned by the http function specified during init
+   */
+  function http(method, url, headers, data, opts, retries) {
+    // prepend the server
+    var absoluteUrl = getAbsoluteUrl(server[environment], url);
+
+    // append the access token as a query parameter to avoid cors pre-flight
+    // this is detrimental to browser caching across sessions, which seems less bad than cors pre-flight requests
+    // TODO investigate this further
+    if (accessToken) {
+      absoluteUrl = appendQueryParameters(absoluteUrl, {'access_token': accessToken});
+    }
+
+    // default retries
+    if (isUndefined(retries) || retries === null) {
+      retries = maxHttpRequestRetries;
+    }
+
+    // call the http wrapper
+    var promise = httpWrapper(method, absoluteUrl, headers || {}, data || {}, opts || {});
+
+    // process the response
+    var d = deferredWrapper();
+    var returnedPromise = d.promise;
+    extendHttpPromise(returnedPromise, promise);
+    promise.then(function() {
+      d.resolve.apply(d, arguments);
+    },
+    function() {
+      var statusCode = promise.getStatusCode();
+      console.log('failure code', statusCode, retries);
+      if (retries > 0 && (statusCode === 429 || (statusCode === 401 && autoSignin))) {
+        var retryDelay = 0;
+        if (statusCode === 401) {
+          accessToken = null; // clear the access token in case it has expired
+        }
+        else if (statusCode === 429) {
+          var retryAfter = promise.getResponseHeader('Retry-After');
+          console.log('retryAfter',retryAfter, promise.getAllResponseHeaders());
+          if (retryAfter) {
+            retryDelay = parseInt(retryAfter,10);
+          }
+          else {
+            retryDelay = throttleRetryDelay;
+          }
+        }
+        getAccessToken().then(function() { // promise will resolve right away if access code exists
+          setTimeout(function() {
+            promise = http(method, url, headers, data, opts, retries-1);
+            extendHttpPromise(returnedPromise, promise);
+            promise.then(function() {
+                d.resolve.apply(d, arguments);
+              },
+              function() {
+                d.reject.apply(d, arguments);
+              });
+          }, retryDelay);
+        });
+      }
+      else {
+        d.reject.apply(d, arguments);
+      }
+    });
+    return returnedPromise;
+  }
+
+  //-----------------
+  // HELPER FUNCTIONS
+  //-----------------
+
+  // borrowed from underscore.js
+  function isArray(value) {
+    //noinspection JSHint
+    return Array.isArray ? Array.isArray(value) : Object.prototype.toString.call(value) == '[object Array]';
+  }
+
+  // borrowed from underscore.js
+  function isObject(obj) {
+    return obj === Object(obj);
+  }
+
+  // borrowed from underscore.js
+  function isFunction(value) {
+    //noinspection JSHint
+    return typeof value == 'function' && Object.prototype.toString.call(value) == '[object Function]';
+  }
+
+  function isUndefined(value) {
+    //noinspection JSHint
+    return typeof value == 'undefined';
+  }
+
+  // borrowed from underscore.js
+  function forEach(obj, iterator, context) {
+    //noinspection JSHint
+    if (obj == null) { // catches undefined as well
+      return;
+    }
+    if (Array.prototype.forEach && obj.forEach === Array.prototype.forEach) {
+      obj.forEach(iterator, context);
+    } else if (obj.length === +obj.length) {
+      for (var i = 0, length = obj.length; i < length; i++) {
+        if (iterator.call(context, obj[i], i, obj) === {}) {
+          return;
+        }
+      }
+    } else {
+      for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          if (iterator.call(context, obj[key], key, obj) === {}) {
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  function extend(dest) {
+    forEach(Array.prototype.slice.call(arguments, 1), function(source) {
+      if (isObject(source)) {
+        forEach(source, function(value, key) {
+          dest[key] = value;
+        });
+      }
+    });
+    return dest;
+  }
+
+  // copy functions from source to dest, binding them to source
+  function wrapFunctions(dest, source, fns) {
+    forEach(fns, function(fn) {
+      dest[fn] = function() {
+        return source[fn].apply(source, arguments);
+      };
+    });
+    return dest;
+  }
+
+  // extend the destPromise with functions from the sourcePromise
+  function extendHttpPromise(destPromise, sourcePromise) {
+    wrapFunctions(destPromise, sourcePromise, ['getResponseHeader', 'getAllResponseHeaders', 'getStatusCode', 'getData']);
+  }
+
+  // "empty" properties are undefined, null, or the empty string
+  function removeEmptyProperties(obj) {
+    forEach(obj, function(value, key) {
+      if (isUndefined(value) || value === null || value === '') {
+        delete obj[key];
+      }
+    });
+    return obj;
+  }
+
+  function getAbsoluteUrl(server, path) {
+    if (!path.match(/^https?:\/\//)) {
+      return server + (path.charAt(0) !== '/' ? '/' : '') + path;
+    }
+    else {
+      return path;
+    }
+  }
+
+  // Create a URL-encoded query string from an object
+  function encodeQueryString(params) {
+    var arr = [];
+    forEach(params, function(value, key) {
+      arr.push(encodeURIComponent(key) + "=" + encodeURIComponent(value));
+    });
+    return arr.join('&');
+  }
+
+  function appendQueryParameters(url, params) {
+    var queryString = encodeQueryString(params);
+    if (queryString.length === 0) {
+      return url;
+    }
+    return url + (url.indexOf('?') >= 0 ? '&' : '?') + queryString;
+  }
+
+  function decodeQueryString(qs) {
+    var obj = {}, segments = qs.substring(qs.indexOf('?')+1).split('&');
+    forEach(segments, function(segment) {
+      var kv = segment.split('=', 2);
+      if (kv && kv[0]) {
+        obj[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1]);
+      }
+    });
+    return obj;
+  }
+
+  function nextTick(cb) {
+    setTimeout(function() {
+      cb();
+    },0);
+  }
+
+  // borrowed from AngularJS's implementation of $q
+  // if passed a promise returns the promise; otherwise returns an a pseudo-promise returning the value
+  function refPromise(value) {
+    if (value && isFunction(value.then)) {
+      return value;
+    }
+    return {
+      then: function(callback) {
+        var d = deferredWrapper();
+        nextTick(function() {
+          d.resolve(callback(value));
+        });
+        return d.promise;
+      }
+    };
+  }
+
+  // borrowed from AngularJS's implementation of $q
+  function promiseAll(promises) {
+    var d = deferredWrapper(),
+      counter = 0,
+      results = isArray(promises) ? [] : {};
+
+    forEach(promises, function(promise, key) {
+      counter++;
+      refPromise(promise).then(function(value) {
+        if (results.hasOwnProperty(key)) {
+          return;
+        }
+        results[key] = value;
+        if (!(--counter)) {
+          d.resolve(results);
+        }
+      },
+      function() {
+        if (results.hasOwnProperty(key)) {
+          return;
+        }
+        d.reject.apply(d, arguments);
+      });
+    });
+
+    if (counter === 0) {
+      d.resolve(results);
+    }
+
+    return d.promise;
+  }
+
+
+  function jqueryHttpWrapper(ajax) {
+    return function(method, url, headers, data, opts) {
+      // set up the options
+      opts = extend({
+        url: url,
+        type: method,
+        dataType: 'json',
+        data: data
+      }, opts);
+      opts.headers = extend({}, headers, opts.headers);
+
+      // make the call
+      var jqXHR = ajax(opts);
+
+      // process the response
+      var d = deferredWrapper();
+      var returnedPromise = d.promise;
+      var responseData = null;
+      var statusCode = null;
+      jqXHR.then(function(data, textStatus, jqXHR) {
+          responseData = data;
+          statusCode = jqXHR.status;
+          d.resolve(data, textStatus, jqXHR);
+        },
+        function(jqXHR, textStatus, errorThrown) {
+          statusCode = jqXHR.status;
+          responseData = jqXHR.responseText;
+          console.log('jqueryHttpWrapper failure',jqXHR.status, jqXHR.getResponseHeader('Retry-After'), jqXHR.getAllResponseHeaders());
+          d.reject(jqXHR, textStatus, errorThrown);
+        });
+
+      // add http-specific functions to the returned promise
+      wrapFunctions(returnedPromise, jqXHR, ['getResponseHeader', 'getAllResponseHeaders']);
+      returnedPromise.getData = function() {
+        return responseData;
+      };
+      returnedPromise.getStatusCode = function() {
+        return statusCode;
+      };
+      return returnedPromise;
+    };
+  }
+
+  function jqueryDeferredWrapper(deferred) {
+    return function() {
+      var d = deferred();
+      return {
+        promise: d.promise(),
+        resolve: d.resolve,
+        reject: d.reject
+      };
+    };
+  }
+
+//  function qDeferredWrapper(deferred) {
+//    return function() {
+//      var d = deferred();
+//      return {
+//        promise: d.promise,
+//        resolve: d.resolve,
+//        reject: d.reject
+//      };
+//    };
+//  }
 
   /**
    * Open a popup window for user to authenticate and authorize this app
@@ -175,14 +657,14 @@
   function openPopup(url, params) {
     // figure out where the center is
     var
-      screenX    	= typeof window.screenX != 'undefined' ? window.screenX : window.screenLeft,
-      screenY    	= typeof window.screenY != 'undefined' ? window.screenY : window.screenTop,
-      outerWidth 	= typeof window.outerWidth != 'undefined' ? window.outerWidth : document.documentElement.clientWidth,
-      outerHeight = typeof window.outerHeight != 'undefined' ? window.outerHeight : (document.documentElement.clientHeight - 22),
-      width    		= params.width 	|| 780,
-      height   		= params.height || 500,
-      left     		= parseInt(screenX + ((outerWidth - width) / 2), 10),
-      top      		= parseInt(screenY + ((outerHeight - height) / 2.5), 10),
+      screenX     = isUndefined(window.screenX) ? window.screenLeft : window.screenX,
+      screenY     = isUndefined(window.screenY) ? window.screenTop : window.screenY,
+      outerWidth  = isUndefined(window.outerWidth) ? document.documentElement.clientWidth : window.outerWidth,
+      outerHeight = isUndefined(window.outerHeight) ? (document.documentElement.clientHeight - 22) : window.outerHeight,
+      width       = params.width|| 780,
+      height      = params.height || 500,
+      left        = parseInt(screenX + ((outerWidth - width) / 2), 10),
+      top         = parseInt(screenY + ((outerHeight - height) / 2.5), 10),
       features = (
         'width=' + width +
           ',height=' + height +
@@ -201,181 +683,43 @@
    */
   function pollForAuthCode(popup) {
     var d = deferredWrapper();
-    var i = setInterval(function() {
-      try {
-        if (popup.location.hostname === window.location.hostname) {
-          console.log(popup.location.href);
-          var params = decodeQueryString(popup.location.href);
-          if (params['code']) {
-            d.resolve(params['code']);
+    if (popup) {
+      var i = setInterval(function() {
+        try {
+          if (popup.location.hostname === window.location.hostname) {
+            var params = decodeQueryString(popup.location.href);
+            clearInterval(i);
+            popup.close();
+            if (params['code']) {
+              d.resolve(params['code']);
+            }
+            else {
+              d.reject(params['error']);
+            }
           }
-          else {
-            d.reject(params['error']);
-          }
-          clearInterval(i);
-          popup.close();
         }
-      }
-      catch(err) {}
-    }, pollDelay);
+        catch(err) {}
+      }, authCodePollDelay);
+    }
+    else {
+      d.reject('Popup blocked');
+    }
     return d.promise;
   }
 
   /**
-   * Open a popup window to allow the user to authenticate and authorize this application
-   *
-   * @returns a promise of the auth code
-   */
-  function getAuthCode() {
-    var popup = openPopup(getAbsoluteUrl(oauthServer[environment], 'authorization'), {
-      'response_type' : 'code',
-      'client_id'     : appKey,
-      'redirect_uri'  : authCallback
-    });
-    return pollForAuthCode(popup);
-  }
-
-  /**
-   * Get the access token for the user.
-   *
-   * Call this function before making any calls that require authentication.
-   * The SDK caches the access token returned so you can ignore it; you just need to ensure that the promise that is
-   * returned by this function resolves before making calls that require authentication
-   *
-   * @param {String} authCode optional auth code from getAuthCode; if not passed in, this function will call getAuthCode first
-   * @returns a promise of the access token.
-   */
-  function getAccessToken(authCode) {
-    // get auth code if not passed in
-    var authCodeDeferred;
-    if (authCode) {
-      authCodeDeferred = deferredWrapper();
-      authCodeDeferred.resolve(authCode);
-    }
-    else {
-      authCodeDeferred = getAuthCode();
-    }
-    var accessTokenDeferred = deferredWrapper();
-    authCodeDeferred.then(function(authCode) {
-      // get the access token given the auth code
-      accessToken = null; // clear the current access token if there is one
-      post(getAbsoluteUrl(oauthServer[environment], 'token'), {
-        'grant_type' : 'authorization_code',
-        'code'       : authCode,
-        'client_id'  : appKey
-      }).then(function(response) {
-        console.log('accessToken=',response);
-        accessToken = response['access_token'];
-        if (accessToken) {
-          accessTokenDeferred.resolve(accessToken);
-        }
-        else {
-          accessTokenDeferred.reject(response['error']);
-        }
-      }, function(error) {
-        accessTokenDeferred.reject(error);
-      });
-    }, function(error) {
-      accessTokenDeferred.reject(error);
-    });
-    return accessTokenDeferred.promise;
-  }
-
-  /**
-   * Invalidate the current access token
-   *
-   * @returns a promise that is resolved once the access token has been invalidated
-   */
-  function invalidateAccessToken() {
-    accessToken = null;
-    return del(getAbsoluteUrl(oauthServer[environment], 'token'));
-  }
-
-  /**
-   * Low-level call to get a specific REST endpoint from FamilySearch
-   *
-   * @param {String} url may be relative; e.g., /platform/users/current
-   * @param {Object} params optional query parameters
-   * @param {Object} opts optional options to pass to the http function specified during init
-   * @returns a promise, which is the promise returned by the http function specified during init
-   */
-  function get(url, params, opts) {
-    return http('GET', appendQueryParameters(url, params), {}, {}, opts);
-  }
-
-  /**
-   * Low-level call to post to a specific REST endpoint from FamilySearch
-   *
-   * @param {String} url may be relative
-   * @param {Object} data optional post data
-   * @param {Object} opts optional options to pass to the http function specified during init
-   * @returns a promise, which is the promise returned by the http function specified during init
-   */
-  function post(url, data, opts) {
-    return http('POST', url, {'Content-type': 'application/x-www-form-urlencoded'}, data, opts);
-  }
-
-  /**
-   * Low-level call to put to a specific REST endpoint from FamilySearch
-   *
-   * @param {String} url may be relative
-   * @param {Object} data optional post data
-   * @param {Object} opts optional options to pass to the http function specified during init
-   * @returns a promise, which is the promise returned by the http function specified during init
-   */
-  function put(url, data, opts) {
-    return http('PUT', url, {'Content-type': 'application/x-www-form-urlencoded'}, data, opts);
-  }
-
-  /**
-   * Low-level call to delete to a specific REST endpoint from FamilySearch
-   *
-   * @param {String} url may be relative
-   * @param {Object} opts optional options to pass to the http function specified during init
-   * @returns a promise, which is the promise returned by the http function specified during init
-   */
-  function del(url, opts) {
-    return http('DELETE', url, {}, {}, opts);
-  }
-
-  /**
-   * Low-level call to issue an http request to a specific REST endpoint from FamilySearch
-   *
-   * @param {String} method GET, POST, PUT, or DELETE
-   * @param {String} url may be relative
-   * @param {Object} headers optional headers object
-   * @param {Object} data optional post data
-   * @param {Object} opts optional options to pass to the http function specified during init
-   * @returns a promise, which is the promise returned by the http function specified during init
-   */
-  function http(method, url, headers, data, opts) {
-    // prepend the server
-    url = getAbsoluteUrl(server[environment], url);
-
-    // append the access token as a query parameter to avoid cors pre-flight
-    // this is detrimental to browser caching across sessions, which seems less bad than cors pre-flight requests
-    // TODO investigate this further
-    if (accessToken) {
-      url = appendQueryParameters(url, {'access_token': accessToken});
-    }
-
-    // add headers
-    headers = extend({
-      'Accept': 'application/x-gedcomx-v1+json'
-    }, headers);
-
-    // call the http wrapper
-    return httpWrapper(method, url, headers, data, opts);
-  }
-
-  /**
-   * Public API
+   * Public functions
    */
   window.FamilySearch = {
     init: init,
     getAuthCode: getAuthCode,
     getAccessToken: getAccessToken,
     invalidateAccessToken: invalidateAccessToken,
+    getCurrentUser: getCurrentUser,
+    getCurrentUserPerson: getCurrentUserPerson,
+    getPerson: getPerson,
+    getMultiPerson: getMultiPerson,
+    getAncestry: getAncestry,
     get: get,
     post: post,
     put: put,
