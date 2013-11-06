@@ -9,7 +9,7 @@ To use the SDK, you need to
           app_key: 'YOUR_ACCESS_KEY_GOES_HERE',
           environment: 'sandbox',
           // auth_callback is the URI you registered with FamilySearch;
-          // it does not need to exist but it must have the same host and port as the server for familysearch-javascript-sdk.js
+          // it does not need to exist but it must have the same host and port as the server running your script
           auth_callback: 'REDIRECT_GOES_HERE',
           http_function: jQuery.ajax,
           deferred_function: jQuery.Deferred,

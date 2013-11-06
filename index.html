@@ -4,6 +4,7 @@
 <head>
   <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
   <script src="familysearch-javascript-sdk.js"></script>
+  <script src="http://www.werelate.org/test.js"></script>
 </head>
 
 <body>
@@ -12,7 +13,6 @@
     // Initialize the SDK
     // ******************************************************************************************
     FamilySearch.init({
-      //app_key: 'KB2L-BVD1-3Q6S-J7X4-GKFZ-4168-QPZ6-NJRK', // production/staging
       app_key: 'WCQY-7J1Q-GKVV-7DNM-SQ5M-9Q5H-JX3H-CMJK', // Sandbox
       environment: 'sandbox',
       // auth_callback is the URI you registered with FamilySearch; it does not need to exist but it must have the same
@@ -20,7 +20,7 @@
       auth_callback: 'http://localhost:9000/#!/auth',
       http_function: jQuery.ajax,
       deferred_function: jQuery.Deferred,
-      auto_signin: true,
+      auto_signin: false,
       logging: true
     });
 
@@ -35,85 +35,74 @@
         // ******************************************************************************************
         // Load current user
         // ******************************************************************************************
-//        FamilySearch.getCurrentUser().then(function(response) {
-//          $("#loading").hide();
-//          $("#user_data").show();
-//          $("#user_name").text(response.users[0].contactName);
-//          $("#user_id").text(response.users[0].id);
-//          console.log('current user id', response.users[0].treeUserId);
-//        });
-//        var promise = FamilySearch.getCurrentUserPerson().then(function(id) {
-//          console.log('current user person',id);
-//          return FamilySearch.getAncestry(id, 8).then(function(data) {
-//            var ids = [];
-//            for (var i = 0, len=data.persons.length; i < len; i++) {
-//              ids.push(data.persons[i].id);
-//            }
-//            return FamilySearch.getMultiPerson(ids);
-//          });
-//        });
-//        promise.then(function(persons) {
-//          for (var id in persons) {
-//            console.log('multi-persons', id, persons[id]);
-//          }
-//        });
-        // use this to test throttling
-        var names = ['williams','johnson','black','miller','taylor'];
-        for (var n = 0; n < names.length; n++) {
-          var name = names[n];
-          FamilySearch.get('/platform/tree/search', {q: 'surname:'+name, count: 2000}, {Accept: 'application/x-gedcomx-atom+json'}).then(function(result) {
-            var searchResultCnt = 0;
-            for (var i = 0; i < result.entries.length; i++) {
-              var persons = result.entries[i].content.gedcomx.persons;
-              for (var j = 0; j < persons.length; j++) {
-                var id = persons[j].id;
-                searchResultCnt++;
-                var promise = FamilySearch.getAncestry(id, 8).then(function(data) {
-                  var ancs = [];
-                  for (var k = 0; k < data.persons.length; k++) {
-                    var anc = data.persons[k].id;
-                    FamilySearch.get('/platform/tree/persons/'+anc+'/matches', {}, {Accept: 'application/x-gedcomx-atom+json'}).then(function() {
-                      //console.log('.');
-                    });
-                    ancs.push(anc);
-                  }
-                  //console.log('REQUEST',ancs.length);
-                  return FamilySearch.getMultiPerson(ancs);
-                });
-                promise.then(function(persons) {
-                  var cnt = 0;
-                  for (var id in persons) {
-                    cnt++;
-//                console.log('multi-persons', id, persons[id]);
-                  }
-                  //console.log('FULFILLED');
-                });
-              }
+        FamilySearch.getCurrentUser().then(function(response) {
+          $("#loading").hide();
+          $("#user_data").show();
+          $("#user_name").text(response.users[0].contactName);
+          $("#user_id").text(response.users[0].id);
+          console.log('current user id', response.users[0].treeUserId);
+        });
+        var promise = FamilySearch.getCurrentUserPerson().then(function(id) {
+          console.log('current user person',id);
+          return FamilySearch.getAncestry(id, 8).then(function(data) {
+            var ids = [];
+            for (var i = 0, len=data.persons.length; i < len; i++) {
+              ids.push(data.persons[i].id);
             }
-            console.log('SEARCH RESULTS',searchResultCnt);
+            return FamilySearch.getMultiPerson(ids);
           });
-        }
-//        var ids = ['KW31-H9P','KWQ7-Y57','KW3B-NR5','KWQ7-Y57',"KW7S-VMM","KW7S-V4V","KW7S-V4J","KW7S-V4K","KWQ8-CTH","KWQ3-N36","KWQ9-T26","KWQ9-GXQ","KWQ8-6QQ","KW7S-VMM","KW7S-J11"];
-//        for (var i = 0; i < 100; i++) {
-//          for (var j = 0; j < ids.length; j++) {
-//            var id = ids[j];
-//            var promise = FamilySearch.getAncestry(id, 8).then(function(data) {
-//              var ancs = [];
-//              for (var k = 0; k < data.persons.length; k++) {
-//                ancs.push(data.persons[k].id);
-//              }
-//              console.log('REQUEST',ancs.length);
-//              return FamilySearch.getMultiPerson(ancs);
-//            });
-//            promise.then(function(persons) {
-//              var cnt = 0;
-//              for (var id in persons) {
-//                cnt++;
+        });
+        promise.then(function(persons) {
+          for (var id in persons) {
+            var person = persons[id];
+            console.log('multi-persons', id, person, person.getId(), person.getName(), person.getGivenName(), person.getSurname());
+          }
+        });
+//        var numRequests = 0;
+//        var startTime = Math.round(new Date().getTime() / 1000);
+//        FamilySearch.setTotalProcessingTime(0);
+//        setInterval(function() {
+//          var endTime = Math.round(new Date().getTime() / 1000);
+//          console.log('requsts + time', numRequests, FamilySearch.getTotalProcessingTime(), endTime - startTime);
+//        }, 1000);
+//        var names = ['smith', 'brown', 'jones','anderson','johnson','williams','lee', 'canon'];
+//        for (var n = 0; n < names.length; n++) {
+//          var name = names[n];
+//          numRequests++;
+//          FamilySearch.get('/platform/tree/search', {q: 'surname:'+name, count: 2000}, {Accept: 'application/x-gedcomx-atom+json'}).then(function(result) {
+//            var searchResultCnt = 0;
+//            for (var i = 0; i < result.entries.length; i++) {
+//              var persons = result.entries[i].content.gedcomx.persons;
+//              for (var j = 0; j < persons.length; j++) {
+//                var id = persons[j].id;
+//                searchResultCnt++;
+//                numRequests++;
+//                var promise = FamilySearch.getAncestry(id, 8).then(function(data) {
+//                  var ancs = [];
+//                  for (var k = 0; k < data.persons.length; k++) {
+//                    var anc = data.persons[k].id;
+//                    numRequests++;
+//                    FamilySearch.get('/platform/tree/persons/'+anc+'/matches', {}, {Accept: 'application/x-gedcomx-atom+json'}).then(function() {
+//                      //console.log('.');
+//                    });
+//                    ancs.push(anc);
+//                  }
+//                  //console.log('REQUEST',ancs.length);
+//                  numRequests += ancs.length;
+//                  return FamilySearch.getMultiPerson(ancs);
+//                });
+//                promise.then(function(persons) {
+//                  var cnt = 0;
+//                  for (var id in persons) {
+//                    cnt++;
 ////                console.log('multi-persons', id, persons[id]);
+//                  }
+//                  //console.log('FULFILLED');
+//                });
 //              }
-//              console.log('FULFILLED',cnt);
-//            });
-//          }
+//            }
+//            console.log('SEARCH RESULTS',searchResultCnt);
+//          });
 //        }
       });
     }
