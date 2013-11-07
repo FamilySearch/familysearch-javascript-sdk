@@ -34,6 +34,8 @@ Promises
 Most functions return promises.  The returned promises are roughly identical to the promises returned by the
 `http_function` you passed into the `FamilySearch.init` call.
 
+// TODO explain the difference between promises returned by API and plumbing functions
+
 **jQuery**
 
 Requires jQuery 1.8 or later.
