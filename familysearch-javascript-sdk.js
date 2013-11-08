@@ -48,7 +48,7 @@
    * @ngdoc overview
    * @name init
    * @description
-   * Call the init function once to initialize the FamilySearch object
+   * Call the init function once to initialize the FamilySearch object before calling any other functions.
    */
 
   /**
@@ -70,7 +70,7 @@
    * - `access_token` - pass this in if you already have an access token
    * - `logging` - not currently used
    *
-   * @param {Object} opts options (see description)
+   * @param {Object} opts options
    */
   function init(opts) {
     opts = opts || {};
@@ -116,20 +116,27 @@
 
   /**
    * @ngdoc overview
-   * @name auth
+   * @name authentication
    * @description
-   * These are the authentication functions
+   * These are the authentication functions. `getAccessToken` is the main function.
+   * If you do not pass in an authorization code to `getAccessToken`, it will call the `getAuthCode` function to get one.
+   *
+   * {@link https://familysearch.org/developers/docs/api/resources#authentication FamilySearch API docs}
    */
 
   /**
    * @ngdoc function
-   * @name auth.functions:getAuthCode
+   * @name authentication.functions:getAuthCode
    * @function
    *
    * @description
-   * Open a popup window to allow the user to authenticate and authorize this application
+   * Open a popup window to allow the user to authenticate and authorize this application.
+   * You do not have to call this function. If you call `getAccessToken` without passing in an authorization code,
+   * that function will call this function to get one.
    *
-   * @return {Object} a promise of the auth code
+   * @link https://familysearch.org/developers/docs/api/authentication/Authorization_resource FamilySearch API docs}
+   *
+   * @return {Object} a promise of the (string) auth code
    */
   function getAuthCode() {
     var popup = openPopup(getAbsoluteUrl(oauthServer[environment], 'authorization'), {
@@ -142,18 +149,22 @@
 
   /**
    * @ngdoc function
-   * @name auth.functions:getAccessToken
+   * @name authentication.functions:getAccessToken
    * @function
    *
    * @description
    * Get the access token for the user.
+   * Call this function before making any requests that require authentication.
    *
-   * Call this function before making any calls that require authentication.
-   * The SDK caches the access token returned so you don't need to; you just need to ensure that the promise that is
-   * returned by this function resolves before making calls that require authentication
+   * You don't need to store the access token returned by this function; you just need to ensure that the promise
+   * returned by this function resolves before making calls that require authentication.
    *
-   * @param {String=} authCode optional auth code from getAuthCode; if not passed in, this function will call getAuthCode first
-   * @return {Object} a promise of the access token.
+   * {@link https://familysearch.org/developers/docs/api/authentication/Access_Token_resource FamilySearch API docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/MpUg7/ editable example}
+   *
+   * @param {String=} authCode auth code from getAuthCode; if not passed in, this function will call getAuthCode
+   * @return {Object} a promise of the (string) access token.
    */
   function getAccessToken(authCode) {
     var accessTokenDeferred = deferredWrapper();
@@ -204,7 +215,7 @@
 
   /**
    * @ngdoc function
-   * @name auth.functions:invalidateAccessToken
+   * @name authentication.functions:invalidateAccessToken
    * @function
    *
    * @description
@@ -223,24 +234,30 @@
 
   /**
    * @ngdoc overview
-   * @name api
+   * @name user
    * @description
-   * These are the api functions
+   * Functions related to users
+   *
+   * {@link https://familysearch.org/developers/docs/api/resources#user FamilySearch API Docs}
    */
 
   /**
    * @ngdoc function
-   * @name api.functions:getCurrentUser
+   * @name user.functions:getCurrentUser
    * @function
    *
    * @description
-   * Get the current user
+   * Get the current user with the following convenience functions
    *
-   * {@link https://familysearch.org/developers/docs/api/tree/Read_Current_User_usecase?ru=users/Current_User_resource&rt=Current%20User FamilySearch API}
+   * - getContactName
+   * - getId
+   * - getTreeUserId
    *
-   * {@link http://jsfiddle.net/DallanQ/3NJFM/ example}
+   * {@link https://familysearch.org/developers/docs/api/users/Current_User_resource FamilySearch API Docs}
    *
-   * @param {Object=} opts optional options to pass to the http function specified during init
+   * {@link http://jsfiddle.net/DallanQ/3NJFM/ editable example}
+   *
+   * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} a promise for the current user
    */
   function getCurrentUser(opts) {
@@ -254,9 +271,19 @@
   };
 
   /**
-   * Get the id of the current user person
-   * @param {Object=} opts optional options to pass to the http function specified during init
-   * @return {Object} promise for the (string) Id of the current user person
+   * @ngdoc function
+   * @name user.functions:getCurrentUserPerson
+   * @function
+   *
+   * @description
+   * Get the id of the current user person in the tree
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Current_User_Person_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/c4puF/ editable example}
+   *
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the (string) id of the current user person
    */
   function getCurrentUserPerson(opts) {
     console.log('getCurrentUserPerson');
@@ -305,16 +332,41 @@
   }
 
   /**
+   * @ngdoc overview
+   * @name person
+   * @description
+   * Functions related to persons
+   *
+   * {@link https://familysearch.org/developers/docs/api/resources#person FamilySearch API Docs}
+   */
+
+  /**
    * @ngdoc function
-   * @name api.functions:getPerson
+   * @name person.functions:getPerson
    * @function
    *
    * @description
-   * Get the specified person
+   * Get the specified person with the following convenience functions
+   *
+   * - getId
+   * - getBirthDate
+   * - getBirthPlace
+   * - getDeathDate
+   * - getDeathPlace
+   * - getGender
+   * - getLifeSpan
+   * - getName
+   * - isLiving
+   * - getGivenName
+   * - getSurname
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/cST4L/ editable example}
    *
    * @param {String} id of the person to read
-   * @param {Object=} opts optional options to pass to the http function specified during init
-   * @return {Object} promise for the person {@link https://familysearch.org/developers/docs/api/tree/Read_Person_usecase?ru=tree/Person_resource&rt=Person example}
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the person
    */
   function getPerson(id, opts) {
     return get('/platform/tree/persons/'+encodeURI(id), {}, {}, opts, objectExtender(personConvenienceFunctions));
@@ -323,6 +375,8 @@
     getId:         function() { return this.persons[0].id; },
     getBirthDate:  function() { return this.persons[0].display.birthDate; },
     getBirthPlace: function() { return this.persons[0].display.birthPlace; },
+    getDeathDate:  function() { return this.persons[0].display.deathDate; },
+    getDeathPlace: function() { return this.persons[0].display.deathPlace; },
     getGender:     function() { return this.persons[0].display.gender; },
     getLifeSpan:   function() { return this.persons[0].display.lifespan; },
     getName:       function() { return this.persons[0].display.name; },
@@ -335,14 +389,18 @@
 
   /**
    * @ngdoc function
-   * @name api.functions:getMultiPerson
+   * @name person.functions:getMultiPerson
    * @function
    *
    * @description
-   * Get an array of people
+   * Get multiple people at once by requesting them in parallel
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/TF6Lg/ editable example}
    *
    * @param {Array} ids of the people to read
-   * @param {Object=} opts optional options to pass to the http function specified during init
+   * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the people have been read, returning a map of person id to response
    */
   function getMultiPerson(ids, opts) {
@@ -354,18 +412,40 @@
   }
 
   /**
+   * @ngdoc overview
+   * @name pedigree
+   * @description
+   * Get someone's ancestry or descendancy
+   *
+   * {@link https://familysearch.org/developers/docs/api/resources#pedigree FamilySearch API Docs}
+   */
+
+  /**
    * @ngdoc function
-   * @name api.functions:getAncestry
+   * @name pedigree.functions:getAncestry
    * @function
    *
    * @description
-   * Get the ancestors of a specified person and optionally a specified spouse
+   * Get the ancestors of a specified person and optionally a specified spouse with the following convenience functions
+   *
+   * - exists(ascendancyNumber) *ascendancyNumber* is the {@link http://en.wikipedia.org/wiki/Ahnentafel Ahnentafel number} of the person in the tree
+   * - getId(ascendancyNumber)
+   * - getGender(ascendancyNumber)
+   * - getLifeSpan(ascendancyNumber)
+   * - getName(ascendancyNumber)
+   * - isLiving(ascendancyNumber)
+   * - getGivenName(ascendancyNumber)
+   * - getSurname(ascendancyNumber)
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Ancestry_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/gt726/ editable example}
    *
    * @param {String} id of the person
    * @param {Number} generations number of generations to retrieve (max 8)
-   * @param {String=} spouseId optional spouse id
-   * @param {Object=} opts optional options to pass to the http function specified during init
-   * @return {Object} promise for the ancestry {@link https://familysearch.org/developers/docs/api/tree/Read_Person_Ancestry_usecase?ru=tree/Ancestry_resource&rt=Ancestry example}
+   * @param {String=} spouseId spouse id
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the ancestry
    */
   function getAncestry(id, generations, spouseId, opts) {
     return get('/platform/tree/ancestry', removeEmptyProperties({
@@ -393,14 +473,6 @@
     };
   }
 
-  function getTotalProcessingTime() {
-    return totalProcessingTime;
-  }
-
-  function setTotalProcessingTime(time) {
-    totalProcessingTime = time;
-  }
-
   //==================================================================================================================
   // PLUMBING
   //==================================================================================================================
@@ -409,8 +481,35 @@
    * @ngdoc overview
    * @name plumbing
    * @description
-   * These are the plumbing functions
+   * These are the low-level "plumbing" functions. You don't normally need to use these functions.
    */
+
+  /**
+   * @ngdoc function
+   * @name plumbing.functions:getTotalProcessingTime
+   * @function
+   * @description
+   * Return the total "processing time" spent in FamilySearch REST endpoints
+   *
+   * @return {Number} time in milliseconds
+   */
+  function getTotalProcessingTime() {
+    return totalProcessingTime;
+  }
+
+  /**
+   * @ngdoc function
+   * @name plumbing.functions:setTotalProcessingTime
+   * @function
+   * @description
+   * Set the "processing time" spent in FamilySearch REST endpoints.
+   * You could use this to reset the processing time counter to zero if you wanted.
+   *
+   * @param {Number} time in milliseconds
+   */
+  function setTotalProcessingTime(time) {
+    totalProcessingTime = time;
+  }
 
   /**
    * @ngdoc function
@@ -421,10 +520,10 @@
    * Low-level call to get a specific REST endpoint from FamilySearch
    *
    * @param {String} url may be relative; e.g., /platform/users/current
-   * @param {Object=} params optional query parameters
+   * @param {Object=} params query parameters
    * @param {Object=} headers options headers
-   * @param {Object=} opts optional options to pass to the http function specified during init
-   * @param {Function=} responseDataExtender optional function to extend response data
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @param {Function=} responseDataExtender function to extend response data
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   function get(url, params, headers, opts, responseDataExtender) {
@@ -440,10 +539,10 @@
    * Low-level call to post to a specific REST endpoint from FamilySearch
    *
    * @param {String} url may be relative
-   * @param {Object=} data optional post data
+   * @param {Object=} data post data
    * @param {Object=} headers options headers
-   * @param {Object=} opts optional options to pass to the http function specified during init
-   * @param {Function=} responseDataExtender optional function to extend response data
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @param {Function=} responseDataExtender function to extend response data
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   function post(url, data, headers, opts, responseDataExtender) {
@@ -459,10 +558,10 @@
    * Low-level call to put to a specific REST endpoint from FamilySearch
    *
    * @param {String} url may be relative
-   * @param {Object=} data optional post data
+   * @param {Object=} data post data
    * @param {Object=} headers options headers
-   * @param {Object=} opts optional options to pass to the http function specified during init
-   * @param {Function=} responseDataExtender optional function to extend response data
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @param {Function=} responseDataExtender function to extend response data
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   function put(url, data, headers, opts, responseDataExtender) {
@@ -478,9 +577,9 @@
    * Low-level call to delete to a specific REST endpoint from FamilySearch
    *
    * @param {String} url may be relative
-   * @param {Object=} opts optional options to pass to the http function specified during init
+   * @param {Object=} opts options to pass to the http function specified during init
    * @param {Object=} headers options headers
-   * @param {Function=} responseDataExtender optional function to extend response data
+   * @param {Function=} responseDataExtender function to extend response data
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   function del(url, headers, opts, responseDataExtender) {
@@ -497,11 +596,11 @@
    *
    * @param {String} method GET, POST, PUT, or DELETE
    * @param {String} url may be relative
-   * @param {Object=} headers optional headers object
-   * @param {Object=} data optional post data
-   * @param {Object=} opts optional options to pass to the http function specified during init
-   * @param {Function=} responseDataExtender optional function to extend response data
-   * @param {Number=} retries optional number of times to retry
+   * @param {Object=} headers headers object
+   * @param {Object=} data post data
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @param {Function=} responseDataExtender function to extend response data
+   * @param {Number=} retries number of times to retry
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   function http(method, url, headers, data, opts, responseDataExtender, retries) {
