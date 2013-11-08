@@ -6,6 +6,13 @@
 /*jshint sub:true*/
 /*global console:false */
 
+/**
+ * @ngdoc overview
+ * @name index
+ * @description
+ * Overall description goes here
+ */
+
 ;(function() {
   'use strict';
 
@@ -33,34 +40,35 @@
     totalProcessingTime = 0;
 
 
-  //===========================================================================
-  // API
-  //===========================================================================
+  //==================================================================================================================
+  // INITIALIZATION
+  //==================================================================================================================
 
   /**
    * @ngdoc overview
-   * @name api
+   * @name init
    * @description
-   * These are the api functions
+   * Call the init function once to initialize the FamilySearch object
    */
 
   /**
    * @ngdoc function
-   * @name api.functions:init
+   * @name init.functions:init
    * @function
    *
    * @description
    * Initialize the FamilySearch object
    *
-   * Options
-   * * app_key -- the developer key you received from FamilySearch
-   * * environment -- sandbox, staging, or production
-   * * http_function -- a function for issuing http requests: jQuery.ajax, and eventually angular's $http, or node.js's ...
-   * * deferred_function -- a function for creating deferred's: jQuery.Deferred, and eventually angular's $q or Q
-   * * auth_callback -- the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist, but must have the same host and port as the server running your script
-   * * auto_signin -- set to true if you want the user to be prompted to sign in when a call returns 401 unauthorized (must be false for node.js, and may require the user to enable popups in their browser)
-   * * access_token -- pass this in if you already have an access token
-   * * logging -- not currently used
+   * **Options**
+   *
+   * - `app_key` - the developer key you received from FamilySearch
+   * - `environment` - sandbox, staging, or production
+   * - `http_function` - a function for issuing http requests: jQuery.ajax, and eventually angular's $http, or node.js's ...
+   * - `deferred_function` - a function for creating deferred's: jQuery.Deferred, and eventually angular's $q or Q
+   * - `auth_callback` - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist, but must have the same host and port as the server running your script
+   * - `auto_signin` - set to true if you want the user to be prompted to sign in when a call returns 401 unauthorized (must be false for node.js, and may require the user to enable popups in their browser)
+   * - `access_token` - pass this in if you already have an access token
+   * - `logging` - not currently used
    *
    * @param {Object} opts options (see description)
    */
@@ -102,9 +110,20 @@
     logging = opts['logging'];
   }
 
+  //==================================================================================================================
+  // AUTHENTICATION
+  //==================================================================================================================
+
+  /**
+   * @ngdoc overview
+   * @name auth
+   * @description
+   * These are the authentication functions
+   */
+
   /**
    * @ngdoc function
-   * @name api.functions:getAuthCode
+   * @name auth.functions:getAuthCode
    * @function
    *
    * @description
@@ -123,7 +142,7 @@
 
   /**
    * @ngdoc function
-   * @name api.functions:getAccessToken
+   * @name auth.functions:getAccessToken
    * @function
    *
    * @description
@@ -184,6 +203,11 @@
   }
 
   /**
+   * @ngdoc function
+   * @name auth.functions:invalidateAccessToken
+   * @function
+   *
+   * @description
    * Invalidate the current access token
    *
    * @return {Object} promise that is resolved once the access token has been invalidated
@@ -192,6 +216,17 @@
     accessToken = null;
     return del(getAbsoluteUrl(oauthServer[environment], 'token'));
   }
+
+  //==================================================================================================================
+  // API
+  //==================================================================================================================
+
+  /**
+   * @ngdoc overview
+   * @name api
+   * @description
+   * These are the api functions
+   */
 
   /**
    * @ngdoc function
@@ -366,9 +401,10 @@
     totalProcessingTime = time;
   }
 
-  //===========================================================================
+  //==================================================================================================================
   // PLUMBING
-  //===========================================================================
+  //==================================================================================================================
+
   /**
    * @ngdoc overview
    * @name plumbing
@@ -542,9 +578,9 @@
     return returnedPromise;
   }
 
-  //===========================================================================
+  //==================================================================================================================
   // HELPER FUNCTIONS
-  //===========================================================================
+  //==================================================================================================================
 
   // borrowed from underscore.js
   function isArray(value) {
@@ -834,9 +870,9 @@
     return d.promise;
   }
 
-  //===========================================================================
+  //==================================================================================================================
   // jQuery, Angular, and Node.js wrappers
-  //===========================================================================
+  //==================================================================================================================
 
   function jqueryHttpWrapper(ajax) {
     return function(method, url, headers, data, opts) {
@@ -903,9 +939,10 @@
 //    };
 //  }
 
-  /**
-   * Public functions
-   */
+  //==================================================================================================================
+  // Exported functions
+  //==================================================================================================================
+
   window.FamilySearch = {
     init: init,
     getAuthCode: getAuthCode,
