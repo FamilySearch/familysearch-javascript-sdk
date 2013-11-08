@@ -1,0 +1,24 @@
+<h1><code ng:non-bindable="">init</code>
+<span class="hint">(functions in module <code ng:non-bindable="">api</code>
+)</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>Initialize the FamilySearch object</p>
+
+<p>Options
+* app<em>key -- the developer key you received from FamilySearch
+* environment -- sandbox, staging, or production
+* http</em>function -- a function for issuing http requests: jQuery.ajax, and eventually angular's $http, or node.js's ...
+* deferred<em>function -- a function for creating deferred's: jQuery.Deferred, and eventually angular's $q or Q
+* auth</em>callback -- the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist, but must have the same host and port as the server running your script
+* auto<em>signin -- set to true if you want the user to be prompted to sign in when a call returns 401 unauthorized (must be false for node.js, and may require the user to enable popups in their browser)
+* access</em>token -- pass this in if you already have an access token
+* logging -- not currently used</p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">init(opts);</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code ng:non-bindable="">opts – {Object} – </code>
+<p>options (see description)</p></li>
+</ul>
+</div>
+</div>

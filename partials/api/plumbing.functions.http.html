@@ -1,0 +1,29 @@
+<h1><code ng:non-bindable="">http</code>
+<span class="hint">(functions in module <code ng:non-bindable="">plumbing</code>
+)</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>Low-level call to issue an http request to a specific REST endpoint from FamilySearch</p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">http(method, url[, headers][, data][, opts][, responseDataExtender][, retries]);</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code ng:non-bindable="">method – {String} – </code>
+<p>GET, POST, PUT, or DELETE</p></li>
+<li><code ng:non-bindable="">url – {String} – </code>
+<p>may be relative</p></li>
+<li><code ng:non-bindable="">headers<i>(optional)</i> – {Object=} – </code>
+<p>optional headers object</p></li>
+<li><code ng:non-bindable="">data<i>(optional)</i> – {Object=} – </code>
+<p>optional post data</p></li>
+<li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
+<p>optional options to pass to the http function specified during init</p></li>
+<li><code ng:non-bindable="">responseDataExtender<i>(optional)</i> – {Function=} – </code>
+<p>optional function to extend response data</p></li>
+<li><code ng:non-bindable="">retries<i>(optional)</i> – {Number=} – </code>
+<p>optional number of times to retry</p></li>
+</ul>
+<h3 id="Returns">Returns</h3>
+<div class="returns"><code ng:non-bindable="">{Object}</code>
+– <p>a promise that behaves like promises returned by the http function specified during init</p></div>
+</div>
+</div>
