@@ -1,0 +1,21 @@
+<h1><code ng:non-bindable="">getAccessToken</code>
+<span class="hint">(functions in module <code ng:non-bindable="">auth</code>
+)</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>Get the access token for the user.</p>
+
+<p>Call this function before making any calls that require authentication.
+The SDK caches the access token returned so you don't need to; you just need to ensure that the promise that is
+returned by this function resolves before making calls that require authentication</p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getAccessToken([authCode]);</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code ng:non-bindable="">authCode<i>(optional)</i> – {String=} – </code>
+<p>optional auth code from getAuthCode; if not passed in, this function will call getAuthCode first</p></li>
+</ul>
+<h3 id="Returns">Returns</h3>
+<div class="returns"><code ng:non-bindable="">{Object}</code>
+– <p>a promise of the access token.</p></div>
+</div>
+</div>

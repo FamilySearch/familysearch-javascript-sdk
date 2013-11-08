@@ -5,6 +5,13 @@ NG_DOCS={
   "pages": [
     {
       "section": "api",
+      "id": "index",
+      "shortName": "index",
+      "type": "overview",
+      "keywords": "api description goes here index overall overview"
+    },
+    {
+      "section": "api",
       "id": "api",
       "shortName": "api",
       "type": "overview",
@@ -12,24 +19,10 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "api.functions:getAccessToken",
-      "shortName": "getAccessToken",
-      "type": "function",
-      "keywords": "access any api auth authcode authentication before by caches call calls code don ensure first for from function functions get getauthcode if in is just making need not of optional passed promise require resolves returned sdk so that the this to token user will you"
-    },
-    {
-      "section": "api",
       "id": "api.functions:getAncestry",
       "shortName": "getAncestry",
       "type": "function",
       "keywords": "ancestors ancestry and api during example for function functions generations get http https id init number of optional optionally options opts org pass person promise retrieve specified spouse spouseid the to"
-    },
-    {
-      "section": "api",
-      "id": "api.functions:getAuthCode",
-      "shortName": "getAuthCode",
-      "type": "function",
-      "keywords": "allow and api application auth authenticate authorize code function functions of open popup promise the this to user window"
     },
     {
       "section": "api",
@@ -54,10 +47,45 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "api.functions:init",
+      "id": "auth",
+      "shortName": "auth",
+      "type": "overview",
+      "keywords": "api are auth authentication functions overview the these"
+    },
+    {
+      "section": "api",
+      "id": "auth.functions:getAccessToken",
+      "shortName": "getAccessToken",
+      "type": "function",
+      "keywords": "access any api auth authcode authentication before by caches call calls code don ensure first for from function functions get getauthcode if in is just making need not of optional passed promise require resolves returned sdk so that the this to token user will you"
+    },
+    {
+      "section": "api",
+      "id": "auth.functions:getAuthCode",
+      "shortName": "getAuthCode",
+      "type": "function",
+      "keywords": "allow and api application auth authenticate authorize code function functions of open popup promise the this to user window"
+    },
+    {
+      "section": "api",
+      "id": "auth.functions:invalidateAccessToken",
+      "shortName": "invalidateAccessToken",
+      "type": "function",
+      "keywords": "access api auth been current function functions has invalidate invalidated is once promise resolved that the token"
+    },
+    {
+      "section": "api",
+      "id": "init",
+      "shortName": "init",
+      "type": "overview",
+      "keywords": "api call familysearch function init initialize object once overview the to"
+    },
+    {
+      "section": "api",
+      "id": "init.functions:init",
       "shortName": "init",
       "type": "function",
-      "keywords": "$http $q access access_token ajax already an and angular api app_key as auth_callback auto_signin be browser but call creating currently deferred deferred_function description developer does enable environment eventually exist false familysearch for from function functions have host http http_function if in initialize issuing jquery js key logging may must need node not oauth2 object options opts or pass popups port production prompted received redirect registered requests require returns running same sandbox script server set sign staging the their this to token true unauthorized uri used user want when with you your"
+      "keywords": "$http $q access access_token ajax already an and angular api app_key as auth_callback auto_signin be browser but call creating currently deferred deferred_function description developer does enable environment eventually exist false familysearch for from function functions have host http http_function if in init initialize issuing jquery js key logging may must need node not oauth2 object options opts or pass popups port production prompted received redirect registered requests require returns running same sandbox script server set sign staging the their this to token true unauthorized uri used user want when with you your"
     },
     {
       "section": "api",
