@@ -10,7 +10,112 @@
  * @ngdoc overview
  * @name index
  * @description
- * Overall description goes here
+ *
+ * ##Getting started
+ *
+ * To use the SDK, you need to
+ *
+ * 1. init the SDK; e.g.,
+ *
+ * <pre>
+ * FamilySearch.init({
+ *   app_key: 'YOUR_ACCESS_KEY_GOES_HERE',
+ *   environment: 'sandbox',
+ *   // auth_callback is the URI you registered with FamilySearch;
+ *   // the page does not need to exist but it must have the same host and port
+ *   // as the server running your script
+ *   auth_callback: 'REDIRECT_GOES_HERE',
+ *   http_function: jQuery.ajax,
+ *   deferred_function: jQuery.Deferred
+ * });
+ * </pre>
+ *
+ * 2. get an access token; e.g.,
+ *
+ * <pre>
+ * FamilySearch.getAccessToken().then(function(response) {
+ *    // now you have an access token
+ * });
+ * </pre>
+ *
+ * 3. make API calls; e.g.,
+ *
+ * <pre>
+ * FamilySearch.getCurrentUser().then(function(response) {
+ *    // now you have the response
+ * });
+ * </pre>
+ *
+ * ##Promises
+ *
+ * Most functions return promises.  The returned promises are roughly identical to the promises returned by the
+ * `http_function` you passed into the `FamilySearch.init` call, with the following differences:
+ *
+ * **NOTE: In the near future, the description below will hold for promises returned from plumbing functions, but
+ * promises returned from API functions will be fulfilled with a data parameter only**
+ *
+ * **jQuery**
+ *
+ * Requires jQuery 1.8 or later.
+ *
+ * If you pass `jQuery.ajax` and `jQuery.Deferred` into the `FamilySearch.init` call, the returned promises
+ * will have the following methods, described in detail at http://api.jquery.com/jQuery.ajax/
+ *
+ * - done(function(data, textStatus, jqXHR) {})
+ * - fail(function(jqXHR, textStatus, errorThrown) {})
+ * - always(function(data|jqXHR, textStatus, jqXHR|errorThrown) {})
+ * - then(function(data, textStatus, jqXHR) {}, function(jqXHR, textStatus, errorThrown) {})
+ * - getResponseHeader(header)
+ * - getAllResponseHeaders()
+ *
+ * In addition, the following function is available when the promise is fulfilled
+ *
+ * - getData()
+ *
+ * And the following function is available when the promise is fulfilled or rejected
+ *
+ * - getStatusCode()
+ *
+ * The following functions and properties are not available on the promise returned, but are available on the jqXHR
+ * parameter of the done, fail, always, and then methods
+ *
+ * - abort()
+ * - statusCode()
+ * - responseText
+ * - responseXML
+ * - readyState
+ * - status
+ * - statusText
+ *
+ * **AngularJS -- not yet implemented**
+ *
+ * If you pass `$http` and `$q.defer` into the `FamilySearch.init` call, the returned promises
+ * will have the following methods, described in detail at http://docs.angularjs.org/api/ng.$http
+ *
+ * - success(function(data, status, headers, config) {})
+ * - error(function(data, status, headers, config) {})
+ * - then(function({data: data, status: status, headers: headers, config: config}) {}, function({data: data, status: status, headers: headers, config: config}) {})
+ * - finally(function(data, status, headers, config) {}) // TODO is this right?
+ *
+ * In addition, the following function is available when the promise is fulfilled
+ *
+ * - getData()
+ *
+ * And the following functions are available when the promise is fulfilled or rejected
+ *
+ * - getResponseHeader(header)
+ * - getAllResponseHeaders()
+ * - getStatusCode()
+ *
+ * **Node.js -- not yet implemented**
+ *
+ * ##Plumbing
+ *
+ * The functions in the "plumbing" module are low-level functions that you would not normally call.
+ * The higher-level functions that you normally call are built on top of the plumbing functions.
+ * The plumbing functions are exposed in case you want to do something not anticipated by the higher-level functions.
+ * The plumbing functions here serve the same purpose as the
+ * [plumbing functions in git](https://www.kernel.org/pub/software/scm/git/docs/#_low_level_commands_plumbing).
  */
 
 ;(function() {
@@ -35,7 +140,7 @@
       'production': 'https://ident.familysearch.org/cis-web/oauth2/v3'
     },
     authCodePollDelay = 50,
-    throttleRetryAfter = 500,
+    defaultThrottleRetryAfter = 500,
     maxHttpRequestRetries = 5,
     totalProcessingTime = 0;
 
@@ -652,7 +757,7 @@
               retryAfter = parseInt(retryAfterHeader,10);
             }
             else {
-              retryAfter = throttleRetryAfter;
+              retryAfter = defaultThrottleRetryAfter;
             }
           }
           getAccessToken().then(
