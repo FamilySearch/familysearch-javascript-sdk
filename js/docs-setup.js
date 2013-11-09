@@ -89,6 +89,13 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "person.functions:getPersonWithRelationships",
+      "shortName": "getPersonWithRelationships",
+      "type": "function",
+      "keywords": "and api array as by children components convenience default docs during each editable example familysearch following for full function functions get getbirthdate getbirthplace getchildids getdeathdate getdeathplace getfatherids getgender getgivenname getlifespan getmotherids getname getparentsids getperson getprimaryid getspouseids getsurname http https id ids if include information init is isliving json motherid net object objects of only options opts org other parameter parent parents pass person persons promise raw read relationships relative relatives requested returns set specified spouse spouseid spouses the their to want well with work you"
+    },
+    {
+      "section": "api",
       "id": "plumbing",
       "shortName": "plumbing",
       "type": "overview",

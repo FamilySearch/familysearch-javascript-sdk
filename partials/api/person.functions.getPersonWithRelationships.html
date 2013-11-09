@@ -1,0 +1,51 @@
+<h1><code ng:non-bindable="">getPersonWithRelationships</code>
+<span class="hint">(functions in module <code ng:non-bindable="">person</code>
+)</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>Get a person and their children, spouses, and parents with the following convenience functions</p>
+
+<ul>
+<li>getPrimaryId() - id of the person requested</li>
+<li>getFatherIds() - array of ids</li>
+<li>getMotherIds() - array of ids</li>
+<li>getParentsIds() - array of [fatherId, motherId]</li>
+<li>getSpouseIds() - array of ids</li>
+<li>getChildIds(spouseId) - array of ids; if spouseId is specified, returns only ids of children with spouse as the other parent</li>
+</ul>
+
+<p>The following functions work only for the person requested by default;
+if you want to include information for relatives as well, set the components parameter to ['persons']</p>
+
+<ul>
+<li>getPerson(id) - raw json object for the specified id</li>
+<li>getBirthDate(id)</li>
+<li>getBirthPlace(id)</li>
+<li>getDeathDate(id)</li>
+<li>getDeathPlace(id)</li>
+<li>getGender(id)</li>
+<li>getLifeSpan(id)</li>
+<li>getName(id)</li>
+<li>isLiving(id)</li>
+<li>getGivenName(id)</li>
+<li>getSurname(id)</li>
+</ul>
+
+<p><a href="https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource">FamilySearch API Docs</a></p>
+
+<p><a href="http://jsfiddle.net/DallanQ/5Npsh/">editable example</a></p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getPersonWithRelationships(id[, components][, opts]);</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<p>person to read</p></li>
+<li><code ng:non-bindable="">components<i>(optional)</i> – {Array=} – </code>
+<p>set to ['persons'] if you want to include full person objects for each relative</p></li>
+<li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
+<p>options to pass to the http function specified during init</p></li>
+</ul>
+<h3 id="Returns">Returns</h3>
+<div class="returns"><code ng:non-bindable="">{Object}</code>
+– <p>promise for the person with relationships</p></div>
+</div>
+</div>
