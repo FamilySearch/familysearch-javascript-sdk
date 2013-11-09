@@ -334,7 +334,7 @@
   }
 
   //==================================================================================================================
-  // API
+  // USER
   //==================================================================================================================
 
   /**
@@ -436,6 +436,10 @@
     }
   }
 
+  //==================================================================================================================
+  // PERSON
+  //==================================================================================================================
+
   /**
    * @ngdoc overview
    * @name person
@@ -515,6 +519,111 @@
     });
     return promiseAll(promises);
   }
+
+  /**
+   * @ngdoc function
+   * @name person.functions:getPersonWithRelationships
+   * @function
+   *
+   * @description
+   * Get a person and their children, spouses, and parents with the following convenience functions
+   *
+   * - getPrimaryId() - id of the person requested
+   * - getFatherIds() - array of ids
+   * - getMotherIds() - array of ids
+   * - getParentsIds() - array of [fatherId, motherId]
+   * - getSpouseIds() - array of ids
+   * - getChildIds(spouseId) - array of ids; if spouseId is specified, returns only ids of children with spouse as the other parent
+   *
+   * The following functions work only for the person requested by default;
+   * if you want to include information for relatives as well, set the components parameter to ['persons']
+   *
+   * - getPerson(id) - raw json object for the specified id
+   * - getBirthDate(id)
+   * - getBirthPlace(id)
+   * - getDeathDate(id)
+   * - getDeathPlace(id)
+   * - getGender(id)
+   * - getLifeSpan(id)
+   * - getName(id)
+   * - isLiving(id)
+   * - getGivenName(id)
+   * - getSurname(id)
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource FamilySearch API Docs}
+   *
+   * {@link  editable example}
+   *
+   * @param {String} id of the person to read
+   * @param {Array=} components to read; set to ['persons'] if you want to include full person objects for each relative
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the person
+   */
+  function getPersonWithRelationships(id, components, opts) {
+    var params = { person: id };
+    if (isArray(components) && components.indexOf('persons') >= 0) {
+      params['persons'] = 'true';
+    }
+    return get('/platform/tree/persons-with-relationships', params, {}, opts, objectExtender(personWithRelationshipsConvenienceFunctions));
+  }
+  // TODO extend personConvenienceFunctions
+  var personWithRelationshipsConvenienceFunctions = {
+    getPrimaryId:  function() { return findOrEmpty(this.persons, function(p) { return p.display.ascendancyNumber === '1';}).id; },
+    getFatherIds:  function() {
+      var primaryId = this.getPrimaryId();
+      return uniq(map(filter(this.childAndParentsRelationships,
+                             function(r) { return r.child.resourceId === primaryId && r.father; }),
+                      function(r) { return r.father.resourceId; }));
+    },
+    getMotherIds:  function() {
+      var primaryId = this.getPrimaryId();
+      return uniq(map(filter(this.childAndParentsRelationships,
+                             function(r) { return r.child.resourceId === primaryId && r.mother; }),
+                      function(r) { return r.mother.resourceId; }));
+    },
+    getParentsIds:  function() {
+      var primaryId = this.getPrimaryId();
+      return map(filter(this.childAndParentsRelationships,
+                        function(r) { return r.child.resourceId === primaryId && (r.father || r.mother); }),
+                 function(r) { return [ r.father ? r.father.resourceId : '', r.mother ? r.mother.resourceId : '']; });
+    },
+    getSpouseIds:  function() {
+      var primaryId = this.getPrimaryId();
+      return uniq(map(filter(this.relationships, function(r) {
+                               return r.type === 'http://gedcomx.org/Couple' &&
+                               (r.person1.resourceId === primaryId || r.person2.resourceId === primaryId);
+                             }),
+                      function(r) { return r.person1.resourceId === primaryId ? r.person2.resourceId : r.person1.resourceId; }));
+    },
+    getChildIds:   function(spouseId) {
+      var primaryId = this.getPrimaryId();
+      return uniq(map(filter(this.childAndParentsRelationships, function(r) {
+                               return childParentRelationshipHasParent(r, primaryId) &&
+                                      (!spouseId || childParentRelationshipHasParent(r, spouseId));
+                             }),
+                      function(r) { return r.child.resourceId; }));
+    },
+    getPerson:     function(id) { return findOrEmpty(this.persons, {id: id}); },
+    getBirthDate:  function(id) { return this.getPerson(id).display.birthDate; },
+    getBirthPlace: function(id) { return this.getPerson(id).display.birthPlace; },
+    getDeathDate:  function(id) { return this.getPerson(id).display.deathDate; },
+    getDeathPlace: function(id) { return this.getPerson(id).display.deathPlace; },
+    getGender:     function(id) { return this.getPerson(id).display.gender; },
+    getLifeSpan:   function(id) { return this.getPerson(id).display.lifespan; },
+    getName:       function(id) { return this.getPerson(id).display.name; },
+    isLiving:      function(id) { return this.getPerson(id).living; },
+    getGivenName:  function(id) { return findOrEmpty(firstOrEmpty(findOrEmpty(this.getPerson(id).names, {preferred: true}).nameForms).parts,
+                                                     {type: 'http://gedcomx.org/Given'}).value; },
+    getSurname:    function(id) { return findOrEmpty(firstOrEmpty(findOrEmpty(this.getPerson(id).names, {preferred: true}).nameForms).parts,
+                                                     {type: 'http://gedcomx.org/Surname'}).value; }
+  };
+  function childParentRelationshipHasParent(r, parentId) {
+    return (r.father && r.father.resourceId === parentId) || (r.mother && r.mother.resourceId === parentId);
+  }
+
+  //==================================================================================================================
+  // PEDIGREE
+  //==================================================================================================================
 
   /**
    * @ngdoc overview
@@ -803,9 +912,9 @@
     return typeof value == 'function' && Object.prototype.toString.call(value) == '[object Function]';
   }
 
+  // borrowed from underscore.js
   function isUndefined(value) {
-    //noinspection JSHint
-    return typeof value == 'undefined';
+    return value === void 0;
   }
 
   // borrowed from underscore.js
@@ -831,6 +940,39 @@
         }
       }
     }
+  }
+
+  // simplified version of underscore's filter
+  function filter(arr, fn) {
+    var result = [];
+    forEach(arr, function(e) {
+      if (fn(e)) {
+        result.push(e);
+      }
+    });
+    return result;
+  }
+
+  // simplified version of underscore's map
+  function map(arr, fn) {
+    var result = [];
+    forEach(arr, function(e) {
+      result.push(fn(e));
+    });
+    return result;
+  }
+
+  // return only unique elements of an array preserving order
+  function uniq(arr) {
+    var u = {}, result = [];
+    for (var i = 0, len = arr.length; i < len; i++) {
+      var e = arr[i];
+      if (!u.hasOwnProperty(e)) {
+        result.push(e);
+        u[e] = 1;
+      }
+    }
+    return result;
   }
 
   // simplified version of underscore's find
@@ -1156,6 +1298,7 @@
     getCurrentUserPerson: getCurrentUserPerson,
     getPerson: getPerson,
     getMultiPerson: getMultiPerson,
+    getPersonWithRelationships: getPersonWithRelationships,
     getAncestry: getAncestry,
     // plumbing
     get: get,
