@@ -554,10 +554,10 @@
    *
    * {@link http://jsfiddle.net/DallanQ/5Npsh/ editable example}
    *
-   * @param {String} id of the person to read
-   * @param {Array=} components to read; set to ['persons'] if you want to include full person objects for each relative
+   * @param {String} id person to read
+   * @param {Array=} components set to ['persons'] if you want to include full person objects for each relative
    * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the person
+   * @return {Object} promise for the person with relationships
    */
   function getPersonWithRelationships(id, components, opts) {
     var params = { person: id };
