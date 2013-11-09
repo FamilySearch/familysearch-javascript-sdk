@@ -552,7 +552,7 @@
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource FamilySearch API Docs}
    *
-   * {@link  editable example}
+   * {@link http://jsfiddle.net/DallanQ/5Npsh/ editable example}
    *
    * @param {String} id of the person to read
    * @param {Array=} components to read; set to ['persons'] if you want to include full person objects for each relative
