@@ -128,6 +128,7 @@
     authCallbackUri,
     autoSignin,
     accessToken,
+    saveAccessToken,
     logging,
     server = {
       'sandbox'   : 'https://sandbox.familysearch.org',
@@ -139,6 +140,7 @@
       'staging'   : 'https://identbeta.familysearch.org/cis-web/oauth2/v3',
       'production': 'https://ident.familysearch.org/cis-web/oauth2/v3'
     },
+    accessTokenCookie = 'FS_ACCESS_TOKEN',
     authCodePollDelay = 50,
     defaultThrottleRetryAfter = 500,
     maxHttpRequestRetries = 5,
@@ -173,6 +175,7 @@
    * - `auth_callback` - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist, but must have the same host and port as the server running your script
    * - `auto_signin` - set to true if you want the user to be prompted to sign in when a call returns 401 unauthorized (must be false for node.js, and may require the user to enable popups in their browser)
    * - `access_token` - pass this in if you already have an access token
+   * - `save_access_token` - set to true if you want the access token to be saved and re-read in future init calls (uses a session cookie)
    * - `logging` - not currently used
    *
    * @param {Object} opts options
@@ -206,6 +209,11 @@
 
     if(opts['auto_signin']) {
       autoSignin = opts['auto_signin'];
+    }
+
+    if (opts['save_access_token']) {
+      saveAccessToken = true;
+      accessToken = readCookie(accessTokenCookie);
     }
 
     if(opts['access_token']) {
@@ -302,6 +310,9 @@
               accessToken = data['access_token'];
               if (accessToken) {
                 accessTokenDeferred.resolve(accessToken);
+                if (saveAccessToken) {
+                  createCookie(accessTokenCookie, accessToken, 0);
+                }
               }
               else {
                 accessTokenDeferred.reject(data['error']);
@@ -329,7 +340,7 @@
    * @return {Object} promise that is resolved once the access token has been invalidated
    */
   function invalidateAccessToken() {
-    accessToken = null;
+    eraseAccessToken();
     return del(getAbsoluteUrl(oauthServer[environment], 'token'));
   }
 
@@ -567,6 +578,7 @@
     return get('/platform/tree/persons-with-relationships', params, {}, opts, objectExtender(personWithRelationshipsConvenienceFunctions));
   }
   // TODO extend personConvenienceFunctions
+  // TODO how identify preferred parents?
   var personWithRelationshipsConvenienceFunctions = {
     getPrimaryId:  function() { return findOrEmpty(this.persons, function(p) { return p.display.ascendancyNumber === '1';}).id; },
     getFatherIds:  function() {
@@ -857,7 +869,7 @@
         if (retries > 0 && (statusCode === 429 || (statusCode === 401 && autoSignin))) {
           var retryAfter = 0;
           if (statusCode === 401) {
-            accessToken = null; // clear the access token in case it has expired
+            eraseAccessToken();
           }
           else if (statusCode === 429) {
             var retryAfterHeader = promise.getResponseHeader('Retry-After');
@@ -1160,6 +1172,43 @@
     return d.promise;
   }
 
+  // cookie functions borrowed from http://www.quirksmode.org/js/cookies.html
+  function createCookie(name,value,days) {
+    var expires = '';
+    if (days) {
+      var date = new Date();
+      date.setTime(date.getTime()+(days*24*60*60*1000));
+      expires = "; expires="+date.toUTCString();
+    }
+    document.cookie = name+"="+value+expires+"; path=/";
+  }
+
+  function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+      var c = ca[i];
+      while (c.charAt(0) ===' ') {
+        c = c.substring(1,c.length);
+      }
+      if (c.indexOf(nameEQ) === 0) {
+        return c.substring(nameEQ.length,c.length);
+      }
+    }
+    return null;
+  }
+
+  function eraseCookie(name) {
+    createCookie(name,"",-1);
+  }
+
+  // erase the access token
+  function eraseAccessToken() {
+    accessToken = null;
+    if (saveAccessToken) {
+      eraseCookie(accessTokenCookie);
+    }
+  }
 
   /**
    * Open a popup window for user to authenticate and authorize this app
@@ -1183,6 +1232,7 @@
       features    = 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top;
     return window.open(appendQueryParameters(url, params),'',features);
   }
+
   /**
    * Polls the popup window location for the auth code
    *
