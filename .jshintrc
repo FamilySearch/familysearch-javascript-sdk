@@ -1,0 +1,32 @@
+{
+  "bitwise": true,
+  "camelcase": true,
+  "curly": true,
+  "eqeqeq": false,
+  "es3": true,
+  "forin": true,
+  "immed": true,
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "noempty": true,
+  "nonew": true,
+  "plusplus": false,
+  "quotmark": "single",
+  "undef": true,
+  "unused": true,
+  "strict": true,
+  "trailing": true,
+  "eqnull": true,
+  "sub": true,
+  "globals": {
+    "window": false,
+    "document": false,
+    "setTimeout": false,
+    "clearTimeout": false,
+    "setInterval": false,
+    "clearInterval": false,
+    "module": false,
+    "console": false
+  }
+}

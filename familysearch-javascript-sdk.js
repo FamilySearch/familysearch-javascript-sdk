@@ -3,8 +3,6 @@
  * (c) 2013, Dallan Quass & Dovy Paukstys
  * License: MIT
 */
-/*jshint sub:true*/
-/*global console:false */
 
 /**
  * @ngdoc overview
@@ -295,6 +293,7 @@
       else {
         authCodePromise = getAuthCode();
       }
+      //noinspection JSCheckFunctionSignatures
       authCodePromise.then(
         function(authCode) {
           // get the access token given the auth code
@@ -303,6 +302,7 @@
             'code'       : authCode,
             'client_id'  : appKey
           });
+          //noinspection JSCheckFunctionSignatures
           promise.then(
             function() {
               var data = promise.getData();
@@ -406,6 +406,7 @@
     var promise = get('/platform/tree/current-person', {}, {}, opts);
     var d = deferredWrapper();
     var returnedPromise = extendHttpPromise(d.promise, promise);
+    //noinspection JSCheckFunctionSignatures
     promise.then(
       function() {
         handleCurrentUserPersonResponse(d, promise);
@@ -695,7 +696,7 @@
   function matchPersonAscNum(ascNum) {
     return function(p) {
       //noinspection JSHint
-      return p.display.ascendancyNumber == ascNum;
+      return p.display.ascendancyNumber == ascNum; // use == deliberately
     };
   }
 
@@ -841,7 +842,7 @@
     }
 
     // default retries
-    if (isUndefined(retries) || retries === null) {
+    if (retries == null) { // also catches undefined
       retries = maxHttpRequestRetries;
     }
 
@@ -851,6 +852,7 @@
     // process the response
     var d = deferredWrapper();
     var returnedPromise = extendHttpPromise(d.promise, promise);
+    //noinspection JSCheckFunctionSignatures
     promise.then(
       function() {
         var processingTime = promise.getResponseHeader('X-PROCESSING-TIME');
@@ -881,11 +883,13 @@
               retryAfter = defaultThrottleRetryAfter;
             }
           }
+          //noinspection JSCheckFunctionSignatures
           getAccessToken().then(
             function() { // promise will resolve right away if access code exists
               setTimeout(function() {
                 promise = http(method, url, headers, data, opts, responseDataExtender, retries-1);
                 extendHttpPromise(returnedPromise, promise);
+                //noinspection JSCheckFunctionSignatures
                 promise.then(
                   function() {
                     d.resolve.apply(d, arguments);
@@ -914,11 +918,6 @@
   }
 
   // borrowed from underscore.js
-  function isObject(obj) {
-    return obj === Object(obj);
-  }
-
-  // borrowed from underscore.js
   function isFunction(value) {
     //noinspection JSHint
     return typeof value == 'function' && Object.prototype.toString.call(value) == '[object Function]';
@@ -931,8 +930,7 @@
 
   // borrowed from underscore.js
   function forEach(obj, iterator, context) {
-    //noinspection JSHint
-    if (obj == null) { // catches undefined as well
+    if (obj == null) { // also catches undefined
       return;
     }
     if (Array.prototype.forEach && obj.forEach === Array.prototype.forEach) {
@@ -1024,7 +1022,7 @@
 
   // returns the specified value or an empty object if the value is null or undefined
   function valueOrEmpty(val) {
-    return isUndefined(val) || val === null ? {} : val;
+    return val == null ? {} : val; // == null also catches undefined
   }
 
   function extend(dest) {
@@ -1067,7 +1065,7 @@
   // "empty" properties are undefined, null, or the empty string
   function removeEmptyProperties(obj) {
     forEach(obj, function(value, key) {
-      if (isUndefined(value) || value === null || value === '') {
+      if (value == null || value === '') {  // == null also catches undefined
         delete obj[key];
       }
     });
@@ -1087,7 +1085,7 @@
   function encodeQueryString(params) {
     var arr = [];
     forEach(params, function(value, key) {
-      arr.push(encodeURIComponent(key) + "=" + encodeURIComponent(value));
+      arr.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
     });
     return arr.join('&');
   }
@@ -1144,6 +1142,7 @@
     forEach(promises, function(promise, key) {
       counter++;
       // TODO use promise.getData() instead of value
+      //noinspection JSCheckFunctionSignatures
       refPromise(promise).then(
         function(value) {
           if (results.hasOwnProperty(key)) {
@@ -1178,13 +1177,13 @@
     if (days) {
       var date = new Date();
       date.setTime(date.getTime()+(days*24*60*60*1000));
-      expires = "; expires="+date.toUTCString();
+      expires = '; expires='+date.toUTCString();
     }
-    document.cookie = name+"="+value+expires+"; path=/";
+    document.cookie = name+'='+value+expires+'; path=/';
   }
 
   function readCookie(name) {
-    var nameEQ = name + "=";
+    var nameEQ = name + '=';
     var ca = document.cookie.split(';');
     for(var i=0;i < ca.length;i++) {
       var c = ca[i];
@@ -1199,7 +1198,7 @@
   }
 
   function eraseCookie(name) {
-    createCookie(name,"",-1);
+    createCookie(name,'',-1);
   }
 
   // erase the access token
@@ -1289,6 +1288,7 @@
       var returnedPromise = d.promise;
       var responseData = null;
       var statusCode = null;
+      //noinspection JSCheckFunctionSignatures
       jqXHR.then(
         function(data, textStatus, jqXHR) {
           responseData = data;
