@@ -11,10 +11,11 @@
     "grunt-contrib-clean": "0.4.1",
     "grunt-contrib-jshint": "~0.7.1",
     "grunt-contrib-watch": "~0.5.3",
-    "connect-livereload": "~0.3.0"
+    "connect-livereload": "~0.3.0",
+    "grunt-gh-pages": "~0.8.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "grunt travis --verbose"
   },
   "repository": {
     "type": "git",

@@ -2,7 +2,13 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     clean: {
-      docs: ['docs/*']
+      docs: ['docs']
+    },
+    jshint: {
+      files: ['familysearch-javascript-sdk.js'],
+      options: {
+        jshintrc: '.jshintrc'
+      }
     },
     ngdocs: {
       options: {
@@ -13,10 +19,20 @@ module.exports = function(grunt) {
       },
       all: ['<%= jshint.files %>']
     },
-    jshint: {
-      files: ['familysearch-javascript-sdk.js'],
+    'gh-pages': {
       options: {
-        jshintrc: '.jshintrc'
+        base: 'docs',
+        message: 'Update docs'
+      },
+      local: {
+        src: ['**/*']
+      },
+      travis: {
+        options: {
+          repo: 'https://' + process.env.GH_TOKEN + '@github.com/rootsdev/familysearch-javascript-sdk.git',
+          silent: true
+        },
+        src: ['**/*']
       }
     },
     connect: {
@@ -38,10 +54,10 @@ module.exports = function(grunt) {
     }
   });
 
-  // Load the plugin that provides the documentation task
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-ngdocs');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-ngdocs');
+  grunt.loadNpmTasks('grunt-gh-pages');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
@@ -53,6 +69,11 @@ module.exports = function(grunt) {
   grunt.registerTask('docs', [
     'clean:docs',
     'ngdocs'
+  ]);
+
+  grunt.registerTask('publishdocs', [
+    'docs',
+    'gh-pages:local'
   ]);
 
   grunt.registerTask('build', [
