@@ -27,6 +27,10 @@
     "setInterval": false,
     "clearInterval": false,
     "module": false,
-    "console": false
+    "describe": false,
+    "it": false,
+    "expect": false,
+    "console": false,
+    "dump": false
   }
 }

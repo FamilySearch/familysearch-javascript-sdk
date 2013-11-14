@@ -4,12 +4,6 @@ module.exports = function(grunt) {
     clean: {
       docs: ['docs']
     },
-    jshint: {
-      files: ['familysearch-javascript-sdk.js'],
-      options: {
-        jshintrc: '.jshintrc'
-      }
-    },
     ngdocs: {
       options: {
         dest: 'docs',
@@ -17,14 +11,23 @@ module.exports = function(grunt) {
         title: 'FamilySearch Javascript SDK',
         bestMatch: false
       },
-      all: ['<%= jshint.files %>']
+      all: ['familysearch-javascript-sdk.js']
+    },
+    jshint: {
+      files: [
+        '<%= ngdocs.all %>',
+        'test/unit/*.js'
+      ],
+      options: {
+        jshintrc: '.jshintrc'
+      }
     },
     'gh-pages': {
       options: {
         base: 'docs',
         message: 'Update docs'
       },
-      local: {
+      dev: {
         src: ['**/*']
       },
       travis: {
@@ -33,6 +36,25 @@ module.exports = function(grunt) {
           silent: true
         },
         src: ['**/*']
+      }
+    },
+    karma: {
+      options: {
+        basePath: '',
+        frameworks: ['jasmine'],
+        files: [
+          'familysearch-javascript-sdk.js',
+          'test/vendor/jquery-1.10.1.min.js',
+          'test/vendor/jasmine-jquery.js',
+          'test/unit/*.js'
+        ],
+        browsers: ['PhantomJS']
+      },
+      dev: {
+        background: true
+      },
+      travis: {
+        singleRun: true
       }
     },
     connect: {
@@ -45,8 +67,13 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      files: ['<%= jshint.files %>', 'Gruntfile.js', 'index.html'],
-      tasks: ['jshint', 'ngdocs'],
+      files: [
+        '<%= jshint.files %>',
+        '.jshintrc',
+        'Gruntfile.js',
+        'index.html'
+      ],
+      tasks: ['jshint', 'ngdocs', 'karma:dev:run'],
       options: {
         livereload: true,
         spawn: false
@@ -60,10 +87,16 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-gh-pages');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-karma');
 
   grunt.registerTask('server', [
     'connect',
+    'karma:dev:start',
     'watch'
+  ]);
+
+  grunt.registerTask('test', [
+    'karma:travis'
   ]);
 
   grunt.registerTask('docs', [
@@ -73,11 +106,12 @@ module.exports = function(grunt) {
 
   grunt.registerTask('publishdocs', [
     'docs',
-    'gh-pages:local'
+    'gh-pages:dev'
   ]);
 
   grunt.registerTask('build', [
     'jshint',
+    'test',
     'docs'
   ]);
 
