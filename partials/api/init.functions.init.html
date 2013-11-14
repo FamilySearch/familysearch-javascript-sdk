@@ -15,6 +15,7 @@
 <li><code>auth_callback</code> - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist, but must have the same host and port as the server running your script</li>
 <li><code>auto_signin</code> - set to true if you want the user to be prompted to sign in when a call returns 401 unauthorized (must be false for node.js, and may require the user to enable popups in their browser)</li>
 <li><code>access_token</code> - pass this in if you already have an access token</li>
+<li><code>save_access_token</code> - set to true if you want the access token to be saved and re-read in future init calls (uses a session cookie)</li>
 <li><code>logging</code> - not currently used</li>
 </ul></div>
 <h2 id="Usage">Usage</h2>
