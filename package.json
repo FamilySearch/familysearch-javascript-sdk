@@ -25,7 +25,7 @@
     "grunt-karma": "~0.6.2"
   },
   "scripts": {
-    "test": "./node_modules/grunt travis --verbose"
+    "test": "grunt travis --verbose"
   },
   "repository": {
     "type": "git",

@@ -120,6 +120,10 @@ module.exports = function(grunt) {
     'docs'
   ]);
 
+  grunt.registerTask('travis', [
+    'jshint'
+  ]);
+
   // Default task(s)
   grunt.registerTask('default', ['build']);
 };

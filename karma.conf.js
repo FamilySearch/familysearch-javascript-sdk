@@ -1,3 +1,4 @@
+// separate karma.conf.js file for use with WebStorm
 module.exports = function(config) {
   config.set({
     basePath: '',
