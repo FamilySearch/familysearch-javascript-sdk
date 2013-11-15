@@ -10,7 +10,7 @@ describe('A user', function() {
 
   it('person id is returned from getCurrentUserPerson', function() {
     FamilySearch.getCurrentUserPerson().then(function(response) {
-      expect(response).toBe('12345');
+      expect(response).toBe('123456');
     });
   });
 });
