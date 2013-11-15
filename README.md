@@ -1,4 +1,6 @@
 [![Stories in Ready](https://badge.waffle.io/rootsdev/familysearch-javascript-sdk.png?label=ready)](https://waffle.io/rootsdev/familysearch-javascript-sdk)  
+[![Build Status](https://travis-ci.org/rootsdev/familysearch-javascript-sdk.png)](https://travis-ci.org/rootsdev/familysearch-javascript-sdk)
+
 FamilySearch Javascript SDK
 ===========================
 

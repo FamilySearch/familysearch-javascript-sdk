@@ -121,7 +121,10 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('travis', [
-    'jshint'
+    'jshint',
+    'karma:travis',
+    'docs',
+    'gh-pages:travis'
   ]);
 
   // Default task(s)
