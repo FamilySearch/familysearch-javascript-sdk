@@ -656,7 +656,9 @@
    * @description
    * Get the ancestors of a specified person and optionally a specified spouse with the following convenience functions
    *
-   * - exists(ascendancyNumber) `ascendancyNumber` is the {@link http://en.wikipedia.org/wiki/Ahnentafel Ahnentafel number} of the person in the tree
+   * - getPersons() - returns the raw persons json array
+   * - getAscendancyNumber(pos) - given a position in the persons array, returns the `ascendancyNumber` of that person, where ascendancyNumber is the {@link http://en.wikipedia.org/wiki/Ahnentafel Ahnentafel number} of the person in the tree
+   * - exists(ascendancyNumber)
    * - getId(ascendancyNumber)
    * - getGender(ascendancyNumber)
    * - getLifeSpan(ascendancyNumber)
@@ -680,25 +682,68 @@
       'person': id,
       'generations': generations,
       'spouse': spouseId}),
-      {}, opts, objectExtender(ancestryConvenienceFunctions));
+      {}, opts, objectExtender(pedigreeConvenienceFunctions('ascendancyNumber')));
   }
-  var ancestryConvenienceFunctions = {
-    exists:        function(ascNum) { return !!findOrEmpty(this.persons, matchPersonAscNum(ascNum)).id; },
-    getId:         function(ascNum) { return findOrEmpty(this.persons, matchPersonAscNum(ascNum)).id; },
-    getGender:     function(ascNum) { return valueOrEmpty(findOrEmpty(this.persons, matchPersonAscNum(ascNum)).display).gender; },
-    getLifeSpan:   function(ascNum) { return valueOrEmpty(findOrEmpty(this.persons, matchPersonAscNum(ascNum)).display).lifespan; },
-    getName:       function(ascNum) { return valueOrEmpty(findOrEmpty(this.persons, matchPersonAscNum(ascNum)).display).name; },
-    isLiving:      function(ascNum) { return findOrEmpty(this.persons, matchPersonAscNum(ascNum)).living; },
-    getGivenName:  function(ascNum) { return findOrEmpty(firstOrEmpty(firstOrEmpty(findOrEmpty(this.persons, matchPersonAscNum(ascNum)).names).nameForms).parts,
-      {type: 'http://gedcomx.org/Given'}).value; },
-    getSurname:    function(ascNum) { return findOrEmpty(firstOrEmpty(firstOrEmpty(findOrEmpty(this.persons, matchPersonAscNum(ascNum)).names).nameForms).parts,
-      {type: 'http://gedcomx.org/Surname'}).value; }
+  var pedigreeConvenienceFunctions = function(numberLabel) {
+    return {
+      getPersons:    function()    { return this.persons; },
+      getAscendancyNumber:  function(pos) { return this.persons[pos].display.ascendancyNumber; },
+      getDescendancyNumber: function(pos) { return this.persons[pos].display.descendancyNumber; },
+      exists:        function(num) { return !!findOrEmpty(this.persons, matchPersonNum(numberLabel, num)).id; },
+      getId:         function(num) { return findOrEmpty(this.persons, matchPersonNum(numberLabel, num)).id; },
+      getGender:     function(num) { return valueOrEmpty(findOrEmpty(this.persons, matchPersonNum(numberLabel, num)).display).gender; },
+      getLifeSpan:   function(num) { return valueOrEmpty(findOrEmpty(this.persons, matchPersonNum(numberLabel, num)).display).lifespan; },
+      getName:       function(num) { return valueOrEmpty(findOrEmpty(this.persons, matchPersonNum(numberLabel, num)).display).name; },
+      isLiving:      function(num) { return findOrEmpty(this.persons, matchPersonNum(numberLabel, num)).living; },
+      getGivenName:  function(num) { return findOrEmpty(firstOrEmpty(firstOrEmpty(findOrEmpty(this.persons, matchPersonNum(numberLabel, num)).names).nameForms).parts,
+        {type: 'http://gedcomx.org/Given'}).value; },
+      getSurname:    function(num) { return findOrEmpty(firstOrEmpty(firstOrEmpty(findOrEmpty(this.persons, matchPersonNum(numberLabel, num)).names).nameForms).parts,
+        {type: 'http://gedcomx.org/Surname'}).value; }
+    };
   };
-  function matchPersonAscNum(ascNum) {
+  function matchPersonNum(numberLabel, num) {
     return function(p) {
       /*jshint eqeqeq:false */
-      return p.display.ascendancyNumber == ascNum;
+      return p.display[numberLabel] == num; // == so users can pass in either numbers or strings for ascendancy numbers
     };
+  }
+
+  /**
+   * @ngdoc function
+   * @name pedigree.functions:getDescendancy
+   * @function
+   *
+   * @description
+   * Get the descendants of a specified person and optionally a specified spouse with the following convenience functions
+   * (similar convenience functions as getAncestry)
+   *
+   * - getPersons() - returns the raw persons json array
+   * - getDescendancyNumber(pos) - given a position in the persons array, returns the `descendancyNumber` of that person, where `descendancyNumber` is the {@link http://en.wikipedia.org/wiki/Genealogical_numbering_system#d.27Aboville_System d'Aboville number} of the person
+   * - exists(descendancyNumber)
+   * - getId(descendancyNumber)
+   * - getGender(descendancyNumber)
+   * - getLifeSpan(descendancyNumber)
+   * - getName(descendancyNumber)
+   * - isLiving(descendancyNumber)
+   * - getGivenName(descendancyNumber)
+   * - getSurname(descendancyNumber)
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Descendancy_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/eBNGk/ editable example}
+   *
+   * @param {String} id of the person
+   * @param {Number=} generations number of generations to retrieve (max 2)
+   * @param {String=} spouseId spouse id
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the descendancy
+   */
+  function getDescendancy(id, generations, spouseId, opts) {
+    return get('/platform/tree/descendancy', removeEmptyProperties({
+      'person': id,
+      'generations': generations,
+      'spouse': spouseId}),
+      {}, opts, objectExtender(pedigreeConvenienceFunctions('descendancyNumber')));
   }
 
   //==================================================================================================================
@@ -1346,6 +1391,7 @@
     getMultiPerson: getMultiPerson,
     getPersonWithRelationships: getPersonWithRelationships,
     getAncestry: getAncestry,
+    getDescendancy: getDescendancy,
     // plumbing
     get: get,
     post: post,

@@ -1,0 +1,243 @@
+{
+  "persons" : [ {
+    "id" : "12345",
+    "links" : {
+      "ancestry" : {
+        "href" : "https://familysearch.org/platform/tree/ancestry?person=12345",
+        "title" : "Ancestry"
+      },
+      "descendancy" : {
+        "href" : "https://familysearch.org/platform/tree/descendancy?person=12345",
+        "title" : "Descendancy"
+      },
+      "child-relationships" : {
+        "href" : "https://familysearch.org/platform/tree/persons/12345/child-relationships",
+        "title" : "Relationships to Children"
+      }
+    },
+    "gender" : {
+      "type" : "http://gedcomx.org/Male"
+    },
+    "names" : [ {
+      "nameForms" : [ {
+        "fullText" : "Daniel Earl Bishop"
+      } ]
+    } ],
+    "display" : {
+      "name" : "Daniel Earl Bishop",
+      "gender" : "Male",
+      "lifespan" : "1885-1981",
+      "descendancyNumber" : "1"
+    }
+  }, {
+    "id" : "3526",
+    "links" : {
+      "ancestry" : {
+        "href" : "https://familysearch.org/platform/tree/ancestry?person=3526",
+        "title" : "Ancestry"
+      },
+      "descendancy" : {
+        "href" : "https://familysearch.org/platform/tree/descendancy?person=3526",
+        "title" : "Descendancy"
+      },
+      "child-relationships" : {
+        "href" : "https://familysearch.org/platform/tree/persons/3526/child-relationships",
+        "title" : "Relationships to Children"
+      }
+    },
+    "gender" : {
+      "type" : "http://gedcomx.org/Female"
+    },
+    "names" : [ {
+      "nameForms" : [ {
+        "fullText" : "Maude Langston"
+      } ]
+    } ],
+    "display" : {
+      "name" : "Maude Langston",
+      "gender" : "Female",
+      "lifespan" : "1885-1949",
+      "descendancyNumber" : "1-S"
+    }
+  }, {
+    "id" : "8413",
+    "links" : {
+      "ancestry" : {
+        "href" : "https://familysearch.org/platform/tree/ancestry?person=8413",
+        "title" : "Ancestry"
+      },
+      "descendancy" : {
+        "href" : "https://familysearch.org/platform/tree/descendancy?person=8413",
+        "title" : "Descendancy"
+      },
+      "child-relationships" : {
+        "href" : "https://familysearch.org/platform/tree/persons/8413/child-relationships",
+        "title" : "Relationships to Children"
+      }
+    },
+    "gender" : {
+      "type" : "http://gedcomx.org/Female"
+    },
+    "names" : [ {
+      "nameForms" : [ {
+        "fullText" : "Nelda Bishop"
+      } ]
+    } ],
+    "display" : {
+      "name" : "Nelda Bishop",
+      "gender" : "Female",
+      "lifespan" : "1907-1908",
+      "descendancyNumber" : "1.1"
+    }
+  }, {
+    "id" : "1287",
+    "links" : {
+      "ancestry" : {
+        "href" : "https://familysearch.org/platform/tree/ancestry?person=1287",
+        "title" : "Ancestry"
+      },
+      "descendancy" : {
+        "href" : "https://familysearch.org/platform/tree/descendancy?person=1287",
+        "title" : "Descendancy"
+      },
+      "child-relationships" : {
+        "href" : "https://familysearch.org/platform/tree/persons/1287/child-relationships",
+        "title" : "Relationships to Children"
+      }
+    },
+    "gender" : {
+      "type" : "http://gedcomx.org/Female"
+    },
+    "names" : [ {
+      "nameForms" : [ {
+        "fullText" : "Elnor Bishop"
+      } ]
+    } ],
+    "display" : {
+      "name" : "Elnor Bishop",
+      "gender" : "Female",
+      "lifespan" : "1909-2000",
+      "descendancyNumber" : "1.2"
+    }
+  }, {
+    "id" : "1718",
+    "links" : {
+      "ancestry" : {
+        "href" : "https://familysearch.org/platform/tree/ancestry?person=1718",
+        "title" : "Ancestry"
+      },
+      "descendancy" : {
+        "href" : "https://familysearch.org/platform/tree/descendancy?person=1718",
+        "title" : "Descendancy"
+      },
+      "child-relationships" : {
+        "href" : "https://familysearch.org/platform/tree/persons/1718/child-relationships",
+        "title" : "Relationships to Children"
+      }
+    },
+    "gender" : {
+      "type" : "http://gedcomx.org/Male"
+    },
+    "names" : [ {
+      "nameForms" : [ {
+        "fullText" : "Roscoe Titensor"
+      } ]
+    } ],
+    "display" : {
+      "name" : "Roscoe Titensor",
+      "gender" : "Male",
+      "lifespan" : "1909-2000",
+      "descendancyNumber" : "1.2-S"
+    }
+  }, {
+    "id" : "4396",
+    "links" : {
+      "ancestry" : {
+        "href" : "https://familysearch.org/platform/tree/ancestry?person=4396",
+        "title" : "Ancestry"
+      },
+      "descendancy" : {
+        "href" : "https://familysearch.org/platform/tree/descendancy?person=4396",
+        "title" : "Descendancy"
+      },
+      "child-relationships" : {
+        "href" : "https://familysearch.org/platform/tree/persons/4396/child-relationships",
+        "title" : "Relationships to Children"
+      }
+    },
+    "gender" : {
+      "type" : "http://gedcomx.org/Male"
+    },
+    "names" : [ {
+      "nameForms" : [ {
+        "fullText" : "Fern Earl Bishop"
+      } ]
+    } ],
+    "display" : {
+      "name" : "Fern Earl Bishop",
+      "gender" : "Male",
+      "lifespan" : "1911-1911",
+      "descendancyNumber" : "1.3"
+    }
+  }, {
+    "id" : "3618",
+    "links" : {
+      "ancestry" : {
+        "href" : "https://familysearch.org/platform/tree/ancestry?person=3618",
+        "title" : "Ancestry"
+      },
+      "descendancy" : {
+        "href" : "https://familysearch.org/platform/tree/descendancy?person=3618",
+        "title" : "Descendancy"
+      },
+      "child-relationships" : {
+        "href" : "https://familysearch.org/platform/tree/persons/3618/child-relationships",
+        "title" : "Relationships to Children"
+      }
+    },
+    "gender" : {
+      "type" : "http://gedcomx.org/Male"
+    },
+    "names" : [ {
+      "nameForms" : [ {
+        "fullText" : "Lavon Bishop"
+      } ]
+    } ],
+    "display" : {
+      "name" : "Lavon Bishop",
+      "gender" : "Male",
+      "lifespan" : "1912-1988",
+      "descendancyNumber" : "1.4"
+    }
+  }, {
+    "id" : "9146",
+    "links" : {
+      "ancestry" : {
+        "href" : "https://familysearch.org/platform/tree/ancestry?person=9146",
+        "title" : "Ancestry"
+      },
+      "descendancy" : {
+        "href" : "https://familysearch.org/platform/tree/descendancy?person=9146",
+        "title" : "Descendancy"
+      },
+      "child-relationships" : {
+        "href" : "https://familysearch.org/platform/tree/persons/9146/child-relationships",
+        "title" : "Relationships to Children"
+      }
+    },
+    "gender" : {
+      "type" : "http://gedcomx.org/Female"
+    },
+    "names" : [ {
+      "nameForms" : [ {
+        "fullText" : "Martha Spencer"
+      } ]
+    } ],
+    "display" : {
+      "name" : "Martha Spencer",
+      "gender" : "Female",
+      "lifespan" : "1912-2003",
+      "descendancyNumber" : "1.4-S"
+    }
+  } ]
+}

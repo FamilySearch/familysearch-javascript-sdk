@@ -26,4 +26,35 @@ describe('A pedigree', function() {
       expect(response.exists(16)).toBe(false);
     });
   });
+
+  it('descendancy is returned from getDescendancy', function() {
+    FamilySearch.getDescendancy('12345').then(function(response) {
+      expect(response.exists('1')).toBe(true);
+      expect(response.getId('1')).toBe('12345');
+      expect(response.getGender('1')).toBe('Male');
+      expect(response.getLifeSpan('1')).toBe('1885-1981');
+      expect(response.getName('1')).toBe('Daniel Earl Bishop');
+      expect(response.isLiving('1')).toBeUndefined();
+      expect(response.getGivenName('1')).toBeUndefined();
+      expect(response.getSurname('1')).toBeUndefined();
+
+      expect(response.exists('1-S')).toBe(true);
+      expect(response.getId('1-S')).toBe('3526');
+      expect(response.getGender('1-S')).toBe('Female');
+      expect(response.getLifeSpan('1-S')).toBe('1885-1949');
+      expect(response.getName('1-S')).toBe('Maude Langston');
+      expect(response.isLiving('1-S')).toBeUndefined();
+      expect(response.getGivenName('1-S')).toBeUndefined();
+      expect(response.getSurname('1-S')).toBeUndefined();
+
+      expect(response.exists('1.1')).toBe(true);
+      expect(response.getId('1.1')).toBe('8413');
+      expect(response.getGender('1.1')).toBe('Female');
+      expect(response.getLifeSpan('1.1')).toBe('1907-1908');
+      expect(response.getName('1.1')).toBe('Nelda Bishop');
+      expect(response.isLiving('1.1')).toBeUndefined();
+      expect(response.getGivenName('1.1')).toBeUndefined();
+      expect(response.getSurname('1.1')).toBeUndefined();
+    });
+  });
 });
