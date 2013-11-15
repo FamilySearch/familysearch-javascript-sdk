@@ -4,5 +4,8 @@ node_js:
 env:
   global:
     secure: ms6pg+JkqhRPO5TtgpxIMxkBbzUUAuK69c+LHgGYNvVdCg9UbUOhiLeyOBW5uaEnLvMSrpEDDrFhIB2YWu18XCu+YaSXODXsRkiXmNda+OXIcN/7SNoIV3W23y3QAcoGwDFmA7UFLCTs3+bMc/sC1bj6hbh1XSIQZ/R7bfwsWRU=
+cache:
+  directories:
+  - node_modules
 before_script:
 - npm install -g grunt-cli

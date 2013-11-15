@@ -42,7 +42,7 @@ module.exports = function(grunt) {
       travis: {
         options: {
           repo: 'https://' + process.env.GH_TOKEN + '@github.com/rootsdev/familysearch-javascript-sdk.git',
-          silent: true
+          silent: false
         },
         src: ['**/*']
       }
