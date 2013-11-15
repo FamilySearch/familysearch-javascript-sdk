@@ -6,7 +6,9 @@
 <div class="description"><p>Get the ancestors of a specified person and optionally a specified spouse with the following convenience functions</p>
 
 <ul>
-<li>exists(ascendancyNumber) <code>ascendancyNumber</code> is the <a href="http://en.wikipedia.org/wiki/Ahnentafel">Ahnentafel number</a> of the person in the tree</li>
+<li>getPersons() - returns the raw persons json array</li>
+<li>getAscendancyNumber(pos) - given a position in the persons array, returns the <code>ascendancyNumber</code> of that person, where ascendancyNumber is the <a href="http://en.wikipedia.org/wiki/Ahnentafel">Ahnentafel number</a> of the person in the tree</li>
+<li>exists(ascendancyNumber)</li>
 <li>getId(ascendancyNumber)</li>
 <li>getGender(ascendancyNumber)</li>
 <li>getLifeSpan(ascendancyNumber)</li>

@@ -1,0 +1,41 @@
+<h1><code ng:non-bindable="">getDescendancy</code>
+<span class="hint">(functions in module <code ng:non-bindable="">pedigree</code>
+)</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>Get the descendants of a specified person and optionally a specified spouse with the following convenience functions
+(similar convenience functions as getAncestry)</p>
+
+<ul>
+<li>getPersons() - returns the raw persons json array</li>
+<li>getDescendancyNumber(pos) - given a position in the persons array, returns the <code>descendancyNumber</code> of that person, where <code>descendancyNumber</code> is the <a href="http://en.wikipedia.org/wiki/Genealogical_numbering_system#d.27Aboville_System">d'Aboville number</a> of the person</li>
+<li>exists(descendancyNumber)</li>
+<li>getId(descendancyNumber)</li>
+<li>getGender(descendancyNumber)</li>
+<li>getLifeSpan(descendancyNumber)</li>
+<li>getName(descendancyNumber)</li>
+<li>isLiving(descendancyNumber)</li>
+<li>getGivenName(descendancyNumber)</li>
+<li>getSurname(descendancyNumber)</li>
+</ul>
+
+<p><a href="https://familysearch.org/developers/docs/api/tree/Descendancy_resource">FamilySearch API Docs</a></p>
+
+<p><a href="http://jsfiddle.net/DallanQ/eBNGk/">editable example</a></p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getDescendancy(id[, generations][, spouseId][, opts]);</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<p>of the person</p></li>
+<li><code ng:non-bindable="">generations<i>(optional)</i> – {Number=} – </code>
+<p>number of generations to retrieve (max 2)</p></li>
+<li><code ng:non-bindable="">spouseId<i>(optional)</i> – {String=} – </code>
+<p>spouse id</p></li>
+<li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
+<p>options to pass to the http function specified during init</p></li>
+</ul>
+<h3 id="Returns">Returns</h3>
+<div class="returns"><code ng:non-bindable="">{Object}</code>
+– <p>promise for the descendancy</p></div>
+</div>
+</div>
