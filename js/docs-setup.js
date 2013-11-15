@@ -64,7 +64,7 @@ NG_DOCS={
       "id": "pedigree.functions:getAncestry",
       "shortName": "getAncestry",
       "type": "function",
-      "keywords": "ahnentafel ancestors ancestry and api convenience docs during editable example exists familysearch following for function functions generations get getgender getgivenname getid getlifespan getname getsurname http https id in init is isliving net number of optionally options opts org pass pedigree person promise retrieve specified spouse spouseid the to tree wikipedia with"
+      "keywords": "ahnentafel ancestors ancestry and api ascendancynumber convenience docs during editable example exists familysearch following for function functions generations get getgender getgivenname getid getlifespan getname getsurname http https id in init is isliving net number of optionally options opts org pass pedigree person promise retrieve specified spouse spouseid the to tree wikipedia with"
     },
     {
       "section": "api",
@@ -162,7 +162,7 @@ NG_DOCS={
       "id": "user.functions:getCurrentUser",
       "shortName": "getCurrentUser",
       "type": "function",
-      "keywords": "api convenience current docs during editable example familysearch following for function functions get getcontactname getid gettreeuserid http https init net options opts org pass promise specified the to user with"
+      "keywords": "api convenience current docs during editable example familysearch following for function functions get getcontactname getemail getfullname getid gettreeuserid http https init net options opts org pass promise specified the to user with"
     },
     {
       "section": "api",

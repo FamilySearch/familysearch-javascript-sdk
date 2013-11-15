@@ -6,7 +6,7 @@
 <div class="description"><p>Get the ancestors of a specified person and optionally a specified spouse with the following convenience functions</p>
 
 <ul>
-<li>exists(ascendancyNumber) <em>ascendancyNumber</em> is the <a href="http://en.wikipedia.org/wiki/Ahnentafel">Ahnentafel number</a> of the person in the tree</li>
+<li>exists(ascendancyNumber) <code>ascendancyNumber</code> is the <a href="http://en.wikipedia.org/wiki/Ahnentafel">Ahnentafel number</a> of the person in the tree</li>
 <li>getId(ascendancyNumber)</li>
 <li>getGender(ascendancyNumber)</li>
 <li>getLifeSpan(ascendancyNumber)</li>
@@ -20,11 +20,11 @@
 
 <p><a href="http://jsfiddle.net/DallanQ/gt726/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getAncestry(id, generations[, spouseId][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getAncestry(id[, generations][, spouseId][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
 <ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
 <p>of the person</p></li>
-<li><code ng:non-bindable="">generations – {Number} – </code>
+<li><code ng:non-bindable="">generations<i>(optional)</i> – {Number=} – </code>
 <p>number of generations to retrieve (max 8)</p></li>
 <li><code ng:non-bindable="">spouseId<i>(optional)</i> – {String=} – </code>
 <p>spouse id</p></li>
