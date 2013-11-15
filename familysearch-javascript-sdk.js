@@ -293,7 +293,6 @@
       else {
         authCodePromise = getAuthCode();
       }
-      //noinspection JSCheckFunctionSignatures
       authCodePromise.then(
         function(authCode) {
           // get the access token given the auth code
@@ -302,7 +301,6 @@
             'code'       : authCode,
             'client_id'  : appKey
           });
-          //noinspection JSCheckFunctionSignatures
           promise.then(
             function() {
               var data = promise.getData();
@@ -366,6 +364,8 @@
    * Get the current user with the following convenience functions
    *
    * - getContactName
+   * - getFullName
+   * - getEmail
    * - getId
    * - getTreeUserId
    *
@@ -382,6 +382,8 @@
   }
   var currentUserConvenienceFunctions = {
     getContactName: function() { return this.users[0].contactName; },
+    getFullName:    function() { return this.users[0].fullName; },
+    getEmail:       function() { return this.users[0].email; },
     getId:          function() { return this.users[0].id; },
     getTreeUserId:  function() { return this.users[0].treeUserId; }
   };
@@ -406,7 +408,6 @@
     var promise = get('/platform/tree/current-person', {}, {}, opts);
     var d = deferredWrapper();
     var returnedPromise = extendHttpPromise(d.promise, promise);
-    //noinspection JSCheckFunctionSignatures
     promise.then(
       function() {
         handleCurrentUserPersonResponse(d, promise);
@@ -655,7 +656,7 @@
    * @description
    * Get the ancestors of a specified person and optionally a specified spouse with the following convenience functions
    *
-   * - exists(ascendancyNumber) *ascendancyNumber* is the {@link http://en.wikipedia.org/wiki/Ahnentafel Ahnentafel number} of the person in the tree
+   * - exists(ascendancyNumber) `ascendancyNumber` is the {@link http://en.wikipedia.org/wiki/Ahnentafel Ahnentafel number} of the person in the tree
    * - getId(ascendancyNumber)
    * - getGender(ascendancyNumber)
    * - getLifeSpan(ascendancyNumber)
@@ -669,7 +670,7 @@
    * {@link http://jsfiddle.net/DallanQ/gt726/ editable example}
    *
    * @param {String} id of the person
-   * @param {Number} generations number of generations to retrieve (max 8)
+   * @param {Number=} generations number of generations to retrieve (max 8)
    * @param {String=} spouseId spouse id
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the ancestry
@@ -695,8 +696,8 @@
   };
   function matchPersonAscNum(ascNum) {
     return function(p) {
-      //noinspection JSHint
-      return p.display.ascendancyNumber == ascNum; // use == deliberately
+      /*jshint eqeqeq:false */
+      return p.display.ascendancyNumber == ascNum;
     };
   }
 
@@ -852,7 +853,6 @@
     // process the response
     var d = deferredWrapper();
     var returnedPromise = extendHttpPromise(d.promise, promise);
-    //noinspection JSCheckFunctionSignatures
     promise.then(
       function() {
         var processingTime = promise.getResponseHeader('X-PROCESSING-TIME');
@@ -883,13 +883,11 @@
               retryAfter = defaultThrottleRetryAfter;
             }
           }
-          //noinspection JSCheckFunctionSignatures
           getAccessToken().then(
             function() { // promise will resolve right away if access code exists
               setTimeout(function() {
                 promise = http(method, url, headers, data, opts, responseDataExtender, retries-1);
                 extendHttpPromise(returnedPromise, promise);
-                //noinspection JSCheckFunctionSignatures
                 promise.then(
                   function() {
                     d.resolve.apply(d, arguments);
@@ -913,14 +911,14 @@
 
   // borrowed from underscore.js
   function isArray(value) {
-    //noinspection JSHint
+    /*jshint eqeqeq:false */
     return Array.isArray ? Array.isArray(value) : Object.prototype.toString.call(value) == '[object Array]';
   }
 
   // borrowed from underscore.js
   function isFunction(value) {
-    //noinspection JSHint
-    return typeof value == 'function' && Object.prototype.toString.call(value) == '[object Function]';
+    /*jshint eqeqeq:false */
+    return (typeof /./ !== 'function') ? (typeof value === 'function') : Object.prototype.toString.call(value) == '[object Function]';
   }
 
   // borrowed from underscore.js
@@ -1142,7 +1140,6 @@
     forEach(promises, function(promise, key) {
       counter++;
       // TODO use promise.getData() instead of value
-      //noinspection JSCheckFunctionSignatures
       refPromise(promise).then(
         function(value) {
           if (results.hasOwnProperty(key)) {
@@ -1176,7 +1173,7 @@
     var expires = '';
     if (days) {
       var date = new Date();
-      date.setTime(date.getTime()+(days*24*60*60*1000));
+      date.setTime(date.getTime()+(days*86400));
       expires = '; expires='+date.toUTCString();
     }
     document.cookie = name+'='+value+expires+'; path=/';
@@ -1288,7 +1285,6 @@
       var returnedPromise = d.promise;
       var responseData = null;
       var statusCode = null;
-      //noinspection JSCheckFunctionSignatures
       jqXHR.then(
         function(data, textStatus, jqXHR) {
           responseData = data;

@@ -2,7 +2,7 @@
   "bitwise": true,
   "camelcase": true,
   "curly": true,
-  "eqeqeq": true,
+  "eqeqeq": false,
   "es3": true,
   "forin": true,
   "immed": true,
@@ -15,7 +15,7 @@
   "quotmark": "single",
   "undef": true,
   "unused": true,
-  "strict": true,
+  "strict": false,
   "trailing": true,
   "eqnull": true,
   "sub": true,
@@ -26,6 +26,21 @@
     "clearTimeout": false,
     "setInterval": false,
     "clearInterval": false,
-    "console": false
+    "console": false,
+
+    "describe": false,
+    "it": false,
+    "iit": false,
+    "xit": false,
+    "expect": false,
+    "beforeEach": false,
+    "jasmine": false,
+    "waitsFor": false,
+    "getJSONFixture": false,
+    "httpMock": true,
+    "deferredMock": true,
+    "FamilySearch": true,
+    "$": true,
+    "dump": false
   }
 }

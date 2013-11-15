@@ -1,0 +1,14 @@
+{
+  "users" : [ {
+    "id" : "cis.MMM.RX9",
+    "links" : {
+      "self" : {
+        "href" : "https://familysearch.org/platform/users/current"
+      }
+    },
+    "contactName" : "Pete Townsend",
+    "fullName" : "Pete Townsend",
+    "email" : "peter@acme.org",
+    "treeUserId" : "PXRQ-FMXT"
+  } ]
+}

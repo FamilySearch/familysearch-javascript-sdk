@@ -14,12 +14,21 @@ module.exports = function(grunt) {
       all: ['familysearch-javascript-sdk.js']
     },
     jshint: {
-      files: [
-        '<%= ngdocs.all %>',
-        'test/unit/*.js'
-      ],
-      options: {
-        jshintrc: '.jshintrc'
+      src: {
+        options: {
+          jshintrc: '.jshintrc'
+        },
+        src: [
+          '<%= ngdocs.all %>'
+        ]
+      },
+      test: {
+        options: {
+          jshintrc: 'test/.jshintrc'
+        },
+        src: [
+          'test/unit/*.js'
+        ]
       }
     },
     'gh-pages': {
@@ -40,21 +49,15 @@ module.exports = function(grunt) {
     },
     karma: {
       options: {
-        basePath: '',
-        frameworks: ['jasmine'],
-        files: [
-          'familysearch-javascript-sdk.js',
-          'test/vendor/jquery-1.10.1.min.js',
-          'test/vendor/jasmine-jquery.js',
-          'test/unit/*.js'
-        ],
-        browsers: ['PhantomJS']
+        configFile: 'karma.conf.js'
       },
       dev: {
-        background: true
+        background: true,
+        browsers: ['PhantomJS']
       },
       travis: {
-        singleRun: true
+        singleRun: true,
+        browsers: ['PhantomJS']
       }
     },
     connect: {
@@ -68,8 +71,10 @@ module.exports = function(grunt) {
     },
     watch: {
       files: [
-        '<%= jshint.files %>',
+        '<%= ngdocs.all %>',
+        'test/unit/*.js',
         '.jshintrc',
+        'test/.jshintrc',
         'Gruntfile.js',
         'index.html'
       ],
