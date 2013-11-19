@@ -81,7 +81,6 @@ function httpMock(opts) {
       .replace(/[^A-Za-z0-9_-]/g, '_') + '.json';
   }
 
-  console.log('request url',opts.url);
   var data = getJSONFixture(filename(opts.url));
   var headers = {};
   if (data.headers) {
