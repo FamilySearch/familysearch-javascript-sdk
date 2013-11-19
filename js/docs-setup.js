@@ -71,14 +71,14 @@ NG_DOCS={
       "id": "pedigree.functions:getAncestry",
       "shortName": "getAncestry",
       "type": "function",
-      "keywords": "all an ancestors ancestry and api array as ascendancy convenience decorated described docs during editable example exists familysearch following for function functions generations get getascendancynumber getperson getpersons http https id if in init net number objects of optionally options opts org pass pedigree person persons promise retrieve return returns specified spouse spouseid that the to true well with"
+      "keywords": "all an ancestor ancestors ancestry and api are array as ascendancy available components convenience decorated described docs during each editable example exists familysearch following for full function functions generations get getascendancynumber getbirthdate getbirthplace getdeathdate getdeathplace getperson getpersons http https id if in include init is net number objects of only optionally options opts org parameter pass pedigree person persondetails persons promise retrieve return returns set specified spouse spouseid that the to true want well with you"
     },
     {
       "section": "api",
       "id": "pedigree.functions:getDescendancy",
       "shortName": "getDescendancy",
       "type": "function",
-      "keywords": "all and api as convenience decorated descendancy descendants described docs during editable example exists familysearch following for function functions generations get getancestry getdescendancynumber getperson getpersons http https id if in init net number objects of optionally options opts org pass pedigree person persons promise retrieve return returns specified spouse spouseid that the to true well with"
+      "keywords": "all and api as components convenience currently decorated descendancy descendants described docs during editable example exists familysearch following for function functions generations get getancestry getdescendancynumber getperson getpersons http https id if in init net not number objects of optionally options opts org pass pedigree person persons promise retrieve return returns specified spouse spouseid that the to true used well with"
     },
     {
       "section": "api",
@@ -92,14 +92,14 @@ NG_DOCS={
       "id": "person.functions:getMultiPerson",
       "shortName": "getMultiPerson",
       "type": "function",
-      "keywords": "all api at been by docs during editable example familysearch fulfilled function functions get have http https id ids in init is map multiple net of once options opts org parallel pass people person promise read requesting response returning specified that the them to when"
+      "keywords": "all api at been by components currently docs during editable example familysearch fulfilled function functions get have http https id ids in init is map multiple net not of once options opts org parallel pass people person promise read requesting response returning specified that the them to used when"
     },
     {
       "section": "api",
       "id": "person.functions:getPerson",
       "shortName": "getPerson",
       "type": "function",
-      "keywords": "an and api been below birthdate birthplace convenience deathdate deathplace docs during editable example extended familysearch following for from function functions gender get getbirthdate getbirthplace getdeathdate getdeathplace getdisplayattrs getgender getgivenname getid getlifespan getname getperson gets getsurname has http https id includes init isliving lifespan listed name net object of options opts org pass person promise read response returns specified the to which with"
+      "keywords": "an and api been below birthdate birthplace components convenience currently deathdate deathplace docs during editable example extended familysearch following for from function functions gender get getbirthdate getbirthplace getdeathdate getdeathplace getdisplayattrs getgender getgivenname getid getlifespan getname getperson gets getsurname has http https id includes init isliving lifespan listed name net not object of options opts org pass person promise read response returns specified the to used which with"
     },
     {
       "section": "api",

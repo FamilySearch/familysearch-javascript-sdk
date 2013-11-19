@@ -17,11 +17,14 @@ as well as a <code>getAscendancyNumber()</code> function that returns the person
 <li><code>getPerson(ascendancyNumber)</code></li>
 </ul>
 
+<p><strong>NOTE:</strong> the <code>getBirthDate()</code>, <code>getBirthPlace()</code>, <code>getDeathDate()</code>, and <code>getDeathPlace()</code> person convenience functions
+are available only if the <code>components</code> parameter is set to <code>['personDetails']</code></p>
+
 <p><a href="https://familysearch.org/developers/docs/api/tree/Ancestry_resource">FamilySearch API Docs</a></p>
 
 <p><a href="http://jsfiddle.net/DallanQ/gt726/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getAncestry(id[, generations][, spouseId][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getAncestry(id[, generations][, spouseId][, components][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
 <ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
 <p>of the person</p></li>
@@ -29,6 +32,8 @@ as well as a <code>getAscendancyNumber()</code> function that returns the person
 <p>number of generations to retrieve (max 8)</p></li>
 <li><code ng:non-bindable="">spouseId<i>(optional)</i> – {String=} – </code>
 <p>spouse id</p></li>
+<li><code ng:non-bindable="">components<i>(optional)</i> – {Array=} – </code>
+<p>set to <code>['personDetails']</code> if you want to include full person objects for each ancestor</p></li>
 <li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
 <p>options to pass to the http function specified during init</p></li>
 </ul>
