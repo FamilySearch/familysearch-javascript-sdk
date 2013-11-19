@@ -33,6 +33,13 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "authentication.functions:hasAccessToken",
+      "shortName": "hasAccessToken",
+      "type": "function",
+      "keywords": "access an and api authentication be but call discovered erased exist exists expired function functions if is may return returns status the to token true unauthorized whether"
+    },
+    {
+      "section": "api",
       "id": "authentication.functions:invalidateAccessToken",
       "shortName": "invalidateAccessToken",
       "type": "function",
