@@ -482,10 +482,11 @@
    * {@link http://jsfiddle.net/DallanQ/cST4L/ editable example}
    *
    * @param {String} id of the person to read
+   * @param {Array=} components currently not used
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  function getPerson(id, opts) {
+  function getPerson(id, components, opts) {
     return get('/platform/tree/persons/'+encodeURI(id), {}, {}, opts,
       compose([objectExtender({getPerson: function() { return this.persons[0]; }}), personExtender]));
   }
@@ -526,10 +527,11 @@
    * {@link http://jsfiddle.net/DallanQ/TF6Lg/ editable example}
    *
    * @param {Array} ids of the people to read
+   * @param {Array=} components currently not used
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the people have been read, returning a map of person id to response
    */
-  function getMultiPerson(ids, opts) {
+  function getMultiPerson(ids, components, opts) {
     var promises = {};
     forEach(ids, function(id) {
       promises[id] = getPerson(id, opts);
@@ -555,9 +557,9 @@
    * The following functions return person objects decorated with *person convenience functions* {@link person.functions:getPerson as described in getPerson}
    *
    * - `getPrimaryPerson()`
-   * - `getPerson(id)` - works only for the primary person unless the components parameter is set to ['persons']
+   * - `getPerson(id)` - works only for the primary person unless the components parameter is set to `['persons']`
    *
-   *   In addition, the following functions are available if the components parameter is set to ['persons']
+   *   In addition, the following functions are available if the components parameter is set to `['persons']`
    * - `getFathers()` - array of father persons
    * - `getMothers()` - array of mother persons
    * - `getParents()` - array of [father person, mother person]
@@ -665,6 +667,9 @@
    * - `getPersons()` - returns an array of all persons
    * - `getPerson(ascendancyNumber)`
    *
+   * **NOTE:** the `getBirthDate()`, `getBirthPlace()`, `getDeathDate()`, and `getDeathPlace()` person convenience functions
+   * are available only if the `components` parameter is set to `['personDetails']`
+   *
    * {@link https://familysearch.org/developers/docs/api/tree/Ancestry_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/gt726/ editable example}
@@ -672,14 +677,20 @@
    * @param {String} id of the person
    * @param {Number=} generations number of generations to retrieve (max 8)
    * @param {String=} spouseId spouse id
+   * @param {Array=} components set to `['personDetails']` if you want to include full person objects for each ancestor
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the ancestry
    */
-  function getAncestry(id, generations, spouseId, opts) {
+  function getAncestry(id, generations, spouseId, components, opts) {
+    var args = getOptionalArgs(Array.prototype.slice.call(arguments, 1), [isNumber, isString, isArray, isObject]);
+    generations = args[0]; spouseId = args[1]; components = args[2]; opts = args[3];
+    var personDetails = isArray(components) && components.indexOf('personDetails') >= 0 ? true : '';
+
     return get('/platform/tree/ancestry', removeEmptyProperties({
       'person': id,
       'generations': generations,
-      'spouse': spouseId}),
+      'spouse': spouseId,
+      'personDetails': personDetails}),
       {}, opts,
       compose([objectExtender(pedigreeConvenienceFunctionGenerator('ascendancyNumber')), personExtender,
         objectExtender({getAscendancyNumber: function() { return this.display.ascendancyNumber; }}, personExtensionPointGetter)
@@ -725,10 +736,11 @@
    * @param {String} id of the person
    * @param {Number=} generations number of generations to retrieve (max 2)
    * @param {String=} spouseId spouse id
+   * @param {Array=} components currently not used
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the descendancy
    */
-  function getDescendancy(id, generations, spouseId, opts) {
+  function getDescendancy(id, generations, spouseId, components, opts) {
     return get('/platform/tree/descendancy', removeEmptyProperties({
       'person': id,
       'generations': generations,
@@ -953,9 +965,26 @@
   }
 
   // borrowed from underscore.js
+  function isNumber(value) {
+    /*jshint eqeqeq:false */
+    return Object.prototype.toString.call(value) == '[object Number]';
+  }
+
+  // borrowed from underscore.js
+  function isString(value) {
+    /*jshint eqeqeq:false */
+    return Object.prototype.toString.call(value) == '[object String]';
+  }
+
+  // borrowed from underscore.js
   function isFunction(value) {
     /*jshint eqeqeq:false */
     return (typeof /./ !== 'function') ? (typeof value === 'function') : Object.prototype.toString.call(value) == '[object Function]';
+  }
+
+  // borrowed from underscore.js
+  function isObject(obj) {
+    return obj === Object(obj);
   }
 
   // borrowed from underscore.js
@@ -1113,6 +1142,18 @@
   // extend the destPromise with functions from the sourcePromise
   function extendHttpPromise(destPromise, sourcePromise) {
     return wrapFunctions(destPromise, sourcePromise, ['getResponseHeader', 'getAllResponseHeaders', 'getStatusCode']);
+  }
+
+  // skip over optional arguments based upon predicate matching
+  function getOptionalArgs(args, argPredicates) {
+    var result = [];
+    for (var i = 0, argPredicatesLen = argPredicates.length, j = 0, argsLen = args.length;
+         i < argPredicatesLen && j < argsLen; i++) {
+      if (argPredicates[i](args[j])) {
+        result[i] = args[j++];
+      }
+    }
+    return result;
   }
 
   // "empty" properties are undefined, null, or the empty string
