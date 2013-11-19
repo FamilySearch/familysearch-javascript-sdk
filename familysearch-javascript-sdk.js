@@ -125,8 +125,8 @@
     deferredWrapper,
     authCallbackUri,
     autoSignin,
-    accessToken,
-    saveAccessToken,
+    accessToken = null,
+    saveAccessToken = false,
     logging,
     server = {
       'sandbox'   : 'https://sandbox.familysearch.org',
@@ -304,7 +304,6 @@
           promise.then(
             function() {
               var data = promise.getData();
-              console.log('accessToken=',data);
               accessToken = data['access_token'];
               if (accessToken) {
                 accessTokenDeferred.resolve(accessToken);
@@ -325,6 +324,22 @@
         });
     }
     return accessTokenDeferred.promise;
+  }
+
+  /**
+   * @ngdoc function
+   * @name authentication.functions:hasAccessToken
+   * @function
+   *
+   * @description
+   * Return whether the access token exists.
+   * The access token may exist but be expired.
+   * An access token is discovered to be expired and is erased if an API call returns a 401 unauthorized status
+   *
+   * @return {boolean} true if the access token exists
+   */
+  function hasAccessToken() {
+    return !!accessToken;
   }
 
   /**
@@ -377,7 +392,6 @@
    * @return {Object} a promise for the current user
    */
   function getCurrentUser(opts) {
-    console.log('getCurrentUser');
     return get('/platform/users/current', {}, {}, opts, objectExtender(currentUserConvenienceFunctions));
   }
   var currentUserConvenienceFunctions = {
@@ -404,7 +418,6 @@
    * @return {Object} promise for the (string) id of the current user person
    */
   function getCurrentUserPerson(opts) {
-    console.log('getCurrentUserPerson');
     var promise = get('/platform/tree/current-person', {}, {}, opts);
     var d = deferredWrapper();
     var returnedPromise = extendHttpPromise(d.promise, promise);
@@ -913,12 +926,12 @@
       function() {
         var statusCode = promise.getStatusCode();
         console.log('http failure', statusCode, retries, promise.getAllResponseHeaders());
+        if (statusCode === 401) {
+          eraseAccessToken();
+        }
         if (retries > 0 && (statusCode === 429 || (statusCode === 401 && autoSignin))) {
           var retryAfter = 0;
-          if (statusCode === 401) {
-            eraseAccessToken();
-          }
-          else if (statusCode === 429) {
+          if (statusCode === 429) {
             var retryAfterHeader = promise.getResponseHeader('Retry-After');
             console.log('retryAfter',retryAfterHeader, promise.getAllResponseHeaders());
             if (retryAfterHeader) {
@@ -1384,6 +1397,7 @@
     init: init,
     getAuthCode: getAuthCode,
     getAccessToken: getAccessToken,
+    hasAccessToken: hasAccessToken,
     invalidateAccessToken: invalidateAccessToken,
     getCurrentUser: getCurrentUser,
     getCurrentUserPerson: getCurrentUserPerson,
