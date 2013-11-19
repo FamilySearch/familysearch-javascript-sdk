@@ -6,16 +6,15 @@
 <div class="description"><p>Get the ancestors of a specified person and optionally a specified spouse with the following convenience functions</p>
 
 <ul>
-<li>getPersons() - returns the raw persons json array</li>
-<li>getAscendancyNumber(pos) - given a position in the persons array, returns the <code>ascendancyNumber</code> of that person, where ascendancyNumber is the <a href="http://en.wikipedia.org/wiki/Ahnentafel">Ahnentafel number</a> of the person in the tree</li>
-<li>exists(ascendancyNumber)</li>
-<li>getId(ascendancyNumber)</li>
-<li>getGender(ascendancyNumber)</li>
-<li>getLifeSpan(ascendancyNumber)</li>
-<li>getName(ascendancyNumber)</li>
-<li>isLiving(ascendancyNumber)</li>
-<li>getGivenName(ascendancyNumber)</li>
-<li>getSurname(ascendancyNumber)</li>
+<li><code>exists(ascendancyNumber)</code> - return true if a person with ascendancy number exists</li>
+</ul>
+
+<p>The following functions return person objects decorated with <em>person convenience functions</em> <a href="#/api/person.functions:getPerson">as described in getPerson</a>
+as well as a <code>getAscendancyNumber()</code> function that returns the person's ascendancy number</p>
+
+<ul>
+<li><code>getPersons()</code> - returns an array of all persons</li>
+<li><code>getPerson(ascendancyNumber)</code></li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/tree/Ancestry_resource">FamilySearch API Docs</a></p>

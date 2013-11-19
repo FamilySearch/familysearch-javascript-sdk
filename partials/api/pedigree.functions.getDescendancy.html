@@ -7,16 +7,15 @@
 (similar convenience functions as getAncestry)</p>
 
 <ul>
-<li>getPersons() - returns the raw persons json array</li>
-<li>getDescendancyNumber(pos) - given a position in the persons array, returns the <code>descendancyNumber</code> of that person, where <code>descendancyNumber</code> is the <a href="http://en.wikipedia.org/wiki/Genealogical_numbering_system#d.27Aboville_System">d'Aboville number</a> of the person</li>
-<li>exists(descendancyNumber)</li>
-<li>getId(descendancyNumber)</li>
-<li>getGender(descendancyNumber)</li>
-<li>getLifeSpan(descendancyNumber)</li>
-<li>getName(descendancyNumber)</li>
-<li>isLiving(descendancyNumber)</li>
-<li>getGivenName(descendancyNumber)</li>
-<li>getSurname(descendancyNumber)</li>
+<li><code>exists(descendancyNumber)</code> - return true if a person with descendancy number exists</li>
+</ul>
+
+<p>The following functions return person objects decorated with <em>person convenience functions</em> <a href="#/api/person.functions:getPerson">as described in getPerson</a>
+as well as a <code>getDescendancyNumber()</code> function that returns the person's descendancy number</p>
+
+<ul>
+<li><code>getPersons()</code> - returns all persons</li>
+<li><code>getPerson(descendancyNumber)</code></li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/tree/Descendancy_resource">FamilySearch API Docs</a></p>

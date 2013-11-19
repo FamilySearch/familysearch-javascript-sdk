@@ -5,7 +5,7 @@
 <div><h2 id="Description">Description</h2>
 <div class="description"><p>Low-level call to issue an http request to a specific REST endpoint from FamilySearch</p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">http(method, url[, headers][, data][, opts][, responseDataExtender][, retries]);</pre>
+<div class="usage"><pre class="prettyprint linenums">http(method, url[, headers][, data][, opts][, responseMapper][, retries]);</pre>
 <h3 id="Parameters">Parameters</h3>
 <ul class="parameters"><li><code ng:non-bindable="">method – {String} – </code>
 <p>GET, POST, PUT, or DELETE</p></li>
@@ -17,8 +17,8 @@
 <p>post data</p></li>
 <li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
 <p>options to pass to the http function specified during init</p></li>
-<li><code ng:non-bindable="">responseDataExtender<i>(optional)</i> – {Function=} – </code>
-<p>function to extend response data</p></li>
+<li><code ng:non-bindable="">responseMapper<i>(optional)</i> – {Function=} – </code>
+<p>function to map response data into the data to return</p></li>
 <li><code ng:non-bindable="">retries<i>(optional)</i> – {Number=} – </code>
 <p>number of times to retry</p></li>
 </ul>

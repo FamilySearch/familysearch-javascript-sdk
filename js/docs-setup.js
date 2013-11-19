@@ -8,7 +8,7 @@ NG_DOCS={
       "id": "index",
       "shortName": "index",
       "type": "overview",
-      "keywords": "$http $q _low_level_commands_plumbing abort access addition ajax always an and angularjs anticipated api app_key are as at auth_callback available be below built but by call calls case com config data defer deferred deferred_function described description detail differences do does done environment error errorthrown exist exposed fail familysearch finally following for from fulfilled function functions future get getaccesstoken getallresponseheaders getcurrentuser getdata getresponseheader getstatuscode getting git have headers here higher-level hold host http http_function identical if implemented in index init into is it jquery jqxhr js kernel later low-level make methods module most must near need normally not now of on only or org overview page parameter pass passed plumbing port promise promises properties purpose readystate redirect_goes_here registered rejected requires response responsetext responsexml return returned right roughly running same sandbox script sdk serve server something started status statuscode statustext success textstatus that the then this to todo token top uri use want when will with would yet you your your_access_key_goes_here"
+      "keywords": "$http $q _low_level_commands_plumbing access ajax also an and angularjs anticipated api app_key are as at auth_callback available built but by call calls case catch com config containing data defer deferred deferred_function described description_the-promise-api do does done environment errorthrown example examples exist exposed fail familysearch following for fulfilled function functions generated get getaccesstoken getallresponseheaders getcurrentuser getresponseheader getstatuscode getting git have headers here higher-level host http http_function if implemented in index init into is it jquery js kernel later low-level make methods module most must need node normally not note now of on or org overview page parameter pass passed plumbing port promise promises purpose redirect_goes_here registered rejected requires response return returned returns running same sandbox script sdk serve server single something started status textstatus that the then to token top uri use want whatever will with would yet you your your_access_key_goes_here"
     },
     {
       "section": "api",
@@ -71,14 +71,14 @@ NG_DOCS={
       "id": "pedigree.functions:getAncestry",
       "shortName": "getAncestry",
       "type": "function",
-      "keywords": "ahnentafel ancestors ancestry and api array ascendancynumber convenience docs during editable example exists familysearch following for function functions generations get getascendancynumber getgender getgivenname getid getlifespan getname getpersons getsurname given http https id in init is isliving json net number of optionally options opts org pass pedigree person persons position promise raw retrieve returns specified spouse spouseid that the to tree where wikipedia with"
+      "keywords": "all an ancestors ancestry and api array as ascendancy convenience decorated described docs during editable example exists familysearch following for function functions generations get getascendancynumber getperson getpersons http https id if in init net number objects of optionally options opts org pass pedigree person persons promise retrieve return returns specified spouse spouseid that the to true well with"
     },
     {
       "section": "api",
       "id": "pedigree.functions:getDescendancy",
       "shortName": "getDescendancy",
       "type": "function",
-      "keywords": "aboville and api array as convenience descendancy descendancynumber descendants docs during editable example exists familysearch following for function functions generations get getancestry getdescendancynumber getgender getgivenname getid getlifespan getname getpersons getsurname given http https id in init is isliving json net number of optionally options opts org pass pedigree person persons position promise raw retrieve returns specified spouse spouseid that the to where wikipedia with"
+      "keywords": "all and api as convenience decorated descendancy descendants described docs during editable example exists familysearch following for function functions generations get getancestry getdescendancynumber getperson getpersons http https id if in init net number objects of optionally options opts org pass pedigree person persons promise retrieve return returns specified spouse spouseid that the to true well with"
     },
     {
       "section": "api",
@@ -99,14 +99,14 @@ NG_DOCS={
       "id": "person.functions:getPerson",
       "shortName": "getPerson",
       "type": "function",
-      "keywords": "api convenience docs during editable example familysearch following for function functions get getbirthdate getbirthplace getdeathdate getdeathplace getgender getgivenname getid getlifespan getname getsurname http https id init isliving net of options opts org pass person promise read specified the to with"
+      "keywords": "an and api been below birthdate birthplace convenience deathdate deathplace docs during editable example extended familysearch following for from function functions gender get getbirthdate getbirthplace getdeathdate getdeathplace getdisplayattrs getgender getgivenname getid getlifespan getname getperson gets getsurname has http https id includes init isliving lifespan listed name net object of options opts org pass person promise read response returns specified the to which with"
     },
     {
       "section": "api",
       "id": "person.functions:getPersonWithRelationships",
       "shortName": "getPersonWithRelationships",
       "type": "function",
-      "keywords": "and api array as by children components convenience default docs during each editable example familysearch following for full function functions get getbirthdate getbirthplace getchildids getdeathdate getdeathplace getfatherids getgender getgivenname getlifespan getmotherids getname getparentsids getperson getprimaryid getspouseids getsurname http https id ids if include information init is isliving json motherid net object objects of only options opts org other parameter parent parents pass person persons promise raw read relationships relative relatives requested returns set specified spouse spouseid spouses the their to want well with work you"
+      "keywords": "addition and api are array as available child children components convenience decorated described docs during each editable example familysearch father following for full function functions get getchildids getchildren getfatherids getfathers getmotherids getmothers getparents getparentsids getperson getprimaryid getprimaryperson getspouseids getspouses http https id ids if in include init is mother motherid net objects of only options opts org other parameter parent parents pass person persons primary promise read relationships relative requested return returns set specified spouse spouseid spouses the their to unless want with works you"
     },
     {
       "section": "api",
@@ -141,7 +141,7 @@ NG_DOCS={
       "id": "plumbing.functions:http",
       "shortName": "http",
       "type": "function",
-      "keywords": "an api be behaves by call data delete during endpoint extend familysearch from function functions get headers http init issue like low-level may method number object of options opts or pass plumbing post promise promises put relative request response responsedataextender rest retries retry returned specific specified that the times to url"
+      "keywords": "an api be behaves by call data delete during endpoint familysearch from function functions get headers http init into issue like low-level map may method number object of options opts or pass plumbing post promise promises put relative request response responsemapper rest retries retry return returned specific specified that the times to url"
     },
     {
       "section": "api",

@@ -6,29 +6,26 @@
 <div class="description"><p>Get a person and their children, spouses, and parents with the following convenience functions</p>
 
 <ul>
-<li>getPrimaryId() - id of the person requested</li>
-<li>getFatherIds() - array of ids</li>
-<li>getMotherIds() - array of ids</li>
-<li>getParentsIds() - array of [fatherId, motherId]</li>
-<li>getSpouseIds() - array of ids</li>
-<li>getChildIds(spouseId) - array of ids; if spouseId is specified, returns only ids of children with spouse as the other parent</li>
+<li><code>getPrimaryId()</code> - id of the person requested</li>
+<li><code>getFatherIds()</code> - array of ids</li>
+<li><code>getMotherIds()</code> - array of ids</li>
+<li><code>getParentsIds()</code> - array of [fatherId, motherId]</li>
+<li><code>getSpouseIds()</code> - array of ids</li>
+<li><code>getChildIds(spouseId)</code> - array of ids; if spouseId is specified, returns only ids of children with spouse as the other parent</li>
 </ul>
 
-<p>The following functions work only for the person requested by default;
-if you want to include information for relatives as well, set the components parameter to ['persons']</p>
+<p>The following functions return person objects decorated with <em>person convenience functions</em> <a href="#/api/person.functions:getPerson">as described in getPerson</a></p>
 
 <ul>
-<li>getPerson(id) - raw json object for the specified id</li>
-<li>getBirthDate(id)</li>
-<li>getBirthPlace(id)</li>
-<li>getDeathDate(id)</li>
-<li>getDeathPlace(id)</li>
-<li>getGender(id)</li>
-<li>getLifeSpan(id)</li>
-<li>getName(id)</li>
-<li>isLiving(id)</li>
-<li>getGivenName(id)</li>
-<li>getSurname(id)</li>
+<li><code>getPrimaryPerson()</code></li>
+<li><p><code>getPerson(id)</code> - works only for the primary person unless the components parameter is set to ['persons']</p>
+
+<p>In addition, the following functions are available if the components parameter is set to ['persons']</p></li>
+<li><code>getFathers()</code> - array of father persons</li>
+<li><code>getMothers()</code> - array of mother persons</li>
+<li><code>getParents()</code> - array of [father person, mother person]</li>
+<li><code>getSpouses()</code> - array of spouse persons</li>
+<li><code>getChildren(spouseId)</code> - array of child persons; if spouseId is specified returns only children with spouse as the other parent</li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource">FamilySearch API Docs</a></p>

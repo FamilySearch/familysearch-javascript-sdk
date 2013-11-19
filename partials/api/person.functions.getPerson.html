@@ -3,20 +3,28 @@
 )</span>
 </h1>
 <div><h2 id="Description">Description</h2>
-<div class="description"><p>Get the specified person with the following convenience functions</p>
+<div class="description"><p>Get the specified person
+The response includes the following convenience function</p>
 
 <ul>
-<li>getId</li>
-<li>getBirthDate</li>
-<li>getBirthPlace</li>
-<li>getDeathDate</li>
-<li>getDeathPlace</li>
-<li>getGender</li>
-<li>getLifeSpan</li>
-<li>getName</li>
-<li>isLiving</li>
-<li>getGivenName</li>
-<li>getSurname</li>
+<li><code>getPerson()</code> - gets the person object from the response, which has been extended with the <em>person convenience functions</em> listed below</li>
+</ul>
+
+<p><em>Person Convenience Functions</em></p>
+
+<ul>
+<li><code>getId()</code></li>
+<li><code>getBirthDate()</code></li>
+<li><code>getBirthPlace()</code></li>
+<li><code>getDeathDate()</code></li>
+<li><code>getDeathPlace()</code></li>
+<li><code>getGender()</code></li>
+<li><code>getLifeSpan()</code></li>
+<li><code>getName()</code></li>
+<li><code>isLiving()</code></li>
+<li><code>getGivenName()</code></li>
+<li><code>getSurname()</code></li>
+<li><code>getDisplayAttrs()</code> - returns an object with birthDate, birthPlace, deathDate, deathPlace, gender, lifespan, and name</li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/tree/Person_resource">FamilySearch API Docs</a></p>
@@ -32,6 +40,6 @@
 </ul>
 <h3 id="Returns">Returns</h3>
 <div class="returns"><code ng:non-bindable="">{Object}</code>
-– <p>promise for the person</p></div>
+– <p>promise for the response</p></div>
 </div>
 </div>
