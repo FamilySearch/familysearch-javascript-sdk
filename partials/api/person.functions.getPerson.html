@@ -10,7 +10,7 @@ The response includes the following convenience function</p>
 <li><code>getPerson()</code> - gets the person object from the response, which has been extended with the <em>person convenience functions</em> listed below</li>
 </ul>
 
-<p><em>Person Convenience Functions</em></p>
+<h3 id="personconveniencefunctions">Person Convenience Functions</h5>
 
 <ul>
 <li><code>getId()</code></li>
@@ -27,6 +27,83 @@ The response includes the following convenience function</p>
 <li><code>getDisplayAttrs()</code> - returns an object with birthDate, birthPlace, deathDate, deathPlace, gender, lifespan, and name</li>
 </ul>
 
+<h3 id="components">Components</h5>
+
+<p>Additional information can be obtained by passing in components. If you don't pass in any components, <code>base</code> is assumed.
+Components extend the returned response and add additional convenience functions as described below</p>
+
+<h4 id="base"><code>base</code></h6>
+
+<ul>
+<li>adds the <em>person convenience functions</em> described above; if you don't include base, only the <code>getId()</code> function is available</li>
+</ul>
+
+<h4 id="changesummary"><code>change-summary</code></h6>
+
+<ul>
+<li>not yet implemented</li>
+</ul>
+
+<h4 id="changes"><code>changes</code></h6>
+
+<ul>
+<li>not yet implemented</li>
+</ul>
+
+<h4 id="childrelationships"><code>child-relationships</code></h6>
+
+<ul>
+<li>not yet implemented</li>
+</ul>
+
+<h4 id="discussionreferences"><code>discussion-references</code></h6>
+
+<ul>
+<li>not yet implemented</li>
+</ul>
+
+<h4 id="matches"><code>matches</code></h6>
+
+<ul>
+<li>not yet implemented</li>
+</ul>
+
+<h4 id="memoryreferences"><code>memory-references</code></h6>
+
+<ul>
+<li>not yet implemented</li>
+</ul>
+
+<h4 id="notamatch"><code>not-a-match</code></h6>
+
+<ul>
+<li>not yet implemented</li>
+</ul>
+
+<h4 id="notes"><code>notes</code></h6>
+
+<ul>
+<li><code>getNotes()</code> - an array of notes</li>
+</ul>
+
+<h4 id="parentrelationships"><code>parent-relationships</code></h6>
+
+<ul>
+<li>not yet implemented</li>
+</ul>
+
+<h4 id="sourcereferences"><code>source-references</code></h6>
+
+<ul>
+<li>not yet implemented</li>
+</ul>
+
+<h4 id="spouserelationships"><code>spouse-relationships</code></h6>
+
+<ul>
+<li>not yet implemented</li>
+</ul>
+
 <p><a href="https://familysearch.org/developers/docs/api/tree/Person_resource">FamilySearch API Docs</a></p>
 
 <p><a href="http://jsfiddle.net/DallanQ/cST4L/">editable example</a></p></div>
@@ -36,7 +113,8 @@ The response includes the following convenience function</p>
 <ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
 <p>of the person to read</p></li>
 <li><code ng:non-bindable="">components<i>(optional)</i> – {Array=} – </code>
-<p>currently not used</p></li>
+<p>zero or more of <code>base</code>, <code>change-summary</code>, <code>changes</code>, <code>child-relationships</code>, <code>discussion-references</code>,
+<code>matches</code>, <code>memory-references</code>, <code>not-a-match</code>, <code>notes</code>, <code>parent-relationsihps</code>, <code>source-references</code>, <code>spouse-relationships</code></p></li>
 <li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
 <p>options to pass to the http function specified during init</p></li>
 </ul>

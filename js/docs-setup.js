@@ -92,14 +92,14 @@ NG_DOCS={
       "id": "person.functions:getMultiPerson",
       "shortName": "getMultiPerson",
       "type": "function",
-      "keywords": "all api at been by components currently docs during editable example familysearch fulfilled function functions get have http https id ids in init is map multiple net not of once options opts org parallel pass people person promise read requesting response returning specified that the them to used when"
+      "keywords": "all api at been by components docs during editable example familysearch fulfilled function functions get getperson have http https id ids in init is map multiple net of once options opts org parallel pass people person promise read requesting response returning specified that the them to when"
     },
     {
       "section": "api",
       "id": "person.functions:getPerson",
       "shortName": "getPerson",
       "type": "function",
-      "keywords": "an and api been below birthdate birthplace components convenience currently deathdate deathplace docs during editable example extended familysearch following for from function functions gender get getbirthdate getbirthplace getdeathdate getdeathplace getdisplayattrs getgender getgivenname getid getlifespan getname getperson gets getsurname has http https id includes init isliving lifespan listed name net not object of options opts org pass person promise read response returns specified the to used which with"
+      "keywords": "above add additional adds an and any api array as assumed available base be been below birthdate birthplace by can change-summary changes child-relationships components convenience deathdate deathplace described discussion-references docs don during editable example extend extended familysearch following for from function functions gender get getbirthdate getbirthplace getdeathdate getdeathplace getdisplayattrs getgender getgivenname getid getlifespan getname getnotes getperson gets getsurname has http https id if implemented in include includes information init is isliving lifespan listed matches memory-references more name net not not-a-match notes object obtained of only options opts or org parent-relationships parent-relationsihps pass passing person promise read response returned returns source-references specified spouse-relationships the to which with yet you zero"
     },
     {
       "section": "api",
@@ -120,14 +120,14 @@ NG_DOCS={
       "id": "plumbing.functions:del",
       "shortName": "del",
       "type": "function",
-      "keywords": "api be behaves by call data delete during endpoint extend familysearch from function functions headers http init like low-level may options opts pass plumbing promise promises relative response responsedataextender rest returned specific specified that the to url"
+      "keywords": "api be behaves by call data delete during else endpoint familysearch from function functions headers http init like low-level map may options opts pass plumbing promise promises relative response responsemapper rest returned something specific specified that the to url"
     },
     {
       "section": "api",
       "id": "plumbing.functions:get",
       "shortName": "get",
       "type": "function",
-      "keywords": "api be behaves by call data during endpoint extend familysearch from function functions get headers http init like low-level may options opts parameters params pass plumbing promise promises query relative response responsedataextender rest returned specific specified that the to url"
+      "keywords": "api be behaves by call data during else endpoint familysearch from function functions get headers http init like low-level map may options opts parameters params pass plumbing promise promises query relative response responsemapper rest returned something specific specified that the to url"
     },
     {
       "section": "api",
@@ -148,14 +148,14 @@ NG_DOCS={
       "id": "plumbing.functions:post",
       "shortName": "post",
       "type": "function",
-      "keywords": "api be behaves by call data during endpoint extend familysearch from function functions headers http init like low-level may options opts pass plumbing post promise promises relative response responsedataextender rest returned specific specified that the to url"
+      "keywords": "api be behaves by call data during else endpoint familysearch from function functions headers http init like low-level map may options opts pass plumbing post promise promises relative response responsemapper rest returned something specific specified that the to url"
     },
     {
       "section": "api",
       "id": "plumbing.functions:put",
       "shortName": "put",
       "type": "function",
-      "keywords": "api be behaves by call data during endpoint extend familysearch from function functions headers http init like low-level may options opts pass plumbing post promise promises put relative response responsedataextender rest returned specific specified that the to url"
+      "keywords": "api be behaves by call data during else endpoint familysearch from function functions headers http init like low-level map may options opts pass plumbing post promise promises put relative response responsemapper rest returned something specific specified that the to url"
     },
     {
       "section": "api",

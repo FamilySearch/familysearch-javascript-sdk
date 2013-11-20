@@ -5,7 +5,7 @@
 <div><h2 id="Description">Description</h2>
 <div class="description"><p>Low-level call to post to a specific REST endpoint from FamilySearch</p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">post(url[, data][, headers][, opts][, responseDataExtender]);</pre>
+<div class="usage"><pre class="prettyprint linenums">post(url[, data][, headers][, opts][, responseMapper]);</pre>
 <h3 id="Parameters">Parameters</h3>
 <ul class="parameters"><li><code ng:non-bindable="">url – {String} – </code>
 <p>may be relative</p></li>
@@ -15,8 +15,8 @@
 <p>options headers</p></li>
 <li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
 <p>options to pass to the http function specified during init</p></li>
-<li><code ng:non-bindable="">responseDataExtender<i>(optional)</i> – {Function=} – </code>
-<p>function to extend response data</p></li>
+<li><code ng:non-bindable="">responseMapper<i>(optional)</i> – {Function=} – </code>
+<p>function to map response data to something else</p></li>
 </ul>
 <h3 id="Returns">Returns</h3>
 <div class="returns"><code ng:non-bindable="">{Object}</code>
