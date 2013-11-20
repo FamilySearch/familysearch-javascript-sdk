@@ -462,7 +462,7 @@
    *
    * - `getPerson()` - gets the person object from the response, which has been extended with the *person convenience functions* listed below
    *
-   * *Person Convenience Functions*
+   * ###Person Convenience Functions
    *
    * - `getId()`
    * - `getBirthDate()`
@@ -477,18 +477,94 @@
    * - `getSurname()`
    * - `getDisplayAttrs()` - returns an object with birthDate, birthPlace, deathDate, deathPlace, gender, lifespan, and name
    *
+   * ###Components
+   *
+   * Additional information can be obtained by passing in components. If you don't pass in any components, `base` is assumed.
+   * Components extend the returned response and add additional convenience functions as described below
+   *
+   * ####`base`
+   *
+   * - adds the *person convenience functions* described above; if you don't include base, only the `getId()` function is available
+   *
+   * ####`change-summary`
+   *
+   * - not yet implemented
+   *
+   * ####`changes`
+   *
+   * - not yet implemented
+   *
+   * ####`child-relationships`
+   *
+   * - not yet implemented
+   *
+   * ####`discussion-references`
+   *
+   * - not yet implemented
+   *
+   * ####`matches`
+   *
+   * - not yet implemented
+   *
+   * ####`memory-references`
+   *
+   * - not yet implemented
+   *
+   * ####`not-a-match`
+   *
+   * - not yet implemented
+   *
+   * ####`notes`
+   *
+   * - `getNotes()` - an array of notes
+   *
+   * ####`parent-relationships`
+   *
+   * - not yet implemented
+   *
+   * ####`source-references`
+   *
+   * - not yet implemented
+   *
+   * ####`spouse-relationships`
+   *
+   * - not yet implemented
+   *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/cST4L/ editable example}
    *
    * @param {String} id of the person to read
-   * @param {Array=} components currently not used
+   * @param {Array=} components zero or more of `base`, `change-summary`, `changes`, `child-relationships`, `discussion-references`,
+   * `matches`, `memory-references`, `not-a-match`, `notes`, `parent-relationsihps`, `source-references`, `spouse-relationships`
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   function getPerson(id, components, opts) {
-    return get('/platform/tree/persons/'+encodeURI(id), {}, {}, opts,
-      compose([objectExtender({getPerson: function() { return this.persons[0]; }}), personExtender]));
+    if (!isArray(components)) {
+      components = ['base'];
+    }
+    var promises = {};
+    forEach(components, function(component) {
+      var suffix = component === 'base' ? '' : '/'+component;
+      // TODO this is horrible - make a hash of mappers
+      var responseMapper;
+      if (component === 'notes') {
+        responseMapper = objectExtender({getNotes: function() { return this.notes; }}, personExtensionPointGetter);
+      }
+      else if (component === 'base') {
+        responseMapper = personExtender;
+      }
+      responseMapper = compose(objectExtender({getPerson: function() { return this.persons[0]; }}), responseMapper);
+      promises[component] = get('/platform/tree/persons/'+encodeURI(id)+suffix, {}, {}, opts, responseMapper);
+    });
+    var result = {};
+    return promiseAll(promises).then(function(responses) {
+      forEach(components, function(component) {
+        result = deepExtend(result, responses[component]);
+      });
+      return result;
+    });
   }
 
   var personConvenienceFunctions = {
@@ -527,14 +603,14 @@
    * {@link http://jsfiddle.net/DallanQ/TF6Lg/ editable example}
    *
    * @param {Array} ids of the people to read
-   * @param {Array=} components currently not used
+   * @param {Array=} components to pass to getPerson
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the people have been read, returning a map of person id to response
    */
   function getMultiPerson(ids, components, opts) {
     var promises = {};
     forEach(ids, function(id) {
-      promises[id] = getPerson(id, opts);
+      promises[id] = getPerson(id, components, opts);
     });
     return promiseAll(promises);
   }
@@ -581,7 +657,7 @@
       params['persons'] = 'true';
     }
     return get('/platform/tree/persons-with-relationships', params, {}, opts,
-      compose([objectExtender(personWithRelationshipsConvenienceFunctions), personExtender]));
+      compose(objectExtender(personWithRelationshipsConvenienceFunctions), personExtender));
   }
 
   // TODO how identify preferred parents?
@@ -692,9 +768,11 @@
       'spouse': spouseId,
       'personDetails': personDetails}),
       {}, opts,
-      compose([objectExtender(pedigreeConvenienceFunctionGenerator('ascendancyNumber')), personExtender,
+      compose(
+        objectExtender(pedigreeConvenienceFunctionGenerator('ascendancyNumber')),
+        personExtender,
         objectExtender({getAscendancyNumber: function() { return this.display.ascendancyNumber; }}, personExtensionPointGetter)
-      ]));
+      ));
   }
 
   function pedigreeConvenienceFunctionGenerator(numberLabel) {
@@ -712,6 +790,7 @@
     };
   }
 
+  //noinspection JSUnusedLocalSymbols
   /**
    * @ngdoc function
    * @name pedigree.functions:getDescendancy
@@ -746,9 +825,11 @@
       'generations': generations,
       'spouse': spouseId}),
       {}, opts,
-      compose([objectExtender(pedigreeConvenienceFunctionGenerator('descendancyNumber')), personExtender,
+      compose(
+        objectExtender(pedigreeConvenienceFunctionGenerator('descendancyNumber')),
+        personExtender,
         objectExtender({getDescendancyNumber: function() { return this.display.descendancyNumber; }}, personExtensionPointGetter)
-      ]));
+      ));
   }
 
   //==================================================================================================================
@@ -801,11 +882,11 @@
    * @param {Object=} params query parameters
    * @param {Object=} headers options headers
    * @param {Object=} opts options to pass to the http function specified during init
-   * @param {Function=} responseDataExtender function to extend response data
+   * @param {Function=} responseMapper function to map response data to something else
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
-  function get(url, params, headers, opts, responseDataExtender) {
-    return http('GET', appendQueryParameters(url, params), extend({'Accept': 'application/x-gedcomx-v1+json'},headers), {}, opts, responseDataExtender);
+  function get(url, params, headers, opts, responseMapper) {
+    return http('GET', appendQueryParameters(url, params), extend({'Accept': 'application/x-gedcomx-v1+json'},headers), {}, opts, responseMapper);
   }
 
   /**
@@ -820,11 +901,11 @@
    * @param {Object=} data post data
    * @param {Object=} headers options headers
    * @param {Object=} opts options to pass to the http function specified during init
-   * @param {Function=} responseDataExtender function to extend response data
+   * @param {Function=} responseMapper function to map response data to something else
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
-  function post(url, data, headers, opts, responseDataExtender) {
-    return http('POST', url, extend({'Content-type': 'application/x-www-form-urlencoded'},headers), data, opts, responseDataExtender);
+  function post(url, data, headers, opts, responseMapper) {
+    return http('POST', url, extend({'Content-type': 'application/x-www-form-urlencoded'},headers), data, opts, responseMapper);
   }
 
   /**
@@ -839,11 +920,11 @@
    * @param {Object=} data post data
    * @param {Object=} headers options headers
    * @param {Object=} opts options to pass to the http function specified during init
-   * @param {Function=} responseDataExtender function to extend response data
+   * @param {Function=} responseMapper function to map response data to something else
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
-  function put(url, data, headers, opts, responseDataExtender) {
-    return http('PUT', url, extend({'Content-type': 'application/x-www-form-urlencoded'},headers), data, opts, responseDataExtender);
+  function put(url, data, headers, opts, responseMapper) {
+    return http('PUT', url, extend({'Content-type': 'application/x-www-form-urlencoded'},headers), data, opts, responseMapper);
   }
 
   /**
@@ -857,11 +938,11 @@
    * @param {String} url may be relative
    * @param {Object=} opts options to pass to the http function specified during init
    * @param {Object=} headers options headers
-   * @param {Function=} responseDataExtender function to extend response data
+   * @param {Function=} responseMapper function to map response data to something else
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
-  function del(url, headers, opts, responseDataExtender) {
-    return http('DELETE', url, headers, {}, opts, responseDataExtender);
+  function del(url, headers, opts, responseMapper) {
+    return http('DELETE', url, headers, {}, opts, responseMapper);
   }
 
   /**
@@ -1095,6 +1176,28 @@
     return dest;
   }
 
+  function deepExtend(dest) {
+    forEach(Array.prototype.slice.call(arguments, 1), function(source) {
+      if (source) {
+        forEach(source, function(value, key) {
+          if (isArray(dest[key])) { // deep-extend each element of the array with the corresponding element from source
+            var arr = dest[key];
+            forEach(arr, function(elm, ix) {
+              arr[ix] = deepExtend(elm, value[ix]);
+            });
+          }
+          else if (isObject(dest[key])) { // deep-extend the object
+            dest[key] = deepExtend(dest[key], value);
+          }
+          else {
+            dest[key] = value;
+          }
+        });
+      }
+    });
+    return dest;
+  }
+
   // create a new function which is the specified function with the right-most arguments pre-filled
   function partialRight(fn) {
     var args = Array.prototype.slice.call(arguments, 1);
@@ -1119,11 +1222,26 @@
     }
   }
 
-  // compose functions from right to left
-  function compose(fns) {
+  //noinspection JSUnusedLocalSymbols
+  /**
+   * Compose functions from right to left
+   * @param {...Function} functions to compose; each argument may be a function or an array of functions
+   * @returns {Function} composed function
+   */
+  function compose(functions) {
+    /*jshint unused:false */
+    var args = arguments;
     return function(obj) {
-      for (var i = fns.length-1; i >= 0; i--) {
-        obj = fns[i](obj);
+      for (var i = args.length-1; i >= 0; i--) {
+        var arg = args[i];
+        if (isArray(arg)) {
+          for (var j = arg.length-1; j >= 0; j--) {
+            obj = arg[j](obj);
+          }
+        }
+        else {
+          obj = arg(obj);
+        }
       }
       return obj;
     };
@@ -1421,16 +1539,21 @@
   //==================================================================================================================
 
   window.FamilySearch = {
+    // init
     init: init,
+    // authentication
     getAuthCode: getAuthCode,
     getAccessToken: getAccessToken,
     hasAccessToken: hasAccessToken,
     invalidateAccessToken: invalidateAccessToken,
+    // user
     getCurrentUser: getCurrentUser,
     getCurrentUserPerson: getCurrentUserPerson,
+    // person
     getPerson: getPerson,
     getMultiPerson: getMultiPerson,
     getPersonWithRelationships: getPersonWithRelationships,
+    // pedigree
     getAncestry: getAncestry,
     getDescendancy: getDescendancy,
     // plumbing
