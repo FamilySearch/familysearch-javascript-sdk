@@ -1,40 +1,42 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
+    src: 'src/**/*.js',
+
     clean: {
-      docs: ['docs']
+      dist: ['dist']
     },
+
     ngdocs: {
       options: {
-        dest: 'docs',
+        dest: 'dist',
         html5Mode: false,
         title: 'FamilySearch Javascript SDK',
         bestMatch: false
       },
-      all: ['familysearch-javascript-sdk.js']
+      all: ['<%= src %>', 'src/**/*.frag']
     },
+
     jshint: {
       src: {
         options: {
           jshintrc: '.jshintrc'
         },
-        src: [
-          '<%= ngdocs.all %>'
-        ]
+        src: ['<%= src %>']
       },
       test: {
         options: {
           jshintrc: 'test/.jshintrc'
         },
-        src: [
-          'test/unit/*.js'
-        ]
+        src: ['test/unit/*.js']
       }
     },
+
     'gh-pages': {
       options: {
-        base: 'docs',
-        message: 'Update docs'
+        base: 'dist',
+        message: 'Update docs and files to distribute'
       },
       dev: {
         src: ['**/*']
@@ -51,6 +53,7 @@ module.exports = function(grunt) {
         src: ['**/*']
       }
     },
+
     karma: {
       options: {
         configFile: 'karma.conf.js'
@@ -64,6 +67,7 @@ module.exports = function(grunt) {
         browsers: ['PhantomJS']
       }
     },
+
     connect: {
       server: {
         options: {
@@ -73,16 +77,17 @@ module.exports = function(grunt) {
         }
       }
     },
+
     watch: {
       files: [
-        '<%= ngdocs.all %>',
+        '<%= src %>',
         'test/unit/*.js',
         '.jshintrc',
         'test/.jshintrc',
         'Gruntfile.js',
         'index.html'
       ],
-      tasks: ['jshint', 'ngdocs', 'karma:dev:run'],
+      tasks: ['jshint', 'karma:dev:run', 'ngdocs'],
       options: {
         livereload: true,
         spawn: false
@@ -108,26 +113,22 @@ module.exports = function(grunt) {
     'karma:travis'
   ]);
 
-  grunt.registerTask('docs', [
-    'clean:docs',
+  grunt.registerTask('build', [
+    'clean:dist',
+    'jshint',
+    'test',
     'ngdocs'
   ]);
 
-  grunt.registerTask('publishdocs', [
-    'docs',
+  grunt.registerTask('publish', [
+    'build',
     'gh-pages:dev'
-  ]);
-
-  grunt.registerTask('build', [
-    'jshint',
-    'test',
-    'docs'
   ]);
 
   grunt.registerTask('travis', [
     'jshint',
     'karma:travis',
-    'docs',
+    'ngdocs',
     'gh-pages:travis'
   ]);
 

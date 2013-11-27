@@ -1,0 +1,2 @@
+window.FamilySearch = requirejs('FamilySearch');
+}());

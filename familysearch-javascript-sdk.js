@@ -842,6 +842,8 @@
    * These are the low-level "plumbing" functions. You don't normally need to use these functions.
    */
 
+  var totalProcessingTime = 0;
+
   /**
    * @ngdoc function
    * @name plumbing.functions:getTotalProcessingTime

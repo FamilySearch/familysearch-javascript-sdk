@@ -15,11 +15,12 @@
   "quotmark": "single",
   "undef": true,
   "unused": true,
-  "strict": true,
+  "strict": false,
   "trailing": true,
   "eqnull": true,
   "sub": true,
   "globals": {
+    "define": false,
     "window": false,
     "document": false,
     "setTimeout": false,

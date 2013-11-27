@@ -1,5 +1,5 @@
 .idea/*
 node_modules/*
-docs/*
+dist/*
 .grunt/*
 index.html
