@@ -488,11 +488,7 @@
    *
    * ####`change-summary`
    *
-   * - not yet implemented
-   *
-   * ####`changes`
-   *
-   * - not yet implemented
+   * - `getChanges()` - an array of summarized changes
    *
    * ####`child-relationships`
    *
@@ -516,7 +512,7 @@
    *
    * ####`notes`
    *
-   * - `getNotes()` - an array of notes
+   * - `getPerson()`.`getNotes()` - an array of notes
    *
    * ####`parent-relationships`
    *
@@ -541,22 +537,19 @@
    * @return {Object} promise for the response
    */
   function getPerson(id, components, opts) {
-    if (!isArray(components)) {
+    if (!isArray(components) || components.length === 0) {
       components = ['base'];
     }
     var promises = {};
     forEach(components, function(component) {
       var suffix = component === 'base' ? '' : '/'+component;
-      // TODO this is horrible - make a hash of mappers
-      var responseMapper;
-      if (component === 'notes') {
-        responseMapper = objectExtender({getNotes: function() { return this.notes; }}, personExtensionPointGetter);
-      }
-      else if (component === 'base') {
-        responseMapper = personExtender;
-      }
-      responseMapper = compose(objectExtender({getPerson: function() { return this.persons[0]; }}), responseMapper);
-      promises[component] = get('/platform/tree/persons/'+encodeURI(id)+suffix, {}, {}, opts, responseMapper);
+      var headers = component === 'change-summary' ? {'Accept': 'application/x-gedcomx-atom+json'} : {};
+      promises[component] = get('/platform/tree/persons/'+encodeURI(id)+suffix, {}, headers, opts,
+        compose(
+          objectExtender({getPerson: function() { return this.persons[0]; }}),
+          personResponseMappers[component]
+        )
+      );
     });
     var result = {};
     return promiseAll(promises).then(function(responses) {
@@ -565,6 +558,10 @@
       });
       return result;
     });
+  }
+
+  function personExtensionPointGetter(response) {
+    return response.persons;
   }
 
   var personConvenienceFunctions = {
@@ -586,9 +583,11 @@
 
   var personExtender = objectExtender(personConvenienceFunctions, personExtensionPointGetter);
 
-  function personExtensionPointGetter(response) {
-    return response.persons;
-  }
+  var personResponseMappers = {
+    base: personExtender,
+    'change-summary': objectExtender({getChanges: function() { return this.entries; }}),
+    notes: objectExtender({getNotes: function() { return this.notes; }}, personExtensionPointGetter)
+  };
 
   /**
    * @ngdoc function
@@ -886,7 +885,7 @@
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   function get(url, params, headers, opts, responseMapper) {
-    return http('GET', appendQueryParameters(url, params), extend({'Accept': 'application/x-gedcomx-v1+json'},headers), {}, opts, responseMapper);
+    return http('GET', appendQueryParameters(url, params), extend({'Accept': 'application/x-gedcomx-v1+json'}, headers), {}, opts, responseMapper);
   }
 
   /**
@@ -1166,13 +1165,15 @@
   }
 
   function extend(dest) {
-    forEach(Array.prototype.slice.call(arguments, 1), function(source) {
-      if (source) {
-        forEach(source, function(value, key) {
-          dest[key] = value;
-        });
-      }
-    });
+    if (dest) {
+      forEach(Array.prototype.slice.call(arguments, 1), function(source) {
+        if (source) {
+          forEach(source, function(value, key) {
+            dest[key] = value;
+          });
+        }
+      });
+    }
     return dest;
   }
 
@@ -1211,9 +1212,11 @@
   function objectExtender(extensions, extensionPointGetter) {
     if (extensionPointGetter) {
       return function(obj) {
-        forEach(extensionPointGetter(obj), function(extensionPoint) {
-          extend(extensionPoint, extensions);
-        });
+        if (obj) {
+          forEach(extensionPointGetter(obj), function(extensionPoint) {
+            extend(extensionPoint, extensions);
+          });
+        }
         return obj;
       };
     }
