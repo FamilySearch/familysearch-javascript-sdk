@@ -31,7 +31,7 @@ define([
    * - `getPerson(ascendancyNumber)`
    *
    * **NOTE:** the `getBirthDate()`, `getBirthPlace()`, `getDeathDate()`, and `getDeathPlace()` person convenience functions
-   * are available only if the `components` parameter is set to `['personDetails']`
+   * are available only if `params` includes `personDetails`
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Ancestry_resource FamilySearch API Docs}
    *

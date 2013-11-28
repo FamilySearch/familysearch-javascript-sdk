@@ -146,9 +146,9 @@ define([
    * The following functions return person objects decorated with *person convenience functions* {@link exports.functions:getPerson as described in getPerson}
    *
    * - `getPrimaryPerson()`
-   * - `getPerson(id)` - works only for the primary person unless the components parameter is set to `['persons']`
+   * - `getPerson(id)` - works only for the primary person unless persons is set to true in params
    *
-   *   In addition, the following functions are available if the components parameter is set to `['persons']`
+   *   In addition, the following functions are available if persons is set to true in params
    * - `getFathers()` - array of father persons
    * - `getMothers()` - array of mother persons
    * - `getParents()` - array of [father person, mother person]

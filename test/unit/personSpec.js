@@ -54,7 +54,7 @@ define(['FamilySearch'], function(FamilySearch) {
       });
     });
 
-    it('is returned with populated relationships from getPersonWithRelationships with persons component', function() {
+    it('is returned with populated relationships from getPersonWithRelationships with persons parameter', function() {
       FamilySearch.getPersonWithRelationships('KW7S-VQJ', {persons: true}).then(function(response) {
         expect(response.getFathers()[0].getName()).toBe('Jens Christian Jensen');
         expect(response.getMothers()[0].getName()).toBe('Ane Christensdr');
