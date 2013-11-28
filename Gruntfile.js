@@ -70,6 +70,7 @@ module.exports = function(grunt) {
 
     requirejs: {
       options: {
+        almond: true,
         baseUrl: 'src',
         include: ['FamilySearch'],
         wrap: {
@@ -141,7 +142,8 @@ module.exports = function(grunt) {
     'clean:dist',
     'jshint',
     'test',
-    'ngdocs'
+    'ngdocs',
+    'requirejs'
   ]);
 
   grunt.registerTask('publish', [
@@ -153,6 +155,7 @@ module.exports = function(grunt) {
     'jshint',
     'karma:travis',
     'ngdocs',
+    'requirejs',
     'gh-pages:travis'
   ]);
 
