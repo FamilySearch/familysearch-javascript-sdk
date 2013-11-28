@@ -17,6 +17,16 @@ define(['FamilySearch'], function(FamilySearch) {
       });
     });
 
+    it('notes are returned from getPersonNotes', function() {
+      FamilySearch.getPersonNotes('P12-3456').then(function(response) {
+        var notes = response.getNotes();
+        expect(notes[0].id).toBe('1804317705');
+        expect(notes[0].subject).toBe('note 0');
+        expect(notes[1].id).toBe('1805241226');
+        expect(notes[1].subject).toBe('note 1');
+      });
+    });
+
     it('is returned with others from getMultiPerson', function() {
       FamilySearch.getMultiPerson(['PPPJ-MYZ','PPPJ-MYY']).then(function(response) {
         var person = response['PPPJ-MYZ'].getPerson();
@@ -45,7 +55,7 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('is returned with populated relationships from getPersonWithRelationships with persons component', function() {
-      FamilySearch.getPersonWithRelationships('KW7S-VQJ', ['persons']).then(function(response) {
+      FamilySearch.getPersonWithRelationships('KW7S-VQJ', {persons: true}).then(function(response) {
         expect(response.getFathers()[0].getName()).toBe('Jens Christian Jensen');
         expect(response.getMothers()[0].getName()).toBe('Ane Christensdr');
         expect(response.getParents()[0][0].getName()).toEqual('Jens Christian Jensen');

@@ -18,6 +18,7 @@ define([
     getCurrentUserPerson: user.getCurrentUserPerson,
 
     getPerson: person.getPerson,
+    getPersonNotes: person.getPersonNotes,
     getMultiPerson: person.getMultiPerson,
     getPersonWithRelationships: person.getPersonWithRelationships,
 

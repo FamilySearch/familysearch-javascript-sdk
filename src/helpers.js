@@ -141,28 +141,6 @@ define([
     return dest;
   };
 
-  helpers.deepExtend = function(dest) {
-    helpers.forEach(Array.prototype.slice.call(arguments, 1), function(source) {
-      if (source) {
-        helpers.forEach(source, function(value, key) {
-          if (helpers.isArray(dest[key])) { // deep-extend each element of the array with the corresponding element from source
-            var arr = dest[key];
-            helpers.forEach(arr, function(elm, ix) {
-              arr[ix] = helpers.deepExtend(elm, value[ix]);
-            });
-          }
-          else if (helpers.isObject(dest[key])) { // deep-extend the object
-            dest[key] = helpers.deepExtend(dest[key], value);
-          }
-          else {
-            dest[key] = value;
-          }
-        });
-      }
-    });
-    return dest;
-  };
-
   // create a new function which is the specified function with the right-most arguments pre-filled
   helpers.partialRight = function(fn) {
     var args = Array.prototype.slice.call(arguments, 1);
@@ -226,18 +204,6 @@ define([
   // extend the destPromise with functions from the sourcePromise
   helpers.extendHttpPromise = function(destPromise, sourcePromise) {
     return helpers.wrapFunctions(destPromise, sourcePromise, ['getResponseHeader', 'getAllResponseHeaders', 'getStatusCode']);
-  };
-
-  // skip over optional arguments based upon predicate matching
-  helpers.getOptionalArgs = function(args, argPredicates) {
-    var result = [];
-    for (var i = 0, argPredicatesLen = argPredicates.length, j = 0, argsLen = args.length;
-         i < argPredicatesLen && j < argsLen; i++) {
-      if (argPredicates[i](args[j])) {
-        result[i] = args[j++];
-      }
-    }
-    return result;
   };
 
   // "empty" properties are undefined, null, or the empty string

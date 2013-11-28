@@ -38,22 +38,13 @@ define([
    * {@link http://jsfiddle.net/DallanQ/gt726/ editable example}
    *
    * @param {String} id of the person
-   * @param {Number=} generations number of generations to retrieve (max 8)
-   * @param {String=} spouseId spouse id
-   * @param {Array=} components set to `['personDetails']` if you want to include full person objects for each ancestor
+   * @param {Object=} params includes `generations` to retrieve max 8, `spouse` id to get ancestry of person and spouse, `personDetails` set to true to retrieve full person objects for each ancestor
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the ancestry
    */
-  exports.getAncestry = function(id, generations, spouseId, components, opts) {
-    var args = helpers.getOptionalArgs(Array.prototype.slice.call(arguments, 1), [helpers.isNumber, helpers.isString, helpers.isArray, helpers.isObject]);
-    generations = args[0]; spouseId = args[1]; components = args[2]; opts = args[3];
-    var personDetails = helpers.isArray(components) && components.indexOf('personDetails') >= 0 ? true : '';
-
-    return plumbing.get('/platform/tree/ancestry', helpers.removeEmptyProperties({
-      'person': id,
-      'generations': generations,
-      'spouse': spouseId,
-      'personDetails': personDetails}),
+  exports.getAncestry = function(id, params, opts) {
+    params = params || {};
+    return plumbing.get('/platform/tree/ancestry', helpers.removeEmptyProperties(helpers.extend({'person': id}, params)),
       {}, opts,
       helpers.compose(
         helpers.objectExtender(pedigreeConvenienceFunctionGenerator('ascendancyNumber')),
@@ -100,17 +91,13 @@ define([
    * {@link http://jsfiddle.net/DallanQ/eBNGk/ editable example}
    *
    * @param {String} id of the person
-   * @param {Number=} generations number of generations to retrieve (max 2)
-   * @param {String=} spouseId spouse id
-   * @param {Array=} components currently not used
+   * @param {Object=} params includes `generations` to retrieve max 2, `spouse` id to get descendency of person and spouse
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the descendancy
    */
-  exports.getDescendancy = function(id, generations, spouseId, components, opts) {
-    return plumbing.get('/platform/tree/descendancy', helpers.removeEmptyProperties({
-      'person': id,
-      'generations': generations,
-      'spouse': spouseId}),
+  exports.getDescendancy = function(id, params, opts) {
+    params = params || {};
+    return plumbing.get('/platform/tree/descendancy', helpers.removeEmptyProperties(helpers.extend({'person': id}, params)),
       {}, opts,
       helpers.compose(
         helpers.objectExtender(pedigreeConvenienceFunctionGenerator('descendancyNumber')),
