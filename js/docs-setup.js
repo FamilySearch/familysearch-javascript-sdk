@@ -57,7 +57,7 @@ NG_DOCS={
       "id": "init.functions:init",
       "shortName": "init",
       "type": "function",
-      "keywords": "$http $q access access_token ajax already an and angular api app_key as auth_callback auto_signin be browser but call calls cookie creating currently deferred deferred_function developer does enable environment eventually exist false familysearch for from function functions future have host http http_function if in init initialize issuing jquery js key logging may must need node not oauth2 object options opts or pass popups port production prompted re-read received redirect registered requests require returns running same sandbox save_access_token saved script server session set sign staging the their this to token true unauthorized uri used user want when with you your"
+      "keywords": "$http $q access access_token ajax already an and angular api app_key as auth_callback auto_signin be browser but call calls cookie creating currently deferred deferred_function developer does enable environment eventually exist false familysearch for from function functions future have host http http_function if in init initialize issuing jquery js key logging may must need node not oauth2 object opts or pass popups port production prompted re-read received redirect registered requests require returns running same sandbox save_access_token saved script server session set sign staging the their this to token true unauthorized uri used user want when with you your"
     },
     {
       "section": "api",
@@ -99,14 +99,14 @@ NG_DOCS={
       "id": "person.functions:getPerson",
       "shortName": "getPerson",
       "type": "function",
-      "keywords": "above add additional adds an and any api array as assumed available base be been below birthdate birthplace by can change-summary changes child-relationships components convenience deathdate deathplace described discussion-references docs don during editable example extend extended familysearch following for from function functions gender get getbirthdate getbirthplace getdeathdate getdeathplace getdisplayattrs getgender getgivenname getid getlifespan getname getnotes getperson gets getsurname has http https id if implemented in include includes information init is isliving lifespan listed matches memory-references more name net not not-a-match notes object obtained of only options opts or org parent-relationships parent-relationsihps pass passing person promise read response returned returns source-references specified spouse-relationships the to which with yet you zero"
+      "keywords": "above add additional adds an and any api array as assumed available base be been below birthdate birthplace by can change-summary changes child-relationships components convenience deathdate deathplace described discussion-references docs don during editable example extend extended familysearch following for from function functions gender get getbirthdate getbirthplace getchanges getdeathdate getdeathplace getdisplayattrs getgender getgivenname getid getlifespan getname getnotes getperson gets getsurname has http https id if implemented in include includes information init is isliving lifespan listed matches memory-references more name net not not-a-match notes object obtained of only options opts or org parent-relationships parent-relationsihps pass passing person promise read response returned returns source-references specified spouse-relationships summarized the to which with yet you zero"
     },
     {
       "section": "api",
       "id": "person.functions:getPersonWithRelationships",
       "shortName": "getPersonWithRelationships",
       "type": "function",
-      "keywords": "addition and api are array as available child children components convenience decorated described docs during each editable example familysearch father following for full function functions get getchildids getchildren getfatherids getfathers getmotherids getmothers getparents getparentsids getperson getprimaryid getprimaryperson getspouseids getspouses http https id ids if in include init is mother motherid net objects of only options opts org other parameter parent parents pass person persons primary promise read relationships relative requested return returns set specified spouse spouseid spouses the their to unless want with works you"
+      "keywords": "addition and api are array as available child children components convenience decorated described docs during each editable example exports familysearch father following for full function functions get getchildids getchildren getfatherids getfathers getmotherids getmothers getparents getparentsids getperson getprimaryid getprimaryperson getspouseids getspouses http https id ids if in include init is mother motherid net objects of only options opts org other parameter parent parents pass person persons primary promise read relationships relative requested return returns set specified spouse spouseid spouses the their to unless want with works you"
     },
     {
       "section": "api",
