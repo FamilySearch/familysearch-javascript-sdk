@@ -100,7 +100,7 @@ define([
   exports.getPersonNotes = function(id, params, opts) {
     params = params || {};
     return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/notes', params, {}, opts,
-      helpers.objectExtender({getNotes: function() { return this.persons[0].notes; }}));
+      helpers.objectExtender({getNotes: function() { return this && this.persons ? this.persons[0].notes : []; }}));
   };
 
   /**

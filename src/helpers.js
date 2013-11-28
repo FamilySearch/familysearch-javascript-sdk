@@ -129,15 +129,14 @@ define([
   };
 
   helpers.extend = function(dest) {
-    if (dest) {
-      helpers.forEach(Array.prototype.slice.call(arguments, 1), function(source) {
-        if (source) {
-          helpers.forEach(source, function(value, key) {
-            dest[key] = value;
-          });
-        }
-      });
-    }
+    dest = dest || {};
+    helpers.forEach(Array.prototype.slice.call(arguments, 1), function(source) {
+      if (source) {
+        helpers.forEach(source, function(value, key) {
+          dest[key] = value;
+        });
+      }
+    });
     return dest;
   };
 
