@@ -588,15 +588,14 @@ define('helpers',[
   };
 
   helpers.extend = function(dest) {
-    if (dest) {
-      helpers.forEach(Array.prototype.slice.call(arguments, 1), function(source) {
-        if (source) {
-          helpers.forEach(source, function(value, key) {
-            dest[key] = value;
-          });
-        }
-      });
-    }
+    dest = dest || {};
+    helpers.forEach(Array.prototype.slice.call(arguments, 1), function(source) {
+      if (source) {
+        helpers.forEach(source, function(value, key) {
+          dest[key] = value;
+        });
+      }
+    });
     return dest;
   };
 
@@ -1576,7 +1575,7 @@ define('person',[
   exports.getPersonNotes = function(id, params, opts) {
     params = params || {};
     return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/notes', params, {}, opts,
-      helpers.objectExtender({getNotes: function() { return this.persons[0].notes; }}));
+      helpers.objectExtender({getNotes: function() { return this && this.persons ? this.persons[0].notes : []; }}));
   };
 
   /**
