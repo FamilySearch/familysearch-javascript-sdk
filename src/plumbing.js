@@ -1,8 +1,7 @@
 define([
-  './globals.js',
-  './helpers.js',
-  './FamilySearch.js'
-], function(globals, helpers, FamilySearch) {
+  'globals',
+  'helpers'
+], function(globals, helpers) {
   /**
    * @ngdoc overview
    * @name plumbing
@@ -11,7 +10,7 @@ define([
    */
 
   var totalProcessingTime = 0;
-  var plumbing = {};
+  var exports = {};
 
   /**
    * @ngdoc function
@@ -22,7 +21,7 @@ define([
    *
    * @return {Number} time in milliseconds
    */
-  FamilySearch.getTotalProcessingTime = function() {
+  exports.getTotalProcessingTime = function() {
     return totalProcessingTime;
   };
 
@@ -36,7 +35,7 @@ define([
    *
    * @param {Number} time in milliseconds
    */
-  FamilySearch.setTotalProcessingTime = function(time) {
+  exports.setTotalProcessingTime = function(time) {
     totalProcessingTime = time;
   };
 
@@ -55,8 +54,8 @@ define([
    * @param {Function=} responseMapper function to map response data to something else
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
-  plumbing.get = FamilySearch.get = function(url, params, headers, opts, responseMapper) {
-    return plumbing.http('GET', helpers.appendQueryParameters(url, params), helpers.extend({'Accept': 'application/x-gedcomx-v1+json'}, headers), {}, opts, responseMapper);
+  exports.get = function(url, params, headers, opts, responseMapper) {
+    return exports.http('GET', helpers.appendQueryParameters(url, params), helpers.extend({'Accept': 'application/x-gedcomx-v1+json'}, headers), {}, opts, responseMapper);
   };
 
   /**
@@ -74,8 +73,8 @@ define([
    * @param {Function=} responseMapper function to map response data to something else
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
-  plumbing.post = FamilySearch.post = function(url, data, headers, opts, responseMapper) {
-    return plumbing.http('POST', url, helpers.extend({'Content-type': 'application/x-www-form-urlencoded'},headers), data, opts, responseMapper);
+  exports.post = function(url, data, headers, opts, responseMapper) {
+    return exports.http('POST', url, helpers.extend({'Content-type': 'application/x-www-form-urlencoded'},headers), data, opts, responseMapper);
   };
 
   /**
@@ -93,8 +92,8 @@ define([
    * @param {Function=} responseMapper function to map response data to something else
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
-  plumbing.put = FamilySearch.put = function(url, data, headers, opts, responseMapper) {
-    return plumbing.http('PUT', url, helpers.extend({'Content-type': 'application/x-www-form-urlencoded'},headers), data, opts, responseMapper);
+  exports.put = function(url, data, headers, opts, responseMapper) {
+    return exports.http('PUT', url, helpers.extend({'Content-type': 'application/x-www-form-urlencoded'},headers), data, opts, responseMapper);
   };
 
   /**
@@ -111,8 +110,8 @@ define([
    * @param {Function=} responseMapper function to map response data to something else
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
-  plumbing.del = FamilySearch.del = function(url, headers, opts, responseMapper) {
-    return plumbing.http('DELETE', url, headers, {}, opts, responseMapper);
+  exports.del = function(url, headers, opts, responseMapper) {
+    return exports.http('DELETE', url, headers, {}, opts, responseMapper);
   };
 
   /**
@@ -132,7 +131,7 @@ define([
    * @param {Number=} retries number of times to retry
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
-  plumbing.http = FamilySearch.http = function(method, url, headers, data, opts, responseMapper, retries) {
+  exports.http = function(method, url, headers, data, opts, responseMapper, retries) {
     // prepend the server
     var absoluteUrl = helpers.getAbsoluteUrl(globals.server[globals.environment], url);
 
@@ -183,11 +182,11 @@ define([
               retryAfter = globals.defaultThrottleRetryAfter;
             }
           }
-          // recursive dependency on FamilySearch
-          FamilySearch.getAccessToken().then(
+          // circular dependency on authentication.getAccessToken has been copied into globals
+          globals.getAccessToken().then(
             function() { // promise will resolve right away if access code exists
               setTimeout(function() {
-                promise = plumbing.http(method, url, headers, data, opts, responseMapper, retries-1);
+                promise = exports.http(method, url, headers, data, opts, responseMapper, retries-1);
                 helpers.extendHttpPromise(returnedPromise, promise);
                 promise.then(
                   function(data) {
@@ -206,5 +205,5 @@ define([
     return returnedPromise;
   };
 
-  return plumbing;
+  return exports;
 });

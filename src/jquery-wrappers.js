@@ -1,10 +1,10 @@
 define([
-  './globals.js',
-  './helpers.js'
+  'globals',
+  'helpers'
 ], function(globals, helpers) {
-  var jQueryWrappers = {};
+  var exports = {};
 
-  jQueryWrappers.httpWrapper = function(ajax) {
+  exports.httpWrapper = function(ajax) {
     return function(method, url, headers, data, opts) {
       // set up the options
       opts = helpers.extend({
@@ -41,7 +41,7 @@ define([
     };
   };
 
-  jQueryWrappers.deferredWrapper = function(deferred) {
+  exports.deferredWrapper = function(deferred) {
     return function() {
       var d = deferred();
       return {
@@ -52,5 +52,5 @@ define([
     };
   };
 
-  return jQueryWrappers;
+  return exports;
 });

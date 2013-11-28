@@ -1,15 +1,16 @@
-/**
- * @ngdoc overview
- * @name init
- * @description
- * Call the init function once to initialize the FamilySearch object before calling any other functions.
- */
 define([
-  './globals.js',
-  './FamilySearch.js',
-  './jquery-wrappers.js',
-  './helpers.js'
-], function(globals, FamilySearch, jQueryWrappers, helpers) {
+  'globals',
+  'jquery-wrappers',
+  'helpers'
+], function(globals, jQueryWrappers, helpers) {
+  /**
+   * @ngdoc overview
+   * @name init
+   * @description
+   * Call the init function once to initialize the FamilySearch object before calling any other functions.
+   */
+
+  var exports = {};
 
   /**
    * @ngdoc function
@@ -33,7 +34,7 @@ define([
    *
    * @param {Object} opts opts
    */
-  FamilySearch.init = function(opts) {
+  exports.init = function(opts) {
     opts = opts || {};
 
     if(!opts['app_key']) {
@@ -77,4 +78,6 @@ define([
 
     globals.logging = opts['logging'];
   };
+
+  return exports;
 });

@@ -1,9 +1,8 @@
 define([
-  './globals.js',
-  './helpers.js',
-  './FamilySearch.js',
-  './plumbing.js'
-], function(globals, helpers, FamilySearch, plumbing) {
+  'globals',
+  'helpers',
+  'plumbing'
+], function(globals, helpers, plumbing) {
   /**
    * @ngdoc overview
    * @name authentication
@@ -13,6 +12,8 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/resources#authentication FamilySearch API docs}
    */
+
+  var exports = {};
 
   /**
    * @ngdoc function
@@ -28,7 +29,7 @@ define([
    *
    * @return {Object} a promise of the (string) auth code
    */
-  FamilySearch.getAuthCode = function() {
+  exports.getAuthCode = function() {
     var popup = openPopup(helpers.getAbsoluteUrl(globals.oauthServer[globals.environment], 'authorization'), {
       'response_type' : 'code',
       'client_id'     : globals.appKey,
@@ -56,7 +57,8 @@ define([
    * @param {String=} authCode auth code from getAuthCode; if not passed in, this function will call getAuthCode
    * @return {Object} a promise of the (string) access token.
    */
-  FamilySearch.getAccessToken = function(authCode) {
+  // plumbing.http may call getAccessToken if there was an error; copy into globals to avoid circular dependency
+  globals.getAccessToken = exports.getAccessToken = function(authCode) {
     var accessTokenDeferred = globals.deferredWrapper();
     if (globals.accessToken) {
       helpers.nextTick(function() {
@@ -70,7 +72,7 @@ define([
         authCodePromise = helpers.refPromise(authCode);
       }
       else {
-        authCodePromise = FamilySearch.getAuthCode();
+        authCodePromise = exports.getAuthCode();
       }
       authCodePromise.then(
         function(authCode) {
@@ -116,7 +118,7 @@ define([
    *
    * @return {boolean} true if the access token exists
    */
-  FamilySearch.hasAccessToken = function() {
+  exports.hasAccessToken = function() {
     return !!globals.accessToken;
   };
 
@@ -130,7 +132,7 @@ define([
    *
    * @return {Object} promise that is resolved once the access token has been invalidated
    */
-  FamilySearch.invalidateAccessToken = function() {
+  exports.invalidateAccessToken = function() {
     helpers.eraseAccessToken();
     return plumbing.del(helpers.getAbsoluteUrl(globals.oauthServer[globals.environment], 'token'));
   };
@@ -190,4 +192,6 @@ define([
     }
     return d.promise;
   }
+
+  return exports;
 });

@@ -1,5 +1,5 @@
 define([
-  './globals.js'
+  'globals'
 ], function(globals) {
   var helpers = {};
 
@@ -138,6 +138,28 @@ define([
         }
       });
     }
+    return dest;
+  };
+
+  helpers.deepExtend = function(dest) {
+    helpers.forEach(Array.prototype.slice.call(arguments, 1), function(source) {
+      if (source) {
+        helpers.forEach(source, function(value, key) {
+          if (helpers.isArray(dest[key])) { // deep-extend each element of the array with the corresponding element from source
+            var arr = dest[key];
+            helpers.forEach(arr, function(elm, ix) {
+              arr[ix] = helpers.deepExtend(elm, value[ix]);
+            });
+          }
+          else if (helpers.isObject(dest[key])) { // deep-extend the object
+            dest[key] = helpers.deepExtend(dest[key], value);
+          }
+          else {
+            dest[key] = value;
+          }
+        });
+      }
+    });
     return dest;
   };
 

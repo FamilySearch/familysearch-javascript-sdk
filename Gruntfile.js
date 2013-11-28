@@ -2,7 +2,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    src: 'src/**/*.js',
+    src: 'src/*.js',
 
     clean: {
       dist: ['dist']
@@ -15,7 +15,7 @@ module.exports = function(grunt) {
         title: 'FamilySearch Javascript SDK',
         bestMatch: false
       },
-      all: ['<%= src %>', 'src/**/*.frag']
+      all: ['<%= src %>', 'src/*.frag']
     },
 
     jshint: {
@@ -68,6 +68,29 @@ module.exports = function(grunt) {
       }
     },
 
+    requirejs: {
+      options: {
+        baseUrl: 'src',
+        include: ['FamilySearch'],
+        wrap: {
+          startFile: 'src/header.frag',
+          endFile: 'src/footer.frag'
+        }
+      },
+      dev: {
+        options: {
+          out: 'dist/familysearch-javascript-sdk.js',
+          optimize: 'none'
+        }
+      },
+      prod: {
+        options: {
+          out: 'dist/familysearch-javascript-sdk.min.js',
+          optimize: 'uglify2'
+        }
+      }
+    },
+
     connect: {
       server: {
         options: {
@@ -102,6 +125,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-requirejs');
 
   grunt.registerTask('server', [
     'connect',

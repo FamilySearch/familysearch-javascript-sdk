@@ -2,13 +2,14 @@
 module.exports = function(config) {
   config.set({
     basePath: '',
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', 'requirejs'],
     files: [
-      'familysearch-javascript-sdk.js',
-      'test/vendor/jquery-1.10.1.min.js',
-      'test/vendor/jasmine-jquery.js',
+      {pattern: 'test/vendor/*.js', included: false},
       {pattern: 'test/mock/*.json', watched: true, served: true, included: false},
-      'test/unit/*.js'
+      {pattern: 'src/*.js', included: false},
+      {pattern: 'test/unit/helpers.js', included: false},
+      {pattern: 'test/unit/*Spec.js', included: false},
+      'test/unit/test-main.js'
     ],
     browsers: ['Firefox']
   });

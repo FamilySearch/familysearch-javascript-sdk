@@ -28,6 +28,8 @@
     "clearInterval": false,
     "console": false,
 
+    "requirejs": false,
+    "define": false,
     "describe": false,
     "it": false,
     "iit": false,

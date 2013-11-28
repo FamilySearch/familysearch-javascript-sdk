@@ -1,9 +1,8 @@
 define([
-  './helpers.js',
-  './FamilySearch.js',
-  './person.js',
-  './plumbing.js'
-], function(helpers, FamilySearch, person, plumbing) {
+  'helpers',
+  'person',
+  'plumbing'
+], function(helpers, person, plumbing) {
   /**
    * @ngdoc overview
    * @name pedigree
@@ -12,6 +11,8 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/resources#pedigree FamilySearch API Docs}
    */
+
+  var exports = {};
 
   /**
    * @ngdoc function
@@ -43,7 +44,7 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the ancestry
    */
-  FamilySearch.getAncestry = function(id, generations, spouseId, components, opts) {
+  exports.getAncestry = function(id, generations, spouseId, components, opts) {
     var args = helpers.getOptionalArgs(Array.prototype.slice.call(arguments, 1), [helpers.isNumber, helpers.isString, helpers.isArray, helpers.isObject]);
     generations = args[0]; spouseId = args[1]; components = args[2]; opts = args[3];
     var personDetails = helpers.isArray(components) && components.indexOf('personDetails') >= 0 ? true : '';
@@ -105,7 +106,7 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the descendancy
    */
-  FamilySearch.getDescendancy = function(id, generations, spouseId, components, opts) {
+  exports.getDescendancy = function(id, generations, spouseId, components, opts) {
     return plumbing.get('/platform/tree/descendancy', helpers.removeEmptyProperties({
       'person': id,
       'generations': generations,
@@ -117,4 +118,6 @@ define([
         helpers.objectExtender({getDescendancyNumber: function() { return this.display.descendancyNumber; }}, person.personExtensionPointGetter)
       ));
   };
+
+  return exports;
 });

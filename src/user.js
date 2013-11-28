@@ -1,9 +1,8 @@
 define([
-  './globals.js',
-  './helpers.js',
-  './FamilySearch.js',
-  './plumbing.js'
-], function(globals, helpers, FamilySearch, plumbing) {
+  'globals',
+  'helpers',
+  'plumbing'
+], function(globals, helpers, plumbing) {
   /**
    * @ngdoc overview
    * @name user
@@ -12,6 +11,8 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/resources#user FamilySearch API Docs}
    */
+
+  var exports = {};
 
   /**
    * @ngdoc function
@@ -34,7 +35,7 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} a promise for the current user
    */
-  FamilySearch.getCurrentUser = function(opts) {
+  exports.getCurrentUser = function(opts) {
     return plumbing.get('/platform/users/current', {}, {}, opts, helpers.objectExtender(currentUserConvenienceFunctions));
   };
 
@@ -61,7 +62,7 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the (string) id of the current user person
    */
-  FamilySearch.getCurrentUserPerson = function(opts) {
+  exports.getCurrentUserPerson = function(opts) {
     var promise = plumbing.get('/platform/tree/current-person', {}, {}, opts);
     var d = globals.deferredWrapper();
     var returnedPromise = helpers.extendHttpPromise(d.promise, promise);
@@ -105,4 +106,6 @@ define([
       d.reject('not found');
     }
   }
+
+  return exports;
 });

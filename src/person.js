@@ -1,8 +1,7 @@
 define([
-  './helpers.js',
-  './FamilySearch.js',
-  './plumbing.js'
-], function(helpers, FamilySearch, plumbing) {
+  'helpers',
+  'plumbing'
+], function(helpers, plumbing) {
   /**
    * @ngdoc overview
    * @name person
@@ -12,7 +11,7 @@ define([
    * {@link https://familysearch.org/developers/docs/api/resources#person FamilySearch API Docs}
    */
 
-  var person = {};
+  var exports = {};
 
   /**
    * @ngdoc function
@@ -99,7 +98,7 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  person.getPerson = FamilySearch.getPerson = function(id, components, opts) {
+  exports.getPerson = function(id, components, opts) {
     if (!helpers.isArray(components) || components.length === 0) {
       components = ['base'];
     }
@@ -123,7 +122,7 @@ define([
     });
   };
 
-  person.personExtensionPointGetter = function(response) {
+  exports.personExtensionPointGetter = function(response) {
     return response.persons;
   };
 
@@ -144,12 +143,12 @@ define([
     getDisplayAttrs: function() { return this.display; }
   };
 
-  person.personExtender = helpers.objectExtender(personConvenienceFunctions, person.personExtensionPointGetter);
+  exports.personExtender = helpers.objectExtender(personConvenienceFunctions, exports.personExtensionPointGetter);
 
   var personResponseMappers = {
-    base: person.personExtender,
+    base: exports.personExtender,
     'change-summary': helpers.objectExtender({getChanges: function() { return this.entries; }}),
-    notes: helpers.objectExtender({getNotes: function() { return this.notes; }}, person.personExtensionPointGetter)
+    notes: helpers.objectExtender({getNotes: function() { return this.notes; }}, exports.personExtensionPointGetter)
   };
 
   /**
@@ -169,10 +168,10 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the people have been read, returning a map of person id to response
    */
-  FamilySearch.getMultiPerson = function(ids, components, opts) {
+  exports.getMultiPerson = function(ids, components, opts) {
     var promises = {};
     helpers.forEach(ids, function(id) {
-      promises[id] = person.getPerson(id, components, opts);
+      promises[id] = exports.getPerson(id, components, opts);
     });
     return helpers.promiseAll(promises);
   };
@@ -192,7 +191,7 @@ define([
    * - `getSpouseIds()` - array of ids
    * - `getChildIds(spouseId)` - array of ids; if spouseId is specified, returns only ids of children with spouse as the other parent
    *
-   * The following functions return person objects decorated with *person convenience functions* {@link person.functions:getPerson as described in getPerson}
+   * The following functions return person objects decorated with *person convenience functions* {@link exports.functions:getPerson as described in getPerson}
    *
    * - `getPrimaryPerson()`
    * - `getPerson(id)` - works only for the primary person unless the components parameter is set to `['persons']`
@@ -213,13 +212,13 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the person with relationships
    */
-  FamilySearch.getPersonWithRelationships = function(id, components, opts) {
+  exports.getPersonWithRelationships = function(id, components, opts) {
     var params = { person: id };
     if (helpers.isArray(components) && components.indexOf('persons') >= 0) {
       params['persons'] = 'true';
     }
     return plumbing.get('/platform/tree/persons-with-relationships', params, {}, opts,
-      helpers.compose(helpers.objectExtender(personWithRelationshipsConvenienceFunctions), person.personExtender));
+      helpers.compose(helpers.objectExtender(personWithRelationshipsConvenienceFunctions), exports.personExtender));
   };
 
   // TODO how identify preferred parents?
@@ -278,5 +277,5 @@ define([
     return (r.father && r.father.resourceId === parentId) || (r.mother && r.mother.resourceId === parentId);
   }
 
-  return person;
+  return exports;
 });
