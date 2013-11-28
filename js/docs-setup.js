@@ -71,14 +71,14 @@ NG_DOCS={
       "id": "pedigree.functions:getAncestry",
       "shortName": "getAncestry",
       "type": "function",
-      "keywords": "all an ancestor ancestors ancestry and api are array as ascendancy available components convenience decorated described docs during each editable example exists familysearch following for full function functions generations get getascendancynumber getbirthdate getbirthplace getdeathdate getdeathplace getperson getpersons http https id if in include init is net number objects of only optionally options opts org parameter pass pedigree person persondetails persons promise retrieve return returns set specified spouse spouseid that the to true want well with you"
+      "keywords": "all an ancestor ancestors ancestry and api are array as ascendancy available components convenience decorated described docs during each editable example exists familysearch following for full function functions generations get getascendancynumber getbirthdate getbirthplace getdeathdate getdeathplace getperson getpersons http https id if in includes init is max net number objects of only optionally options opts org parameter params pass pedigree person persondetails persons promise retrieve return returns set specified spouse that the to true well with"
     },
     {
       "section": "api",
       "id": "pedigree.functions:getDescendancy",
       "shortName": "getDescendancy",
       "type": "function",
-      "keywords": "all and api as components convenience currently decorated descendancy descendants described docs during editable example exists familysearch following for function functions generations get getancestry getdescendancynumber getperson getpersons http https id if in init net not number objects of optionally options opts org pass pedigree person persons promise retrieve return returns specified spouse spouseid that the to true used well with"
+      "keywords": "all and api as convenience decorated descendancy descendants descendency described docs during editable example exists familysearch following for function functions generations get getancestry getdescendancynumber getperson getpersons http https id if in includes init max net number objects of optionally options opts org params pass pedigree person persons promise retrieve return returns specified spouse that the to true well with"
     },
     {
       "section": "api",
@@ -92,21 +92,28 @@ NG_DOCS={
       "id": "person.functions:getMultiPerson",
       "shortName": "getMultiPerson",
       "type": "function",
-      "keywords": "all api at been by components docs during editable example familysearch fulfilled function functions get getperson have http https id ids in init is map multiple net of once options opts org parallel pass people person promise read requesting response returning specified that the them to when"
+      "keywords": "all api at been by currently docs during editable example familysearch fulfilled function functions get getperson have http https id ids in init is map multiple net of once options opts org parallel params pass people person promise read requesting response returning specified that the them to unused when"
     },
     {
       "section": "api",
       "id": "person.functions:getPerson",
       "shortName": "getPerson",
       "type": "function",
-      "keywords": "above add additional adds an and any api array as assumed available base be been below birthdate birthplace by can change-summary changes child-relationships components convenience deathdate deathplace described discussion-references docs don during editable example extend extended familysearch following for from function functions gender get getbirthdate getbirthplace getchanges getdeathdate getdeathplace getdisplayattrs getgender getgivenname getid getlifespan getname getnotes getperson gets getsurname has http https id if implemented in include includes information init is isliving lifespan listed matches memory-references more name net not not-a-match notes object obtained of only options opts or org parent-relationships parent-relationsihps pass passing person promise read response returned returns source-references specified spouse-relationships summarized the to which with yet you zero"
+      "keywords": "an and api been below birthdate birthplace convenience currently deathdate deathplace docs during editable example extended familysearch following for from function functions gender get getbirthdate getbirthplace getdeathdate getdeathplace getdisplayattrs getgender getgivenname getid getlifespan getname getperson getsurname has http https id includes init isliving lifespan listed name net object of options opts org params pass person promise read response returns specified the to unused which with"
+    },
+    {
+      "section": "api",
+      "id": "person.functions:getPersonNotes",
+      "shortName": "getPersonNotes",
+      "type": "function",
+      "keywords": "an and api array convenience currently docs during each editable example familysearch following for from function functions get getnotes has http https id includes init net note notes of options opts org params pass person promise read response specified subject the to unused"
     },
     {
       "section": "api",
       "id": "person.functions:getPersonWithRelationships",
       "shortName": "getPersonWithRelationships",
       "type": "function",
-      "keywords": "addition and api are array as available child children components convenience decorated described docs during each editable example exports familysearch father following for full function functions get getchildids getchildren getfatherids getfathers getmotherids getmothers getparents getparentsids getperson getprimaryid getprimaryperson getspouseids getspouses http https id ids if in include init is mother motherid net objects of only options opts org other parameter parent parents pass person persons primary promise read relationships relative requested return returns set specified spouse spouseid spouses the their to unless want with works you"
+      "keywords": "addition and api are array as available child children components convenience decorated described docs during each editable example exports familysearch father following for full function functions get getchildids getchildren getfatherids getfathers getmotherids getmothers getparents getparentsids getperson getprimaryid getprimaryperson getspouseids getspouses http https id ids if in init is mother motherid net objects of only options opts org other parameter params parent parents pass person persons primary promise read relationships relative requested retrieve return returns set specified spouse spouseid spouses the their to true unless with works"
     },
     {
       "section": "api",

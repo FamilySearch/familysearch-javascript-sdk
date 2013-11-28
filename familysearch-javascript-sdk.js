@@ -600,28 +600,6 @@ define('helpers',[
     return dest;
   };
 
-  helpers.deepExtend = function(dest) {
-    helpers.forEach(Array.prototype.slice.call(arguments, 1), function(source) {
-      if (source) {
-        helpers.forEach(source, function(value, key) {
-          if (helpers.isArray(dest[key])) { // deep-extend each element of the array with the corresponding element from source
-            var arr = dest[key];
-            helpers.forEach(arr, function(elm, ix) {
-              arr[ix] = helpers.deepExtend(elm, value[ix]);
-            });
-          }
-          else if (helpers.isObject(dest[key])) { // deep-extend the object
-            dest[key] = helpers.deepExtend(dest[key], value);
-          }
-          else {
-            dest[key] = value;
-          }
-        });
-      }
-    });
-    return dest;
-  };
-
   // create a new function which is the specified function with the right-most arguments pre-filled
   helpers.partialRight = function(fn) {
     var args = Array.prototype.slice.call(arguments, 1);
@@ -685,18 +663,6 @@ define('helpers',[
   // extend the destPromise with functions from the sourcePromise
   helpers.extendHttpPromise = function(destPromise, sourcePromise) {
     return helpers.wrapFunctions(destPromise, sourcePromise, ['getResponseHeader', 'getAllResponseHeaders', 'getStatusCode']);
-  };
-
-  // skip over optional arguments based upon predicate matching
-  helpers.getOptionalArgs = function(args, argPredicates) {
-    var result = [];
-    for (var i = 0, argPredicatesLen = argPredicates.length, j = 0, argsLen = args.length;
-         i < argPredicatesLen && j < argsLen; i++) {
-      if (argPredicates[i](args[j])) {
-        result[i] = args[j++];
-      }
-    }
-    return result;
   };
 
   // "empty" properties are undefined, null, or the empty string
@@ -1532,7 +1498,7 @@ define('person',[
    * Get the specified person
    * The response includes the following convenience function
    *
-   * - `getPerson()` - gets the person object from the response, which has been extended with the *person convenience functions* listed below
+   * - `getPerson()` - get the person object from the response, which has been extended with the *person convenience functions* listed below
    *
    * ###Person Convenience Functions
    *
@@ -1549,87 +1515,19 @@ define('person',[
    * - `getSurname()`
    * - `getDisplayAttrs()` - returns an object with birthDate, birthPlace, deathDate, deathPlace, gender, lifespan, and name
    *
-   * ###Components
-   *
-   * Additional information can be obtained by passing in components. If you don't pass in any components, `base` is assumed.
-   * Components extend the returned response and add additional convenience functions as described below
-   *
-   * ####`base`
-   *
-   * - adds the *person convenience functions* described above; if you don't include base, only the `getId()` function is available
-   *
-   * ####`change-summary`
-   *
-   * - `getChanges()` - an array of summarized changes
-   *
-   * ####`child-relationships`
-   *
-   * - not yet implemented
-   *
-   * ####`discussion-references`
-   *
-   * - not yet implemented
-   *
-   * ####`matches`
-   *
-   * - not yet implemented
-   *
-   * ####`memory-references`
-   *
-   * - not yet implemented
-   *
-   * ####`not-a-match`
-   *
-   * - not yet implemented
-   *
-   * ####`notes`
-   *
-   * - `getPerson()`.`getNotes()` - an array of notes
-   *
-   * ####`parent-relationships`
-   *
-   * - not yet implemented
-   *
-   * ####`source-references`
-   *
-   * - not yet implemented
-   *
-   * ####`spouse-relationships`
-   *
-   * - not yet implemented
-   *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/cST4L/ editable example}
    *
    * @param {String} id of the person to read
-   * @param {Array=} components zero or more of `base`, `change-summary`, `changes`, `child-relationships`, `discussion-references`,
-   * `matches`, `memory-references`, `not-a-match`, `notes`, `parent-relationsihps`, `source-references`, `spouse-relationships`
+   * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getPerson = function(id, components, opts) {
-    if (!helpers.isArray(components) || components.length === 0) {
-      components = ['base'];
-    }
-    var promises = {};
-    helpers.forEach(components, function(component) {
-      var suffix = component === 'base' ? '' : '/'+component;
-      var headers = component === 'change-summary' ? {'Accept': 'application/x-gedcomx-atom+json'} : {};
-      promises[component] = plumbing.get('/platform/tree/persons/'+encodeURI(id)+suffix, {}, headers, opts,
-        helpers.compose(
-          helpers.objectExtender({getPerson: function() { return this.persons[0]; }}),
-          personResponseMappers[component]
-        )
-      );
-    });
-    var result = {};
-    return helpers.promiseAll(promises).then(function(responses) {
-      helpers.forEach(components, function(component) {
-        result = helpers.deepExtend(result, responses[component]);
-      });
-      return result;
-    });
+  exports.getPerson = function(id, params, opts) {
+    params = params || {};
+    return plumbing.get('/platform/tree/persons/'+encodeURI(id), params, {}, opts,
+      helpers.compose(helpers.objectExtender({getPerson: function() { return this.persons[0]; }}), exports.personExtender));
   };
 
   exports.personExtensionPointGetter = function(response) {
@@ -1655,10 +1553,30 @@ define('person',[
 
   exports.personExtender = helpers.objectExtender(personConvenienceFunctions, exports.personExtensionPointGetter);
 
-  var personResponseMappers = {
-    base: exports.personExtender,
-    'change-summary': helpers.objectExtender({getChanges: function() { return this.entries; }}),
-    notes: helpers.objectExtender({getNotes: function() { return this.notes; }}, exports.personExtensionPointGetter)
+  /**
+   * @ngdoc function
+   * @name person.functions:getPersonNotes
+   * @function
+   *
+   * @description
+   * Get the notes for a person
+   * The response includes the following convenience function
+   *
+   * - `getNotes()` - get the array of notes from the response; each note has an `id` and a `subject`
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Notes_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/3enGw/ editable example}
+   *
+   * @param {String} id of the person to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getPersonNotes = function(id, params, opts) {
+    params = params || {};
+    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/notes', params, {}, opts,
+      helpers.objectExtender({getNotes: function() { return this.persons[0].notes; }}));
   };
 
   /**
@@ -1674,14 +1592,14 @@ define('person',[
    * {@link http://jsfiddle.net/DallanQ/TF6Lg/ editable example}
    *
    * @param {Array} ids of the people to read
-   * @param {Array=} components to pass to getPerson
+   * @param {Object=} params to pass to getPerson currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the people have been read, returning a map of person id to response
    */
-  exports.getMultiPerson = function(ids, components, opts) {
+  exports.getMultiPerson = function(ids, params, opts) {
     var promises = {};
     helpers.forEach(ids, function(id) {
-      promises[id] = exports.getPerson(id, components, opts);
+      promises[id] = exports.getPerson(id, params, opts);
     });
     return helpers.promiseAll(promises);
   };
@@ -1718,16 +1636,14 @@ define('person',[
    * {@link http://jsfiddle.net/DallanQ/5Npsh/ editable example}
    *
    * @param {String} id person to read
-   * @param {Array=} components set to ['persons'] if you want to include full person objects for each relative
+   * @param {Object=} params set `persons` to true to retrieve full person objects for each relative
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the person with relationships
    */
-  exports.getPersonWithRelationships = function(id, components, opts) {
-    var params = { person: id };
-    if (helpers.isArray(components) && components.indexOf('persons') >= 0) {
-      params['persons'] = 'true';
-    }
-    return plumbing.get('/platform/tree/persons-with-relationships', params, {}, opts,
+  exports.getPersonWithRelationships = function(id, params, opts) {
+    params = params || {};
+    return plumbing.get('/platform/tree/persons-with-relationships', helpers.removeEmptyProperties(helpers.extend({'person': id}, params)),
+      {}, opts,
       helpers.compose(helpers.objectExtender(personWithRelationshipsConvenienceFunctions), exports.personExtender));
   };
 
@@ -1829,22 +1745,13 @@ define('pedigree',[
    * {@link http://jsfiddle.net/DallanQ/gt726/ editable example}
    *
    * @param {String} id of the person
-   * @param {Number=} generations number of generations to retrieve (max 8)
-   * @param {String=} spouseId spouse id
-   * @param {Array=} components set to `['personDetails']` if you want to include full person objects for each ancestor
+   * @param {Object=} params includes `generations` to retrieve max 8, `spouse` id to get ancestry of person and spouse, `personDetails` set to true to retrieve full person objects for each ancestor
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the ancestry
    */
-  exports.getAncestry = function(id, generations, spouseId, components, opts) {
-    var args = helpers.getOptionalArgs(Array.prototype.slice.call(arguments, 1), [helpers.isNumber, helpers.isString, helpers.isArray, helpers.isObject]);
-    generations = args[0]; spouseId = args[1]; components = args[2]; opts = args[3];
-    var personDetails = helpers.isArray(components) && components.indexOf('personDetails') >= 0 ? true : '';
-
-    return plumbing.get('/platform/tree/ancestry', helpers.removeEmptyProperties({
-      'person': id,
-      'generations': generations,
-      'spouse': spouseId,
-      'personDetails': personDetails}),
+  exports.getAncestry = function(id, params, opts) {
+    params = params || {};
+    return plumbing.get('/platform/tree/ancestry', helpers.removeEmptyProperties(helpers.extend({'person': id}, params)),
       {}, opts,
       helpers.compose(
         helpers.objectExtender(pedigreeConvenienceFunctionGenerator('ascendancyNumber')),
@@ -1891,17 +1798,13 @@ define('pedigree',[
    * {@link http://jsfiddle.net/DallanQ/eBNGk/ editable example}
    *
    * @param {String} id of the person
-   * @param {Number=} generations number of generations to retrieve (max 2)
-   * @param {String=} spouseId spouse id
-   * @param {Array=} components currently not used
+   * @param {Object=} params includes `generations` to retrieve max 2, `spouse` id to get descendency of person and spouse
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the descendancy
    */
-  exports.getDescendancy = function(id, generations, spouseId, components, opts) {
-    return plumbing.get('/platform/tree/descendancy', helpers.removeEmptyProperties({
-      'person': id,
-      'generations': generations,
-      'spouse': spouseId}),
+  exports.getDescendancy = function(id, params, opts) {
+    params = params || {};
+    return plumbing.get('/platform/tree/descendancy', helpers.removeEmptyProperties(helpers.extend({'person': id}, params)),
       {}, opts,
       helpers.compose(
         helpers.objectExtender(pedigreeConvenienceFunctionGenerator('descendancyNumber')),
@@ -1932,6 +1835,7 @@ define('FamilySearch',[
     getCurrentUserPerson: user.getCurrentUserPerson,
 
     getPerson: person.getPerson,
+    getPersonNotes: person.getPersonNotes,
     getMultiPerson: person.getMultiPerson,
     getPersonWithRelationships: person.getPersonWithRelationships,
 

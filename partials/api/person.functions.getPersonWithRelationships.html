@@ -32,12 +32,12 @@
 
 <p><a href="http://jsfiddle.net/DallanQ/5Npsh/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getPersonWithRelationships(id[, components][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getPersonWithRelationships(id[, params][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
 <ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
 <p>person to read</p></li>
-<li><code ng:non-bindable="">components<i>(optional)</i> – {Array=} – </code>
-<p>set to ['persons'] if you want to include full person objects for each relative</p></li>
+<li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
+<p>set <code>persons</code> to true to retrieve full person objects for each relative</p></li>
 <li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
 <p>options to pass to the http function specified during init</p></li>
 </ul>

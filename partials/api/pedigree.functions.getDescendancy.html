@@ -22,16 +22,12 @@ as well as a <code>getDescendancyNumber()</code> function that returns the perso
 
 <p><a href="http://jsfiddle.net/DallanQ/eBNGk/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getDescendancy(id[, generations][, spouseId][, components][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getDescendancy(id[, params][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
 <ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
 <p>of the person</p></li>
-<li><code ng:non-bindable="">generations<i>(optional)</i> – {Number=} – </code>
-<p>number of generations to retrieve (max 2)</p></li>
-<li><code ng:non-bindable="">spouseId<i>(optional)</i> – {String=} – </code>
-<p>spouse id</p></li>
-<li><code ng:non-bindable="">components<i>(optional)</i> – {Array=} – </code>
-<p>currently not used</p></li>
+<li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
+<p>includes <code>generations</code> to retrieve max 2, <code>spouse</code> id to get descendency of person and spouse</p></li>
 <li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
 <p>options to pass to the http function specified during init</p></li>
 </ul>
