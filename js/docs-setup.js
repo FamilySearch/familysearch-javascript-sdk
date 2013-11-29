@@ -71,7 +71,7 @@ NG_DOCS={
       "id": "pedigree.functions:getAncestry",
       "shortName": "getAncestry",
       "type": "function",
-      "keywords": "all an ancestor ancestors ancestry and api are array as ascendancy available components convenience decorated described docs during each editable example exists familysearch following for full function functions generations get getascendancynumber getbirthdate getbirthplace getdeathdate getdeathplace getperson getpersons http https id if in includes init is max net number objects of only optionally options opts org parameter params pass pedigree person persondetails persons promise retrieve return returns set specified spouse that the to true well with"
+      "keywords": "all an ancestor ancestors ancestry and api are array as ascendancy available convenience decorated described docs during each editable example exists familysearch following for full function functions generations get getascendancynumber getbirthdate getbirthplace getdeathdate getdeathplace getperson getpersons http https id if in includes init max net number objects of only optionally options opts org params pass pedigree person persondetails persons promise retrieve return returns set specified spouse that the to true well with"
     },
     {
       "section": "api",
@@ -113,7 +113,7 @@ NG_DOCS={
       "id": "person.functions:getPersonWithRelationships",
       "shortName": "getPersonWithRelationships",
       "type": "function",
-      "keywords": "addition and api are array as available child children components convenience decorated described docs during each editable example exports familysearch father following for full function functions get getchildids getchildren getfatherids getfathers getmotherids getmothers getparents getparentsids getperson getprimaryid getprimaryperson getspouseids getspouses http https id ids if in init is mother motherid net objects of only options opts org other parameter params parent parents pass person persons primary promise read relationships relative requested retrieve return returns set specified spouse spouseid spouses the their to true unless with works"
+      "keywords": "addition and api are array as available child children convenience decorated described docs during each editable example exports familysearch father following for full function functions get getchildids getchildren getfatherids getfathers getmotherids getmothers getparents getparentsids getperson getprimaryid getprimaryperson getspouseids getspouses http https id ids if in init is mother motherid net objects of only options opts org other params parent parents pass person persons primary promise read relationships relative requested retrieve return returns set specified spouse spouseid spouses the their to true unless with works"
     },
     {
       "section": "api",
