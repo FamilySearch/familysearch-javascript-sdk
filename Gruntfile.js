@@ -70,7 +70,6 @@ module.exports = function(grunt) {
 
     requirejs: {
       options: {
-        almond: true,
         baseUrl: 'src',
         include: ['FamilySearch'],
         wrap: {
