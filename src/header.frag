@@ -1,7 +1,8 @@
 /**
  * @preserve FamilySearch JavaScript SDK
- * (c) 2013, Dallan Quass & Dovy Paukstys
- * License: MIT
+ * (c) 2013 Dallan Quass and other contributors
+ * Released under the MIT license
+ * http://github.com/rootsdev/familysearch-javascript-sdk
  */
 ;(function (global, factory) {
   if (typeof module === 'object' && typeof module.exports === 'object') {
