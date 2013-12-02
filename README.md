@@ -43,7 +43,7 @@ Check out the [jsFiddle](http://jsfiddle.net/DallanQ/MpUg7/) to see it in action
 Download
 ========
 
-The SDK is in the early stages and the calls may change somewhat. Once the SDK stablizes, which is should by the
+The SDK is in the early stages and the calls may change somewhat. Once the SDK stablizes, which it should by the
 end of the year, I will add semantic version numbering to the downloads. Once we get 100 people watching the repo,
 [cdnJS](http://cdnjs.com/) will host it.
 
