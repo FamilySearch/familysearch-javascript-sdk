@@ -68,7 +68,6 @@ define([
     };
   }
 
-  //noinspection JSUnusedLocalSymbols
   /**
    * @ngdoc function
    * @name pedigree.functions:getDescendancy
