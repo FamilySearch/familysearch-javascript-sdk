@@ -1,13 +1,14 @@
 define([
   'init',
   'authentication',
+  'discussions',
   'notes',
   'pedigree',
   'person',
   'sources',
   'user',
   'plumbing'
-], function(init, authentication, notes, pedigree, person, sources, user, plumbing) {
+], function(init, authentication, discussions, notes, pedigree, person, sources, user, plumbing) {
   return {
     init: init.init,
 
@@ -16,6 +17,10 @@ define([
     getAccessToken: authentication.getAccessToken,
     hasAccessToken: authentication.hasAccessToken,
     invalidateAccessToken: authentication.invalidateAccessToken,
+
+    // discussions
+    getPersonDiscussionReferences: discussions.getPersonDiscussionReferences,
+    getDiscussion: discussions.getDiscussion,
 
     // notes
     getPersonNotes: notes.getPersonNotes,
