@@ -36,7 +36,7 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Change_History_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/DallanQ// editable example}
+   * {@link http://jsfiddle.net/DallanQ/6SqTH/ editable example}
    *
    * @param {String} id of the person to read
    * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
