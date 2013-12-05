@@ -180,6 +180,13 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "user.functions:getAgent",
+      "shortName": "getAgent",
+      "type": "function",
+      "keywords": "about agent api contributor convenience currently docs during editable example familysearch following function functions get getaccountname getemail getid getname http https id includes information init net of options opts org params pass response specified the to tree unused user"
+    },
+    {
+      "section": "api",
       "id": "user.functions:getCurrentUser",
       "shortName": "getCurrentUser",
       "type": "function",
