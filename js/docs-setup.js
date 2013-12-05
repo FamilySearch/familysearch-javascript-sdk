@@ -148,7 +148,7 @@ NG_DOCS={
       "id": "memories.functions:getPersonPortraitURL",
       "shortName": "getPersonPortraitURL",
       "type": "function",
-      "keywords": "api docs familysearch function functions get https id memories of org person portrait redirect that the to url will"
+      "keywords": "api docs editable example familysearch function functions get http https id memories net of org person portrait redirect that the to url will"
     },
     {
       "section": "api",

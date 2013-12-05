@@ -1438,6 +1438,8 @@ define('memories',[
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Memories_Portrait_resource FamilySearch API Docs}
    *
+   * {@link http://jsfiddle.net/DallanQ/f8DU3/ editable example}
+   *
    * @param {String} id of the person
    * @return {String} URL that will redirect to the portrait of a person
    */
