@@ -92,7 +92,7 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/discussions/Comments_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/DallanQ// editable example}
+   * {@link http://jsfiddle.net/DallanQ/b56hz/ editable example}
    *
    * @param {String} id of the discussion to read
    * @param {Object=} params currently unused
