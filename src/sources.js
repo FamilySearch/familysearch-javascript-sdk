@@ -63,7 +63,51 @@ define([
     getChangeMessage:     function() { return maybe(this.attribution).changeMessage; }
   };
 
-  // TODO getSourceDescription
+  /**
+   * @ngdoc function
+   * @name sources.functions:getSourceDescription
+   * @function
+   *
+   * @description
+   * Get information about a source
+   * The response includes the following convenience functions
+   *
+   * - `getId()` - id of the source description
+   * - `getTitles()` - array of title strings
+   * - `getTitle()` - the first title string
+   * - `getCitations()` - array of citation strings
+   * - `getNotes()` - array of note strings
+   * - `getAbout()` - URI to the resource being described
+   *
+   * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/eECJx/ editable example}
+   *
+   * @param {String} id of the source description to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getSourceDescription = function(id, params, opts) {
+    return plumbing.get('/platform/sources/descriptions/'+encodeURI(id), params, {}, opts,
+      helpers.objectExtender(sourceDescriptionConvenienceFunctions));
+  };
+
+  var sourceDescriptionConvenienceFunctions = {
+    getId: function() { return maybe(maybe(this.sourceDescriptions)[0]).id; },
+    getTitle: function() { return maybe(maybe(maybe(maybe(this.sourceDescriptions)[0]).titles)[0]).value; },
+    getTitles: function() { return helpers.map(maybe(maybe(this.sourceDescriptions)[0]).titles, function(title) {
+        return title.value;
+      }); },
+    getCitations: function() { return helpers.map(maybe(maybe(this.sourceDescriptions)[0]).citations, function(citation) {
+        return citation.value;
+      }); },
+    getNotes: function() { return helpers.map(maybe(maybe(this.sourceDescriptions)[0]).notes, function(note) {
+        return note.text;
+      }); },
+    getAbout: function() { return maybe(maybe(this.sourceDescriptions)[0]).about; }
+  };
+
   // TODO getCoupleRelationshipSourceReferences
   // TODO getChildAndParentsRelationshipSourceReferences
   // TODO getSourcesReferencesQuery

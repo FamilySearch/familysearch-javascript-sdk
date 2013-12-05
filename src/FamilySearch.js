@@ -29,6 +29,7 @@ define([
 
     // source
     getPersonSourceReferences: sources.getPersonSourceReferences,
+    getSourceDescription: sources.getSourceDescription,
 
     // user
     getCurrentUser: user.getCurrentUser,
