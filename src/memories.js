@@ -68,7 +68,7 @@ define([
    *
    * - `getId()` - id of the memory
    * - `getMediaType()` - media type
-   * - `getObjectURL()` - URL of the media object
+   * - `getArtifactURL()` - URL of the media object
    * - `getIconURL()` - URL of an icon for the media object
    * - `getThumbnailURL()` - URL of a thumbnail for the media object
    * - `getTitles()` - an array of title strings
@@ -93,7 +93,7 @@ define([
   var memoryConvenienceFunctions = {
     getId:           function() { return maybe(maybe(this.sourceDescriptions)[0]).id; },
     getMediaType:    function() { return maybe(maybe(this.sourceDescriptions)[0]).mediaType; },
-    getObjectURL:    function() { return maybe(maybe(this.sourceDescriptions)[0]).about; },
+    getArtifactURL:    function() { return maybe(maybe(this.sourceDescriptions)[0]).about; },
     getIconURL:      function() { return maybe(maybe(maybe(maybe(this.sourceDescriptions)[0]).links)['image-icon']).href; },
     getThumbnailURL: function() { return maybe(maybe(maybe(maybe(this.sourceDescriptions)[0]).links)['image-thumbnail']).href; },
     getTitle:        function() { return maybe(maybe(maybe(maybe(this.sourceDescriptions)[0]).titles)[0]).value; },
@@ -129,6 +129,31 @@ define([
   exports.getMemoryComments = function(id, params, opts) {
     return plumbing.get('/platform/memories/memories/'+encodeURI(id)+'/comments', params, {}, opts,
       helpers.objectExtender({getComments: function() { return maybe(maybe(this.discussions)[0]).comments || []; }}));
+  };
+
+  /**
+   * @ngdoc function
+   * @name memories.functions:getMemoryPersonas
+   * @function
+   *
+   * @description
+   * Get personas for a memory
+   * The response includes the following convenience function
+   *
+   * - `getPersonas()` - get the array of personas from the response; each persona has `id`, `extracted`, `display.name`, and several other fields
+   *
+   * {@link https://familysearch.org/developers/docs/api/memories/Memory_Personas_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/zD5V7/ editable example}
+   *
+   * @param {String} id of the memory to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getMemoryPersonas = function(id, params, opts) {
+    return plumbing.get('/platform/memories/memories/'+encodeURI(id)+'/personas', params, {}, opts,
+      helpers.objectExtender({getPersonas: function() { return this.persons || []; }}));
   };
 
   return exports;

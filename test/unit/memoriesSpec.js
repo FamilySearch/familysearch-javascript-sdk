@@ -13,7 +13,7 @@ define(['FamilySearch'], function(FamilySearch) {
       FamilySearch.getMemory('ARXX-MMM').then(function(response) {
         expect(response.getId()).toBe('ARXX-MMM');
         expect(response.getMediaType()).toBe('image/jpeg');
-        expect(response.getObjectURL()).toBe('https://familysearch.org/platform/memories/artifacts/ARXX-MMM');
+        expect(response.getArtifactURL()).toBe('https://familysearch.org/platform/memories/artifacts/ARXX-MMM');
         expect(response.getIconURL()).toBe('https://familysearch.org/platform/memories/artifacts/ARXX-MMM?icon');
         expect(response.getThumbnailURL()).toBe('https://familysearch.org/platform/memories/artifacts/ARXX-MMM?thumbnail');
         expect(response.getTitle()).toBe('Birth Certificate of Ethel Hollivet');
@@ -28,6 +28,15 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getComments().length).toBe(1);
         expect(response.getComments()[0].id).toBe('CMMM-MMM');
         expect(response.getComments()[0].text).toBe('Just a comment.');
+      });
+    });
+
+    it('personas are returned from getMemoryPersonas', function() {
+      FamilySearch.getMemoryPersonas('AR-1234').then(function(response) {
+        expect(response.getPersonas().length).toBe(1);
+        expect(response.getPersonas()[0].id).toBe('123');
+        expect(response.getPersonas()[0].extracted).toBeTruthy();
+        expect(response.getPersonas()[0].display.name).toBe('Anastasia Aleksandrova');
       });
     });
   });

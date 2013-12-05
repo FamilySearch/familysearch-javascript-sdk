@@ -32,6 +32,7 @@ define([
     getPersonMemoryReferences: memories.getPersonMemoryReferences,
     getMemory: memories.getMemory,
     getMemoryComments: memories.getMemoryComments,
+    getMemoryPersonas: memories.getMemoryPersonas,
 
     // notes
     getPersonNotes: notes.getPersonNotes,
