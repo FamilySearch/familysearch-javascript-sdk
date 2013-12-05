@@ -2,7 +2,7 @@ define(['FamilySearch'], function(FamilySearch) {
   describe('Discussion', function() {
     it('references are returned from getPersonDiscussionReferences', function() {
       FamilySearch.getPersonDiscussionReferences('12345').then(function(response) {
-        expect(response.getIds()).toEqual(['67890','67891']);
+        expect(response.getDiscussionIds()).toEqual(['67890','67891']);
       });
     });
 

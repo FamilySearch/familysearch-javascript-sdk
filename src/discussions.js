@@ -24,7 +24,7 @@ define([
    * Get references to discussions for a person
    * The response includes the following convenience function
    *
-   * - `getIds()` - get an array of discussion ids from the response; pass the id into `getDiscussion` for more information
+   * - `getDiscussionIds()` - get an array of discussion ids from the response; pass the id into `getDiscussion` for more information
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Discussion_References_resource FamilySearch API Docs}
    *
@@ -37,7 +37,7 @@ define([
    */
   exports.getPersonDiscussionReferences = function(id, params, opts) {
     return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/discussion-references', params, {}, opts,
-      helpers.objectExtender({getIds: function() {
+      helpers.objectExtender({getDiscussionIds: function() {
         return helpers.map(maybe(maybe(this.persons)[0])['discussion-references'], function(uri) {
           return uri.replace(/^.*\//, '');
         });
