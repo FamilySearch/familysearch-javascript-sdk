@@ -1,11 +1,12 @@
 define([
   'init',
   'authentication',
-  'user',
-  'person',
   'pedigree',
+  'person',
+  'sources',
+  'user',
   'plumbing'
-], function(init, authentication, user, person, pedigree, plumbing) {
+], function(init, authentication, pedigree, person, sources, user, plumbing) {
   return {
     init: init.init,
 
@@ -15,10 +16,9 @@ define([
     hasAccessToken: authentication.hasAccessToken,
     invalidateAccessToken: authentication.invalidateAccessToken,
 
-    // user
-    getCurrentUser: user.getCurrentUser,
-    getCurrentUserPerson: user.getCurrentUserPerson,
-    getAgent: user.getAgent,
+    // pedigree
+    getAncestry: pedigree.getAncestry,
+    getDescendancy: pedigree.getDescendancy,
 
     // person
     getPerson: person.getPerson,
@@ -27,9 +27,13 @@ define([
     getPersonWithRelationships: person.getPersonWithRelationships,
     getPersonChangeSummary: person.getPersonChangeSummary,
 
-    // pedigree
-    getAncestry: pedigree.getAncestry,
-    getDescendancy: pedigree.getDescendancy,
+    // source
+    getPersonSourceReferences: sources.getPersonSourceReferences,
+
+    // user
+    getCurrentUser: user.getCurrentUser,
+    getCurrentUserPerson: user.getCurrentUserPerson,
+    getAgent: user.getAgent,
 
     // plumbing
     get: plumbing.get,

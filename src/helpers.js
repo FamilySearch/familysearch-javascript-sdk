@@ -148,6 +148,11 @@ define([
     };
   };
 
+  // return an empty object if passed in a null or undefined, similar to the maybe monad
+  helpers.maybe = function(value) {
+    return value != null ? value : {}; // != null also covers undefined
+  };
+
   // return a function that will extend an object with the specified extensions
   // optionally applying them at points returned by extensionPointGetter
   helpers.objectExtender = function(extensions, extensionPointGetter) {

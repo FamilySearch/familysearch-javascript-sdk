@@ -246,8 +246,11 @@ define([
    */
   exports.getPersonChangeSummary = function(id, params, opts) {
     return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/change-summary', params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-      helpers.objectExtender({getChanges: function() { return this && this.entries ? this.entries : []; }}));
+      helpers.objectExtender({getChanges: function() { return this.entries || []; }}));
   };
+
+  // TODO getPersonMerge
+  // TODO getPersonNotAMatch
 
   return exports;
 });
