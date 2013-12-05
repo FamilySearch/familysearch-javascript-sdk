@@ -98,7 +98,7 @@ define([
    */
   exports.getPersonNotes = function(id, params, opts) {
     return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/notes', params, {}, opts,
-      helpers.objectExtender({getNotes: function() { return this && this.persons ? this.persons[0].notes : []; }}));
+      helpers.objectExtender({getNotes: function() { return this && this.persons && this.persons[0].notes ? this.persons[0].notes : []; }}));
   };
 
   /**
@@ -223,6 +223,31 @@ define([
   function childParentRelationshipHasParent(r, parentId) {
     return (r.father && r.father.resourceId === parentId) || (r.mother && r.mother.resourceId === parentId);
   }
+
+  /**
+   * @ngdoc function
+   * @name person.functions:getPersonChangeSummary
+   * @function
+   *
+   * @description
+   * Get the change summary for a person. For detailed change information see functions in the changeHistory module
+   * The response includes the following convenience function
+   *
+   * - `getChanges()` - get the array of changes from the response; each change has an `id`, `published` timestamp, `title`, and `updated` timestamp
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Change_Summary_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/ga37h/ editable example}
+   *
+   * @param {String} id of the person to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getPersonChangeSummary = function(id, params, opts) {
+    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/change-summary', params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+      helpers.objectExtender({getChanges: function() { return this && this.entries ? this.entries : []; }}));
+  };
 
   return exports;
 });

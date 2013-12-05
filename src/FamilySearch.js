@@ -25,6 +25,7 @@ define([
     getPersonNotes: person.getPersonNotes,
     getMultiPerson: person.getMultiPerson,
     getPersonWithRelationships: person.getPersonWithRelationships,
+    getPersonChangeSummary: person.getPersonChangeSummary,
 
     // pedigree
     getAncestry: pedigree.getAncestry,

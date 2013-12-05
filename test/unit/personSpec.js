@@ -65,5 +65,14 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getChildren('KW7S-JB7')[0].getName()).toEqual('Christian Ludvic Jensen');
       });
     });
+
+    it('change summary is returned from getPersonChangeSummary', function() {
+      FamilySearch.getPersonChangeSummary('PID').then(function(response) {
+        expect(response.getChanges()[0].id).toBe('12345');
+        expect(response.getChanges()[0].published).toBe(1386006311124);
+        expect(response.getChanges()[0].title).toBe('Change Summary 1');
+        expect(response.getChanges()[0].updated).toBe(1386006311124);
+      });
+    });
   });
 });
