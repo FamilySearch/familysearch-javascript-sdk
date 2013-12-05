@@ -1,0 +1,38 @@
+<h1><code ng:non-bindable="">getMemory</code>
+<span class="hint">(functions in module <code ng:non-bindable="">memories</code>
+)</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>Get information about a source
+The response includes the following convenience functions</p>
+
+<ul>
+<li><code>getId()</code> - id of the memory</li>
+<li><code>getMediaType()</code> - media type</li>
+<li><code>getArtifactURL()</code> - URL of the media object</li>
+<li><code>getIconURL()</code> - URL of an icon for the media object</li>
+<li><code>getThumbnailURL()</code> - URL of a thumbnail for the media object</li>
+<li><code>getTitles()</code> - an array of title strings</li>
+<li><code>getTitle()</code> - first title in the array</li>
+<li><code>getDescriptions()</code> - an array of description strings</li>
+<li><code>getDescription()</code> - first description in the array</li>
+</ul>
+
+<p><a href="https://familysearch.org/developers/docs/api/memories/Memory_resource">FamilySearch API Docs</a></p>
+
+<p><a href="http://jsfiddle.net/DallanQ/9J4zn/">editable example</a></p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getMemory(id[, params][, opts]);</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<p>of the memory to read</p></li>
+<li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
+<p>currently unused</p></li>
+<li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
+<p>options to pass to the http function specified during init</p></li>
+</ul>
+<h3 id="Returns">Returns</h3>
+<div class="returns"><code ng:non-bindable="">{Object}</code>
+– <p>promise for the response</p></div>
+</div>
+</div>

@@ -47,6 +47,20 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "changeHistory",
+      "shortName": "changeHistory",
+      "type": "overview",
+      "keywords": "api change change-history changehistory docs familysearch functions histories https org overview related to"
+    },
+    {
+      "section": "api",
+      "id": "changeHistory.functions:getPersonChangeHistory",
+      "shortName": "getPersonChangeHistory",
+      "type": "function",
+      "keywords": "api array change changehistory changes contributor convenience count docs during each editable entries example familysearch following for from function functions get getchangereason getchanges getcontributornames getid gettitle getupdatedtimestamp has history http https id includes init is name net number of options opts org params pass person promise read reason response return specified string strings the this timestamp title to"
+    },
+    {
+      "section": "api",
       "id": "discussions",
       "shortName": "discussions",
       "type": "overview",
@@ -71,7 +85,7 @@ NG_DOCS={
       "id": "discussions.functions:getPersonDiscussionReferences",
       "shortName": "getPersonDiscussionReferences",
       "type": "function",
-      "keywords": "an api array convenience currently discussion discussions docs during editable example familysearch following for from function functions get getdiscussion getids http https id ids includes information init into more net of options opts org params pass person promise read references response specified the to unused"
+      "keywords": "an api array convenience currently discussion discussions docs during editable example familysearch following for from function functions get getdiscussion getdiscussionids http https id ids includes information init into more net of options opts org params pass person promise read references response specified the to unused"
     },
     {
       "section": "api",
@@ -86,6 +100,62 @@ NG_DOCS={
       "shortName": "init",
       "type": "function",
       "keywords": "$http $q access access_token ajax already an and angular api app_key as auth_callback auto_signin be browser but call calls cookie creating currently deferred deferred_function developer does enable environment eventually exist false familysearch for from function functions future have host http http_function if in init initialize issuing jquery js key logging may must need node not oauth2 object opts or pass popups port production prompted re-read received redirect registered requests require returns running same sandbox save_access_token saved script server session set sign staging the their this to token true unauthorized uri used user want when with you your"
+    },
+    {
+      "section": "api",
+      "id": "memories",
+      "shortName": "memories",
+      "type": "overview",
+      "keywords": "api docs familysearch functions https memories org overview related to"
+    },
+    {
+      "section": "api",
+      "id": "memories.functions:getMemory",
+      "shortName": "getMemory",
+      "type": "function",
+      "keywords": "about an api array convenience currently description docs during editable example familysearch first following for function functions get getartifacturl getdescription getdescriptions geticonurl getid getmediatype getthumbnailurl gettitle gettitles http https icon id in includes information init media memories memory net object of options opts org params pass promise read response source specified strings the thumbnail title to type unused url"
+    },
+    {
+      "section": "api",
+      "id": "memories.functions:getMemoryComments",
+      "shortName": "getMemoryComments",
+      "type": "function",
+      "keywords": "an and api array comment comments convenience currently docs during each editable example familysearch following for from function functions get getcomments has http https id includes init memories memory net of options opts org params pass promise read response specified text the to unused"
+    },
+    {
+      "section": "api",
+      "id": "memories.functions:getMemoryPersonas",
+      "shortName": "getMemoryPersonas",
+      "type": "function",
+      "keywords": "and api array convenience currently display docs during each editable example extracted familysearch fields following for from function functions get getpersonas has http https id includes init memories memory name net of options opts org other params pass persona personas promise read response several specified the to unused"
+    },
+    {
+      "section": "api",
+      "id": "memories.functions:getPersonMemories",
+      "shortName": "getPersonMemories",
+      "type": "function",
+      "keywords": "an and api are array artifacts both convenience count defaults description docs during each editable example familysearch filename find first following for from function functions get getartifactfilenames getartifacturl getdescription getdescriptions getid getmemories getmemory gettitle gettitles has http https id in includes init list maximum media memories memory more net number object of options opts org out paged params pass person photo possible promise read response return specified start story strings the title to type url values"
+    },
+    {
+      "section": "api",
+      "id": "memories.functions:getPersonMemoryReferences",
+      "shortName": "getPersonMemoryReferences",
+      "type": "function",
+      "keywords": "api array attached convenience currently docs during each editable example familysearch find following for from function functions get getmemories getmemory getmemoryid getpersonaid has http https id in includes init is memories memory more net of options opts org out params pass person persona promise read reference references response specified that the this to unused"
+    },
+    {
+      "section": "api",
+      "id": "memories.functions:getPersonPortraitURL",
+      "shortName": "getPersonPortraitURL",
+      "type": "function",
+      "keywords": "api docs familysearch function functions get https id memories of org person portrait redirect that the to url will"
+    },
+    {
+      "section": "api",
+      "id": "memories.functions:getUserMemories",
+      "shortName": "getUserMemories",
+      "type": "function",
+      "keywords": "an api array convenience count defaults description docs during each editable example familysearch filename find first following for from function functions get getartifactfilenames getartifacturl getdescription getdescriptions getid getmemories getmemory gettitle gettitles has http https id in includes init list maximum media memories memory more net number object of options opts org out paged params pass promise response return specified start strings the title to url user"
     },
     {
       "section": "api",
@@ -232,7 +302,7 @@ NG_DOCS={
       "id": "sources.functions:getPersonSourceReferences",
       "shortName": "getPersonSourceReferences",
       "type": "function",
-      "keywords": "an api array assertion contributor convenience currently docs during each editable example familysearch find following for from function functions get getagent getchangemessage getcontributorid getmodifiedtimestamp getreferences getsourcedescription getsourceid gettags has http https id identifying includes init is more net object of options opts org out params pass person promise property read reference references resource response source sources specified tag tags the to type unused use with"
+      "keywords": "an api array assertion contributor convenience currently docs during each editable example familysearch find following for from function functions get getagent getchangemessage getcontributorid getmodifiedtimestamp getsourcedescription getsourceid getsources gettags has http https id identifying includes init is more net object of options opts org out params pass person promise property read reference references resource response source sources specified tag tags the to type unused use with"
     },
     {
       "section": "api",
