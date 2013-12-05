@@ -1,0 +1,32 @@
+{
+  "sourceDescriptions" : [ {
+    "id" : "ARXX-MMM",
+    "links" : {
+      "image-icon" : {
+        "href" : "https://familysearch.org/platform/memories/artifacts/ARXX-MMM?icon"
+      },
+      "description" : {
+        "href" : "https://familysearch.org/platform/memories/memories/ARXX-MMM",
+        "title" : "Memory"
+      },
+      "image-thumbnail" : {
+        "href" : "https://familysearch.org/platform/memories/artifacts/ARXX-MMM?thumbnail"
+      },
+      "image" : {
+        "href" : "https://familysearch.org/platform/memories/artifacts/ARXX-MMM"
+      },
+      "comments" : {
+        "href" : "https://familysearch.org/platform/memories/memories/ARXX-MMM/comments",
+        "title" : "Memory Comments"
+      }
+    },
+    "mediaType" : "image/jpeg",
+    "about" : "https://familysearch.org/platform/memories/artifacts/ARXX-MMM",
+    "titles" : [ {
+      "value" : "Birth Certificate of Ethel Hollivet"
+    } ],
+    "description" : [ {
+      "value" : "Shows Ethel Hollivet was born 3 Aug 1899"
+    } ]
+  } ]
+}

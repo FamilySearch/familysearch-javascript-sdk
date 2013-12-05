@@ -53,8 +53,57 @@ define([
   };
 
   var memoryReferenceConvenienceFunctions = {
-    getMemoryId:          function() { return this.resource ? this.resource.replace(/^.*\/memories\/(\d+)\/.*$/, '$1') : this.resource; },
-    getPersonaId:         function() { return this.resourceId; }
+    getMemoryId:  function() { return this.resource ? this.resource.replace(/^.*\/memories\/(\d+)\/.*$/, '$1') : this.resource; },
+    getPersonaId: function() { return this.resourceId; }
+  };
+
+  /**
+   * @ngdoc function
+   * @name memories.functions:getMemory
+   * @function
+   *
+   * @description
+   * Get information about a source
+   * The response includes the following convenience functions
+   *
+   * - `getId()` - id of the memory
+   * - `getMediaType()` - media type
+   * - `getObjectURL()` - URL of the media object
+   * - `getIconURL()` - URL of an icon for the media object
+   * - `getThumbnailURL()` - URL of a thumbnail for the media object
+   * - `getTitles()` - an array of title strings
+   * - `getTitle()` - first title in the array
+   * - `getDescriptions()` - an array of description strings
+   * - `getDescription()` - first description in the array
+   *
+   * {@link https://familysearch.org/developers/docs/api/memories/Memory_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/9J4zn/ editable example}
+   *
+   * @param {String} id of the memory to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getMemory = function(id, params, opts) {
+    return plumbing.get('/platform/memories/memories/'+encodeURI(id), params, {}, opts,
+      helpers.objectExtender(memoryConvenienceFunctions));
+  };
+
+  var memoryConvenienceFunctions = {
+    getId:           function() { return maybe(maybe(this.sourceDescriptions)[0]).id; },
+    getMediaType:    function() { return maybe(maybe(this.sourceDescriptions)[0]).mediaType; },
+    getObjectURL:    function() { return maybe(maybe(this.sourceDescriptions)[0]).about; },
+    getIconURL:      function() { return maybe(maybe(maybe(maybe(this.sourceDescriptions)[0]).links)['image-icon']).href; },
+    getThumbnailURL: function() { return maybe(maybe(maybe(maybe(this.sourceDescriptions)[0]).links)['image-thumbnail']).href; },
+    getTitle:        function() { return maybe(maybe(maybe(maybe(this.sourceDescriptions)[0]).titles)[0]).value; },
+    getTitles:       function() { return helpers.map(maybe(maybe(this.sourceDescriptions)[0]).titles, function(title) {
+      return title.value;
+    }); },
+    getDescription:  function() { return maybe(maybe(maybe(maybe(this.sourceDescriptions)[0]).description)[0]).value; },
+    getDescriptions: function() { return helpers.map(maybe(maybe(this.sourceDescriptions)[0]).description, function(description) {
+      return description.value;
+    }); }
   };
 
   return exports;
