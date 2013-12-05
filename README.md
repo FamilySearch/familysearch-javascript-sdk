@@ -62,7 +62,9 @@ Roadmap
 ####Milestone 1 - December 24, 2013
 * Create functions for basic read operations
 * Make the SDK work with jQuery, AngularJS, and Node.js
-* Create functions for the basic create, update, and delete operations
 
 ####Milestone 2 - Feb 5, 2014
 * Create an example application showing how to use the SDK.
+
+####Milestone 3 - Feb 28, 2014
+* Create functions for the basic create, update, and delete operations

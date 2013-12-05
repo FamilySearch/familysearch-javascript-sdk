@@ -9,5 +9,14 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(notes[1].subject).toBe('note 1');
       });
     });
+
+    it('is returned from getPersonNote', function() {
+      FamilySearch.getPersonNote('12345', '12345').then(function(response) {
+        expect(response.getPersonId()).toBe('12345');
+        expect(response.getNoteId()).toBe('1586334607');
+        expect(response.getSubject()).toBe('Sample');
+        expect(response.getText()).toBe('Sample note text');
+      });
+    });
   });
 });

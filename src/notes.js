@@ -17,7 +17,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name person.functions:getPersonNotes
+   * @name notes.functions:getPersonNotes
    * @function
    *
    * @description
@@ -39,6 +39,48 @@ define([
     return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/notes', params, {}, opts,
       helpers.objectExtender({getNotes: function() { return maybe(maybe(this.persons)[0]).notes || []; }}));
   };
+
+
+  /**
+   * @ngdoc function
+   * @name notes.functions:getPersonNote
+   * @function
+   *
+   * @description
+   * Get information about a note
+   * The response includes the following convenience functions
+   *
+   * - `getPersonId()`
+   * - `getNoteId()`
+   * - `getSubject()`
+   * - `getText()`
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Note_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/96EkL/ editable example}
+   *
+   * @param {String} pid of the person
+   * @param {String} nid of the note
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getPersonNote = function(pid, nid, params, opts) {
+    return plumbing.get('/platform/tree/persons/'+encodeURI(pid)+'/notes/'+encodeURI(nid), params, {}, opts,
+      helpers.objectExtender(personNoteConvenienceFunctions));
+  };
+
+  var personNoteConvenienceFunctions = {
+    getPersonId: function() { return maybe(maybe(this.persons)[0]).id; },
+    getNoteId:   function() { return maybe(maybe(maybe(maybe(this.persons)[0]).notes)[0]).id; },
+    getSubject:  function() { return maybe(maybe(maybe(maybe(this.persons)[0]).notes)[0]).subject; },
+    getText:     function() { return maybe(maybe(maybe(maybe(this.persons)[0]).notes)[0]).text; }
+  };
+
+  // TODO getCoupleRelationshipNotes
+  // TODO getCoupleRelationshipNote
+  // TODO getChildAndParentsRelationshipNotes
+  // TODO getChildAndParentsRelationshipNote
 
   return exports;
 });

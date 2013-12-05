@@ -1,0 +1,22 @@
+{
+  "persons" : [ {
+    "id" : "12345",
+    "links" : {
+      "person" : {
+        "href" : "https://familysearch.org/platform/tree/persons/12345",
+        "title" : "Person"
+      }
+    },
+    "notes" : [ {
+      "id" : "1586334607",
+      "links" : {
+        "notes" : {
+          "href" : "https://familysearch.org/platform/tree/persons/12345/notes",
+          "title" : "Person Notes"
+        }
+      },
+      "subject" : "Sample",
+      "text" : "Sample note text"
+    } ]
+  } ]
+}

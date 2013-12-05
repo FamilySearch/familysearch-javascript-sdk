@@ -19,6 +19,7 @@ define([
 
     // notes
     getPersonNotes: notes.getPersonNotes,
+    getPersonNote: notes.getPersonNote,
 
     // pedigree
     getAncestry: pedigree.getAncestry,
