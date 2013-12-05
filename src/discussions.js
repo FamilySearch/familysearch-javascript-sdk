@@ -37,9 +37,10 @@ define([
    */
   exports.getPersonDiscussionReferences = function(id, params, opts) {
     return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/discussion-references', params, {'Accept': 'application/x-fs-v1+json'}, opts,
+      // TODO consider returning a URL
       helpers.objectExtender({getDiscussionIds: function() {
         return helpers.map(maybe(maybe(this.persons)[0])['discussion-references'], function(uri) {
-          return uri.replace(/^.*\//, '');
+          return uri.replace(/^.*\//, '').replace(/\?.*$/, '');
         });
       }}));
   };
