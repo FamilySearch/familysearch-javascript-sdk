@@ -1032,7 +1032,7 @@ define('changeHistory',[
    * @return {Object} promise for the response
    */
   exports.getPersonChangeHistory = function(id, params, opts) {
-    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/changes', params, {}, opts,
+    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/changes', params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
       helpers.compose(
         helpers.objectExtender({getChanges: function() {
           return this.entries || [];
@@ -1097,7 +1097,7 @@ define('discussions',[
    * @return {Object} promise for the response
    */
   exports.getPersonDiscussionReferences = function(id, params, opts) {
-    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/discussion-references', params, {}, opts,
+    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/discussion-references', params, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.objectExtender({getDiscussionIds: function() {
         return helpers.map(maybe(maybe(this.persons)[0])['discussion-references'], function(uri) {
           return uri.replace(/^.*\//, '');
@@ -1129,7 +1129,7 @@ define('discussions',[
    * @return {Object} promise for the response
    */
   exports.getDiscussion = function(id, params, opts) {
-    return plumbing.get('/platform/discussions/discussions/'+encodeURI(id), params, {}, opts,
+    return plumbing.get('/platform/discussions/discussions/'+encodeURI(id), params, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.objectExtender(discussionConvenienceFunctions));
   };
 
@@ -1161,7 +1161,7 @@ define('discussions',[
    * @return {Object} promise for the response
    */
   exports.getComments = function(id, params, opts) {
-    return plumbing.get('/platform/discussions/discussions/'+encodeURI(id)+'/comments', params, {}, opts,
+    return plumbing.get('/platform/discussions/discussions/'+encodeURI(id)+'/comments', params, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.objectExtender({getComments: function() { return maybe(maybe(this.discussions)[0]).comments || []; }}));
   };
 
@@ -1399,7 +1399,7 @@ define('memories',[
    * @return {Object} promise for the response
    */
   exports.getMemoryComments = function(id, params, opts) {
-    return plumbing.get('/platform/memories/memories/'+encodeURI(id)+'/comments', params, {}, opts,
+    return plumbing.get('/platform/memories/memories/'+encodeURI(id)+'/comments', params, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.objectExtender({getComments: function() { return maybe(maybe(this.discussions)[0]).comments || []; }}));
   };
 
