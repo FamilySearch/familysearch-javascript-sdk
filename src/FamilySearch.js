@@ -33,6 +33,9 @@ define([
     getMemory: memories.getMemory,
     getMemoryComments: memories.getMemoryComments,
     getMemoryPersonas: memories.getMemoryPersonas,
+    getPersonPortraitURL: memories.getPersonPortraitURL,
+    getPersonMemories: memories.getPersonMemories,
+    getUserMemories: memories.getUserMemories,
 
     // notes
     getPersonNotes: notes.getPersonNotes,

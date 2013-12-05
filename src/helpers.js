@@ -220,14 +220,23 @@ define([
     return obj;
   };
 
-  // prepend server to url if url doesn't start with http(s)
-  helpers.getAbsoluteUrl = function(server, path) {
+  function getAbsoluteUrl(server, path) {
     if (!path.match(/^https?:\/\//)) {
       return server + (path.charAt(0) !== '/' ? '/' : '') + path;
     }
     else {
       return path;
     }
+  }
+
+  // prepend oauth server to url if url doesn't start with http(s)
+  helpers.getOAuthServerUrl = function(path) {
+    return getAbsoluteUrl(globals.oauthServer[globals.environment], path);
+  };
+
+  // prepend server to url if url doesn't start with http(s)
+  helpers.getServerUrl = function(path) {
+    return getAbsoluteUrl(globals.server[globals.environment], path);
   };
 
   // Create a URL-encoded query string from an object

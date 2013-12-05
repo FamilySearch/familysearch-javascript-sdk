@@ -39,5 +39,35 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getPersonas()[0].display.name).toBe('Anastasia Aleksandrova');
       });
     });
+
+    it('portrait URL is returned from getPersonPortraitURL', function() {
+      expect(FamilySearch.getPersonPortraitURL('PID')).toBe('https://sandbox.familysearch.org/platform/tree/persons/PID/portrait');
+    });
+
+    it('are returned from getPersonMemories', function() {
+      FamilySearch.getPersonMemories('KWCR-JWS', {start: 2, count: 2}).then(function(response) {
+        var memories = response.getMemories();
+        expect(memories.length).toBe(2);
+        expect(memories[0].getId()).toBe('904106');
+        expect(memories[0].getArtifactURL()).toBe('https://familysearch.org/photos/images/904106');
+        expect(memories[0].getTitle()).toBe('Missionary Portrait');
+        expect(memories[0].getTitles()).toEqual(['Missionary Portrait']);
+        expect(memories[0].getDescription()).toBe('Alma Heaton while on a mission to Canada.');
+        expect(memories[0].getDescriptions()).toEqual(['Alma Heaton while on a mission to Canada.']);
+      });
+    });
+
+    it('are returned from getUserMemories', function() {
+      FamilySearch.getUserMemories('cis.user.batman', {start: 2, count: 1}).then(function(response) {
+        var memories = response.getMemories();
+        expect(memories.length).toBe(1);
+        expect(memories[0].getId()).toBe('MMMM-PPP');
+        expect(memories[0].getArtifactURL()).toBeUndefined();
+        expect(memories[0].getTitle()).toBe('NEW ARTIFACT TITLE');
+        expect(memories[0].getTitles()).toEqual(['NEW ARTIFACT TITLE']);
+        expect(memories[0].getDescription()).toBeUndefined();
+        expect(memories[0].getDescriptions()).toEqual([]);
+      });
+    });
   });
 });

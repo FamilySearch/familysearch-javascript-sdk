@@ -30,7 +30,7 @@ define([
    * @return {Object} a promise of the (string) auth code
    */
   exports.getAuthCode = function() {
-    var popup = openPopup(helpers.getAbsoluteUrl(globals.oauthServer[globals.environment], 'authorization'), {
+    var popup = openPopup(helpers.getOAuthServerUrl('authorization'), {
       'response_type' : 'code',
       'client_id'     : globals.appKey,
       'redirect_uri'  : globals.authCallbackUri
@@ -77,7 +77,7 @@ define([
       authCodePromise.then(
         function(authCode) {
           // get the access token given the auth code
-          var promise = plumbing.post(helpers.getAbsoluteUrl(globals.oauthServer[globals.environment], 'token'), {
+          var promise = plumbing.post(helpers.getOAuthServerUrl('token'), {
             'grant_type' : 'authorization_code',
             'code'       : authCode,
             'client_id'  : globals.appKey
@@ -134,7 +134,7 @@ define([
    */
   exports.invalidateAccessToken = function() {
     helpers.eraseAccessToken();
-    return plumbing.del(helpers.getAbsoluteUrl(globals.oauthServer[globals.environment], 'token'));
+    return plumbing.del(helpers.getOAuthServerUrl('token'));
   };
 
   /**

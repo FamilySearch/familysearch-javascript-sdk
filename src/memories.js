@@ -46,15 +46,117 @@ define([
         helpers.objectExtender({getMemories: function() {
           return maybe(maybe(this.persons)[0]).evidence || [];
         }}),
-        helpers.objectExtender(memoryReferenceConvenienceFunctions, function(response) {
+        helpers.objectExtender(personMemoryReferenceConvenienceFunctions, function(response) {
           return maybe(maybe(response.persons)[0]).evidence;
         })
       ));
   };
 
-  var memoryReferenceConvenienceFunctions = {
+  var personMemoryReferenceConvenienceFunctions = {
+    // TODO hack
     getMemoryId:  function() { return this.resource ? this.resource.replace(/^.*\/memories\/(\d+)\/.*$/, '$1') : this.resource; },
     getPersonaId: function() { return this.resourceId; }
+  };
+
+  /**
+   * @ngdoc function
+   * @name memories.functions:getPersonMemories
+   * @function
+   *
+   * @description
+   * Get a paged list of memories for a person
+   * The response includes the following convenience function
+   *
+   * - `getMemories()` - get the array of memories from the response; each memory has the following convenience functions
+   *
+   * ###Memory convenience Functions
+   *
+   * - `getId()` - id of the memory (use `getMemory` to find out more)
+   * - `getArtifactURL()` - URL of the media object
+   * - `getTitles()` - an array of title strings
+   * - `getTitle()` - first title in the array
+   * - `getDescriptions()` - an array of description strings
+   * - `getDescription()` - first description in the array
+   * - `getArtifactFilenames()` - array of filename strings
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Memories_Query_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/XaD23/ editable example}
+   *
+   * @param {String} id of the person to read
+   * @param {Object=} params `count` maximum number to return - defaults to 25, `start` defaults to 0, `type` type of artifacts to return - possible values are photo and story - defaults to both
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getPersonMemories = function(id, params, opts) {
+    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/memories', params, {}, opts,
+      helpers.compose(
+        helpers.objectExtender({getMemories: function() {
+          return this.sourceDescriptions || [];
+        }}),
+        helpers.objectExtender(memoriesConvenienceFunctions, function(response) {
+          return response.sourceDescriptions;
+        })
+      ));
+  };
+
+  var memoriesConvenienceFunctions = {
+    getId:           function() { return this.id; },
+    getArtifactURL:  function() { return this.about; },
+    getTitle:        function() { return maybe(maybe(this.titles)[0]).value; },
+    getTitles:       function() { return helpers.map(this.titles, function(title) {
+      return title.value;
+    }); },
+    getDescription:  function() { return maybe(maybe(this.description)[0]).value; },
+    getDescriptions: function() { return helpers.map(this.description, function(description) {
+      return description.value;
+    }); },
+    getArtifactFilenames: function() { return helpers.map(this.artifactMetadata, function(am) {
+      return am.filename;
+    }); }
+  };
+
+  /**
+   * @ngdoc function
+   * @name memories.functions:getUserMemories
+   * @function
+   *
+   * @description
+   * Get a paged list of memories for a user
+   * The response includes the following convenience function
+   *
+   * - `getMemories()` - get the array of memories from the response; each memory has the following convenience functions
+   *
+   * ###Memory convenience Functions
+   *
+   * - `getId()` - id of the memory (use `getMemory` to find out more)
+   * - `getArtifactURL()` - URL of the media object
+   * - `getTitles()` - an array of title strings
+   * - `getTitle()` - first title in the array
+   * - `getDescriptions()` - an array of description strings
+   * - `getDescription()` - first description in the array
+   * - `getArtifactFilenames()` - array of filename strings
+   *
+   * {@link https://familysearch.org/developers/docs/api/memories/User_Memories_Query_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/V8pfd/ editable example}
+   *
+   * @param {String} id of the user
+   * @param {Object=} params `count` maximum number to return - defaults to 25, `start` defaults to 0
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getUserMemories = function(id, params, opts) {
+    // TODO verify the convenience functions are really the same as for getPersonMemories
+    return plumbing.get('/platform/memories/users/'+encodeURI(id)+'/memories', params, {}, opts,
+      helpers.compose(
+        helpers.objectExtender({getMemories: function() {
+          return this.sourceDescriptions || [];
+        }}),
+        helpers.objectExtender(memoriesConvenienceFunctions, function(response) {
+          return response.sourceDescriptions;
+        })
+      ));
   };
 
   /**
@@ -93,7 +195,7 @@ define([
   var memoryConvenienceFunctions = {
     getId:           function() { return maybe(maybe(this.sourceDescriptions)[0]).id; },
     getMediaType:    function() { return maybe(maybe(this.sourceDescriptions)[0]).mediaType; },
-    getArtifactURL:    function() { return maybe(maybe(this.sourceDescriptions)[0]).about; },
+    getArtifactURL:  function() { return maybe(maybe(this.sourceDescriptions)[0]).about; },
     getIconURL:      function() { return maybe(maybe(maybe(maybe(this.sourceDescriptions)[0]).links)['image-icon']).href; },
     getThumbnailURL: function() { return maybe(maybe(maybe(maybe(this.sourceDescriptions)[0]).links)['image-thumbnail']).href; },
     getTitle:        function() { return maybe(maybe(maybe(maybe(this.sourceDescriptions)[0]).titles)[0]).value; },
@@ -154,6 +256,23 @@ define([
   exports.getMemoryPersonas = function(id, params, opts) {
     return plumbing.get('/platform/memories/memories/'+encodeURI(id)+'/personas', params, {}, opts,
       helpers.objectExtender({getPersonas: function() { return this.persons || []; }}));
+  };
+
+  /**
+   * @ngdoc function
+   * @name memories.functions:getPersonPortraitURL
+   * @function
+   *
+   * @description
+   * Get a URL that will redirect to the portrait of a person
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Memories_Portrait_resource FamilySearch API Docs}
+   *
+   * @param {String} id of the person
+   * @return {String} URL that will redirect to the portrait of a person
+   */
+  exports.getPersonPortraitURL = function(id) {
+    return helpers.getServerUrl('/platform/tree/persons/'+encodeURI(id)+'/portrait');
   };
 
   return exports;

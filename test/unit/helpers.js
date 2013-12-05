@@ -67,11 +67,42 @@ define(['FamilySearch', 'jasmine-jquery'], function(FamilySearch) {
     };
   }
 
+  function decodeQueryString(qs) {
+    var obj = {};
+    var queryPos = qs.indexOf('?');
+    if (queryPos !== -1) {
+      var segments = qs.substring(queryPos+1).split('&');
+      for (var i = 0, len = segments.length; i < len; i++) {
+        var kv = segments[i].split('=', 2);
+        if (kv && kv[0]) {
+          obj[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1]);
+        }
+      }
+    }
+    return obj;
+  }
+
+  function keys(obj) {
+    var result = [];
+    for (var prop in obj) {
+      if (obj.hasOwnProperty(prop)) {
+        result.push(prop);
+      }
+    }
+    return result;
+  }
+
   function getFilename(opts) {
-    return opts.url.replace(/[^\/]*\/\/[^\/]+\//, '')
-      .replace(/([?&])access_token=[^&]*&?/,'$1')
-      .replace(/[?&]$/, '')
-      .replace(/[^A-Za-z0-9_-]/g, '_') + '.json';
+    var params = decodeQueryString(opts.url);
+    var filename = opts.url.replace(/[^\/]*\/\/[^\/]+\//, '').replace(/\?.*$/, ''); // get path portion of URL
+    var sortedKeys = keys(params).sort(); // sort parameters in alphabetical order
+    for (var i = 0, len = sortedKeys.length; i < len; i++) {
+      var key = sortedKeys[i];
+      if (key !== 'access_token') { // skip access token
+        filename = filename + '_' + encodeURIComponent(sortedKeys[i]) + '_' + encodeURIComponent(params[sortedKeys[i]]);
+      }
+    }
+    return filename.replace(/[^A-Za-z0-9_-]/g, '_') + '.json'; // convert special characters to _'s
   }
 
   /**
@@ -82,7 +113,7 @@ define(['FamilySearch', 'jasmine-jquery'], function(FamilySearch) {
    */
   function httpMock(opts) {
     var filename = getFilename(opts);
-    //console.log('httpMock', filename);
+    //console.log('httpMock', opts.url, filename);
     var data = getJSONFixture(filename);
     var headers = {};
     if (data.headers) {

@@ -1,0 +1,66 @@
+{
+  "links" : {
+    "person" : {
+      "href" : "https://familysearch.org/platform/tree/persons/KWCR-JWS",
+      "title" : "Person"
+    },
+    "last" : {
+      "href" : "https://familysearch.org/platform/tree/persons/KWCR-JWS/memories?count=2&start=4",
+      "title" : "Person Memories Query"
+    },
+    "next" : {
+      "href" : "https://familysearch.org/platform/tree/persons/KWCR-JWS/memories?count=2&start=4",
+      "title" : "Person Memories Query"
+    },
+    "self" : {
+      "href" : "https://familysearch.org/platform/tree/persons/KWCR-JWS/memories?count=2&start=2",
+      "title" : "Person Memories Query"
+    },
+    "first" : {
+      "href" : "https://familysearch.org/platform/tree/persons/KWCR-JWS/memories?count=2&start=0",
+      "title" : "Person Memories Query"
+    },
+    "prev" : {
+      "href" : "https://familysearch.org/platform/tree/persons/KWCR-JWS/memories?count=2&start=0",
+      "title" : "Person Memories Query"
+    }
+  },
+  "persons" : [ ],
+  "sourceDescriptions" : [ {
+    "id" : "904106",
+    "links" : {
+      "memory" : {
+        "href" : "https://familysearch.org/platform/memories/memories/904106"
+      }
+    },
+    "about" : "https://familysearch.org/photos/images/904106",
+    "titles" : [ {
+      "value" : "Missionary Portrait"
+    } ],
+    "description" : [ {
+      "value" : "Alma Heaton while on a mission to Canada."
+    } ],
+    "artifactMetadata" : [ {
+      "filename" : "alma-mission.jpg",
+      "artifactType" : "http://familysearch.org/v1/Image"
+    } ]
+  }, {
+    "id" : "1559654",
+    "links" : {
+      "memory" : {
+        "href" : "https://familysearch.org/platform/memories/memories/1559654"
+      }
+    },
+    "about" : "https://familysearch.org/photos/images/1559654",
+    "titles" : [ {
+      "value" : "Record Player"
+    } ],
+    "description" : [ {
+      "value" : "Alma Heaton using his favorite record player."
+    } ],
+    "artifactMetadata" : [ {
+      "filename" : "alma-record-player.jpg",
+      "artifactType" : "http://familysearch.org/v1/Image"
+    } ]
+  } ]
+}

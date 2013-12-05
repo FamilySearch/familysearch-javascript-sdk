@@ -133,7 +133,7 @@ define([
    */
   exports.http = function(method, url, headers, data, opts, responseMapper, retries) {
     // prepend the server
-    var absoluteUrl = helpers.getAbsoluteUrl(globals.server[globals.environment], url);
+    var absoluteUrl = helpers.getServerUrl(url);
 
     // append the access token as a query parameter to avoid cors pre-flight
     // this is detrimental to browser caching across sessions, which seems less bad than cors pre-flight requests

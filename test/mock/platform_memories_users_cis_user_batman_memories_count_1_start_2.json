@@ -1,0 +1,32 @@
+{
+  "links" : {
+    "next" : {
+      "href" : "https://familysearch.org/platform/memories/users/cis.user.batman/memories?start=3&count=1",
+      "title" : "User Memories Query"
+    },
+    "self" : {
+      "href" : "https://familysearch.org/platform/memories/users/cis.user.batman/memories?start=2&count=1",
+      "title" : "User Memories Query"
+    },
+    "first" : {
+      "href" : "https://familysearch.org/platform/memories/users/cis.user.batman/memories?start=0&count=1",
+      "title" : "User Memories Query"
+    },
+    "prev" : {
+      "href" : "https://familysearch.org/platform/memories/users/cis.user.batman/memories?start=1&count=1",
+      "title" : "User Memories Query"
+    }
+  },
+  "sourceDescriptions" : [ {
+    "id" : "MMMM-PPP",
+    "links" : {
+      "memory" : {
+        "href" : "https://familysearch.org/platform/memories/memories/MMMM-PPP",
+        "title" : "Memory"
+      }
+    },
+    "titles" : [ {
+      "value" : "NEW ARTIFACT TITLE"
+    } ]
+  } ]
+}
