@@ -21,6 +21,7 @@ define([
     // discussions
     getPersonDiscussionReferences: discussions.getPersonDiscussionReferences,
     getDiscussion: discussions.getDiscussion,
+    getComments: discussions.getComments,
 
     // notes
     getPersonNotes: notes.getPersonNotes,

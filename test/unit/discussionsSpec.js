@@ -14,5 +14,13 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getNumberOfComments()).toBe(2);
       });
     });
+
+    it('comments are returned from getComments', function() {
+      FamilySearch.getComments('dis-MMMM-MMM').then(function(response) {
+        expect(response.getComments().length).toBe(1);
+        expect(response.getComments()[0].id).toBe('CMMM-MMM');
+        expect(response.getComments()[0].text).toBe('Just a comment.');
+      });
+    });
   });
 });

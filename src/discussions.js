@@ -79,5 +79,30 @@ define([
     getNumberOfComments: function() { return maybe(maybe(this.discussions)[0]).numberOfComments; }
   };
 
+  /**
+   * @ngdoc function
+   * @name discussions.functions:getComments
+   * @function
+   *
+   * @description
+   * Get comments for a discussion
+   * The response includes the following convenience function
+   *
+   * - `getComments()` - get the array of comments from the response; each comment has an `id` and `text`
+   *
+   * {@link https://familysearch.org/developers/docs/api/discussions/Comments_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ// editable example}
+   *
+   * @param {String} id of the discussion to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getComments = function(id, params, opts) {
+    return plumbing.get('/platform/discussions/discussions/'+encodeURI(id)+'/comments', params, {}, opts,
+      helpers.objectExtender({getComments: function() { return maybe(maybe(this.discussions)[0]).comments || []; }}));
+  };
+
   return exports;
 });

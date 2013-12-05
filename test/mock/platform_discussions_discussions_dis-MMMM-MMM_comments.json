@@ -1,0 +1,22 @@
+{
+  "discussions" : [ {
+    "id" : "dis-MMMM-MMM",
+    "links" : {
+      "discussion" : {
+        "href" : "https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMM",
+        "title" : "Discussion"
+      }
+    },
+    "numberOfComments" : 1,
+    "comments" : [ {
+      "id" : "CMMM-MMM",
+      "links" : {
+        "comment" : {
+          "href" : "https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMM/comments/CMMM-MMM",
+          "title" : "Comment"
+        }
+      },
+      "text" : "Just a comment."
+    } ]
+  } ]
+}
