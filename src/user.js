@@ -107,5 +107,41 @@ define([
     }
   }
 
+  /**
+   * @ngdoc function
+   * @name user.functions:getAgent
+   * @function
+   *
+   * @description
+   * Get information about the specified agent (contributor)
+   * The response includes the following convenience functions
+   *
+   * - `getId()`
+   * - `getName()`
+   * - `getAccountName()`
+   * - `getEmail()`
+   *
+   * {@link https://familysearch.org/developers/docs/api/users/Agent_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/BpT8c/ editable example}
+   *
+   * @param {String} id of the contributor; e.g., tree user id
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   */
+  exports.getAgent = function(id, params, opts) {
+    return plumbing.get('/platform/users/agents/'+encodeURI(id), {}, {}, opts, helpers.objectExtender(agentConvenienceFunctions));
+  };
+
+  var agentConvenienceFunctions = {
+    getId:          function() { return helpers.firstOrEmpty(this.agents).id; },
+    getName:        function() { return helpers.firstOrEmpty(helpers.firstOrEmpty(this.agents).names).value; },
+    getAccountName: function() { return helpers.firstOrEmpty(helpers.firstOrEmpty(this.agents).accounts).accountName; },
+    getEmail:       function() {
+      var email;
+      return (email = helpers.firstOrEmpty(helpers.firstOrEmpty(this.agents).emails).resource) ? email.replace(/^mailto:/,'') : email;
+    }
+  };
+
   return exports;
 });

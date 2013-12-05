@@ -67,6 +67,13 @@ define(['FamilySearch', 'jasmine-jquery'], function(FamilySearch) {
     };
   }
 
+  function getFilename(opts) {
+    return opts.url.replace(/[^\/]*\/\/[^\/]+\//, '')
+      .replace(/([?&])access_token=[^&]*&?/,'$1')
+      .replace(/[?&]$/, '')
+      .replace(/[^A-Za-z0-9_-]/g, '_') + '.json';
+  }
+
   /**
    * Mock an http call, fetching the json from a file in test/mock
    *
@@ -74,14 +81,9 @@ define(['FamilySearch', 'jasmine-jquery'], function(FamilySearch) {
    * @returns {Object} promise
    */
   function httpMock(opts) {
-    function filename(url) {
-      return url.replace(/[^\/]*\/\/[^\/]+\//, '')
-        .replace(/([?&])access_token=[^&]*&?/,'$1')
-        .replace(/[?&]$/, '')
-        .replace(/[^A-Za-z0-9_-]/g, '_') + '.json';
-    }
-
-    var data = getJSONFixture(filename(opts.url));
+    var filename = getFilename(opts);
+    //console.log('httpMock', filename);
+    var data = getJSONFixture(filename);
     var headers = {};
     if (data.headers) {
       headers = data.headers;

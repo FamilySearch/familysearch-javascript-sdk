@@ -1,0 +1,20 @@
+{
+  "agents" : [ {
+    "id" : "12345",
+    "links" : {
+      "self" : {
+        "href" : "https://familysearch.org/platform/users/agents/12345"
+      }
+    },
+    "names" : [ {
+      "value" : "John Smith",
+      "type" : "http://familysearch.org/v1//DisplayName"
+    } ],
+    "accounts" : [ {
+      "accountName" : "account"
+    } ],
+    "emails" : [ {
+      "resource" : "mailto:someone@somewhere.org"
+    } ]
+  } ]
+}
