@@ -180,6 +180,27 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "sources",
+      "shortName": "sources",
+      "type": "overview",
+      "keywords": "api docs familysearch functions https org overview related sources to"
+    },
+    {
+      "section": "api",
+      "id": "sources.functions:getPersonSourceReferences",
+      "shortName": "getPersonSourceReferences",
+      "type": "function",
+      "keywords": "an api array assertion contributor convenience currently docs during each editable example familysearch find following for from function functions get getagent getchangemessage getcontributorid getmodifiedtimestamp getreferences getsourcedescription getsourceid gettags has http https id identifying includes init is more net object of options opts org out params pass person promise property read reference references resource response source sources specified tag tags the to type unused use with"
+    },
+    {
+      "section": "api",
+      "id": "sources.functions:getSourceDescription",
+      "shortName": "getSourceDescription",
+      "type": "function",
+      "keywords": "about api array being citation convenience currently described description docs during editable example familysearch first following for function functions get getabout getcitations getid getnotes gettitle gettitles http https id includes information init net note of options opts org params pass promise read resource response source sources specified string strings the title to unused uri"
+    },
+    {
+      "section": "api",
       "id": "user",
       "shortName": "user",
       "type": "overview",

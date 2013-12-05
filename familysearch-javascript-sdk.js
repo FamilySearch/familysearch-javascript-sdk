@@ -218,6 +218,11 @@ define('helpers',[
     };
   };
 
+  // return an empty object if passed in a null or undefined, similar to the maybe monad
+  helpers.maybe = function(value) {
+    return value != null ? value : {}; // != null also covers undefined
+  };
+
   // return a function that will extend an object with the specified extensions
   // optionally applying them at points returned by extensionPointGetter
   helpers.objectExtender = function(extensions, extensionPointGetter) {
@@ -972,156 +977,6 @@ define('authentication',[
   return exports;
 });
 
-define('user',[
-  'globals',
-  'helpers',
-  'plumbing'
-], function(globals, helpers, plumbing) {
-  /**
-   * @ngdoc overview
-   * @name user
-   * @description
-   * Functions related to users
-   *
-   * {@link https://familysearch.org/developers/docs/api/resources#user FamilySearch API Docs}
-   */
-
-  var exports = {};
-
-  /**
-   * @ngdoc function
-   * @name user.functions:getCurrentUser
-   * @function
-   *
-   * @description
-   * Get the current user with the following convenience functions
-   *
-   * - `getContactName()`
-   * - `getFullName()`
-   * - `getEmail()`
-   * - `getId()`
-   * - `getTreeUserId()`
-   *
-   * {@link https://familysearch.org/developers/docs/api/users/Current_User_resource FamilySearch API Docs}
-   *
-   * {@link http://jsfiddle.net/DallanQ/3NJFM/ editable example}
-   *
-   * @param {Object=} params currently unused
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} a promise for the current user
-   */
-  exports.getCurrentUser = function(params, opts) {
-    return plumbing.get('/platform/users/current', params, {}, opts, helpers.objectExtender(currentUserConvenienceFunctions));
-  };
-
-  var currentUserConvenienceFunctions = {
-    getContactName: function() { return this.users[0].contactName; },
-    getFullName:    function() { return this.users[0].fullName; },
-    getEmail:       function() { return this.users[0].email; },
-    getId:          function() { return this.users[0].id; },
-    getTreeUserId:  function() { return this.users[0].treeUserId; }
-  };
-
-  /**
-   * @ngdoc function
-   * @name user.functions:getCurrentUserPerson
-   * @function
-   *
-   * @description
-   * Get the id of the current user person in the tree
-   *
-   * {@link https://familysearch.org/developers/docs/api/tree/Current_User_Person_resource FamilySearch API Docs}
-   *
-   * {@link http://jsfiddle.net/DallanQ/c4puF/ editable example}
-   *
-   * @param {Object=} params currently unused
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the (string) id of the current user person
-   */
-  exports.getCurrentUserPerson = function(params, opts) {
-    var promise = plumbing.get('/platform/tree/current-person', params, {}, opts);
-    var d = globals.deferredWrapper();
-    var returnedPromise = helpers.extendHttpPromise(d.promise, promise);
-    promise.then(
-      function() {
-        handleCurrentUserPersonResponse(d, promise);
-      },
-      function() {
-        // in Chrome, the current person response is expected to fail because it involves a redirect and chrome doesn't
-        // re-send the Accept header on a CORS redirect, so the response comes back as XML and jQuery can't parse it.
-        // That's ok, because we'll pick up the ID from the Content-Location header
-        handleCurrentUserPersonResponse(d, promise);
-      });
-
-    return returnedPromise;
-  };
-
-  // common code for current user person promise fulfillment and failure
-  function handleCurrentUserPersonResponse(d, promise) {
-    var id = null;
-    // this is the expected result for Node.js because it doesn't follow redirects
-    var location = promise.getResponseHeader('Location');
-    if (!location) {
-      // this is the expected result for browsers because they follow redirects
-      // NOTE: Chrome doesn't re-send the accept header on CORS redirect requests, so the request fails because we can't
-      // parse the returned XML into JSON. We still get a Content-Location header though.
-      location = promise.getResponseHeader('Content-Location');
-    }
-
-    if (location) {
-      var matchResult = location.match(/\/persons\/([^?]*)/);
-      if (matchResult) {
-        id = matchResult[1];
-      }
-    }
-
-    if (id) {
-      d.resolve(id);
-    }
-    else {
-      d.reject('not found');
-    }
-  }
-
-  /**
-   * @ngdoc function
-   * @name user.functions:getAgent
-   * @function
-   *
-   * @description
-   * Get information about the specified agent (contributor)
-   * The response includes the following convenience functions
-   *
-   * - `getId()`
-   * - `getName()`
-   * - `getAccountName()`
-   * - `getEmail()`
-   *
-   * {@link https://familysearch.org/developers/docs/api/users/Agent_resource FamilySearch API Docs}
-   *
-   * {@link http://jsfiddle.net/DallanQ/BpT8c/ editable example}
-   *
-   * @param {String} id of the contributor; e.g., tree user id
-   * @param {Object=} params currently unused
-   * @param {Object=} opts options to pass to the http function specified during init
-   */
-  exports.getAgent = function(id, params, opts) {
-    return plumbing.get('/platform/users/agents/'+encodeURI(id), params, {}, opts, helpers.objectExtender(agentConvenienceFunctions));
-  };
-
-  var agentConvenienceFunctions = {
-    getId:          function() { return helpers.firstOrEmpty(this.agents).id; },
-    getName:        function() { return helpers.firstOrEmpty(helpers.firstOrEmpty(this.agents).names).value; },
-    getAccountName: function() { return helpers.firstOrEmpty(helpers.firstOrEmpty(this.agents).accounts).accountName; },
-    getEmail:       function() {
-      var email;
-      return (email = helpers.firstOrEmpty(helpers.firstOrEmpty(this.agents).emails).resource) ? email.replace(/^mailto:/,'') : email;
-    }
-  };
-
-  return exports;
-});
-
 define('person',[
   'helpers',
   'plumbing'
@@ -1370,8 +1225,11 @@ define('person',[
    */
   exports.getPersonChangeSummary = function(id, params, opts) {
     return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/change-summary', params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-      helpers.objectExtender({getChanges: function() { return this && this.entries ? this.entries : []; }}));
+      helpers.objectExtender({getChanges: function() { return this.entries || []; }}));
   };
+
+  // TODO getPersonMerge
+  // TODO getPersonNotAMatch
 
   return exports;
 });
@@ -1483,14 +1341,282 @@ define('pedigree',[
 
   return exports;
 });
+define('sources',[
+  'helpers',
+  'plumbing'
+], function(helpers, plumbing) {
+  /**
+   * @ngdoc overview
+   * @name sources
+   * @description
+   * Functions related to sources
+   *
+   * {@link https://familysearch.org/developers/docs/api/resources#sources FamilySearch API Docs}
+   */
+
+  var maybe = helpers.maybe; // shorthand
+
+  var exports = {};
+
+  /**
+   * @ngdoc function
+   * @name sources.functions:getPersonSourceReferences
+   * @function
+   *
+   * @description
+   * Get references to sources for a person
+   * The response includes the following convenience function
+   *
+   * - `getReferences()` - get the array of source references from the response; each reference has the following convenience functions
+   *
+   * ###Source reference convenience Functions
+   *
+   * - `getSourceId()` - id of the source ( use `getSourceDescription` to find out more)
+   * - `getTags()` - array of tags; each tag is an object with a `resource` property identifying an assertion type
+   * - `getContributorId()` - id of the contributor (use `getAgent` to find out more)
+   * - `getModifiedTimestamp()`
+   * - `getChangeMessage()`
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Source_References_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/BkydV/ editable example}
+   *
+   * @param {String} id of the person to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getPersonSourceReferences = function(id, params, opts) {
+    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/source-references', params, {}, opts,
+      helpers.compose(
+        helpers.objectExtender({getReferences: function() {
+          return maybe(maybe(this.persons)[0]).sources || [];
+        }}),
+        helpers.objectExtender(sourceReferenceConvenienceFunctions, function(response) {
+          return maybe(maybe(response.persons)[0]).sources;
+        })
+      ));
+  };
+
+  var sourceReferenceConvenienceFunctions = {
+    getSourceId:          function() { return this.description ? this.description.replace(/.*\//, '') : this.description; },
+    getTags:              function() { return this.tags || []; },
+    getContributorId:     function() { return maybe(maybe(this.attribution).contributor).resourceId; },
+    getModifiedTimestamp: function() { return maybe(this.attribution).modified; },
+    getChangeMessage:     function() { return maybe(this.attribution).changeMessage; }
+  };
+
+  /**
+   * @ngdoc function
+   * @name sources.functions:getSourceDescription
+   * @function
+   *
+   * @description
+   * Get information about a source
+   * The response includes the following convenience functions
+   *
+   * - `getId()` - id of the source description
+   * - `getTitles()` - array of title strings
+   * - `getTitle()` - the first title string
+   * - `getCitations()` - array of citation strings
+   * - `getNotes()` - array of note strings
+   * - `getAbout()` - URI to the resource being described
+   *
+   * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/eECJx/ editable example}
+   *
+   * @param {String} id of the source description to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getSourceDescription = function(id, params, opts) {
+    return plumbing.get('/platform/sources/descriptions/'+encodeURI(id), params, {}, opts,
+      helpers.objectExtender(sourceDescriptionConvenienceFunctions));
+  };
+
+  var sourceDescriptionConvenienceFunctions = {
+    getId: function() { return maybe(maybe(this.sourceDescriptions)[0]).id; },
+    getTitle: function() { return maybe(maybe(maybe(maybe(this.sourceDescriptions)[0]).titles)[0]).value; },
+    getTitles: function() { return helpers.map(maybe(maybe(this.sourceDescriptions)[0]).titles, function(title) {
+        return title.value;
+      }); },
+    getCitations: function() { return helpers.map(maybe(maybe(this.sourceDescriptions)[0]).citations, function(citation) {
+        return citation.value;
+      }); },
+    getNotes: function() { return helpers.map(maybe(maybe(this.sourceDescriptions)[0]).notes, function(note) {
+        return note.text;
+      }); },
+    getAbout: function() { return maybe(maybe(this.sourceDescriptions)[0]).about; }
+  };
+
+  // TODO getCoupleRelationshipSourceReferences
+  // TODO getChildAndParentsRelationshipSourceReferences
+  // TODO getSourcesReferencesQuery
+
+  return exports;
+});
+
+define('user',[
+  'globals',
+  'helpers',
+  'plumbing'
+], function(globals, helpers, plumbing) {
+  /**
+   * @ngdoc overview
+   * @name user
+   * @description
+   * Functions related to users
+   *
+   * {@link https://familysearch.org/developers/docs/api/resources#user FamilySearch API Docs}
+   */
+
+  var exports = {};
+
+  /**
+   * @ngdoc function
+   * @name user.functions:getCurrentUser
+   * @function
+   *
+   * @description
+   * Get the current user with the following convenience functions
+   *
+   * - `getContactName()`
+   * - `getFullName()`
+   * - `getEmail()`
+   * - `getId()`
+   * - `getTreeUserId()`
+   *
+   * {@link https://familysearch.org/developers/docs/api/users/Current_User_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/3NJFM/ editable example}
+   *
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} a promise for the current user
+   */
+  exports.getCurrentUser = function(params, opts) {
+    return plumbing.get('/platform/users/current', params, {}, opts, helpers.objectExtender(currentUserConvenienceFunctions));
+  };
+
+  var currentUserConvenienceFunctions = {
+    getContactName: function() { return this.users[0].contactName; },
+    getFullName:    function() { return this.users[0].fullName; },
+    getEmail:       function() { return this.users[0].email; },
+    getId:          function() { return this.users[0].id; },
+    getTreeUserId:  function() { return this.users[0].treeUserId; }
+  };
+
+  /**
+   * @ngdoc function
+   * @name user.functions:getCurrentUserPerson
+   * @function
+   *
+   * @description
+   * Get the id of the current user person in the tree
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Current_User_Person_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/c4puF/ editable example}
+   *
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the (string) id of the current user person
+   */
+  exports.getCurrentUserPerson = function(params, opts) {
+    var promise = plumbing.get('/platform/tree/current-person', params, {}, opts);
+    var d = globals.deferredWrapper();
+    var returnedPromise = helpers.extendHttpPromise(d.promise, promise);
+    promise.then(
+      function() {
+        handleCurrentUserPersonResponse(d, promise);
+      },
+      function() {
+        // in Chrome, the current person response is expected to fail because it involves a redirect and chrome doesn't
+        // re-send the Accept header on a CORS redirect, so the response comes back as XML and jQuery can't parse it.
+        // That's ok, because we'll pick up the ID from the Content-Location header
+        handleCurrentUserPersonResponse(d, promise);
+      });
+
+    return returnedPromise;
+  };
+
+  // common code for current user person promise fulfillment and failure
+  function handleCurrentUserPersonResponse(d, promise) {
+    var id = null;
+    // this is the expected result for Node.js because it doesn't follow redirects
+    var location = promise.getResponseHeader('Location');
+    if (!location) {
+      // this is the expected result for browsers because they follow redirects
+      // NOTE: Chrome doesn't re-send the accept header on CORS redirect requests, so the request fails because we can't
+      // parse the returned XML into JSON. We still get a Content-Location header though.
+      location = promise.getResponseHeader('Content-Location');
+    }
+
+    if (location) {
+      var matchResult = location.match(/\/persons\/([^?]*)/);
+      if (matchResult) {
+        id = matchResult[1];
+      }
+    }
+
+    if (id) {
+      d.resolve(id);
+    }
+    else {
+      d.reject('not found');
+    }
+  }
+
+  /**
+   * @ngdoc function
+   * @name user.functions:getAgent
+   * @function
+   *
+   * @description
+   * Get information about the specified agent (contributor)
+   * The response includes the following convenience functions
+   *
+   * - `getId()`
+   * - `getName()`
+   * - `getAccountName()`
+   * - `getEmail()`
+   *
+   * {@link https://familysearch.org/developers/docs/api/users/Agent_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/BpT8c/ editable example}
+   *
+   * @param {String} id of the contributor; e.g., tree user id
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   */
+  exports.getAgent = function(id, params, opts) {
+    return plumbing.get('/platform/users/agents/'+encodeURI(id), params, {}, opts, helpers.objectExtender(agentConvenienceFunctions));
+  };
+
+  var agentConvenienceFunctions = {
+    getId:          function() { return helpers.firstOrEmpty(this.agents).id; },
+    getName:        function() { return helpers.firstOrEmpty(helpers.firstOrEmpty(this.agents).names).value; },
+    getAccountName: function() { return helpers.firstOrEmpty(helpers.firstOrEmpty(this.agents).accounts).accountName; },
+    getEmail:       function() {
+      var email;
+      return (email = helpers.firstOrEmpty(helpers.firstOrEmpty(this.agents).emails).resource) ? email.replace(/^mailto:/,'') : email;
+    }
+  };
+
+  return exports;
+});
+
 define('FamilySearch',[
   'init',
   'authentication',
-  'user',
-  'person',
   'pedigree',
+  'person',
+  'sources',
+  'user',
   'plumbing'
-], function(init, authentication, user, person, pedigree, plumbing) {
+], function(init, authentication, pedigree, person, sources, user, plumbing) {
   return {
     init: init.init,
 
@@ -1500,10 +1626,9 @@ define('FamilySearch',[
     hasAccessToken: authentication.hasAccessToken,
     invalidateAccessToken: authentication.invalidateAccessToken,
 
-    // user
-    getCurrentUser: user.getCurrentUser,
-    getCurrentUserPerson: user.getCurrentUserPerson,
-    getAgent: user.getAgent,
+    // pedigree
+    getAncestry: pedigree.getAncestry,
+    getDescendancy: pedigree.getDescendancy,
 
     // person
     getPerson: person.getPerson,
@@ -1512,9 +1637,14 @@ define('FamilySearch',[
     getPersonWithRelationships: person.getPersonWithRelationships,
     getPersonChangeSummary: person.getPersonChangeSummary,
 
-    // pedigree
-    getAncestry: pedigree.getAncestry,
-    getDescendancy: pedigree.getDescendancy,
+    // source
+    getPersonSourceReferences: sources.getPersonSourceReferences,
+    getSourceDescription: sources.getSourceDescription,
+
+    // user
+    getCurrentUser: user.getCurrentUser,
+    getCurrentUserPerson: user.getCurrentUserPerson,
+    getAgent: user.getAgent,
 
     // plumbing
     get: plumbing.get,

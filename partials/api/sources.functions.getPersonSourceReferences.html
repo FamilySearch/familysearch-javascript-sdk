@@ -1,0 +1,40 @@
+<h1><code ng:non-bindable="">getPersonSourceReferences</code>
+<span class="hint">(functions in module <code ng:non-bindable="">sources</code>
+)</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>Get references to sources for a person
+The response includes the following convenience function</p>
+
+<ul>
+<li><code>getReferences()</code> - get the array of source references from the response; each reference has the following convenience functions</li>
+</ul>
+
+<h3 id="sourcereferenceconveniencefunctions">Source reference convenience Functions</h5>
+
+<ul>
+<li><code>getSourceId()</code> - id of the source ( use <code>getSourceDescription</code> to find out more)</li>
+<li><code>getTags()</code> - array of tags; each tag is an object with a <code>resource</code> property identifying an assertion type</li>
+<li><code>getContributorId()</code> - id of the contributor (use <code>getAgent</code> to find out more)</li>
+<li><code>getModifiedTimestamp()</code></li>
+<li><code>getChangeMessage()</code></li>
+</ul>
+
+<p><a href="https://familysearch.org/developers/docs/api/tree/Person_Source_References_resource">FamilySearch API Docs</a></p>
+
+<p><a href="http://jsfiddle.net/DallanQ/BkydV/">editable example</a></p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getPersonSourceReferences(id[, params][, opts]);</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<p>of the person to read</p></li>
+<li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
+<p>currently unused</p></li>
+<li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
+<p>options to pass to the http function specified during init</p></li>
+</ul>
+<h3 id="Returns">Returns</h3>
+<div class="returns"><code ng:non-bindable="">{Object}</code>
+– <p>promise for the response</p></div>
+</div>
+</div>
