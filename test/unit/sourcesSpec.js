@@ -1,6 +1,6 @@
 define(['FamilySearch'], function(FamilySearch) {
-  describe('A source', function() {
-    it('reference is returned from getPersonSourceReferences', function() {
+  describe('Source', function() {
+    it('references are returned from getPersonSourceReferences', function() {
       FamilySearch.getPersonSourceReferences('PPPP-PPP').then(function(response) {
         var refs = response.getReferences();
         expect(refs[0].getTags().length).toBe(3);
