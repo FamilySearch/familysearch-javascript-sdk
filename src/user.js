@@ -32,11 +32,12 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/3NJFM/ editable example}
    *
+   * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} a promise for the current user
    */
-  exports.getCurrentUser = function(opts) {
-    return plumbing.get('/platform/users/current', {}, {}, opts, helpers.objectExtender(currentUserConvenienceFunctions));
+  exports.getCurrentUser = function(params, opts) {
+    return plumbing.get('/platform/users/current', params, {}, opts, helpers.objectExtender(currentUserConvenienceFunctions));
   };
 
   var currentUserConvenienceFunctions = {
@@ -59,11 +60,12 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/c4puF/ editable example}
    *
+   * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the (string) id of the current user person
    */
-  exports.getCurrentUserPerson = function(opts) {
-    var promise = plumbing.get('/platform/tree/current-person', {}, {}, opts);
+  exports.getCurrentUserPerson = function(params, opts) {
+    var promise = plumbing.get('/platform/tree/current-person', params, {}, opts);
     var d = globals.deferredWrapper();
     var returnedPromise = helpers.extendHttpPromise(d.promise, promise);
     promise.then(
@@ -130,7 +132,7 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    */
   exports.getAgent = function(id, params, opts) {
-    return plumbing.get('/platform/users/agents/'+encodeURI(id), {}, {}, opts, helpers.objectExtender(agentConvenienceFunctions));
+    return plumbing.get('/platform/users/agents/'+encodeURI(id), params, {}, opts, helpers.objectExtender(agentConvenienceFunctions));
   };
 
   var agentConvenienceFunctions = {
