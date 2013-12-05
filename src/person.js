@@ -49,7 +49,6 @@ define([
    * @return {Object} promise for the response
    */
   exports.getPerson = function(id, params, opts) {
-    params = params || {};
     return plumbing.get('/platform/tree/persons/'+encodeURI(id), params, {}, opts,
       helpers.compose(helpers.objectExtender({getPerson: function() { return this.persons[0]; }}), exports.personExtender));
   };
@@ -98,7 +97,6 @@ define([
    * @return {Object} promise for the response
    */
   exports.getPersonNotes = function(id, params, opts) {
-    params = params || {};
     return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/notes', params, {}, opts,
       helpers.objectExtender({getNotes: function() { return this && this.persons ? this.persons[0].notes : []; }}));
   };
@@ -165,7 +163,6 @@ define([
    * @return {Object} promise for the person with relationships
    */
   exports.getPersonWithRelationships = function(id, params, opts) {
-    params = params || {};
     return plumbing.get('/platform/tree/persons-with-relationships', helpers.removeEmptyProperties(helpers.extend({'person': id}, params)),
       {}, opts,
       helpers.compose(helpers.objectExtender(personWithRelationshipsConvenienceFunctions), exports.personExtender));

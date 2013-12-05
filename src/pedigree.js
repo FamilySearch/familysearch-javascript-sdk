@@ -43,7 +43,6 @@ define([
    * @return {Object} promise for the ancestry
    */
   exports.getAncestry = function(id, params, opts) {
-    params = params || {};
     return plumbing.get('/platform/tree/ancestry', helpers.removeEmptyProperties(helpers.extend({'person': id}, params)),
       {}, opts,
       helpers.compose(
@@ -95,7 +94,6 @@ define([
    * @return {Object} promise for the descendancy
    */
   exports.getDescendancy = function(id, params, opts) {
-    params = params || {};
     return plumbing.get('/platform/tree/descendancy', helpers.removeEmptyProperties(helpers.extend({'person': id}, params)),
       {}, opts,
       helpers.compose(
