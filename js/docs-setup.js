@@ -47,6 +47,34 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "discussions",
+      "shortName": "discussions",
+      "type": "overview",
+      "keywords": "api discussions docs familysearch functions https org overview related to"
+    },
+    {
+      "section": "api",
+      "id": "discussions.functions:getComments",
+      "shortName": "getComments",
+      "type": "function",
+      "keywords": "an and api array comment comments convenience currently discussion discussions docs during each editable example familysearch following for from function functions get getcomments has http https id includes init net of options opts org params pass promise read response specified text the to unused"
+    },
+    {
+      "section": "api",
+      "id": "discussions.functions:getDiscussion",
+      "shortName": "getDiscussion",
+      "type": "function",
+      "keywords": "about api comments convenience currently details discussion discussions docs during editable example familysearch following for function functions get getdetails getid getnumberofcomments gettitle http https id includes information init net number of options opts org params pass promise read response specified string the title to unused"
+    },
+    {
+      "section": "api",
+      "id": "discussions.functions:getPersonDiscussionReferences",
+      "shortName": "getPersonDiscussionReferences",
+      "type": "function",
+      "keywords": "an api array convenience currently discussion discussions docs during editable example familysearch following for from function functions get getdiscussion getids http https id ids includes information init into more net of options opts org params pass person promise read references response specified the to unused"
+    },
+    {
+      "section": "api",
       "id": "init",
       "shortName": "init",
       "type": "overview",
@@ -58,6 +86,27 @@ NG_DOCS={
       "shortName": "init",
       "type": "function",
       "keywords": "$http $q access access_token ajax already an and angular api app_key as auth_callback auto_signin be browser but call calls cookie creating currently deferred deferred_function developer does enable environment eventually exist false familysearch for from function functions future have host http http_function if in init initialize issuing jquery js key logging may must need node not oauth2 object opts or pass popups port production prompted re-read received redirect registered requests require returns running same sandbox save_access_token saved script server session set sign staging the their this to token true unauthorized uri used user want when with you your"
+    },
+    {
+      "section": "api",
+      "id": "notes",
+      "shortName": "notes",
+      "type": "overview",
+      "keywords": "api docs familysearch functions https notes org overview related to"
+    },
+    {
+      "section": "api",
+      "id": "notes.functions:getPersonNote",
+      "shortName": "getPersonNote",
+      "type": "function",
+      "keywords": "about api convenience currently docs during editable example familysearch following for function functions get getnoteid getpersonid getsubject gettext http https includes information init net nid note notes of options opts org params pass person pid promise response specified the to unused"
+    },
+    {
+      "section": "api",
+      "id": "notes.functions:getPersonNotes",
+      "shortName": "getPersonNotes",
+      "type": "function",
+      "keywords": "an and api array convenience currently docs during each editable example familysearch following for from function functions get getnotes has http https id includes init net note notes of options opts org params pass person promise read response specified subject the to unused"
     },
     {
       "section": "api",
@@ -107,13 +156,6 @@ NG_DOCS={
       "shortName": "getPersonChangeSummary",
       "type": "function",
       "keywords": "an and api array change changehistory changes convenience currently detailed docs during each editable example familysearch following for from function functions get getchanges has http https id in includes information init module net of options opts org params pass person promise published read response see specified summary the timestamp title to unused updated"
-    },
-    {
-      "section": "api",
-      "id": "person.functions:getPersonNotes",
-      "shortName": "getPersonNotes",
-      "type": "function",
-      "keywords": "an and api array convenience currently docs during each editable example familysearch following for from function functions get getnotes has http https id includes init net note notes of options opts org params pass person promise read response specified subject the to unused"
     },
     {
       "section": "api",

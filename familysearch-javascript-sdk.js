@@ -977,6 +977,202 @@ define('authentication',[
   return exports;
 });
 
+define('discussions',[
+  'helpers',
+  'plumbing'
+], function(helpers, plumbing) {
+  /**
+   * @ngdoc overview
+   * @name discussions
+   * @description
+   * Functions related to discussions
+   *
+   * {@link https://familysearch.org/developers/docs/api/resources#discussions FamilySearch API Docs}
+   */
+
+  var maybe = helpers.maybe; // shorthand
+
+  var exports = {};
+
+  /**
+   * @ngdoc function
+   * @name discussions.functions:getPersonDiscussionReferences
+   * @function
+   *
+   * @description
+   * Get references to discussions for a person
+   * The response includes the following convenience function
+   *
+   * - `getIds()` - get an array of discussion ids from the response; pass the id into `getDiscussion` for more information
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Discussion_References_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/kd39K/ editable example}
+   *
+   * @param {String} id of the person to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getPersonDiscussionReferences = function(id, params, opts) {
+    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/discussion-references', params, {}, opts,
+      helpers.objectExtender({getIds: function() {
+        return helpers.map(maybe(maybe(this.persons)[0])['discussion-references'], function(uri) {
+          return uri.replace(/^.*\//, '');
+        });
+      }}));
+  };
+
+  /**
+   * @ngdoc function
+   * @name discussions.functions:getDiscussion
+   * @function
+   *
+   * @description
+   * Get information about a discussion
+   * The response includes the following convenience functions
+   *
+   * - `getId()` - discussion id
+   * - `getTitle()` - title string
+   * - `getDetails()` - details string
+   * - `getNumberOfComments()` - number of comments
+   *
+   * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/FzWSu/ editable example}
+   *
+   * @param {String} id of the discussion to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getDiscussion = function(id, params, opts) {
+    return plumbing.get('/platform/discussions/discussions/'+encodeURI(id), params, {}, opts,
+      helpers.objectExtender(discussionConvenienceFunctions));
+  };
+
+  var discussionConvenienceFunctions = {
+    getId:               function() { return maybe(maybe(this.discussions)[0]).id; },
+    getTitle:            function() { return maybe(maybe(this.discussions)[0]).title; },
+    getDetails:          function() { return maybe(maybe(this.discussions)[0]).details; },
+    getNumberOfComments: function() { return maybe(maybe(this.discussions)[0]).numberOfComments; }
+  };
+
+  /**
+   * @ngdoc function
+   * @name discussions.functions:getComments
+   * @function
+   *
+   * @description
+   * Get comments for a discussion
+   * The response includes the following convenience function
+   *
+   * - `getComments()` - get the array of comments from the response; each comment has an `id` and `text`
+   *
+   * {@link https://familysearch.org/developers/docs/api/discussions/Comments_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ// editable example}
+   *
+   * @param {String} id of the discussion to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getComments = function(id, params, opts) {
+    return plumbing.get('/platform/discussions/discussions/'+encodeURI(id)+'/comments', params, {}, opts,
+      helpers.objectExtender({getComments: function() { return maybe(maybe(this.discussions)[0]).comments || []; }}));
+  };
+
+  return exports;
+});
+
+define('notes',[
+  'helpers',
+  'plumbing'
+], function(helpers, plumbing) {
+  /**
+   * @ngdoc overview
+   * @name notes
+   * @description
+   * Functions related to notes
+   *
+   * {@link https://familysearch.org/developers/docs/api/resources#notes FamilySearch API Docs}
+   */
+
+  var maybe = helpers.maybe; // shorthand
+
+  var exports = {};
+
+  /**
+   * @ngdoc function
+   * @name notes.functions:getPersonNotes
+   * @function
+   *
+   * @description
+   * Get the notes for a person
+   * The response includes the following convenience function
+   *
+   * - `getNotes()` - get the array of notes from the response; each note has an `id` and a `subject`
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Notes_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/3enGw/ editable example}
+   *
+   * @param {String} id of the person to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getPersonNotes = function(id, params, opts) {
+    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/notes', params, {}, opts,
+      helpers.objectExtender({getNotes: function() { return maybe(maybe(this.persons)[0]).notes || []; }}));
+  };
+
+
+  /**
+   * @ngdoc function
+   * @name notes.functions:getPersonNote
+   * @function
+   *
+   * @description
+   * Get information about a note
+   * The response includes the following convenience functions
+   *
+   * - `getPersonId()`
+   * - `getNoteId()`
+   * - `getSubject()`
+   * - `getText()`
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Note_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/96EkL/ editable example}
+   *
+   * @param {String} pid of the person
+   * @param {String} nid of the note
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getPersonNote = function(pid, nid, params, opts) {
+    return plumbing.get('/platform/tree/persons/'+encodeURI(pid)+'/notes/'+encodeURI(nid), params, {}, opts,
+      helpers.objectExtender(personNoteConvenienceFunctions));
+  };
+
+  var personNoteConvenienceFunctions = {
+    getPersonId: function() { return maybe(maybe(this.persons)[0]).id; },
+    getNoteId:   function() { return maybe(maybe(maybe(maybe(this.persons)[0]).notes)[0]).id; },
+    getSubject:  function() { return maybe(maybe(maybe(maybe(this.persons)[0]).notes)[0]).subject; },
+    getText:     function() { return maybe(maybe(maybe(maybe(this.persons)[0]).notes)[0]).text; }
+  };
+
+  // TODO getCoupleRelationshipNotes
+  // TODO getCoupleRelationshipNote
+  // TODO getChildAndParentsRelationshipNotes
+  // TODO getChildAndParentsRelationshipNote
+
+  return exports;
+});
+
 define('person',[
   'helpers',
   'plumbing'
@@ -1054,31 +1250,6 @@ define('person',[
   };
 
   exports.personExtender = helpers.objectExtender(personConvenienceFunctions, exports.personExtensionPointGetter);
-
-  /**
-   * @ngdoc function
-   * @name person.functions:getPersonNotes
-   * @function
-   *
-   * @description
-   * Get the notes for a person
-   * The response includes the following convenience function
-   *
-   * - `getNotes()` - get the array of notes from the response; each note has an `id` and a `subject`
-   *
-   * {@link https://familysearch.org/developers/docs/api/tree/Person_Notes_resource FamilySearch API Docs}
-   *
-   * {@link http://jsfiddle.net/DallanQ/3enGw/ editable example}
-   *
-   * @param {String} id of the person to read
-   * @param {Object=} params currently unused
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the response
-   */
-  exports.getPersonNotes = function(id, params, opts) {
-    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/notes', params, {}, opts,
-      helpers.objectExtender({getNotes: function() { return this && this.persons && this.persons[0].notes ? this.persons[0].notes : []; }}));
-  };
 
   /**
    * @ngdoc function
@@ -1611,12 +1782,14 @@ define('user',[
 define('FamilySearch',[
   'init',
   'authentication',
+  'discussions',
+  'notes',
   'pedigree',
   'person',
   'sources',
   'user',
   'plumbing'
-], function(init, authentication, pedigree, person, sources, user, plumbing) {
+], function(init, authentication, discussions, notes, pedigree, person, sources, user, plumbing) {
   return {
     init: init.init,
 
@@ -1626,13 +1799,21 @@ define('FamilySearch',[
     hasAccessToken: authentication.hasAccessToken,
     invalidateAccessToken: authentication.invalidateAccessToken,
 
+    // discussions
+    getPersonDiscussionReferences: discussions.getPersonDiscussionReferences,
+    getDiscussion: discussions.getDiscussion,
+    getComments: discussions.getComments,
+
+    // notes
+    getPersonNotes: notes.getPersonNotes,
+    getPersonNote: notes.getPersonNote,
+
     // pedigree
     getAncestry: pedigree.getAncestry,
     getDescendancy: pedigree.getDescendancy,
 
     // person
     getPerson: person.getPerson,
-    getPersonNotes: person.getPersonNotes,
     getMultiPerson: person.getMultiPerson,
     getPersonWithRelationships: person.getPersonWithRelationships,
     getPersonChangeSummary: person.getPersonChangeSummary,
