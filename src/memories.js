@@ -4,11 +4,11 @@ define([
 ], function(helpers, plumbing) {
   /**
    * @ngdoc overview
-   * @name sources
+   * @name memories
    * @description
-   * Functions related to sources
+   * Functions related to memories
    *
-   * {@link https://familysearch.org/developers/docs/api/resources#sources FamilySearch API Docs}
+   * {@link https://familysearch.org/developers/docs/api/resources#memories FamilySearch API Docs}
    */
 
   var maybe = helpers.maybe; // shorthand
@@ -17,24 +17,21 @@ define([
 
   /**
    * @ngdoc function
-   * @name sources.functions:getPersonSourceReferences
+   * @name memories.functions:getPersonMemoryReferences
    * @function
    *
    * @description
-   * Get references to sources for a person
+   * Get references to memories for a person
    * The response includes the following convenience function
    *
-   * - `getSources()` - get the array of source references from the response; each reference has the following convenience functions
+   * - `getMemories()` - get the array of memory references from the response; each reference has the following convenience functions
    *
-   * ###Source reference convenience Functions
+   * ###Memory reference convenience Functions
    *
-   * - `getSourceId()` - id of the source ( use `getSourceDescription` to find out more)
-   * - `getTags()` - array of tags; each tag is an object with a `resource` property identifying an assertion type
-   * - `getContributorId()` - id of the contributor (use `getAgent` to find out more)
-   * - `getModifiedTimestamp()`
-   * - `getChangeMessage()`
+   * - `getMemoryId()` - id of the memory (use `getMemory` to find out more)
+   * - `getPersonaId()` - id of the persona in the memory that is attached to this person
    *
-   * {@link https://familysearch.org/developers/docs/api/tree/Person_Source_References_resource FamilySearch API Docs}
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_References_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/BkydV/ editable example}
    *
@@ -44,9 +41,9 @@ define([
    * @return {Object} promise for the response
    */
   exports.getPersonSourceReferences = function(id, params, opts) {
-    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/source-references', params, {}, opts,
+    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/memory-references', params, {}, opts,
       helpers.compose(
-        helpers.objectExtender({getSources: function() {
+        helpers.objectExtender({getReferences: function() {
           return maybe(maybe(this.persons)[0]).sources || [];
         }}),
         helpers.objectExtender(sourceReferenceConvenienceFunctions, function(response) {
@@ -97,14 +94,14 @@ define([
     getId: function() { return maybe(maybe(this.sourceDescriptions)[0]).id; },
     getTitle: function() { return maybe(maybe(maybe(maybe(this.sourceDescriptions)[0]).titles)[0]).value; },
     getTitles: function() { return helpers.map(maybe(maybe(this.sourceDescriptions)[0]).titles, function(title) {
-        return title.value;
-      }); },
+      return title.value;
+    }); },
     getCitations: function() { return helpers.map(maybe(maybe(this.sourceDescriptions)[0]).citations, function(citation) {
-        return citation.value;
-      }); },
+      return citation.value;
+    }); },
     getNotes: function() { return helpers.map(maybe(maybe(this.sourceDescriptions)[0]).notes, function(note) {
-        return note.text;
-      }); },
+      return note.text;
+    }); },
     getAbout: function() { return maybe(maybe(this.sourceDescriptions)[0]).about; }
   };
 
