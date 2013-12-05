@@ -103,6 +103,13 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "person.functions:getPersonChangeSummary",
+      "shortName": "getPersonChangeSummary",
+      "type": "function",
+      "keywords": "an and api array change changehistory changes convenience currently detailed docs during each editable example familysearch following for from function functions get getchanges has http https id in includes information init module net of options opts org params pass person promise published read response see specified summary the timestamp title to unused updated"
+    },
+    {
+      "section": "api",
       "id": "person.functions:getPersonNotes",
       "shortName": "getPersonNotes",
       "type": "function",
@@ -190,14 +197,14 @@ NG_DOCS={
       "id": "user.functions:getCurrentUser",
       "shortName": "getCurrentUser",
       "type": "function",
-      "keywords": "api convenience current docs during editable example familysearch following for function functions get getcontactname getemail getfullname getid gettreeuserid http https init net options opts org pass promise specified the to user with"
+      "keywords": "api convenience current currently docs during editable example familysearch following for function functions get getcontactname getemail getfullname getid gettreeuserid http https init net options opts org params pass promise specified the to unused user with"
     },
     {
       "section": "api",
       "id": "user.functions:getCurrentUserPerson",
       "shortName": "getCurrentUserPerson",
       "type": "function",
-      "keywords": "api current docs during editable example familysearch for function functions get http https id in init net of options opts org pass person promise specified the to tree user"
+      "keywords": "api current currently docs during editable example familysearch for function functions get http https id in init net of options opts org params pass person promise specified the to tree unused user"
     }
   ],
   "apis": {

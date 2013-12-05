@@ -1,0 +1,30 @@
+<h1><code ng:non-bindable="">getPersonChangeSummary</code>
+<span class="hint">(functions in module <code ng:non-bindable="">person</code>
+)</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>Get the change summary for a person. For detailed change information see functions in the changeHistory module
+The response includes the following convenience function</p>
+
+<ul>
+<li><code>getChanges()</code> - get the array of changes from the response; each change has an <code>id</code>, <code>published</code> timestamp, <code>title</code>, and <code>updated</code> timestamp</li>
+</ul>
+
+<p><a href="https://familysearch.org/developers/docs/api/tree/Person_Change_Summary_resource">FamilySearch API Docs</a></p>
+
+<p><a href="http://jsfiddle.net/DallanQ/ga37h/">editable example</a></p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getPersonChangeSummary(id[, params][, opts]);</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<p>of the person to read</p></li>
+<li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
+<p>currently unused</p></li>
+<li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
+<p>options to pass to the http function specified during init</p></li>
+</ul>
+<h3 id="Returns">Returns</h3>
+<div class="returns"><code ng:non-bindable="">{Object}</code>
+– <p>promise for the response</p></div>
+</div>
+</div>

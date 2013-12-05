@@ -1006,11 +1006,12 @@ define('user',[
    *
    * {@link http://jsfiddle.net/DallanQ/3NJFM/ editable example}
    *
+   * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} a promise for the current user
    */
-  exports.getCurrentUser = function(opts) {
-    return plumbing.get('/platform/users/current', {}, {}, opts, helpers.objectExtender(currentUserConvenienceFunctions));
+  exports.getCurrentUser = function(params, opts) {
+    return plumbing.get('/platform/users/current', params, {}, opts, helpers.objectExtender(currentUserConvenienceFunctions));
   };
 
   var currentUserConvenienceFunctions = {
@@ -1033,11 +1034,12 @@ define('user',[
    *
    * {@link http://jsfiddle.net/DallanQ/c4puF/ editable example}
    *
+   * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the (string) id of the current user person
    */
-  exports.getCurrentUserPerson = function(opts) {
-    var promise = plumbing.get('/platform/tree/current-person', {}, {}, opts);
+  exports.getCurrentUserPerson = function(params, opts) {
+    var promise = plumbing.get('/platform/tree/current-person', params, {}, opts);
     var d = globals.deferredWrapper();
     var returnedPromise = helpers.extendHttpPromise(d.promise, promise);
     promise.then(
@@ -1104,7 +1106,7 @@ define('user',[
    * @param {Object=} opts options to pass to the http function specified during init
    */
   exports.getAgent = function(id, params, opts) {
-    return plumbing.get('/platform/users/agents/'+encodeURI(id), {}, {}, opts, helpers.objectExtender(agentConvenienceFunctions));
+    return plumbing.get('/platform/users/agents/'+encodeURI(id), params, {}, opts, helpers.objectExtender(agentConvenienceFunctions));
   };
 
   var agentConvenienceFunctions = {
@@ -1171,7 +1173,6 @@ define('person',[
    * @return {Object} promise for the response
    */
   exports.getPerson = function(id, params, opts) {
-    params = params || {};
     return plumbing.get('/platform/tree/persons/'+encodeURI(id), params, {}, opts,
       helpers.compose(helpers.objectExtender({getPerson: function() { return this.persons[0]; }}), exports.personExtender));
   };
@@ -1220,9 +1221,8 @@ define('person',[
    * @return {Object} promise for the response
    */
   exports.getPersonNotes = function(id, params, opts) {
-    params = params || {};
     return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/notes', params, {}, opts,
-      helpers.objectExtender({getNotes: function() { return this && this.persons ? this.persons[0].notes : []; }}));
+      helpers.objectExtender({getNotes: function() { return this && this.persons && this.persons[0].notes ? this.persons[0].notes : []; }}));
   };
 
   /**
@@ -1287,7 +1287,6 @@ define('person',[
    * @return {Object} promise for the person with relationships
    */
   exports.getPersonWithRelationships = function(id, params, opts) {
-    params = params || {};
     return plumbing.get('/platform/tree/persons-with-relationships', helpers.removeEmptyProperties(helpers.extend({'person': id}, params)),
       {}, opts,
       helpers.compose(helpers.objectExtender(personWithRelationshipsConvenienceFunctions), exports.personExtender));
@@ -1349,8 +1348,34 @@ define('person',[
     return (r.father && r.father.resourceId === parentId) || (r.mother && r.mother.resourceId === parentId);
   }
 
+  /**
+   * @ngdoc function
+   * @name person.functions:getPersonChangeSummary
+   * @function
+   *
+   * @description
+   * Get the change summary for a person. For detailed change information see functions in the changeHistory module
+   * The response includes the following convenience function
+   *
+   * - `getChanges()` - get the array of changes from the response; each change has an `id`, `published` timestamp, `title`, and `updated` timestamp
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Change_Summary_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/ga37h/ editable example}
+   *
+   * @param {String} id of the person to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getPersonChangeSummary = function(id, params, opts) {
+    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/change-summary', params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+      helpers.objectExtender({getChanges: function() { return this && this.entries ? this.entries : []; }}));
+  };
+
   return exports;
 });
+
 define('pedigree',[
   'helpers',
   'person',
@@ -1396,7 +1421,6 @@ define('pedigree',[
    * @return {Object} promise for the ancestry
    */
   exports.getAncestry = function(id, params, opts) {
-    params = params || {};
     return plumbing.get('/platform/tree/ancestry', helpers.removeEmptyProperties(helpers.extend({'person': id}, params)),
       {}, opts,
       helpers.compose(
@@ -1448,7 +1472,6 @@ define('pedigree',[
    * @return {Object} promise for the descendancy
    */
   exports.getDescendancy = function(id, params, opts) {
-    params = params || {};
     return plumbing.get('/platform/tree/descendancy', helpers.removeEmptyProperties(helpers.extend({'person': id}, params)),
       {}, opts,
       helpers.compose(
@@ -1487,6 +1510,7 @@ define('FamilySearch',[
     getPersonNotes: person.getPersonNotes,
     getMultiPerson: person.getMultiPerson,
     getPersonWithRelationships: person.getPersonWithRelationships,
+    getPersonChangeSummary: person.getPersonChangeSummary,
 
     // pedigree
     getAncestry: pedigree.getAncestry,
