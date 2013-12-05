@@ -44,7 +44,7 @@ define([
    * @return {Object} promise for the response
    */
   exports.getPersonChangeHistory = function(id, params, opts) {
-    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/changes', params, {}, opts,
+    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/changes', params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
       helpers.compose(
         helpers.objectExtender({getChanges: function() {
           return this.entries || [];

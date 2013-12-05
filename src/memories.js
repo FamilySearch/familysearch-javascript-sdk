@@ -229,7 +229,7 @@ define([
    * @return {Object} promise for the response
    */
   exports.getMemoryComments = function(id, params, opts) {
-    return plumbing.get('/platform/memories/memories/'+encodeURI(id)+'/comments', params, {}, opts,
+    return plumbing.get('/platform/memories/memories/'+encodeURI(id)+'/comments', params, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.objectExtender({getComments: function() { return maybe(maybe(this.discussions)[0]).comments || []; }}));
   };
 
