@@ -3,13 +3,14 @@ define([
   'authentication',
   'changeHistory',
   'discussions',
+  'memories',
   'notes',
   'pedigree',
   'person',
   'sources',
   'user',
   'plumbing'
-], function(init, authentication, changeHistory, discussions, notes, pedigree, person, sources, user, plumbing) {
+], function(init, authentication, changeHistory, discussions, memories, notes, pedigree, person, sources, user, plumbing) {
   return {
     init: init.init,
 
@@ -26,6 +27,9 @@ define([
     getPersonDiscussionReferences: discussions.getPersonDiscussionReferences,
     getDiscussion: discussions.getDiscussion,
     getComments: discussions.getComments,
+
+    // memories
+    getPersonMemoryReferences: memories.getPersonMemoryReferences,
 
     // notes
     getPersonNotes: notes.getPersonNotes,

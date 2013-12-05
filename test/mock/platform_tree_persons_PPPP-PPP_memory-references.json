@@ -1,0 +1,18 @@
+{
+  "persons" : [ {
+    "id" : "PPPP-PPP",
+    "links" : {
+      "person" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPPP-PPP",
+        "title" : "Person"
+      }
+    },
+    "evidence" : [ {
+      "resource" : "https://familysearch.org/platform/memories/memories/3649/personas/1083",
+      "resourceId" : "1083"
+    }, {
+      "resource" : "https://familysearch.org/platform/memories/memories/3652/personas/1204",
+      "resourceId" : "1204"
+    } ]
+  } ]
+}
