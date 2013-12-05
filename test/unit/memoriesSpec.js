@@ -22,5 +22,13 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getDescriptions()).toEqual(['Shows Ethel Hollivet was born 3 Aug 1899']);
       });
     });
+
+    it('comments are returned from getMemoryComments', function() {
+      FamilySearch.getMemoryComments('AR-1234').then(function(response) {
+        expect(response.getComments().length).toBe(1);
+        expect(response.getComments()[0].id).toBe('CMMM-MMM');
+        expect(response.getComments()[0].text).toBe('Just a comment.');
+      });
+    });
   });
 });

@@ -1,0 +1,16 @@
+{
+  "discussions" : [ {
+  "id" : "dis-MMMM-MMM",
+  "numberOfComments" : 1,
+  "comments" : [ {
+    "id" : "CMMM-MMM",
+    "links" : {
+      "comment" : {
+        "href" : "https://familysearch.org/platform/memories/memories/AR-1234/comments/CMMM-MMM",
+        "title" : "Memory Comment"
+      }
+    },
+    "text" : "Just a comment."
+  } ]
+} ]
+}

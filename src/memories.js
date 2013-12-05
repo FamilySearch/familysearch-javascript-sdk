@@ -106,5 +106,30 @@ define([
     }); }
   };
 
+  /**
+   * @ngdoc function
+   * @name memories.functions:getMemoryComments
+   * @function
+   *
+   * @description
+   * Get comments for a memory
+   * The response includes the following convenience function
+   *
+   * - `getComments()` - get the array of comments from the response; each comment has an `id` and `text`
+   *
+   * {@link https://familysearch.org/developers/docs/api/memories/Memory_Comments_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/nLW5hn/ editable example}
+   *
+   * @param {String} id of the memory to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getMemoryComments = function(id, params, opts) {
+    return plumbing.get('/platform/memories/memories/'+encodeURI(id)+'/comments', params, {}, opts,
+      helpers.objectExtender({getComments: function() { return maybe(maybe(this.discussions)[0]).comments || []; }}));
+  };
+
   return exports;
 });
