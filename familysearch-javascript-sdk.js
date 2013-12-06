@@ -1098,9 +1098,10 @@ define('discussions',[
    */
   exports.getPersonDiscussionReferences = function(id, params, opts) {
     return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/discussion-references', params, {'Accept': 'application/x-fs-v1+json'}, opts,
+      // TODO consider returning a URL
       helpers.objectExtender({getDiscussionIds: function() {
         return helpers.map(maybe(maybe(this.persons)[0])['discussion-references'], function(uri) {
-          return uri.replace(/^.*\//, '');
+          return uri.replace(/^.*\//, '').replace(/\?.*$/, '');
         });
       }}));
   };
@@ -1934,7 +1935,8 @@ define('sources',[
   };
 
   var sourceReferenceConvenienceFunctions = {
-    getSourceId:          function() { return this.description ? this.description.replace(/.*\//, '') : this.description; },
+    // TODO consider returning the URL
+    getSourceId:          function() { return this.description ? this.description.replace(/.*\//, '').replace(/\?.*$/, '') : this.description; },
     getTags:              function() { return this.tags || []; },
     getContributorId:     function() { return maybe(maybe(this.attribution).contributor).resourceId; },
     getModifiedTimestamp: function() { return maybe(this.attribution).modified; },
