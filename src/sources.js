@@ -57,7 +57,7 @@ define([
 
   var sourceReferenceConvenienceFunctions = {
     // TODO consider returning the URL
-    getSourceId:          function() { return this.description ? this.description.replace(/.*\/([^?]*).*/, '').replace(/\?.*$/, '') : this.description; },
+    getSourceId:          function() { return this.description ? this.description.replace(/.*\//, '').replace(/\?.*$/, '') : this.description; },
     getTags:              function() { return this.tags || []; },
     getContributorId:     function() { return maybe(maybe(this.attribution).contributor).resourceId; },
     getModifiedTimestamp: function() { return maybe(this.attribution).modified; },
