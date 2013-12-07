@@ -221,7 +221,7 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/memories/Memory_Comments_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/DallanQ/nLW5hn/ editable example}
+   * {@link http://jsfiddle.net/DallanQ/aJ77f/ editable example}
    *
    * @param {String} id of the memory to read
    * @param {Object=} params currently unused
@@ -273,9 +273,12 @@ define([
    * @param {String} id of the person
    * @return {String} URL that will redirect to the portrait of a person
    */
+  // TODO add the default parameter
   exports.getPersonPortraitURL = function(id) {
     return helpers.getServerUrl('/platform/tree/persons/'+encodeURI(id)+'/portrait');
   };
+
+  // TODO think about a way to test whether a person has a portrait: default to / and see if it redirects there
 
   return exports;
 });
