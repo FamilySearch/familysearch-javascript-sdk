@@ -25,6 +25,7 @@ define([
    * - `exists(ascendancyNumber)` - return true if a person with ascendancy number exists
    *
    * The following functions return person objects decorated with *person convenience functions* {@link person.functions:getPerson as described in getPerson}
+   * (with the exception that `getGivenName()` and `getSurname()` functions do not work because the name pieces aren't there)
    * as well as a `getAscendancyNumber()` function that returns the person's ascendancy number
    *
    * - `getPersons()` - returns an array of all persons
@@ -79,6 +80,7 @@ define([
    * - `exists(descendancyNumber)` - return true if a person with descendancy number exists
    *
    * The following functions return person objects decorated with *person convenience functions* {@link person.functions:getPerson as described in getPerson}
+   * (with the exception that `getGivenName()` and `getSurname()` functions do not work because the name pieces aren't there)
    * as well as a `getDescendancyNumber()` function that returns the person's descendancy number
    *
    * - `getPersons()` - returns all persons

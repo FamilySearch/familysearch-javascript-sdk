@@ -67,9 +67,9 @@ define([
     getLifeSpan:   function() { return this.display.lifespan; },
     getName:       function() { return this.display.name; },
     isLiving:      function() { return this.living; },
-    getGivenName:  function() { return helpers.findOrEmpty(helpers.firstOrEmpty(helpers.findOrEmpty(this.names, {preferred: true}).nameForms).parts,
+    getGivenName:  function() { return helpers.findOrEmpty(helpers.firstOrEmpty(helpers.findOrFirstOrEmpty(this.names, {preferred: true}).nameForms).parts,
       {type: 'http://gedcomx.org/Given'}).value; },
-    getSurname:    function() { return helpers.findOrEmpty(helpers.firstOrEmpty(helpers.findOrEmpty(this.names, {preferred: true}).nameForms).parts,
+    getSurname:    function() { return helpers.findOrEmpty(helpers.firstOrEmpty(helpers.findOrFirstOrEmpty(this.names, {preferred: true}).nameForms).parts,
       {type: 'http://gedcomx.org/Surname'}).value; },
     getDisplayAttrs: function() { return this.display; }
   };

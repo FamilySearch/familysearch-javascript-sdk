@@ -94,9 +94,9 @@ define([
   };
 
   // simplified version of underscore's find
-  // also, returns an empty object if the no matching elements found
-  helpers.findOrEmpty = function(arr, objOrFn) {
-    var result = {};
+  // returns undefined if nothing found
+  helpers.find = function(arr, objOrFn) {
+    var result;
     var isFn = helpers.isFunction(objOrFn);
     if (arr) {
       for (var i = 0, len = arr.length; i < len; i++) {
@@ -123,9 +123,45 @@ define([
     return result;
   };
 
-  // returns the first element of the array or an empty object
+  // returns empty object if nothing found
+  helpers.findOrEmpty = function(arr, objOrFn) {
+    var result = helpers.find(arr, objOrFn);
+    if (helpers.isUndefined(result)) {
+      result = {};
+    }
+    return result;
+  };
+
+  // returns the first element of the array
+  // returns undefined if nothing found
+  helpers.first = function(arr) {
+    var result;
+    if (arr && arr.length > 0) {
+      result = arr[0];
+    }
+    return result;
+  };
+
+  // returns empty object if nothing found
   helpers.firstOrEmpty = function(arr) {
-    return (arr && arr.length > 0 ? arr[0] : {});
+    var result = helpers.first(arr);
+    if (helpers.isUndefined(result)) {
+      result = {};
+    }
+    return result;
+  };
+
+  // returns find match, first, or empty
+  helpers.findOrFirstOrEmpty = function(arr, objOrFn) {
+    var result = helpers.find(arr, objOrFn);
+    if (helpers.isUndefined(result)) {
+      result = helpers.first(arr);
+      console.log('findOrFirstOrEmpty', arr);
+    }
+    if (helpers.isUndefined(result)) {
+      result = {};
+    }
+    return result;
   };
 
   helpers.extend = function(dest) {
