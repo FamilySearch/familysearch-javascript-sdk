@@ -164,9 +164,9 @@ define('helpers',[
   };
 
   // simplified version of underscore's find
-  // also, returns an empty object if the no matching elements found
-  helpers.findOrEmpty = function(arr, objOrFn) {
-    var result = {};
+  // returns undefined if nothing found
+  helpers.find = function(arr, objOrFn) {
+    var result;
     var isFn = helpers.isFunction(objOrFn);
     if (arr) {
       for (var i = 0, len = arr.length; i < len; i++) {
@@ -193,9 +193,45 @@ define('helpers',[
     return result;
   };
 
-  // returns the first element of the array or an empty object
+  // returns empty object if nothing found
+  helpers.findOrEmpty = function(arr, objOrFn) {
+    var result = helpers.find(arr, objOrFn);
+    if (helpers.isUndefined(result)) {
+      result = {};
+    }
+    return result;
+  };
+
+  // returns the first element of the array
+  // returns undefined if nothing found
+  helpers.first = function(arr) {
+    var result;
+    if (arr && arr.length > 0) {
+      result = arr[0];
+    }
+    return result;
+  };
+
+  // returns empty object if nothing found
   helpers.firstOrEmpty = function(arr) {
-    return (arr && arr.length > 0 ? arr[0] : {});
+    var result = helpers.first(arr);
+    if (helpers.isUndefined(result)) {
+      result = {};
+    }
+    return result;
+  };
+
+  // returns find match, first, or empty
+  helpers.findOrFirstOrEmpty = function(arr, objOrFn) {
+    var result = helpers.find(arr, objOrFn);
+    if (helpers.isUndefined(result)) {
+      result = helpers.first(arr);
+      console.log('findOrFirstOrEmpty', arr);
+    }
+    if (helpers.isUndefined(result)) {
+      result = {};
+    }
+    return result;
   };
 
   helpers.extend = function(dest) {
@@ -1392,7 +1428,7 @@ define('memories',[
    *
    * {@link https://familysearch.org/developers/docs/api/memories/Memory_Comments_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/DallanQ/nLW5hn/ editable example}
+   * {@link http://jsfiddle.net/DallanQ/aJ77f/ editable example}
    *
    * @param {String} id of the memory to read
    * @param {Object=} params currently unused
@@ -1444,9 +1480,12 @@ define('memories',[
    * @param {String} id of the person
    * @return {String} URL that will redirect to the portrait of a person
    */
+  // TODO add the default parameter
   exports.getPersonPortraitURL = function(id) {
     return helpers.getServerUrl('/platform/tree/persons/'+encodeURI(id)+'/portrait');
   };
+
+  // TODO think about a way to test whether a person has a portrait: default to / and see if it redirects there
 
   return exports;
 });
@@ -1607,9 +1646,9 @@ define('person',[
     getLifeSpan:   function() { return this.display.lifespan; },
     getName:       function() { return this.display.name; },
     isLiving:      function() { return this.living; },
-    getGivenName:  function() { return helpers.findOrEmpty(helpers.firstOrEmpty(helpers.findOrEmpty(this.names, {preferred: true}).nameForms).parts,
+    getGivenName:  function() { return helpers.findOrEmpty(helpers.firstOrEmpty(helpers.findOrFirstOrEmpty(this.names, {preferred: true}).nameForms).parts,
       {type: 'http://gedcomx.org/Given'}).value; },
-    getSurname:    function() { return helpers.findOrEmpty(helpers.firstOrEmpty(helpers.findOrEmpty(this.names, {preferred: true}).nameForms).parts,
+    getSurname:    function() { return helpers.findOrEmpty(helpers.firstOrEmpty(helpers.findOrFirstOrEmpty(this.names, {preferred: true}).nameForms).parts,
       {type: 'http://gedcomx.org/Surname'}).value; },
     getDisplayAttrs: function() { return this.display; }
   };
@@ -1797,6 +1836,7 @@ define('pedigree',[
    * - `exists(ascendancyNumber)` - return true if a person with ascendancy number exists
    *
    * The following functions return person objects decorated with *person convenience functions* {@link person.functions:getPerson as described in getPerson}
+   * (with the exception that `getGivenName()` and `getSurname()` functions do not work because the name pieces aren't there)
    * as well as a `getAscendancyNumber()` function that returns the person's ascendancy number
    *
    * - `getPersons()` - returns an array of all persons
@@ -1851,6 +1891,7 @@ define('pedigree',[
    * - `exists(descendancyNumber)` - return true if a person with descendancy number exists
    *
    * The following functions return person objects decorated with *person convenience functions* {@link person.functions:getPerson as described in getPerson}
+   * (with the exception that `getGivenName()` and `getSurname()` functions do not work because the name pieces aren't there)
    * as well as a `getDescendancyNumber()` function that returns the person's descendancy number
    *
    * - `getPersons()` - returns all persons

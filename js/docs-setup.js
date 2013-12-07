@@ -190,14 +190,14 @@ NG_DOCS={
       "id": "pedigree.functions:getAncestry",
       "shortName": "getAncestry",
       "type": "function",
-      "keywords": "all an ancestor ancestors ancestry and api are array as ascendancy available convenience decorated described docs during each editable example exists familysearch following for full function functions generations get getascendancynumber getbirthdate getbirthplace getdeathdate getdeathplace getperson getpersons http https id if in includes init max net number objects of only optionally options opts org params pass pedigree person persondetails persons promise retrieve return returns set specified spouse that the to true well with"
+      "keywords": "all an ancestor ancestors ancestry and api are aren array as ascendancy available because convenience decorated described do docs during each editable example exception exists familysearch following for full function functions generations get getascendancynumber getbirthdate getbirthplace getdeathdate getdeathplace getgivenname getperson getpersons getsurname http https id if in includes init max name net not number objects of only optionally options opts org params pass pedigree person persondetails persons pieces promise retrieve return returns set specified spouse that the there to true well with work"
     },
     {
       "section": "api",
       "id": "pedigree.functions:getDescendancy",
       "shortName": "getDescendancy",
       "type": "function",
-      "keywords": "all and api as convenience decorated descendancy descendants descendency described docs during editable example exists familysearch following for function functions generations get getancestry getdescendancynumber getperson getpersons http https id if in includes init max net number objects of optionally options opts org params pass pedigree person persons promise retrieve return returns specified spouse that the to true well with"
+      "keywords": "all and api aren as because convenience decorated descendancy descendants descendency described do docs during editable example exception exists familysearch following for function functions generations get getancestry getdescendancynumber getgivenname getperson getpersons getsurname http https id if in includes init max name net not number objects of optionally options opts org params pass pedigree person persons pieces promise retrieve return returns specified spouse that the there to true well with work"
     },
     {
       "section": "api",
