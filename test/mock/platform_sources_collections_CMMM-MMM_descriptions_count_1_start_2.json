@@ -1,0 +1,40 @@
+{
+  "links" : {
+    "last" : {
+      "href" : "https://familysearch.org/platform/sources/collections/CMMM-MMM/descriptions?start=4&count=1",
+      "title" : "User-Defined Collection Source Descriptions"
+    },
+    "next" : {
+      "href" : "https://familysearch.org/platform/sources/collections/CMMM-MMM/descriptions?start=3&count=1",
+      "title" : "User-Defined Collection Source Descriptions"
+    },
+    "self" : {
+      "href" : "https://familysearch.org/platform/sources/collections/CMMM-MMM/descriptions?start=2&count=1",
+      "title" : "User-Defined Collection Source Descriptions"
+    },
+    "collection" : {
+      "href" : "https://familysearch.org/platform/sources/collections/CMMM-MMM",
+      "title" : "User-Defined Collection"
+    },
+    "first" : {
+      "href" : "https://familysearch.org/platform/sources/collections/CMMM-MMM/descriptions?start=0&count=1",
+      "title" : "User-Defined Collection Source Descriptions"
+    },
+    "prev" : {
+      "href" : "https://familysearch.org/platform/sources/collections/CMMM-MMM/descriptions?start=1&count=1",
+      "title" : "User-Defined Collection Source Descriptions"
+    }
+  },
+  "sourceDescriptions" : [ {
+    "id" : "MMMM-CCC",
+    "links" : {
+      "description" : {
+        "href" : "https://familysearch.org/platform/sources/descriptions/MMMM-CCC",
+        "title" : "Source Description"
+      }
+    },
+    "titles" : [ {
+      "value" : "NEW TITLE"
+    } ]
+  } ]
+}

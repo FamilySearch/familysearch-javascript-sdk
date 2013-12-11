@@ -12,5 +12,15 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getTitle()).toBe('Name');
       });
     });
+
+    it('source descriptions are returned from getUserDefinedCollectionSourceDescriptions', function() {
+      FamilySearch.getUserDefinedCollectionSourceDescriptions('CMMM-MMM', {start:2, count:1}).then(function(response) {
+        var sourceDescriptions = response.getSourceDescriptions();
+        expect(sourceDescriptions.length).toBe(1);
+        expect(sourceDescriptions[0].getId()).toBe('MMMM-CCC');
+        expect(sourceDescriptions[0].getTitle()).toBe('NEW TITLE');
+        expect(sourceDescriptions[0].getTitles()).toEqual(['NEW TITLE']);
+      });
+    });
   });
 });

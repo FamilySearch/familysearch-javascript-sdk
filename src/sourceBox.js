@@ -75,5 +75,51 @@ define([
     getTitle:            function() { return maybe(maybe(this.collections)[0]).title; }
   };
 
+  /**
+   * @ngdoc function
+   * @name sourceBox.functions:getUserDefinedCollectionSourceDescriptions
+   * @function
+   *
+   * @description
+   * Get a paged list of source descriptions in a user-defined collection
+   * The response includes the following convenience function
+   *
+   * - `getSourceDescriptions()` - get the array of source descriptions from the response; each has the following convenience functions
+   *
+   * ###Source description convenience functions
+   *
+   * - `getId()` - id of the source description
+   * - `getTitles()` - array of title strings
+   * - `getTitle()` - the first title string
+   *
+   * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_Source_Descriptions_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ// editable example}
+   *
+   * @param {String} id of the collection to read
+   * @param {Object=} params `count` maximum to return (defaults to 25), `start` zero-based index of first source to return
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getUserDefinedCollectionSourceDescriptions = function(id, params, opts) {
+    return plumbing.get('/platform/sources/collections/'+encodeURI(id)+'/descriptions', params, {'Accept': 'application/x-fs-v1+json'}, opts,
+      helpers.compose(
+        helpers.objectExtender({getSourceDescriptions: function() {
+          return this.sourceDescriptions || [];
+        }}),
+        helpers.objectExtender(sourceDescriptionConvenienceFunctions, function(response) {
+          return response.sourceDescriptions;
+        })
+      ));
+  };
+
+  var sourceDescriptionConvenienceFunctions = {
+    getId: function() { return this.id; },
+    getTitle: function() { return maybe(maybe(this.titles)[0]).value; },
+    getTitles: function() { return helpers.map(this.titles, function(title) {
+      return title.value;
+    }); }
+  };
+
   return exports;
 });
