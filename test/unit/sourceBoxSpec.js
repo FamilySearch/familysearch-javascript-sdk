@@ -5,5 +5,12 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getCollectionIds()).toEqual(['MMMM-MMM']);
       });
     });
+
+    it('user collection is returned from getUserDefinedCollection', function() {
+      FamilySearch.getUserDefinedCollection('sf-MMMM-MMM').then(function(response) {
+        expect(response.getId()).toBe('sf-MMMM-MMM');
+        expect(response.getTitle()).toBe('Name');
+      });
+    });
   });
 });
