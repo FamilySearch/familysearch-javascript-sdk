@@ -292,6 +292,20 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "searchAndMatch",
+      "shortName": "searchAndMatch",
+      "type": "overview",
+      "keywords": "and api docs familysearch functions https match org overview related search search-and-match searchandmatch to"
+    },
+    {
+      "section": "api",
+      "id": "searchAndMatch.functions:getPersonSearch",
+      "shortName": "getPersonSearch",
+      "type": "function",
+      "keywords": "above additional allows an and api appears append array as be below birthdate birthplace can context convenience count dates deathdate deathplace decorated described docs does during each editable end example exports familysearch father female first following for from full function functions gender get getchildren getconfidence getcontext getfathers getid getmothers getperson getprimaryperson getresults getscore getspouses gettitle givenname has http https id in includes index init integer into is it list male marriagedate marriageplace matches mother name net non-exact number object objects of options opts or org pages parameter parameters params pass people person places promise real requests response result results returned search searchandmatch similarly specified spouse start string subsequent surname the tilde title to token value well which with work works"
+    },
+    {
+      "section": "api",
       "id": "sources",
       "shortName": "sources",
       "type": "overview",
