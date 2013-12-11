@@ -60,6 +60,20 @@ define([
     }
   };
 
+  // borrowed from underscore.js
+  helpers.keys = Object.keys || function(obj) {
+    if (obj !== Object(obj)) {
+      throw new TypeError('Invalid object');
+    }
+    var keys = [];
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        keys.push(key);
+      }
+    }
+    return keys;
+  };
+
   // simplified version of underscore's filter
   helpers.filter = function(arr, fn) {
     var result = [];
