@@ -57,7 +57,7 @@ define([
     return response.persons;
   };
 
-  var personConvenienceFunctions = {
+  exports.personConvenienceFunctions = {
     getId:         function() { return this.id; },
     getBirthDate:  function() { return this.display.birthDate; },
     getBirthPlace: function() { return this.display.birthPlace; },
@@ -74,7 +74,7 @@ define([
     getDisplayAttrs: function() { return this.display; }
   };
 
-  exports.personExtender = helpers.objectExtender(personConvenienceFunctions, exports.personExtensionPointGetter);
+  exports.personExtender = helpers.objectExtender(exports.personConvenienceFunctions, exports.personExtensionPointGetter);
 
   /**
    * @ngdoc function

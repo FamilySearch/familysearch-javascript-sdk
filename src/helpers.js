@@ -123,6 +123,32 @@ define([
     return result;
   };
 
+  // Compose functions from right to left, with each function consuming the return value of the function that follows
+  // borrowed from underscore
+  helpers.compose = function() {
+    var funcs = arguments;
+    return function() {
+      var args = arguments;
+      for (var i = funcs.length - 1; i >= 0; i--) {
+        args = [funcs[i].apply(this, args)];
+      }
+      return args[0];
+    };
+  };
+
+  // simplified version of underscore's flatten that only does shallow flattening
+  helpers.flatten = function(arr) {
+    var result = [];
+    helpers.forEach(arr, function(value) {
+      if (helpers.isArray(value)) {
+        Array.prototype.push.apply(result, value);
+      }
+    });
+    return result;
+  };
+
+  helpers.flatMap = helpers.compose(helpers.flatten, helpers.map);
+
   // returns empty object if nothing found
   helpers.findOrEmpty = function(arr, objOrFn) {
     var result = helpers.find(arr, objOrFn);
@@ -205,30 +231,6 @@ define([
     else {
       return helpers.partialRight(helpers.extend, extensions);
     }
-  };
-
-  /**
-   * Compose functions from right to left
-   * @param {...Function} functions to compose; each argument may be a function or an array of functions
-   * @returns {Function} composed function
-   */
-  /*jshint unused:false */
-  helpers.compose = function(functions) {
-    var args = arguments;
-    return function(obj) {
-      for (var i = args.length-1; i >= 0; i--) {
-        var arg = args[i];
-        if (helpers.isArray(arg)) {
-          for (var j = arg.length-1; j >= 0; j--) {
-            obj = arg[j](obj);
-          }
-        }
-        else {
-          obj = arg(obj);
-        }
-      }
-      return obj;
-    };
   };
 
   // copy functions from source to dest, binding them to source

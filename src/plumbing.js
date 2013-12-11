@@ -160,7 +160,7 @@ define([
           totalProcessingTime += parseInt(processingTime,10);
         }
         if (responseMapper) {
-          data = responseMapper(data);
+          data = responseMapper(data, promise);
         }
         d.resolve(data);
       },
