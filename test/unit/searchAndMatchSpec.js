@@ -20,5 +20,25 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(results[0].getMothers()[0].getId()).toBe('76543');
       });
     });
+
+    it('match results are returned from getPersonMatches', function() {
+      FamilySearch.getPersonMatches('12345').then(function(response) {
+        var results = response.getResults();
+        expect(results.length).toBe(2);
+        expect(results[0].getId()).toBe('98765');
+        expect(results[0].getTitle()).toBe('Person 98765');
+        expect(results[0].getScore()).toEqual(0.95);
+        expect(results[0].getConfidence()).toBeUndefined();
+        expect(results[0].getPrimaryPerson().getId()).toBe('98765');
+        expect(results[0].getChildren().length).toBe(1);
+        expect(results[0].getChildren()[0].getId()).toBe('54321');
+        expect(results[0].getSpouses().length).toBe(1);
+        expect(results[0].getSpouses()[0].getId()).toBe('65432');
+        expect(results[0].getFathers().length).toBe(1);
+        expect(results[0].getFathers()[0].getId()).toBe('87654');
+        expect(results[0].getMothers().length).toBe(1);
+        expect(results[0].getMothers()[0].getId()).toBe('76543');
+      });
+    });
   });
 });

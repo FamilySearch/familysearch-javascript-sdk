@@ -1,0 +1,181 @@
+{
+  "id" : "uuid:a39c2208-d305-4e2e-920f-75d3b04531b6",
+  "results" : 2,
+  "index" : 1,
+  "links" : {
+    "person" : {
+      "href" : "https://familysearch.org/platform/tree/persons/12345/matches",
+      "title" : "Person Matches"
+    },
+    "self" : {
+      "href" : "https://familysearch.org/platform/tree/persons/12345/matches",
+      "title" : "Person Matches"
+    }
+  },
+  "title" : "Possible matches of person 12345",
+  "updated" : 1386263873421,
+  "entries" : [ {
+    "content" : {
+      "gedcomx" : {
+        "persons" : [ {
+          "id" : "98765",
+          "identifiers" : {
+            "http://gedcomx.org/Persistent" : [ "http://10.0.0.2/platform/tree/persons/98765" ]
+          },
+          "gender" : {
+            "type" : "http://gedcomx.org/Male"
+          },
+          "names" : [ {
+            "type" : "http://gedcomx.org/BirthName",
+            "nameForms" : [ {
+              "fullText" : "Israel Heaton"
+            } ]
+          } ],
+          "facts" : [ {
+            "type" : "http://gedcomx.org/Birth",
+            "date" : {
+              "original" : "30 January 1880"
+            },
+            "place" : {
+              "original" : "Orderville, UT"
+            }
+          }, {
+            "type" : "http://gedcomx.org/Death",
+            "date" : {
+              "original" : "29 August 1936"
+            },
+            "place" : {
+              "original" : "Kanab, Kane, UT"
+            }
+          } ]
+        }, {
+          "id" : "87654",
+          "gender" : {
+            "type" : "http://gedcomx.org/Male"
+          },
+          "names" : [ {
+            "nameForms" : [ {
+              "fullText" : "Jonathan Heaton"
+            } ]
+          } ]
+        }, {
+          "id" : "76543",
+          "gender" : {
+            "type" : "http://gedcomx.org/Female"
+          },
+          "names" : [ {
+            "nameForms" : [ {
+              "fullText" : "Clarissa Hoyt"
+            } ]
+          } ]
+        }, {
+          "id" : "65432",
+          "gender" : {
+            "type" : "http://gedcomx.org/Female"
+          },
+          "names" : [ {
+            "nameForms" : [ {
+              "fullText" : "Charlotte Cox"
+            } ]
+          } ]
+        }, {
+          "id" : "54321",
+          "gender" : {
+            "type" : "http://gedcomx.org/Male"
+          },
+          "names" : [ {
+            "nameForms" : [ {
+              "fullText" : "Alma Heaton"
+            } ]
+          } ]
+        } ],
+        "relationships" : [ {
+          "type" : "http://gedcomx.org/ParentChild",
+          "person1" : {
+            "resource" : "https://familysearch.org/platform/users/agents/87654",
+            "resourceId" : "87654"
+          },
+          "person2" : {
+            "resource" : "https://familysearch.org/platform/users/agents/98765",
+            "resourceId" : "98765"
+          }
+        }, {
+          "type" : "http://gedcomx.org/ParentChild",
+          "person1" : {
+            "resource" : "https://familysearch.org/platform/users/agents/76543",
+            "resourceId" : "76543"
+          },
+          "person2" : {
+            "resource" : "https://familysearch.org/platform/users/agents/98765",
+            "resourceId" : "98765"
+          }
+        }, {
+          "type" : "http://gedcomx.org/Couple",
+          "person1" : {
+            "resource" : "https://familysearch.org/platform/users/agents/98765",
+            "resourceId" : "98765"
+          },
+          "person2" : {
+            "resource" : "https://familysearch.org/platform/users/agents/65432",
+            "resourceId" : "65432"
+          }
+        }, {
+          "type" : "http://gedcomx.org/ParentChild",
+          "person1" : {
+            "resource" : "https://familysearch.org/platform/users/agents/98765",
+            "resourceId" : "98765"
+          },
+          "person2" : {
+            "resource" : "https://familysearch.org/platform/users/agents/54321",
+            "resourceId" : "54321"
+          }
+        } ]
+      }
+    },
+    "id" : "98765",
+    "score" : 0.95,
+    "links" : {
+      "person" : {
+        "href" : "https://familysearch.org/platform/tree/persons/98765",
+        "title" : "Person"
+      },
+      "merge" : {
+        "href" : "https://familysearch.org/platform/tree/persons/12345/merges/98765",
+        "title" : "Person Merge"
+      }
+    },
+    "title" : "Person 98765",
+    "updated" : 1386263873421
+  }, {
+    "content" : {
+      "gedcomx" : {
+        "persons" : [ {
+          "id" : "43210",
+          "identifiers" : {
+            "http://gedcomx.org/Persistent" : [ "http://10.0.0.2/platform/tree/persons/43210" ]
+          },
+          "names" : [ {
+            "type" : "http://gedcomx.org/BirthName",
+            "nameForms" : [ {
+              "fullText" : "Israel Hoyt Heaton"
+            } ]
+          } ]
+        } ]
+      }
+    },
+    "id" : "43210",
+    "score" : 0.85,
+    "links" : {
+      "person" : {
+        "href" : "https://familysearch.org/platform/tree/persons/43210",
+        "title" : "Person"
+      },
+      "merge" : {
+        "href" : "https://familysearch.org/platform/tree/persons/12345/merges/43210",
+        "title" : "Person Merge"
+      }
+    },
+    "title" : "Person 43210",
+    "updated" : 1386263873421
+  } ]
+}

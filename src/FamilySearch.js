@@ -54,6 +54,7 @@ define([
 
     // search and match
     getPersonSearch: searchAndMatch.getPersonSearch,
+    getPersonMatches: searchAndMatch.getPersonMatches,
 
     // source
     getPersonSourceReferences: sources.getPersonSourceReferences,
