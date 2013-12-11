@@ -1697,7 +1697,7 @@ define('person',[
    * - `getSpouseIds()` - array of ids
    * - `getChildIds(spouseId)` - array of ids; if spouseId is specified, returns only ids of children with spouse as the other parent
    *
-   * The following functions return person objects decorated with *person convenience functions* {@link exports.functions:getPerson as described in getPerson}
+   * The following functions return person objects decorated with *person convenience functions* as described for {@link person.functions:getPerson getPerson}
    *
    * - `getPrimaryPerson()`
    * - `getPerson(id)` - works only for the primary person unless persons is set to true in params
@@ -1956,7 +1956,7 @@ define('searchAndMatch',[
    * - `getTitle()` - title string
    * - `getScore()` - real number
    * - `getConfidence()` - appears to be an integer
-   * - `getPrimaryPerson() - person object decorated with the *person convenience functions* as described in {@link exports.functions:getPerson getPerson}
+   * - `getPrimaryPerson()` - person object decorated with the *person convenience functions* as described for {@link person.functions:getPerson getPerson}
    * - `getFathers()` - array of person objects similarly decorated
    * - `getMothers()` - array of person objects similarly decorated
    * - `getSpouses()` - array of person objects similarly decorated

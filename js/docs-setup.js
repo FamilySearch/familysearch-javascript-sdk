@@ -232,7 +232,7 @@ NG_DOCS={
       "id": "person.functions:getPersonWithRelationships",
       "shortName": "getPersonWithRelationships",
       "type": "function",
-      "keywords": "addition and api are array as available child children convenience decorated described docs during each editable example exports familysearch father following for full function functions get getchildids getchildren getfatherids getfathers getmotherids getmothers getparents getparentsids getperson getprimaryid getprimaryperson getspouseids getspouses http https id ids if in init is mother motherid net objects of only options opts org other params parent parents pass person persons primary promise read relationships relative requested retrieve return returns set specified spouse spouseid spouses the their to true unless with works"
+      "keywords": "addition and api are array as available child children convenience decorated described docs during each editable example familysearch father following for full function functions get getchildids getchildren getfatherids getfathers getmotherids getmothers getparents getparentsids getperson getprimaryid getprimaryperson getspouseids getspouses http https id ids if in init is mother motherid net objects of only options opts org other params parent parents pass person persons primary promise read relationships relative requested retrieve return returns set specified spouse spouseid spouses the their to true unless with works"
     },
     {
       "section": "api",
@@ -302,7 +302,7 @@ NG_DOCS={
       "id": "searchAndMatch.functions:getPersonSearch",
       "shortName": "getPersonSearch",
       "type": "function",
-      "keywords": "above additional allows an and api appears append array as be below birthdate birthplace can context convenience count dates deathdate deathplace decorated described docs does during each editable end example exports familysearch father female first following for from full function functions gender get getchildren getconfidence getcontext getfathers getid getmothers getperson getprimaryperson getresults getscore getspouses gettitle givenname has http https id in includes index init integer into is it list male marriagedate marriageplace matches mother name net non-exact number object objects of options opts or org pages parameter parameters params pass people person places promise real requests response result results returned search searchandmatch similarly specified spouse start string subsequent surname the tilde title to token value well which with work works"
+      "keywords": "above additional allows an and api appears append array as be below birthdate birthplace can context convenience count dates deathdate deathplace decorated described docs does during each editable end example familysearch father female first following for from full function functions gender get getchildren getconfidence getcontext getfathers getid getmothers getperson getprimaryperson getresults getscore getspouses gettitle givenname has http https id in includes index init integer into is it list male marriagedate marriageplace matches mother name net non-exact number object objects of options opts or org pages parameter parameters params pass people person places promise real requests response result results returned search searchandmatch similarly specified spouse start string subsequent surname the tilde title to token value well which with work works"
     },
     {
       "section": "api",
