@@ -216,5 +216,46 @@ define([
   };
 
 
+  /**
+   * @ngdoc function
+   * @name searchAndMatch.functions:getPersonMatchesQuery
+   * @function
+   *
+   * @description
+   * Get matches for someone not in the tree
+   * The response includes the following convenience function
+   *
+   * - `getResults()` - get the array of match results from the response; each result has the following convenience functions
+   * as described for {@link searchAndMatch.functions:getPersonSearch getPersonSearch}
+   *
+   * ###Match result convenience Functions
+   *
+   * - `getId()` - person id
+   * - `getTitle()` - title string
+   * - `getScore()` - real number
+   * - `getConfidence()` - appears to be an integer
+   * - `getPrimaryPerson()` - person object decorated with the *person convenience functions* as described for {@link person.functions:getPerson getPerson}
+   * - `getFathers()` - array of person objects similarly decorated
+   * - `getMothers()` - array of person objects similarly decorated
+   * - `getSpouses()` - array of person objects similarly decorated
+   * - `getChildren()` - array of person objects similarly decorated
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Search_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/hhcLP/ editable example}
+   *
+   * @param {Object} params same parameters as described for {@link searchAndMatch.functions:getPersonSearch getPersonSearch},
+   * with the exception that `context` is not a valid parameter for match, and `candidateId` restricts matches to the person with that Id
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getPersonMatchesQuery = function(params, opts) {
+    return plumbing.get('/platform/tree/matches', helpers.removeEmptyProperties({
+      q: getQuery(params),
+      start: params.start,
+      count: params.count
+    }), {'Accept': 'application/x-gedcomx-atom+json'}, opts, searchMatchResultExtender);
+  };
+
   return exports;
 });
