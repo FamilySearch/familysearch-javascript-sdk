@@ -34,7 +34,7 @@ define([
    * - `getTitle()` - title string
    * - `getScore()` - real number
    * - `getConfidence()` - appears to be an integer
-   * - `getPrimaryPerson() - person object decorated with the *person convenience functions* as described in {@link exports.functions:getPerson getPerson}
+   * - `getPrimaryPerson()` - person object decorated with the *person convenience functions* as described for {@link person.functions:getPerson getPerson}
    * - `getFathers()` - array of person objects similarly decorated
    * - `getMothers()` - array of person objects similarly decorated
    * - `getSpouses()` - array of person objects similarly decorated
