@@ -130,6 +130,20 @@ define('helpers',[
     }
   };
 
+  // borrowed from underscore.js
+  helpers.keys = Object.keys || function(obj) {
+    if (obj !== Object(obj)) {
+      throw new TypeError('Invalid object');
+    }
+    var keys = [];
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        keys.push(key);
+      }
+    }
+    return keys;
+  };
+
   // simplified version of underscore's filter
   helpers.filter = function(arr, fn) {
     var result = [];
@@ -2006,44 +2020,27 @@ define('searchAndMatch',[
       context: params.context
     }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
       helpers.compose(
-        helpers.objectExtender({getResults: function() {
-          return this.entries || [];
-        }}),
-        helpers.objectExtender(searchResultConvenienceFunctions, function(response) {
-          return response.entries;
-        }),
-        helpers.objectExtender(person.personConvenienceFunctions, function(response) {
-          return helpers.flatMap(response.entries, function(entry) {
-            return maybe(maybe(entry.content).gedcomx).persons;
-          });
-        }),
+        searchMatchResultExtender,
         function(obj, promise) {
           obj.getContext = function() {
             return promise.getResponseHeader('X-fs-page-context');
           };
           return obj;
         }
-    ));
+      )
+    );
   };
 
   var nonQueryParams = {start: true, count: true, context: true};
 
   function quote(value) {
     value = value.replace(/[:"]/g, '').trim();
-    if (value.indexOf(' ') >= 0) {
-      return '"' + value + '"';
-    }
-    return value;
+    return value.indexOf(' ') >= 0 ? '"' + value + '"' : value;
   }
 
   function getQuery(params) {
-    var queryParams = [];
-    helpers.forEach(params, function(value, key) {
-      if (!nonQueryParams[key]) {
-        queryParams.push(key+':'+quote(value));
-      }
-    });
-    return queryParams.join(' ');
+    return helpers.map(helpers.filter(helpers.keys(params), function(key) { return !nonQueryParams[key]; }),
+                       function(key) { return key+':'+quote(params[key]); }).join(' ');
   }
 
   // TODO refactor this to reuse personWithRelationshipsConvenienceFunctions?
@@ -2100,6 +2097,100 @@ define('searchAndMatch',[
         function(r) { return r.person2.resourceId; }));
     },
     getChildren:   function() { return helpers.map(this.getChildIds(), this.getPerson, this); }
+  };
+
+  var searchMatchResultExtender = helpers.compose(
+    helpers.objectExtender({getResults: function() {
+      return this.entries || [];
+    }}),
+    helpers.objectExtender(searchResultConvenienceFunctions, function(response) {
+      return response.entries;
+    }),
+    helpers.objectExtender(person.personConvenienceFunctions, function(response) {
+      return helpers.flatMap(response.entries, function(entry) {
+        return maybe(maybe(entry.content).gedcomx).persons;
+      });
+    })
+  );
+
+  /**
+   * @ngdoc function
+   * @name searchAndMatch.functions:getPersonMatches
+   * @function
+   *
+   * @description
+   * Get the matches (possible duplicates) for a person
+   * The response includes the following convenience function
+   *
+   * - `getResults()` - get the array of match results from the response; each result has the following convenience functions
+   * as described for {@link searchAndMatch.functions:getPersonSearch getPersonSearch}
+   *
+   * ###Match result convenience Functions
+   *
+   * - `getId()` - person id
+   * - `getTitle()` - title string
+   * - `getScore()` - real number
+   * - `getConfidence()` - appears to be an integer
+   * - `getPrimaryPerson()` - person object decorated with the *person convenience functions* as described for {@link person.functions:getPerson getPerson}
+   * - `getFathers()` - array of person objects similarly decorated
+   * - `getMothers()` - array of person objects similarly decorated
+   * - `getSpouses()` - array of person objects similarly decorated
+   * - `getChildren()` - array of person objects similarly decorated
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Matches_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/5uwyf/ editable example}
+   *
+   * @param {String} id of the person to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getPersonMatches = function(id, params, opts) {
+    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/matches', params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+      searchMatchResultExtender);
+  };
+
+
+  /**
+   * @ngdoc function
+   * @name searchAndMatch.functions:getPersonMatchesQuery
+   * @function
+   *
+   * @description
+   * Get matches for someone not in the tree
+   * The response includes the following convenience function
+   *
+   * - `getResults()` - get the array of match results from the response; each result has the following convenience functions
+   * as described for {@link searchAndMatch.functions:getPersonSearch getPersonSearch}
+   *
+   * ###Match result convenience Functions
+   *
+   * - `getId()` - person id
+   * - `getTitle()` - title string
+   * - `getScore()` - real number
+   * - `getConfidence()` - appears to be an integer
+   * - `getPrimaryPerson()` - person object decorated with the *person convenience functions* as described for {@link person.functions:getPerson getPerson}
+   * - `getFathers()` - array of person objects similarly decorated
+   * - `getMothers()` - array of person objects similarly decorated
+   * - `getSpouses()` - array of person objects similarly decorated
+   * - `getChildren()` - array of person objects similarly decorated
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Search_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/hhcLP/ editable example}
+   *
+   * @param {Object} params same parameters as described for {@link searchAndMatch.functions:getPersonSearch getPersonSearch},
+   * with the exception that `context` is not a valid parameter for match, and `candidateId` restricts matches to the person with that Id
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getPersonMatchesQuery = function(params, opts) {
+    return plumbing.get('/platform/tree/matches', helpers.removeEmptyProperties({
+      q: getQuery(params),
+      start: params.start,
+      count: params.count
+    }), {'Accept': 'application/x-gedcomx-atom+json'}, opts, searchMatchResultExtender);
   };
 
   return exports;
@@ -2429,6 +2520,8 @@ define('FamilySearch',[
 
     // search and match
     getPersonSearch: searchAndMatch.getPersonSearch,
+    getPersonMatches: searchAndMatch.getPersonMatches,
+    getPersonMatchesQuery: searchAndMatch.getPersonMatchesQuery,
 
     // source
     getPersonSourceReferences: sources.getPersonSourceReferences,
