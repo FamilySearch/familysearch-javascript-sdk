@@ -1,0 +1,31 @@
+<h1><code ng:non-bindable="">getCollectionSourceDescriptionsForUser</code>
+<span class="hint">(functions in module <code ng:non-bindable="">sourceBox</code>
+)</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>Get a paged list of source descriptions in all user-defined collections defined by a user
+The response includes the following convenience function</p>
+
+<ul>
+<li><code>getSourceDescriptions()</code> - get the array of source descriptions from the response; each has the same convenience functions
+as for <a href="#/api/sourceBox.functions:getCollectionSourceDescriptions">getCollectionSourceDescriptions</a></li>
+</ul>
+
+<p><a href="https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_Source_Descriptions_for_a_User_resource">FamilySearch API Docs</a></p>
+
+<p><a href="http://jsfiddle.net/DallanQ/4TSxJ/">editable example</a></p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getCollectionSourceDescriptionsForUser(id[, params][, opts]);</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<p>of the user to read</p></li>
+<li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
+<p><code>count</code> maximum to return (defaults to 25), <code>start</code> zero-based index of first source to return</p></li>
+<li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
+<p>options to pass to the http function specified during init</p></li>
+</ul>
+<h3 id="Returns">Returns</h3>
+<div class="returns"><code ng:non-bindable="">{Object}</code>
+– <p>promise for the response</p></div>
+</div>
+</div>

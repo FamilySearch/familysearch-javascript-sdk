@@ -1,0 +1,38 @@
+<h1><code ng:non-bindable="">getCollectionSourceDescriptions</code>
+<span class="hint">(functions in module <code ng:non-bindable="">sourceBox</code>
+)</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>Get a paged list of source descriptions in a user-defined collection
+The response includes the following convenience function</p>
+
+<ul>
+<li><code>getSourceDescriptions()</code> - get the array of source descriptions from the response; each has the following convenience functions</li>
+</ul>
+
+<h3 id="sourcedescriptionconveniencefunctions">Source description convenience functions</h5>
+
+<ul>
+<li><code>getId()</code> - id of the source description</li>
+<li><code>getTitles()</code> - array of title strings</li>
+<li><code>getTitle()</code> - the first title string</li>
+</ul>
+
+<p><a href="https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_Source_Descriptions_resource">FamilySearch API Docs</a></p>
+
+<p><a href="http://jsfiddle.net/DallanQ/7yDmE/">editable example</a></p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getCollectionSourceDescriptions(id[, params][, opts]);</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<p>of the collection to read</p></li>
+<li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
+<p><code>count</code> maximum to return (defaults to 25), <code>start</code> zero-based index of first source to return</p></li>
+<li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
+<p>options to pass to the http function specified during init</p></li>
+</ul>
+<h3 id="Returns">Returns</h3>
+<div class="returns"><code ng:non-bindable="">{Object}</code>
+– <p>promise for the response</p></div>
+</div>
+</div>

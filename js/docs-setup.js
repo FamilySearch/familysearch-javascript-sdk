@@ -320,6 +320,41 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "sourceBox",
+      "shortName": "sourceBox",
+      "type": "overview",
+      "keywords": "api box docs familysearch functions https org overview related source source-box sourcebox to user"
+    },
+    {
+      "section": "api",
+      "id": "sourceBox.functions:getCollection",
+      "shortName": "getCollection",
+      "type": "function",
+      "keywords": "about api collection convenience currently docs during editable example familysearch following for function functions get getid gettitle http https id includes information init net of options opts org params pass promise read response sourcebox specified string the title to unused user-defined"
+    },
+    {
+      "section": "api",
+      "id": "sourceBox.functions:getCollectionsForUser",
+      "shortName": "getCollectionsForUser",
+      "type": "function",
+      "keywords": "api array box collection convenience currently docs during editable example familysearch following for from function functions get getcollectionids http https id includes init net of options opts org owns params pass people promise response search source sourcebox specified the to unused user who"
+    },
+    {
+      "section": "api",
+      "id": "sourceBox.functions:getCollectionSourceDescriptions",
+      "shortName": "getCollectionSourceDescriptions",
+      "type": "function",
+      "keywords": "api array collection convenience count description descriptions docs during each editable example familysearch first following for from function functions get getid getsourcedescriptions gettitle gettitles has http https id in includes index init list maximum net of options opts org paged params pass promise read response return source sourcebox specified start string strings the title to user-defined zero-based"
+    },
+    {
+      "section": "api",
+      "id": "sourceBox.functions:getCollectionSourceDescriptionsForUser",
+      "shortName": "getCollectionSourceDescriptionsForUser",
+      "type": "function",
+      "keywords": "all api array as by collections convenience count defined descriptions docs during each editable example familysearch first following for from function functions get getcollectionsourcedescriptions getsourcedescriptions has http https id in includes index init list maximum net of options opts org paged params pass promise read response return same source sourcebox specified start the to user user-defined zero-based"
+    },
+    {
+      "section": "api",
       "id": "sources",
       "shortName": "sources",
       "type": "overview",
