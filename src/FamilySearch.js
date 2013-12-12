@@ -5,6 +5,7 @@ define([
   'discussions',
   'memories',
   'notes',
+  'parentsAndChildren',
   'pedigree',
   'person',
   'searchAndMatch',
@@ -12,8 +13,8 @@ define([
   'sources',
   'user',
   'plumbing'
-], function(init, authentication, changeHistory, discussions, memories, notes, pedigree, person, searchAndMatch,
-            sourceBox, sources, user, plumbing) {
+], function(init, authentication, changeHistory, discussions, memories, notes, parentsAndChildren, pedigree, person,
+            searchAndMatch, sourceBox, sources, user, plumbing) {
   return {
     init: init.init,
 
@@ -43,6 +44,9 @@ define([
     // notes
     getPersonNotes: notes.getPersonNotes,
     getPersonNote: notes.getPersonNote,
+
+    // parents and children
+    getChildAndParentsRelationship: parentsAndChildren.getChildAndParentsRelationship,
 
     // pedigree
     getAncestry: pedigree.getAncestry,

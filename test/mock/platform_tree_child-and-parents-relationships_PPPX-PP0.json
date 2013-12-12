@@ -1,0 +1,69 @@
+{
+  "links" : {
+    "change-history" : {
+      "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0/changes",
+      "title" : "Child-and-Parents Relationship Change History"
+    }
+  },
+  "childAndParentsRelationships" : [ {
+    "id" : "PPPX-PP0",
+    "links" : {
+      "source-references" : {
+        "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0/source-references",
+        "title" : "Child-and-Parents Relationship Source References"
+      },
+      "relationship" : {
+        "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0",
+        "title" : "Child-and-Parents Relationship"
+      },
+      "child" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPPX-PP3",
+        "title" : "Person"
+      },
+      "mother" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPPX-FP2",
+        "title" : "Person"
+      },
+      "notes" : {
+        "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0/notes",
+        "title" : "Child-and-Parents Relationship Notes"
+      },
+      "father" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPPX-MP1",
+        "title" : "Person"
+      }
+    },
+    "father" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/PPPX-MP1",
+      "resourceId" : "PPPX-MP1"
+    },
+    "mother" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/PPPX-FP2",
+      "resourceId" : "PPPX-FP2"
+    },
+    "child" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/PPPX-PP3",
+      "resourceId" : "PPPX-PP3"
+    },
+    "fatherFacts" : [ {
+      "id" : "C.1",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0/mother/conclusions/C.1",
+          "title" : "Child-and-Parents Relationship Conclusion"
+        }
+      },
+      "type" : "http://gedcomx.org/AdoptiveParent"
+    } ],
+    "motherFacts" : [ {
+      "id" : "C.2",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0/mother/conclusions/C.2",
+          "title" : "Child-and-Parents Relationship Conclusion"
+        }
+      },
+      "type" : "http://gedcomx.org/BiologicalParent"
+    } ]
+  } ]
+}
