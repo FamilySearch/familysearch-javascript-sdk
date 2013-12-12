@@ -63,6 +63,7 @@ define([
     getUserDefinedCollectionsForUser: sourceBox.getUserDefinedCollectionsForUser,
     getUserDefinedCollection: sourceBox.getUserDefinedCollection,
     getUserDefinedCollectionSourceDescriptions: sourceBox.getUserDefinedCollectionSourceDescriptions,
+    getUserDefinedCollectionSourceDescriptionsForUser: sourceBox.getUserDefinedCollectionSourceDescriptionsForUser,
 
     // sources
     getPersonSourceReferences: sources.getPersonSourceReferences,

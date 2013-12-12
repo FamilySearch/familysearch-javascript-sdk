@@ -94,7 +94,7 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_Source_Descriptions_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/DallanQ// editable example}
+   * {@link http://jsfiddle.net/DallanQ/7yDmE/ editable example}
    *
    * @param {String} id of the collection to read
    * @param {Object=} params `count` maximum to return (defaults to 25), `start` zero-based index of first source to return
@@ -119,6 +119,39 @@ define([
     getTitles: function() { return helpers.map(this.titles, function(title) {
       return title.value;
     }); }
+  };
+
+  /**
+   * @ngdoc function
+   * @name sourceBox.functions:getUserDefinedCollectionSourceDescriptionsForUser
+   * @function
+   *
+   * @description
+   * Get a paged list of source descriptions in all user-defined collections defined by a user
+   * The response includes the following convenience function
+   *
+   * - `getSourceDescriptions()` - get the array of source descriptions from the response; each has the same convenience functions
+   * as for {@link sourceBox.functions:getUserDefinedCollectionSourceDescriptions getUserDefinedCollectionSourceDescriptions}
+   *
+   * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_Source_Descriptions_for_a_User_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/4TSxJ/ editable example}
+   *
+   * @param {String} id of the user to read
+   * @param {Object=} params `count` maximum to return (defaults to 25), `start` zero-based index of first source to return
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getUserDefinedCollectionSourceDescriptionsForUser = function(id, params, opts) {
+    return plumbing.get('/platform/sources/'+encodeURI(id)+'/collections/descriptions', params, {'Accept': 'application/x-fs-v1+json'}, opts,
+      helpers.compose(
+        helpers.objectExtender({getSourceDescriptions: function() {
+          return this.sourceDescriptions || [];
+        }}),
+        helpers.objectExtender(sourceDescriptionConvenienceFunctions, function(response) {
+          return response.sourceDescriptions;
+        })
+      ));
   };
 
   return exports;
