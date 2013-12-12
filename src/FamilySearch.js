@@ -60,10 +60,10 @@ define([
     getPersonMatchesQuery: searchAndMatch.getPersonMatchesQuery,
 
     // sourceBox
-    getUserDefinedCollectionsForUser: sourceBox.getUserDefinedCollectionsForUser,
-    getUserDefinedCollection: sourceBox.getUserDefinedCollection,
-    getUserDefinedCollectionSourceDescriptions: sourceBox.getUserDefinedCollectionSourceDescriptions,
-    getUserDefinedCollectionSourceDescriptionsForUser: sourceBox.getUserDefinedCollectionSourceDescriptionsForUser,
+    getCollectionsForUser: sourceBox.getCollectionsForUser,
+    getCollection: sourceBox.getCollection,
+    getCollectionSourceDescriptions: sourceBox.getCollectionSourceDescriptions,
+    getCollectionSourceDescriptionsForUser: sourceBox.getCollectionSourceDescriptionsForUser,
 
     // sources
     getPersonSourceReferences: sources.getPersonSourceReferences,

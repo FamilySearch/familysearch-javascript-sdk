@@ -17,7 +17,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name sourceBox.functions:getUserDefinedCollectionsForUser
+   * @name sourceBox.functions:getCollectionsForUser
    * @function
    *
    * @description
@@ -35,7 +35,7 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getUserDefinedCollectionsForUser = function(id, params, opts) {
+  exports.getCollectionsForUser = function(id, params, opts) {
     return plumbing.get('/platform/sources/'+encodeURI(id)+'/collections', {}, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.objectExtender({getCollectionIds: function() {
         return helpers.map(this.collections, function(collection) {
@@ -46,7 +46,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name sourceBox.functions:getUserDefinedCollection
+   * @name sourceBox.functions:getCollection
    * @function
    *
    * @description
@@ -65,7 +65,7 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getUserDefinedCollection = function(id, params, opts) {
+  exports.getCollection = function(id, params, opts) {
     return plumbing.get('/platform/sources/collections/'+encodeURI(id), params, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.objectExtender(userDefinedCollectionConvenienceFunctions));
   };
@@ -77,7 +77,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name sourceBox.functions:getUserDefinedCollectionSourceDescriptions
+   * @name sourceBox.functions:getCollectionSourceDescriptions
    * @function
    *
    * @description
@@ -101,7 +101,7 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getUserDefinedCollectionSourceDescriptions = function(id, params, opts) {
+  exports.getCollectionSourceDescriptions = function(id, params, opts) {
     return plumbing.get('/platform/sources/collections/'+encodeURI(id)+'/descriptions', params, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.compose(
         helpers.objectExtender({getSourceDescriptions: function() {
@@ -123,7 +123,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name sourceBox.functions:getUserDefinedCollectionSourceDescriptionsForUser
+   * @name sourceBox.functions:getCollectionSourceDescriptionsForUser
    * @function
    *
    * @description
@@ -131,7 +131,7 @@ define([
    * The response includes the following convenience function
    *
    * - `getSourceDescriptions()` - get the array of source descriptions from the response; each has the same convenience functions
-   * as for {@link sourceBox.functions:getUserDefinedCollectionSourceDescriptions getUserDefinedCollectionSourceDescriptions}
+   * as for {@link sourceBox.functions:getCollectionSourceDescriptions getCollectionSourceDescriptions}
    *
    * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_Source_Descriptions_for_a_User_resource FamilySearch API Docs}
    *
@@ -142,7 +142,7 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getUserDefinedCollectionSourceDescriptionsForUser = function(id, params, opts) {
+  exports.getCollectionSourceDescriptionsForUser = function(id, params, opts) {
     return plumbing.get('/platform/sources/'+encodeURI(id)+'/collections/descriptions', params, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.compose(
         helpers.objectExtender({getSourceDescriptions: function() {
