@@ -96,12 +96,12 @@ define([
 
   // return only unique elements of an array preserving order
   helpers.uniq = function(arr) {
-    var u = {}, result = [];
+    var uniqueValues = {}, result = [];
     for (var i = 0, len = arr.length; i < len; i++) {
-      var e = arr[i];
-      if (!u.hasOwnProperty(e)) {
-        result.push(e);
-        u[e] = 1;
+      var value = arr[i];
+      if (!uniqueValues.hasOwnProperty(value)) {
+        result.push(value);
+        uniqueValues[value] = 1;
       }
     }
     return result;

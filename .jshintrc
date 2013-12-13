@@ -16,7 +16,7 @@
   "undef": true,
   "unused": true,
   "strict": false,
-  "trailing": true,
+  "trailing": false,
   "eqnull": true,
   "sub": true,
   "globals": {

@@ -85,5 +85,18 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getChanges()[0].updated).toBe(1386006311124);
       });
     });
+
+    it('spouse relationships are returned from getPersonRelationshipsToSpouses', function() {
+      FamilySearch.getPersonRelationshipsToSpouses('12345').then(function(response) {
+        expect(response.getSpouseIds()).toEqual(['KJ8T-MP1']);
+        expect(response.getRelationships().length).toBe(1);
+        var rel = response.getRelationships()[0];
+        expect(rel.getId()).toBe('KJ8T-GZ0');
+        expect(rel.getHusbandId()).toBe('KJ8T-MP1');
+        expect(rel.getWifeId()).toBe('KJ8T-FP2');
+        expect(rel.getFacts().length).toBe(1);
+        expect(rel.getFacts()[0].getDate()).toBe('1 January 1786');
+      });
+    });
   });
 });
