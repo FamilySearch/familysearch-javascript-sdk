@@ -17,7 +17,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name parentsAndChildren.functions:getChildAndParentsRelationship
+   * @name parentsAndChildren.functions:getChildAndParents
    * @function
    *
    * @description
@@ -33,14 +33,14 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/DallanQ// editable example}
+   * {@link http://jsfiddle.net/DallanQ/C437t/ editable example}
    *
    * @param {String} id of the relationship to read
    * @param {Object=} params set `persons` true to return a person object for each person in the relationship
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getChildAndParentsRelationship = function(id, params, opts) {
+  exports.getChildAndParents = function(id, params, opts) {
     return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(id), params, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.objectExtender(childAndParentsRelationshipConvenienceFunctions));
   };

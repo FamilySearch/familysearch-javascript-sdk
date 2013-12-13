@@ -46,7 +46,7 @@ define([
     getPersonNote: notes.getPersonNote,
 
     // parents and children
-    getChildAndParentsRelationship: parentsAndChildren.getChildAndParentsRelationship,
+    getChildAndParents: parentsAndChildren.getChildAndParents,
 
     // pedigree
     getAncestry: pedigree.getAncestry,
