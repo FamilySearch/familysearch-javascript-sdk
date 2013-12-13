@@ -59,6 +59,7 @@ define([
     getPersonWithRelationships: person.getPersonWithRelationships,
     getPersonChangeSummary: person.getPersonChangeSummary,
     getPersonRelationshipsToSpouses: person.getPersonRelationshipsToSpouses,
+    getPersonRelationshipsToParents: person.getPersonRelationshipsToParents,
 
     // search and match
     getPersonSearch: searchAndMatch.getPersonSearch,

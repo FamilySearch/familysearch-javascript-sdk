@@ -1,0 +1,153 @@
+{
+  "links" : {
+    "person" : {
+      "href" : "https://familysearch.org/platform/tree/persons/pid-3",
+      "title" : "Person"
+    }
+  },
+  "persons" : [ {
+    "id" : "pid-3",
+    "links" : {
+      "person" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-3",
+        "title" : "Person"
+      }
+    }
+  } ],
+  "relationships" : [ {
+    "id" : "CCC-0123",
+    "links" : {
+      "source-references" : {
+        "href" : "https://familysearch.org/platform/tree/couple-relationships/CCC-0123/source-references",
+        "title" : "Couple Relationship Source References"
+      },
+      "relationship" : {
+        "href" : "https://familysearch.org/platform/tree/couple-relationships/CCC-0123",
+        "title" : "Couple Relationship"
+      },
+      "person1" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-1",
+        "title" : "Person"
+      },
+      "person2" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-2",
+        "title" : "Person"
+      },
+      "woman" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-2",
+        "title" : "Person"
+      },
+      "change-history" : {
+        "href" : "https://familysearch.org/platform/tree/couple-relationships/CCC-0123/changes",
+        "title" : "Couple Relationship Change History"
+      },
+      "notes" : {
+        "href" : "https://familysearch.org/platform/tree/couple-relationships/CCC-0123/notes",
+        "title" : "Couple Relationship Notes"
+      },
+      "man" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-1",
+        "title" : "Person"
+      }
+    },
+    "type" : "http://gedcomx.org/Couple",
+    "person1" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/pid-1",
+      "resourceId" : "pid-1"
+    },
+    "person2" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/pid-2",
+      "resourceId" : "pid-2"
+    },
+    "facts" : [ {
+      "type" : "http://gedcomx.org/Marriage",
+      "date" : {
+        "original" : "June 1800",
+        "formal" : "+1800-06"
+      },
+      "place" : {
+        "original" : "Provo, Utah, Utah, United States"
+      }
+    } ]
+  }, {
+    "id" : "FPPPX-PP0",
+    "links" : {
+      "relationship" : {
+        "href" : "https://familysearch.org/platform/tree/parent-child-relationships/PPPX-PP0",
+        "title" : "Parent-Child Relationship"
+      },
+      "child" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-3",
+        "title" : "Person"
+      },
+      "person1" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-1",
+        "title" : "Person"
+      },
+      "person2" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-3",
+        "title" : "Person"
+      },
+      "parent" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-1",
+        "title" : "Person"
+      },
+      "father" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-1",
+        "title" : "Person"
+      }
+    },
+    "identifiers" : {
+      "http://familysearch.org/v1/ChildAndParentsRelationship" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0"
+    },
+    "type" : "http://gedcomx.org/ParentChild",
+    "person1" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/pid-1",
+      "resourceId" : "pid-1"
+    },
+    "person2" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/pid-3",
+      "resourceId" : "pid-3"
+    }
+  }, {
+    "id" : "MPPPX-PP0",
+    "links" : {
+      "relationship" : {
+        "href" : "https://familysearch.org/platform/tree/parent-child-relationships/PPPX-PP0",
+        "title" : "Parent-Child Relationship"
+      },
+      "child" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-3",
+        "title" : "Person"
+      },
+      "person1" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-2",
+        "title" : "Person"
+      },
+      "person2" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-3",
+        "title" : "Person"
+      },
+      "mother" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-2",
+        "title" : "Person"
+      },
+      "parent" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-2",
+        "title" : "Person"
+      }
+    },
+    "identifiers" : {
+      "http://familysearch.org/v1/ChildAndParentsRelationship" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0"
+    },
+    "type" : "http://gedcomx.org/ParentChild",
+    "person1" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/pid-2",
+      "resourceId" : "pid-2"
+    },
+    "person2" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/pid-3",
+      "resourceId" : "pid-3"
+    }
+  } ]
+}

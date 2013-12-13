@@ -22,7 +22,7 @@ define([
    * @function
    *
    * @description
-   * Get information about a child and parents relationship
+   * Get information about a child and parents relationship; to get more
    * The response includes the following convenience functions
    *
    * - `getId()` - id of the relationship

@@ -109,7 +109,7 @@ define([
 
   // simplified version of underscore's find
   // returns undefined if nothing found
-  helpers.find = function(arr, objOrFn) {
+  helpers.find = function(arr, objOrFn, context) {
     var result;
     var isFn = helpers.isFunction(objOrFn);
     if (arr) {
@@ -117,7 +117,7 @@ define([
         var elm = arr[i];
         var matches;
         if (isFn) {
-          matches = objOrFn.call(null, elm);
+          matches = objOrFn.call(context, elm);
         }
         else {
           matches = true;

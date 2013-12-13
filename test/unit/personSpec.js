@@ -98,5 +98,15 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(rel.getFacts()[0].getDate()).toBe('1 January 1786');
       });
     });
+
+    it('parent relationships are returned from getPersonRelationshipsToParents', function() {
+      FamilySearch.getPersonRelationshipsToParents('pid-3').then(function(response) {
+        expect(response.getRelationships().length).toBe(1);
+        var rel = response.getRelationships()[0];
+        expect(rel.getId()).toBe('PPPX-PP0');
+        expect(rel.getFatherId()).toBe('pid-1');
+        expect(rel.getMotherId()).toBe('pid-2');
+      });
+    });
   });
 });
