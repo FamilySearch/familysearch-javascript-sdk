@@ -35,11 +35,31 @@ define([
    * - `getDeathPlace()`
    * - `getGender()`
    * - `getLifeSpan()`
-   * - `getName()`
    * - `isLiving()`
-   * - `getGivenName()`
-   * - `getSurname()`
+   * - `getName()` - display name
+   * - `getGivenName()` - preferred
+   * - `getSurname()` - preferred
+   * - `getNames()` - array of name objects decorated with *name convenience functions* described below
+   * - `getFacts()` - array of fact objects decorated with *fact convenience functions* described below
    * - `getDisplayAttrs()` - returns an object with birthDate, birthPlace, deathDate, deathPlace, gender, lifespan, and name
+   *
+   * ###Name Convenience Functions
+   * - `getId()` - name id
+   * - `getContributor()` - id of the contributor
+   * - `getType()` - http://gedcomx.org/BirthName, etc.
+   * - `getNameFormsCount()` - get the number of name forms
+   * - `getFullText(i)` - get the full text of the `i`'th name form; if `i` is omitted; get the first
+   * - `getGivenName(i)` - get the given part of the `i`'th name form; if `i` is omitted; get the first
+   * - `getSurname(i)` - get the surname part of the `i`'th name form; if `i` is omitted; get the first
+   * - `isPreferred()` - true if this name is preferred
+   *
+   * ###Fact Convenience Functions
+   * - `getId()` - fact id
+   * - `getContributor()` - id of the contributor
+   * - `getType()` - http://gedcomx.org/Birth, etc.
+   * - `getDate()` - original string
+   * - `getFormalDate()` - standard form; e.g., +1836-04-13
+   * - `getPlace()` - original string
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
    *
@@ -67,16 +87,56 @@ define([
     getDeathPlace: function() { return this.display.deathPlace; },
     getGender:     function() { return this.display.gender; },
     getLifeSpan:   function() { return this.display.lifespan; },
-    getName:       function() { return this.display.name; },
     isLiving:      function() { return this.living; },
-    getGivenName:  function() { return helpers.findOrEmpty(helpers.firstOrEmpty(helpers.findOrFirstOrEmpty(this.names, {preferred: true}).nameForms).parts,
-      {type: 'http://gedcomx.org/Given'}).value; },
-    getSurname:    function() { return helpers.findOrEmpty(helpers.firstOrEmpty(helpers.findOrFirstOrEmpty(this.names, {preferred: true}).nameForms).parts,
-      {type: 'http://gedcomx.org/Surname'}).value; },
+    getName:       function() { return this.display.name; },
+    getGivenName:  function() { return maybe(helpers.find(
+      maybe(maybe(maybe(helpers.findOrFirst(this.names, {preferred: true})).nameForms)[0]).parts,
+      {type: 'http://gedcomx.org/Given'}
+    )).value; },
+    getSurname:    function() { return maybe(helpers.find(
+      maybe(maybe(maybe(helpers.findOrFirst(this.names, {preferred: true})).nameForms)[0]).parts,
+      {type: 'http://gedcomx.org/Surname'}
+    )).value; },
+    getNames:      function() { return this.names; },
+    getFacts:      function() { return this.facts; },
     getDisplayAttrs: function() { return this.display; }
   };
 
-  exports.personExtender = helpers.objectExtender(exports.personConvenienceFunctions, exports.personExtensionPointGetter);
+  exports.nameConvenienceFunctions = {
+    getId:             function() { return this.id; },
+    getContributor:    function() { return maybe(maybe(this.attribution).contributor).resourceId; },
+    getType:           function() { return this.type; },
+    getNameFormsCount: function() { return this.nameForms ? this.nameForms.length : 0; },
+    getFullText:       function(i) { return maybe(maybe(this.nameForms)[i || 0]).fullText; },
+    getGivenName:      function(i) { return maybe(helpers.find(
+      maybe(maybe(this.nameForms)[i || 0]).parts,
+      {type: 'http://gedcomx.org/Given'}
+    )).value; },
+    getSurname:        function(i) { return maybe(helpers.find(
+      maybe(maybe(this.nameForms)[i || 0]).parts,
+      {type: 'http://gedcomx.org/Surname'}
+    )).value; },
+    isPreferred:       function() { return this.preferred; }
+  };
+
+  exports.factConvenienceFunctions = {
+    getId:             function() { return this.id; },
+    getContributor:    function() { return maybe(maybe(this.attribution).contributor).resourceId; },
+    getType:           function() { return this.type; },
+    getDate:           function() { return maybe(this.date).original; },
+    getFormalDate:     function() { return maybe(this.date).formal; },
+    getPlace:          function() { return maybe(this.place).original; }
+  };
+
+  exports.personExtender = helpers.compose(
+    helpers.objectExtender(exports.personConvenienceFunctions, exports.personExtensionPointGetter),
+    helpers.objectExtender(exports.nameConvenienceFunctions, function(response) {
+      return helpers.flatMap(response.persons, function(person) { return person.names; });
+    }),
+    helpers.objectExtender(exports.factConvenienceFunctions, function(response) {
+      return helpers.flatMap(response.persons, function(person) { return person.facts; });
+    })
+  );
 
   /**
    * @ngdoc function
@@ -150,8 +210,8 @@ define([
 
   // TODO how identify preferred parents?
   var personWithRelationshipsConvenienceFunctions = {
-    getPerson:     function(id) { return helpers.findOrEmpty(this.persons, {id: id}); },
-    getPrimaryId:  function() { return helpers.findOrEmpty(this.persons, function(p) { return p.display.ascendancyNumber === '1';}).id; },
+    getPerson:     function(id) { return helpers.find(this.persons, {id: id}); },
+    getPrimaryId:  function() { return maybe(helpers.find(this.persons, function(p) { return p.display.ascendancyNumber === '1';})).id; },
     getPrimaryPerson: function() { //noinspection JSValidateTypes
       return this.getPerson(this.getPrimaryId());
     },
@@ -247,6 +307,9 @@ define([
 
   // TODO getPersonMerge
   // TODO getPersonNotAMatch
+  // TODO getRelationshipsToParents
+  // TODO getRelationshipsToChildren
+  // TODO getRelationshipsToSpouses
 
   return exports;
 });

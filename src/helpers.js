@@ -163,45 +163,10 @@ define([
 
   helpers.flatMap = helpers.compose(helpers.flatten, helpers.map);
 
-  // returns empty object if nothing found
-  helpers.findOrEmpty = function(arr, objOrFn) {
+  // returns find match or first if none found
+  helpers.findOrFirst = function(arr, objOrFn) {
     var result = helpers.find(arr, objOrFn);
-    if (helpers.isUndefined(result)) {
-      result = {};
-    }
-    return result;
-  };
-
-  // returns the first element of the array
-  // returns undefined if nothing found
-  helpers.first = function(arr) {
-    var result;
-    if (arr && arr.length > 0) {
-      result = arr[0];
-    }
-    return result;
-  };
-
-  // returns empty object if nothing found
-  helpers.firstOrEmpty = function(arr) {
-    var result = helpers.first(arr);
-    if (helpers.isUndefined(result)) {
-      result = {};
-    }
-    return result;
-  };
-
-  // returns find match, first, or empty
-  helpers.findOrFirstOrEmpty = function(arr, objOrFn) {
-    var result = helpers.find(arr, objOrFn);
-    if (helpers.isUndefined(result)) {
-      result = helpers.first(arr);
-      console.log('findOrFirstOrEmpty', arr);
-    }
-    if (helpers.isUndefined(result)) {
-      result = {};
-    }
-    return result;
+    return helpers.isUndefined(result) ? arr[0] : result;
   };
 
   helpers.extend = function(dest) {

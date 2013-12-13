@@ -6,7 +6,7 @@ define([
    * @ngdoc overview
    * @name parentsAndChildren
    * @description
-   * Functions related to parents and children
+   * Functions related to parents and children relationships
    *
    * {@link https://familysearch.org/developers/docs/api/resources#parents-and-children FamilySearch API Docs}
    */

@@ -116,7 +116,7 @@ define([
     getTitle:      function() { return this.title; },
     getScore:      function() { return this.score; },
     getConfidence: function() { return this.confidence; },
-    getPerson:     function(id) { return helpers.findOrEmpty(maybe(maybe(this.content).gedcomx).persons, {id: id}); },
+    getPerson:     function(id) { return helpers.find(maybe(maybe(this.content).gedcomx).persons, {id: id}); },
     getPrimaryPerson: function() {
       return this.getPerson(this.getId());
     },

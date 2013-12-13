@@ -14,6 +14,25 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(person.isLiving()).toBe(true);
         expect(person.getGivenName()).toBe('Alex');
         expect(person.getSurname()).toBe('Aleksandrova');
+        expect(person.getNames().length).toBe(1);
+        var name = person.getNames()[0];
+        expect(name.getId()).toBe('name-id');
+        expect(name.getContributor()).toBe('KNCV-RMZ');
+        expect(name.getType()).toBe('http://gedcomx.org/BirthName');
+        expect(name.getNameFormsCount()).toBe(2);
+        expect(name.getFullText()).toBe('Alex Aleksandrova');
+        expect(name.getGivenName(1)).toBe('Анастасия');
+        expect(name.getSurname(0)).toBe('Aleksandrova');
+        expect(person.getFacts().length).toBe(2);
+        var facts = person.getFacts();
+        expect(facts[0].getId()).toBe('born');
+        expect(facts[0].getContributor()).toBe('RMQW-LPK');
+        expect(facts[0].getType()).toBe('http://gedcomx.org/Birth');
+        expect(facts[0].getDate()).toBe('3 Apr 1836');
+        expect(facts[0].getFormalDate()).toBe('+1836');
+        expect(facts[0].getPlace()).toBe('Moscow, Russia');
+        expect(facts[1].getId()).toBe('res');
+        expect(facts[1].getType()).toBe('http://gedcomx.org/Residence');
       });
     });
 

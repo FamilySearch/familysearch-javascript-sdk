@@ -11,6 +11,7 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/resources#pedigree FamilySearch API Docs}
    */
+  var maybe = helpers.maybe; // shorthand
 
   var exports = {};
 
@@ -56,8 +57,8 @@ define([
   function pedigreeConvenienceFunctionGenerator(numberLabel) {
     return {
       getPersons:    function()    { return this.persons; },
-      exists:        function(num) { return !!helpers.findOrEmpty(this.persons, matchPersonNum(numberLabel, num)).id; },
-      getPerson:     function(num) { return helpers.findOrEmpty(this.persons, matchPersonNum(numberLabel, num)); }
+      exists:        function(num) { return !!maybe(helpers.find(this.persons, matchPersonNum(numberLabel, num))).id; },
+      getPerson:     function(num) { return helpers.find(this.persons, matchPersonNum(numberLabel, num)); }
     };
   }
 

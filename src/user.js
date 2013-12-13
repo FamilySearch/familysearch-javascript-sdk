@@ -12,6 +12,8 @@ define([
    * {@link https://familysearch.org/developers/docs/api/resources#user FamilySearch API Docs}
    */
 
+  var maybe = helpers.maybe; // shorthand
+
   var exports = {};
 
   /**
@@ -136,12 +138,12 @@ define([
   };
 
   var agentConvenienceFunctions = {
-    getId:          function() { return helpers.firstOrEmpty(this.agents).id; },
-    getName:        function() { return helpers.firstOrEmpty(helpers.firstOrEmpty(this.agents).names).value; },
-    getAccountName: function() { return helpers.firstOrEmpty(helpers.firstOrEmpty(this.agents).accounts).accountName; },
+    getId:          function() { return maybe(maybe(this.agents)[0]).id; },
+    getName:        function() { return maybe(maybe(maybe(maybe(this.agents)[0]).names)[0]).value; },
+    getAccountName: function() { return maybe(maybe(maybe(maybe(this.agents)[0]).accounts)[0]).accountName; },
     getEmail:       function() {
-      var email;
-      return (email = helpers.firstOrEmpty(helpers.firstOrEmpty(this.agents).emails).resource) ? email.replace(/^mailto:/,'') : email;
+      var email = maybe(maybe(maybe(maybe(this.agents)[0]).emails)[0]).resource;
+      return email ? email.replace(/^mailto:/,'') : email;
     }
   };
 
