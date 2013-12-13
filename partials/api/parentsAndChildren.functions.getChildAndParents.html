@@ -1,0 +1,35 @@
+<h1><code ng:non-bindable="">getChildAndParents</code>
+<span class="hint">(functions in module <code ng:non-bindable="">parentsAndChildren</code>
+)</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>Get information about a child and parents relationship
+The response includes the following convenience functions</p>
+
+<ul>
+<li><code>getId()</code> - id of the relationship</li>
+<li><code>getFatherId()</code> - person id</li>
+<li><code>getMotherId()</code> - mother id</li>
+<li><code>getChildId()</code> - child id</li>
+<li><code>getFatherType()</code> - http://gedcomx.org/AdoptiveParent, http://gedcomx.org/BiologicalParent, etc.</li>
+<li><code>getMotherType()</code> - http://gedcomx.org/AdoptiveParent, http://gedcomx.org/BiologicalParent, etc.</li>
+</ul>
+
+<p><a href="https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_resource">FamilySearch API Docs</a></p>
+
+<p><a href="http://jsfiddle.net/DallanQ/C437t/">editable example</a></p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getChildAndParents(id[, params][, opts]);</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<p>of the relationship to read</p></li>
+<li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
+<p>set <code>persons</code> true to return a person object for each person in the relationship</p></li>
+<li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
+<p>options to pass to the http function specified during init</p></li>
+</ul>
+<h3 id="Returns">Returns</h3>
+<div class="returns"><code ng:non-bindable="">{Object}</code>
+– <p>promise for the response</p></div>
+</div>
+</div>

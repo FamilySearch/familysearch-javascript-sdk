@@ -9,7 +9,10 @@
 <li><code>getPrimaryId()</code> - id of the person requested</li>
 <li><code>getFatherIds()</code> - array of ids</li>
 <li><code>getMotherIds()</code> - array of ids</li>
-<li><code>getParentsIds()</code> - array of [fatherId, motherId]</li>
+<li><code>getParentRelationships()</code> - array of { <code>id</code> - relationship id, <code>fatherId</code>, <code>motherId</code>,
+<code>fatherType</code> - http://gedcomx.org/AdoptiveParent, http://gedcomx.org/BiologicalParent, etc,
+<code>motherType</code> - same values as <code>fatherType</code> }</li>
+<li><code>getSpouseRelationships()</code> - array of { <code>id</code> - relationship id, <code>spouseId</code> }</li>
 <li><code>getSpouseIds()</code> - array of ids</li>
 <li><code>getChildIds(spouseId)</code> - array of ids; if spouseId is specified, returns only ids of children with spouse as the other parent</li>
 </ul>

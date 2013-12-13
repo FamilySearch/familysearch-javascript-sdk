@@ -180,6 +180,20 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "parentsAndChildren",
+      "shortName": "parentsAndChildren",
+      "type": "overview",
+      "keywords": "and api children docs familysearch functions https org overview parents parents-and-children parentsandchildren related to"
+    },
+    {
+      "section": "api",
+      "id": "parentsAndChildren.functions:getChildAndParents",
+      "shortName": "getChildAndParents",
+      "type": "function",
+      "keywords": "about and api child convenience docs during each editable etc example familysearch following for function functions get getchildid getfatherid getfathertype getid getmotherid getmothertype http https id in includes information init mother net object of options opts org params parents parentsandchildren pass person persons promise read relationship response return set specified the to true"
+    },
+    {
+      "section": "api",
       "id": "pedigree",
       "shortName": "pedigree",
       "type": "overview",
@@ -232,7 +246,7 @@ NG_DOCS={
       "id": "person.functions:getPersonWithRelationships",
       "shortName": "getPersonWithRelationships",
       "type": "function",
-      "keywords": "addition and api are array as available child children convenience decorated described docs during each editable example familysearch father following for full function functions get getchildids getchildren getfatherids getfathers getmotherids getmothers getparents getparentsids getperson getprimaryid getprimaryperson getspouseids getspouses http https id ids if in init is mother motherid net objects of only options opts org other params parent parents pass person persons primary promise read relationships relative requested retrieve return returns set specified spouse spouseid spouses the their to true unless with works"
+      "keywords": "addition and api are array as available child children convenience decorated described docs during each editable etc example familysearch father fatherid fathertype following for full function functions get getchildids getchildren getfatherids getfathers getmotherids getmothers getparentrelationships getparents getperson getprimaryid getprimaryperson getspouseids getspouserelationships getspouses http https id ids if in init is mother motherid mothertype net objects of only options opts org other params parent parents pass person persons primary promise read relationship relationships relative requested retrieve return returns same set specified spouse spouseid spouses the their to true unless values with works"
     },
     {
       "section": "api",
