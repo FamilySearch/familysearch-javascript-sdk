@@ -205,7 +205,10 @@ define([
   exports.getPersonWithRelationships = function(id, params, opts) {
     return plumbing.get('/platform/tree/persons-with-relationships', helpers.removeEmptyProperties(helpers.extend({'person': id}, params)),
       {}, opts,
-      helpers.compose(helpers.objectExtender(personWithRelationshipsConvenienceFunctions), exports.personExtender));
+      helpers.compose(
+        helpers.objectExtender(personWithRelationshipsConvenienceFunctions),
+        exports.personExtender
+      ));
   };
 
   // TODO how identify preferred parents?

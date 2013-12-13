@@ -25,7 +25,7 @@ define([
    *
    * - `exists(ascendancyNumber)` - return true if a person with ascendancy number exists
    *
-   * The following functions return person objects decorated with *person convenience functions* {@link person.functions:getPerson as described in getPerson}
+   * The following functions return person objects decorated with *person convenience functions* as described for {@link person.functions:getPerson getPerson}
    * (with the exception that `getGivenName()` and `getSurname()` functions do not work because the name pieces aren't there)
    * as well as a `getAscendancyNumber()` function that returns the person's ascendancy number
    *
