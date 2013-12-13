@@ -11,10 +11,11 @@ define([
   'searchAndMatch',
   'sourceBox',
   'sources',
+  'spouses',
   'user',
   'plumbing'
 ], function(init, authentication, changeHistory, discussions, memories, notes, parentsAndChildren, pedigree, person,
-            searchAndMatch, sourceBox, sources, user, plumbing) {
+            searchAndMatch, sourceBox, sources, spouses, user, plumbing) {
   return {
     init: init.init,
 
@@ -72,6 +73,9 @@ define([
     // sources
     getPersonSourceReferences: sources.getPersonSourceReferences,
     getSourceDescription: sources.getSourceDescription,
+
+    // spouses
+    getCouple: spouses.getCouple,
 
     // user
     getCurrentUser: user.getCurrentUser,

@@ -1,0 +1,58 @@
+{
+  "relationships" : [ {
+    "id" : "12345",
+    "links" : {
+      "source-references" : {
+        "href" : "https://familysearch.org/platform/tree/couple-relationships/12345/source-references",
+        "title" : "Couple Relationship Source References"
+      },
+      "relationship" : {
+        "href" : "https://familysearch.org/platform/tree/couple-relationships/12345",
+        "title" : "Couple Relationship"
+      },
+      "person1" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-1",
+        "title" : "Person"
+      },
+      "person2" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-2",
+        "title" : "Person"
+      },
+      "woman" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-2",
+        "title" : "Person"
+      },
+      "change-history" : {
+        "href" : "https://familysearch.org/platform/tree/couple-relationships/12345/changes",
+        "title" : "Couple Relationship Change History"
+      },
+      "notes" : {
+        "href" : "https://familysearch.org/platform/tree/couple-relationships/12345/notes",
+        "title" : "Couple Relationship Notes"
+      },
+      "man" : {
+        "href" : "https://familysearch.org/platform/tree/persons/pid-1",
+        "title" : "Person"
+      }
+    },
+    "type" : "http://gedcomx.org/Couple",
+    "person1" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/pid-1",
+      "resourceId" : "pid-1"
+    },
+    "person2" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/pid-2",
+      "resourceId" : "pid-2"
+    },
+    "facts" : [ {
+      "type" : "http://gedcomx.org/Marriage",
+      "date" : {
+        "original" : "June 1800",
+        "formal" : "+1800-06"
+      },
+      "place" : {
+        "original" : "Provo, Utah, Utah, United States"
+      }
+    } ]
+  } ]
+}

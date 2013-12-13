@@ -102,7 +102,7 @@ define([
     getDisplayAttrs: function() { return this.display; }
   };
 
-  exports.nameConvenienceFunctions = {
+  var nameConvenienceFunctions = {
     getId:             function() { return this.id; },
     getContributor:    function() { return maybe(maybe(this.attribution).contributor).resourceId; },
     getType:           function() { return this.type; },
@@ -130,7 +130,7 @@ define([
 
   exports.personExtender = helpers.compose(
     helpers.objectExtender(exports.personConvenienceFunctions, exports.personExtensionPointGetter),
-    helpers.objectExtender(exports.nameConvenienceFunctions, function(response) {
+    helpers.objectExtender(nameConvenienceFunctions, function(response) {
       return helpers.flatMap(response.persons, function(person) { return person.names; });
     }),
     helpers.objectExtender(exports.factConvenienceFunctions, function(response) {
