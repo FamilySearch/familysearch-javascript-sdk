@@ -18,7 +18,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name parentsAndChildren.functions:getCouple
+   * @name spouses.functions:getCouple
    * @function
    *
    * @description

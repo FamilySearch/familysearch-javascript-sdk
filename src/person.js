@@ -174,12 +174,12 @@ define([
    * - `getPrimaryId()` - id of the person requested
    * - `getFatherIds()` - array of ids
    * - `getMotherIds()` - array of ids
+   * - `getSpouseIds()` - array of ids
+   * - `getChildIds(spouseId)` - array of ids; if spouseId is specified, returns only ids of children with spouse as the other parent
    * - `getParentRelationships()` - array of { `id` - relationship id, `fatherId`, `motherId`,
    * `fatherType` - http://gedcomx.org/AdoptiveParent, http://gedcomx.org/BiologicalParent, etc,
    * `motherType` - same values as `fatherType` }
    * - `getSpouseRelationships()` - array of { `id` - relationship id, `spouseId` }
-   * - `getSpouseIds()` - array of ids
-   * - `getChildIds(spouseId)` - array of ids; if spouseId is specified, returns only ids of children with spouse as the other parent
    *
    * The following functions return person objects decorated with *person convenience functions* as described for {@link person.functions:getPerson getPerson}
    *
@@ -378,13 +378,9 @@ define([
    * Get the relationships to a person's parents.
    * The response includes the following convenience function
    *
-   * - `getRelationships()` - an array of relationships; each has the functions listed below:
+   * - `getRelationships()` - an array of { `id` - relationship id, `fatherId`, `motherId` }
    *
-   * ###Relationship functions
-   *
-   * - `getId()` - relationship id - pass into {@link parentsAndChildren.functions:getChildAndParents getChildAndParents}
-   * - `getFatherId()`
-   * - `getMotherId()`
+   * Pass the relationship id into {@link parentsAndChildren.functions:getChildAndParents getChildAndParents} for more information
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Relationships_to_Parents_resource FamilySearch API Docs}
    *
@@ -410,7 +406,7 @@ define([
 
   var personRelationshipsToParentsConvenienceFunctions = {
     getRelationships: function() {
-      return helpers.map( // map them to the { getId, getFatherId, getMotherId } result objects
+      return helpers.map( // map them to the { id, fatherId, motherId } result objects
         helpers.uniq( // remove duplicates
           helpers.map( // map them to the relationship identifier
             helpers.filter(this.relationships, function(relationship) { // get only the parent-child relationships
@@ -422,25 +418,16 @@ define([
             }, this)
         ),
         function(relIdent) {
-          var self = this;
           return {
-            getId: function() {
-              return relIdent.replace(/^.*\//, '').replace(/\?.*$/, ''); // TODO how else to get the relationship id?
-            },
-            getFatherId: function() {
-              // find relationship for this relIdent and with a father link
-              return maybe(maybe(helpers.find(self.relationships, function(relationship) {
-                return maybe(relationship.identifiers)[CHILD_AND_PARENTS_RELATIONSHIP] === relIdent &&
+            id: relIdent.replace(/^.*\//, '').replace(/\?.*$/, ''), // TODO how else to get the relationship id?
+            fatherId: maybe(maybe(helpers.find(this.relationships, function(relationship) { // find this relationship with father link
+              return maybe(relationship.identifiers)[CHILD_AND_PARENTS_RELATIONSHIP] === relIdent &&
                   !!maybe(relationship.links).father;
-              })).person1).resourceId; // and return person1's resource id
-            },
-            getMotherId: function() {
-              // find relationship for this relIdent and with a mother link
-              return maybe(maybe(helpers.find(self.relationships, function(relationship) {
+              })).person1).resourceId, // and return person1's resource id
+            motherId: maybe(maybe(helpers.find(this.relationships, function(relationship) { // find this relationship with mother link
                 return maybe(relationship.identifiers)[CHILD_AND_PARENTS_RELATIONSHIP] === relIdent &&
                   !!maybe(relationship.links).mother;
-              })).person1).resourceId; // and return person1's resource id
-            }
+              })).person1).resourceId // and return person1's resource id
           };
         }, this);
     },

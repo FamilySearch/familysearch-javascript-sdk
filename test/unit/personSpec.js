@@ -103,9 +103,9 @@ define(['FamilySearch'], function(FamilySearch) {
       FamilySearch.getPersonRelationshipsToParents('pid-3').then(function(response) {
         expect(response.getRelationships().length).toBe(1);
         var rel = response.getRelationships()[0];
-        expect(rel.getId()).toBe('PPPX-PP0');
-        expect(rel.getFatherId()).toBe('pid-1');
-        expect(rel.getMotherId()).toBe('pid-2');
+        expect(rel.id).toBe('PPPX-PP0');
+        expect(rel.fatherId).toBe('pid-1');
+        expect(rel.motherId).toBe('pid-2');
       });
     });
   });
