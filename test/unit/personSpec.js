@@ -108,5 +108,17 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(rel.motherId).toBe('pid-2');
       });
     });
+
+    it('child relationships are returned from getRelationshipsToChildren', function() {
+      FamilySearch.getRelationshipsToChildren('PPP0-MP1').then(function(response) {
+        expect(response.getChildIds()).toEqual(['PPP0-PP3', 'PPP1-PP3']);
+        var rels = response.getRelationships();
+        expect(rels.length).toBe(2);
+        expect(rels[0].getId()).toBe('FPPP0-PP0');
+        expect(rels[0].getChildId()).toBe('PPP0-PP3');
+        expect(rels[1].getId()).toBe('FPPP1-PP0');
+        expect(rels[1].getChildId()).toBe('PPP1-PP3');
+      });
+    });
   });
 });

@@ -1,0 +1,98 @@
+{
+  "links" : {
+    "person" : {
+      "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1",
+      "title" : "Person"
+    }
+  },
+  "persons" : [ {
+    "id" : "PPP0-MP1",
+    "links" : {
+      "person" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1",
+        "title" : "Person"
+      }
+    }
+  } ],
+  "relationships" : [ {
+    "id" : "FPPP0-PP0",
+    "links" : {
+      "relationship" : {
+        "href" : "https://familysearch.org/platform/tree/parent-child-relationships/PPP0-PP0",
+        "title" : "Parent-Child Relationship"
+      },
+      "child" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-PP3",
+        "title" : "Person"
+      },
+      "person1" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1",
+        "title" : "Person"
+      },
+      "person2" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-PP3",
+        "title" : "Person"
+      },
+      "parent" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1",
+        "title" : "Person"
+      },
+      "father" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1",
+        "title" : "Person"
+      }
+    },
+    "identifiers" : {
+      "http://familysearch.org/v1/ChildAndParentsRelationship" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPP0-PP0"
+    },
+    "type" : "http://gedcomx.org/ParentChild",
+    "person1" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/PPP0-MP1",
+      "resourceId" : "PPP0-MP1"
+    },
+    "person2" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/PPP0-PP3",
+      "resourceId" : "PPP0-PP3"
+    }
+  }, {
+    "id" : "FPPP1-PP0",
+    "links" : {
+      "relationship" : {
+        "href" : "https://familysearch.org/platform/tree/parent-child-relationships/PPP1-PP0",
+        "title" : "Parent-Child Relationship"
+      },
+      "child" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP1-PP3",
+        "title" : "Person"
+      },
+      "person1" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1",
+        "title" : "Person"
+      },
+      "person2" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP1-PP3",
+        "title" : "Person"
+      },
+      "parent" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1",
+        "title" : "Person"
+      },
+      "father" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1",
+        "title" : "Person"
+      }
+    },
+    "identifiers" : {
+      "http://familysearch.org/v1/ChildAndParentsRelationship" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPP1-PP0"
+    },
+    "type" : "http://gedcomx.org/ParentChild",
+    "person1" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/PPP0-MP1",
+      "resourceId" : "PPP0-MP1"
+    },
+    "person2" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/PPP1-PP3",
+      "resourceId" : "PPP1-PP3"
+    }
+  } ]
+}

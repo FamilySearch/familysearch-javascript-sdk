@@ -434,6 +434,60 @@ define([
     getPerson: function(id) { return helpers.find(this.persons, {id: id}); }
   };
 
+  /**
+   * @ngdoc function
+   * @name person.functions:getRelationshipsToChildren
+   * @function
+   *
+   * @description
+   * Get the relationships to a person's children.
+   * The response includes the following convenience functions
+   *
+   * - `getChildIds()` - an array of string ids
+   * - `getRelationships()` - an array of relationships; each has the following convenience functions
+   *
+   * ###Relationship convenience functions
+   *
+   * - `getId()` - id of the relationship; pass into {@link parentsAndChildren.functions:getChildAndParents getChildAndParents} for more information
+   * - `getChildId()`
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Relationships_to_Children_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ// editable example}
+   *
+   * @param {String} id of the person to read
+   * @param {Object=} params set `persons` true to return a person object for each person in the relationships,
+   * which you can access using a `getPerson(id)` convenience function. The person object id decorated with convenience functions
+   * as described for {@link person.functions:getPerson getPerson} but possibly without facts
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getRelationshipsToChildren = function(id, params, opts) {
+    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/child-relationships', params, {}, opts,
+      helpers.compose(
+        helpers.objectExtender(relationshipsToChildrenConvenienceFunctions),
+        helpers.objectExtender(childRelationshipConvenienceFunctions, function(response) {
+          return response.relationships;
+        }),
+        exports.personExtender
+      ));
+  };
+
+  var relationshipsToChildrenConvenienceFunctions = {
+    getChildIds:  function() {
+      return helpers.uniq(helpers.map(this.relationships, function(r) {
+        return maybe(r.person2).resourceId;
+      }));
+    },
+    getRelationships: function() { return this.relationships || []; },
+    getPerson:    function(id) { return helpers.find(this.persons, {id: id}); }
+  };
+
+  var childRelationshipConvenienceFunctions = {
+    getId:      function() { return this.id; },
+    getChildId: function() { return maybe(this.person2).resourceId; }
+  };
+
   // TODO getPersonMerge
   // TODO getPersonNotAMatch
   // TODO getRelationshipsToChildren

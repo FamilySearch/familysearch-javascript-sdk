@@ -60,6 +60,7 @@ define([
     getPersonChangeSummary: person.getPersonChangeSummary,
     getRelationshipsToSpouses: person.getRelationshipsToSpouses,
     getRelationshipsToParents: person.getRelationshipsToParents,
+    getRelationshipsToChildren: person.getRelationshipsToChildren,
 
     // search and match
     getPersonSearch: searchAndMatch.getPersonSearch,
