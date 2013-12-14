@@ -1,0 +1,42 @@
+<h1><code ng:non-bindable="">getRelationshipsToSpouses</code>
+<span class="hint">(functions in module <code ng:non-bindable="">person</code>
+)</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>Get the relationships to a person's spouses.
+The response includes the following convenience functions</p>
+
+<ul>
+<li><code>getSpouseIds()</code> - an array of string ids</li>
+<li><code>getRelationships()</code> - an array of relationships; each has the following convenience functions</li>
+</ul>
+
+<h3 id="relationshipconveniencefunctions">Relationship convenience functions</h5>
+
+<ul>
+<li><code>getId()</code> - id of the relationship</li>
+<li><code>getHusbandId()</code></li>
+<li><code>getWifeId()</code></li>
+<li><code>getFacts()</code> - array of facts decorated with <em>fact convenience functions</em> as described for <a href="#/api/person.functions:getPerson">getPerson</a></li>
+</ul>
+
+<p><a href="https://familysearch.org/developers/docs/api/tree/Person_Relationships_to_Spouses_resource">FamilySearch API Docs</a></p>
+
+<p><a href="http://jsfiddle.net/DallanQ/7zLEJ/">editable example</a></p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getRelationshipsToSpouses(id[, params][, opts]);</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<p>of the person to read</p></li>
+<li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
+<p>set <code>persons</code> true to return a person object for each person in the relationships,
+which you can access using a <code>getPerson(id)</code> convenience function. The person object id decorated with convenience functions
+as described for <a href="#/api/person.functions:getPerson">getPerson</a> but possibly without facts</p></li>
+<li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
+<p>options to pass to the http function specified during init</p></li>
+</ul>
+<h3 id="Returns">Returns</h3>
+<div class="returns"><code ng:non-bindable="">{Object}</code>
+– <p>promise for the response</p></div>
+</div>
+</div>

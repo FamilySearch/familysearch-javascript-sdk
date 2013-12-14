@@ -145,10 +145,10 @@ define('helpers',[
   };
 
   // simplified version of underscore's filter
-  helpers.filter = function(arr, fn) {
+  helpers.filter = function(arr, fn, context) {
     var result = [];
     helpers.forEach(arr, function(e) {
-      if (fn(e)) {
+      if (fn.call(context, e)) {
         result.push(e);
       }
     });
@@ -164,22 +164,37 @@ define('helpers',[
     return result;
   };
 
-  // return only unique elements of an array preserving order
-  helpers.uniq = function(arr) {
-    var u = {}, result = [];
-    for (var i = 0, len = arr.length; i < len; i++) {
-      var e = arr[i];
-      if (!u.hasOwnProperty(e)) {
-        result.push(e);
-        u[e] = 1;
-      }
+  // borrowed from underscore
+  helpers.contains = function(obj, target) {
+    if (obj == null) { // covers undefined as well
+      return false;
     }
+    if (obj.indexOf && obj.indexOf === Array.prototype.indexOf) {
+      return obj.indexOf(target) !== -1;
+    }
+    var result = false;
+    helpers.forEach(obj, function(value) {
+      if (value === target) {
+        result = true;
+      }
+    });
     return result;
+  };
+
+  // simplified version of underscore's uniq
+  helpers.uniq = function(arr) {
+    var results = [];
+    helpers.forEach(arr, function(value) {
+      if (!helpers.contains(results, value)) {
+        results.push(value);
+      }
+    });
+    return results;
   };
 
   // simplified version of underscore's find
   // returns undefined if nothing found
-  helpers.find = function(arr, objOrFn) {
+  helpers.find = function(arr, objOrFn, context) {
     var result;
     var isFn = helpers.isFunction(objOrFn);
     if (arr) {
@@ -187,7 +202,7 @@ define('helpers',[
         var elm = arr[i];
         var matches;
         if (isFn) {
-          matches = objOrFn.call(null, elm);
+          matches = objOrFn.call(context, elm);
         }
         else {
           matches = true;
@@ -233,45 +248,16 @@ define('helpers',[
 
   helpers.flatMap = helpers.compose(helpers.flatten, helpers.map);
 
-  // returns empty object if nothing found
-  helpers.findOrEmpty = function(arr, objOrFn) {
+  // union arrays
+  // borrowed from underscore
+  helpers.union = function() {
+    return helpers.uniq(helpers.flatten(arguments));
+  };
+
+  // returns find match or first if none found
+  helpers.findOrFirst = function(arr, objOrFn) {
     var result = helpers.find(arr, objOrFn);
-    if (helpers.isUndefined(result)) {
-      result = {};
-    }
-    return result;
-  };
-
-  // returns the first element of the array
-  // returns undefined if nothing found
-  helpers.first = function(arr) {
-    var result;
-    if (arr && arr.length > 0) {
-      result = arr[0];
-    }
-    return result;
-  };
-
-  // returns empty object if nothing found
-  helpers.firstOrEmpty = function(arr) {
-    var result = helpers.first(arr);
-    if (helpers.isUndefined(result)) {
-      result = {};
-    }
-    return result;
-  };
-
-  // returns find match, first, or empty
-  helpers.findOrFirstOrEmpty = function(arr, objOrFn) {
-    var result = helpers.find(arr, objOrFn);
-    if (helpers.isUndefined(result)) {
-      result = helpers.first(arr);
-      console.log('findOrFirstOrEmpty', arr);
-    }
-    if (helpers.isUndefined(result)) {
-      result = {};
-    }
-    return result;
+    return helpers.isUndefined(result) ? arr[0] : result;
   };
 
   helpers.extend = function(dest) {
@@ -1593,65 +1579,6 @@ define('notes',[
   return exports;
 });
 
-define('parentsAndChildren',[
-  'helpers',
-  'plumbing'
-], function(helpers, plumbing) {
-  /**
-   * @ngdoc overview
-   * @name parentsAndChildren
-   * @description
-   * Functions related to parents and children
-   *
-   * {@link https://familysearch.org/developers/docs/api/resources#parents-and-children FamilySearch API Docs}
-   */
-
-  var maybe = helpers.maybe; // shorthand
-
-  var exports = {};
-
-  /**
-   * @ngdoc function
-   * @name parentsAndChildren.functions:getChildAndParents
-   * @function
-   *
-   * @description
-   * Get information about a child and parents relationship
-   * The response includes the following convenience functions
-   *
-   * - `getId()` - id of the relationship
-   * - `getFatherId()` - person id
-   * - `getMotherId()` - mother id
-   * - `getChildId()` - child id
-   * - `getFatherType()` - http://gedcomx.org/AdoptiveParent, http://gedcomx.org/BiologicalParent, etc.
-   * - `getMotherType()` - http://gedcomx.org/AdoptiveParent, http://gedcomx.org/BiologicalParent, etc.
-   *
-   * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_resource FamilySearch API Docs}
-   *
-   * {@link http://jsfiddle.net/DallanQ/C437t/ editable example}
-   *
-   * @param {String} id of the relationship to read
-   * @param {Object=} params set `persons` true to return a person object for each person in the relationship
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the response
-   */
-  exports.getChildAndParents = function(id, params, opts) {
-    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(id), params, {'Accept': 'application/x-fs-v1+json'}, opts,
-      helpers.objectExtender(childAndParentsRelationshipConvenienceFunctions));
-  };
-
-  var childAndParentsRelationshipConvenienceFunctions = {
-    getId:         function() { return maybe(maybe(this.childAndParentsRelationships)[0]).id; },
-    getFatherId:   function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).father).resourceId; },
-    getMotherId:   function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).mother).resourceId; },
-    getChildId:    function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).child).resourceId; },
-    getFatherType: function() { return maybe(maybe(maybe(maybe(this.childAndParentsRelationships)[0]).fatherFacts)[0]).type; },
-    getMotherType: function() { return maybe(maybe(maybe(maybe(this.childAndParentsRelationships)[0]).motherFacts)[0]).type; }
-  };
-
-  return exports;
-});
-
 define('person',[
   'helpers',
   'plumbing'
@@ -1689,11 +1616,31 @@ define('person',[
    * - `getDeathPlace()`
    * - `getGender()`
    * - `getLifeSpan()`
-   * - `getName()`
    * - `isLiving()`
-   * - `getGivenName()`
-   * - `getSurname()`
+   * - `getName()` - display name
+   * - `getGivenName()` - preferred
+   * - `getSurname()` - preferred
+   * - `getNames()` - array of name objects decorated with *name convenience functions* described below
+   * - `getFacts()` - array of fact objects decorated with *fact convenience functions* described below
    * - `getDisplayAttrs()` - returns an object with birthDate, birthPlace, deathDate, deathPlace, gender, lifespan, and name
+   *
+   * ###Name Convenience Functions
+   * - `getId()` - name id
+   * - `getContributor()` - id of the contributor
+   * - `getType()` - http://gedcomx.org/BirthName, etc.
+   * - `getNameFormsCount()` - get the number of name forms
+   * - `getFullText(i)` - get the full text of the `i`'th name form; if `i` is omitted; get the first
+   * - `getGivenName(i)` - get the given part of the `i`'th name form; if `i` is omitted; get the first
+   * - `getSurname(i)` - get the surname part of the `i`'th name form; if `i` is omitted; get the first
+   * - `isPreferred()` - true if this name is preferred
+   *
+   * ###Fact Convenience Functions
+   * - `getId()` - fact id
+   * - `getContributor()` - id of the contributor
+   * - `getType()` - http://gedcomx.org/Birth, etc.
+   * - `getDate()` - original string
+   * - `getFormalDate()` - standard form; e.g., +1836-04-13
+   * - `getPlace()` - original string
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
    *
@@ -1721,16 +1668,56 @@ define('person',[
     getDeathPlace: function() { return this.display.deathPlace; },
     getGender:     function() { return this.display.gender; },
     getLifeSpan:   function() { return this.display.lifespan; },
-    getName:       function() { return this.display.name; },
     isLiving:      function() { return this.living; },
-    getGivenName:  function() { return helpers.findOrEmpty(helpers.firstOrEmpty(helpers.findOrFirstOrEmpty(this.names, {preferred: true}).nameForms).parts,
-      {type: 'http://gedcomx.org/Given'}).value; },
-    getSurname:    function() { return helpers.findOrEmpty(helpers.firstOrEmpty(helpers.findOrFirstOrEmpty(this.names, {preferred: true}).nameForms).parts,
-      {type: 'http://gedcomx.org/Surname'}).value; },
+    getName:       function() { return this.display.name; },
+    getGivenName:  function() { return maybe(helpers.find(
+      maybe(maybe(maybe(helpers.findOrFirst(this.names, {preferred: true})).nameForms)[0]).parts,
+      {type: 'http://gedcomx.org/Given'}
+    )).value; },
+    getSurname:    function() { return maybe(helpers.find(
+      maybe(maybe(maybe(helpers.findOrFirst(this.names, {preferred: true})).nameForms)[0]).parts,
+      {type: 'http://gedcomx.org/Surname'}
+    )).value; },
+    getNames:      function() { return this.names; },
+    getFacts:      function() { return this.facts; },
     getDisplayAttrs: function() { return this.display; }
   };
 
-  exports.personExtender = helpers.objectExtender(exports.personConvenienceFunctions, exports.personExtensionPointGetter);
+  var nameConvenienceFunctions = {
+    getId:             function() { return this.id; },
+    getContributor:    function() { return maybe(maybe(this.attribution).contributor).resourceId; },
+    getType:           function() { return this.type; },
+    getNameFormsCount: function() { return this.nameForms ? this.nameForms.length : 0; },
+    getFullText:       function(i) { return maybe(maybe(this.nameForms)[i || 0]).fullText; },
+    getGivenName:      function(i) { return maybe(helpers.find(
+      maybe(maybe(this.nameForms)[i || 0]).parts,
+      {type: 'http://gedcomx.org/Given'}
+    )).value; },
+    getSurname:        function(i) { return maybe(helpers.find(
+      maybe(maybe(this.nameForms)[i || 0]).parts,
+      {type: 'http://gedcomx.org/Surname'}
+    )).value; },
+    isPreferred:       function() { return this.preferred; }
+  };
+
+  exports.factConvenienceFunctions = {
+    getId:             function() { return this.id; },
+    getContributor:    function() { return maybe(maybe(this.attribution).contributor).resourceId; },
+    getType:           function() { return this.type; },
+    getDate:           function() { return maybe(this.date).original; },
+    getFormalDate:     function() { return maybe(this.date).formal; },
+    getPlace:          function() { return maybe(this.place).original; }
+  };
+
+  exports.personExtender = helpers.compose(
+    helpers.objectExtender(exports.personConvenienceFunctions, exports.personExtensionPointGetter),
+    helpers.objectExtender(nameConvenienceFunctions, function(response) {
+      return helpers.flatMap(response.persons, function(person) { return person.names; });
+    }),
+    helpers.objectExtender(exports.factConvenienceFunctions, function(response) {
+      return helpers.flatMap(response.persons, function(person) { return person.facts; });
+    })
+  );
 
   /**
    * @ngdoc function
@@ -1768,12 +1755,11 @@ define('person',[
    * - `getPrimaryId()` - id of the person requested
    * - `getFatherIds()` - array of ids
    * - `getMotherIds()` - array of ids
-   * - `getParentRelationships()` - array of { `id` - relationship id, `fatherId`, `motherId`,
-   * `fatherType` - http://gedcomx.org/AdoptiveParent, http://gedcomx.org/BiologicalParent, etc,
-   * `motherType` - same values as `fatherType` }
-   * - `getSpouseRelationships()` - array of { `id` - relationship id, `spouseId` }
    * - `getSpouseIds()` - array of ids
    * - `getChildIds(spouseId)` - array of ids; if spouseId is specified, returns only ids of children with spouse as the other parent
+   * - `getParentRelationships()` - array of objects decorated with *child and parents relationship convenience functions* described below
+   * - `getSpouseRelationships()` - array of object decorated with *spouse relationship convenience functions* described below
+   * - `getChildRelationships()` - array of object decorated with *child and parents relationship convenience functions* described below
    *
    * The following functions return person objects decorated with *person convenience functions* as described for {@link person.functions:getPerson getPerson}
    *
@@ -1787,6 +1773,24 @@ define('person',[
    * - `getSpouses()` - array of spouse persons
    * - `getChildren(spouseId)` - array of child persons; if spouseId is specified returns only children with spouse as the other parent
    *
+   * ###Child and Parents Relationship Convenience Functions
+   *
+   * - `getId()` - relationship id
+   * - `getFatherId()`
+   * - `getMotherId()`
+   * - `getChildId()`
+   * - `getFatherFacts()` - an array of facts (e.g., parent-relationship type) decorated with *fact convenience functions*
+   * as described for {@link person.functions:getPerson getPerson}
+   * - `getMotherFacts()` - similar to father facts
+   *
+   * ###Spouse Relationship Convenience Functions
+   *
+   * - `getId()` - relationship id
+   * - `getHusbandId()`
+   * - `getWifeId()`
+   * - `getFacts()` - an array of facts (e.g., marriage) decorated with *fact convenience functions*
+   * as described for {@link person.functions:getPerson getPerson}
+   *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/5Npsh/ editable example}
@@ -1799,80 +1803,109 @@ define('person',[
   exports.getPersonWithRelationships = function(id, params, opts) {
     return plumbing.get('/platform/tree/persons-with-relationships', helpers.removeEmptyProperties(helpers.extend({'person': id}, params)),
       {}, opts,
-      helpers.compose(helpers.objectExtender(personWithRelationshipsConvenienceFunctions), exports.personExtender));
+      helpers.compose(
+        helpers.objectExtender({getPrimaryId: function() { return id; }}), // make id available
+        helpers.objectExtender(exports.factConvenienceFunctions, function(response) {
+          return helpers.union(
+            helpers.flatMap(response.childAndParentsRelationships, function(r) {
+              return helpers.union(r.fatherFacts, r.motherFacts);
+            }),
+            helpers.flatMap(response.getSpouseRelationships(), function(r) {
+              return r.facts;
+            })
+          );
+        }),
+        helpers.objectExtender(spouseRelationshipConvenienceFunctions, function(response) {
+          return response.getSpouseRelationships();
+        }),
+        helpers.objectExtender(childAndParentsRelationshipConvenienceFunctions, function(response) {
+          return response.childAndParentsRelationships;
+        }),
+        helpers.objectExtender(personWithRelationshipsConvenienceFunctions),
+        exports.personExtender
+      ));
   };
 
   // TODO how identify preferred parents?
   var personWithRelationshipsConvenienceFunctions = {
-    getPerson:     function(id) { return helpers.findOrEmpty(this.persons, {id: id}); },
-    getPrimaryId:  function() { return helpers.findOrEmpty(this.persons, function(p) { return p.display.ascendancyNumber === '1';}).id; },
-    getPrimaryPerson: function() { //noinspection JSValidateTypes
-      return this.getPerson(this.getPrimaryId());
+    getPerson:     function(id) { return helpers.find(this.persons, {id: id}); },
+    getPrimaryPerson: function() { return this.getPerson(this.getPrimaryId()); },
+    getParentRelationships: function() {
+      var primaryId = this.getPrimaryId();
+      return helpers.filter(this.childAndParentsRelationships, function(r) {
+        return maybe(r.child).resourceId === primaryId;
+      });
+    },
+    getSpouseRelationships:  function() {
+      return helpers.filter(this.relationships, function(r) {
+        return r.type === 'http://gedcomx.org/Couple';
+      });
+    },
+    getChildRelationships: function() {
+      var primaryId = this.getPrimaryId();
+      return helpers.filter(this.childAndParentsRelationships, function(r) {
+        return maybe(r.father).resourceId === primaryId || maybe(r.mother).resourceId === primaryId;
+      });
     },
     getFatherIds:  function() {
-      var primaryId = this.getPrimaryId();
-      return helpers.uniq(helpers.map(helpers.filter(this.childAndParentsRelationships,
-        function(r) { return r.child.resourceId === primaryId && r.father; }),
-        function(r) { return r.father.resourceId; }));
+      return helpers.uniq(helpers.map(
+        helpers.filter(this.getParentRelationships(), function(r) {
+          return !!r.getFatherId();
+        }),
+        function(r) {
+          return r.getFatherId();
+        }, this));
     },
     getFathers:    function() { return helpers.map(this.getFatherIds(), this.getPerson, this); },
     getMotherIds:  function() {
-      var primaryId = this.getPrimaryId();
-      return helpers.uniq(helpers.map(helpers.filter(this.childAndParentsRelationships,
-        function(r) { return r.child.resourceId === primaryId && r.mother; }),
-        function(r) { return r.mother.resourceId; }));
-    },
-    getMothers:    function() { return helpers.map(this.getMotherIds(), this.getPerson, this); },
-    getParentRelationships: function() {
-      var primaryId = this.getPrimaryId();
-      return helpers.map(helpers.filter(this.childAndParentsRelationships,
-        function(r) { return r.child.resourceId === primaryId && (r.father || r.mother); }),
-        function(r) { return {
-          id: r.id,
-          fatherId: maybe(r.father).resourceId,
-          motherId: maybe(r.mother).resourceId,
-          fatherType: r.fatherFacts[0].type,
-          motherType: r.motherFacts[0].type
-        }; }, this);
-    },
-    getSpouseRelationships:  function() {
-      var primaryId = this.getPrimaryId();
-      return helpers.map(helpers.filter(this.relationships, function(r) {
-          return r.type === 'http://gedcomx.org/Couple' &&
-            (r.person1.resourceId === primaryId || r.person2.resourceId === primaryId);
+      return helpers.uniq(helpers.map(
+        helpers.filter(this.getParentRelationships(), function(r) {
+          return !!r.getMotherId();
         }),
-        function(r) { return {
-          id: r.id,
-          spouseId: r.person1.resourceId === primaryId ? r.person2.resourceId : r.person1.resourceId
-        }; });
-    },
-    getSpouseIds: function() {
-      return helpers.map(this.getSpouseRelationships(), function(r) { return r.spouseId; });
-    },
-    getSpouses:  function() {
-      var primaryId = this.getPrimaryId();
-      return helpers.uniq(helpers.map(helpers.filter(this.relationships, function(r) {
-        return r.type === 'http://gedcomx.org/Couple' &&
-          (r.person1.resourceId === primaryId || r.person2.resourceId === primaryId);
-      }),
         function(r) {
-          return this.getPerson(r.person1.resourceId === primaryId ? r.person2.resourceId : r.person1.resourceId);
+          return r.getMotherId();
         }, this));
     },
-    getChildIds:   function(spouseId) {
+    getMothers:    function() { return helpers.map(this.getMotherIds(), this.getPerson, this); },
+    getSpouseIds:  function() {
       var primaryId = this.getPrimaryId();
-      return helpers.uniq(helpers.map(helpers.filter(this.childAndParentsRelationships, function(r) {
-        return childParentRelationshipHasParent(r, primaryId) &&
-          (!spouseId || childParentRelationshipHasParent(r, spouseId));
-      }),
-        function(r) { return r.child.resourceId; }));
+      return helpers.uniq(helpers.map(
+        helpers.filter(this.getSpouseRelationships(), function(r) {
+          return !!(r.getHusbandId() === primaryId ? r.getWifeId() : r.getHusbandId());
+        }),
+        function(r) {
+          return r.getHusbandId() === primaryId ? r.getWifeId() : r.getHusbandId();
+        }, this));
+    },
+    getSpouses:    function() { return helpers.map(this.getSpouseIds(), this.getPerson, this); },
+    getChildIds:   function(spouseId) {
+      return helpers.uniq(helpers.map(
+        helpers.filter(this.getChildRelationships(), function(r) {
+          return !!r.getChildId() &&
+            (!spouseId || r.getFatherId() === spouseId || r.getMotherId() === spouseId);
+        }),
+        function(r) {
+          return r.getChildId();
+        }, this));
     },
     getChildren:   function(spouseId) { return helpers.map(this.getChildIds(spouseId), this.getPerson, this); }
   };
 
-  function childParentRelationshipHasParent(r, parentId) {
-    return (r.father && r.father.resourceId === parentId) || (r.mother && r.mother.resourceId === parentId);
-  }
+  var spouseRelationshipConvenienceFunctions = {
+    getId:        function() { return this.id; },
+    getHusbandId: function() { return maybe(this.person1).resourceId; },
+    getWifeId:    function() { return maybe(this.person2).resourceId; },
+    getFacts:     function() { return this.facts || []; }
+  };
+
+  var childAndParentsRelationshipConvenienceFunctions = {
+    getId:          function() { return this.id; },
+    getFatherId:    function() { return maybe(this.father).resourceId; },
+    getMotherId:    function() { return maybe(this.mother).resourceId; },
+    getChildId:     function() { return maybe(this.child).resourceId; },
+    getFatherFacts: function() { return this.fatherFacts || []; },
+    getMotherFacts: function() { return this.motherFacts || []; }
+  };
 
   /**
    * @ngdoc function
@@ -1899,8 +1932,256 @@ define('person',[
       helpers.objectExtender({getChanges: function() { return this.entries || []; }}));
   };
 
+  /**
+   * @ngdoc function
+   * @name person.functions:getRelationshipsToSpouses
+   * @function
+   *
+   * @description
+   * Get the relationships to a person's spouses.
+   * The response includes the following convenience functions
+   *
+   * - `getSpouseIds()` - an array of string ids
+   * - `getRelationships()` - an array of relationships; each has the following convenience functions
+   *
+   * ###Relationship convenience functions
+   *
+   * - `getId()` - id of the relationship
+   * - `getHusbandId()`
+   * - `getWifeId()`
+   * - `getFacts()` - array of facts decorated with *fact convenience functions* as described for {@link person.functions:getPerson getPerson}
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Relationships_to_Spouses_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/7zLEJ/ editable example}
+   *
+   * @param {String} id of the person to read
+   * @param {Object=} params set `persons` true to return a person object for each person in the relationships,
+   * which you can access using a `getPerson(id)` convenience function. The person object id decorated with convenience functions
+   * as described for {@link person.functions:getPerson getPerson} but possibly without facts
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getRelationshipsToSpouses = function(id, params, opts) {
+    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/spouse-relationships', params, {}, opts,
+      helpers.compose(
+        helpers.objectExtender({getPrimaryId: function() { return id; }}), // make id available
+        helpers.objectExtender(relationshipsToSpousesConvenienceFunctions),
+        helpers.objectExtender(spouseRelationshipConvenienceFunctions, function(response) {
+          return response.relationships;
+        }),
+        helpers.objectExtender(exports.factConvenienceFunctions, function(response) {
+          return helpers.flatMap(response.relationships, function(relationship) { return relationship.facts; });
+        }),
+        exports.personExtender
+      ));
+  };
+
+  var relationshipsToSpousesConvenienceFunctions = {
+    getRelationships: function() { return this.relationships || []; },
+    getSpouseIds:  function() {
+      var primaryId = this.getPrimaryId();
+      return helpers.uniq(helpers.map(this.getRelationships(), function(r) {
+        return r.getHusbandId() === primaryId ? r.getWifeId() : r.getHusbandId();
+      }, this));
+    },
+    getPerson:    function(id) { return helpers.find(this.persons, {id: id}); }
+  };
+
+  /**
+   * @ngdoc function
+   * @name person.functions:getRelationshipsToParents
+   * @function
+   *
+   * @description
+   * Get the relationships to a person's parents.
+   * The response includes the following convenience function
+   *
+   * - `getRelationships()` - an array of { `id` - relationship id, `fatherId`, `motherId` }
+   *
+   * Pass the relationship id into {@link parentsAndChildren.functions:getChildAndParents getChildAndParents} for more information
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Relationships_to_Parents_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/ajxpq/ editable example}
+   *
+   * @param {String} id of the person to read
+   * @param {Object=} params set `persons` true to return a person object for each person in the relationships,
+   * which you can access using a `getPerson(id)` convenience function. The person object id decorated with convenience functions
+   * as described for {@link person.functions:getPerson getPerson} but possibly without facts
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getRelationshipsToParents = function(id, params, opts) {
+    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/parent-relationships', params, {}, opts,
+      helpers.compose(
+        // TODO consider adding convenience functions to expose the couple relationship for the parents
+        helpers.objectExtender(relationshipsToParentsConvenienceFunctions),
+        exports.personExtender
+      ));
+  };
+
+  var CHILD_AND_PARENTS_RELATIONSHIP = 'http://familysearch.org/v1/ChildAndParentsRelationship';
+
+  var relationshipsToParentsConvenienceFunctions = {
+    getRelationships: function() {
+      return helpers.map( // map them to the { id, fatherId, motherId } result objects
+        helpers.uniq( // remove duplicates
+          helpers.map( // map them to the relationship identifier
+            helpers.filter(this.relationships, function(relationship) { // get only the parent-child relationships
+              return relationship.type === 'http://gedcomx.org/ParentChild' &&
+                !!maybe(relationship.identifiers)[CHILD_AND_PARENTS_RELATIONSHIP];
+            }),
+            function(relationship) {
+              return relationship.identifiers[CHILD_AND_PARENTS_RELATIONSHIP];
+            }, this)
+        ),
+        function(relIdent) {
+          return {
+            id: relIdent.replace(/^.*\//, '').replace(/\?.*$/, ''), // TODO how else to get the relationship id?
+            fatherId: maybe(maybe(helpers.find(this.relationships, function(relationship) { // find this relationship with father link
+              return maybe(relationship.identifiers)[CHILD_AND_PARENTS_RELATIONSHIP] === relIdent &&
+                !!maybe(relationship.links).father;
+            })).person1).resourceId, // and return person1's resource id
+            motherId: maybe(maybe(helpers.find(this.relationships, function(relationship) { // find this relationship with mother link
+              return maybe(relationship.identifiers)[CHILD_AND_PARENTS_RELATIONSHIP] === relIdent &&
+                !!maybe(relationship.links).mother;
+            })).person1).resourceId // and return person1's resource id
+          };
+        }, this);
+    },
+    getPerson: function(id) { return helpers.find(this.persons, {id: id}); }
+  };
+
+  /**
+   * @ngdoc function
+   * @name person.functions:getRelationshipsToChildren
+   * @function
+   *
+   * @description
+   * Get the relationships to a person's children.
+   * The response includes the following convenience functions
+   *
+   * - `getChildIds()` - an array of string ids
+   * - `getRelationships()` - an array of relationships; each has the following convenience functions
+   *
+   * ###Relationship convenience functions
+   *
+   * - `getId()` - id of the relationship; pass into {@link parentsAndChildren.functions:getChildAndParents getChildAndParents} for more information
+   * - `getChildId()`
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Relationships_to_Children_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/mUUEK/ editable example}
+   *
+   * @param {String} id of the person to read
+   * @param {Object=} params set `persons` true to return a person object for each person in the relationships,
+   * which you can access using a `getPerson(id)` convenience function. The person object id decorated with convenience functions
+   * as described for {@link person.functions:getPerson getPerson} but possibly without facts
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getRelationshipsToChildren = function(id, params, opts) {
+    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/child-relationships', params, {}, opts,
+      helpers.compose(
+        helpers.objectExtender(relationshipsToChildrenConvenienceFunctions),
+        helpers.objectExtender(childRelationshipConvenienceFunctions, function(response) {
+          return response.relationships;
+        }),
+        exports.personExtender
+      ));
+  };
+
+  var relationshipsToChildrenConvenienceFunctions = {
+    getRelationships: function() { return this.relationships || []; },
+    getChildIds:  function() {
+      return helpers.uniq(helpers.map(this.getRelationships(), function(r) {
+        return r.getChildId();
+      }, this));
+    },
+    getPerson:    function(id) { return helpers.find(this.persons, {id: id}); }
+  };
+
+  var childRelationshipConvenienceFunctions = {
+    getId:      function() { return this.id; },
+    getChildId: function() { return maybe(this.person2).resourceId; }
+  };
+
   // TODO getPersonMerge
   // TODO getPersonNotAMatch
+  // TODO getRelationshipsToChildren
+
+  return exports;
+});
+
+define('parentsAndChildren',[
+  'helpers',
+  'person',
+  'plumbing'
+], function(helpers, person, plumbing) {
+  /**
+   * @ngdoc overview
+   * @name parentsAndChildren
+   * @description
+   * Functions related to parents and children relationships
+   *
+   * {@link https://familysearch.org/developers/docs/api/resources#parents-and-children FamilySearch API Docs}
+   */
+
+  var maybe = helpers.maybe; // shorthand
+
+  var exports = {};
+
+  /**
+   * @ngdoc function
+   * @name parentsAndChildren.functions:getChildAndParents
+   * @function
+   *
+   * @description
+   * Get information about a child and parents relationship; to get more
+   * The response includes the following convenience functions
+   *
+   * - `getId()` - id of the relationship
+   * - `getFatherId()` - person id
+   * - `getMotherId()` - mother id
+   * - `getChildId()` - child id
+   * - `getFatherFacts()` - an array of facts decorated with *fact convenience functions* as described for {@link person.functions:getPerson getPerson}
+   * - `getMotherFacts()` - similar to father facts
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/C437t/ editable example}
+   *
+   * @param {String} id of the relationship to read
+   * @param {Object=} params set `persons` true to return a person object for each person in the relationship,
+   * which you can access using the `getPerson(id)` convenience function. The person object id decorated with convenience functions
+   * as described for {@link person.functions:getPerson getPerson} but possibly without facts
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getChildAndParents = function(id, params, opts) {
+    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(id), params, {'Accept': 'application/x-fs-v1+json'}, opts,
+      helpers.compose(
+        helpers.objectExtender(childAndParentsConvenienceFunctions),
+        helpers.objectExtender(person.factConvenienceFunctions, function(response) {
+          return helpers.union(
+            maybe(maybe(response.childAndParentsRelationships)[0]).fatherFacts,
+            maybe(maybe(response.childAndParentsRelationships)[0]).motherFacts
+          );
+        }),
+        person.personExtender
+      ));
+  };
+
+  var childAndParentsConvenienceFunctions = {
+    getId:          function() { return maybe(maybe(this.childAndParentsRelationships)[0]).id; },
+    getFatherId:    function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).father).resourceId; },
+    getMotherId:    function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).mother).resourceId; },
+    getChildId:     function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).child).resourceId; },
+    getFatherFacts: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).fatherFacts; },
+    getMotherFacts: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).motherFacts; },
+    getPerson:      function(id) { return helpers.find(this.persons, {id: id}); }
+  };
 
   return exports;
 });
@@ -1918,6 +2199,7 @@ define('pedigree',[
    *
    * {@link https://familysearch.org/developers/docs/api/resources#pedigree FamilySearch API Docs}
    */
+  var maybe = helpers.maybe; // shorthand
 
   var exports = {};
 
@@ -1931,7 +2213,7 @@ define('pedigree',[
    *
    * - `exists(ascendancyNumber)` - return true if a person with ascendancy number exists
    *
-   * The following functions return person objects decorated with *person convenience functions* {@link person.functions:getPerson as described in getPerson}
+   * The following functions return person objects decorated with *person convenience functions* as described for {@link person.functions:getPerson getPerson}
    * (with the exception that `getGivenName()` and `getSurname()` functions do not work because the name pieces aren't there)
    * as well as a `getAscendancyNumber()` function that returns the person's ascendancy number
    *
@@ -1963,8 +2245,8 @@ define('pedigree',[
   function pedigreeConvenienceFunctionGenerator(numberLabel) {
     return {
       getPersons:    function()    { return this.persons; },
-      exists:        function(num) { return !!helpers.findOrEmpty(this.persons, matchPersonNum(numberLabel, num)).id; },
-      getPerson:     function(num) { return helpers.findOrEmpty(this.persons, matchPersonNum(numberLabel, num)); }
+      exists:        function(num) { return !!maybe(helpers.find(this.persons, matchPersonNum(numberLabel, num))).id; },
+      getPerson:     function(num) { return helpers.find(this.persons, matchPersonNum(numberLabel, num)); }
     };
   }
 
@@ -2132,7 +2414,7 @@ define('searchAndMatch',[
     getTitle:      function() { return this.title; },
     getScore:      function() { return this.score; },
     getConfidence: function() { return this.confidence; },
-    getPerson:     function(id) { return helpers.findOrEmpty(maybe(maybe(this.content).gedcomx).persons, {id: id}); },
+    getPerson:     function(id) { return helpers.find(maybe(maybe(this.content).gedcomx).persons, {id: id}); },
     getPrimaryPerson: function() {
       return this.getPerson(this.getId());
     },
@@ -2553,6 +2835,71 @@ define('sources',[
   return exports;
 });
 
+define('spouses',[
+  'helpers',
+  'person',
+  'plumbing'
+], function(helpers, person, plumbing) {
+  /**
+   * @ngdoc overview
+   * @name spouses
+   * @description
+   * Functions related to spouse relationships
+   *
+   * {@link https://familysearch.org/developers/docs/api/resources#spouses FamilySearch API Docs}
+   */
+
+  var maybe = helpers.maybe; // shorthand
+
+  var exports = {};
+
+  /**
+   * @ngdoc function
+   * @name spouses.functions:getCouple
+   * @function
+   *
+   * @description
+   * Get information about a couple relationship
+   * The response includes the following convenience functions
+   *
+   * - `getId()` - id of the relationship
+   * - `getHusbandId()`
+   * - `getWifeId()`
+   * - `getFacts()` - array of facts decorated with *fact convenience functions* as described for {@link person.functions:getPerson getPerson}
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/a2vUg/ editable example}
+   *
+   * @param {String} id of the relationship to read
+   * @param {Object=} params set `persons` true to return a person object for each person in the relationship,
+   * which you can access using the `getPerson(id)` convenience function. The person object id decorated with convenience functions
+   * as described for {@link person.functions:getPerson getPerson} but possibly without facts
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getCouple = function(id, params, opts) {
+    return plumbing.get('/platform/tree/couple-relationships/'+encodeURI(id), params, {}, opts,
+      helpers.compose(
+        helpers.objectExtender(coupleConvenienceFunctions),
+        helpers.objectExtender(person.factConvenienceFunctions, function(response) {
+          return maybe(maybe(response.relationships)[0]).facts;
+        }),
+        person.personExtender
+      ));
+  };
+
+  var coupleConvenienceFunctions = {
+    getId:        function() { return maybe(maybe(this.relationships)[0]).id; },
+    getHusbandId: function() { return maybe(maybe(maybe(this.relationships)[0]).person1).resourceId; },
+    getWifeId:    function() { return maybe(maybe(maybe(this.relationships)[0]).person2).resourceId; },
+    getFacts:     function() { return maybe(maybe(this.relationships)[0]).facts || []; },
+    getPerson:    function(id) { return helpers.find(this.persons, {id: id}); }
+  };
+
+  return exports;
+});
+
 define('user',[
   'globals',
   'helpers',
@@ -2566,6 +2913,8 @@ define('user',[
    *
    * {@link https://familysearch.org/developers/docs/api/resources#user FamilySearch API Docs}
    */
+
+  var maybe = helpers.maybe; // shorthand
 
   var exports = {};
 
@@ -2691,12 +3040,12 @@ define('user',[
   };
 
   var agentConvenienceFunctions = {
-    getId:          function() { return helpers.firstOrEmpty(this.agents).id; },
-    getName:        function() { return helpers.firstOrEmpty(helpers.firstOrEmpty(this.agents).names).value; },
-    getAccountName: function() { return helpers.firstOrEmpty(helpers.firstOrEmpty(this.agents).accounts).accountName; },
+    getId:          function() { return maybe(maybe(this.agents)[0]).id; },
+    getName:        function() { return maybe(maybe(maybe(maybe(this.agents)[0]).names)[0]).value; },
+    getAccountName: function() { return maybe(maybe(maybe(maybe(this.agents)[0]).accounts)[0]).accountName; },
     getEmail:       function() {
-      var email;
-      return (email = helpers.firstOrEmpty(helpers.firstOrEmpty(this.agents).emails).resource) ? email.replace(/^mailto:/,'') : email;
+      var email = maybe(maybe(maybe(maybe(this.agents)[0]).emails)[0]).resource;
+      return email ? email.replace(/^mailto:/,'') : email;
     }
   };
 
@@ -2716,10 +3065,11 @@ define('FamilySearch',[
   'searchAndMatch',
   'sourceBox',
   'sources',
+  'spouses',
   'user',
   'plumbing'
 ], function(init, authentication, changeHistory, discussions, memories, notes, parentsAndChildren, pedigree, person,
-            searchAndMatch, sourceBox, sources, user, plumbing) {
+            searchAndMatch, sourceBox, sources, spouses, user, plumbing) {
   return {
     init: init.init,
 
@@ -2762,6 +3112,9 @@ define('FamilySearch',[
     getMultiPerson: person.getMultiPerson,
     getPersonWithRelationships: person.getPersonWithRelationships,
     getPersonChangeSummary: person.getPersonChangeSummary,
+    getRelationshipsToSpouses: person.getRelationshipsToSpouses,
+    getRelationshipsToParents: person.getRelationshipsToParents,
+    getRelationshipsToChildren: person.getRelationshipsToChildren,
 
     // search and match
     getPersonSearch: searchAndMatch.getPersonSearch,
@@ -2777,6 +3130,9 @@ define('FamilySearch',[
     // sources
     getPersonSourceReferences: sources.getPersonSourceReferences,
     getSourceDescription: sources.getSourceDescription,
+
+    // spouses
+    getCouple: spouses.getCouple,
 
     // user
     getCurrentUser: user.getCurrentUser,

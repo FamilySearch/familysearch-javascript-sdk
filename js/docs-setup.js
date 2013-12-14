@@ -183,14 +183,14 @@ NG_DOCS={
       "id": "parentsAndChildren",
       "shortName": "parentsAndChildren",
       "type": "overview",
-      "keywords": "and api children docs familysearch functions https org overview parents parents-and-children parentsandchildren related to"
+      "keywords": "and api children docs familysearch functions https org overview parents parents-and-children parentsandchildren related relationships to"
     },
     {
       "section": "api",
       "id": "parentsAndChildren.functions:getChildAndParents",
       "shortName": "getChildAndParents",
       "type": "function",
-      "keywords": "about and api child convenience docs during each editable etc example familysearch following for function functions get getchildid getfatherid getfathertype getid getmotherid getmothertype http https id in includes information init mother net object of options opts org params parents parentsandchildren pass person persons promise read relationship response return set specified the to true"
+      "keywords": "about access an and api array as but can child convenience decorated described docs during each editable example facts familysearch father following for function functions get getchildid getfatherfacts getfatherid getid getmotherfacts getmotherid getperson http https id in includes information init more mother net object of options opts org params parents parentsandchildren pass person persons possibly promise read relationship response return set similar specified the to true using which with without you"
     },
     {
       "section": "api",
@@ -204,7 +204,7 @@ NG_DOCS={
       "id": "pedigree.functions:getAncestry",
       "shortName": "getAncestry",
       "type": "function",
-      "keywords": "all an ancestor ancestors ancestry and api are aren array as ascendancy available because convenience decorated described do docs during each editable example exception exists familysearch following for full function functions generations get getascendancynumber getbirthdate getbirthplace getdeathdate getdeathplace getgivenname getperson getpersons getsurname http https id if in includes init max name net not number objects of only optionally options opts org params pass pedigree person persondetails persons pieces promise retrieve return returns set specified spouse that the there to true well with work"
+      "keywords": "all an ancestor ancestors ancestry and api are aren array as ascendancy available because convenience decorated described do docs during each editable example exception exists familysearch following for full function functions generations get getascendancynumber getbirthdate getbirthplace getdeathdate getdeathplace getgivenname getperson getpersons getsurname http https id if includes init max name net not number objects of only optionally options opts org params pass pedigree person persondetails persons pieces promise retrieve return returns set specified spouse that the there to true well with work"
     },
     {
       "section": "api",
@@ -232,7 +232,7 @@ NG_DOCS={
       "id": "person.functions:getPerson",
       "shortName": "getPerson",
       "type": "function",
-      "keywords": "an and api been below birthdate birthplace convenience currently deathdate deathplace docs during editable example extended familysearch following for from function functions gender get getbirthdate getbirthplace getdeathdate getdeathplace getdisplayattrs getgender getgivenname getid getlifespan getname getperson getsurname has http https id includes init isliving lifespan listed name net object of options opts org params pass person promise read response returns specified the to unused which with"
+      "keywords": "an and api array been below birthdate birthplace contributor convenience currently deathdate deathplace decorated described display docs during editable etc example extended fact familysearch first following for form forms from full function functions gender get getbirthdate getbirthplace getcontributor getdate getdeathdate getdeathplace getdisplayattrs getfacts getformaldate getfulltext getgender getgivenname getid getlifespan getname getnameformscount getnames getperson getplace getsurname gettype given has http https id if includes init is isliving ispreferred lifespan listed name net number object objects of omitted options opts org original params part pass person preferred promise read response returns specified standard string surname text th the this to true unused which with"
     },
     {
       "section": "api",
@@ -246,7 +246,28 @@ NG_DOCS={
       "id": "person.functions:getPersonWithRelationships",
       "shortName": "getPersonWithRelationships",
       "type": "function",
-      "keywords": "addition and api are array as available child children convenience decorated described docs during each editable etc example familysearch father fatherid fathertype following for full function functions get getchildids getchildren getfatherids getfathers getmotherids getmothers getparentrelationships getparents getperson getprimaryid getprimaryperson getspouseids getspouserelationships getspouses http https id ids if in init is mother motherid mothertype net objects of only options opts org other params parent parents pass person persons primary promise read relationship relationships relative requested retrieve return returns same set specified spouse spouseid spouses the their to true unless values with works"
+      "keywords": "addition an and api are array as available below child children convenience decorated described docs during each editable example facts familysearch father following for full function functions get getchildid getchildids getchildrelationships getchildren getfacts getfatherfacts getfatherid getfatherids getfathers gethusbandid getid getmotherfacts getmotherid getmotherids getmothers getparentrelationships getparents getperson getprimaryid getprimaryperson getspouseids getspouserelationships getspouses getwifeid http https id ids if in init is marriage mother net object objects of only options opts org other params parent parent-relationship parents pass person persons primary promise read relationship relationships relative requested retrieve return returns set similar specified spouse spouseid spouses the their to true type unless with works"
+    },
+    {
+      "section": "api",
+      "id": "person.functions:getRelationshipsToChildren",
+      "shortName": "getRelationshipsToChildren",
+      "type": "function",
+      "keywords": "access an api array as but can children convenience decorated described docs during each editable example facts familysearch following for function functions get getchildandparents getchildid getchildids getid getperson getrelationships has http https id ids in includes information init into more net object of options opts org params parentsandchildren pass person persons possibly promise read relationship relationships response return set specified string the to true using which with without you"
+    },
+    {
+      "section": "api",
+      "id": "person.functions:getRelationshipsToParents",
+      "shortName": "getRelationshipsToParents",
+      "type": "function",
+      "keywords": "access an api array as but can convenience decorated described docs during each editable example facts familysearch fatherid following for function functions get getchildandparents getperson getrelationships http https id in includes information init into more motherid net object of options opts org params parents parentsandchildren pass person persons possibly promise read relationship relationships response return set specified the to true using which with without you"
+    },
+    {
+      "section": "api",
+      "id": "person.functions:getRelationshipsToSpouses",
+      "shortName": "getRelationshipsToSpouses",
+      "type": "function",
+      "keywords": "access an api array as but can convenience decorated described docs during each editable example facts familysearch following for function functions get getfacts gethusbandid getid getperson getrelationships getspouseids getwifeid has http https id ids in includes init net object of options opts org params pass person persons possibly promise read relationship relationships response return set specified spouses string the to true using which with without you"
     },
     {
       "section": "api",
@@ -387,6 +408,20 @@ NG_DOCS={
       "shortName": "getSourceDescription",
       "type": "function",
       "keywords": "about api array being citation convenience currently described description docs during editable example familysearch first following for function functions get getabout getcitations getid getnotes gettitle gettitles http https id includes information init net note of options opts org params pass promise read resource response source sources specified string strings the title to unused uri"
+    },
+    {
+      "section": "api",
+      "id": "spouses",
+      "shortName": "spouses",
+      "type": "overview",
+      "keywords": "api docs familysearch functions https org overview related relationships spouse spouses to"
+    },
+    {
+      "section": "api",
+      "id": "spouses.functions:getCouple",
+      "shortName": "getCouple",
+      "type": "function",
+      "keywords": "about access api array as but can convenience couple decorated described docs during each editable example facts familysearch following for function functions get getfacts gethusbandid getid getperson getwifeid http https id in includes information init net object of options opts org params pass person persons possibly promise read relationship response return set specified spouses the to true using which with without you"
     },
     {
       "section": "api",

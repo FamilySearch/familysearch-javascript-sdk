@@ -9,12 +9,11 @@
 <li><code>getPrimaryId()</code> - id of the person requested</li>
 <li><code>getFatherIds()</code> - array of ids</li>
 <li><code>getMotherIds()</code> - array of ids</li>
-<li><code>getParentRelationships()</code> - array of { <code>id</code> - relationship id, <code>fatherId</code>, <code>motherId</code>,
-<code>fatherType</code> - http://gedcomx.org/AdoptiveParent, http://gedcomx.org/BiologicalParent, etc,
-<code>motherType</code> - same values as <code>fatherType</code> }</li>
-<li><code>getSpouseRelationships()</code> - array of { <code>id</code> - relationship id, <code>spouseId</code> }</li>
 <li><code>getSpouseIds()</code> - array of ids</li>
 <li><code>getChildIds(spouseId)</code> - array of ids; if spouseId is specified, returns only ids of children with spouse as the other parent</li>
+<li><code>getParentRelationships()</code> - array of objects decorated with <em>child and parents relationship convenience functions</em> described below</li>
+<li><code>getSpouseRelationships()</code> - array of object decorated with <em>spouse relationship convenience functions</em> described below</li>
+<li><code>getChildRelationships()</code> - array of object decorated with <em>child and parents relationship convenience functions</em> described below</li>
 </ul>
 
 <p>The following functions return person objects decorated with <em>person convenience functions</em> as described for <a href="#/api/person.functions:getPerson">getPerson</a></p>
@@ -29,6 +28,28 @@
 <li><code>getParents()</code> - array of [father person, mother person]</li>
 <li><code>getSpouses()</code> - array of spouse persons</li>
 <li><code>getChildren(spouseId)</code> - array of child persons; if spouseId is specified returns only children with spouse as the other parent</li>
+</ul>
+
+<h3 id="childandparentsrelationshipconveniencefunctions">Child and Parents Relationship Convenience Functions</h5>
+
+<ul>
+<li><code>getId()</code> - relationship id</li>
+<li><code>getFatherId()</code></li>
+<li><code>getMotherId()</code></li>
+<li><code>getChildId()</code></li>
+<li><code>getFatherFacts()</code> - an array of facts (e.g., parent-relationship type) decorated with <em>fact convenience functions</em>
+as described for <a href="#/api/person.functions:getPerson">getPerson</a></li>
+<li><code>getMotherFacts()</code> - similar to father facts</li>
+</ul>
+
+<h3 id="spouserelationshipconveniencefunctions">Spouse Relationship Convenience Functions</h5>
+
+<ul>
+<li><code>getId()</code> - relationship id</li>
+<li><code>getHusbandId()</code></li>
+<li><code>getWifeId()</code></li>
+<li><code>getFacts()</code> - an array of facts (e.g., marriage) decorated with <em>fact convenience functions</em>
+as described for <a href="#/api/person.functions:getPerson">getPerson</a></li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource">FamilySearch API Docs</a></p>
