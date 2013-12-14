@@ -58,8 +58,8 @@ define([
     getMultiPerson: person.getMultiPerson,
     getPersonWithRelationships: person.getPersonWithRelationships,
     getPersonChangeSummary: person.getPersonChangeSummary,
-    getPersonRelationshipsToSpouses: person.getPersonRelationshipsToSpouses,
-    getPersonRelationshipsToParents: person.getPersonRelationshipsToParents,
+    getRelationshipsToSpouses: person.getRelationshipsToSpouses,
+    getRelationshipsToParents: person.getRelationshipsToParents,
 
     // search and match
     getPersonSearch: searchAndMatch.getPersonSearch,

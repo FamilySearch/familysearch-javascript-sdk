@@ -86,8 +86,8 @@ define(['FamilySearch'], function(FamilySearch) {
       });
     });
 
-    it('spouse relationships are returned from getPersonRelationshipsToSpouses', function() {
-      FamilySearch.getPersonRelationshipsToSpouses('12345').then(function(response) {
+    it('spouse relationships are returned from getRelationshipsToSpouses', function() {
+      FamilySearch.getRelationshipsToSpouses('12345').then(function(response) {
         expect(response.getSpouseIds()).toEqual(['KJ8T-MP1']);
         expect(response.getRelationships().length).toBe(1);
         var rel = response.getRelationships()[0];
@@ -99,8 +99,8 @@ define(['FamilySearch'], function(FamilySearch) {
       });
     });
 
-    it('parent relationships are returned from getPersonRelationshipsToParents', function() {
-      FamilySearch.getPersonRelationshipsToParents('pid-3').then(function(response) {
+    it('parent relationships are returned from getRelationshipsToParents', function() {
+      FamilySearch.getRelationshipsToParents('pid-3').then(function(response) {
         expect(response.getRelationships().length).toBe(1);
         var rel = response.getRelationships()[0];
         expect(rel.id).toBe('PPPX-PP0');

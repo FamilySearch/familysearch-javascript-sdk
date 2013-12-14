@@ -308,7 +308,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name person.functions:getPersonRelationshipsToSpouses
+   * @name person.functions:getRelationshipsToSpouses
    * @function
    *
    * @description
@@ -336,11 +336,11 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getPersonRelationshipsToSpouses = function(id, params, opts) {
+  exports.getRelationshipsToSpouses = function(id, params, opts) {
     return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/spouse-relationships', params, {}, opts,
       helpers.compose(
         helpers.objectExtender({getPrimaryId: function() { return id; }}), // make id available
-        helpers.objectExtender(personRelationshipsToSpousesConvenienceFunctions),
+        helpers.objectExtender(relationshipsToSpousesConvenienceFunctions),
         helpers.objectExtender(coupleRelationshipConvenienceFunctions, function(response) {
           return response.relationships;
         }),
@@ -351,7 +351,7 @@ define([
       ));
   };
 
-  var personRelationshipsToSpousesConvenienceFunctions = {
+  var relationshipsToSpousesConvenienceFunctions = {
     getSpouseIds:  function() {
       var primaryId = this.getPrimaryId();
       return helpers.uniq(helpers.map(this.relationships, function(r) {
@@ -371,7 +371,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name person.functions:getPersonRelationshipsToParents
+   * @name person.functions:getRelationshipsToParents
    * @function
    *
    * @description
@@ -393,18 +393,18 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getPersonRelationshipsToParents = function(id, params, opts) {
+  exports.getRelationshipsToParents = function(id, params, opts) {
     return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/parent-relationships', params, {}, opts,
       helpers.compose(
         // TODO consider adding convenience functions to expose the couple relationship for the parents
-        helpers.objectExtender(personRelationshipsToParentsConvenienceFunctions),
+        helpers.objectExtender(relationshipsToParentsConvenienceFunctions),
         exports.personExtender
       ));
   };
 
   var CHILD_AND_PARENTS_RELATIONSHIP = 'http://familysearch.org/v1/ChildAndParentsRelationship';
 
-  var personRelationshipsToParentsConvenienceFunctions = {
+  var relationshipsToParentsConvenienceFunctions = {
     getRelationships: function() {
       return helpers.map( // map them to the { id, fatherId, motherId } result objects
         helpers.uniq( // remove duplicates
@@ -422,12 +422,12 @@ define([
             id: relIdent.replace(/^.*\//, '').replace(/\?.*$/, ''), // TODO how else to get the relationship id?
             fatherId: maybe(maybe(helpers.find(this.relationships, function(relationship) { // find this relationship with father link
               return maybe(relationship.identifiers)[CHILD_AND_PARENTS_RELATIONSHIP] === relIdent &&
-                  !!maybe(relationship.links).father;
-              })).person1).resourceId, // and return person1's resource id
+                !!maybe(relationship.links).father;
+            })).person1).resourceId, // and return person1's resource id
             motherId: maybe(maybe(helpers.find(this.relationships, function(relationship) { // find this relationship with mother link
-                return maybe(relationship.identifiers)[CHILD_AND_PARENTS_RELATIONSHIP] === relIdent &&
-                  !!maybe(relationship.links).mother;
-              })).person1).resourceId // and return person1's resource id
+              return maybe(relationship.identifiers)[CHILD_AND_PARENTS_RELATIONSHIP] === relIdent &&
+                !!maybe(relationship.links).mother;
+            })).person1).resourceId // and return person1's resource id
           };
         }, this);
     },
