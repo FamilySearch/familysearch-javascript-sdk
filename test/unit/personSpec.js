@@ -74,6 +74,8 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(rel.getId()).toBe('C123-ABC');
         expect(rel.getHusbandId()).toBe('PW8J-MZ0');
         expect(rel.getWifeId()).toBe('PA65-HG3');
+        expect(rel.getPrimaryId()).toBe('PW8J-MZ0');
+        expect(rel.getSpouseId()).toBe('PA65-HG3');
         expect(rel.getFacts().length).toBe(0);
         expect(response.getChildRelationships().length).toBe(1);
         rel = response.getChildRelationships()[0];

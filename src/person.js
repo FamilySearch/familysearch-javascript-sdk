@@ -207,6 +207,8 @@ define([
    * - `getId()` - relationship id
    * - `getHusbandId()`
    * - `getWifeId()`
+   * - `getPrimaryId()` - id of the person requested
+   * - `getSpouseId()` - id of the spouse of the person requested
    * - `getFacts()` - an array of facts (e.g., marriage) decorated with *fact convenience functions*
    * as described for {@link person.functions:getPerson getPerson}
    *
@@ -233,6 +235,9 @@ define([
               return r.facts;
             })
           );
+        }),
+        helpers.objectExtender({getPrimaryId: function() { return id; }}, function(response) { // make id available to spouse relationship convenience functions
+          return response.getSpouseRelationships();
         }),
         helpers.objectExtender(spouseRelationshipConvenienceFunctions, function(response) {
           return response.getSpouseRelationships();
@@ -287,13 +292,12 @@ define([
     },
     getMothers:    function() { return helpers.map(this.getMotherIds(), this.getPerson, this); },
     getSpouseIds:  function() {
-      var primaryId = this.getPrimaryId();
       return helpers.uniq(helpers.map(
         helpers.filter(this.getSpouseRelationships(), function(r) {
-          return !!(r.getHusbandId() === primaryId ? r.getWifeId() : r.getHusbandId());
+          return !!r.getSpouseId();
         }),
         function(r) {
-          return r.getHusbandId() === primaryId ? r.getWifeId() : r.getHusbandId();
+          return r.getSpouseId();
         }, this));
     },
     getSpouses:    function() { return helpers.map(this.getSpouseIds(), this.getPerson, this); },
@@ -314,6 +318,7 @@ define([
     getId:        function() { return this.id; },
     getHusbandId: function() { return maybe(this.person1).resourceId; },
     getWifeId:    function() { return maybe(this.person2).resourceId; },
+    getSpouseId:  function() { return this.getHusbandId() === this.getPrimaryId() ? this.getWifeId() : this.getHusbandId(); },
     getFacts:     function() { return this.facts || []; }
   };
 
