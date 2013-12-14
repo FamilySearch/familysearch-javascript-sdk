@@ -57,11 +57,34 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getPrimaryPerson().getName('PW8J-MZ0')).toBe('Alex Aleksandrova');
         expect(response.getFatherIds()).toEqual(['PW8J-MZ1']);
         expect(response.getMotherIds()).toEqual(['PW8J-GZ2']);
-        expect(response.getParentRelationships()).toEqual([{ id: 'PPPX-PP0', fatherId: 'PW8J-MZ1', motherId: 'PW8J-GZ2',
-          fatherType: 'http://gedcomx.org/AdoptiveParent', motherType: 'http://gedcomx.org/BiologicalParent'}]);
-        expect(response.getSpouseRelationships()).toEqual([{id: 'C123-ABC', spouseId: 'PA65-HG3'}]);
         expect(response.getSpouseIds()).toEqual(['PA65-HG3']);
         expect(response.getChildIds('PA65-HG3')).toEqual(['PS78-MH4']);
+        expect(response.getParentRelationships().length).toBe(1);
+        var rel = response.getParentRelationships()[0];
+        expect(rel.getId()).toBe('PPPX-PP0');
+        expect(rel.getFatherId()).toBe('PW8J-MZ1');
+        expect(rel.getMotherId()).toBe('PW8J-GZ2');
+        expect(rel.getChildId()).toBe('PW8J-MZ0');
+        expect(rel.getFatherFacts().length).toBe(1);
+        expect(rel.getFatherFacts()[0].getType()).toBe('http://gedcomx.org/AdoptiveParent');
+        expect(rel.getMotherFacts().length).toBe(1);
+        expect(rel.getMotherFacts()[0].getType()).toBe('http://gedcomx.org/BiologicalParent');
+        expect(response.getSpouseRelationships().length).toBe(1);
+        rel = response.getSpouseRelationships()[0];
+        expect(rel.getId()).toBe('C123-ABC');
+        expect(rel.getHusbandId()).toBe('PW8J-MZ0');
+        expect(rel.getWifeId()).toBe('PA65-HG3');
+        expect(rel.getFacts().length).toBe(0);
+        expect(response.getChildRelationships().length).toBe(1);
+        rel = response.getChildRelationships()[0];
+        expect(rel.getId()).toBe('PPPY-PP0');
+        expect(rel.getFatherId()).toBe('PW8J-MZ0');
+        expect(rel.getMotherId()).toBe('PA65-HG3');
+        expect(rel.getChildId()).toBe('PS78-MH4');
+        expect(rel.getFatherFacts().length).toBe(1);
+        expect(rel.getFatherFacts()[0].getType()).toBe('http://gedcomx.org/AdoptiveParent');
+        expect(rel.getMotherFacts().length).toBe(1);
+        expect(rel.getMotherFacts()[0].getType()).toBe('http://gedcomx.org/BiologicalParent');
       });
     });
 
@@ -69,7 +92,7 @@ define(['FamilySearch'], function(FamilySearch) {
       FamilySearch.getPersonWithRelationships('KW7S-VQJ', {persons: true}).then(function(response) {
         expect(response.getFathers()[0].getName()).toBe('Jens Christian Jensen');
         expect(response.getMothers()[0].getName()).toBe('Ane Christensdr');
-        expect(response.getPerson(response.getParentRelationships()[0].fatherId).getName()).toEqual('Jens Christian Jensen');
+        expect(response.getPerson(response.getParentRelationships()[0].getFatherId()).getName()).toEqual('Jens Christian Jensen');
         expect(response.getSpouses()[0].getId()).toBe(response.getSpouseIds()[0]);
         expect(response.getSpouses()[0].getId()).toBe('KW7S-JB7');
         expect(response.getSpouses()[0].getName()).toBe('Delilah Ann Smith');

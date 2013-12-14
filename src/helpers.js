@@ -75,10 +75,10 @@ define([
   };
 
   // simplified version of underscore's filter
-  helpers.filter = function(arr, fn) {
+  helpers.filter = function(arr, fn, context) {
     var result = [];
     helpers.forEach(arr, function(e) {
-      if (fn(e)) {
+      if (fn.call(context, e)) {
         result.push(e);
       }
     });
@@ -94,17 +94,32 @@ define([
     return result;
   };
 
-  // return only unique elements of an array preserving order
-  helpers.uniq = function(arr) {
-    var uniqueValues = {}, result = [];
-    for (var i = 0, len = arr.length; i < len; i++) {
-      var value = arr[i];
-      if (!uniqueValues.hasOwnProperty(value)) {
-        result.push(value);
-        uniqueValues[value] = 1;
-      }
+  // borrowed from underscore
+  helpers.contains = function(obj, target) {
+    if (obj == null) { // covers undefined as well
+      return false;
     }
+    if (obj.indexOf && obj.indexOf === Array.prototype.indexOf) {
+      return obj.indexOf(target) !== -1;
+    }
+    var result = false;
+    helpers.forEach(obj, function(value) {
+      if (value === target) {
+        result = true;
+      }
+    });
     return result;
+  };
+
+  // simplified version of underscore's uniq
+  helpers.uniq = function(arr) {
+    var results = [];
+    helpers.forEach(arr, function(value) {
+      if (!helpers.contains(results, value)) {
+        results.push(value);
+      }
+    });
+    return results;
   };
 
   // simplified version of underscore's find
@@ -162,6 +177,12 @@ define([
   };
 
   helpers.flatMap = helpers.compose(helpers.flatten, helpers.map);
+
+  // union arrays
+  // borrowed from underscore
+  helpers.union = function() {
+    return helpers.uniq(helpers.flatten(arguments));
+  };
 
   // returns find match or first if none found
   helpers.findOrFirst = function(arr, objOrFn) {

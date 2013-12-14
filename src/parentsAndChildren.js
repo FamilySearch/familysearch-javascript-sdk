@@ -29,8 +29,8 @@ define([
    * - `getFatherId()` - person id
    * - `getMotherId()` - mother id
    * - `getChildId()` - child id
-   * - `getFatherType()` - http://gedcomx.org/AdoptiveParent, http://gedcomx.org/BiologicalParent, etc.
-   * - `getMotherType()` - http://gedcomx.org/AdoptiveParent, http://gedcomx.org/BiologicalParent, etc.
+   * - `getFatherFacts()` - an array of facts decorated with *fact convenience functions* as described for {@link person.functions:getPerson getPerson}
+   * - `getMotherFacts()` - similar to father facts
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_resource FamilySearch API Docs}
    *
@@ -47,18 +47,24 @@ define([
     return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(id), params, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.compose(
         helpers.objectExtender(childAndParentsConvenienceFunctions),
+        helpers.objectExtender(person.factConvenienceFunctions, function(response) {
+          return helpers.union(
+            maybe(maybe(response.childAndParentsRelationships)[0]).fatherFacts,
+            maybe(maybe(response.childAndParentsRelationships)[0]).motherFacts
+          );
+        }),
         person.personExtender
       ));
   };
 
   var childAndParentsConvenienceFunctions = {
-    getId:         function() { return maybe(maybe(this.childAndParentsRelationships)[0]).id; },
-    getFatherId:   function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).father).resourceId; },
-    getMotherId:   function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).mother).resourceId; },
-    getChildId:    function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).child).resourceId; },
-    getFatherType: function() { return maybe(maybe(maybe(maybe(this.childAndParentsRelationships)[0]).fatherFacts)[0]).type; },
-    getMotherType: function() { return maybe(maybe(maybe(maybe(this.childAndParentsRelationships)[0]).motherFacts)[0]).type; },
-    getPerson:     function(id) { return helpers.find(this.persons, {id: id}); }
+    getId:          function() { return maybe(maybe(this.childAndParentsRelationships)[0]).id; },
+    getFatherId:    function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).father).resourceId; },
+    getMotherId:    function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).mother).resourceId; },
+    getChildId:     function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).child).resourceId; },
+    getFatherFacts: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).fatherFacts; },
+    getMotherFacts: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).motherFacts; },
+    getPerson:      function(id) { return helpers.find(this.persons, {id: id}); }
   };
 
   return exports;

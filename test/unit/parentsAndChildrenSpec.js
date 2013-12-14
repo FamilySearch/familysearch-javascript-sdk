@@ -6,8 +6,10 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getFatherId()).toBe('PPPX-MP1');
         expect(response.getMotherId()).toBe('PPPX-FP2');
         expect(response.getChildId()).toBe('PPPX-PP3');
-        expect(response.getFatherType()).toBe('http://gedcomx.org/AdoptiveParent');
-        expect(response.getMotherType()).toBe('http://gedcomx.org/BiologicalParent');
+        expect(response.getFatherFacts().length).toBe(1);
+        expect(response.getFatherFacts()[0].getType()).toBe('http://gedcomx.org/AdoptiveParent');
+        expect(response.getMotherFacts().length).toBe(1);
+        expect(response.getMotherFacts()[0].getType()).toBe('http://gedcomx.org/BiologicalParent');
       });
     });
   });
