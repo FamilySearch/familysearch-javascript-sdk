@@ -1,43 +1,43 @@
 define([
   'globals'
 ], function(globals) {
-  var helpers = {};
+  var exports = {};
 
   // borrowed from underscore.js
-  helpers.isArray = function(value) {
+  exports.isArray = function(value) {
     /*jshint eqeqeq:false */
     return Array.isArray ? Array.isArray(value) : Object.prototype.toString.call(value) == '[object Array]';
   };
 
   // borrowed from underscore.js
-  helpers.isNumber = function(value) {
+  exports.isNumber = function(value) {
     /*jshint eqeqeq:false */
     return Object.prototype.toString.call(value) == '[object Number]';
   };
 
   // borrowed from underscore.js
-  helpers.isString = function(value) {
+  exports.isString = function(value) {
     /*jshint eqeqeq:false */
     return Object.prototype.toString.call(value) == '[object String]';
   };
 
   // borrowed from underscore.js
-  helpers.isFunction = function(value) {
+  exports.isFunction = function(value) {
     /*jshint eqeqeq:false */
     return (typeof /./ !== 'function') ? (typeof value === 'function') : Object.prototype.toString.call(value) == '[object Function]';
   };
 
   // borrowed from underscore.js
-  helpers.isObject = function(value) {
+  exports.isObject = function(value) {
     return value === Object(value);
   };
 
-  helpers.isUndefined = function(value) {
+  exports.isUndefined = function(value) {
     return value === void 0;
   };
 
   // borrowed from underscore.js
-  helpers.forEach = function(obj, iterator, context) {
+  var forEach = exports.forEach = function(obj, iterator, context) {
     if (obj == null) { // also catches undefined
       return;
     }
@@ -61,7 +61,7 @@ define([
   };
 
   // borrowed from underscore.js
-  helpers.keys = Object.keys || function(obj) {
+  exports.keys = Object.keys || function(obj) {
     if (obj !== Object(obj)) {
       throw new TypeError('Invalid object');
     }
@@ -75,9 +75,9 @@ define([
   };
 
   // simplified version of underscore's filter
-  helpers.filter = function(arr, fn, context) {
+  exports.filter = function(arr, fn, context) {
     var result = [];
-    helpers.forEach(arr, function(e) {
+    forEach(arr, function(e) {
       if (fn.call(context, e)) {
         result.push(e);
       }
@@ -86,16 +86,16 @@ define([
   };
 
   // simplified version of underscore's map
-  helpers.map = function(arr, fn, context) {
+  exports.map = function(arr, fn, context) {
     var result = [];
-    helpers.forEach(arr, function(value, index, list) {
+    forEach(arr, function(value, index, list) {
       result.push(fn.call(context, value, index, list));
     });
     return result;
   };
 
   // borrowed from underscore
-  helpers.contains = function(obj, target) {
+  exports.contains = function(obj, target) {
     if (obj == null) { // covers undefined as well
       return false;
     }
@@ -103,7 +103,7 @@ define([
       return obj.indexOf(target) !== -1;
     }
     var result = false;
-    helpers.forEach(obj, function(value) {
+    forEach(obj, function(value) {
       if (value === target) {
         result = true;
       }
@@ -112,10 +112,10 @@ define([
   };
 
   // simplified version of underscore's uniq
-  helpers.uniq = function(arr) {
+  exports.uniq = function(arr) {
     var results = [];
-    helpers.forEach(arr, function(value) {
-      if (!helpers.contains(results, value)) {
+    forEach(arr, function(value) {
+      if (!exports.contains(results, value)) {
         results.push(value);
       }
     });
@@ -124,9 +124,9 @@ define([
 
   // simplified version of underscore's find
   // returns undefined if nothing found
-  helpers.find = function(arr, objOrFn, context) {
+  exports.find = function(arr, objOrFn, context) {
     var result;
-    var isFn = helpers.isFunction(objOrFn);
+    var isFn = exports.isFunction(objOrFn);
     if (arr) {
       for (var i = 0, len = arr.length; i < len; i++) {
         var elm = arr[i];
@@ -154,7 +154,7 @@ define([
 
   // Compose functions from right to left, with each function consuming the return value of the function that follows
   // borrowed from underscore
-  helpers.compose = function() {
+  exports.compose = function() {
     var funcs = arguments;
     return function() {
       var args = arguments;
@@ -166,35 +166,35 @@ define([
   };
 
   // simplified version of underscore's flatten that only does shallow flattening
-  helpers.flatten = function(arr) {
+  exports.flatten = function(arr) {
     var result = [];
-    helpers.forEach(arr, function(value) {
-      if (helpers.isArray(value)) {
+    forEach(arr, function(value) {
+      if (exports.isArray(value)) {
         Array.prototype.push.apply(result, value);
       }
     });
     return result;
   };
 
-  helpers.flatMap = helpers.compose(helpers.flatten, helpers.map);
+  exports.flatMap = exports.compose(exports.flatten, exports.map);
 
   // union arrays
   // borrowed from underscore
-  helpers.union = function() {
-    return helpers.uniq(helpers.flatten(arguments));
+  exports.union = function() {
+    return exports.uniq(exports.flatten(arguments));
   };
 
   // returns find match or first if none found
-  helpers.findOrFirst = function(arr, objOrFn) {
-    var result = helpers.find(arr, objOrFn);
-    return helpers.isUndefined(result) ? arr[0] : result;
+  exports.findOrFirst = function(arr, objOrFn) {
+    var result = exports.find(arr, objOrFn);
+    return exports.isUndefined(result) ? arr[0] : result;
   };
 
-  helpers.extend = function(dest) {
+  exports.extend = function(dest) {
     dest = dest || {};
-    helpers.forEach(Array.prototype.slice.call(arguments, 1), function(source) {
+    forEach(Array.prototype.slice.call(arguments, 1), function(source) {
       if (source) {
-        helpers.forEach(source, function(value, key) {
+        forEach(source, function(value, key) {
           dest[key] = value;
         });
       }
@@ -203,7 +203,7 @@ define([
   };
 
   // create a new function which is the specified function with the right-most arguments pre-filled
-  helpers.partialRight = function(fn) {
+  exports.partialRight = function(fn) {
     var args = Array.prototype.slice.call(arguments, 1);
     return function() {
       return fn.apply(this, Array.prototype.slice.call(arguments, 0).concat(args));
@@ -211,31 +211,31 @@ define([
   };
 
   // return an empty object if passed in a null or undefined, similar to the maybe monad
-  helpers.maybe = function(value) {
+  exports.maybe = function(value) {
     return value != null ? value : {}; // != null also covers undefined
   };
 
   // return a function that will extend an object with the specified extensions
   // optionally applying them at points returned by extensionPointGetter
-  helpers.objectExtender = function(extensions, extensionPointGetter) {
+  exports.objectExtender = function(extensions, extensionPointGetter) {
     if (extensionPointGetter) {
       return function(obj) {
         if (obj) {
-          helpers.forEach(extensionPointGetter(obj), function(extensionPoint) {
-            helpers.extend(extensionPoint, extensions);
+          forEach(extensionPointGetter(obj), function(extensionPoint) {
+            exports.extend(extensionPoint, extensions);
           });
         }
         return obj;
       };
     }
     else {
-      return helpers.partialRight(helpers.extend, extensions);
+      return exports.partialRight(exports.extend, extensions);
     }
   };
 
   // copy functions from source to dest, binding them to source
-  helpers.wrapFunctions = function(dest, source, fns) {
-    helpers.forEach(fns, function(fn) {
+  exports.wrapFunctions = function(dest, source, fns) {
+    forEach(fns, function(fn) {
       dest[fn] = function() {
         return source[fn].apply(source, arguments);
       };
@@ -244,13 +244,13 @@ define([
   };
 
   // extend the destPromise with functions from the sourcePromise
-  helpers.extendHttpPromise = function(destPromise, sourcePromise) {
-    return helpers.wrapFunctions(destPromise, sourcePromise, ['getResponseHeader', 'getAllResponseHeaders', 'getStatusCode']);
+  exports.extendHttpPromise = function(destPromise, sourcePromise) {
+    return exports.wrapFunctions(destPromise, sourcePromise, ['getResponseHeader', 'getAllResponseHeaders', 'getStatusCode']);
   };
 
   // "empty" properties are undefined, null, or the empty string
-  helpers.removeEmptyProperties = function(obj) {
-    helpers.forEach(obj, function(value, key) {
+  exports.removeEmptyProperties = function(obj) {
+    forEach(obj, function(value, key) {
       if (value == null || value === '') {  // == null also catches undefined
         delete obj[key];
       }
@@ -268,27 +268,27 @@ define([
   }
 
   // prepend oauth server to url if url doesn't start with http(s)
-  helpers.getOAuthServerUrl = function(path) {
+  exports.getOAuthServerUrl = function(path) {
     return getAbsoluteUrl(globals.oauthServer[globals.environment], path);
   };
 
   // prepend server to url if url doesn't start with http(s)
-  helpers.getServerUrl = function(path) {
+  exports.getServerUrl = function(path) {
     return getAbsoluteUrl(globals.server[globals.environment], path);
   };
 
   // Create a URL-encoded query string from an object
-  helpers.encodeQueryString = function(params) {
+  exports.encodeQueryString = function(params) {
     var arr = [];
-    helpers.forEach(params, function(value, key) {
+    forEach(params, function(value, key) {
       arr.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
     });
     return arr.join('&');
   };
 
   // append query parameters
-  helpers.appendQueryParameters = function(url, params) {
-    var queryString = helpers.encodeQueryString(params);
+  exports.appendQueryParameters = function(url, params) {
+    var queryString = exports.encodeQueryString(params);
     if (queryString.length === 0) {
       return url;
     }
@@ -296,9 +296,9 @@ define([
   };
 
   // decode query string into an object
-  helpers.decodeQueryString = function(qs) {
+  exports.decodeQueryString = function(qs) {
     var obj = {}, segments = qs.substring(qs.indexOf('?')+1).split('&');
-    helpers.forEach(segments, function(segment) {
+    forEach(segments, function(segment) {
       var kv = segment.split('=', 2);
       if (kv && kv[0]) {
         obj[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1]);
@@ -308,7 +308,7 @@ define([
   };
 
   // call the callback on the next tick
-  helpers.nextTick = function(cb) {
+  exports.nextTick = function(cb) {
     setTimeout(function() {
       cb();
     },0);
@@ -316,14 +316,14 @@ define([
 
   // borrowed from AngularJS's implementation of $q
   // if passed a promise returns the promise; otherwise returns a pseudo-promise returning the value
-  helpers.refPromise = function(value) {
-    if (value && helpers.isFunction(value.then)) {
+  exports.refPromise = function(value) {
+    if (value && exports.isFunction(value.then)) {
       return value;
     }
     return {
       then: function(callback) {
         var d = globals.deferredWrapper();
-        helpers.nextTick(function() {
+        exports.nextTick(function() {
           d.resolve(callback(value));
         });
         return d.promise;
@@ -332,14 +332,14 @@ define([
   };
 
   // borrowed from AngularJS's implementation of $q
-  helpers.promiseAll = function(promises) {
+  exports.promiseAll = function(promises) {
     var d = globals.deferredWrapper(),
       counter = 0,
-      results = helpers.isArray(promises) ? [] : {};
+      results = exports.isArray(promises) ? [] : {};
 
-    helpers.forEach(promises, function(promise, key) {
+    forEach(promises, function(promise, key) {
       counter++;
-      helpers.refPromise(promise).then(
+      exports.refPromise(promise).then(
         function(value) {
           if (results.hasOwnProperty(key)) {
             return;
@@ -365,7 +365,7 @@ define([
   };
 
   // cookie functions borrowed from http://www.quirksmode.org/js/cookies.html
-  helpers.createCookie = function(name, value, days) {
+  exports.createCookie = function(name, value, days) {
     var expires = '';
     if (days) {
       var date = new Date();
@@ -375,7 +375,7 @@ define([
     document.cookie = name+'='+value+expires+'; path=/';
   };
 
-  helpers.readCookie = function(name) {
+  exports.readCookie = function(name) {
     var nameEQ = name + '=';
     var ca = document.cookie.split(';');
     for(var i=0;i < ca.length;i++) {
@@ -390,17 +390,17 @@ define([
     return null;
   };
 
-  helpers.eraseCookie = function(name) {
-    helpers.createCookie(name,'',-1);
+  exports.eraseCookie = function(name) {
+    exports.createCookie(name,'',-1);
   };
 
   // erase access token
-  helpers.eraseAccessToken = function() {
+  exports.eraseAccessToken = function() {
     globals.accessToken = null;
     if (globals.saveAccessToken) {
-      helpers.eraseCookie(globals.accessTokenCookie);
+      exports.eraseCookie(globals.accessTokenCookie);
     }
   };
 
-  return helpers;
+  return exports;
 });
