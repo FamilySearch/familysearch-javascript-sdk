@@ -119,7 +119,9 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(rel.getId()).toBe('KJ8T-GZ0');
         expect(rel.getHusbandId()).toBe('KJ8T-MP1');
         expect(rel.getWifeId()).toBe('KJ8T-FP2');
-        expect(rel.getFacts().length).toBe(1);
+        expect(rel.getPrimaryId()).toBe('12345');   // test data copied from FamilySearch is incorrect
+        expect(rel.getSpouseId()).toBe('KJ8T-MP1'); // it doesn't have 12345 as either the husband or wife
+        expect(rel.getFacts().length).toBe(1);      // so the expectations are odd, but correct for this case
         expect(rel.getFacts()[0].getDate()).toBe('1 January 1786');
       });
     });
