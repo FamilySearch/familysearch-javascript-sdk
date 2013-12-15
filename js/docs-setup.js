@@ -246,7 +246,7 @@ NG_DOCS={
       "id": "person.functions:getPersonWithRelationships",
       "shortName": "getPersonWithRelationships",
       "type": "function",
-      "keywords": "addition an and api are array as available below child children convenience decorated described docs during each editable example facts familysearch father following for full function functions get getchildid getchildids getchildrelationships getchildren getfacts getfatherfacts getfatherid getfatherids getfathers gethusbandid getid getmotherfacts getmotherid getmotherids getmothers getparentrelationships getparents getperson getprimaryid getprimaryperson getspouseid getspouseids getspouserelationships getspouses getwifeid http https id ids if in init is marriage mother net object objects of only options opts org other params parent parent-relationship parents pass person persons primary promise read relationship relationships relative requested retrieve return returns set similar specified spouse spouseid spouses the their to true type unless with works"
+      "keywords": "addition an and api are array as available below child children convenience decorated described docs during each editable example facts familysearch father following for full function functions get getchildid getchildids getchildrelationships getchildren getfacts getfatherfacts getfatherid getfatherids getfathers gethusbandid getid getmotherfacts getmotherid getmotherids getmothers getparentrelationships getperson getprimaryid getprimaryperson getspouseid getspouseids getspouserelationships getspouses getwifeid http https id ids if in init is marriage mother net object objects of only options opts org other params parent parent-relationship parents pass person persons primary promise read relationship relationships relative requested retrieve return returns set similar specified spouse spouseid spouses the their to true type unless with works"
     },
     {
       "section": "api",
@@ -267,7 +267,7 @@ NG_DOCS={
       "id": "person.functions:getRelationshipsToSpouses",
       "shortName": "getRelationshipsToSpouses",
       "type": "function",
-      "keywords": "access an api array as but can convenience decorated described docs during each editable example facts familysearch following for function functions get getfacts gethusbandid getid getperson getrelationships getspouseids getwifeid has http https id ids in includes init net object of options opts org params pass person persons possibly promise read relationship relationships response return set specified spouses string the to true using which with without you"
+      "keywords": "access an api array as but can convenience decorated described docs during each editable example facts familysearch following for function functions get getfacts gethusbandid getid getperson getprimaryid getrelationships getspouseid getspouseids getwifeid has http https id ids in includes init marriage net object of options opts org params pass person persons possibly promise read relationship relationships requested response return set specified spouse spouses string the to true using which with without you"
     },
     {
       "section": "api",

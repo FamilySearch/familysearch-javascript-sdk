@@ -1769,7 +1769,6 @@ define('person',[
    *   In addition, the following functions are available if persons is set to true in params
    * - `getFathers()` - array of father persons
    * - `getMothers()` - array of mother persons
-   * - `getParents()` - array of [father person, mother person]
    * - `getSpouses()` - array of spouse persons
    * - `getChildren(spouseId)` - array of child persons; if spouseId is specified returns only children with spouse as the other parent
    *
@@ -1954,7 +1953,10 @@ define('person',[
    * - `getId()` - id of the relationship
    * - `getHusbandId()`
    * - `getWifeId()`
-   * - `getFacts()` - array of facts decorated with *fact convenience functions* as described for {@link person.functions:getPerson getPerson}
+   * - `getPrimaryId()` - id of the person requested
+   * - `getSpouseId()` - id of the spouse of the person requested
+   * - `getFacts()` - an array of facts (e.g., marriage) decorated with *fact convenience functions*
+   * as described for {@link person.functions:getPerson getPerson}
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Relationships_to_Spouses_resource FamilySearch API Docs}
    *
@@ -1972,6 +1974,9 @@ define('person',[
       helpers.compose(
         helpers.objectExtender({getPrimaryId: function() { return id; }}), // make id available
         helpers.objectExtender(relationshipsToSpousesConvenienceFunctions),
+        helpers.objectExtender({getPrimaryId: function() { return id; }}, function(response) { // make id available to spouse relationship convenience functions
+          return response.relationships;
+        }),
         helpers.objectExtender(spouseRelationshipConvenienceFunctions, function(response) {
           return response.relationships;
         }),
