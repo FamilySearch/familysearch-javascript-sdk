@@ -337,14 +337,14 @@ NG_DOCS={
       "id": "searchAndMatch.functions:getPersonMatches",
       "shortName": "getPersonMatches",
       "type": "function",
-      "keywords": "an api appears array as be convenience currently decorated described docs duplicates during each editable example familysearch following for from function functions get getchildren getconfidence getfathers getid getmothers getperson getpersonsearch getprimaryperson getresults getscore getspouses gettitle has http https id includes init integer match matches net number object objects of options opts org params pass person promise read real response result results searchandmatch similarly specified string the title to unused with"
+      "keywords": "api array as convenience currently described docs duplicates during each editable example familysearch following for from function functions get getpersonsearch getresults has http https id includes init match matches net of options opts org params pass person promise read response result results searchandmatch specified the to unused"
     },
     {
       "section": "api",
       "id": "searchAndMatch.functions:getPersonMatchesQuery",
       "shortName": "getPersonMatchesQuery",
       "type": "function",
-      "keywords": "an and api appears array as be candidateid context convenience decorated described docs during each editable example exception familysearch following for from function functions get getchildren getconfidence getfathers getid getmothers getperson getpersonsearch getprimaryperson getresults getscore getspouses gettitle has http https id in includes init integer is match matches net not number object objects of options opts org parameter parameters params pass person promise real response restricts result results same searchandmatch similarly someone specified string that the title to tree valid with"
+      "keywords": "and api array as candidateid context convenience described docs during each editable example exception familysearch following for from function functions get getpersonsearch getresults has http https id in includes init is match matches net not of options opts org parameter parameters params pass person promise response restricts result results same searchandmatch someone specified that the to tree valid with"
     },
     {
       "section": "api",

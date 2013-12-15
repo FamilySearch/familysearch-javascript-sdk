@@ -2494,20 +2494,8 @@ define('searchAndMatch',[
    * Get the matches (possible duplicates) for a person
    * The response includes the following convenience function
    *
-   * - `getResults()` - get the array of match results from the response; each result has the following convenience functions
+   * - `getResults()` - get the array of match results from the response; each result has convenience functions
    * as described for {@link searchAndMatch.functions:getPersonSearch getPersonSearch}
-   *
-   * ###Match result convenience Functions
-   *
-   * - `getId()` - person id
-   * - `getTitle()` - title string
-   * - `getScore()` - real number
-   * - `getConfidence()` - appears to be an integer
-   * - `getPrimaryPerson()` - person object decorated with the *person convenience functions* as described for {@link person.functions:getPerson getPerson}
-   * - `getFathers()` - array of person objects similarly decorated
-   * - `getMothers()` - array of person objects similarly decorated
-   * - `getSpouses()` - array of person objects similarly decorated
-   * - `getChildren()` - array of person objects similarly decorated
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Matches_resource FamilySearch API Docs}
    *
@@ -2533,20 +2521,8 @@ define('searchAndMatch',[
    * Get matches for someone not in the tree
    * The response includes the following convenience function
    *
-   * - `getResults()` - get the array of match results from the response; each result has the following convenience functions
+   * - `getResults()` - get the array of match results from the response; each result has convenience functions
    * as described for {@link searchAndMatch.functions:getPersonSearch getPersonSearch}
-   *
-   * ###Match result convenience Functions
-   *
-   * - `getId()` - person id
-   * - `getTitle()` - title string
-   * - `getScore()` - real number
-   * - `getConfidence()` - appears to be an integer
-   * - `getPrimaryPerson()` - person object decorated with the *person convenience functions* as described for {@link person.functions:getPerson getPerson}
-   * - `getFathers()` - array of person objects similarly decorated
-   * - `getMothers()` - array of person objects similarly decorated
-   * - `getSpouses()` - array of person objects similarly decorated
-   * - `getChildren()` - array of person objects similarly decorated
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Search_resource FamilySearch API Docs}
    *
@@ -2562,7 +2538,8 @@ define('searchAndMatch',[
       q: getQuery(params),
       start: params.start,
       count: params.count
-    }), {'Accept': 'application/x-gedcomx-atom+json'}, opts, searchMatchResultExtender);
+    }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+      searchMatchResultExtender);
   };
 
   return exports;
