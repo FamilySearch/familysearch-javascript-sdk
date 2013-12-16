@@ -45,7 +45,7 @@ define([
    *
    * ###Name Convenience Functions
    * - `getId()` - name id
-   * - `getContributor()` - id of the contributor
+   * - `getContributorId()` - id of the contributor
    * - `getType()` - http://gedcomx.org/BirthName, etc.
    * - `getNameFormsCount()` - get the number of name forms
    * - `getFullText(i)` - get the full text of the `i`'th name form; if `i` is omitted; get the first
@@ -55,7 +55,7 @@ define([
    *
    * ###Fact Convenience Functions
    * - `getId()` - fact id
-   * - `getContributor()` - id of the contributor
+   * - `getContributorId()` - id of the contributor
    * - `getType()` - http://gedcomx.org/Birth, etc.
    * - `getDate()` - original string
    * - `getFormalDate()` - standard form; e.g., +1836-04-13
@@ -104,7 +104,7 @@ define([
 
   var nameConvenienceFunctions = {
     getId:             function() { return this.id; },
-    getContributor:    function() { return maybe(maybe(this.attribution).contributor).resourceId; },
+    getContributorId:  function() { return maybe(maybe(this.attribution).contributor).resourceId; },
     getType:           function() { return this.type; },
     getNameFormsCount: function() { return this.nameForms ? this.nameForms.length : 0; },
     getFullText:       function(i) { return maybe(maybe(this.nameForms)[i || 0]).fullText; },
@@ -121,7 +121,7 @@ define([
 
   exports.factConvenienceFunctions = {
     getId:             function() { return this.id; },
-    getContributor:    function() { return maybe(maybe(this.attribution).contributor).resourceId; },
+    getContributorId:  function() { return maybe(maybe(this.attribution).contributor).resourceId; },
     getType:           function() { return this.type; },
     getDate:           function() { return maybe(this.date).original; },
     getFormalDate:     function() { return maybe(this.date).formal; },

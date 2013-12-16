@@ -24,12 +24,12 @@ define([
    * Get change history for a person
    * The response includes the following convenience function
    *
-   * - `getChanges()` - get the array of changes from the response; each change has the following convenience functions
+   * - `getChanges()` - get the array of changes from the response; each has the following *change convenience functions*
    *
    * ###Change convenience Functions
    *
    * - `getId()` - id of the change
-   * - `getContributorNames()` array of contributor name strings
+   * - `getContributorName()` name of the contributor
    * - `getTitle()` - title string
    * - `getUpdatedTimestamp()` - timestamp
    * - `getChangeReason()` - string reason for change
@@ -57,15 +57,12 @@ define([
 
   var changeHistoryConvenienceFunctions = {
     getId:               function() { return this.id; },
-    getContributorNames: function() { return helpers.map(this.contributors, function(contributor) {
-        return contributor.name;
-      }); },
+    getContributorName:  function() { return maybe(maybe(this.contributors)[0]).name; },
     getTitle:            function() { return this.title; },
     getUpdatedTimestamp: function() { return this.updated; },
     getChangeReason:     function() { return maybe(maybe(this.changeInfo)[0]).reason; }
   };
 
-  // TODO getChildAndParentsRelationshipChangeHistory
   // TODO getCoupleRelationshipChangeHistory
 
   return exports;
