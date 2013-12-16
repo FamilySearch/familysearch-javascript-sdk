@@ -165,7 +165,7 @@ define([
    * @function
    *
    * @description
-   * Get information about a source
+   * Get information about a memory
    * The response includes the following convenience functions
    *
    * - `getId()` - id of the memory
