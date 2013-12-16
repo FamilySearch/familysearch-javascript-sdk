@@ -54,10 +54,24 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "changeHistory.functions:getChildAndParentsChangeHistory",
+      "shortName": "getChildAndParentsChangeHistory",
+      "type": "function",
+      "keywords": "and api array as change changehistory changes child convenience count described docs during each editable entries example familysearch following for from function functions get getchanges getpersonchangehistory has history http https id includes init is net number of options opts org params parents pass promise read relationship response return specified the this to"
+    },
+    {
+      "section": "api",
+      "id": "changeHistory.functions:getCoupleChangeHistory",
+      "shortName": "getCoupleChangeHistory",
+      "type": "function",
+      "keywords": "api array as change changehistory changes convenience count couple described docs during each editable entries example familysearch following for from function functions get getchanges getpersonchangehistory has history http https id includes init is net number of options opts org params pass promise read relationship response return specified the this to"
+    },
+    {
+      "section": "api",
       "id": "changeHistory.functions:getPersonChangeHistory",
       "shortName": "getPersonChangeHistory",
       "type": "function",
-      "keywords": "api array change changehistory changes contributor convenience count docs during each editable entries example familysearch following for from function functions get getchangereason getchanges getcontributornames getid gettitle getupdatedtimestamp has history http https id includes init is name net number of options opts org params pass person promise read reason response return specified string strings the this timestamp title to"
+      "keywords": "api array change changehistory changes contributor convenience count docs during each editable entries example familysearch following for from function functions get getchangereason getchanges getcontributorname getid gettitle getupdatedtimestamp has history http https id includes init is name net number of options opts org params pass person promise read reason response return specified string the this timestamp title to"
     },
     {
       "section": "api",
@@ -113,7 +127,7 @@ NG_DOCS={
       "id": "memories.functions:getMemory",
       "shortName": "getMemory",
       "type": "function",
-      "keywords": "about an api array convenience currently description docs during editable example familysearch first following for function functions get getartifacturl getdescription getdescriptions geticonurl getid getmediatype getthumbnailurl gettitle gettitles http https icon id in includes information init media memories memory net object of options opts org params pass promise read response source specified strings the thumbnail title to type unused url"
+      "keywords": "about an api array convenience currently description docs during editable example familysearch first following for function functions get getartifacturl getdescription getdescriptions geticonurl getid getmediatype getthumbnailurl gettitle gettitles http https icon id in includes information init media memories memory net object of options opts org params pass promise read response specified strings the thumbnail title to type unused url"
     },
     {
       "section": "api",
@@ -166,17 +180,45 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "notes.functions:getChildAndParentsNote",
+      "shortName": "getChildAndParentsNote",
+      "type": "function",
+      "keywords": "about an and api as caprid child convenience currently described docs during editable example familysearch following for function functions get getnote getpersonnote http https includes information init net nid note notes object of options opts org params parents pass promise relationship response returns specified the to unused with"
+    },
+    {
+      "section": "api",
+      "id": "notes.functions:getChildAndParentsNotes",
+      "shortName": "getChildAndParentsNotes",
+      "type": "function",
+      "keywords": "an and api array child convenience currently docs during each editable example familysearch following for from function functions get getchildandparentsnote getnotes has http https id includes information init into more net notes of options opts org params parents pass promise read relationship response specified subject the to unused"
+    },
+    {
+      "section": "api",
+      "id": "notes.functions:getCoupleNote",
+      "shortName": "getCoupleNote",
+      "type": "function",
+      "keywords": "about an api as convenience couple crid currently described docs during editable example familysearch following for function functions get getnote getpersonnote http https includes information init net nid note notes object of options opts org params pass promise relationship response returns specified the to unused with"
+    },
+    {
+      "section": "api",
+      "id": "notes.functions:getCoupleNotes",
+      "shortName": "getCoupleNotes",
+      "type": "function",
+      "keywords": "an and api array convenience couple currently docs during each editable example familysearch following for from function functions get getcouplenote getnotes has http https id includes information init into more net notes of options opts org params pass promise read relationship response specified subject the to unused"
+    },
+    {
+      "section": "api",
       "id": "notes.functions:getPersonNote",
       "shortName": "getPersonNote",
       "type": "function",
-      "keywords": "about api convenience currently docs during editable example familysearch following for function functions get getnoteid getpersonid getsubject gettext http https includes information init net nid note notes of options opts org params pass person pid promise response specified the to unused"
+      "keywords": "about an api convenience currently docs during editable example familysearch following for function functions get getcontributorid getnote getnoteid getsubject gettext http https includes information init net nid note notes object of options opts org params pass person pid promise response returns specified the to unused with"
     },
     {
       "section": "api",
       "id": "notes.functions:getPersonNotes",
       "shortName": "getPersonNotes",
       "type": "function",
-      "keywords": "an and api array convenience currently docs during each editable example familysearch following for from function functions get getnotes has http https id includes init net note notes of options opts org params pass person promise read response specified subject the to unused"
+      "keywords": "an and api array convenience currently docs during each editable example familysearch following for from function functions get getnotes getpersonnote has http https id includes information init into more net note notes of options opts org params pass person promise read references response specified subject the to unused"
     },
     {
       "section": "api",
@@ -232,7 +274,7 @@ NG_DOCS={
       "id": "person.functions:getPerson",
       "shortName": "getPerson",
       "type": "function",
-      "keywords": "an and api array been below birthdate birthplace contributor convenience currently deathdate deathplace decorated described display docs during editable etc example extended fact familysearch first following for form forms from full function functions gender get getbirthdate getbirthplace getcontributor getdate getdeathdate getdeathplace getdisplayattrs getfacts getformaldate getfulltext getgender getgivenname getid getlifespan getname getnameformscount getnames getperson getplace getsurname gettype given has http https id if includes init is isliving ispreferred lifespan listed name net number object objects of omitted options opts org original params part pass person preferred promise read response returns specified standard string surname text th the this to true unused which with"
+      "keywords": "an and api array been below birthdate birthplace contributor convenience currently deathdate deathplace decorated described display docs during editable etc example extended fact familysearch first following for form forms from full function functions gender get getbirthdate getbirthplace getcontributorid getdate getdeathdate getdeathplace getdisplayattrs getfacts getformaldate getfulltext getgender getgivenname getid getlifespan getname getnameformscount getnames getperson getplace getsurname gettype given has http https id if includes init is isliving ispreferred lifespan listed name net number object objects of omitted options opts org original params part pass person preferred promise read response returns specified standard string surname text th the this to true unused which with"
     },
     {
       "section": "api",

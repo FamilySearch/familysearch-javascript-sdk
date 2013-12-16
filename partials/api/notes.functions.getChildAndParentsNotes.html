@@ -1,24 +1,24 @@
-<h1><code ng:non-bindable="">getPersonNotes</code>
+<h1><code ng:non-bindable="">getChildAndParentsNotes</code>
 <span class="hint">(functions in module <code ng:non-bindable="">notes</code>
 )</span>
 </h1>
 <div><h2 id="Description">Description</h2>
-<div class="description"><p>Get note references for a person
+<div class="description"><p>Get the notes for a child and parents relationship
 The response includes the following convenience function</p>
 
 <ul>
 <li><code>getNotes()</code> - get the array of notes from the response; each has an <code>id</code> and a <code>subject</code>;
-pass the <code>id</code> into <a href="#/api/notes.functions:getPersonNote">getPersonNote</a> for more information</li>
+pass the <code>id</code> into <a href="#/api/notes.functions:getChildAndParentsNote">getChildAndParentsNote</a> for more information</li>
 </ul>
 
-<p><a href="https://familysearch.org/developers/docs/api/tree/Person_Notes_resource">FamilySearch API Docs</a></p>
+<p><a href="https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Notes_resource">FamilySearch API Docs</a></p>
 
-<p><a href="http://jsfiddle.net/DallanQ/3enGw/">editable example</a></p></div>
+<p><a href="http://jsfiddle.net/DallanQ/SV8Hs/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getPersonNotes(id[, params][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getChildAndParentsNotes(id[, params][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
 <ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
-<p>of the person to read</p></li>
+<p>of the child and parents relationship to read</p></li>
 <li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
 <p>currently unused</p></li>
 <li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>

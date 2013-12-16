@@ -1050,12 +1050,12 @@ define('changeHistory',[
    * Get change history for a person
    * The response includes the following convenience function
    *
-   * - `getChanges()` - get the array of changes from the response; each change has the following convenience functions
+   * - `getChanges()` - get the array of changes from the response; each has the following *change convenience functions*
    *
    * ###Change convenience Functions
    *
    * - `getId()` - id of the change
-   * - `getContributorNames()` array of contributor name strings
+   * - `getContributorName()` name of the contributor
    * - `getTitle()` - title string
    * - `getUpdatedTimestamp()` - timestamp
    * - `getChangeReason()` - string reason for change
@@ -1083,16 +1083,77 @@ define('changeHistory',[
 
   var changeHistoryConvenienceFunctions = {
     getId:               function() { return this.id; },
-    getContributorNames: function() { return helpers.map(this.contributors, function(contributor) {
-        return contributor.name;
-      }); },
+    getContributorName:  function() { return maybe(maybe(this.contributors)[0]).name; },
     getTitle:            function() { return this.title; },
     getUpdatedTimestamp: function() { return this.updated; },
     getChangeReason:     function() { return maybe(maybe(this.changeInfo)[0]).reason; }
   };
 
-  // TODO getChildAndParentsRelationshipChangeHistory
-  // TODO getCoupleRelationshipChangeHistory
+  /**
+   * @ngdoc function
+   * @name changeHistory.functions:getChildAndParentsChangeHistory
+   * @function
+   *
+   * @description
+   * Get change history for a child and parents relationship
+   * The response includes the following convenience function
+   *
+   * - `getChanges()` - get the array of changes from the response; each has *change convenience functions*
+   * as described for {@link changeHistory.functions:getPersonChangeHistory getPersonChangeHistory}
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Change_History_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/Uk6HA/ editable example}
+   *
+   * @param {String} id of the relationship to read
+   * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getChildAndParentsChangeHistory = function(id, params, opts) {
+    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(id)+'/changes', params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+      helpers.compose(
+        helpers.objectExtender({getChanges: function() {
+          return this.entries || [];
+        }}),
+        helpers.objectExtender(changeHistoryConvenienceFunctions, function(response) {
+          return response.entries;
+        })
+      ));
+  };
+
+  /**
+   * @ngdoc function
+   * @name changeHistory.functions:getCoupleChangeHistory
+   * @function
+   *
+   * @description
+   * Get change history for a couple relationship
+   * The response includes the following convenience function
+   *
+   * - `getChanges()` - get the array of changes from the response; each has *change convenience functions*
+   * as described for {@link changeHistory.functions:getPersonChangeHistory getPersonChangeHistory}
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Change_History_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/csG9t/ editable example}
+   *
+   * @param {String} id of the relationship to read
+   * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getCoupleChangeHistory = function(id, params, opts) {
+    return plumbing.get('/platform/tree/couple-relationships/'+encodeURI(id)+'/changes', params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+      helpers.compose(
+        helpers.objectExtender({getChanges: function() {
+          return this.entries || [];
+        }}),
+        helpers.objectExtender(changeHistoryConvenienceFunctions, function(response) {
+          return response.entries;
+        })
+      ));
+  };
 
   return exports;
 });
@@ -1374,7 +1435,7 @@ define('memories',[
    * @function
    *
    * @description
-   * Get information about a source
+   * Get information about a memory
    * The response includes the following convenience functions
    *
    * - `getId()` - id of the memory
@@ -1515,10 +1576,11 @@ define('notes',[
    * @function
    *
    * @description
-   * Get the notes for a person
+   * Get note references for a person
    * The response includes the following convenience function
    *
-   * - `getNotes()` - get the array of notes from the response; each note has an `id` and a `subject`
+   * - `getNotes()` - get the array of notes from the response; each has an `id` and a `subject`;
+   * pass the `id` into {@link notes.functions:getPersonNote getPersonNote} for more information
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Notes_resource FamilySearch API Docs}
    *
@@ -1534,7 +1596,6 @@ define('notes',[
       helpers.objectExtender({getNotes: function() { return maybe(maybe(this.persons)[0]).notes || []; }}));
   };
 
-
   /**
    * @ngdoc function
    * @name notes.functions:getPersonNote
@@ -1542,12 +1603,15 @@ define('notes',[
    *
    * @description
    * Get information about a note
-   * The response includes the following convenience functions
+   * The response includes the following convenience function
    *
-   * - `getPersonId()`
+   * - `getNote()` - returns an object with the following *note convenience functions*:
+   *
+   * ###Note convenience functions
    * - `getNoteId()`
    * - `getSubject()`
    * - `getText()`
+   * - `getContributorId()`
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Note_resource FamilySearch API Docs}
    *
@@ -1561,20 +1625,136 @@ define('notes',[
    */
   exports.getPersonNote = function(pid, nid, params, opts) {
     return plumbing.get('/platform/tree/persons/'+encodeURI(pid)+'/notes/'+encodeURI(nid), params, {}, opts,
-      helpers.objectExtender(personNoteConvenienceFunctions));
+      helpers.compose(
+        helpers.objectExtender({getNote: function() { return maybe(maybe(maybe(this.persons)[0]).notes)[0]; }}),
+        helpers.objectExtender(noteConvenienceFunctions, function(response) {
+          return maybe(maybe(response.persons)[0]).notes;
+        })
+      ));
   };
 
-  var personNoteConvenienceFunctions = {
-    getPersonId: function() { return maybe(maybe(this.persons)[0]).id; },
-    getNoteId:   function() { return maybe(maybe(maybe(maybe(this.persons)[0]).notes)[0]).id; },
-    getSubject:  function() { return maybe(maybe(maybe(maybe(this.persons)[0]).notes)[0]).subject; },
-    getText:     function() { return maybe(maybe(maybe(maybe(this.persons)[0]).notes)[0]).text; }
+  var noteConvenienceFunctions = {
+    getNoteId:   function() { return this.id; },
+    getSubject:  function() { return this.subject; },
+    getText:     function() { return this.text; },
+    getContributorId: function() { return maybe(maybe(this.attribution).contributor).resourceId; }
   };
 
-  // TODO getCoupleRelationshipNotes
-  // TODO getCoupleRelationshipNote
-  // TODO getChildAndParentsRelationshipNotes
-  // TODO getChildAndParentsRelationshipNote
+  /**
+   * @ngdoc function
+   * @name notes.functions:getCoupleNotes
+   * @function
+   *
+   * @description
+   * Get the notes for a couple relationship
+   * The response includes the following convenience function
+   *
+   * - `getNotes()` - get the array of notes from the response; each has an `id` and a `subject`;
+   * pass the `id` into {@link notes.functions:getCoupleNote getCoupleNote} for more information
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Notes_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/qe2dc/ editable example}
+   *
+   * @param {String} id of the couple relationship to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getCoupleNotes = function(id, params, opts) {
+    return plumbing.get('/platform/tree/couple-relationships/'+encodeURI(id)+'/notes', params, {}, opts,
+      helpers.objectExtender({getNotes: function() { return maybe(maybe(this.relationships)[0]).notes || []; }}));
+  };
+
+  /**
+   * @ngdoc function
+   * @name notes.functions:getCoupleNote
+   * @function
+   *
+   * @description
+   * Get information about a couple relationship note
+   * The response includes the following convenience function
+   *
+   * - `getNote()` - returns an object with *note convenience functions*
+   * as described for {@link notes.functions:getPersonNote getPersonNote}
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/T7xj2/ editable example}
+   *
+   * @param {String} crid of the couple relationship
+   * @param {String} nid of the note
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getCoupleNote = function(crid, nid, params, opts) {
+    return plumbing.get('/platform/tree/couple-relationships/'+encodeURI(crid)+'/notes/'+encodeURI(nid), params, {}, opts,
+      helpers.compose(
+        helpers.objectExtender({getNote: function() { return maybe(maybe(maybe(this.relationships)[0]).notes)[0]; }}),
+        helpers.objectExtender(noteConvenienceFunctions, function(response) {
+          return maybe(maybe(response.relationships)[0]).notes;
+        })
+      ));
+  };
+
+  /**
+   * @ngdoc function
+   * @name notes.functions:getChildAndParentsNotes
+   * @function
+   *
+   * @description
+   * Get the notes for a child and parents relationship
+   * The response includes the following convenience function
+   *
+   * - `getNotes()` - get the array of notes from the response; each has an `id` and a `subject`;
+   * pass the `id` into {@link notes.functions:getChildAndParentsNote getChildAndParentsNote} for more information
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Notes_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/SV8Hs/ editable example}
+   *
+   * @param {String} id of the child and parents relationship to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getChildAndParentsNotes = function(id, params, opts) {
+    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(id)+'/notes', params, {}, opts,
+      helpers.objectExtender({getNotes: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).notes || []; }}));
+  };
+
+  /**
+   * @ngdoc function
+   * @name notes.functions:getChildAndParentsNote
+   * @function
+   *
+   * @description
+   * Get information about a child and parents relationship note
+   * The response includes the following convenience function
+   *
+   * - `getNote()` - returns an object with *note convenience functions*
+   * as described for {@link notes.functions:getPersonNote getPersonNote}
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ// editable example}
+   *
+   * @param {String} caprid of the child and parents relationship
+   * @param {String} nid of the note
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getChildAndParentsNote = function(caprid, nid, params, opts) {
+    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(caprid)+'/notes/'+encodeURI(nid), params, {}, opts,
+      helpers.compose(
+        helpers.objectExtender({getNote: function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).notes)[0]; }}),
+        helpers.objectExtender(noteConvenienceFunctions, function(response) {
+          return maybe(maybe(response.childAndParentsRelationships)[0]).notes;
+        })
+      ));
+  };
 
   return exports;
 });
@@ -1626,7 +1806,7 @@ define('person',[
    *
    * ###Name Convenience Functions
    * - `getId()` - name id
-   * - `getContributor()` - id of the contributor
+   * - `getContributorId()` - id of the contributor
    * - `getType()` - http://gedcomx.org/BirthName, etc.
    * - `getNameFormsCount()` - get the number of name forms
    * - `getFullText(i)` - get the full text of the `i`'th name form; if `i` is omitted; get the first
@@ -1636,7 +1816,7 @@ define('person',[
    *
    * ###Fact Convenience Functions
    * - `getId()` - fact id
-   * - `getContributor()` - id of the contributor
+   * - `getContributorId()` - id of the contributor
    * - `getType()` - http://gedcomx.org/Birth, etc.
    * - `getDate()` - original string
    * - `getFormalDate()` - standard form; e.g., +1836-04-13
@@ -1685,7 +1865,7 @@ define('person',[
 
   var nameConvenienceFunctions = {
     getId:             function() { return this.id; },
-    getContributor:    function() { return maybe(maybe(this.attribution).contributor).resourceId; },
+    getContributorId:  function() { return maybe(maybe(this.attribution).contributor).resourceId; },
     getType:           function() { return this.type; },
     getNameFormsCount: function() { return this.nameForms ? this.nameForms.length : 0; },
     getFullText:       function(i) { return maybe(maybe(this.nameForms)[i || 0]).fullText; },
@@ -1702,7 +1882,7 @@ define('person',[
 
   exports.factConvenienceFunctions = {
     getId:             function() { return this.id; },
-    getContributor:    function() { return maybe(maybe(this.attribution).contributor).resourceId; },
+    getContributorId:  function() { return maybe(maybe(this.attribution).contributor).resourceId; },
     getType:           function() { return this.type; },
     getDate:           function() { return maybe(this.date).original; },
     getFormalDate:     function() { return maybe(this.date).formal; },
@@ -3068,6 +3248,8 @@ define('FamilySearch',[
 
     // changeHistory
     getPersonChangeHistory: changeHistory.getPersonChangeHistory,
+    getChildAndParentsChangeHistory: changeHistory.getChildAndParentsChangeHistory,
+    getCoupleChangeHistory: changeHistory.getCoupleChangeHistory,
 
     // discussions
     getPersonDiscussionReferences: discussions.getPersonDiscussionReferences,
@@ -3086,6 +3268,10 @@ define('FamilySearch',[
     // notes
     getPersonNotes: notes.getPersonNotes,
     getPersonNote: notes.getPersonNote,
+    getCoupleNotes: notes.getCoupleNotes,
+    getCoupleNote: notes.getCoupleNote,
+    getChildAndParentsNotes: notes.getChildAndParentsNotes,
+    getChildAndParentsNote: notes.getChildAndParentsNote,
 
     // parents and children
     getChildAndParents: parentsAndChildren.getChildAndParents,
