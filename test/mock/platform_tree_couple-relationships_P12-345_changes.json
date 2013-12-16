@@ -1,0 +1,87 @@
+{
+  "id" : "uuid:7c8261ea-bbbe-42d2-a4c6-d591bdcc185a",
+  "links" : {
+    "relationship" : {
+      "href" : "https://familysearch.org/platform/tree/couple-relationships/P12-345",
+      "title" : "Couple Relationship"
+    },
+    "self" : {
+      "href" : "https://familysearch.org/platform/tree/couple-relationships/P12-345/changes",
+      "title" : "Couple Relationship Change History"
+    }
+  },
+  "title" : "Change History for Couple Relationship P12-345",
+  "updated" : 1386863423023,
+  "entries" : [ {
+    "contributors" : [ {
+      "name" : "Mr. Contributor"
+    } ],
+    "id" : "1386863423023",
+    "links" : {
+      "restore" : {
+        "href" : "https://familysearch.org/platform/tree/changes/644307/restore",
+        "title" : "Restore Change"
+      },
+      "agent" : {
+        "href" : "https://familysearch.org/platform/users/agents/UKMGTY"
+      }
+    },
+    "title" : "Couple Relationship Created",
+    "updated" : 1386863423023,
+    "changeInfo" : [ {
+      "operation" : "http://familysearch.org/v1/Create",
+      "objectType" : "http://gedcomx.org/Couple",
+      "reason" : "because it was necessary",
+      "knownOperation" : "Create",
+      "knownObjectType" : "Couple"
+    } ]
+  }, {
+    "contributors" : [ {
+      "name" : "Mr. Contributor"
+    } ],
+    "id" : "1386863423023",
+    "links" : {
+      "restore" : {
+        "href" : "https://familysearch.org/platform/tree/changes/556378/restore",
+        "title" : "Restore Change"
+      },
+      "agent" : {
+        "href" : "https://familysearch.org/platform/users/agents/UKMGTY"
+      }
+    },
+    "title" : "Couple Event Added",
+    "updated" : 1386863423023,
+    "changeInfo" : [ {
+      "operation" : "http://familysearch.org/v1/Update",
+      "objectType" : "http://gedcomx.org/Fact",
+      "objectModifier" : "http://gedcomx.org/Couple",
+      "reason" : "because it was necessary",
+      "knownOperation" : "Update",
+      "knownObjectType" : "Fact",
+      "knownObjectModifier" : "Couple"
+    } ]
+  }, {
+    "contributors" : [ {
+      "name" : "Mr. Contributor"
+    } ],
+    "id" : "1386863423023",
+    "links" : {
+      "restore" : {
+        "href" : "https://familysearch.org/platform/tree/changes/904255/restore",
+        "title" : "Restore Change"
+      },
+      "agent" : {
+        "href" : "https://familysearch.org/platform/users/agents/UKMGTY"
+      }
+    },
+    "title" : "Couple Relationship Removed",
+    "updated" : 1386863423023,
+    "changeInfo" : [ {
+      "operation" : "http://familysearch.org/v1/Delete",
+      "objectType" : "http://gedcomx.org/Couple",
+      "reason" : "because it was necessary",
+      "knownOperation" : "Delete",
+      "knownObjectType" : "Couple"
+    } ]
+  } ]
+}

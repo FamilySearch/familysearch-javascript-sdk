@@ -21,5 +21,16 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getChanges()[0].getChangeReason()).toBe('because it was necessary');
       });
     });
+
+    it('for couple relationship is returned from getCoupleChangeHistory', function() {
+      FamilySearch.getCoupleChangeHistory('P12-345').then(function(response) {
+        expect(response.getChanges().length).toBe(3);
+        expect(response.getChanges()[0].getId()).toBe('1386863423023');
+        expect(response.getChanges()[0].getContributorName()).toEqual('Mr. Contributor');
+        expect(response.getChanges()[0].getTitle()).toBe('Couple Relationship Created');
+        expect(response.getChanges()[0].getUpdatedTimestamp()).toBe(1386863423023);
+        expect(response.getChanges()[0].getChangeReason()).toBe('because it was necessary');
+      });
+    });
   });
 });

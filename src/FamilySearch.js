@@ -28,6 +28,7 @@ define([
     // changeHistory
     getPersonChangeHistory: changeHistory.getPersonChangeHistory,
     getChildAndParentsChangeHistory: changeHistory.getChildAndParentsChangeHistory,
+    getCoupleChangeHistory: changeHistory.getCoupleChangeHistory,
 
     // discussions
     getPersonDiscussionReferences: discussions.getPersonDiscussionReferences,

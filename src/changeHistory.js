@@ -96,7 +96,38 @@ define([
       ));
   };
 
-  // TODO getCoupleRelationshipChangeHistory
+  /**
+   * @ngdoc function
+   * @name changeHistory.functions:getCoupleChangeHistory
+   * @function
+   *
+   * @description
+   * Get change history for a couple relationship
+   * The response includes the following convenience function
+   *
+   * - `getChanges()` - get the array of changes from the response; each has *change convenience functions*
+   * as described for {@link changeHistory.functions:getPersonChangeHistory getPersonChangeHistory}
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Change_History_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/csG9t/ editable example}
+   *
+   * @param {String} id of the relationship to read
+   * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getCoupleChangeHistory = function(id, params, opts) {
+    return plumbing.get('/platform/tree/couple-relationships/'+encodeURI(id)+'/changes', params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+      helpers.compose(
+        helpers.objectExtender({getChanges: function() {
+          return this.entries || [];
+        }}),
+        helpers.objectExtender(changeHistoryConvenienceFunctions, function(response) {
+          return response.entries;
+        })
+      ));
+  };
 
   return exports;
 });
