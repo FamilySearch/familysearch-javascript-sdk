@@ -1,0 +1,30 @@
+{
+  "childAndParentsRelationships" : [ {
+    "id" : "R12-3456",
+    "links" : {
+      "relationship" : {
+        "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/R12-3456",
+        "title" : "Child-and-Parents Relationship"
+      }
+    },
+    "notes" : [ {
+      "id" : "1804317705",
+      "links" : {
+        "note" : {
+          "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/R12-3456/notes/1804317705",
+          "title" : "Child-and-Parents Relationship Note"
+        }
+      },
+      "subject" : "note 0"
+    }, {
+      "id" : "1805241226",
+      "links" : {
+        "note" : {
+          "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/R12-3456/notes/1805241226",
+          "title" : "Child-and-Parents Relationship Note"
+        }
+      },
+      "subject" : "note 1"
+    } ]
+  } ]
+}

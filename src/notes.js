@@ -103,8 +103,33 @@ define([
       helpers.objectExtender({getNotes: function() { return maybe(maybe(this.relationships)[0]).notes || []; }}));
   };
 
+  /**
+   * @ngdoc function
+   * @name notes.functions:getChildAndParentsNotes
+   * @function
+   *
+   * @description
+   * Get the notes for a child and parents relationship
+   * The response includes the following convenience function
+   *
+   * - `getNotes()` - get the array of notes from the response; each has an `id` and a `subject`;
+   * pass the `id` into {@link notes.functions:getChildAndParentsNote getChildAndParentsNote} for more information
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Notes_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/SV8Hs/ editable example}
+   *
+   * @param {String} id of the child and parents relationship to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getChildAndParentsNotes = function(id, params, opts) {
+    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(id)+'/notes', params, {}, opts,
+      helpers.objectExtender({getNotes: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).notes || []; }}));
+  };
+
   // TODO getCoupleRelationshipNote
-  // TODO getChildAndParentsRelationshipNotes
   // TODO getChildAndParentsRelationshipNote
 
   return exports;
