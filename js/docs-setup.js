@@ -187,10 +187,10 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "notes.functions:getChildAndParentsNotes",
-      "shortName": "getChildAndParentsNotes",
+      "id": "notes.functions:getChildAndParentsNoteRefs",
+      "shortName": "getChildAndParentsNoteRefs",
       "type": "function",
-      "keywords": "an and api array child convenience currently docs during each editable example familysearch following for from function functions get getchildandparentsnote getnotes has http https id includes information init into more net notes of options opts org params parents pass promise read relationship response specified subject the to unused"
+      "keywords": "an and api array child convenience currently docs during each editable example familysearch following for from function functions get getchildandparentsnote getnoterefs has http https id includes information init into more net note notes of options opts org params parents pass promise read references relationship response specified subject the to unused"
     },
     {
       "section": "api",
@@ -201,10 +201,10 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "notes.functions:getCoupleNotes",
-      "shortName": "getCoupleNotes",
+      "id": "notes.functions:getCoupleNoteRefs",
+      "shortName": "getCoupleNoteRefs",
       "type": "function",
-      "keywords": "an and api array convenience couple currently docs during each editable example familysearch following for from function functions get getcouplenote getnotes has http https id includes information init into more net notes of options opts org params pass promise read relationship response specified subject the to unused"
+      "keywords": "an and api array convenience couple currently docs during each editable example familysearch following for from function functions get getcouplenote getnoterefs has http https id includes information init into more net note notes of options opts org params pass promise read references relationship response specified subject the to unused"
     },
     {
       "section": "api",
@@ -215,10 +215,10 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "notes.functions:getPersonNotes",
-      "shortName": "getPersonNotes",
+      "id": "notes.functions:getPersonNoteRefs",
+      "shortName": "getPersonNoteRefs",
       "type": "function",
-      "keywords": "an and api array convenience currently docs during each editable example familysearch following for from function functions get getnotes getpersonnote has http https id includes information init into more net note notes of options opts org params pass person promise read references response specified subject the to unused"
+      "keywords": "an and api array convenience currently docs during each editable example familysearch following for from function functions get getnoterefs getpersonnote has http https id includes information init into more net note notes of options opts org params pass person promise read references response specified subject the to unused"
     },
     {
       "section": "api",
@@ -439,10 +439,24 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "sources.functions:getPersonSourceReferences",
-      "shortName": "getPersonSourceReferences",
+      "id": "sources.functions:getChildAndParentsSourceRefs",
+      "shortName": "getChildAndParentsSourceRefs",
       "type": "function",
-      "keywords": "an api array assertion contributor convenience currently docs during each editable example familysearch find following for from function functions get getagent getchangemessage getcontributorid getmodifiedtimestamp getsourcedescription getsourceid getsources gettags has http https id identifying includes init is more net object of options opts org out params pass person promise property read reference references resource response source sources specified tag tags the to type unused use with"
+      "keywords": "and api array as child convenience currently described docs during each editable example familysearch following for from function functions get getpersonsourcerefs getsourcerefs has http https id includes init net of options opts org params parents pass promise read reference references relationship response source sources specified the to unused"
+    },
+    {
+      "section": "api",
+      "id": "sources.functions:getCoupleSourceRefs",
+      "shortName": "getCoupleSourceRefs",
+      "type": "function",
+      "keywords": "api array as convenience couple crid currently described docs during each editable example familysearch following for from function functions get getpersonsourcerefs getsourcerefs has http https includes init net of options opts org params pass promise read reference references relationship response source sources specified the to unused"
+    },
+    {
+      "section": "api",
+      "id": "sources.functions:getPersonSourceRefs",
+      "shortName": "getPersonSourceRefs",
+      "type": "function",
+      "keywords": "an api array assertion contributor convenience currently docs during each editable example familysearch following for from function functions get getagent getchangemessage getcontributorid getmodifiedtimestamp getsourcedescription getsourceid getsourcerefs gettags has http https id identifying includes information init into is more net object of options opts org params pass person promise property read reference references resource response source sources specified tag tags the to type unused user with"
     },
     {
       "section": "api",
