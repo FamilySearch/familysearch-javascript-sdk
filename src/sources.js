@@ -17,20 +17,22 @@ define([
 
   /**
    * @ngdoc function
-   * @name sources.functions:getPersonSourceReferences
+   * @name sources.functions:getPersonSourceRefs
    * @function
    *
    * @description
    * Get references to sources for a person
    * The response includes the following convenience function
    *
-   * - `getSources()` - get the array of source references from the response; each reference has the following convenience functions
+   * - `getSourceRefs()` - get the array of source references from the response; each has the following *source reference convenience functions*
    *
-   * ###Source reference convenience Functions
+   * ###Source Reference Convenience Functions
    *
-   * - `getSourceId()` - id of the source ( use `getSourceDescription` to find out more)
+   * - `getSourceId()` - id of the source;
+   * pass into {@link sources.functions:getSourceDescription getSourceDescription} for more information
    * - `getTags()` - array of tags; each tag is an object with a `resource` property identifying an assertion type
-   * - `getContributorId()` - id of the contributor (use `getAgent` to find out more)
+   * - `getContributorId()` - id of the contributor;
+   * pass into {@link user.functions:getAgent getAgent} for more information
    * - `getModifiedTimestamp()`
    * - `getChangeMessage()`
    *
@@ -43,10 +45,10 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getPersonSourceReferences = function(id, params, opts) {
+  exports.getPersonSourceRefs = function(id, params, opts) {
     return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/source-references', params, {}, opts,
       helpers.compose(
-        helpers.objectExtender({getSources: function() {
+        helpers.objectExtender({getSourceRefs: function() {
           return maybe(maybe(this.persons)[0]).sources || [];
         }}),
         helpers.objectExtender(sourceReferenceConvenienceFunctions, function(response) {
@@ -56,7 +58,6 @@ define([
   };
 
   var sourceReferenceConvenienceFunctions = {
-    // TODO consider returning the URL
     getSourceId:          function() { return this.description ? this.description.replace(/.*\//, '').replace(/\?.*$/, '') : this.description; },
     getTags:              function() { return this.tags || []; },
     getContributorId:     function() { return maybe(maybe(this.attribution).contributor).resourceId; },
@@ -73,7 +74,7 @@ define([
    * Get information about a source
    * The response includes the following convenience functions
    *
-   * - `getId()` - id of the source description
+   * - `getId()` - id of the source
    * - `getTitles()` - array of title strings
    * - `getTitle()` - the first title string
    * - `getCitations()` - array of citation strings
@@ -109,8 +110,72 @@ define([
     getAbout: function() { return maybe(maybe(this.sourceDescriptions)[0]).about; }
   };
 
-  // TODO getCoupleRelationshipSourceReferences
-  // TODO getChildAndParentsRelationshipSourceReferences
+  /**
+   * @ngdoc function
+   * @name sources.functions:getCoupleSourceRefs
+   * @function
+   *
+   * @description
+   * Get the source references for a couple relationship
+   * The response includes the following convenience function
+   *
+   * - `getSourceRefs()` - get the array of source references from the response; each has *source reference convenience functions*
+   * as described for {@link sources.functions:getPersonSourceRefs getPersonSourceRefs}
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Source_References_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/ahu29/ editable example}
+   *
+   * @param {String} crid of the couple relationship to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getCoupleSourceRefs = function(crid, params, opts) {
+    return plumbing.get('/platform/tree/couple-relationships/'+encodeURI(crid)+'/source-references', params, {}, opts,
+      helpers.compose(
+        helpers.objectExtender({getSourceRefs: function() {
+          return maybe(maybe(this.relationships)[0]).sources || [];
+        }}),
+        helpers.objectExtender(sourceReferenceConvenienceFunctions, function(response) {
+          return maybe(maybe(response.relationships)[0]).sources;
+        })
+      ));
+  };
+
+  /**
+   * @ngdoc function
+   * @name sources.functions:getChildAndParentsSourceRefs
+   * @function
+   *
+   * @description
+   * Get the source references for a child and parents relationship
+   * The response includes the following convenience function
+   *
+   * - `getSourceRefs()` - get the array of source references from the response; each has *source reference convenience functions*
+   * as described for {@link sources.functions:getPersonSourceRefs getPersonSourceRefs}
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/ZKLVT/ editable example}
+   *
+   * @param {String} id of the child and parents relationship to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getChildAndParentsSourceRefs = function(id, params, opts) {
+    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(id)+'/source-references', params, {}, opts,
+      helpers.compose(
+        helpers.objectExtender({getSourceRefs: function() {
+          return maybe(maybe(this.childAndParentsRelationships)[0]).sources || [];
+        }}),
+        helpers.objectExtender(sourceReferenceConvenienceFunctions, function(response) {
+          return maybe(maybe(response.childAndParentsRelationships)[0]).sources;
+        })
+      ));
+  };
+
   // TODO getSourcesReferencesQuery
 
   return exports;

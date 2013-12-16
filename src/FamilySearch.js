@@ -80,8 +80,10 @@ define([
     getCollectionSourceDescriptionsForUser: sourceBox.getCollectionSourceDescriptionsForUser,
 
     // sources
-    getPersonSourceReferences: sources.getPersonSourceReferences,
+    getPersonSourceRefs: sources.getPersonSourceRefs,
     getSourceDescription: sources.getSourceDescription,
+    getCoupleSourceRefs: sources.getCoupleSourceRefs,
+    getChildAndParentsSourceRefs: sources.getChildAndParentsSourceRefs,
 
     // spouses
     getCouple: spouses.getCouple,
