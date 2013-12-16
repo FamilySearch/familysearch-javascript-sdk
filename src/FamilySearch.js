@@ -45,11 +45,11 @@ define([
     getUserMemories: memories.getUserMemories,
 
     // notes
-    getPersonNotes: notes.getPersonNotes,
+    getPersonNoteRefs: notes.getPersonNoteRefs,
     getPersonNote: notes.getPersonNote,
-    getCoupleNotes: notes.getCoupleNotes,
+    getCoupleNoteRefs: notes.getCoupleNoteRefs,
     getCoupleNote: notes.getCoupleNote,
-    getChildAndParentsNotes: notes.getChildAndParentsNotes,
+    getChildAndParentsNoteRefs: notes.getChildAndParentsNoteRefs,
     getChildAndParentsNote: notes.getChildAndParentsNote,
 
     // parents and children

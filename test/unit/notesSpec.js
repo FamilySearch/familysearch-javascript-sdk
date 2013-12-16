@@ -1,8 +1,8 @@
 define(['FamilySearch'], function(FamilySearch) {
   describe('Note', function() {
-    it('references are returned from getPersonNotes', function() {
-      FamilySearch.getPersonNotes('P12-3456').then(function(response) {
-        var notes = response.getNotes();
+    it('references are returned from getPersonNoteRefs', function() {
+      FamilySearch.getPersonNoteRefs('P12-3456').then(function(response) {
+        var notes = response.getNoteRefs();
         expect(notes[0].id).toBe('1804317705');
         expect(notes[0].subject).toBe('note 0');
         expect(notes[1].id).toBe('1805241226');
@@ -19,9 +19,9 @@ define(['FamilySearch'], function(FamilySearch) {
       });
     });
 
-    it('references are returned from getCoupleNotes', function() {
-      FamilySearch.getCoupleNotes('R12-3456').then(function(response) {
-        var notes = response.getNotes();
+    it('references are returned from getCoupleNoteRefs', function() {
+      FamilySearch.getCoupleNoteRefs('R12-3456').then(function(response) {
+        var notes = response.getNoteRefs();
         expect(notes.length).toBe(2);
         expect(notes[0].id).toBe('1804317705');
         expect(notes[0].subject).toBe('note 0');
@@ -40,9 +40,9 @@ define(['FamilySearch'], function(FamilySearch) {
       });
     });
 
-    it('references are returned from getChildAndParentsNotes', function() {
-      FamilySearch.getChildAndParentsNotes('R12-3456').then(function(response) {
-        var notes = response.getNotes();
+    it('references are returned from getChildAndParentsNoteRefs', function() {
+      FamilySearch.getChildAndParentsNoteRefs('R12-3456').then(function(response) {
+        var notes = response.getNoteRefs();
         expect(notes.length).toBe(2);
         expect(notes[0].id).toBe('1804317705');
         expect(notes[0].subject).toBe('note 0');
