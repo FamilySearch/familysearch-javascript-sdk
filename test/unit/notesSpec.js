@@ -18,5 +18,17 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getText()).toBe('Sample note text');
       });
     });
+
+    it('references are returned from getCoupleNotes', function() {
+      FamilySearch.getCoupleNotes('R12-3456').then(function(response) {
+        var notes = response.getNotes();
+        expect(notes.length).toBe(2);
+        expect(notes[0].id).toBe('1804317705');
+        expect(notes[0].subject).toBe('note 0');
+        expect(notes[1].id).toBe('1805241226');
+        expect(notes[1].subject).toBe('note 1');
+      });
+    });
+
   });
 });

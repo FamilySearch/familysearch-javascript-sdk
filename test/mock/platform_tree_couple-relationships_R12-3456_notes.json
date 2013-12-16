@@ -1,0 +1,30 @@
+{
+  "relationships" : [ {
+    "id" : "R12-3456",
+    "links" : {
+      "relationship" : {
+        "href" : "https://familysearch.org/platform/tree/couple-relationships/R12-3456",
+        "title" : "Couple Relationship"
+      }
+    },
+    "notes" : [ {
+      "id" : "1804317705",
+      "links" : {
+        "note" : {
+          "href" : "https://familysearch.org/platform/tree/couple-relationships/R12-3456/notes/1804317705",
+          "title" : "Couple Relationship Note"
+        }
+      },
+      "subject" : "note 0"
+    }, {
+      "id" : "1805241226",
+      "links" : {
+        "note" : {
+          "href" : "https://familysearch.org/platform/tree/couple-relationships/R12-3456/notes/1805241226",
+          "title" : "Couple Relationship Note"
+        }
+      },
+      "subject" : "note 1"
+    } ]
+  } ]
+}

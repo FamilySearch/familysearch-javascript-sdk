@@ -21,10 +21,11 @@ define([
    * @function
    *
    * @description
-   * Get the notes for a person
+   * Get note references for a person
    * The response includes the following convenience function
    *
-   * - `getNotes()` - get the array of notes from the response; each note has an `id` and a `subject`
+   * - `getNotes()` - get the array of notes from the response; each has an `id` and a `subject`;
+   * pass the `id` into {@link notes.functions:getPersonNote getPersonNote} for more information
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Notes_resource FamilySearch API Docs}
    *
@@ -39,7 +40,6 @@ define([
     return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/notes', params, {}, opts,
       helpers.objectExtender({getNotes: function() { return maybe(maybe(this.persons)[0]).notes || []; }}));
   };
-
 
   /**
    * @ngdoc function
@@ -77,7 +77,32 @@ define([
     getText:     function() { return maybe(maybe(maybe(maybe(this.persons)[0]).notes)[0]).text; }
   };
 
-  // TODO getCoupleRelationshipNotes
+  /**
+   * @ngdoc function
+   * @name notes.functions:getCoupleNotes
+   * @function
+   *
+   * @description
+   * Get the notes for a couple relationship
+   * The response includes the following convenience function
+   *
+   * - `getNotes()` - get the array of notes from the response; each has an `id` and a `subject`;
+   * pass the `id` into {@link notes.functions:getCoupleNote getCoupleNote} for more information
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Notes_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/qe2dc/ editable example}
+   *
+   * @param {String} id of the couple relationship to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getCoupleNotes = function(id, params, opts) {
+    return plumbing.get('/platform/tree/couple-relationships/'+encodeURI(id)+'/notes', params, {}, opts,
+      helpers.objectExtender({getNotes: function() { return maybe(maybe(this.relationships)[0]).notes || []; }}));
+  };
+
   // TODO getCoupleRelationshipNote
   // TODO getChildAndParentsRelationshipNotes
   // TODO getChildAndParentsRelationshipNote

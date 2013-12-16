@@ -47,6 +47,7 @@ define([
     // notes
     getPersonNotes: notes.getPersonNotes,
     getPersonNote: notes.getPersonNote,
+    getCoupleNotes: notes.getCoupleNotes,
 
     // parents and children
     getChildAndParents: parentsAndChildren.getChildAndParents,
