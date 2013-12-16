@@ -1,0 +1,15 @@
+{
+  "childAndParentsRelationships" : [ {
+    "id" : "RRRX-RRX",
+    "notes" : [ {
+      "links" : {
+        "notes" : {
+          "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/RRRX-RRX/notes",
+          "title" : "Child-and-Parents Relationship Notes"
+        }
+      },
+      "subject" : "Sample",
+      "text" : "Sample note text"
+    } ]
+  } ]
+}

@@ -52,6 +52,7 @@ define([
    *
    * - `getNote()` - returns an object with the following *note convenience functions*:
    *
+   * ###Note convenience functions
    * - `getNoteId()`
    * - `getSubject()`
    * - `getText()`
@@ -116,13 +117,11 @@ define([
    * @function
    *
    * @description
-   * Get information about a couple note
-   * The response includes the following convenience functions
+   * Get information about a couple relationship note
+   * The response includes the following convenience function
    *
-   * - `getPersonId()`
-   * - `getNoteId()`
-   * - `getSubject()`
-   * - `getText()`
+   * - `getNote()` - returns an object with *note convenience functions*
+   * as described for {@link notes.functions:getPersonNote getPersonNote}
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource FamilySearch API Docs}
    *
@@ -170,8 +169,37 @@ define([
       helpers.objectExtender({getNotes: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).notes || []; }}));
   };
 
-  // TODO getCoupleRelationshipNote
-  // TODO getChildAndParentsRelationshipNote
+  /**
+   * @ngdoc function
+   * @name notes.functions:getChildAndParentsNote
+   * @function
+   *
+   * @description
+   * Get information about a child and parents relationship note
+   * The response includes the following convenience function
+   *
+   * - `getNote()` - returns an object with *note convenience functions*
+   * as described for {@link notes.functions:getPersonNote getPersonNote}
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ// editable example}
+   *
+   * @param {String} caprid of the child and parents relationship
+   * @param {String} nid of the note
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getChildAndParentsNote = function(caprid, nid, params, opts) {
+    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(caprid)+'/notes/'+encodeURI(nid), params, {}, opts,
+      helpers.compose(
+        helpers.objectExtender({getNote: function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).notes)[0]; }}),
+        helpers.objectExtender(noteConvenienceFunctions, function(response) {
+          return maybe(maybe(response.childAndParentsRelationships)[0]).notes;
+        })
+      ));
+  };
 
   return exports;
 });

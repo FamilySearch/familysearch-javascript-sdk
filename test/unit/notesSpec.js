@@ -41,13 +41,23 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('references are returned from getChildAndParentsNotes', function() {
-      FamilySearch.getCoupleNotes('R12-3456').then(function(response) {
+      FamilySearch.getChildAndParentsNotes('R12-3456').then(function(response) {
         var notes = response.getNotes();
         expect(notes.length).toBe(2);
         expect(notes[0].id).toBe('1804317705');
         expect(notes[0].subject).toBe('note 0');
         expect(notes[1].id).toBe('1805241226');
         expect(notes[1].subject).toBe('note 1');
+      });
+    });
+
+    it('is returned from getChildAndParentsNote', function() {
+      FamilySearch.getChildAndParentsNote('RRRX-RRX', 'NOTE1').then(function(response) {
+        var note = response.getNote();
+        expect(note.getNoteId()).toBeUndefined(); // bad example data
+        expect(note.getSubject()).toBe('Sample');
+        expect(note.getText()).toBe('Sample note text');
+        expect(note.getContributorId()).toBeUndefined();
       });
     });
   });

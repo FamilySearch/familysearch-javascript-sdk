@@ -50,6 +50,7 @@ define([
     getCoupleNotes: notes.getCoupleNotes,
     getCoupleNote: notes.getCoupleNote,
     getChildAndParentsNotes: notes.getChildAndParentsNotes,
+    getChildAndParentsNote: notes.getChildAndParentsNote,
 
     // parents and children
     getChildAndParents: parentsAndChildren.getChildAndParents,
