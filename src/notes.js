@@ -48,12 +48,14 @@ define([
    *
    * @description
    * Get information about a note
-   * The response includes the following convenience functions
+   * The response includes the following convenience function
    *
-   * - `getPersonId()`
+   * - `getNote()` - returns an object with the following *note convenience functions*:
+   *
    * - `getNoteId()`
    * - `getSubject()`
    * - `getText()`
+   * - `getContributorId()`
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Note_resource FamilySearch API Docs}
    *
@@ -67,14 +69,19 @@ define([
    */
   exports.getPersonNote = function(pid, nid, params, opts) {
     return plumbing.get('/platform/tree/persons/'+encodeURI(pid)+'/notes/'+encodeURI(nid), params, {}, opts,
-      helpers.objectExtender(personNoteConvenienceFunctions));
+      helpers.compose(
+        helpers.objectExtender({getNote: function() { return maybe(maybe(maybe(this.persons)[0]).notes)[0]; }}),
+        helpers.objectExtender(noteConvenienceFunctions, function(response) {
+          return maybe(maybe(response.persons)[0]).notes;
+        })
+      ));
   };
 
-  var personNoteConvenienceFunctions = {
-    getPersonId: function() { return maybe(maybe(this.persons)[0]).id; },
-    getNoteId:   function() { return maybe(maybe(maybe(maybe(this.persons)[0]).notes)[0]).id; },
-    getSubject:  function() { return maybe(maybe(maybe(maybe(this.persons)[0]).notes)[0]).subject; },
-    getText:     function() { return maybe(maybe(maybe(maybe(this.persons)[0]).notes)[0]).text; }
+  var noteConvenienceFunctions = {
+    getNoteId:   function() { return this.id; },
+    getSubject:  function() { return this.subject; },
+    getText:     function() { return this.text; },
+    getContributorId: function() { return maybe(maybe(this.attribution).contributor).resourceId; }
   };
 
   /**
@@ -101,6 +108,40 @@ define([
   exports.getCoupleNotes = function(id, params, opts) {
     return plumbing.get('/platform/tree/couple-relationships/'+encodeURI(id)+'/notes', params, {}, opts,
       helpers.objectExtender({getNotes: function() { return maybe(maybe(this.relationships)[0]).notes || []; }}));
+  };
+
+  /**
+   * @ngdoc function
+   * @name notes.functions:getCoupleNote
+   * @function
+   *
+   * @description
+   * Get information about a couple note
+   * The response includes the following convenience functions
+   *
+   * - `getPersonId()`
+   * - `getNoteId()`
+   * - `getSubject()`
+   * - `getText()`
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/T7xj2/ editable example}
+   *
+   * @param {String} crid of the couple relationship
+   * @param {String} nid of the note
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getCoupleNote = function(crid, nid, params, opts) {
+    return plumbing.get('/platform/tree/couple-relationships/'+encodeURI(crid)+'/notes/'+encodeURI(nid), params, {}, opts,
+      helpers.compose(
+        helpers.objectExtender({getNote: function() { return maybe(maybe(maybe(this.relationships)[0]).notes)[0]; }}),
+        helpers.objectExtender(noteConvenienceFunctions, function(response) {
+          return maybe(maybe(response.relationships)[0]).notes;
+        })
+      ));
   };
 
   /**
