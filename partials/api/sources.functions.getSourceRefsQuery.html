@@ -1,0 +1,40 @@
+<h1><code ng:non-bindable="">getSourceRefsQuery</code>
+<span class="hint">(functions in module <code ng:non-bindable="">sources</code>
+)</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>Get the people, couples, and child-and-parents relationships referencing a source
+The response includes the following convenience function</p>
+
+<ul>
+<li><code>getPersonIdSourceRefs()</code> - get the array of id source references from the response; each has the following <em>id source reference convenience functions</em></li>
+<li><code>getCoupleIdSourceRefs()</code> - get the array of id source references from the response; each has the following <em>id source reference convenience functions</em></li>
+<li><code>getChildAndParentsIdSourceRefs()</code> - get the array of id source references from the response; each has the following <em>id source reference convenience functions</em></li>
+</ul>
+
+<h3 id="idsourcereferenceconveniencefunctions">Id Source Reference Convenience Functions</h5>
+
+<ul>
+<li><code>getId()</code> - get the id of the person, couple relationship, or child-and-parents relationship</li>
+<li><code>getSourceRef()</code> - get the source reference with <em>source reference convenience functions</em>
+as described for <a href="#/api/sources.functions:getPersonSourceRefs">getPersonSourceRefs</a></li>
+</ul>
+
+<p><a href="https://familysearch.org/developers/docs/api/tree/Source_References_Query_resource">FamilySearch API Docs</a></p>
+
+<p><a href="http://jsfiddle.net/DallanQ/E866s/">editable example</a></p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getSourceRefsQuery(sid[, params][, opts]);</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code ng:non-bindable="">sid – {String} – </code>
+<p>of the source</p></li>
+<li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
+<p>currently unused</p></li>
+<li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
+<p>options to pass to the http function specified during init</p></li>
+</ul>
+<h3 id="Returns">Returns</h3>
+<div class="returns"><code ng:non-bindable="">{Object}</code>
+– <p>promise for the response</p></div>
+</div>
+</div>

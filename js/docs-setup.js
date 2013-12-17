@@ -456,7 +456,7 @@ NG_DOCS={
       "id": "sources.functions:getPersonSourceRefs",
       "shortName": "getPersonSourceRefs",
       "type": "function",
-      "keywords": "an api array assertion contributor convenience currently docs during each editable example familysearch following for from function functions get getagent getchangemessage getcontributorid getmodifiedtimestamp getsourcedescription getsourceid getsourcerefs gettags has http https id identifying includes information init into is more net object of options opts org params pass person promise property read reference references resource response source sources specified tag tags the to type unused user with"
+      "keywords": "an api array assertion contributor convenience currently docs during each editable example familysearch following for from function functions get getagent getchangemessage getcontributorid getid getmodifiedtimestamp getsourcedescription getsourceid getsourcerefs gettags has http https id identifying includes information init into is more net object of options opts org params pass person promise property read reference references resource response source sources specified tag tags the to type unused user with"
     },
     {
       "section": "api",
@@ -464,6 +464,13 @@ NG_DOCS={
       "shortName": "getSourceDescription",
       "type": "function",
       "keywords": "about api array being citation convenience currently described description docs during editable example familysearch first following for function functions get getabout getcitations getid getnotes gettitle gettitles http https id includes information init net note of options opts org params pass promise read resource response source sources specified string strings the title to unused uri"
+    },
+    {
+      "section": "api",
+      "id": "sources.functions:getSourceRefsQuery",
+      "shortName": "getSourceRefsQuery",
+      "type": "function",
+      "keywords": "and api array as child-and-parents convenience couple couples currently described docs during each editable example familysearch following for from function functions get getchildandparentsidsourcerefs getcoupleidsourcerefs getid getpersonidsourcerefs getpersonsourcerefs getsourceref has http https id includes init net of options opts or org params pass people person promise reference references referencing relationship relationships response sid source sources specified the to unused with"
     },
     {
       "section": "api",
