@@ -28,6 +28,7 @@ define([
    *
    * ###Source Reference Convenience Functions
    *
+   * - `getId()` - id of the source reference
    * - `getSourceId()` - id of the source;
    * pass into {@link sources.functions:getSourceDescription getSourceDescription} for more information
    * - `getTags()` - array of tags; each tag is an object with a `resource` property identifying an assertion type
@@ -58,6 +59,7 @@ define([
   };
 
   var sourceReferenceConvenienceFunctions = {
+    getId:                function() { return this.id; },
     getSourceId:          function() { return this.description ? this.description.replace(/.*\//, '').replace(/\?.*$/, '') : this.description; },
     getTags:              function() { return this.tags || []; },
     getContributorId:     function() { return maybe(maybe(this.attribution).contributor).resourceId; },
@@ -176,7 +178,69 @@ define([
       ));
   };
 
-  // TODO getSourcesReferencesQuery
+  /**
+   * @ngdoc function
+   * @name sources.functions:getSourceRefsQuery
+   * @function
+   *
+   * @description
+   * Get the people, couples, and child-and-parents relationships referencing a source
+   * The response includes the following convenience function
+   *
+   * - `getPersonIdSourceRefs()` - get the array of id source references from the response; each has the following *id source reference convenience functions*
+   * - `getCoupleIdSourceRefs()` - get the array of id source references from the response; each has the following *id source reference convenience functions*
+   * - `getChildAndParentsIdSourceRefs()` - get the array of id source references from the response; each has the following *id source reference convenience functions*
+   *
+   * ###Id Source Reference Convenience Functions
+   * - `getId()` - get the id of the person, couple relationship, or child-and-parents relationship
+   * - `getSourceRef()` - get the source reference with *source reference convenience functions*
+   * as described for {@link sources.functions:getPersonSourceRefs getPersonSourceRefs}
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Source_References_Query_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/E866s/ editable example}
+   *
+   * @param {String} sid of the source
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getSourceRefsQuery = function(sid, params, opts) {
+    return plumbing.get('/platform/tree/source-references', helpers.extend({'source': sid}, params), {'Accept': 'application/x-fs-v1+json'}, opts,
+      helpers.compose(
+        helpers.objectExtender({getPersonIdSourceRefs: function() {
+          return this.persons || [];
+        }}),
+        helpers.objectExtender(idSourceRefConvenienceFunctions, function(response) {
+          return response.persons;
+        }),
+        helpers.objectExtender({getCoupleIdSourceRefs: function() {
+          return this.relationships || [];
+        }}),
+        helpers.objectExtender(idSourceRefConvenienceFunctions, function(response) {
+          return response.relationships;
+        }),
+        helpers.objectExtender({getChildAndParentsIdSourceRefs: function() {
+          return this.childAndParentsRelationships || [];
+        }}),
+        helpers.objectExtender(idSourceRefConvenienceFunctions, function(response) {
+          return response.childAndParentsRelationships;
+        }),
+        helpers.objectExtender(sourceReferenceConvenienceFunctions, function(response) {
+          return helpers.flatMap(
+            helpers.union(response.persons, response.relationships, response.childAndParentsRelationships),
+            function(person) {
+              return person.sources;
+            }
+          );
+        })
+      ));
+  };
+
+  var idSourceRefConvenienceFunctions = {
+    getId: function() { return this.id; },
+    getSourceRef: function() { return maybe(this.sources)[0]; }
+  };
 
   return exports;
 });

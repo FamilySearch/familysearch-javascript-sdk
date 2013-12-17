@@ -84,6 +84,7 @@ define([
     getSourceDescription: sources.getSourceDescription,
     getCoupleSourceRefs: sources.getCoupleSourceRefs,
     getChildAndParentsSourceRefs: sources.getChildAndParentsSourceRefs,
+    getSourceRefsQuery: sources.getSourceRefsQuery,
 
     // spouses
     getCouple: spouses.getCouple,

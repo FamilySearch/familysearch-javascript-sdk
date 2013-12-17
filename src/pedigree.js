@@ -45,8 +45,7 @@ define([
    * @return {Object} promise for the ancestry
    */
   exports.getAncestry = function(id, params, opts) {
-    return plumbing.get('/platform/tree/ancestry', helpers.removeEmptyProperties(helpers.extend({'person': id}, params)),
-      {}, opts,
+    return plumbing.get('/platform/tree/ancestry', helpers.extend({'person': id}, params), {}, opts,
       helpers.compose(
         helpers.objectExtender(pedigreeConvenienceFunctionGenerator('ascendancyNumber')),
         person.personExtender,
@@ -97,8 +96,7 @@ define([
    * @return {Object} promise for the descendancy
    */
   exports.getDescendancy = function(id, params, opts) {
-    return plumbing.get('/platform/tree/descendancy', helpers.removeEmptyProperties(helpers.extend({'person': id}, params)),
-      {}, opts,
+    return plumbing.get('/platform/tree/descendancy', helpers.extend({'person': id}, params), {}, opts,
       helpers.compose(
         helpers.objectExtender(pedigreeConvenienceFunctionGenerator('descendancyNumber')),
         person.personExtender,

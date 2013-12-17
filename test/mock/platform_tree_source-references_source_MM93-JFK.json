@@ -1,0 +1,91 @@
+{
+  "persons": [
+    {
+      "id": "KW7V-Y32",
+      "links": {
+        "person": {
+          "href": "https://sandbox.familysearch.org/platform/tree/persons/KW7V-Y32?access_token=USYS4423A216E398C17846B5C9B5B9FC8265_idses-int02.a.fsglobal.net",
+          "title": "Person"
+        }
+      },
+      "sources": [
+        {
+          "id": "MMM9-NNG",
+          "links": {
+            "source-reference": {
+              "href": "https://sandbox.familysearch.org/platform/tree/persons/KW7V-Y32/source-references/MMM9-NNG?access_token=USYS4423A216E398C17846B5C9B5B9FC8265_idses-int02.a.fsglobal.net",
+              "title": "Source Reference"
+            }
+          },
+          "attribution": {
+            "contributor": {
+              "resource": "https://sandbox.familysearch.org/platform/users/agents/MMD8-3NT?access_token=USYS4423A216E398C17846B5C9B5B9FC8265_idses-int02.a.fsglobal.net",
+              "resourceId": "MMD8-3NT"
+            },
+            "modified": 1385502450544,
+            "changeMessage": "Reason to attach source"
+          },
+          "description": "https://sandbox.familysearch.org/platform/sources/descriptions/MM93-JFK?access_token=USYS4423A216E398C17846B5C9B5B9FC8265_idses-int02.a.fsglobal.net"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "id": "MMM7-12S",
+      "links": {
+        "relationship": {
+          "href": "https://sandbox.familysearch.org/platform/tree/couple-relationships/MMM7-12S?access_token=USYS4423A216E398C17846B5C9B5B9FC8265_idses-int02.a.fsglobal.net",
+          "title": "Relationship"
+        }
+      },
+      "sources": [
+        {
+          "id": "MMMM-S3D",
+          "links": {
+            "source-reference": {
+              "href": "https://sandbox.familysearch.org/platform/tree/couple-relationships/MMM7-12S/source-references/MMMM-S3D?access_token=USYS4423A216E398C17846B5C9B5B9FC8265_idses-int02.a.fsglobal.net",
+              "title": "Source Reference"
+            }
+          },
+          "attribution": {
+            "contributor": {
+              "resource": "https://sandbox.familysearch.org/platform/users/agents/MMD8-3NT?access_token=USYS4423A216E398C17846B5C9B5B9FC8265_idses-int02.a.fsglobal.net",
+              "resourceId": "MMD8-3NT"
+            },
+            "modified": 1387248662013,
+            "changeMessage": "Attaching source to two things?"
+          },
+          "description": "https://sandbox.familysearch.org/platform/sources/descriptions/MM93-JFK?access_token=USYS4423A216E398C17846B5C9B5B9FC8265_idses-int02.a.fsglobal.net"
+        }
+      ]
+    }
+  ],
+  "childAndParentsRelationships" : [ {
+    "id" : "MMMP-KN5",
+    "links" : {
+      "relationship" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MMMP-KN5?access_token=USYS4423A216E398C17846B5C9B5B9FC8265_idses-int02.a.fsglobal.net",
+        "title" : "Child-and-Parents Relationship"
+      }
+    },
+    "sources" : [ {
+      "id" : "MMMM-S36",
+      "links" : {
+        "source-reference" : {
+          "href" : "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MMMP-KN5/source-references/MMMM-S36?access_token=USYS4423A216E398C17846B5C9B5B9FC8265_idses-int02.a.fsglobal.net",
+          "title" : "Child-and-Parents Source Reference"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMD8-3NT?access_token=USYS4423A216E398C17846B5C9B5B9FC8265_idses-int02.a.fsglobal.net",
+          "resourceId" : "MMD8-3NT"
+        },
+        "modified" : 1387250077070,
+        "changeMessage" : "Attach a source to a parent-child relationship"
+      },
+      "description" : "https://sandbox.familysearch.org/platform/sources/descriptions/MM93-JFK?access_token=USYS4423A216E398C17846B5C9B5B9FC8265_idses-int02.a.fsglobal.net"
+    } ]
+  } ]
+}

@@ -46,5 +46,19 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(sources[1].getChangeMessage()).toBe('Dates and location match with other sources.');
       });
     });
+
+    it('references are returned from getSourceRefsQuery', function() {
+      FamilySearch.getSourceRefsQuery('MM93-JFK').then(function(response) {
+        expect(response.getPersonIdSourceRefs()[0].getId()).toBe('KW7V-Y32');
+        expect(response.getPersonIdSourceRefs()[0].getSourceRef().getId()).toBe('MMM9-NNG');
+        expect(response.getPersonIdSourceRefs()[0].getSourceRef().getSourceId()).toBe('MM93-JFK');
+        expect(response.getCoupleIdSourceRefs()[0].getId()).toBe('MMM7-12S');
+        expect(response.getCoupleIdSourceRefs()[0].getSourceRef().getId()).toBe('MMMM-S3D');
+        expect(response.getCoupleIdSourceRefs()[0].getSourceRef().getSourceId()).toBe('MM93-JFK');
+        expect(response.getChildAndParentsIdSourceRefs()[0].getId()).toBe('MMMP-KN5');
+        expect(response.getChildAndParentsIdSourceRefs()[0].getSourceRef().getId()).toBe('MMMM-S36');
+        expect(response.getChildAndParentsIdSourceRefs()[0].getSourceRef().getSourceId()).toBe('MM93-JFK');
+      });
+    });
   });
 });

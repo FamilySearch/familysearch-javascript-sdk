@@ -221,8 +221,7 @@ define([
    * @return {Object} promise for the person with relationships
    */
   exports.getPersonWithRelationships = function(id, params, opts) {
-    return plumbing.get('/platform/tree/persons-with-relationships', helpers.removeEmptyProperties(helpers.extend({'person': id}, params)),
-      {}, opts,
+    return plumbing.get('/platform/tree/persons-with-relationships', helpers.extend({'person': id}, params), {}, opts,
       helpers.compose(
         helpers.objectExtender({getPrimaryId: function() { return id; }}), // make id available
         helpers.objectExtender(exports.factConvenienceFunctions, function(response) {
