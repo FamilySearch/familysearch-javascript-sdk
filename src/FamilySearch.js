@@ -33,7 +33,6 @@ define([
 
     // discussions
     Discussion: discussions.Discussion,
-    DiscussionRef: discussions.DiscussionRef,
     Comment: discussions.Comment,
     getPersonDiscussionRefs: discussions.getPersonDiscussionRefs,
     getDiscussion: discussions.getDiscussion,

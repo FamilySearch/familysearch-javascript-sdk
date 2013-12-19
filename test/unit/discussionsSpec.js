@@ -2,8 +2,9 @@ define(['FamilySearch'], function(FamilySearch) {
   describe('Discussion', function() {
     it('references are returned from getPersonDiscussionRefs', function() {
       FamilySearch.getPersonDiscussionRefs('12345').then(function(response) {
-        expect(response.getDiscussionRefs().length).toBe(1);
-        expect(response.getDiscussionRefs()[0].getId()).toEqual('ds.disc.MMMM-CN7F');
+        var ids = response.getDiscussionIds();
+        expect(ids.length).toBe(2);
+        expect(ids[0]).toEqual('67890');
       });
     });
 
