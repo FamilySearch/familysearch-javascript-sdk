@@ -3618,7 +3618,9 @@ define('sources',[
       helpers.compose(
         helpers.objectExtender({getSourceRefs: function() { return maybe(maybe(this.persons)[0]).sources || []; }}),
         helpers.constructorSetter(SourceRef, 'sources', function(response) {
-          return maybe(response.persons)[0];
+          if (response) {
+            return maybe(response.persons)[0];  
+          }
         })
       ));
   };
