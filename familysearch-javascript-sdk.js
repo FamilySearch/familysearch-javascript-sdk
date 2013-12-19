@@ -1837,8 +1837,8 @@ define('person',[
 
     /**
      * @ngdoc function
-     * @name sources.types:type.SourceRef#getModified
-     * @methodOf sources.types:type.SourceRef
+     * @name person.types:type.Name#getModified
+     * @methodOf person.types:type.Name
      * @function
      * @return {Number} last modified timestamp
      */
@@ -1928,8 +1928,8 @@ define('person',[
 
     /**
      * @ngdoc function
-     * @name sources.types:type.SourceRef#getModified
-     * @methodOf sources.types:type.SourceRef
+     * @name person.types:type.Fact#getModified
+     * @methodOf person.types:type.Fact
      * @function
      * @return {Number} last modified timestamp
      */
@@ -3579,7 +3579,7 @@ define('searchAndMatch',[
         searchMatchResponseMapper,
         function(obj, promise) {
           obj.getContext = function() {
-            return promise.getResponseHeader('X-fs-page-context');
+            return promise.getResponseHeader('X-FS-Page-Context');
           };
           return obj;
         }
@@ -3943,7 +3943,8 @@ define('sources',[
    * @return {Object} promise for the response
    */
   exports.getChildAndParentsSourceRefs = function(id, params, opts) {
-    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(id)+'/source-references', params, {}, opts,
+    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(id)+'/source-references', params,
+      {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.compose(
         helpers.objectExtender({getSourceRefs: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).sources || []; }}),
         helpers.constructorSetter(SourceRef, 'sources', function(response) {

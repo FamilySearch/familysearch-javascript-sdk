@@ -379,14 +379,14 @@ NG_DOCS={
       "id": "person.types:type.Fact",
       "shortName": "Fact",
       "type": "function",
-      "keywords": "api contributor date details etc event fact for form function functions getagent getcontributorid getdate getformaldate getplace http id into name of org original pass person place property standard the type types user"
+      "keywords": "api contributor date details etc event fact for form function functions getagent getcontributorid getdate getformaldate getmodified getplace http id into last modified name of org original pass person place property standard the timestamp type types user"
     },
     {
       "section": "api",
       "id": "person.types:type.Name",
       "shortName": "Name",
       "type": "function",
-      "keywords": "api contributor details etc first for form forms full function functions get getagent getcontributorid getfulltext getgivenname getnameformscount getsurname given http id if into is name number of omitted org part pass person preferred property read surname text th the this to true type types user"
+      "keywords": "api contributor details etc first for form forms full function functions get getagent getcontributorid getfulltext getgivenname getmodified getnameformscount getsurname given http id if into is last modified name number of omitted org part pass person preferred property read surname text th the this timestamp to true type types user"
     },
     {
       "section": "api",
