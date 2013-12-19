@@ -265,7 +265,8 @@ define([
    * @return {Object} promise for the response
    */
   exports.getChildAndParentsSourceRefs = function(id, params, opts) {
-    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(id)+'/source-references', params, {}, opts,
+    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(id)+'/source-references', params,
+      {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.compose(
         helpers.objectExtender({getSourceRefs: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).sources || []; }}),
         helpers.constructorSetter(SourceRef, 'sources', function(response) {

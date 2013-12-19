@@ -198,8 +198,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name sources.types:type.SourceRef#getModified
-     * @methodOf sources.types:type.SourceRef
+     * @name person.types:type.Name#getModified
+     * @methodOf person.types:type.Name
      * @function
      * @return {Number} last modified timestamp
      */
@@ -289,8 +289,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name sources.types:type.SourceRef#getModified
-     * @methodOf sources.types:type.SourceRef
+     * @name person.types:type.Fact#getModified
+     * @methodOf person.types:type.Fact
      * @function
      * @return {Number} last modified timestamp
      */
