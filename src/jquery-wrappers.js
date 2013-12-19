@@ -4,6 +4,11 @@ define([
 ], function(globals, helpers) {
   var exports = {};
 
+  /**
+   * httpWrapper function based upon jQuery's $.ajax function
+   * @param ajax jQuery's $.ajax function
+   * @returns {Function} http function that exposes a standard interface
+   */
   exports.httpWrapper = function(ajax) {
     return function(method, url, headers, data, opts) {
       // set up the options
@@ -41,6 +46,11 @@ define([
     };
   };
 
+  /**
+   * deferredWrapper function based upon jQuery's $.Deferred function
+   * @param deferred jQuery's $.Deferred function
+   * @returns {Function} deferred function that exposes a standard interface
+   */
   exports.deferredWrapper = function(deferred) {
     return function() {
       var d = deferred();

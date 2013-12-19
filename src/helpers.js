@@ -18,40 +18,70 @@ define([
     })();
   }
 
-  // borrowed from underscore.js
+  /**
+   * borrowed from underscore.js
+   * @param {*} value to test
+   * @returns {boolean}
+   */
   exports.isArray = function(value) {
     /*jshint eqeqeq:false */
     return Array.isArray ? Array.isArray(value) : Object.prototype.toString.call(value) == '[object Array]';
   };
 
-  // borrowed from underscore.js
+  /**
+   * borrowed from underscore.js
+   * @param {*} value to test
+   * @returns {boolean}
+   */
   exports.isNumber = function(value) {
     /*jshint eqeqeq:false */
     return Object.prototype.toString.call(value) == '[object Number]';
   };
 
-  // borrowed from underscore.js
+  /**
+   * borrowed from underscore.js
+   * @param {*} value to test
+   * @returns {boolean}
+   */
   exports.isString = function(value) {
     /*jshint eqeqeq:false */
     return Object.prototype.toString.call(value) == '[object String]';
   };
 
-  // borrowed from underscore.js
+  /**
+   * borrowed from underscore.js
+   * @param {*} value to test
+   * @returns {boolean}
+   */
   exports.isFunction = function(value) {
     /*jshint eqeqeq:false */
     return (typeof /./ !== 'function') ? (typeof value === 'function') : Object.prototype.toString.call(value) == '[object Function]';
   };
 
-  // borrowed from underscore.js
+  /**
+   * borrowed from underscore.js
+   * @param {*} value to test
+   * @returns {boolean}
+   */
   exports.isObject = function(value) {
     return value === Object(value);
   };
 
+  /**
+   * borrowed from underscore.js
+   * @param value to test
+   * @returns {boolean}
+   */
   exports.isUndefined = function(value) {
     return value === void 0;
   };
 
-  // borrowed from underscore.js
+  /**
+   * borrowed from underscore.js
+   * @param {Array|Object} obj Object or array to iterate over
+   * @param {function(elm)} iterator Function to call
+   * @param {Object=} context Object for this
+   */
   var forEach = exports.forEach = function(obj, iterator, context) {
     if (obj == null) { // also catches undefined
       return;
@@ -75,7 +105,11 @@ define([
     }
   };
 
-  // borrowed from underscore.js
+  /**
+   * borrowed from underscore.js
+   * @param {Object} obj Object to get keys from
+   * @returns {Array.<string>} keys
+   */
   exports.keys = Object.keys || function(obj) {
     if (obj !== Object(obj)) {
       throw new TypeError('Invalid object');
@@ -89,7 +123,13 @@ define([
     return keys;
   };
 
-  // simplified version of underscore's filter
+  /**
+   * Simplified version of underscore's filter
+   * @param {Array|Object} arr Array or object to iterate over
+   * @param {function(elm)} fn Function returns true to keep element
+   * @param {Object=} context Object for this
+   * @returns {Array} Filtered array
+   */
   exports.filter = function(arr, fn, context) {
     var result = [];
     forEach(arr, function(e) {
@@ -100,7 +140,13 @@ define([
     return result;
   };
 
-  // simplified version of underscore's map
+  /**
+   * simplified version of underscore's map
+   * @param {Array|Object} arr Array or object to iterate over
+   * @param {function(elm)} fn Function to call
+   * @param {Object=} context Object for this
+   * @returns {Array} Mapped array
+   */
   exports.map = function(arr, fn, context) {
     var result = [];
     forEach(arr, function(value, index, list) {
@@ -109,7 +155,12 @@ define([
     return result;
   };
 
-  // borrowed from underscore
+  /**
+   * borrowed from underscore
+   * @param {Array|Object} obj Object or array to check
+   * @param {*} target Thing to look for
+   * @returns {boolean} Return true if found
+   */
   exports.contains = function(obj, target) {
     if (obj == null) { // covers undefined as well
       return false;
@@ -126,7 +177,11 @@ define([
     return result;
   };
 
-  // simplified version of underscore's uniq
+  /**
+   * simplified version of underscore's uniq
+   * @param {Array} arr Array to extract unique elements from
+   * @returns {Array} Contains only one instance of each element
+   */
   exports.uniq = function(arr) {
     var results = [];
     forEach(arr, function(value) {
@@ -137,8 +192,14 @@ define([
     return results;
   };
 
-  // simplified version of underscore's find
-  // returns undefined if nothing found
+  /**
+   * simplified version of underscore's find
+   * returns undefined if nothing found
+   * @param {Array} arr Array to search
+   * @param {Object|function(elm)} objOrFn If object, look for matching object; otherwise look for function to return true
+   * @param {Object=} context Object for this
+   * @returns {*} Thing found
+   */
   exports.find = function(arr, objOrFn, context) {
     var result;
     var isFn = exports.isFunction(objOrFn);
@@ -167,8 +228,11 @@ define([
     return result;
   };
 
-  // Compose functions from right to left, with each function consuming the return value of the function that follows
-  // borrowed from underscore
+  /**
+   * borrowed from underscore.js
+   * Compose functions from right to left, with each function consuming the return value of the function that follows
+   * @returns {Function} Composed function
+   */
   exports.compose = function() {
     var funcs = arguments;
     return function() {
@@ -180,7 +244,11 @@ define([
     };
   };
 
-  // simplified version of underscore's flatten that only does shallow flattening
+  /**
+   * simplified version of underscore's flatten that only does shallow flattening
+   * @param {Array} arr Array of arrays to flatten
+   * @returns {Array} Flattened array
+   */
   exports.flatten = function(arr) {
     var result = [];
     forEach(arr, function(value) {
@@ -191,20 +259,38 @@ define([
     return result;
   };
 
+  /**
+   * Composition of map and flatten
+   * Flattens the output of map into a single array
+   * @returns {Array} Flattened array
+   */
   exports.flatMap = exports.compose(exports.flatten, exports.map);
 
-  // union arrays
-  // borrowed from underscore
+  /**
+   * borrowed from underscore
+   * Union arrays, removing duplicates
+   * @returns {Array} Unioned array
+   */
   exports.union = function() {
     return exports.uniq(exports.flatten(arguments));
   };
 
-  // returns find match or first if none found
+  /**
+   * Return found match or first if none found
+   * @param {Array} arr Array to search
+   * @param {Object|function(elm)} objOrFn If object, look for matching object; otherwise look for function to return true
+   * @returns {*} Thing found or first element of array
+   */
   exports.findOrFirst = function(arr, objOrFn) {
     var result = exports.find(arr, objOrFn);
     return exports.isUndefined(result) ? arr[0] : result;
   };
 
+  /**
+   * borrowed from underscore
+   * @param {Object} dest Object to extend
+   * @returns {Object} Extended object
+   */
   exports.extend = function(dest) {
     dest = dest || {};
     forEach(Array.prototype.slice.call(arguments, 1), function(source) {
@@ -217,7 +303,11 @@ define([
     return dest;
   };
 
-  // create a new function which is the specified function with the right-most arguments pre-filled
+  /**
+   * Create a new function which is the specified function with the right-most arguments pre-filled with arguments from this call
+   * @param {function()} fn Function to wrap
+   * @returns {Function} Wrapped function
+   */
   exports.partialRight = function(fn) {
     var args = Array.prototype.slice.call(arguments, 1);
     return function() {
@@ -225,7 +315,11 @@ define([
     };
   };
 
-  // return an empty object if passed in a null or undefined, similar to the maybe monad
+  /**
+   * Return an empty object if passed in a null or undefined, similar to the maybe monad
+   * @param {*} value Value to test
+   * @returns {*} Original value or empty object
+   */
   exports.maybe = function(value) {
     return value != null ? value : {}; // != null also covers undefined
   };
@@ -233,8 +327,8 @@ define([
   /**
    * Return a function that takes an object and extends it with the specified extensions
    * @param {Object} extensions
-   * @param {Function=} extensionPointGetter optional function that returns (sub)objects to extend
-   * @return {Function} the extender function
+   * @param {function(Object)=} extensionPointGetter Optional function that returns (sub)objects to extend
+   * @return {function(Object)} The extender function
    */
   exports.objectExtender = function(extensions, extensionPointGetter) {
     if (extensionPointGetter) {
@@ -254,11 +348,11 @@ define([
 
   /**
    * Return a function that takes an object and returns an object with the same properties but with the constructor function's prototype
-   * @param constructorFunction
-   * @param {String=} attr if passed in, the constructor function will be applied to (each) element of object[attr] instead of the object itself
-   * @param {Function=} subObjectGenerator function that takes an object and returns a set of sub-objects;
+   * @param {function()} constructorFunction Create new objects with this constructor
+   * @param {string=} attr if passed in, the constructor function will be applied to (each) element of object[attr] instead of the object itself
+   * @param {function(Object)=} subObjectGenerator Function that takes an object and returns a set of sub-objects;
    * if passed in, the constructor function will be applied to sub-object[attr], where the sub-objects are returned by subObjectGenerator
-   * @return {Function} the constructor setter function
+   * @return {function(Object)} The constructor setter function
    */
   exports.constructorSetter = function(constructorFunction, attr, subObjectGenerator) {
     var setConstructor;
@@ -300,7 +394,13 @@ define([
     }
   };
 
-  // copy functions from source to dest, binding them to source
+  /**
+   * Copy functions from source to dest, binding them to source
+   * @param {Object} dest Destination object
+   * @param {Object} source Source object
+   * @param {Array<string>} fns Names of functions to copy
+   * @returns {Object} Destination object with functions
+   */
   exports.wrapFunctions = function(dest, source, fns) {
     forEach(fns, function(fn) {
       dest[fn] = function() {
@@ -310,12 +410,21 @@ define([
     return dest;
   };
 
-  // extend the destPromise with functions from the sourcePromise
+  /**
+   * Extend the destPromise with functions from the sourcePromise
+   * @param {Object} destPromise Destination promise
+   * @param {Object} sourcePromise Source promise
+   * @returns {Object} Destination promise with functions from source promise
+   */
   exports.extendHttpPromise = function(destPromise, sourcePromise) {
     return exports.wrapFunctions(destPromise, sourcePromise, ['getResponseHeader', 'getAllResponseHeaders', 'getStatusCode']);
   };
 
-  // "empty" properties are undefined, null, or the empty string
+  /**
+   * "empty" properties are undefined, null, or the empty string
+   * @param {Object} obj Object to remove properties from
+   * @returns {Object} Object with empty properties removed
+   */
   exports.removeEmptyProperties = function(obj) {
     forEach(obj, function(value, key) {
       if (value == null || value === '') {  // == null also catches undefined
@@ -325,6 +434,12 @@ define([
     return obj;
   };
 
+  /**
+   * Prepend server onto path if path does not start with https?://
+   * @param {string} server
+   * @param {string} path
+   * @returns {string} server + path
+   */
   function getAbsoluteUrl(server, path) {
     if (!path.match(/^https?:\/\//)) {
       return server + (path.charAt(0) !== '/' ? '/' : '') + path;
@@ -334,17 +449,29 @@ define([
     }
   }
 
-  // prepend oauth server to url if url doesn't start with http(s)
+  /**
+   * Prepend oauth server to path if path doesn't start with https?://
+   * @param {string} path
+   * @returns {string} server + path
+   */
   exports.getOAuthServerUrl = function(path) {
     return getAbsoluteUrl(globals.oauthServer[globals.environment], path);
   };
 
-  // prepend server to url if url doesn't start with http(s)
+  /**
+   * Prepend api server to path if path doesn't start with https?://
+   * @param path
+   * @returns {string} server + path
+   */
   exports.getServerUrl = function(path) {
     return getAbsoluteUrl(globals.server[globals.environment], path);
   };
 
-  // Create a URL-encoded query string from an object
+  /**
+   * Create a URL-encoded query string from an object
+   * @param {Object} params Parameters
+   * @returns {string} URL-encoded string
+   */
   exports.encodeQueryString = function(params) {
     var arr = [];
     forEach(params, function(value, key) {
@@ -353,7 +480,12 @@ define([
     return arr.join('&');
   };
 
-  // append query parameters
+  /**
+   * Append query parameters object to a url
+   * @param {string} url
+   * @param {Object} params
+   * @returns {String} url + query string
+   */
   exports.appendQueryParameters = function(url, params) {
     var queryString = exports.encodeQueryString(params);
     if (queryString.length === 0) {
@@ -362,7 +494,11 @@ define([
     return url + (url.indexOf('?') >= 0 ? '&' : '?') + queryString;
   };
 
-  // decode query string into an object
+  /**
+   * Decode query string into an object
+   * @param {string} qs query string
+   * @returns {Object} parameters object
+   */
   exports.decodeQueryString = function(qs) {
     var obj = {}, segments = qs.substring(qs.indexOf('?')+1).split('&');
     forEach(segments, function(segment) {
@@ -374,15 +510,22 @@ define([
     return obj;
   };
 
-  // call the callback on the next tick
+  /**
+   * Call the callback on the next tick
+   * @param {function()} cb Function to call
+   */
   exports.nextTick = function(cb) {
     setTimeout(function() {
       cb();
     },0);
   };
 
-  // borrowed from AngularJS's implementation of $q
-  // if passed a promise returns the promise; otherwise returns a pseudo-promise returning the value
+  /**
+   * borrowed from AngularJS's implementation of $q
+   * If passed a promise returns the promise; otherwise returns a pseudo-promise returning the value
+   * @param {*} value Promise or value
+   * @returns {Object} Promise
+   */
   exports.refPromise = function(value) {
     if (value && exports.isFunction(value.then)) {
       return value;
@@ -398,7 +541,12 @@ define([
     };
   };
 
-  // borrowed from AngularJS's implementation of $q
+  //
+  /**
+   * borrowed from AngularJS's implementation of $q
+   * @param {Array|Object} promises Array or object of promises
+   * @returns {Object} Promise that is resolved when all promises resolve
+   */
   exports.promiseAll = function(promises) {
     var d = globals.deferredWrapper(),
       counter = 0,
@@ -431,7 +579,13 @@ define([
     return d.promise;
   };
 
-  // cookie functions borrowed from http://www.quirksmode.org/js/cookies.html
+  /**
+   * borrowed from http://www.quirksmode.org/js/cookies.html
+   * Create a cookie
+   * @param {string} name Cookie name
+   * @param {string} value Cookie value
+   * @param {number} days Number of days to expiration; set to 0 for a session cookie
+   */
   exports.createCookie = function(name, value, days) {
     var expires = '';
     if (days) {
@@ -442,6 +596,12 @@ define([
     document.cookie = name+'='+value+expires+'; path=/';
   };
 
+  /**
+   * borrowed from http://www.quirksmode.org/js/cookies.html
+   * Read a cookie
+   * @param {string} name Cookie name
+   * @returns {string} Cookie value
+   */
   exports.readCookie = function(name) {
     var nameEQ = name + '=';
     var ca = document.cookie.split(';');
@@ -457,11 +617,18 @@ define([
     return null;
   };
 
+  /**
+   * borrowed from http://www.quirksmode.org/js/cookies.html
+   * Erase a cookie
+   * @param {string} name Cookie name
+   */
   exports.eraseCookie = function(name) {
     exports.createCookie(name,'',-1);
   };
 
-  // erase access token
+  /**
+   * Erase access token
+   */
   exports.eraseAccessToken = function() {
     globals.accessToken = null;
     if (globals.saveAccessToken) {

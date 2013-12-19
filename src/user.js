@@ -126,7 +126,11 @@ define([
     return returnedPromise;
   };
 
-  // common code for current user person promise fulfillment and failure
+  /**
+   * Common code for current user person promise fulfillment and failure
+   * @param {Object} d deferred
+   * @param {Object} promise promise from get
+   */
   function handleCurrentUserPersonResponse(d, promise) {
     var id = null;
     // this is the expected result for Node.js because it doesn't follow redirects

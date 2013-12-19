@@ -352,6 +352,11 @@ define([
       ));
   };
 
+  /**
+   * Return a function that maps a response into a response with Person, Name, and Fact objects
+   * @param {Function=} subObjectGenerator generate sub-objects corresponding to parents of persons; used by search/match functions
+   * @returns {Function}
+   */
   exports.personMapper = function(subObjectGenerator) {
     var personsGenerator = function(response) {
       return helpers.flatMap(subObjectGenerator ? subObjectGenerator(response) : [response], function(root) {
@@ -507,7 +512,8 @@ define([
    * @function
    *
    * @description
-   * Get a person and their children, spouses, and parents with the following convenience functions
+   * Get a person and their children, spouses, and parents.
+   * The response has the following convenience functions
    *
    * - `getPrimaryId()` - id of the person requested
    * - `getFatherIds()` - array of ids
@@ -558,6 +564,7 @@ define([
       ));
   };
 
+  // Functions to extract various pieces of the response
   // TODO how identify preferred parents?
   var personWithRelationshipsConvenienceFunctions = {
     getPerson:     function(id) { return helpers.find(this.persons, {id: id}); },

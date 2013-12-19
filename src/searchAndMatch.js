@@ -212,7 +212,7 @@ define([
    * - `getResultsCount()` - get the total number of search results
    * - `getIndex()` - get the starting index of the results array
    *
-   * ###Search parameters
+   * ### Search parameters
    * In the list below, {relation} can be father, mother, or spouse.
    * For non-exact matches, append a tilde (~) to the end of the parameter value.
    * (The tilde works for name parameters; does it work for dates and places as well?)

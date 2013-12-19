@@ -53,6 +53,12 @@ define([
       ));
   };
 
+  /**
+   * Generate ancestry or descendancy convenience functions
+   *
+   * @param numberLabel ascendancyNumber or descendancyNumber
+   * @returns {{getPersons: Function, exists: Function, getPerson: Function}}
+   */
   function pedigreeConvenienceFunctionGenerator(numberLabel) {
     return {
       getPersons:    function()    { return this.persons; },
