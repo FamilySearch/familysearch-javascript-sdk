@@ -48,7 +48,7 @@ define([
         helpers.objectExtender(pedigreeConvenienceFunctionGenerator('ascendancyNumber')),
         person.personMapper(),
         helpers.objectExtender({getAscendancyNumber: function() { return this.display.ascendancyNumber; }}, function(response) {
-          return response.persons;
+          return maybe(response).persons;
         })
       ));
   };
@@ -107,7 +107,7 @@ define([
         helpers.objectExtender(pedigreeConvenienceFunctionGenerator('descendancyNumber')),
         person.personMapper(),
         helpers.objectExtender({getDescendancyNumber: function() { return this.display.descendancyNumber; }}, function(response) {
-          return response.persons;
+          return maybe(response).persons;
         })
       ));
   };

@@ -45,7 +45,7 @@ define([
         helpers.constructorSetter(person.Couple, 'relationships'),
         helpers.objectExtender(coupleConvenienceFunctions),
         helpers.constructorSetter(person.Fact, 'facts', function(response) {
-          return response.relationships;
+          return maybe(response).relationships;
         }),
         person.personMapper()
       ));

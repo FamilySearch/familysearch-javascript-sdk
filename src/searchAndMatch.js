@@ -289,7 +289,7 @@ define([
     helpers.objectExtender(searchMatchResponseConvenienceFunctions),
     helpers.constructorSetter(SearchResult, 'entries'),
     person.personMapper(function(response) {
-      return helpers.map(response.entries, function(entry) {
+      return helpers.map(maybe(response).entries, function(entry) {
         return maybe(entry.content).gedcomx;
       });
     })

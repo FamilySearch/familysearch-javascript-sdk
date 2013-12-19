@@ -45,10 +45,10 @@ define([
         helpers.constructorSetter(person.ChildAndParents, 'childAndParentsRelationships'),
         helpers.objectExtender(childAndParentsConvenienceFunctions),
         helpers.constructorSetter(person.Fact, 'motherFacts', function(response) {
-          return response.childAndParentsRelationships;
+          return maybe(response).childAndParentsRelationships;
         }),
         helpers.constructorSetter(person.Fact, 'fatherFacts', function(response) {
-          return response.childAndParentsRelationships;
+          return maybe(response).childAndParentsRelationships;
         }),
         person.personMapper()
       ));

@@ -108,9 +108,7 @@ define([
       helpers.compose(
         helpers.objectExtender({getSourceRefs: function() { return maybe(maybe(this.persons)[0]).sources || []; }}),
         helpers.constructorSetter(SourceRef, 'sources', function(response) {
-          if (response) {
-            return maybe(response.persons)[0];  
-          }
+          return maybe(maybe(response).persons)[0];
         })
       ));
   };
@@ -241,7 +239,7 @@ define([
       helpers.compose(
         helpers.objectExtender({getSourceRefs: function() { return maybe(maybe(this.relationships)[0]).sources || []; }}),
         helpers.constructorSetter(SourceRef, 'sources', function(response) {
-          return maybe(response.relationships)[0];
+          return maybe(maybe(response).relationships)[0];
         })
       ));
   };
@@ -271,7 +269,7 @@ define([
       helpers.compose(
         helpers.objectExtender({getSourceRefs: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).sources || []; }}),
         helpers.constructorSetter(SourceRef, 'sources', function(response) {
-          return maybe(response.childAndParentsRelationships)[0];
+          return maybe(maybe(response).childAndParentsRelationships)[0];
         })
       ));
   };
@@ -338,7 +336,7 @@ define([
         helpers.objectExtender({getChildAndParentsIdSourceRefs: function() { return this.childAndParentsRelationships || []; }}),
         helpers.constructorSetter(IdSourceRef, 'childAndParentsRelationships'),
         helpers.constructorSetter(SourceRef, 'sources', function(response) {
-          return helpers.union(response.persons, response.relationships, response.childAndParentsRelationships);
+          return helpers.union(maybe(response).persons, maybe(response).relationships, maybe(response).childAndParentsRelationships);
         })
       ));
   };

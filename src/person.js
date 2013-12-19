@@ -548,13 +548,13 @@ define([
       helpers.compose(
         helpers.objectExtender({getPrimaryId: function() { return pid; }}), // make id available
         helpers.constructorSetter(Fact, 'fatherFacts', function(response) {
-          return response.childAndParentsRelationships;
+          return maybe(response).childAndParentsRelationships;
         }),
         helpers.constructorSetter(Fact, 'motherFacts', function(response) {
-          return response.childAndParentsRelationships;
+          return maybe(response).childAndParentsRelationships;
         }),
         helpers.constructorSetter(Fact, 'facts', function(response) {
-          return response.relationships;
+          return maybe(response).relationships;
         }),
         helpers.constructorSetter(ChildAndParents, 'childAndParentsRelationships'),
         helpers.constructorSetter(Couple, 'relationships'), // some of the relationships are ParentChild relationships, but
@@ -687,7 +687,7 @@ define([
         helpers.constructorSetter(Couple, 'relationships'),
         helpers.objectExtender(relationshipsToSpousesConvenienceFunctions),
         helpers.constructorSetter(Fact, 'facts', function(response) {
-          return response.relationships;
+          return maybe(response).relationships;
         }),
         exports.personMapper()
       ));

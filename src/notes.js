@@ -68,7 +68,7 @@ define([
       helpers.compose(
         helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.persons)[0]).notes || []; }}),
         helpers.constructorSetter(NoteRef, 'notes', function(response) {
-          return maybe(response.persons)[0];
+          return maybe(maybe(response).persons)[0];
         })
       ));
   };
@@ -152,7 +152,7 @@ define([
       helpers.compose(
         helpers.objectExtender({getNote: function() { return maybe(maybe(maybe(this.persons)[0]).notes)[0]; }}),
         helpers.constructorSetter(Note, 'notes', function(response) {
-            return maybe(response.persons)[0];
+            return maybe(maybe(response).persons)[0];
         })
       ));
   };
@@ -182,7 +182,7 @@ define([
       helpers.compose(
         helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.relationships)[0]).notes || []; }}),
         helpers.constructorSetter(NoteRef, 'notes', function(response) {
-          return maybe(response.relationships)[0];
+          return maybe(maybe(response).relationships)[0];
         })
       ));
   };
@@ -213,7 +213,7 @@ define([
       helpers.compose(
         helpers.objectExtender({getNote: function() { return maybe(maybe(maybe(this.relationships)[0]).notes)[0]; }}),
         helpers.constructorSetter(Note, 'notes', function(response) {
-          return maybe(response.relationships)[0];
+          return maybe(maybe(response).relationships)[0];
         })
       ));
   };
@@ -243,7 +243,7 @@ define([
       helpers.compose(
         helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).notes || []; }}),
         helpers.constructorSetter(NoteRef, 'notes', function(response) {
-          return maybe(response.childAndParentsRelationships)[0];
+          return maybe(maybe(response).childAndParentsRelationships)[0];
         })
       ));
   };
@@ -274,7 +274,7 @@ define([
       helpers.compose(
         helpers.objectExtender({getNote: function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).notes)[0]; }}),
         helpers.constructorSetter(Note, 'notes', function(response) {
-          return maybe(response.childAndParentsRelationships)[0];
+          return maybe(maybe(response).childAndParentsRelationships)[0];
         })
       ));
   };

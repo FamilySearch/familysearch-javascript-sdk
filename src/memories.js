@@ -73,7 +73,7 @@ define([
       helpers.compose(
         helpers.objectExtender({getMemoryRefs: function() { return maybe(maybe(this.persons)[0]).evidence || []; }}),
         helpers.constructorSetter(MemoryRef, 'evidence', function(response) {
-          return maybe(response.persons)[0];
+          return maybe(maybe(response).persons)[0];
         })
       ));
   };
@@ -287,7 +287,7 @@ define([
       helpers.compose(
         helpers.objectExtender({getComments: function() { return maybe(maybe(this.discussions)[0]).comments || []; }}),
         helpers.constructorSetter(discussions.Comment, 'comments', function(response) {
-          return maybe(response.discussions)[0];
+          return maybe(maybe(response).discussions)[0];
         })
       ));
   };
