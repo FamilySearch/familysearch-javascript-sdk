@@ -239,7 +239,8 @@ define([
    * @return {Object} promise for the response
    */
   exports.getChildAndParentsNoteRefs = function(caprid, params, opts) {
-    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(caprid)+'/notes', params, {}, opts,
+    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(caprid)+'/notes', params,
+      {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.compose(
         helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).notes || []; }}),
         helpers.constructorSetter(NoteRef, 'notes', function(response) {
@@ -270,7 +271,8 @@ define([
    * @return {Object} promise for the response
    */
   exports.getChildAndParentsNote = function(caprid, nid, params, opts) {
-    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(caprid)+'/notes/'+encodeURI(nid), params, {}, opts,
+    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(caprid)+'/notes/'+encodeURI(nid), params,
+      {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.compose(
         helpers.objectExtender({getNote: function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).notes)[0]; }}),
         helpers.constructorSetter(Note, 'notes', function(response) {

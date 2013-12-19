@@ -41,7 +41,7 @@ define([
     // memories
     Memory: memories.Memory,
     MemoryRef: memories.MemoryRef,
-    getPersonMemoryReferences: memories.getPersonMemoryReferences,
+    getPersonMemoryRefs: memories.getPersonMemoryRefs,
     getMemory: memories.getMemory,
     getMemoryComments: memories.getMemoryComments,
     getMemoryPersonas: memories.getMemoryPersonas,

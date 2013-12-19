@@ -1,7 +1,7 @@
 define(['FamilySearch'], function(FamilySearch) {
   describe('Memory', function() {
-    it('references are returned from getPersonMemoryReferences', function() {
-      FamilySearch.getPersonMemoryReferences('PPPP-PPP').then(function(response) {
+    it('references are returned from getPersonMemoryRefs', function() {
+      FamilySearch.getPersonMemoryRefs('PPPP-PPP').then(function(response) {
         var memoryRefs = response.getMemoryRefs();
         expect(memoryRefs.length).toBe(2);
         expect(memoryRefs[0].getMemoryId()).toBe('3649');
