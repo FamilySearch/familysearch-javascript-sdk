@@ -262,7 +262,7 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/DallanQ// editable example}
+   * {@link http://jsfiddle.net/DallanQ/dV9uQ/ editable example}
    *
    * @param {String} caprid of the child and parents relationship
    * @param {String} nid of the note
