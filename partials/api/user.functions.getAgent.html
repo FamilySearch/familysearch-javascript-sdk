@@ -4,23 +4,20 @@
 </h1>
 <div><h2 id="Description">Description</h2>
 <div class="description"><p>Get information about the specified agent (contributor)
-The response includes the following convenience functions</p>
+The response includes the following convenience function</p>
 
 <ul>
-<li><code>getId()</code></li>
-<li><code>getName()</code></li>
-<li><code>getAccountName()</code></li>
-<li><code>getEmail()</code></li>
+<li><code>getAgent()</code> - get the <a href="#/api/user.types:type.Agent">Agent</a> from the response</li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/users/Agent_resource">FamilySearch API Docs</a></p>
 
 <p><a href="http://jsfiddle.net/DallanQ/BpT8c/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getAgent(id[, params][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getAgent(aid[, params][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
-<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
-<p>of the contributor; e.g., tree user id</p></li>
+<ul class="parameters"><li><code ng:non-bindable="">aid – {String} – </code>
+<p>of the agent / contributor</p></li>
 <li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
 <p>currently unused</p></li>
 <li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>

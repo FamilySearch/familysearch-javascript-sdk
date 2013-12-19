@@ -8,33 +8,21 @@ The response includes the following convenience functions</p>
 
 <ul>
 <li><code>getSpouseIds()</code> - an array of string ids</li>
-<li><code>getRelationships()</code> - an array of relationships; each has the following convenience functions</li>
-</ul>
-
-<h3 id="relationshipconveniencefunctions">Relationship convenience functions</h5>
-
-<ul>
-<li><code>getId()</code> - id of the relationship</li>
-<li><code>getHusbandId()</code></li>
-<li><code>getWifeId()</code></li>
-<li><code>getPrimaryId()</code> - id of the person requested</li>
-<li><code>getSpouseId()</code> - id of the spouse of the person requested</li>
-<li><code>getFacts()</code> - an array of facts (e.g., marriage) decorated with <em>fact convenience functions</em>
-as described for <a href="#/api/person.functions:getPerson">getPerson</a></li>
+<li><code>getRelationships()</code> - an array of <a href="#/api/person.types:type.Couple">Couple</a> relationships</li>
+<li><code>getPerson(pid)</code> - if the <code>persons</code> parameter has been set, this function will return a <a href="#/api/person.types:type.Person">Person</a> for a person in the relationship</li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/tree/Person_Relationships_to_Spouses_resource">FamilySearch API Docs</a></p>
 
 <p><a href="http://jsfiddle.net/DallanQ/7zLEJ/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getRelationshipsToSpouses(id[, params][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getRelationshipsToSpouses(pid[, params][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
-<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<ul class="parameters"><li><code ng:non-bindable="">pid – {String} – </code>
 <p>of the person to read</p></li>
 <li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
 <p>set <code>persons</code> true to return a person object for each person in the relationships,
-which you can access using a <code>getPerson(id)</code> convenience function. The person object id decorated with convenience functions
-as described for <a href="#/api/person.functions:getPerson">getPerson</a> but possibly without facts</p></li>
+which you can access using the <code>getPerson(id)</code> convenience function.</p></li>
 <li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
 <p>options to pass to the http function specified during init</p></li>
 </ul>

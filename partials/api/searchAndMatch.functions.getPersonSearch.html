@@ -8,21 +8,9 @@ The response includes the following convenience functions</p>
 
 <ul>
 <li><code>getContext()</code> - get the search context to pass into subsequent requests for additional results</li>
-<li><code>getResults()</code> - get the array of search results from the response; each result has the following convenience functions</li>
-</ul>
-
-<h3 id="searchresultconveniencefunctions">Search result convenience Functions</h5>
-
-<ul>
-<li><code>getId()</code> - person id</li>
-<li><code>getTitle()</code> - title string</li>
-<li><code>getScore()</code> - real number</li>
-<li><code>getConfidence()</code> - appears to be an integer</li>
-<li><code>getPrimaryPerson()</code> - person object decorated with the <em>person convenience functions</em> as described for <a href="#/api/person.functions:getPerson">getPerson</a></li>
-<li><code>getFathers()</code> - array of person objects similarly decorated</li>
-<li><code>getMothers()</code> - array of person objects similarly decorated</li>
-<li><code>getSpouses()</code> - array of person objects similarly decorated</li>
-<li><code>getChildren()</code> - array of person objects similarly decorated</li>
+<li><code>getSearchResults()</code> - get the array of <a href="#/api/searchAndMatch.types:type.SearchResult">SearchResults</a> from the response</li>
+<li><code>getResultsCount()</code> - get the total number of search results</li>
+<li><code>getIndex()</code> - get the starting index of the results array</li>
 </ul>
 
 <h3 id="searchparameters">Search parameters</h5>

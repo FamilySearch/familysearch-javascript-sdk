@@ -4,24 +4,19 @@
 </h1>
 <div><h2 id="Description">Description</h2>
 <div class="description"><p>Get information about a source
-The response includes the following convenience functions</p>
+The response includes the following convenience function</p>
 
 <ul>
-<li><code>getId()</code> - id of the source</li>
-<li><code>getTitles()</code> - array of title strings</li>
-<li><code>getTitle()</code> - the first title string</li>
-<li><code>getCitations()</code> - array of citation strings</li>
-<li><code>getNotes()</code> - array of note strings</li>
-<li><code>getAbout()</code> - URI to the resource being described</li>
+<li><code>getSourceDescription()</code> - get the <a href="#/api/sources.types:type.SourceDescription">SourceDescription</a> from the response</li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/sources/Source_Description_resource">FamilySearch API Docs</a></p>
 
 <p><a href="http://jsfiddle.net/DallanQ/eECJx/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getSourceDescription(id[, params][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getSourceDescription(sdid[, params][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
-<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<ul class="parameters"><li><code ng:non-bindable="">sdid – {String} – </code>
 <p>of the source description to read</p></li>
 <li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
 <p>currently unused</p></li>

@@ -1,4 +1,4 @@
-<h1><code ng:non-bindable="">getCoupleChangeHistory</code>
+<h1><code ng:non-bindable="">getCoupleChanges</code>
 <span class="hint">(functions in module <code ng:non-bindable="">changeHistory</code>
 )</span>
 </h1>
@@ -7,18 +7,17 @@
 The response includes the following convenience function</p>
 
 <ul>
-<li><code>getChanges()</code> - get the array of changes from the response; each has <em>change convenience functions</em>
-as described for <a href="#/api/changeHistory.functions:getPersonChangeHistory">getPersonChangeHistory</a></li>
+<li><code>getChanges()</code> - get the array of <a href="#/api/changeHistory.types:type.Change">Changes</a> from the response</li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Change_History_resource">FamilySearch API Docs</a></p>
 
 <p><a href="http://jsfiddle.net/DallanQ/csG9t/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getCoupleChangeHistory(id[, params:][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getCoupleChanges(crid[, params:][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
-<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
-<p>of the relationship to read</p></li>
+<ul class="parameters"><li><code ng:non-bindable="">crid – {String} – </code>
+<p>of the couple relationship to read</p></li>
 <li><code ng:non-bindable="">params:<i>(optional)</i> – {Object=} – </code>
 <p><code>count</code> is the number of change entries to return, <code>from</code> to return changes following this id</p></li>
 <li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>

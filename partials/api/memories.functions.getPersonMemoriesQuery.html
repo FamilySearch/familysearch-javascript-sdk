@@ -1,4 +1,4 @@
-<h1><code ng:non-bindable="">getPersonMemories</code>
+<h1><code ng:non-bindable="">getPersonMemoriesQuery</code>
 <span class="hint">(functions in module <code ng:non-bindable="">memories</code>
 )</span>
 </h1>
@@ -7,28 +7,16 @@
 The response includes the following convenience function</p>
 
 <ul>
-<li><code>getMemories()</code> - get the array of memories from the response; each memory has the following convenience functions</li>
-</ul>
-
-<h3 id="memoryconveniencefunctions">Memory convenience Functions</h5>
-
-<ul>
-<li><code>getId()</code> - id of the memory (use <code>getMemory</code> to find out more)</li>
-<li><code>getArtifactURL()</code> - URL of the media object</li>
-<li><code>getTitles()</code> - an array of title strings</li>
-<li><code>getTitle()</code> - first title in the array</li>
-<li><code>getDescriptions()</code> - an array of description strings</li>
-<li><code>getDescription()</code> - first description in the array</li>
-<li><code>getArtifactFilenames()</code> - array of filename strings</li>
+<li><code>getMemories()</code> - get the array of <a href="#/api/memories.types:type.Memory">Memories</a> from the response</li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/tree/Person_Memories_Query_resource">FamilySearch API Docs</a></p>
 
 <p><a href="http://jsfiddle.net/DallanQ/XaD23/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getPersonMemories(id[, params][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getPersonMemoriesQuery(pid[, params][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
-<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<ul class="parameters"><li><code ng:non-bindable="">pid – {String} – </code>
 <p>of the person to read</p></li>
 <li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
 <p><code>count</code> maximum number to return - defaults to 25, <code>start</code> defaults to 0, <code>type</code> type of artifacts to return - possible values are photo and story - defaults to both</p></li>

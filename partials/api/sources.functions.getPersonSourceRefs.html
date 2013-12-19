@@ -7,29 +7,16 @@
 The response includes the following convenience function</p>
 
 <ul>
-<li><code>getSourceRefs()</code> - get the array of source references from the response; each has the following <em>source reference convenience functions</em></li>
-</ul>
-
-<h3 id="sourcereferenceconveniencefunctions">Source Reference Convenience Functions</h5>
-
-<ul>
-<li><code>getId()</code> - id of the source reference</li>
-<li><code>getSourceId()</code> - id of the source;
-pass into <a href="#/api/sources.functions:getSourceDescription">getSourceDescription</a> for more information</li>
-<li><code>getTags()</code> - array of tags; each tag is an object with a <code>resource</code> property identifying an assertion type</li>
-<li><code>getContributorId()</code> - id of the contributor;
-pass into <a href="#/api/user.functions:getAgent">getAgent</a> for more information</li>
-<li><code>getModifiedTimestamp()</code></li>
-<li><code>getChangeMessage()</code></li>
+<li><code>getSourceRefs()</code> - get an array of <a href="#/api/sources.types:type.SourceRef">SourceRefs</a> from the response</li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/tree/Person_Source_References_resource">FamilySearch API Docs</a></p>
 
 <p><a href="http://jsfiddle.net/DallanQ/BkydV/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getPersonSourceRefs(id[, params][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getPersonSourceRefs(pid[, params][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
-<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<ul class="parameters"><li><code ng:non-bindable="">pid – {String} – </code>
 <p>of the person to read</p></li>
 <li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
 <p>currently unused</p></li>

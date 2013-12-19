@@ -8,6 +8,7 @@ The response includes the following convenience function</p>
 
 <ul>
 <li><code>getRelationships()</code> - an array of { <code>id</code> - relationship id, <code>fatherId</code>, <code>motherId</code> }</li>
+<li><code>getPerson(pid)</code> - if the <code>persons</code> parameter has been set, this function will return a <a href="#/api/person.types:type.Person">Person</a> for a person in the relationship</li>
 </ul>
 
 <p>Pass the relationship id into <a href="#/api/parentsAndChildren.functions:getChildAndParents">getChildAndParents</a> for more information</p>
@@ -16,14 +17,13 @@ The response includes the following convenience function</p>
 
 <p><a href="http://jsfiddle.net/DallanQ/ajxpq/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getRelationshipsToParents(id[, params][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getRelationshipsToParents(pid[, params][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
-<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<ul class="parameters"><li><code ng:non-bindable="">pid – {String} – </code>
 <p>of the person to read</p></li>
 <li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
 <p>set <code>persons</code> true to return a person object for each person in the relationships,
-which you can access using a <code>getPerson(id)</code> convenience function. The person object id decorated with convenience functions
-as described for <a href="#/api/person.functions:getPerson">getPerson</a> but possibly without facts</p></li>
+which you can access using the <code>getPerson(id)</code> convenience function.</p></li>
 <li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
 <p>options to pass to the http function specified during init</p></li>
 </ul>

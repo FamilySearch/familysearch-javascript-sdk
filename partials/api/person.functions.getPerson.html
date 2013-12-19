@@ -7,59 +7,16 @@
 The response includes the following convenience function</p>
 
 <ul>
-<li><code>getPerson()</code> - get the person object from the response, which has been extended with the <em>person convenience functions</em> listed below</li>
-</ul>
-
-<h3 id="personconveniencefunctions">Person Convenience Functions</h5>
-
-<ul>
-<li><code>getId()</code></li>
-<li><code>getBirthDate()</code></li>
-<li><code>getBirthPlace()</code></li>
-<li><code>getDeathDate()</code></li>
-<li><code>getDeathPlace()</code></li>
-<li><code>getGender()</code></li>
-<li><code>getLifeSpan()</code></li>
-<li><code>isLiving()</code></li>
-<li><code>getName()</code> - display name</li>
-<li><code>getGivenName()</code> - preferred</li>
-<li><code>getSurname()</code> - preferred</li>
-<li><code>getNames()</code> - array of name objects decorated with <em>name convenience functions</em> described below</li>
-<li><code>getFacts()</code> - array of fact objects decorated with <em>fact convenience functions</em> described below</li>
-<li><code>getDisplayAttrs()</code> - returns an object with birthDate, birthPlace, deathDate, deathPlace, gender, lifespan, and name</li>
-</ul>
-
-<h3 id="nameconveniencefunctions">Name Convenience Functions</h5>
-
-<ul>
-<li><code>getId()</code> - name id</li>
-<li><code>getContributorId()</code> - id of the contributor</li>
-<li><code>getType()</code> - http://gedcomx.org/BirthName, etc.</li>
-<li><code>getNameFormsCount()</code> - get the number of name forms</li>
-<li><code>getFullText(i)</code> - get the full text of the <code>i</code>'th name form; if <code>i</code> is omitted; get the first</li>
-<li><code>getGivenName(i)</code> - get the given part of the <code>i</code>'th name form; if <code>i</code> is omitted; get the first</li>
-<li><code>getSurname(i)</code> - get the surname part of the <code>i</code>'th name form; if <code>i</code> is omitted; get the first</li>
-<li><code>isPreferred()</code> - true if this name is preferred</li>
-</ul>
-
-<h3 id="factconveniencefunctions">Fact Convenience Functions</h5>
-
-<ul>
-<li><code>getId()</code> - fact id</li>
-<li><code>getContributorId()</code> - id of the contributor</li>
-<li><code>getType()</code> - http://gedcomx.org/Birth, etc.</li>
-<li><code>getDate()</code> - original string</li>
-<li><code>getFormalDate()</code> - standard form; e.g., +1836-04-13</li>
-<li><code>getPlace()</code> - original string</li>
+<li><code>getPerson()</code> - get the <a href="#/api/person.types:type.Person">Person</a> from the response</li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/tree/Person_resource">FamilySearch API Docs</a></p>
 
 <p><a href="http://jsfiddle.net/DallanQ/cST4L/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getPerson(id[, params][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getPerson(pid[, params][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
-<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<ul class="parameters"><li><code ng:non-bindable="">pid – {String} – </code>
 <p>of the person to read</p></li>
 <li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
 <p>currently unused</p></li>

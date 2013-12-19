@@ -1,4 +1,4 @@
-<h1><code ng:non-bindable="">getPersonDiscussionReferences</code>
+<h1><code ng:non-bindable="">getPersonDiscussionRefs</code>
 <span class="hint">(functions in module <code ng:non-bindable="">discussions</code>
 )</span>
 </h1>
@@ -7,16 +7,16 @@
 The response includes the following convenience function</p>
 
 <ul>
-<li><code>getDiscussionIds()</code> - get an array of discussion ids from the response; pass the id into <code>getDiscussion</code> for more information</li>
+<li><code>getDiscussionRefs()</code> - get an array of <a href="#/api/discussions.types:type.DiscussionRef">DiscussionRefs</a> from the response</li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/tree/Person_Discussion_References_resource">FamilySearch API Docs</a></p>
 
 <p><a href="http://jsfiddle.net/DallanQ/kd39K/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getPersonDiscussionReferences(id[, params][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getPersonDiscussionRefs(pid[, params][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
-<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<ul class="parameters"><li><code ng:non-bindable="">pid – {String} – </code>
 <p>of the person to read</p></li>
 <li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
 <p>currently unused</p></li>

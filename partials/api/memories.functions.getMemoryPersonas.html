@@ -7,16 +7,17 @@
 The response includes the following convenience function</p>
 
 <ul>
-<li><code>getPersonas()</code> - get the array of personas from the response; each persona has <code>id</code>, <code>extracted</code>, <code>display.name</code>, and several other fields</li>
+<li><code>getPersonas()</code> - get the array of <em>Personas</em> from the response; a <em>Persona</em> appears to be a scaled-down
+<a href="#/api/person.types:type.Person">Person</a> whose id is a <em>Persona Id</em> instead of a <em>Person Id</em></li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/memories/Memory_Personas_resource">FamilySearch API Docs</a></p>
 
 <p><a href="http://jsfiddle.net/DallanQ/zD5V7/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getMemoryPersonas(id[, params][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getMemoryPersonas(mid[, params][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
-<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<ul class="parameters"><li><code ng:non-bindable="">mid – {String} – </code>
 <p>of the memory to read</p></li>
 <li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
 <p>currently unused</p></li>

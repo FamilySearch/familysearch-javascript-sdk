@@ -1,4 +1,4 @@
-<h1><code ng:non-bindable="">getPersonChangeHistory</code>
+<h1><code ng:non-bindable="">getPersonChanges</code>
 <span class="hint">(functions in module <code ng:non-bindable="">changeHistory</code>
 )</span>
 </h1>
@@ -7,26 +7,16 @@
 The response includes the following convenience function</p>
 
 <ul>
-<li><code>getChanges()</code> - get the array of changes from the response; each has the following <em>change convenience functions</em></li>
-</ul>
-
-<h3 id="changeconveniencefunctions">Change convenience Functions</h5>
-
-<ul>
-<li><code>getId()</code> - id of the change</li>
-<li><code>getContributorName()</code> name of the contributor</li>
-<li><code>getTitle()</code> - title string</li>
-<li><code>getUpdatedTimestamp()</code> - timestamp</li>
-<li><code>getChangeReason()</code> - string reason for change</li>
+<li><code>getChanges()</code> - get the array of <a href="#/api/changeHistory.types:type.Change">Changes</a> from the response</li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/tree/Person_Change_History_resource">FamilySearch API Docs</a></p>
 
 <p><a href="http://jsfiddle.net/DallanQ/6SqTH/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getPersonChangeHistory(id[, params:][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getPersonChanges(pid[, params:][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
-<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<ul class="parameters"><li><code ng:non-bindable="">pid – {String} – </code>
 <p>of the person to read</p></li>
 <li><code ng:non-bindable="">params:<i>(optional)</i> – {Object=} – </code>
 <p><code>count</code> is the number of change entries to return, <code>from</code> to return changes following this id</p></li>

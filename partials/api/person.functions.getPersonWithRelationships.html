@@ -11,16 +11,16 @@
 <li><code>getMotherIds()</code> - array of ids</li>
 <li><code>getSpouseIds()</code> - array of ids</li>
 <li><code>getChildIds(spouseId)</code> - array of ids; if spouseId is specified, returns only ids of children with spouse as the other parent</li>
-<li><code>getParentRelationships()</code> - array of objects decorated with <em>child and parents relationship convenience functions</em> described below</li>
-<li><code>getSpouseRelationships()</code> - array of object decorated with <em>spouse relationship convenience functions</em> described below</li>
-<li><code>getChildRelationships()</code> - array of object decorated with <em>child and parents relationship convenience functions</em> described below</li>
+<li><code>getParentRelationships()</code> - array of <a href="#/api/person.types:type.ChildAndParents">ChildAndParents</a> relationship objects</li>
+<li><code>getSpouseRelationships()</code> - array of <a href="#/api/person.types:type.Couple">Couple</a> relationship objects</li>
+<li><code>getChildRelationships()</code> - array of <a href="#/api/person.types:type.ChildAndParents">ChildAndParents</a> relationship objects</li>
 </ul>
 
-<p>The following functions return person objects decorated with <em>person convenience functions</em> as described for <a href="#/api/person.functions:getPerson">getPerson</a></p>
+<p>The following functions return <a href="#/api/person.types:type.Person">Person</a> objects</p>
 
 <ul>
 <li><code>getPrimaryPerson()</code></li>
-<li><p><code>getPerson(id)</code> - works only for the primary person unless persons is set to true in params</p>
+<li><p><code>getPerson(id)</code> - works only for the primary person unless persons is set to true in params, in which case it works also for relatives</p>
 
 <p>In addition, the following functions are available if persons is set to true in params</p></li>
 <li><code>getFathers()</code> - array of father persons</li>
@@ -29,37 +29,13 @@
 <li><code>getChildren(spouseId)</code> - array of child persons; if spouseId is specified returns only children with spouse as the other parent</li>
 </ul>
 
-<h3 id="childandparentsrelationshipconveniencefunctions">Child and Parents Relationship Convenience Functions</h5>
-
-<ul>
-<li><code>getId()</code> - relationship id</li>
-<li><code>getFatherId()</code></li>
-<li><code>getMotherId()</code></li>
-<li><code>getChildId()</code></li>
-<li><code>getFatherFacts()</code> - an array of facts (e.g., parent-relationship type) decorated with <em>fact convenience functions</em>
-as described for <a href="#/api/person.functions:getPerson">getPerson</a></li>
-<li><code>getMotherFacts()</code> - similar to father facts</li>
-</ul>
-
-<h3 id="spouserelationshipconveniencefunctions">Spouse Relationship Convenience Functions</h5>
-
-<ul>
-<li><code>getId()</code> - relationship id</li>
-<li><code>getHusbandId()</code></li>
-<li><code>getWifeId()</code></li>
-<li><code>getPrimaryId()</code> - id of the person requested</li>
-<li><code>getSpouseId()</code> - id of the spouse of the person requested</li>
-<li><code>getFacts()</code> - an array of facts (e.g., marriage) decorated with <em>fact convenience functions</em>
-as described for <a href="#/api/person.functions:getPerson">getPerson</a></li>
-</ul>
-
 <p><a href="https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource">FamilySearch API Docs</a></p>
 
 <p><a href="http://jsfiddle.net/DallanQ/5Npsh/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getPersonWithRelationships(id[, params][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getPersonWithRelationships(pid[, params][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
-<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<ul class="parameters"><li><code ng:non-bindable="">pid – {String} – </code>
 <p>person to read</p></li>
 <li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
 <p>set <code>persons</code> to true to retrieve full person objects for each relative</p></li>

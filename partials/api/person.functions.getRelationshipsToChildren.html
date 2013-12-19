@@ -8,28 +8,21 @@ The response includes the following convenience functions</p>
 
 <ul>
 <li><code>getChildIds()</code> - an array of string ids</li>
-<li><code>getRelationships()</code> - an array of relationships; each has the following convenience functions</li>
-</ul>
-
-<h3 id="relationshipconveniencefunctions">Relationship convenience functions</h5>
-
-<ul>
-<li><code>getId()</code> - id of the relationship; pass into <a href="#/api/parentsAndChildren.functions:getChildAndParents">getChildAndParents</a> for more information</li>
-<li><code>getChildId()</code></li>
+<li><code>getRelationships()</code> - an array of <a href="#/api/person.types:type.ParentChild">ParentChild</a> relationships</li>
+<li><code>getPerson(pid)</code> - if the <code>persons</code> parameter has been set, this function will return a <a href="#/api/person.types:type.Person">Person</a> for a person in the relationship</li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/tree/Relationships_to_Children_resource">FamilySearch API Docs</a></p>
 
 <p><a href="http://jsfiddle.net/DallanQ/mUUEK/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getRelationshipsToChildren(id[, params][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getRelationshipsToChildren(pid[, params][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
-<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<ul class="parameters"><li><code ng:non-bindable="">pid – {String} – </code>
 <p>of the person to read</p></li>
 <li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
 <p>set <code>persons</code> true to return a person object for each person in the relationships,
-which you can access using a <code>getPerson(id)</code> convenience function. The person object id decorated with convenience functions
-as described for <a href="#/api/person.functions:getPerson">getPerson</a> but possibly without facts</p></li>
+which you can access using the <code>getPerson(id)</code> convenience function.</p></li>
 <li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
 <p>options to pass to the http function specified during init</p></li>
 </ul>

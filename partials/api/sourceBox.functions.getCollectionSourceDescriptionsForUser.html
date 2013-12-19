@@ -7,17 +7,16 @@
 The response includes the following convenience function</p>
 
 <ul>
-<li><code>getSourceDescriptions()</code> - get the array of source descriptions from the response; each has the same convenience functions
-as for <a href="#/api/sourceBox.functions:getCollectionSourceDescriptions">getCollectionSourceDescriptions</a></li>
+<li><code>getSourceDescriptions()</code> - get an array of <a href="#/api/sources.types:type.SourceDescription">SourceDescriptions</a> from the response</li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_Source_Descriptions_for_a_User_resource">FamilySearch API Docs</a></p>
 
 <p><a href="http://jsfiddle.net/DallanQ/4TSxJ/">editable example</a></p></div>
 <h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getCollectionSourceDescriptionsForUser(id[, params][, opts]);</pre>
+<div class="usage"><pre class="prettyprint linenums">getCollectionSourceDescriptionsForUser(uid[, params][, opts]);</pre>
 <h3 id="Parameters">Parameters</h3>
-<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
+<ul class="parameters"><li><code ng:non-bindable="">uid – {String} – </code>
 <p>of the user to read</p></li>
 <li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
 <p><code>count</code> maximum to return (defaults to 25), <code>start</code> zero-based index of first source to return</p></li>

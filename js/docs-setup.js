@@ -54,24 +54,31 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "changeHistory.functions:getChildAndParentsChangeHistory",
-      "shortName": "getChildAndParentsChangeHistory",
+      "id": "changeHistory.functions:getChildAndParentsChanges",
+      "shortName": "getChildAndParentsChanges",
       "type": "function",
-      "keywords": "and api array as change changehistory changes child convenience count described docs during each editable entries example familysearch following for from function functions get getchanges getpersonchangehistory has history http https id includes init is net number of options opts org params parents pass promise read relationship response return specified the this to"
+      "keywords": "and api array caprid change changehistory changes child convenience count docs during editable entries example familysearch following for from function functions get getchanges history http https id includes init is net number of options opts org params parents pass promise read relationship response return specified the this to types"
     },
     {
       "section": "api",
-      "id": "changeHistory.functions:getCoupleChangeHistory",
-      "shortName": "getCoupleChangeHistory",
+      "id": "changeHistory.functions:getCoupleChanges",
+      "shortName": "getCoupleChanges",
       "type": "function",
-      "keywords": "api array as change changehistory changes convenience count couple described docs during each editable entries example familysearch following for from function functions get getchanges getpersonchangehistory has history http https id includes init is net number of options opts org params pass promise read relationship response return specified the this to"
+      "keywords": "api array change changehistory changes convenience count couple crid docs during editable entries example familysearch following for from function functions get getchanges history http https id includes init is net number of options opts org params pass promise read relationship response return specified the this to types"
     },
     {
       "section": "api",
-      "id": "changeHistory.functions:getPersonChangeHistory",
-      "shortName": "getPersonChangeHistory",
+      "id": "changeHistory.functions:getPersonChanges",
+      "shortName": "getPersonChanges",
       "type": "function",
-      "keywords": "api array change changehistory changes contributor convenience count docs during each editable entries example familysearch following for from function functions get getchangereason getchanges getcontributorname getid gettitle getupdatedtimestamp has history http https id includes init is name net number of options opts org params pass person promise read reason response return specified string the this timestamp title to"
+      "keywords": "api array change changehistory changes convenience count docs during editable entries example familysearch following for from function functions get getchanges history http https id includes init is net number of options opts org params pass person pid promise read response return specified the this to types"
+    },
+    {
+      "section": "api",
+      "id": "changeHistory.types:type.Change",
+      "shortName": "Change",
+      "type": "function",
+      "keywords": "api change changehistory contributor for function getchangereason getcontributorname id made name of or person property reason relationship the timestamp title to types updated"
     },
     {
       "section": "api",
@@ -85,21 +92,42 @@ NG_DOCS={
       "id": "discussions.functions:getComments",
       "shortName": "getComments",
       "type": "function",
-      "keywords": "an and api array comment comments convenience currently discussion discussions docs during each editable example familysearch following for from function functions get getcomments has http https id includes init net of options opts org params pass promise read response specified text the to unused"
+      "keywords": "an api array comment comments convenience currently did discussion discussions docs during editable example familysearch following for from function functions get getcomments http https includes init net of options opts org params pass promise read response specified the to types unused"
     },
     {
       "section": "api",
       "id": "discussions.functions:getDiscussion",
       "shortName": "getDiscussion",
       "type": "function",
-      "keywords": "about api comments convenience currently details discussion discussions docs during editable example familysearch following for function functions get getdetails getid getnumberofcomments gettitle http https id includes information init net number of options opts org params pass promise read response specified string the title to unused"
+      "keywords": "about api convenience currently did discussion discussions docs during editable example familysearch following for from function functions get getdiscussion http https includes information init net of options opts org params pass promise read response specified the to types unused"
     },
     {
       "section": "api",
-      "id": "discussions.functions:getPersonDiscussionReferences",
-      "shortName": "getPersonDiscussionReferences",
+      "id": "discussions.functions:getPersonDiscussionRefs",
+      "shortName": "getPersonDiscussionRefs",
       "type": "function",
-      "keywords": "an api array convenience currently discussion discussions docs during editable example familysearch following for from function functions get getdiscussion getdiscussionids http https id ids includes information init into more net of options opts org params pass person promise read references response specified the to unused"
+      "keywords": "an api array convenience currently discussionref discussionrefs discussions docs during editable example familysearch following for from function functions get getdiscussionrefs http https includes init net of options opts org params pass person pid promise read references response specified the to types unused"
+    },
+    {
+      "section": "api",
+      "id": "discussions.types:type.Comment",
+      "shortName": "Comment",
+      "type": "function",
+      "keywords": "api comment contributor created details discussion discussions for function functions getagent getcontributorid id into of on pass property text the timestamp types user"
+    },
+    {
+      "section": "api",
+      "id": "discussions.types:type.Discussion",
+      "shortName": "Discussion",
+      "type": "function",
+      "keywords": "api comments contributor created description details discussion discussions for function functions getagent getcontributorid id into modified number numberofcomments of pass property text the timestamp title types user"
+    },
+    {
+      "section": "api",
+      "id": "discussions.types:type.DiscussionRef",
+      "shortName": "DiscussionRef",
+      "type": "function",
+      "keywords": "api details discussion discussionref discussions for function functions getdiscussion getid id into of on pass person reference the to types"
     },
     {
       "section": "api",
@@ -127,35 +155,35 @@ NG_DOCS={
       "id": "memories.functions:getMemory",
       "shortName": "getMemory",
       "type": "function",
-      "keywords": "about an api array convenience currently description docs during editable example familysearch first following for function functions get getartifacturl getdescription getdescriptions geticonurl getid getmediatype getthumbnailurl gettitle gettitles http https icon id in includes information init media memories memory net object of options opts org params pass promise read response specified strings the thumbnail title to type unused url"
+      "keywords": "about api convenience currently docs during editable example familysearch following for from function functions get getmemory http https id includes information init memories memory net of options opts org params pass promise read response specified the to types unused"
     },
     {
       "section": "api",
       "id": "memories.functions:getMemoryComments",
       "shortName": "getMemoryComments",
       "type": "function",
-      "keywords": "an and api array comment comments convenience currently docs during each editable example familysearch following for from function functions get getcomments has http https id includes init memories memory net of options opts org params pass promise read response specified text the to unused"
+      "keywords": "api array comment comments convenience currently discussions docs during editable example familysearch following for from function functions get getcomments http https includes init memories memory mid net of options opts org params pass promise read response specified the to types unused"
     },
     {
       "section": "api",
       "id": "memories.functions:getMemoryPersonas",
       "shortName": "getMemoryPersonas",
       "type": "function",
-      "keywords": "and api array convenience currently display docs during each editable example extracted familysearch fields following for from function functions get getpersonas has http https id includes init memories memory name net of options opts org other params pass persona personas promise read response several specified the to unused"
+      "keywords": "api appears array be convenience currently docs during editable example familysearch following for from function functions get getpersonas http https id includes init instead is memories memory mid net of options opts org params pass person personas promise read response scaled-down specified the to types unused whose"
     },
     {
       "section": "api",
-      "id": "memories.functions:getPersonMemories",
-      "shortName": "getPersonMemories",
+      "id": "memories.functions:getPersonMemoriesQuery",
+      "shortName": "getPersonMemoriesQuery",
       "type": "function",
-      "keywords": "an and api are array artifacts both convenience count defaults description docs during each editable example familysearch filename find first following for from function functions get getartifactfilenames getartifacturl getdescription getdescriptions getid getmemories getmemory gettitle gettitles has http https id in includes init list maximum media memories memory more net number object of options opts org out paged params pass person photo possible promise read response return specified start story strings the title to type url values"
+      "keywords": "and api are array artifacts both convenience count defaults docs during editable example familysearch following for from function functions get getmemories http https includes init list maximum memories memory net number of options opts org paged params pass person photo pid possible promise read response return specified start story the to type types values"
     },
     {
       "section": "api",
       "id": "memories.functions:getPersonMemoryReferences",
       "shortName": "getPersonMemoryReferences",
       "type": "function",
-      "keywords": "api array attached convenience currently docs during each editable example familysearch find following for from function functions get getmemories getmemory getmemoryid getpersonaid has http https id in includes init is memories memory more net of options opts org out params pass person persona promise read reference references response specified that the this to unused"
+      "keywords": "an api array convenience currently docs during editable example familysearch following for from function functions get getmemoryrefs http https includes init memories memoryref memoryrefs net of options opts org params pass person pid promise read references response specified the to types unused"
     },
     {
       "section": "api",
@@ -166,10 +194,24 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "memories.functions:getUserMemories",
-      "shortName": "getUserMemories",
+      "id": "memories.functions:getUserMemoriesQuery",
+      "shortName": "getUserMemoriesQuery",
       "type": "function",
-      "keywords": "an api array convenience count defaults description docs during each editable example familysearch filename find first following for from function functions get getartifactfilenames getartifacturl getdescription getdescriptions getid getmemories getmemory gettitle gettitles has http https id in includes init list maximum media memories memory more net number object of options opts org out paged params pass promise response return specified start strings the title to url user"
+      "keywords": "api array convenience count defaults docs during editable example familysearch following for from function functions get getmemories http https id includes init list maximum memories memory net number of options opts org paged params pass promise response return specified start the to types user"
+    },
+    {
+      "section": "api",
+      "id": "memories.types:type.Memory",
+      "shortName": "Memory",
+      "type": "function",
+      "keywords": "about api array description filenames function getartifactfilenames getdescription geticonurl getthumbnailurl gettitle http icon id image media mediatype memories memory object of org property resource resourcetype the thumbnail title type types url"
+    },
+    {
+      "section": "api",
+      "id": "memories.types:type.MemoryRef",
+      "shortName": "MemoryRef",
+      "type": "function",
+      "keywords": "about and api connected details for function functions getmemory getmemoryid getmemorypersonas id information into is memories memory memoryref more of pass person persona personas property resourceid see the this to types which"
     },
     {
       "section": "api",
@@ -183,42 +225,56 @@ NG_DOCS={
       "id": "notes.functions:getChildAndParentsNote",
       "shortName": "getChildAndParentsNote",
       "type": "function",
-      "keywords": "about an and api as caprid child convenience currently described docs during editable example familysearch following for function functions get getnote getpersonnote http https includes information init net nid note notes object of options opts org params parents pass promise relationship response returns specified the to unused with"
+      "keywords": "about and api caprid child convenience currently docs during editable example familysearch following for from function functions get getnote http https includes information init net nid note notes of options opts org params parents pass promise relationship response specified the to types unused"
     },
     {
       "section": "api",
       "id": "notes.functions:getChildAndParentsNoteRefs",
       "shortName": "getChildAndParentsNoteRefs",
       "type": "function",
-      "keywords": "an and api array child convenience currently docs during each editable example familysearch following for from function functions get getchildandparentsnote getnoterefs has http https id includes information init into more net note notes of options opts org params parents pass promise read references relationship response specified subject the to unused"
+      "keywords": "an and api array caprid child convenience currently docs during editable example familysearch following for from function functions get getnoterefs http https includes init net note noteref noterefs notes of options opts org params parents pass promise read references relationship response specified the to types unused"
     },
     {
       "section": "api",
       "id": "notes.functions:getCoupleNote",
       "shortName": "getCoupleNote",
       "type": "function",
-      "keywords": "about an api as convenience couple crid currently described docs during editable example familysearch following for function functions get getnote getpersonnote http https includes information init net nid note notes object of options opts org params pass promise relationship response returns specified the to unused with"
+      "keywords": "about api convenience couple crid currently docs during editable example familysearch following for from function functions get getnote http https includes information init net nid note notes of options opts org params pass promise relationship response specified the to types unused"
     },
     {
       "section": "api",
       "id": "notes.functions:getCoupleNoteRefs",
       "shortName": "getCoupleNoteRefs",
       "type": "function",
-      "keywords": "an and api array convenience couple currently docs during each editable example familysearch following for from function functions get getcouplenote getnoterefs has http https id includes information init into more net note notes of options opts org params pass promise read references relationship response specified subject the to unused"
+      "keywords": "an api array convenience couple crid currently docs during editable example familysearch following for from function functions get getnoterefs http https includes init net note noteref noterefs notes of options opts org params pass promise read references relationship response specified the to types unused"
     },
     {
       "section": "api",
       "id": "notes.functions:getPersonNote",
       "shortName": "getPersonNote",
       "type": "function",
-      "keywords": "about an api convenience currently docs during editable example familysearch following for function functions get getcontributorid getnote getnoteid getsubject gettext http https includes information init net nid note notes object of options opts org params pass person pid promise response returns specified the to unused with"
+      "keywords": "about api convenience currently docs during editable example familysearch following for from function functions get getnote http https includes information init net nid note notes of options opts org params pass person pid promise response specified the to types unused"
     },
     {
       "section": "api",
       "id": "notes.functions:getPersonNoteRefs",
       "shortName": "getPersonNoteRefs",
       "type": "function",
-      "keywords": "an and api array convenience currently docs during each editable example familysearch following for from function functions get getnoterefs getpersonnote has http https id includes information init into more net note notes of options opts org params pass person promise read references response specified subject the to unused"
+      "keywords": "an api array convenience currently docs during editable example familysearch following for from function functions get getnoterefs http https includes init net note noteref noterefs notes of options opts org params pass person pid promise read references response specified the to types unused"
+    },
+    {
+      "section": "api",
+      "id": "notes.types:type.Note",
+      "shortName": "Note",
+      "type": "function",
+      "keywords": "api contributor details for function functions getagent getcontributorid getmodified id into note notes of pass property subject text the timestamp title types user"
+    },
+    {
+      "section": "api",
+      "id": "notes.types:type.NoteRef",
+      "shortName": "NoteRef",
+      "type": "function",
+      "keywords": "api details for function functions getpersonnote id into note noteref notes of on pass person property reference subject the to types"
     },
     {
       "section": "api",
@@ -232,7 +288,7 @@ NG_DOCS={
       "id": "parentsAndChildren.functions:getChildAndParents",
       "shortName": "getChildAndParents",
       "type": "function",
-      "keywords": "about access an and api array as but can child convenience decorated described docs during each editable example facts familysearch father following for function functions get getchildid getfatherfacts getfatherid getid getmotherfacts getmotherid getperson http https id in includes information init more mother net object of options opts org params parents parentsandchildren pass person persons possibly promise read relationship response return set similar specified the to true using which with without you"
+      "keywords": "about access and api been can child childandparents convenience docs during each editable example familysearch following for function functions get getperson getrelationship has http https id if in includes information init net object of options opts org parameter params parents parentsandchildren pass person persons promise read relationship response return set specified the this to true types using which will you"
     },
     {
       "section": "api",
@@ -246,14 +302,14 @@ NG_DOCS={
       "id": "pedigree.functions:getAncestry",
       "shortName": "getAncestry",
       "type": "function",
-      "keywords": "all an ancestor ancestors ancestry and api are aren array as ascendancy available because convenience decorated described do docs during each editable example exception exists familysearch following for full function functions generations get getascendancynumber getbirthdate getbirthplace getdeathdate getdeathplace getgivenname getperson getpersons getsurname http https id if includes init max name net not number objects of only optionally options opts org params pass pedigree person persondetails persons pieces promise retrieve return returns set specified spouse that the there to true well with work"
+      "keywords": "additional an ancestor ancestors ancestry and api array ascendancy available convenience docs during each editable example exists familysearch following for full function functions generations get getascendancynumber getperson getpersons has http https id if includes information init is max net notes number object objects of on only optionally options opts org params pass pedigree person persondetails persons promise retrieve return returns set some specified spouse that the to true types with"
     },
     {
       "section": "api",
       "id": "pedigree.functions:getDescendancy",
       "shortName": "getDescendancy",
       "type": "function",
-      "keywords": "all and api aren as because convenience decorated descendancy descendants descendency described do docs during editable example exception exists familysearch following for function functions generations get getancestry getdescendancynumber getgivenname getperson getpersons getsurname http https id if in includes init max name net not number objects of optionally options opts org params pass pedigree person persons pieces promise retrieve return returns specified spouse that the there to true well with work"
+      "keywords": "additional an and api array as ascendancy convenience descendancy descendants descendency docs during each editable example exists familysearch following for function functions generations get getancestry getdescendancynumber getperson getpersons given has http https id if includes information init is max name net notes number object objects of on optionally options opts org params parts pass pedigree person persons promise retrieve return returns separate some specified spouse surname that the to true types unavailable with"
     },
     {
       "section": "api",
@@ -267,49 +323,91 @@ NG_DOCS={
       "id": "person.functions:getMultiPerson",
       "shortName": "getMultiPerson",
       "type": "function",
-      "keywords": "all api at been by currently docs during editable example familysearch fulfilled function functions get getperson have http https id ids in init is map multiple net of once options opts org parallel params pass people person promise read requesting response returning specified that the them to unused when"
+      "keywords": "all api at been by currently docs during editable example familysearch fulfilled function functions get getperson have http https id in init is map multiple net of once options opts org parallel params pass people person pids promise read requesting response returning specified that the them to unused when"
     },
     {
       "section": "api",
       "id": "person.functions:getPerson",
       "shortName": "getPerson",
       "type": "function",
-      "keywords": "an and api array been below birthdate birthplace contributor convenience currently deathdate deathplace decorated described display docs during editable etc example extended fact familysearch first following for form forms from full function functions gender get getbirthdate getbirthplace getcontributorid getdate getdeathdate getdeathplace getdisplayattrs getfacts getformaldate getfulltext getgender getgivenname getid getlifespan getname getnameformscount getnames getperson getplace getsurname gettype given has http https id if includes init is isliving ispreferred lifespan listed name net number object objects of omitted options opts org original params part pass person preferred promise read response returns specified standard string surname text th the this to true unused which with"
+      "keywords": "api convenience currently docs during editable example familysearch following for from function functions get getperson http https includes init net of options opts org params pass person pid promise read response specified the to types unused"
     },
     {
       "section": "api",
       "id": "person.functions:getPersonChangeSummary",
       "shortName": "getPersonChangeSummary",
       "type": "function",
-      "keywords": "an and api array change changehistory changes convenience currently detailed docs during each editable example familysearch following for from function functions get getchanges has http https id in includes information init module net of options opts org params pass person promise published read response see specified summary the timestamp title to unused updated"
+      "keywords": "an and api array been broken change changehistory changes convenience currently detailed do docs during each editable endpoint example familysearch following for from function functions get getchanges has have http https id in includes information init is it module net not of options opts org params pass person pid promise published read response rest sandbox see so specified summary test the this timestamp title to unable unused updated use"
     },
     {
       "section": "api",
       "id": "person.functions:getPersonWithRelationships",
       "shortName": "getPersonWithRelationships",
       "type": "function",
-      "keywords": "addition an and api are array as available below child children convenience decorated described docs during each editable example facts familysearch father following for full function functions get getchildid getchildids getchildrelationships getchildren getfacts getfatherfacts getfatherid getfatherids getfathers gethusbandid getid getmotherfacts getmotherid getmotherids getmothers getparentrelationships getperson getprimaryid getprimaryperson getspouseid getspouseids getspouserelationships getspouses getwifeid http https id ids if in init is marriage mother net object objects of only options opts org other params parent parent-relationship parents pass person persons primary promise read relationship relationships relative requested retrieve return returns set similar specified spouse spouseid spouses the their to true type unless with works"
+      "keywords": "addition also and api are array as available case child childandparents children convenience couple docs during each editable example familysearch father following for full function functions get getchildids getchildrelationships getchildren getfatherids getfathers getmotherids getmothers getparentrelationships getperson getprimaryid getprimaryperson getspouseids getspouserelationships getspouses http https id ids if in init is it mother net objects of only options opts org other params parent parents pass person persons pid primary promise read relationship relationships relative relatives requested retrieve return returns set specified spouse spouseid spouses the their to true types unless which with works"
     },
     {
       "section": "api",
       "id": "person.functions:getRelationshipsToChildren",
       "shortName": "getRelationshipsToChildren",
       "type": "function",
-      "keywords": "access an api array as but can children convenience decorated described docs during each editable example facts familysearch following for function functions get getchildandparents getchildid getchildids getid getperson getrelationships has http https id ids in includes information init into more net object of options opts org params parentsandchildren pass person persons possibly promise read relationship relationships response return set specified string the to true using which with without you"
+      "keywords": "access an api array been can children convenience docs during each editable example familysearch following for function functions get getchildids getperson getrelationships has http https ids if in includes init net object of options opts org parameter params parentchild pass person persons pid promise read relationship relationships response return set specified string the this to true types using which will you"
     },
     {
       "section": "api",
       "id": "person.functions:getRelationshipsToParents",
       "shortName": "getRelationshipsToParents",
       "type": "function",
-      "keywords": "access an api array as but can convenience decorated described docs during each editable example facts familysearch fatherid following for function functions get getchildandparents getperson getrelationships http https id in includes information init into more motherid net object of options opts org params parents parentsandchildren pass person persons possibly promise read relationship relationships response return set specified the to true using which with without you"
+      "keywords": "access an api array been can convenience docs during each editable example familysearch fatherid following for function functions get getchildandparents getperson getrelationships has http https id if in includes information init into more motherid net object of options opts org parameter params parents parentsandchildren pass person persons pid promise read relationship relationships response return set specified the this to true types using which will you"
     },
     {
       "section": "api",
       "id": "person.functions:getRelationshipsToSpouses",
       "shortName": "getRelationshipsToSpouses",
       "type": "function",
-      "keywords": "access an api array as but can convenience decorated described docs during each editable example facts familysearch following for function functions get getfacts gethusbandid getid getperson getprimaryid getrelationships getspouseid getspouseids getwifeid has http https id ids in includes init marriage net object of options opts org params pass person persons possibly promise read relationship relationships requested response return set specified spouse spouses string the to true using which with without you"
+      "keywords": "access an api array been can convenience couple docs during each editable example familysearch following for function functions get getperson getrelationships getspouseids has http https ids if in includes init net object of options opts org parameter params pass person persons pid promise read relationship relationships response return set specified spouses string the this to true types using which will you"
+    },
+    {
+      "section": "api",
+      "id": "person.types:type.ChildAndParents",
+      "shortName": "ChildAndParents",
+      "type": "function",
+      "keywords": "and api array be child childandparents confused fact facts father function general getchildid getfatherfacts getfatherid getmotherfacts getmotherid id in is more mother of parent-relationship parentchild parents person property relationship the to type types useful with"
+    },
+    {
+      "section": "api",
+      "id": "person.types:type.Couple",
+      "shortName": "Couple",
+      "type": "function",
+      "keywords": "api array couple fact facts function getfacts gethusbandid getwifeid husband id marriage of person property relationship the types wife"
+    },
+    {
+      "section": "api",
+      "id": "person.types:type.Fact",
+      "shortName": "Fact",
+      "type": "function",
+      "keywords": "api contributor date details etc event fact for form function functions getagent getcontributorid getdate getformaldate getplace http id into name of org original pass person place property standard the type types user"
+    },
+    {
+      "section": "api",
+      "id": "person.types:type.Name",
+      "shortName": "Name",
+      "type": "function",
+      "keywords": "api contributor details etc first for form forms full function functions get getagent getcontributorid getfulltext getgivenname getnameformscount getsurname given http id if into is name number of omitted org part pass person preferred property read surname text th the this to true type types user"
+    },
+    {
+      "section": "api",
+      "id": "person.types:type.ParentChild",
+      "shortName": "ParentChild",
+      "type": "function",
+      "keywords": "and api be child childandparents confused function general getchildandparentsid getchildid id in is more of parent-child parentchild parents person property relationship the to types useful with"
+    },
+    {
+      "section": "api",
+      "id": "person.types:type.Person",
+      "shortName": "Person",
+      "type": "function",
+      "keywords": "an and api array attributes birth birthdate birthplace date death deathdate deathplace display fact facts false female function gender getbirthdate getbirthplace getdeathdate getdeathplace getfacts getgender getgivenname getlifespan getname getnames getsurname given id includes lifespan living male name names of or person place preferred property surname the true types year"
     },
     {
       "section": "api",
@@ -379,21 +477,28 @@ NG_DOCS={
       "id": "searchAndMatch.functions:getPersonMatches",
       "shortName": "getPersonMatches",
       "type": "function",
-      "keywords": "api array as convenience currently described docs duplicates during each editable example familysearch following for from function functions get getpersonsearch getresults has http https id includes init match matches net of options opts org params pass person promise read response result results searchandmatch specified the to unused"
+      "keywords": "api array convenience currently docs duplicates during editable example familysearch following for from function functions get getindex getresultscount getsearchresults http https id includes index init matches net number of options opts org params pass person promise read response results search searchandmatch searchresult searchresults specified starting the to total types unused"
     },
     {
       "section": "api",
       "id": "searchAndMatch.functions:getPersonMatchesQuery",
       "shortName": "getPersonMatchesQuery",
       "type": "function",
-      "keywords": "and api array as candidateid context convenience described docs during each editable example exception familysearch following for from function functions get getpersonsearch getresults has http https id in includes init is match matches net not of options opts org parameter parameters params pass person promise response restricts result results same searchandmatch someone specified that the to tree valid with"
+      "keywords": "and api array as candidateid context convenience described docs during editable example exception familysearch following for from function functions get getindex getpersonsearch getresultscount getsearchresults http https id in includes index init is match matches net not number of options opts org parameter parameters params pass person promise response restricts results same search searchandmatch searchresult searchresults someone specified starting that the to total tree types valid with"
     },
     {
       "section": "api",
       "id": "searchAndMatch.functions:getPersonSearch",
       "shortName": "getPersonSearch",
       "type": "function",
-      "keywords": "above additional allows an and api appears append array as be below birthdate birthplace can context convenience count dates deathdate deathplace decorated described docs does during each editable end example familysearch father female first following for from full function functions gender get getchildren getconfidence getcontext getfathers getid getmothers getperson getprimaryperson getresults getscore getspouses gettitle givenname has http https id in includes index init integer into is it list male marriagedate marriageplace matches mother name net non-exact number object objects of options opts or org pages parameter parameters params pass people person places promise real requests response result results returned search searchandmatch similarly specified spouse start string subsequent surname the tilde title to token value well which with work works"
+      "keywords": "above additional allows and api append array as be below birthdate birthplace can context convenience count dates deathdate deathplace described docs does during editable end example familysearch father female first following for from full function functions gender get getcontext getindex getresultscount getsearchresults givenname http https in includes index init into is it list male marriagedate marriageplace matches mother name net non-exact number of options opts or org pages parameter parameters params pass people places promise requests response result results returned search searchandmatch searchresult searchresults specified spouse start starting subsequent surname the tilde to token total types value well which work works"
+    },
+    {
+      "section": "api",
+      "id": "searchAndMatch.types:type.SearchResult",
+      "shortName": "SearchResult",
+      "type": "function",
+      "keywords": "and api array as aware be better child confidence do father for from function functions getchildids getchildren getfatherids getfathers getmotherids getmothers getperson getprimaryperson getspouseids getspouses have higher how id in information is mother much name not objects of or pedigree person persons primary property reference relates relationship result returned score search searchandmatch searchresult searchresults source spouse that the this title to types unsure various"
     },
     {
       "section": "api",
@@ -407,28 +512,35 @@ NG_DOCS={
       "id": "sourceBox.functions:getCollection",
       "shortName": "getCollection",
       "type": "function",
-      "keywords": "about api collection convenience currently docs during editable example familysearch following for function functions get getid gettitle http https id includes information init net of options opts org params pass promise read response sourcebox specified string the title to unused user-defined"
+      "keywords": "about api collection convenience currently docs during editable example familysearch following for from function functions get getcollection http https id includes information init net of options opts org params pass promise read response sourcebox specified the to types unused user-defined"
     },
     {
       "section": "api",
       "id": "sourceBox.functions:getCollectionsForUser",
       "shortName": "getCollectionsForUser",
       "type": "function",
-      "keywords": "api array box collection convenience currently docs during editable example familysearch following for from function functions get getcollectionids http https id includes init net of options opts org owns params pass people promise response search source sourcebox specified the to unused user who"
+      "keywords": "an api array box collection collections convenience currently docs during editable example familysearch following for from function functions get getcollections http https includes init net of options opts org owns params pass people promise response search source sourcebox specified the to types uid unused user who"
     },
     {
       "section": "api",
       "id": "sourceBox.functions:getCollectionSourceDescriptions",
       "shortName": "getCollectionSourceDescriptions",
       "type": "function",
-      "keywords": "api array collection convenience count description descriptions docs during each editable example familysearch first following for from function functions get getid getsourcedescriptions gettitle gettitles has http https id in includes index init list maximum net of options opts org paged params pass promise read response return source sourcebox specified start string strings the title to user-defined zero-based"
+      "keywords": "an api array cid collection convenience count descriptions docs during editable example familysearch first following for from function functions get getsourcedescriptions http https in includes index init list maximum net of options opts org paged params pass promise read response return source sourcebox sourcedescription sourcedescriptions sources specified start the to types user-defined zero-based"
     },
     {
       "section": "api",
       "id": "sourceBox.functions:getCollectionSourceDescriptionsForUser",
       "shortName": "getCollectionSourceDescriptionsForUser",
       "type": "function",
-      "keywords": "all api array as by collections convenience count defined descriptions docs during each editable example familysearch first following for from function functions get getcollectionsourcedescriptions getsourcedescriptions has http https id in includes index init list maximum net of options opts org paged params pass promise read response return same source sourcebox specified start the to user user-defined zero-based"
+      "keywords": "all an api array by collections convenience count defined descriptions docs during editable example familysearch first following for from function functions get getsourcedescriptions http https in includes index init list maximum net of options opts org paged params pass promise read response return source sourcebox sourcedescription sourcedescriptions sources specified start the to types uid user user-defined zero-based"
+    },
+    {
+      "section": "api",
+      "id": "sourceBox.types:type.Collection",
+      "shortName": "Collection",
+      "type": "function",
+      "keywords": "api collection contributor details folder for function functions getagent getcontributorid id in into number of pass property size sourcebox sources the title types user"
     },
     {
       "section": "api",
@@ -442,35 +554,56 @@ NG_DOCS={
       "id": "sources.functions:getChildAndParentsSourceRefs",
       "shortName": "getChildAndParentsSourceRefs",
       "type": "function",
-      "keywords": "and api array as child convenience currently described docs during each editable example familysearch following for from function functions get getpersonsourcerefs getsourcerefs has http https id includes init net of options opts org params parents pass promise read reference references relationship response source sources specified the to unused"
+      "keywords": "an and api array child convenience currently docs during editable example familysearch following for from function functions get getsourcerefs http https id includes init net of options opts org params parents pass promise read references relationship response source sourceref sourcerefs sources specified the to types unused"
     },
     {
       "section": "api",
       "id": "sources.functions:getCoupleSourceRefs",
       "shortName": "getCoupleSourceRefs",
       "type": "function",
-      "keywords": "api array as convenience couple crid currently described docs during each editable example familysearch following for from function functions get getpersonsourcerefs getsourcerefs has http https includes init net of options opts org params pass promise read reference references relationship response source sources specified the to unused"
+      "keywords": "an api array convenience couple crid currently docs during editable example familysearch following for from function functions get getsourcerefs http https includes init net of options opts org params pass promise read references relationship response source sourceref sourcerefs sources specified the to types unused"
     },
     {
       "section": "api",
       "id": "sources.functions:getPersonSourceRefs",
       "shortName": "getPersonSourceRefs",
       "type": "function",
-      "keywords": "an api array assertion contributor convenience currently docs during each editable example familysearch following for from function functions get getagent getchangemessage getcontributorid getid getmodifiedtimestamp getsourcedescription getsourceid getsourcerefs gettags has http https id identifying includes information init into is more net object of options opts org params pass person promise property read reference references resource response source sources specified tag tags the to type unused user with"
+      "keywords": "an api array convenience currently docs during editable example familysearch following for from function functions get getsourcerefs http https includes init net of options opts org params pass person pid promise read references response sourceref sourcerefs sources specified the to types unused"
     },
     {
       "section": "api",
       "id": "sources.functions:getSourceDescription",
       "shortName": "getSourceDescription",
       "type": "function",
-      "keywords": "about api array being citation convenience currently described description docs during editable example familysearch first following for function functions get getabout getcitations getid getnotes gettitle gettitles http https id includes information init net note of options opts org params pass promise read resource response source sources specified string strings the title to unused uri"
+      "keywords": "about api convenience currently description docs during editable example familysearch following for from function functions get getsourcedescription http https includes information init net of options opts org params pass promise read response sdid source sourcedescription sources specified the to types unused"
     },
     {
       "section": "api",
       "id": "sources.functions:getSourceRefsQuery",
       "shortName": "getSourceRefsQuery",
       "type": "function",
-      "keywords": "and api array as child-and-parents convenience couple couples currently described docs during each editable example familysearch following for from function functions get getchildandparentsidsourcerefs getcoupleidsourcerefs getid getpersonidsourcerefs getpersonsourcerefs getsourceref has http https id includes init net of options opts or org params pass people person promise reference references referencing relationship relationships response sid source sources specified the to unused with"
+      "keywords": "an and api array child-and-parents convenience couples currently description docs during editable example familysearch following for from function functions get getchildandparentsidsourcerefs getcoupleidsourcerefs getpersonidsourcerefs http https idsourceref idsourcerefs includes init net of options opts org params pass people promise referencing relationships response sdid source sources specified the to types unused"
+    },
+    {
+      "section": "api",
+      "id": "sources.types:type.IdSourceRef",
+      "shortName": "IdSourceRef",
+      "type": "function",
+      "keywords": "and api function getsourceref id idsourceref of or person property relationship sourceref sources the types"
+    },
+    {
+      "section": "api",
+      "id": "sources.types:type.SourceDescription",
+      "shortName": "SourceDescription",
+      "type": "function",
+      "keywords": "about api citation contributor description details for function functions getagent getcitation getcontributorid getmodified gettext gettitle id into last modified of pass property record source sourcedescription sources text the timestamp title to types url user"
+    },
+    {
+      "section": "api",
+      "id": "sources.types:type.SourceRef",
+      "shortName": "SourceRef",
+      "type": "function",
+      "keywords": "an api array change contributor description details for from function functions getagent getchangemessage getcontributorid getmodified getsourcedescription getsourcedescriptionid gettagnames http id into last modified names of or org pass person property reason reference relationship source sourceref sources tag the timestamp to types user"
     },
     {
       "section": "api",
@@ -484,7 +617,7 @@ NG_DOCS={
       "id": "spouses.functions:getCouple",
       "shortName": "getCouple",
       "type": "function",
-      "keywords": "about access api array as but can convenience couple decorated described docs during each editable example facts familysearch following for function functions get getfacts gethusbandid getid getperson getwifeid http https id in includes information init net object of options opts org params pass person persons possibly promise read relationship response return set specified spouses the to true using which with without you"
+      "keywords": "about access api been can convenience couple crid docs during each editable example familysearch following for function functions get getperson getrelationship has http https if in includes information init net object of options opts org parameter params pass person persons promise read relationship response return set specified spouses the this to true types using which will you"
     },
     {
       "section": "api",
@@ -498,21 +631,35 @@ NG_DOCS={
       "id": "user.functions:getAgent",
       "shortName": "getAgent",
       "type": "function",
-      "keywords": "about agent api contributor convenience currently docs during editable example familysearch following function functions get getaccountname getemail getid getname http https id includes information init net of options opts org params pass response specified the to tree unused user"
+      "keywords": "about agent aid api contributor convenience currently docs during editable example familysearch following from function functions get getagent http https includes information init net of options opts org params pass response specified the to types unused user"
     },
     {
       "section": "api",
       "id": "user.functions:getCurrentUser",
       "shortName": "getCurrentUser",
       "type": "function",
-      "keywords": "api convenience current currently docs during editable example familysearch following for function functions get getcontactname getemail getfullname getid gettreeuserid http https init net options opts org params pass promise specified the to unused user with"
+      "keywords": "api convenience current currently docs during editable example familysearch following for from function functions get getuser http https init net options opts org params pass promise response specified the to types unused user with"
     },
     {
       "section": "api",
       "id": "user.functions:getCurrentUserPerson",
       "shortName": "getCurrentUserPerson",
       "type": "function",
-      "keywords": "api current currently docs during editable example familysearch for function functions get http https id in init net of options opts org params pass person promise specified the to tree unused user"
+      "keywords": "api current currently details docs during editable example familysearch for function functions get getperson http https id in init into net of options opts org params pass person promise specified the to tree unused user"
+    },
+    {
+      "section": "api",
+      "id": "user.types:type.Agent",
+      "shortName": "Agent",
+      "type": "function",
+      "keywords": "account agent an api are contact contributor email from function functions getaccountname getagent getemail getname id ids is name not of property returned the types user"
+    },
+    {
+      "section": "api",
+      "id": "user.types:type.User",
+      "shortName": "User",
+      "type": "function",
+      "keywords": "agent api are contact contactname contributor email from full fullname function functions getcurrentuser id ids is name not of property returned the treeuserid types user"
     }
   ],
   "apis": {
