@@ -1440,29 +1440,6 @@ define('discussions',[
 
   /**
    * @ngdoc function
-   * @name discussions.types:type.DiscussionRef
-   * @description
-   *
-   * Reference to a discussion on a person
-   */
-  var DiscussionRef = exports.DiscussionRef = function() {
-
-  };
-
-  exports.DiscussionRef.prototype = {
-    constructor: DiscussionRef,
-    /**
-     * @ngdoc function
-     * @name discussions.types:type.DiscussionRef#getId
-     * @methodOf discussions.types:type.DiscussionRef
-     * @function
-     * @return {String} Id of the discussion - pass into {@link discussions.functions:getDiscussion getDiscussion} for details
-     */
-    getId: function() { return this.resource ? this.resource.replace(/^.*\//, '').replace(/\?.*$/, '') : this.resource; }
-  };
-
-  /**
-   * @ngdoc function
    * @name discussions.functions:getPersonDiscussionRefs
    * @function
    *
@@ -1470,7 +1447,7 @@ define('discussions',[
    * Get references to discussions for a person
    * The response includes the following convenience function
    *
-   * - `getDiscussionRefs()` - get an array of {@link discussions.types:type.DiscussionRef DiscussionRefs} from the response
+   * - `getDiscussionIds()` - get an array of discussion ids from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Discussion_References_resource FamilySearch API Docs}
    *
@@ -1483,12 +1460,11 @@ define('discussions',[
    */
   exports.getPersonDiscussionRefs = function(pid, params, opts) {
     return plumbing.get('/platform/tree/persons/'+encodeURI(pid)+'/discussion-references', params, {'Accept': 'application/x-fs-v1+json'}, opts,
-      helpers.compose(
-        helpers.objectExtender({getDiscussionRefs: function() { return maybe(maybe(this.persons)[0])['discussion-references'] || []; }}),
-        helpers.constructorSetter(DiscussionRef, 'discussion-references', function(response) {
-          return maybe(maybe(response).persons)[0];
-        })
-      ));
+      helpers.objectExtender({getDiscussionIds: function() {
+        return helpers.map(maybe(maybe(this.persons)[0])['discussion-references'], function(uri) {
+          return uri.replace(/^.*\//, '');
+        });
+      }}));
   };
 
   /**
@@ -4558,7 +4534,6 @@ define('FamilySearch',[
 
     // discussions
     Discussion: discussions.Discussion,
-    DiscussionRef: discussions.DiscussionRef,
     Comment: discussions.Comment,
     getPersonDiscussionRefs: discussions.getPersonDiscussionRefs,
     getDiscussion: discussions.getDiscussion,

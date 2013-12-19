@@ -106,7 +106,7 @@ NG_DOCS={
       "id": "discussions.functions:getPersonDiscussionRefs",
       "shortName": "getPersonDiscussionRefs",
       "type": "function",
-      "keywords": "an api array convenience currently discussionref discussionrefs discussions docs during editable example familysearch following for from function functions get getdiscussionrefs http https includes init net of options opts org params pass person pid promise read references response specified the to types unused"
+      "keywords": "an api array convenience currently discussion discussions docs during editable example familysearch following for from function functions get getdiscussionids http https ids includes init net of options opts org params pass person pid promise read references response specified the to unused"
     },
     {
       "section": "api",
@@ -121,13 +121,6 @@ NG_DOCS={
       "shortName": "Discussion",
       "type": "function",
       "keywords": "api comments contributor created description details discussion discussions for function functions getagent getcontributorid id into modified number numberofcomments of pass property text the timestamp title types user"
-    },
-    {
-      "section": "api",
-      "id": "discussions.types:type.DiscussionRef",
-      "shortName": "DiscussionRef",
-      "type": "function",
-      "keywords": "api details discussion discussionref discussions for function functions getdiscussion getid id into of on pass person reference the to types"
     },
     {
       "section": "api",
