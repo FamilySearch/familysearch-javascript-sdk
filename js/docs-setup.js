@@ -173,8 +173,8 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "memories.functions:getPersonMemoryReferences",
-      "shortName": "getPersonMemoryReferences",
+      "id": "memories.functions:getPersonMemoryRefs",
+      "shortName": "getPersonMemoryRefs",
       "type": "function",
       "keywords": "an api array convenience currently docs during editable example familysearch following for from function functions get getmemoryrefs http https includes init memories memoryref memoryrefs net of options opts org params pass person pid promise read references response specified the to types unused"
     },
@@ -197,7 +197,7 @@ NG_DOCS={
       "id": "memories.types:type.Memory",
       "shortName": "Memory",
       "type": "function",
-      "keywords": "about api array description filenames function getartifactfilenames getdescription geticonurl getthumbnailurl gettitle http icon id image media mediatype memories memory object of org property resource resourcetype the thumbnail title type types url"
+      "keywords": "about api array description filenames function getartifactfilenames getdescription geticonurl getmodified getthumbnailurl gettitle http icon id image media mediatype memories memory object of org property resource resourcetype the thumbnail timestamp title type types url"
     },
     {
       "section": "api",

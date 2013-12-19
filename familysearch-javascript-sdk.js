@@ -2554,7 +2554,7 @@ define('memories',[
 
   /**
    * @ngdoc function
-   * @name memories.functions:getPersonMemoryReferences
+   * @name memories.functions:getPersonMemoryRefs
    * @function
    *
    * @description
@@ -2572,7 +2572,7 @@ define('memories',[
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getPersonMemoryReferences = function(pid, params, opts) {
+  exports.getPersonMemoryRefs = function(pid, params, opts) {
     return plumbing.get('/platform/tree/persons/'+encodeURI(pid)+'/memory-references', params, {}, opts,
       helpers.compose(
         helpers.objectExtender({getMemoryRefs: function() { return maybe(maybe(this.persons)[0]).evidence || []; }}),
@@ -2674,8 +2674,8 @@ define('memories',[
 
     /**
      * @ngdoc function
-     * @name notes.types:type.Note#getModified
-     * @methodOf notes.types:type.Note
+     * @name memories.types:type.Memory#getModified
+     * @methodOf memories.types:type.Memory
      * @function
      * @return {Number} timestamp
      */
@@ -3091,7 +3091,8 @@ define('notes',[
    * @return {Object} promise for the response
    */
   exports.getChildAndParentsNoteRefs = function(caprid, params, opts) {
-    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(caprid)+'/notes', params, {}, opts,
+    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(caprid)+'/notes', params,
+      {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.compose(
         helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).notes || []; }}),
         helpers.constructorSetter(NoteRef, 'notes', function(response) {
@@ -3122,7 +3123,8 @@ define('notes',[
    * @return {Object} promise for the response
    */
   exports.getChildAndParentsNote = function(caprid, nid, params, opts) {
-    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(caprid)+'/notes/'+encodeURI(nid), params, {}, opts,
+    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(caprid)+'/notes/'+encodeURI(nid), params,
+      {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.compose(
         helpers.objectExtender({getNote: function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).notes)[0]; }}),
         helpers.constructorSetter(Note, 'notes', function(response) {
@@ -4542,7 +4544,7 @@ define('FamilySearch',[
     // memories
     Memory: memories.Memory,
     MemoryRef: memories.MemoryRef,
-    getPersonMemoryReferences: memories.getPersonMemoryReferences,
+    getPersonMemoryRefs: memories.getPersonMemoryRefs,
     getMemory: memories.getMemory,
     getMemoryComments: memories.getMemoryComments,
     getMemoryPersonas: memories.getMemoryPersonas,
