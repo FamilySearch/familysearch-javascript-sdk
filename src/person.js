@@ -513,21 +513,20 @@ define([
    * - `getFatherIds()` - array of ids
    * - `getMotherIds()` - array of ids
    * - `getSpouseIds()` - array of ids
-   * - `getChildIds(spouseId)` - array of ids; if spouseId is specified, returns only ids of children with spouse as the other parent
+   * - `getChildIds(spouseId)` - array of ids; if `spouseId` is specified, returns only ids of children with spouse as the other parent
    * - `getParentRelationships()` - array of {@link person.types:type.ChildAndParents ChildAndParents} relationship objects
    * - `getSpouseRelationships()` - array of {@link person.types:type.Couple Couple} relationship objects
    * - `getChildRelationships()` - array of {@link person.types:type.ChildAndParents ChildAndParents} relationship objects
+   * - `getPrimaryPerson()` - {@link person.types:type.Person Person} object for the primary person
    *
-   * The following functions return {@link person.types:type.Person Person} objects
+   * In addition, the following functions are available if persons is set to true in params
    *
-   * - `getPrimaryPerson()`
-   * - `getPerson(id)` - works only for the primary person unless persons is set to true in params, in which case it works also for relatives
-   *
-   *   In addition, the following functions are available if persons is set to true in params
-   * - `getFathers()` - array of father persons
-   * - `getMothers()` - array of mother persons
-   * - `getSpouses()` - array of spouse persons
-   * - `getChildren(spouseId)` - array of child persons; if spouseId is specified returns only children with spouse as the other parent
+   * - `getPerson(id)` - {@link person.types:type.Person Person} object for the person with `id`
+   * - `getFathers()` - array of father {@link person.types:type.Person Persons}
+   * - `getMothers()` - array of mother {@link person.types:type.Person Persons}
+   * - `getSpouses()` - array of spouse {@link person.types:type.Person Persons}
+   * - `getChildren(spouseId)` - array of child {@link person.types:type.Person Persons};
+   * if `spouseId` is specified returns only children with spouse as the other parent
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource FamilySearch API Docs}
    *
@@ -661,7 +660,8 @@ define([
    *
    * - `getSpouseIds()` - an array of string ids
    * - `getRelationships()` - an array of {@link person.types:type.Couple Couple} relationships
-   * - `getPerson(pid)` - if the `persons` parameter has been set, this function will return a {@link person.types:type.Person Person} for a person in the relationship
+   * - `getPerson(pid)` - if the `persons` parameter has been set, this function will return a
+   * {@link person.types:type.Person Person} for a person id in the relationship
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Relationships_to_Spouses_resource FamilySearch API Docs}
    *
@@ -707,7 +707,8 @@ define([
    * The response includes the following convenience function
    *
    * - `getRelationships()` - an array of { `id` - relationship id, `fatherId`, `motherId` }
-   * - `getPerson(pid)` - if the `persons` parameter has been set, this function will return a {@link person.types:type.Person Person} for a person in the relationship
+   * - `getPerson(pid)` - if the `persons` parameter has been set, this function will return a
+   * {@link person.types:type.Person Person} for a person id in the relationship
    *
    * Pass the relationship id into {@link parentsAndChildren.functions:getChildAndParents getChildAndParents} for more information
    *
@@ -815,7 +816,8 @@ define([
    *
    * - `getChildIds()` - an array of string ids
    * - `getRelationships()` - an array of {@link person.types:type.ParentChild ParentChild} relationships
-   * - `getPerson(pid)` - if the `persons` parameter has been set, this function will return a {@link person.types:type.Person Person} for a person in the relationship
+   * - `getPerson(pid)` - if the `persons` parameter has been set, this function will return a
+   * {@link person.types:type.Person Person} for a person id in the relationship
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Relationships_to_Children_resource FamilySearch API Docs}
    *
