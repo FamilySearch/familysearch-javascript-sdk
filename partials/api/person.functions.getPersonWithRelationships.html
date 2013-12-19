@@ -10,23 +10,22 @@
 <li><code>getFatherIds()</code> - array of ids</li>
 <li><code>getMotherIds()</code> - array of ids</li>
 <li><code>getSpouseIds()</code> - array of ids</li>
-<li><code>getChildIds(spouseId)</code> - array of ids; if spouseId is specified, returns only ids of children with spouse as the other parent</li>
+<li><code>getChildIds(spouseId)</code> - array of ids; if <code>spouseId</code> is specified, returns only ids of children with spouse as the other parent</li>
 <li><code>getParentRelationships()</code> - array of <a href="#/api/person.types:type.ChildAndParents">ChildAndParents</a> relationship objects</li>
 <li><code>getSpouseRelationships()</code> - array of <a href="#/api/person.types:type.Couple">Couple</a> relationship objects</li>
 <li><code>getChildRelationships()</code> - array of <a href="#/api/person.types:type.ChildAndParents">ChildAndParents</a> relationship objects</li>
+<li><code>getPrimaryPerson()</code> - <a href="#/api/person.types:type.Person">Person</a> object for the primary person</li>
 </ul>
 
-<p>The following functions return <a href="#/api/person.types:type.Person">Person</a> objects</p>
+<p>In addition, the following functions are available if persons is set to true in params</p>
 
 <ul>
-<li><code>getPrimaryPerson()</code></li>
-<li><p><code>getPerson(id)</code> - works only for the primary person unless persons is set to true in params, in which case it works also for relatives</p>
-
-<p>In addition, the following functions are available if persons is set to true in params</p></li>
-<li><code>getFathers()</code> - array of father persons</li>
-<li><code>getMothers()</code> - array of mother persons</li>
-<li><code>getSpouses()</code> - array of spouse persons</li>
-<li><code>getChildren(spouseId)</code> - array of child persons; if spouseId is specified returns only children with spouse as the other parent</li>
+<li><code>getPerson(id)</code> - <a href="#/api/person.types:type.Person">Person</a> object for the person with <code>id</code></li>
+<li><code>getFathers()</code> - array of father <a href="#/api/person.types:type.Person">Persons</a></li>
+<li><code>getMothers()</code> - array of mother <a href="#/api/person.types:type.Person">Persons</a></li>
+<li><code>getSpouses()</code> - array of spouse <a href="#/api/person.types:type.Person">Persons</a></li>
+<li><code>getChildren(spouseId)</code> - array of child <a href="#/api/person.types:type.Person">Persons</a>;
+if <code>spouseId</code> is specified returns only children with spouse as the other parent</li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource">FamilySearch API Docs</a></p>

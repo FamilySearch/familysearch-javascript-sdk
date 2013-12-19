@@ -344,14 +344,14 @@ NG_DOCS={
       "id": "person.functions:getPersonWithRelationships",
       "shortName": "getPersonWithRelationships",
       "type": "function",
-      "keywords": "addition also and api are array as available case child childandparents children convenience couple docs during each editable example familysearch father following for full function functions get getchildids getchildrelationships getchildren getfatherids getfathers getmotherids getmothers getparentrelationships getperson getprimaryid getprimaryperson getspouseids getspouserelationships getspouses http https id ids if in init is it mother net objects of only options opts org other params parent parents pass person persons pid primary promise read relationship relationships relative relatives requested retrieve return returns set specified spouse spouseid spouses the their to true types unless which with works"
+      "keywords": "addition and api are array as available child childandparents children convenience couple docs during each editable example familysearch father following for full function functions get getchildids getchildrelationships getchildren getfatherids getfathers getmotherids getmothers getparentrelationships getperson getprimaryid getprimaryperson getspouseids getspouserelationships getspouses http https id ids if in init is mother net object objects of only options opts org other params parent parents pass person persons pid primary promise read relationship relationships relative requested retrieve returns set specified spouse spouseid spouses the their to true types with"
     },
     {
       "section": "api",
       "id": "person.functions:getRelationshipsToChildren",
       "shortName": "getRelationshipsToChildren",
       "type": "function",
-      "keywords": "access an api array been can children convenience docs during each editable example familysearch following for function functions get getchildids getperson getrelationships has http https ids if in includes init net object of options opts org parameter params parentchild pass person persons pid promise read relationship relationships response return set specified string the this to true types using which will you"
+      "keywords": "access an api array been can children convenience docs during each editable example familysearch following for function functions get getchildids getperson getrelationships has http https id ids if in includes init net object of options opts org parameter params parentchild pass person persons pid promise read relationship relationships response return set specified string the this to true types using which will you"
     },
     {
       "section": "api",
@@ -365,7 +365,7 @@ NG_DOCS={
       "id": "person.functions:getRelationshipsToSpouses",
       "shortName": "getRelationshipsToSpouses",
       "type": "function",
-      "keywords": "access an api array been can convenience couple docs during each editable example familysearch following for function functions get getperson getrelationships getspouseids has http https ids if in includes init net object of options opts org parameter params pass person persons pid promise read relationship relationships response return set specified spouses string the this to true types using which will you"
+      "keywords": "access an api array been can convenience couple docs during each editable example familysearch following for function functions get getperson getrelationships getspouseids has http https id ids if in includes init net object of options opts org parameter params pass person persons pid promise read relationship relationships response return set specified spouses string the this to true types using which will you"
     },
     {
       "section": "api",
@@ -617,7 +617,7 @@ NG_DOCS={
       "id": "spouses.functions:getCouple",
       "shortName": "getCouple",
       "type": "function",
-      "keywords": "about access api been can convenience couple crid docs during each editable example familysearch following for function functions get getperson getrelationship has http https if in includes information init net object of options opts org parameter params pass person persons promise read relationship response return set specified spouses the this to true types using which will you"
+      "keywords": "about access api been can convenience couple crid docs during each editable example familysearch following for function functions get getperson getrelationship has http https id if in includes information init net object of options opts org parameter params pass person persons promise read relationship response return set specified spouses the this to true types using which will you"
     },
     {
       "section": "api",
