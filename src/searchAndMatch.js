@@ -259,7 +259,7 @@ define([
         searchMatchResponseMapper,
         function(obj, promise) {
           obj.getContext = function() {
-            return promise.getResponseHeader('X-fs-page-context');
+            return promise.getResponseHeader('X-FS-Page-Context');
           };
           return obj;
         }
