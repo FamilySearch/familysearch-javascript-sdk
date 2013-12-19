@@ -38,8 +38,8 @@ define([
   exports.getPersonDiscussionRefs = function(pid, params, opts) {
     return plumbing.get('/platform/tree/persons/'+encodeURI(pid)+'/discussion-references', params, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.objectExtender({getDiscussionIds: function() {
-        return helpers.map(maybe(maybe(this.persons)[0])['discussion-references'], function(uri) {
-          return uri.replace(/^.*\//, '');
+        return helpers.map(maybe(maybe(this.persons)[0])['discussion-references'], function(url) {
+          return url ? url.replace(/^.*\//, '').replace(/\?.*$/, '') : url; // TODO how else to get the discussion id?
         });
       }}));
   };
