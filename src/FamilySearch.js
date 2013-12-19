@@ -111,7 +111,7 @@ define([
     Agent: user.Agent,
     User: user.User,
     getCurrentUser: user.getCurrentUser,
-    getCurrentUserPerson: user.getCurrentUserPerson,
+    getCurrentUserPersonId: user.getCurrentUserPersonId,
     getAgent: user.getAgent,
 
     // plumbing

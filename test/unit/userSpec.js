@@ -11,8 +11,8 @@ define(['FamilySearch'], function(FamilySearch) {
       });
     });
 
-    it('person id is returned from getCurrentUserPerson', function() {
-      FamilySearch.getCurrentUserPerson().then(function(response) {
+    it('person id is returned from getCurrentUserPersonId', function() {
+      FamilySearch.getCurrentUserPersonId().then(function(response) {
         expect(response).toBe('12345');
       });
     });
