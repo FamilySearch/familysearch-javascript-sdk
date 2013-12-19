@@ -88,40 +88,70 @@ define('helpers',[
     })();
   }
 
-  // borrowed from underscore.js
+  /**
+   * borrowed from underscore.js
+   * @param {*} value to test
+   * @returns {boolean}
+   */
   exports.isArray = function(value) {
     /*jshint eqeqeq:false */
     return Array.isArray ? Array.isArray(value) : Object.prototype.toString.call(value) == '[object Array]';
   };
 
-  // borrowed from underscore.js
+  /**
+   * borrowed from underscore.js
+   * @param {*} value to test
+   * @returns {boolean}
+   */
   exports.isNumber = function(value) {
     /*jshint eqeqeq:false */
     return Object.prototype.toString.call(value) == '[object Number]';
   };
 
-  // borrowed from underscore.js
+  /**
+   * borrowed from underscore.js
+   * @param {*} value to test
+   * @returns {boolean}
+   */
   exports.isString = function(value) {
     /*jshint eqeqeq:false */
     return Object.prototype.toString.call(value) == '[object String]';
   };
 
-  // borrowed from underscore.js
+  /**
+   * borrowed from underscore.js
+   * @param {*} value to test
+   * @returns {boolean}
+   */
   exports.isFunction = function(value) {
     /*jshint eqeqeq:false */
     return (typeof /./ !== 'function') ? (typeof value === 'function') : Object.prototype.toString.call(value) == '[object Function]';
   };
 
-  // borrowed from underscore.js
+  /**
+   * borrowed from underscore.js
+   * @param {*} value to test
+   * @returns {boolean}
+   */
   exports.isObject = function(value) {
     return value === Object(value);
   };
 
+  /**
+   * borrowed from underscore.js
+   * @param value to test
+   * @returns {boolean}
+   */
   exports.isUndefined = function(value) {
     return value === void 0;
   };
 
-  // borrowed from underscore.js
+  /**
+   * borrowed from underscore.js
+   * @param {Array|Object} obj Object or array to iterate over
+   * @param {function(elm)} iterator Function to call
+   * @param {Object=} context Object for this
+   */
   var forEach = exports.forEach = function(obj, iterator, context) {
     if (obj == null) { // also catches undefined
       return;
@@ -145,7 +175,11 @@ define('helpers',[
     }
   };
 
-  // borrowed from underscore.js
+  /**
+   * borrowed from underscore.js
+   * @param {Object} obj Object to get keys from
+   * @returns {Array.<string>} keys
+   */
   exports.keys = Object.keys || function(obj) {
     if (obj !== Object(obj)) {
       throw new TypeError('Invalid object');
@@ -159,7 +193,13 @@ define('helpers',[
     return keys;
   };
 
-  // simplified version of underscore's filter
+  /**
+   * Simplified version of underscore's filter
+   * @param {Array|Object} arr Array or object to iterate over
+   * @param {function(elm)} fn Function returns true to keep element
+   * @param {Object=} context Object for this
+   * @returns {Array} Filtered array
+   */
   exports.filter = function(arr, fn, context) {
     var result = [];
     forEach(arr, function(e) {
@@ -170,7 +210,13 @@ define('helpers',[
     return result;
   };
 
-  // simplified version of underscore's map
+  /**
+   * simplified version of underscore's map
+   * @param {Array|Object} arr Array or object to iterate over
+   * @param {function(elm)} fn Function to call
+   * @param {Object=} context Object for this
+   * @returns {Array} Mapped array
+   */
   exports.map = function(arr, fn, context) {
     var result = [];
     forEach(arr, function(value, index, list) {
@@ -179,7 +225,12 @@ define('helpers',[
     return result;
   };
 
-  // borrowed from underscore
+  /**
+   * borrowed from underscore
+   * @param {Array|Object} obj Object or array to check
+   * @param {*} target Thing to look for
+   * @returns {boolean} Return true if found
+   */
   exports.contains = function(obj, target) {
     if (obj == null) { // covers undefined as well
       return false;
@@ -196,7 +247,11 @@ define('helpers',[
     return result;
   };
 
-  // simplified version of underscore's uniq
+  /**
+   * simplified version of underscore's uniq
+   * @param {Array} arr Array to extract unique elements from
+   * @returns {Array} Contains only one instance of each element
+   */
   exports.uniq = function(arr) {
     var results = [];
     forEach(arr, function(value) {
@@ -207,8 +262,14 @@ define('helpers',[
     return results;
   };
 
-  // simplified version of underscore's find
-  // returns undefined if nothing found
+  /**
+   * simplified version of underscore's find
+   * returns undefined if nothing found
+   * @param {Array} arr Array to search
+   * @param {Object|function(elm)} objOrFn If object, look for matching object; otherwise look for function to return true
+   * @param {Object=} context Object for this
+   * @returns {*} Thing found
+   */
   exports.find = function(arr, objOrFn, context) {
     var result;
     var isFn = exports.isFunction(objOrFn);
@@ -237,8 +298,11 @@ define('helpers',[
     return result;
   };
 
-  // Compose functions from right to left, with each function consuming the return value of the function that follows
-  // borrowed from underscore
+  /**
+   * borrowed from underscore.js
+   * Compose functions from right to left, with each function consuming the return value of the function that follows
+   * @returns {Function} Composed function
+   */
   exports.compose = function() {
     var funcs = arguments;
     return function() {
@@ -250,7 +314,11 @@ define('helpers',[
     };
   };
 
-  // simplified version of underscore's flatten that only does shallow flattening
+  /**
+   * simplified version of underscore's flatten that only does shallow flattening
+   * @param {Array} arr Array of arrays to flatten
+   * @returns {Array} Flattened array
+   */
   exports.flatten = function(arr) {
     var result = [];
     forEach(arr, function(value) {
@@ -261,20 +329,38 @@ define('helpers',[
     return result;
   };
 
+  /**
+   * Composition of map and flatten
+   * Flattens the output of map into a single array
+   * @returns {Array} Flattened array
+   */
   exports.flatMap = exports.compose(exports.flatten, exports.map);
 
-  // union arrays
-  // borrowed from underscore
+  /**
+   * borrowed from underscore
+   * Union arrays, removing duplicates
+   * @returns {Array} Unioned array
+   */
   exports.union = function() {
     return exports.uniq(exports.flatten(arguments));
   };
 
-  // returns find match or first if none found
+  /**
+   * Return found match or first if none found
+   * @param {Array} arr Array to search
+   * @param {Object|function(elm)} objOrFn If object, look for matching object; otherwise look for function to return true
+   * @returns {*} Thing found or first element of array
+   */
   exports.findOrFirst = function(arr, objOrFn) {
     var result = exports.find(arr, objOrFn);
     return exports.isUndefined(result) ? arr[0] : result;
   };
 
+  /**
+   * borrowed from underscore
+   * @param {Object} dest Object to extend
+   * @returns {Object} Extended object
+   */
   exports.extend = function(dest) {
     dest = dest || {};
     forEach(Array.prototype.slice.call(arguments, 1), function(source) {
@@ -287,7 +373,11 @@ define('helpers',[
     return dest;
   };
 
-  // create a new function which is the specified function with the right-most arguments pre-filled
+  /**
+   * Create a new function which is the specified function with the right-most arguments pre-filled with arguments from this call
+   * @param {function()} fn Function to wrap
+   * @returns {Function} Wrapped function
+   */
   exports.partialRight = function(fn) {
     var args = Array.prototype.slice.call(arguments, 1);
     return function() {
@@ -295,7 +385,11 @@ define('helpers',[
     };
   };
 
-  // return an empty object if passed in a null or undefined, similar to the maybe monad
+  /**
+   * Return an empty object if passed in a null or undefined, similar to the maybe monad
+   * @param {*} value Value to test
+   * @returns {*} Original value or empty object
+   */
   exports.maybe = function(value) {
     return value != null ? value : {}; // != null also covers undefined
   };
@@ -303,8 +397,8 @@ define('helpers',[
   /**
    * Return a function that takes an object and extends it with the specified extensions
    * @param {Object} extensions
-   * @param {Function=} extensionPointGetter optional function that returns (sub)objects to extend
-   * @return {Function} the extender function
+   * @param {function(Object)=} extensionPointGetter Optional function that returns (sub)objects to extend
+   * @return {function(Object)} The extender function
    */
   exports.objectExtender = function(extensions, extensionPointGetter) {
     if (extensionPointGetter) {
@@ -324,11 +418,11 @@ define('helpers',[
 
   /**
    * Return a function that takes an object and returns an object with the same properties but with the constructor function's prototype
-   * @param constructorFunction
-   * @param {String=} attr if passed in, the constructor function will be applied to (each) element of object[attr] instead of the object itself
-   * @param {Function=} subObjectGenerator function that takes an object and returns a set of sub-objects;
+   * @param {function()} constructorFunction Create new objects with this constructor
+   * @param {string=} attr if passed in, the constructor function will be applied to (each) element of object[attr] instead of the object itself
+   * @param {function(Object)=} subObjectGenerator Function that takes an object and returns a set of sub-objects;
    * if passed in, the constructor function will be applied to sub-object[attr], where the sub-objects are returned by subObjectGenerator
-   * @return {Function} the constructor setter function
+   * @return {function(Object)} The constructor setter function
    */
   exports.constructorSetter = function(constructorFunction, attr, subObjectGenerator) {
     var setConstructor;
@@ -370,7 +464,13 @@ define('helpers',[
     }
   };
 
-  // copy functions from source to dest, binding them to source
+  /**
+   * Copy functions from source to dest, binding them to source
+   * @param {Object} dest Destination object
+   * @param {Object} source Source object
+   * @param {Array<string>} fns Names of functions to copy
+   * @returns {Object} Destination object with functions
+   */
   exports.wrapFunctions = function(dest, source, fns) {
     forEach(fns, function(fn) {
       dest[fn] = function() {
@@ -380,12 +480,21 @@ define('helpers',[
     return dest;
   };
 
-  // extend the destPromise with functions from the sourcePromise
+  /**
+   * Extend the destPromise with functions from the sourcePromise
+   * @param {Object} destPromise Destination promise
+   * @param {Object} sourcePromise Source promise
+   * @returns {Object} Destination promise with functions from source promise
+   */
   exports.extendHttpPromise = function(destPromise, sourcePromise) {
     return exports.wrapFunctions(destPromise, sourcePromise, ['getResponseHeader', 'getAllResponseHeaders', 'getStatusCode']);
   };
 
-  // "empty" properties are undefined, null, or the empty string
+  /**
+   * "empty" properties are undefined, null, or the empty string
+   * @param {Object} obj Object to remove properties from
+   * @returns {Object} Object with empty properties removed
+   */
   exports.removeEmptyProperties = function(obj) {
     forEach(obj, function(value, key) {
       if (value == null || value === '') {  // == null also catches undefined
@@ -395,6 +504,12 @@ define('helpers',[
     return obj;
   };
 
+  /**
+   * Prepend server onto path if path does not start with https?://
+   * @param {string} server
+   * @param {string} path
+   * @returns {string} server + path
+   */
   function getAbsoluteUrl(server, path) {
     if (!path.match(/^https?:\/\//)) {
       return server + (path.charAt(0) !== '/' ? '/' : '') + path;
@@ -404,17 +519,29 @@ define('helpers',[
     }
   }
 
-  // prepend oauth server to url if url doesn't start with http(s)
+  /**
+   * Prepend oauth server to path if path doesn't start with https?://
+   * @param {string} path
+   * @returns {string} server + path
+   */
   exports.getOAuthServerUrl = function(path) {
     return getAbsoluteUrl(globals.oauthServer[globals.environment], path);
   };
 
-  // prepend server to url if url doesn't start with http(s)
+  /**
+   * Prepend api server to path if path doesn't start with https?://
+   * @param path
+   * @returns {string} server + path
+   */
   exports.getServerUrl = function(path) {
     return getAbsoluteUrl(globals.server[globals.environment], path);
   };
 
-  // Create a URL-encoded query string from an object
+  /**
+   * Create a URL-encoded query string from an object
+   * @param {Object} params Parameters
+   * @returns {string} URL-encoded string
+   */
   exports.encodeQueryString = function(params) {
     var arr = [];
     forEach(params, function(value, key) {
@@ -423,7 +550,12 @@ define('helpers',[
     return arr.join('&');
   };
 
-  // append query parameters
+  /**
+   * Append query parameters object to a url
+   * @param {string} url
+   * @param {Object} params
+   * @returns {String} url + query string
+   */
   exports.appendQueryParameters = function(url, params) {
     var queryString = exports.encodeQueryString(params);
     if (queryString.length === 0) {
@@ -432,7 +564,11 @@ define('helpers',[
     return url + (url.indexOf('?') >= 0 ? '&' : '?') + queryString;
   };
 
-  // decode query string into an object
+  /**
+   * Decode query string into an object
+   * @param {string} qs query string
+   * @returns {Object} parameters object
+   */
   exports.decodeQueryString = function(qs) {
     var obj = {}, segments = qs.substring(qs.indexOf('?')+1).split('&');
     forEach(segments, function(segment) {
@@ -444,15 +580,22 @@ define('helpers',[
     return obj;
   };
 
-  // call the callback on the next tick
+  /**
+   * Call the callback on the next tick
+   * @param {function()} cb Function to call
+   */
   exports.nextTick = function(cb) {
     setTimeout(function() {
       cb();
     },0);
   };
 
-  // borrowed from AngularJS's implementation of $q
-  // if passed a promise returns the promise; otherwise returns a pseudo-promise returning the value
+  /**
+   * borrowed from AngularJS's implementation of $q
+   * If passed a promise returns the promise; otherwise returns a pseudo-promise returning the value
+   * @param {*} value Promise or value
+   * @returns {Object} Promise
+   */
   exports.refPromise = function(value) {
     if (value && exports.isFunction(value.then)) {
       return value;
@@ -468,7 +611,12 @@ define('helpers',[
     };
   };
 
-  // borrowed from AngularJS's implementation of $q
+  //
+  /**
+   * borrowed from AngularJS's implementation of $q
+   * @param {Array|Object} promises Array or object of promises
+   * @returns {Object} Promise that is resolved when all promises resolve
+   */
   exports.promiseAll = function(promises) {
     var d = globals.deferredWrapper(),
       counter = 0,
@@ -501,7 +649,13 @@ define('helpers',[
     return d.promise;
   };
 
-  // cookie functions borrowed from http://www.quirksmode.org/js/cookies.html
+  /**
+   * borrowed from http://www.quirksmode.org/js/cookies.html
+   * Create a cookie
+   * @param {string} name Cookie name
+   * @param {string} value Cookie value
+   * @param {number} days Number of days to expiration; set to 0 for a session cookie
+   */
   exports.createCookie = function(name, value, days) {
     var expires = '';
     if (days) {
@@ -512,6 +666,12 @@ define('helpers',[
     document.cookie = name+'='+value+expires+'; path=/';
   };
 
+  /**
+   * borrowed from http://www.quirksmode.org/js/cookies.html
+   * Read a cookie
+   * @param {string} name Cookie name
+   * @returns {string} Cookie value
+   */
   exports.readCookie = function(name) {
     var nameEQ = name + '=';
     var ca = document.cookie.split(';');
@@ -527,11 +687,18 @@ define('helpers',[
     return null;
   };
 
+  /**
+   * borrowed from http://www.quirksmode.org/js/cookies.html
+   * Erase a cookie
+   * @param {string} name Cookie name
+   */
   exports.eraseCookie = function(name) {
     exports.createCookie(name,'',-1);
   };
 
-  // erase access token
+  /**
+   * Erase access token
+   */
   exports.eraseAccessToken = function() {
     globals.accessToken = null;
     if (globals.saveAccessToken) {
@@ -548,6 +715,11 @@ define('jquery-wrappers',[
 ], function(globals, helpers) {
   var exports = {};
 
+  /**
+   * httpWrapper function based upon jQuery's $.ajax function
+   * @param ajax jQuery's $.ajax function
+   * @returns {Function} http function that exposes a standard interface
+   */
   exports.httpWrapper = function(ajax) {
     return function(method, url, headers, data, opts) {
       // set up the options
@@ -585,6 +757,11 @@ define('jquery-wrappers',[
     };
   };
 
+  /**
+   * deferredWrapper function based upon jQuery's $.Deferred function
+   * @param deferred jQuery's $.Deferred function
+   * @returns {Function} deferred function that exposes a standard interface
+   */
   exports.deferredWrapper = function(deferred) {
     return function() {
       var d = deferred();
@@ -1309,9 +1486,7 @@ define('discussions',[
       helpers.compose(
         helpers.objectExtender({getDiscussionRefs: function() { return maybe(maybe(this.persons)[0])['discussion-references'] || []; }}),
         helpers.constructorSetter(DiscussionRef, 'discussion-references', function(response) {
-          if (response) {
-            return maybe(response.persons)[0];
-          }
+          return maybe(maybe(response).persons)[0];
         })
       ));
   };
@@ -1478,7 +1653,7 @@ define('discussions',[
       helpers.compose(
         helpers.objectExtender({getComments: function() { return maybe(maybe(this.discussions)[0]).comments || []; }}),
         helpers.constructorSetter(Comment, 'comments', function(response) {
-          return maybe(response.discussions)[0];
+          return maybe(maybe(response).discussions)[0];
         })
       ));
   };
@@ -1840,6 +2015,11 @@ define('person',[
       ));
   };
 
+  /**
+   * Return a function that maps a response into a response with Person, Name, and Fact objects
+   * @param {Function=} subObjectGenerator generate sub-objects corresponding to parents of persons; used by search/match functions
+   * @returns {Function}
+   */
   exports.personMapper = function(subObjectGenerator) {
     var personsGenerator = function(response) {
       return helpers.flatMap(subObjectGenerator ? subObjectGenerator(response) : [response], function(root) {
@@ -1995,7 +2175,8 @@ define('person',[
    * @function
    *
    * @description
-   * Get a person and their children, spouses, and parents with the following convenience functions
+   * Get a person and their children, spouses, and parents.
+   * The response has the following convenience functions
    *
    * - `getPrimaryId()` - id of the person requested
    * - `getFatherIds()` - array of ids
@@ -2030,13 +2211,13 @@ define('person',[
       helpers.compose(
         helpers.objectExtender({getPrimaryId: function() { return pid; }}), // make id available
         helpers.constructorSetter(Fact, 'fatherFacts', function(response) {
-          return response.childAndParentsRelationships;
+          return maybe(response).childAndParentsRelationships;
         }),
         helpers.constructorSetter(Fact, 'motherFacts', function(response) {
-          return response.childAndParentsRelationships;
+          return maybe(response).childAndParentsRelationships;
         }),
         helpers.constructorSetter(Fact, 'facts', function(response) {
-          return response.relationships;
+          return maybe(response).relationships;
         }),
         helpers.constructorSetter(ChildAndParents, 'childAndParentsRelationships'),
         helpers.constructorSetter(Couple, 'relationships'), // some of the relationships are ParentChild relationships, but
@@ -2046,6 +2227,7 @@ define('person',[
       ));
   };
 
+  // Functions to extract various pieces of the response
   // TODO how identify preferred parents?
   var personWithRelationshipsConvenienceFunctions = {
     getPerson:     function(id) { return helpers.find(this.persons, {id: id}); },
@@ -2168,7 +2350,7 @@ define('person',[
         helpers.constructorSetter(Couple, 'relationships'),
         helpers.objectExtender(relationshipsToSpousesConvenienceFunctions),
         helpers.constructorSetter(Fact, 'facts', function(response) {
-          return response.relationships;
+          return maybe(response).relationships;
         }),
         exports.personMapper()
       ));
@@ -2419,7 +2601,7 @@ define('memories',[
       helpers.compose(
         helpers.objectExtender({getMemoryRefs: function() { return maybe(maybe(this.persons)[0]).evidence || []; }}),
         helpers.constructorSetter(MemoryRef, 'evidence', function(response) {
-          return maybe(response.persons)[0];
+          return maybe(maybe(response).persons)[0];
         })
       ));
   };
@@ -2633,7 +2815,7 @@ define('memories',[
       helpers.compose(
         helpers.objectExtender({getComments: function() { return maybe(maybe(this.discussions)[0]).comments || []; }}),
         helpers.constructorSetter(discussions.Comment, 'comments', function(response) {
-          return maybe(response.discussions)[0];
+          return maybe(maybe(response).discussions)[0];
         })
       ));
   };
@@ -2762,7 +2944,7 @@ define('notes',[
       helpers.compose(
         helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.persons)[0]).notes || []; }}),
         helpers.constructorSetter(NoteRef, 'notes', function(response) {
-          return maybe(response.persons)[0];
+          return maybe(maybe(response).persons)[0];
         })
       ));
   };
@@ -2846,7 +3028,7 @@ define('notes',[
       helpers.compose(
         helpers.objectExtender({getNote: function() { return maybe(maybe(maybe(this.persons)[0]).notes)[0]; }}),
         helpers.constructorSetter(Note, 'notes', function(response) {
-            return maybe(response.persons)[0];
+            return maybe(maybe(response).persons)[0];
         })
       ));
   };
@@ -2876,7 +3058,7 @@ define('notes',[
       helpers.compose(
         helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.relationships)[0]).notes || []; }}),
         helpers.constructorSetter(NoteRef, 'notes', function(response) {
-          return maybe(response.relationships)[0];
+          return maybe(maybe(response).relationships)[0];
         })
       ));
   };
@@ -2907,7 +3089,7 @@ define('notes',[
       helpers.compose(
         helpers.objectExtender({getNote: function() { return maybe(maybe(maybe(this.relationships)[0]).notes)[0]; }}),
         helpers.constructorSetter(Note, 'notes', function(response) {
-          return maybe(response.relationships)[0];
+          return maybe(maybe(response).relationships)[0];
         })
       ));
   };
@@ -2937,7 +3119,7 @@ define('notes',[
       helpers.compose(
         helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).notes || []; }}),
         helpers.constructorSetter(NoteRef, 'notes', function(response) {
-          return maybe(response.childAndParentsRelationships)[0];
+          return maybe(maybe(response).childAndParentsRelationships)[0];
         })
       ));
   };
@@ -2968,7 +3150,7 @@ define('notes',[
       helpers.compose(
         helpers.objectExtender({getNote: function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).notes)[0]; }}),
         helpers.constructorSetter(Note, 'notes', function(response) {
-          return maybe(response.childAndParentsRelationships)[0];
+          return maybe(maybe(response).childAndParentsRelationships)[0];
         })
       ));
   };
@@ -3023,10 +3205,10 @@ define('parentsAndChildren',[
         helpers.constructorSetter(person.ChildAndParents, 'childAndParentsRelationships'),
         helpers.objectExtender(childAndParentsConvenienceFunctions),
         helpers.constructorSetter(person.Fact, 'motherFacts', function(response) {
-          return response.childAndParentsRelationships;
+          return maybe(response).childAndParentsRelationships;
         }),
         helpers.constructorSetter(person.Fact, 'fatherFacts', function(response) {
-          return response.childAndParentsRelationships;
+          return maybe(response).childAndParentsRelationships;
         }),
         person.personMapper()
       ));
@@ -3092,11 +3274,17 @@ define('pedigree',[
         helpers.objectExtender(pedigreeConvenienceFunctionGenerator('ascendancyNumber')),
         person.personMapper(),
         helpers.objectExtender({getAscendancyNumber: function() { return this.display.ascendancyNumber; }}, function(response) {
-          return response.persons;
+          return maybe(response).persons;
         })
       ));
   };
 
+  /**
+   * Generate ancestry or descendancy convenience functions
+   *
+   * @param numberLabel ascendancyNumber or descendancyNumber
+   * @returns {{getPersons: Function, exists: Function, getPerson: Function}}
+   */
   function pedigreeConvenienceFunctionGenerator(numberLabel) {
     return {
       getPersons:    function()    { return this.persons; },
@@ -3145,7 +3333,7 @@ define('pedigree',[
         helpers.objectExtender(pedigreeConvenienceFunctionGenerator('descendancyNumber')),
         person.personMapper(),
         helpers.objectExtender({getDescendancyNumber: function() { return this.display.descendancyNumber; }}, function(response) {
-          return response.persons;
+          return maybe(response).persons;
         })
       ));
   };
@@ -3366,7 +3554,7 @@ define('searchAndMatch',[
    * - `getResultsCount()` - get the total number of search results
    * - `getIndex()` - get the starting index of the results array
    *
-   * ###Search parameters
+   * ### Search parameters
    * In the list below, {relation} can be father, mother, or spouse.
    * For non-exact matches, append a tilde (~) to the end of the parameter value.
    * (The tilde works for name parameters; does it work for dates and places as well?)
@@ -3443,7 +3631,7 @@ define('searchAndMatch',[
     helpers.objectExtender(searchMatchResponseConvenienceFunctions),
     helpers.constructorSetter(SearchResult, 'entries'),
     person.personMapper(function(response) {
-      return helpers.map(response.entries, function(entry) {
+      return helpers.map(maybe(response).entries, function(entry) {
         return maybe(entry.content).gedcomx;
       });
     })
@@ -3620,9 +3808,7 @@ define('sources',[
       helpers.compose(
         helpers.objectExtender({getSourceRefs: function() { return maybe(maybe(this.persons)[0]).sources || []; }}),
         helpers.constructorSetter(SourceRef, 'sources', function(response) {
-          if (response) {
-            return maybe(response.persons)[0];  
-          }
+          return maybe(maybe(response).persons)[0];
         })
       ));
   };
@@ -3753,7 +3939,7 @@ define('sources',[
       helpers.compose(
         helpers.objectExtender({getSourceRefs: function() { return maybe(maybe(this.relationships)[0]).sources || []; }}),
         helpers.constructorSetter(SourceRef, 'sources', function(response) {
-          return maybe(response.relationships)[0];
+          return maybe(maybe(response).relationships)[0];
         })
       ));
   };
@@ -3783,7 +3969,7 @@ define('sources',[
       helpers.compose(
         helpers.objectExtender({getSourceRefs: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).sources || []; }}),
         helpers.constructorSetter(SourceRef, 'sources', function(response) {
-          return maybe(response.childAndParentsRelationships)[0];
+          return maybe(maybe(response).childAndParentsRelationships)[0];
         })
       ));
   };
@@ -3850,7 +4036,7 @@ define('sources',[
         helpers.objectExtender({getChildAndParentsIdSourceRefs: function() { return this.childAndParentsRelationships || []; }}),
         helpers.constructorSetter(IdSourceRef, 'childAndParentsRelationships'),
         helpers.constructorSetter(SourceRef, 'sources', function(response) {
-          return helpers.union(response.persons, response.relationships, response.childAndParentsRelationships);
+          return helpers.union(maybe(response).persons, maybe(response).relationships, maybe(response).childAndParentsRelationships);
         })
       ));
   };
@@ -4082,7 +4268,7 @@ define('spouses',[
         helpers.constructorSetter(person.Couple, 'relationships'),
         helpers.objectExtender(coupleConvenienceFunctions),
         helpers.constructorSetter(person.Fact, 'facts', function(response) {
-          return response.relationships;
+          return maybe(response).relationships;
         }),
         person.personMapper()
       ));
@@ -4224,7 +4410,11 @@ define('user',[
     return returnedPromise;
   };
 
-  // common code for current user person promise fulfillment and failure
+  /**
+   * Common code for current user person promise fulfillment and failure
+   * @param {Object} d deferred
+   * @param {Object} promise promise from get
+   */
   function handleCurrentUserPersonResponse(d, promise) {
     var id = null;
     // this is the expected result for Node.js because it doesn't follow redirects
