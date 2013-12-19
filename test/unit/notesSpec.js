@@ -13,9 +13,11 @@ define(['FamilySearch'], function(FamilySearch) {
     it('is returned from getPersonNote', function() {
       FamilySearch.getPersonNote('12345', '12345').then(function(response) {
         var note = response.getNote();
-        expect(note.getNoteId()).toBe('1586334607'); // bad example data
-        expect(note.getSubject()).toBe('Sample');
-        expect(note.getText()).toBe('Sample note text');
+        expect(note.id).toBe('1586334607'); // bad example data
+        expect(note.subject).toBe('Sample');
+        expect(note.text).toBe('Sample note text');
+        expect(note.getContributorId()).toBeUndefined();
+        expect(note.getModified()).toBeUndefined();
       });
     });
 
@@ -33,10 +35,11 @@ define(['FamilySearch'], function(FamilySearch) {
     it('is returned from getCoupleNote', function() {
       FamilySearch.getCoupleNote('MMM7-12S', 'MMMM-ZP8').then(function(response) {
         var note = response.getNote();
-        expect(note.getNoteId()).toBe('MMMM-ZP8');
-        expect(note.getSubject()).toBe('Couple Relationship Note Title');
-        expect(note.getText()).toBe('Couple Relationship Note Text');
+        expect(note.id).toBe('MMMM-ZP8');
+        expect(note.subject).toBe('Couple Relationship Note Title');
+        expect(note.text).toBe('Couple Relationship Note Text');
         expect(note.getContributorId()).toBe('MMD8-3NT');
+        expect(note.getModified()).toBe(1387223690000);
       });
     });
 
@@ -54,10 +57,11 @@ define(['FamilySearch'], function(FamilySearch) {
     it('is returned from getChildAndParentsNote', function() {
       FamilySearch.getChildAndParentsNote('RRRX-RRX', 'NOTE1').then(function(response) {
         var note = response.getNote();
-        expect(note.getNoteId()).toBeUndefined(); // bad example data
-        expect(note.getSubject()).toBe('Sample');
-        expect(note.getText()).toBe('Sample note text');
+        expect(note.id).toBeUndefined(); // bad example data
+        expect(note.subject).toBe('Sample');
+        expect(note.text).toBe('Sample note text');
         expect(note.getContributorId()).toBeUndefined();
+        expect(note.getModified()).toBeUndefined();
       });
     });
   });

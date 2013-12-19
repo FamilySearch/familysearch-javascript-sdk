@@ -1,25 +1,31 @@
 define(['FamilySearch'], function(FamilySearch) {
   describe('Discussion', function() {
-    it('references are returned from getPersonDiscussionReferences', function() {
-      FamilySearch.getPersonDiscussionReferences('12345').then(function(response) {
-        expect(response.getDiscussionIds()).toEqual(['67890','67891']);
+    it('references are returned from getPersonDiscussionRefs', function() {
+      FamilySearch.getPersonDiscussionRefs('12345').then(function(response) {
+        expect(response.getDiscussionRefs().length).toBe(1);
+        expect(response.getDiscussionRefs()[0].getId()).toEqual('ds.disc.MMMM-CN7F');
       });
     });
 
     it('is returned from getDiscussion', function() {
       FamilySearch.getDiscussion('dis-MMMM-MMM').then(function(response) {
-        expect(response.getId()).toBe('dis-MMMM-MMM');
-        expect(response.getTitle()).toBe('1900 US Census, Ethel Hollivet');
-        expect(response.getDetails()).toBe('Ethel Hollivet (line 75) with husband Albert Hollivet (line 74); also in the dwelling: step-father Joseph E Watkins (line 72), mother Lina Watkins (line 73), and grandmother -- Lina\'s mother -- Mary Sasnett (line 76).  ');
-        expect(response.getNumberOfComments()).toBe(2);
+        var discussion = response.getDiscussion();
+        expect(discussion.id).toBe('dis-MMMM-MMM');
+        expect(discussion.title).toBe('1900 US Census, Ethel Hollivet');
+        expect(discussion.details).toBe('Ethel Hollivet (line 75) with husband Albert Hollivet (line 74); also in the dwelling: step-father Joseph E Watkins (line 72), mother Lina Watkins (line 73), and grandmother -- Lina\'s mother -- Mary Sasnett (line 76).  ');
+        expect(discussion.numberOfComments).toBe(2);
+        expect(discussion.getContributorId()).toBeUndefined();
       });
     });
 
     it('comments are returned from getComments', function() {
       FamilySearch.getComments('dis-MMMM-MMM').then(function(response) {
-        expect(response.getComments().length).toBe(1);
-        expect(response.getComments()[0].id).toBe('CMMM-MMM');
-        expect(response.getComments()[0].text).toBe('Just a comment.');
+        var comments = response.getComments();
+        expect(comments.length).toBe(1);
+        expect(comments[0].id).toBe('CMMM-MMM');
+        expect(comments[0].text).toBe('Just a comment.');
+        expect(comments[0].created).toBeUndefined();
+        expect(comments[0].getContributorId()).toBeUndefined();
       });
     });
   });

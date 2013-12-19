@@ -60,7 +60,10 @@
             "place" : {
               "original" : "Kanab, Kane, UT"
             }
-          } ]
+          } ],
+          "display": {
+            "name" : "Israel Heaton"
+          }
         }, {
           "id" : "87654",
           "links" : {

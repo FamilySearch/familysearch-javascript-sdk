@@ -23,24 +23,22 @@ define([
    * @description
    * Get the ancestors of a specified person and optionally a specified spouse with the following convenience functions
    *
+   * - `getPersons()` - return an array of {@link person.types:type.Person Persons}
+   * - `getPerson(ascendancyNumber)` - return a {@link person.types:type.Person Person}
    * - `exists(ascendancyNumber)` - return true if a person with ascendancy number exists
    *
-   * The following functions return person objects decorated with *person convenience functions* as described for {@link person.functions:getPerson getPerson}
-   * (with the exception that `getGivenName()` and `getSurname()` functions do not work because the name pieces aren't there)
-   * as well as a `getAscendancyNumber()` function that returns the person's ascendancy number
+   * ### Notes
    *
-   * - `getPersons()` - returns an array of all persons
-   * - `getPerson(ascendancyNumber)`
-   *
-   * **NOTE:** the `getBirthDate()`, `getBirthPlace()`, `getDeathDate()`, and `getDeathPlace()` person convenience functions
-   * are available only if `params` includes `personDetails`
+   * * Each Person object has an additional `getAscendancyNumber()` function that returns the person's ascendancy number.
+   * * Some information on the Person objects is available only if `params` includes `personDetails`
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Ancestry_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/gt726/ editable example}
    *
    * @param {String} id of the person
-   * @param {Object=} params includes `generations` to retrieve max 8, `spouse` id to get ancestry of person and spouse, `personDetails` set to true to retrieve full person objects for each ancestor
+   * @param {Object=} params includes `generations` to retrieve max 8, `spouse` id to get ancestry of person and spouse,
+   * `personDetails` set to true to retrieve full person objects for each ancestor
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the ancestry
    */
@@ -48,8 +46,10 @@ define([
     return plumbing.get('/platform/tree/ancestry', helpers.extend({'person': id}, params), {}, opts,
       helpers.compose(
         helpers.objectExtender(pedigreeConvenienceFunctionGenerator('ascendancyNumber')),
-        person.personExtender,
-        helpers.objectExtender({getAscendancyNumber: function() { return this.display.ascendancyNumber; }}, person.personExtensionPointGetter)
+        person.personMapper(),
+        helpers.objectExtender({getAscendancyNumber: function() { return this.display.ascendancyNumber; }}, function(response) {
+          return response.persons;
+        })
       ));
   };
 
@@ -77,14 +77,14 @@ define([
    * Get the descendants of a specified person and optionally a specified spouse with the following convenience functions
    * (similar convenience functions as getAncestry)
    *
-   * - `exists(descendancyNumber)` - return true if a person with descendancy number exists
+   * - `getPersons()` - return an array of {@link person.types:type.Person Persons}
+   * - `getPerson(descendancyNumber)` - return a {@link person.types:type.Person Person}
+   * - `exists(descendancyNumber)` - return true if a person with ascendancy number exists
    *
-   * The following functions return person objects decorated with *person convenience functions* {@link person.functions:getPerson as described in getPerson}
-   * (with the exception that `getGivenName()` and `getSurname()` functions do not work because the name pieces aren't there)
-   * as well as a `getDescendancyNumber()` function that returns the person's descendancy number
+   * ### Notes
    *
-   * - `getPersons()` - returns all persons
-   * - `getPerson(descendancyNumber)`
+   * * Each Person object has an additional `getDescendancyNumber()` function that returns the person's descendancy number.
+   * * Some information on the Person objects is unavailable; e.g., separate given name and surname name parts.
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Descendancy_resource FamilySearch API Docs}
    *
@@ -99,8 +99,10 @@ define([
     return plumbing.get('/platform/tree/descendancy', helpers.extend({'person': id}, params), {}, opts,
       helpers.compose(
         helpers.objectExtender(pedigreeConvenienceFunctionGenerator('descendancyNumber')),
-        person.personExtender,
-        helpers.objectExtender({getDescendancyNumber: function() { return this.display.descendancyNumber; }}, person.personExtensionPointGetter)
+        person.personMapper(),
+        helpers.objectExtender({getDescendancyNumber: function() { return this.display.descendancyNumber; }}, function(response) {
+          return response.persons;
+        })
       ));
   };
 

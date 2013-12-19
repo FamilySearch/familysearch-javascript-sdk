@@ -1,12 +1,24 @@
 {
-  "persons" : [ {
-    "id" : "12345",
-    "links" : {
-      "person" : {
-        "href" : "https://familysearch.org/platform/tree/persons/12345",
-        "title" : "Person"
-      }
-    },
-    "discussion-references" : [ "https://familysearch.org/platform/discussions/discussions/67890", "https://familysearch.org/platform/discussions/discussions/67891" ]
-  } ]
+  "persons": [
+    {
+      "id": "KW7V-Y32",
+      "links": {
+        "person": {
+          "href": "https://sandbox.familysearch.org/platform/tree/persons/KW7V-Y32?access_token=USYSD7A1C8152F5F18779DDEF948285719E8_idses-int02.a.fsglobal.net",
+          "title": "Person"
+        }
+      },
+      "discussion-references": [
+        {
+          "links": {
+            "discussion-reference": {
+              "href": "https://sandbox.familysearch.org/platform/tree/persons/KW7V-Y32/discussion-references/ds.disc.MMMM-CN7F?access_token=USYSD7A1C8152F5F18779DDEF948285719E8_idses-int02.a.fsglobal.net",
+              "title": "Discussion Reference"
+            }
+          },
+          "resource": "https://sandbox.familysearch.org/platform/discussions/discussions/ds.disc.MMMM-CN7F?access_token=USYSD7A1C8152F5F18779DDEF948285719E8_idses-int02.a.fsglobal.net"
+        }
+      ]
+    }
+  ]
 }

@@ -26,25 +26,33 @@ define([
     invalidateAccessToken: authentication.invalidateAccessToken,
 
     // changeHistory
-    getPersonChangeHistory: changeHistory.getPersonChangeHistory,
-    getChildAndParentsChangeHistory: changeHistory.getChildAndParentsChangeHistory,
-    getCoupleChangeHistory: changeHistory.getCoupleChangeHistory,
+    Change: changeHistory.Change,
+    getPersonChanges: changeHistory.getPersonChanges,
+    getChildAndParentsChanges: changeHistory.getChildAndParentsChanges,
+    getCoupleChanges: changeHistory.getCoupleChanges,
 
     // discussions
-    getPersonDiscussionReferences: discussions.getPersonDiscussionReferences,
+    Discussion: discussions.Discussion,
+    DiscussionRef: discussions.DiscussionRef,
+    Comment: discussions.Comment,
+    getPersonDiscussionRefs: discussions.getPersonDiscussionRefs,
     getDiscussion: discussions.getDiscussion,
     getComments: discussions.getComments,
 
     // memories
+    Memory: memories.Memory,
+    MemoryRef: memories.MemoryRef,
     getPersonMemoryReferences: memories.getPersonMemoryReferences,
     getMemory: memories.getMemory,
     getMemoryComments: memories.getMemoryComments,
     getMemoryPersonas: memories.getMemoryPersonas,
     getPersonPortraitURL: memories.getPersonPortraitURL,
-    getPersonMemories: memories.getPersonMemories,
-    getUserMemories: memories.getUserMemories,
+    getPersonMemoriesQuery: memories.getPersonMemoriesQuery,
+    getUserMemoriesQuery: memories.getUserMemoriesQuery,
 
     // notes
+    Note: notes.Note,
+    NoteRef: notes.NoteRef,
     getPersonNoteRefs: notes.getPersonNoteRefs,
     getPersonNote: notes.getPersonNote,
     getCoupleNoteRefs: notes.getCoupleNoteRefs,
@@ -60,6 +68,12 @@ define([
     getDescendancy: pedigree.getDescendancy,
 
     // person
+    Person: person.Person,
+    Name: person.Name,
+    Fact: person.Fact,
+    ChildAndParents: person.ChildAndParents,
+    Couple: person.Couple,
+    ParentChild: person.ParentChild,
     getPerson: person.getPerson,
     getMultiPerson: person.getMultiPerson,
     getPersonWithRelationships: person.getPersonWithRelationships,
@@ -69,17 +83,22 @@ define([
     getRelationshipsToChildren: person.getRelationshipsToChildren,
 
     // search and match
+    SearchResult: searchAndMatch.SearchResult,
     getPersonSearch: searchAndMatch.getPersonSearch,
     getPersonMatches: searchAndMatch.getPersonMatches,
     getPersonMatchesQuery: searchAndMatch.getPersonMatchesQuery,
 
     // sourceBox
+    Collection: sourceBox.Collection,
     getCollectionsForUser: sourceBox.getCollectionsForUser,
     getCollection: sourceBox.getCollection,
     getCollectionSourceDescriptions: sourceBox.getCollectionSourceDescriptions,
     getCollectionSourceDescriptionsForUser: sourceBox.getCollectionSourceDescriptionsForUser,
 
     // sources
+    SourceDescription: sources.SourceDescription,
+    SourceRef: sources.SourceRef,
+    IdSourceRef: sources.IdSourceRef,
     getPersonSourceRefs: sources.getPersonSourceRefs,
     getSourceDescription: sources.getSourceDescription,
     getCoupleSourceRefs: sources.getCoupleSourceRefs,
@@ -90,6 +109,8 @@ define([
     getCouple: spouses.getCouple,
 
     // user
+    Agent: user.Agent,
+    User: user.User,
     getCurrentUser: user.getCurrentUser,
     getCurrentUserPerson: user.getCurrentUserPerson,
     getAgent: user.getAgent,

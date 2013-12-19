@@ -25,39 +25,34 @@ define([
    * Get information about a couple relationship
    * The response includes the following convenience functions
    *
-   * - `getId()` - id of the relationship
-   * - `getHusbandId()`
-   * - `getWifeId()`
-   * - `getFacts()` - array of facts decorated with *fact convenience functions* as described for {@link person.functions:getPerson getPerson}
+   * - `getRelationship()` - a {@link person.types:type.Couple Couple} relationship
+   * - `getPerson(pid)` - if the `persons` parameter has been set, this function will return a {@link person.types:type.Person Person} for a person in the relationship
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/a2vUg/ editable example}
    *
-   * @param {String} id of the relationship to read
+   * @param {String} crid of the couple relationship to read
    * @param {Object=} params set `persons` true to return a person object for each person in the relationship,
-   * which you can access using the `getPerson(id)` convenience function. The person object id decorated with convenience functions
-   * as described for {@link person.functions:getPerson getPerson} but possibly without facts
+   * which you can access using the `getPerson(id)` convenience function.
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getCouple = function(id, params, opts) {
-    return plumbing.get('/platform/tree/couple-relationships/'+encodeURI(id), params, {}, opts,
+  exports.getCouple = function(crid, params, opts) {
+    return plumbing.get('/platform/tree/couple-relationships/'+encodeURI(crid), params, {}, opts,
       helpers.compose(
+        helpers.constructorSetter(person.Couple, 'relationships'),
         helpers.objectExtender(coupleConvenienceFunctions),
-        helpers.objectExtender(person.factConvenienceFunctions, function(response) {
-          return maybe(maybe(response.relationships)[0]).facts;
+        helpers.constructorSetter(person.Fact, 'facts', function(response) {
+          return response.relationships;
         }),
-        person.personExtender
+        person.personMapper()
       ));
   };
 
   var coupleConvenienceFunctions = {
-    getId:        function() { return maybe(maybe(this.relationships)[0]).id; },
-    getHusbandId: function() { return maybe(maybe(maybe(this.relationships)[0]).person1).resourceId; },
-    getWifeId:    function() { return maybe(maybe(maybe(this.relationships)[0]).person2).resourceId; },
-    getFacts:     function() { return maybe(maybe(this.relationships)[0]).facts || []; },
-    getPerson:    function(id) { return helpers.find(this.persons, {id: id}); }
+    getRelationship: function() { return maybe(this.relationships)[0]; },
+    getPerson:       function(id) { return helpers.find(this.persons, {id: id}); }
   };
 
   return exports;

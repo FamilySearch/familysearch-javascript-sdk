@@ -17,6 +17,34 @@ define([
 
   /**
    * @ngdoc function
+   * @name notes.types:type.NoteRef
+   * @description
+   *
+   * Reference to a note on a person
+   */
+  var NoteRef = exports.NoteRef = function() {
+
+  };
+
+  exports.NoteRef.prototype = {
+    constructor: NoteRef
+    /**
+     * @ngdoc property
+     * @name notes.types:type.NoteRef#id
+     * @propertyOf notes.types:type.NoteRef
+     * @return {String} Id of the note - pass into {@link notes.functions.getPersonNote getPersonNote} for details
+     */
+
+    /**
+     * @ngdoc property
+     * @name notes.types:type.NoteRef#subject
+     * @propertyOf notes.types:type.NoteRef
+     * @return {String} subject of the note
+     */
+  };
+
+  /**
+   * @ngdoc function
    * @name notes.functions:getPersonNoteRefs
    * @function
    *
@@ -24,21 +52,78 @@ define([
    * Get note references for a person
    * The response includes the following convenience function
    *
-   * - `getNoteRefs()` - get the array of note references from the response; each has an `id` and a `subject`;
-   * pass the `id` into {@link notes.functions:getPersonNote getPersonNote} for more information
+   * - `getNoteRefs()` - get an array of {@link notes.types:type.NoteRef NoteRefs} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Notes_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/3enGw/ editable example}
    *
-   * @param {String} id of the person to read
+   * @param {String} pid of the person to read
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getPersonNoteRefs = function(id, params, opts) {
-    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/notes', params, {}, opts,
-      helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.persons)[0]).notes || []; }}));
+  exports.getPersonNoteRefs = function(pid, params, opts) {
+    return plumbing.get('/platform/tree/persons/'+encodeURI(pid)+'/notes', params, {}, opts,
+      helpers.compose(
+        helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.persons)[0]).notes || []; }}),
+        helpers.constructorSetter(NoteRef, 'notes', function(response) {
+          return maybe(response.persons)[0];
+        })
+      ));
+  };
+
+  /**
+   * @ngdoc function
+   * @name notes.types:type.Note
+   * @description
+   *
+   * Note
+   */
+  var Note = exports.Note = function() {
+
+  };
+
+  exports.Note.prototype = {
+    constructor: Note,
+    /**
+     * @ngdoc property
+     * @name notes.types:type.Note#id
+     * @propertyOf notes.types:type.Note
+     * @return {String} Id of the note
+     */
+
+    /**
+     * @ngdoc property
+     * @name notes.types:type.Note#subject
+     * @propertyOf notes.types:type.Note
+     * @return {String} subject / title of the note
+     */
+
+    /**
+     * @ngdoc property
+     * @name notes.types:type.Note#text
+     * @propertyOf notes.types:type.Note
+     * @return {String} text of the note
+     */
+
+    /**
+     * @ngdoc function
+     * @name notes.types:type.Note#getContributorId
+     * @methodOf notes.types:type.Note
+     * @function
+     * @return {String} Id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
+     */
+    getContributorId: function() { return maybe(maybe(this.attribution).contributor).resourceId; },
+
+    /**
+     * @ngdoc function
+     * @name notes.types:type.Note#getModified
+     * @methodOf notes.types:type.Note
+     * @function
+     * @return {Number} timestamp
+     */
+    getModified: function() { return maybe(this.attribution).modified; }
   };
 
   /**
@@ -50,13 +135,7 @@ define([
    * Get information about a note
    * The response includes the following convenience function
    *
-   * - `getNote()` - returns an object with the following *note convenience functions*:
-   *
-   * ###Note convenience functions
-   * - `getNoteId()`
-   * - `getSubject()`
-   * - `getText()`
-   * - `getContributorId()`
+   * - `getNote()` - get the {@link notes.types:type.Note Note} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Note_resource FamilySearch API Docs}
    *
@@ -72,17 +151,10 @@ define([
     return plumbing.get('/platform/tree/persons/'+encodeURI(pid)+'/notes/'+encodeURI(nid), params, {}, opts,
       helpers.compose(
         helpers.objectExtender({getNote: function() { return maybe(maybe(maybe(this.persons)[0]).notes)[0]; }}),
-        helpers.objectExtender(noteConvenienceFunctions, function(response) {
-          return maybe(maybe(response.persons)[0]).notes;
+        helpers.constructorSetter(Note, 'notes', function(response) {
+            return maybe(response.persons)[0];
         })
       ));
-  };
-
-  var noteConvenienceFunctions = {
-    getNoteId:   function() { return this.id; },
-    getSubject:  function() { return this.subject; },
-    getText:     function() { return this.text; },
-    getContributorId: function() { return maybe(maybe(this.attribution).contributor).resourceId; }
   };
 
   /**
@@ -94,21 +166,25 @@ define([
    * Get the note references for a couple relationship
    * The response includes the following convenience function
    *
-   * - `getNoteRefs()` - get the array of note references from the response; each has an `id` and a `subject`;
-   * pass the `id` into {@link notes.functions:getCoupleNote getCoupleNote} for more information
+   * - `getNoteRefs()` - get an array of {@link notes.types:type.NoteRef NoteRefs} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Notes_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/qe2dc/ editable example}
    *
-   * @param {String} id of the couple relationship to read
+   * @param {String} crid of the couple relationship to read
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getCoupleNoteRefs = function(id, params, opts) {
-    return plumbing.get('/platform/tree/couple-relationships/'+encodeURI(id)+'/notes', params, {}, opts,
-      helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.relationships)[0]).notes || []; }}));
+  exports.getCoupleNoteRefs = function(crid, params, opts) {
+    return plumbing.get('/platform/tree/couple-relationships/'+encodeURI(crid)+'/notes', params, {}, opts,
+      helpers.compose(
+        helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.relationships)[0]).notes || []; }}),
+        helpers.constructorSetter(NoteRef, 'notes', function(response) {
+          return maybe(response.relationships)[0];
+        })
+      ));
   };
 
   /**
@@ -120,8 +196,7 @@ define([
    * Get information about a couple relationship note
    * The response includes the following convenience function
    *
-   * - `getNote()` - returns an object with *note convenience functions*
-   * as described for {@link notes.functions:getPersonNote getPersonNote}
+   * - `getNote()` - get the {@link notes.types:type.Note Note} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource FamilySearch API Docs}
    *
@@ -137,8 +212,8 @@ define([
     return plumbing.get('/platform/tree/couple-relationships/'+encodeURI(crid)+'/notes/'+encodeURI(nid), params, {}, opts,
       helpers.compose(
         helpers.objectExtender({getNote: function() { return maybe(maybe(maybe(this.relationships)[0]).notes)[0]; }}),
-        helpers.objectExtender(noteConvenienceFunctions, function(response) {
-          return maybe(maybe(response.relationships)[0]).notes;
+        helpers.constructorSetter(Note, 'notes', function(response) {
+          return maybe(response.relationships)[0];
         })
       ));
   };
@@ -152,21 +227,25 @@ define([
    * Get the note references for a child and parents relationship
    * The response includes the following convenience function
    *
-   * - `getNoteRefs()` - get the array of note references from the response; each has an `id` and a `subject`;
-   * pass the `id` into {@link notes.functions:getChildAndParentsNote getChildAndParentsNote} for more information
+   * - `getNoteRefs()` - get an array of {@link notes.types:type.NoteRef NoteRefs} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Notes_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/SV8Hs/ editable example}
    *
-   * @param {String} id of the child and parents relationship to read
+   * @param {String} caprid of the child and parents relationship to read
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getChildAndParentsNoteRefs = function(id, params, opts) {
-    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(id)+'/notes', params, {}, opts,
-      helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).notes || []; }}));
+  exports.getChildAndParentsNoteRefs = function(caprid, params, opts) {
+    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(caprid)+'/notes', params, {}, opts,
+      helpers.compose(
+        helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).notes || []; }}),
+        helpers.constructorSetter(NoteRef, 'notes', function(response) {
+          return maybe(response.childAndParentsRelationships)[0];
+        })
+      ));
   };
 
   /**
@@ -178,8 +257,7 @@ define([
    * Get information about a child and parents relationship note
    * The response includes the following convenience function
    *
-   * - `getNote()` - returns an object with *note convenience functions*
-   * as described for {@link notes.functions:getPersonNote getPersonNote}
+   * - `getNote()` - get the {@link notes.types:type.Note Note} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource FamilySearch API Docs}
    *
@@ -195,8 +273,8 @@ define([
     return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(caprid)+'/notes/'+encodeURI(nid), params, {}, opts,
       helpers.compose(
         helpers.objectExtender({getNote: function() { return maybe(maybe(maybe(this.childAndParentsRelationships)[0]).notes)[0]; }}),
-        helpers.objectExtender(noteConvenienceFunctions, function(response) {
-          return maybe(maybe(response.childAndParentsRelationships)[0]).notes;
+        helpers.constructorSetter(Note, 'notes', function(response) {
+          return maybe(response.childAndParentsRelationships)[0];
         })
       ));
   };

@@ -18,6 +18,188 @@ define([
 
   /**
    * @ngdoc function
+   * @name searchAndMatch.types:type.SearchResult
+   * @description
+   *
+   * Reference from a person or relationship to a source
+   */
+  var SearchResult = exports.SearchResult = function() {
+
+  };
+
+  exports.SearchResult.prototype = {
+    constructor: SearchResult,
+    /**
+     * @ngdoc property
+     * @name searchAndMatch.types:type.SearchResult#id
+     * @propertyOf searchAndMatch.types:type.SearchResult
+     * @return {String} Id of the person for this search result
+     */
+
+    /**
+     * @ngdoc property
+     * @name searchAndMatch.types:type.SearchResult#title
+     * @propertyOf searchAndMatch.types:type.SearchResult
+     * @return {String} Id and Name
+     */
+
+    /**
+     * @ngdoc property
+     * @name searchAndMatch.types:type.SearchResult#score
+     * @propertyOf searchAndMatch.types:type.SearchResult
+     * @return {Number} higher is better
+     */
+
+    /**
+     * @ngdoc property
+     * @name searchAndMatch.types:type.SearchResult#confidence
+     * @propertyOf searchAndMatch.types:type.SearchResult
+     * @return {Number} unsure how this relates to score
+     */
+
+    /**
+     * @ngdoc function
+     * @name searchAndMatch.types:type.SearchResult#getPerson
+     * @methodOf searchAndMatch.types:type.SearchResult
+     * @function
+     * @description
+     *
+     * **Note: Be aware that the `Person` objects returned from SearchResults do not have as much information
+     * as `Person` objects returned from the various person and pedigree functions.**
+     *
+     * @return {Person} the {@link person.types:type.Person Person} for this Id in this search result
+     */
+    getPerson: function(id) {
+      return helpers.find(maybe(maybe(this.content).gedcomx).persons, {id: id});
+    },
+
+    /**
+     * @ngdoc function
+     * @name searchAndMatch.types:type.SearchResult#getPrimaryPerson
+     * @methodOf searchAndMatch.types:type.SearchResult
+     * @function
+     * @return {Person} the primary {@link person.types:type.Person Person} for this search result
+     */
+    getPrimaryPerson: function() {
+      return this.getPerson(this.id);
+    },
+
+    /**
+     * @ngdoc function
+     * @name searchAndMatch.types:type.SearchResult#getFatherIds
+     * @methodOf searchAndMatch.types:type.SearchResult
+     * @function
+     * @return {String[]} array of father Id's for this search result
+     */
+    getFatherIds: function() {
+      var primaryId = this.id, self = this;
+      return helpers.uniq(helpers.map(
+        helpers.filter(maybe(maybe(this.content).gedcomx).relationships, function(r) {
+          return r.type === 'http://gedcomx.org/ParentChild' &&
+            r.person2.resourceId === primaryId &&
+            r.person1 &&
+            maybe(self.getPerson(r.person1.resourceId).gender).type === 'http://gedcomx.org/Male';
+        }),
+        function(r) { return r.person1.resourceId; }
+      ));
+    },
+
+    /**
+     * @ngdoc function
+     * @name searchAndMatch.types:type.SearchResult#getFathers
+     * @methodOf searchAndMatch.types:type.SearchResult
+     * @function
+     * @return {Person[]} array of father {@link person.types:type.Person Persons} for this search result
+     */
+    getFathers: function() { return helpers.map(this.getFatherIds(), this.getPerson, this); },
+
+    /**
+     * @ngdoc function
+     * @name searchAndMatch.types:type.SearchResult#getMotherIds
+     * @methodOf searchAndMatch.types:type.SearchResult
+     * @function
+     * @return {String[]} array of mother Id's for this search result
+     */
+    getMotherIds: function() {
+      var primaryId = this.id, self = this;
+      return helpers.uniq(helpers.map(
+        helpers.filter(maybe(maybe(this.content).gedcomx).relationships, function(r) {
+          return r.type === 'http://gedcomx.org/ParentChild' &&
+            r.person2.resourceId === primaryId &&
+            r.person1 &&
+            maybe(self.getPerson(r.person1.resourceId).gender).type !== 'http://gedcomx.org/Male';
+        }),
+        function(r) { return r.person1.resourceId; }
+      ));
+    },
+
+    /**
+     * @ngdoc function
+     * @name searchAndMatch.types:type.SearchResult#getMothers
+     * @methodOf searchAndMatch.types:type.SearchResult
+     * @function
+     * @return {Person[]} array of mother {@link person.types:type.Person Persons} for this search result
+     */
+    getMothers: function() { return helpers.map(this.getMotherIds(), this.getPerson, this); },
+
+    /**
+     * @ngdoc function
+     * @name searchAndMatch.types:type.SearchResult#getSpouseIds
+     * @methodOf searchAndMatch.types:type.SearchResult
+     * @function
+     * @return {String[]} array of spouse Id's for this search result
+     */
+    getSpouseIds:  function() {
+      var primaryId = this.id;
+      return helpers.uniq(helpers.map(
+        helpers.filter(maybe(maybe(this.content).gedcomx).relationships, function(r) {
+          return r.type === 'http://gedcomx.org/Couple' &&
+            (r.person1.resourceId === primaryId || r.person2.resourceId === primaryId);
+        }),
+        function(r) { return r.person1.resourceId === primaryId ? r.person2.resourceId : r.person1.resourceId; }
+      ));
+    },
+
+    /**
+     * @ngdoc function
+     * @name searchAndMatch.types:type.SearchResult#getSpouses
+     * @methodOf searchAndMatch.types:type.SearchResult
+     * @function
+     * @return {Person[]} array of spouse {@link person.types:type.Person Persons} for this search result
+     */
+    getSpouses: function() { return helpers.map(this.getSpouseIds(), this.getPerson, this); },
+
+    /**
+     * @ngdoc function
+     * @name searchAndMatch.types:type.SearchResult#getChildIds
+     * @methodOf searchAndMatch.types:type.SearchResult
+     * @function
+     * @return {String[]} array of child Id's for this search result
+     */
+    getChildIds:  function() {
+      var primaryId = this.id;
+      return helpers.uniq(helpers.map(
+        helpers.filter(maybe(maybe(this.content).gedcomx).relationships, function(r) {
+          return r.type === 'http://gedcomx.org/ParentChild' &&
+            r.person1.resourceId === primaryId &&
+            r.person2;
+        }),
+        function(r) { return r.person2.resourceId; }
+      ));
+    },
+
+    /**
+     * @ngdoc function
+     * @name searchAndMatch.types:type.SearchResult#getChildren
+     * @methodOf searchAndMatch.types:type.SearchResult
+     * @function
+     * @return {Person[]} array of spouse {@link person.types:type.Person Persons} for this search result
+     */
+    getChildren: function() { return helpers.map(this.getChildIds(), this.getPerson, this); }
+  };
+
+  /**
+   * @ngdoc function
    * @name searchAndMatch.functions:getPersonSearch
    * @function
    *
@@ -26,19 +208,9 @@ define([
    * The response includes the following convenience functions
    *
    * - `getContext()` - get the search context to pass into subsequent requests for additional results
-   * - `getResults()` - get the array of search results from the response; each result has the following convenience functions
-   *
-   * ###Search result convenience Functions
-   *
-   * - `getId()` - person id
-   * - `getTitle()` - title string
-   * - `getScore()` - real number
-   * - `getConfidence()` - appears to be an integer
-   * - `getPrimaryPerson()` - person object decorated with the *person convenience functions* as described for {@link person.functions:getPerson getPerson}
-   * - `getFathers()` - array of person objects similarly decorated
-   * - `getMothers()` - array of person objects similarly decorated
-   * - `getSpouses()` - array of person objects similarly decorated
-   * - `getChildren()` - array of person objects similarly decorated
+   * - `getSearchResults()` - get the array of {@link searchAndMatch.types:type.SearchResult SearchResults} from the response
+   * - `getResultsCount()` - get the total number of search results
+   * - `getIndex()` - get the starting index of the results array
    *
    * ###Search parameters
    * In the list below, {relation} can be father, mother, or spouse.
@@ -84,7 +256,7 @@ define([
       context: params.context
     }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
       helpers.compose(
-        searchMatchResultExtender,
+        searchMatchResponseMapper,
         function(obj, promise) {
           obj.getContext = function() {
             return promise.getResponseHeader('X-fs-page-context');
@@ -107,72 +279,18 @@ define([
                        function(key) { return key+':'+quote(params[key]); }).join(' ');
   }
 
-  // TODO refactor this to reuse personWithRelationshipsConvenienceFunctions?
-  // The person with relationships json has a childAndParentsRelationships object with .father and .mother,
-  // which may be more accurate than our gender checking, which lists parents without a gender as mothers.
-  // Another issue is these functions need to start navigating from two levels higher - at content.gedcomx.
-  var searchResultConvenienceFunctions = {
-    getId:         function() { return this.id; },
-    getTitle:      function() { return this.title; },
-    getScore:      function() { return this.score; },
-    getConfidence: function() { return this.confidence; },
-    getPerson:     function(id) { return helpers.find(maybe(maybe(this.content).gedcomx).persons, {id: id}); },
-    getPrimaryPerson: function() {
-      return this.getPerson(this.getId());
-    },
-    getFatherIds:  function() {
-      var primaryId = this.getId(), self = this;
-      return helpers.uniq(helpers.map(helpers.filter(maybe(maybe(this.content).gedcomx).relationships, function(r) {
-        return r.type === 'http://gedcomx.org/ParentChild' &&
-               r.person2.resourceId === primaryId &&
-               r.person1 &&
-               maybe(self.getPerson(r.person1.resourceId).gender).type === 'http://gedcomx.org/Male';
-      }),
-        function(r) { return r.person1.resourceId; }));
-    },
-    getFathers:    function() { return helpers.map(this.getFatherIds(), this.getPerson, this); },
-    getMotherIds:  function() {
-      var primaryId = this.getId(), self = this;
-      return helpers.uniq(helpers.map(helpers.filter(maybe(maybe(this.content).gedcomx).relationships, function(r) {
-        return r.type === 'http://gedcomx.org/ParentChild' &&
-          r.person2.resourceId === primaryId &&
-          r.person1 &&
-          maybe(self.getPerson(r.person1.resourceId).gender).type !== 'http://gedcomx.org/Male';
-      }),
-        function(r) { return r.person1.resourceId; }));
-    },
-    getMothers:    function() { return helpers.map(this.getMotherIds(), this.getPerson, this); },
-    getSpouseIds:  function() {
-      var primaryId = this.getId();
-      return helpers.uniq(helpers.map(helpers.filter(maybe(maybe(this.content).gedcomx).relationships, function(r) {
-        return r.type === 'http://gedcomx.org/Couple' &&
-          (r.person1.resourceId === primaryId || r.person2.resourceId === primaryId);
-      }),
-        function(r) { return r.person1.resourceId === primaryId ? r.person2.resourceId : r.person1.resourceId; }));
-    },
-    getSpouses:    function() { return helpers.map(this.getSpouseIds(), this.getPerson, this); },
-    getChildIds:  function() {
-      var primaryId = this.getId();
-      return helpers.uniq(helpers.map(helpers.filter(maybe(maybe(this.content).gedcomx).relationships, function(r) {
-        return r.type === 'http://gedcomx.org/ParentChild' &&
-          r.person1.resourceId === primaryId &&
-          r.person2;
-      }),
-        function(r) { return r.person2.resourceId; }));
-    },
-    getChildren:   function() { return helpers.map(this.getChildIds(), this.getPerson, this); }
+  var searchMatchResponseConvenienceFunctions = {
+    getSearchResults: function() { return this.entries || []; },
+    getResultsCount: function() { return this.results; },
+    getIndex: function() { return this.index; }
   };
 
-  var searchMatchResultExtender = helpers.compose(
-    helpers.objectExtender({getResults: function() {
-      return this.entries || [];
-    }}),
-    helpers.objectExtender(searchResultConvenienceFunctions, function(response) {
-      return response.entries;
-    }),
-    helpers.objectExtender(person.personConvenienceFunctions, function(response) {
-      return helpers.flatMap(response.entries, function(entry) {
-        return maybe(maybe(entry.content).gedcomx).persons;
+  var searchMatchResponseMapper = helpers.compose(
+    helpers.objectExtender(searchMatchResponseConvenienceFunctions),
+    helpers.constructorSetter(SearchResult, 'entries'),
+    person.personMapper(function(response) {
+      return helpers.map(response.entries, function(entry) {
+        return maybe(entry.content).gedcomx;
       });
     })
   );
@@ -186,8 +304,9 @@ define([
    * Get the matches (possible duplicates) for a person
    * The response includes the following convenience function
    *
-   * - `getResults()` - get the array of match results from the response; each result has convenience functions
-   * as described for {@link searchAndMatch.functions:getPersonSearch getPersonSearch}
+   * - `getSearchResults()` - get the array of {@link searchAndMatch.types:type.SearchResult SearchResults} from the response
+   * - `getResultsCount()` - get the total number of search results
+   * - `getIndex()` - get the starting index of the results array
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Matches_resource FamilySearch API Docs}
    *
@@ -200,9 +319,8 @@ define([
    */
   exports.getPersonMatches = function(id, params, opts) {
     return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/matches', params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-      searchMatchResultExtender);
+      searchMatchResponseMapper);
   };
-
 
   /**
    * @ngdoc function
@@ -213,8 +331,9 @@ define([
    * Get matches for someone not in the tree
    * The response includes the following convenience function
    *
-   * - `getResults()` - get the array of match results from the response; each result has convenience functions
-   * as described for {@link searchAndMatch.functions:getPersonSearch getPersonSearch}
+   * - `getSearchResults()` - get the array of {@link searchAndMatch.types:type.SearchResult SearchResults} from the response
+   * - `getResultsCount()` - get the total number of search results
+   * - `getIndex()` - get the starting index of the results array
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Search_resource FamilySearch API Docs}
    *
@@ -231,7 +350,7 @@ define([
       start: params.start,
       count: params.count
     }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-      searchMatchResultExtender);
+      searchMatchResponseMapper);
   };
 
   return exports;

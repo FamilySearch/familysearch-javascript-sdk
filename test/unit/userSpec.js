@@ -2,10 +2,12 @@ define(['FamilySearch'], function(FamilySearch) {
   describe('A user', function() {
     it('is returned from getCurrentUser', function() {
       FamilySearch.getCurrentUser().then(function(response) {
-        expect(response.getContactName()).toBe('Pete Townsend');
-        expect(response.getFullName()).toBe('Pete Townsend');
-        expect(response.getEmail()).toBe('peter@acme.org');
-        expect(response.getTreeUserId()).toBe('PXRQ-FMXT');
+        var user = response.getUser();
+        expect(user.id).toBe('cis.MMM.RX9');
+        expect(user.contactName).toBe('Pete Townsend');
+        expect(user.fullName).toBe('Pete Townsend');
+        expect(user.email).toBe('peter@acme.org');
+        expect(user.treeUserId).toBe('PXRQ-FMXT');
       });
     });
 
@@ -17,10 +19,11 @@ define(['FamilySearch'], function(FamilySearch) {
 
     it('contributor is returned from getAgent', function() {
       FamilySearch.getAgent('12345').then(function(response) {
-        expect(response.getId()).toBe('12345');
-        expect(response.getName()).toBe('John Smith');
-        expect(response.getAccountName()).toBe('account');
-        expect(response.getEmail()).toBe('someone@somewhere.org');
+        var agent = response.getAgent();
+        expect(agent.id).toBe('12345');
+        expect(agent.getName()).toBe('John Smith');
+        expect(agent.getAccountName()).toBe('account');
+        expect(agent.getEmail()).toBe('someone@somewhere.org');
       });
     });
 

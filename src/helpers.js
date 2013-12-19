@@ -3,6 +3,21 @@ define([
 ], function(globals) {
   var exports = {};
 
+  // Object.create polyfill
+  if (!Object.create) {
+    Object.create = (function(){
+      function F() {}
+
+      return function(o) {
+        if (arguments.length !== 1) {
+          throw new Error('Object.create implementation only accepts one parameter.');
+        }
+        F.prototype = o;
+        return new F();
+      };
+    })();
+  }
+
   // borrowed from underscore.js
   exports.isArray = function(value) {
     /*jshint eqeqeq:false */
@@ -215,8 +230,12 @@ define([
     return value != null ? value : {}; // != null also covers undefined
   };
 
-  // return a function that will extend an object with the specified extensions
-  // optionally applying them at points returned by extensionPointGetter
+  /**
+   * Return a function that takes an object and extends it with the specified extensions
+   * @param {Object} extensions
+   * @param {Function=} extensionPointGetter optional function that returns (sub)objects to extend
+   * @return {Function} the extender function
+   */
   exports.objectExtender = function(extensions, extensionPointGetter) {
     if (extensionPointGetter) {
       return function(obj) {
@@ -230,6 +249,54 @@ define([
     }
     else {
       return exports.partialRight(exports.extend, extensions);
+    }
+  };
+
+  /**
+   * Return a function that takes an object and returns an object with the same properties but with the constructor function's prototype
+   * @param constructorFunction
+   * @param {String=} attr if passed in, the constructor function will be applied to (each) element of object[attr] instead of the object itself
+   * @param {Function=} subObjectGenerator function that takes an object and returns a set of sub-objects;
+   * if passed in, the constructor function will be applied to sub-object[attr], where the sub-objects are returned by subObjectGenerator
+   * @return {Function} the constructor setter function
+   */
+  exports.constructorSetter = function(constructorFunction, attr, subObjectGenerator) {
+    var setConstructor;
+    if (subObjectGenerator) {
+      setConstructor = exports.constructorSetter(constructorFunction, attr);
+      return function(obj) {
+        var subObjs = subObjectGenerator(obj);
+        if (exports.isArray(subObjs)) {
+          exports.forEach(subObjs, function(subObj) {
+            setConstructor(subObj);
+          });
+        }
+        else if (exports.isObject(subObjs)) {
+          setConstructor(subObjs);
+        }
+        return obj;
+      };
+    }
+    else if (attr) {
+      setConstructor = exports.constructorSetter(constructorFunction);
+      return function(obj) {
+        if (exports.isArray(obj[attr])) {
+          obj[attr] = exports.map(obj[attr], function(o) {
+            return setConstructor(o);
+          });
+        }
+        else if (exports.isObject(obj[attr])) {
+          obj[attr] = setConstructor(obj[attr]);
+        }
+        return obj;
+      };
+    }
+    else {
+      return function(obj) {
+        var result = Object.create(constructorFunction.prototype);
+        exports.extend(result, obj);
+        return result;
+      };
     }
   };
 
