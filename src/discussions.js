@@ -63,7 +63,9 @@ define([
       helpers.compose(
         helpers.objectExtender({getDiscussionRefs: function() { return maybe(maybe(this.persons)[0])['discussion-references'] || []; }}),
         helpers.constructorSetter(DiscussionRef, 'discussion-references', function(response) {
-          return maybe(response.persons)[0];
+          if (response) {
+            return maybe(response.persons)[0];
+          }
         })
       ));
   };
