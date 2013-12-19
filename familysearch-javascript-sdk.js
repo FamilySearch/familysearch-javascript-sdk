@@ -2279,7 +2279,7 @@ define('person',[
    *
    * - `getChanges()` - get the array of changes from the response; each change has an `id`, `published` timestamp, `title`, and `updated` timestamp
    *
-   * *NOTE* The sandbox REST endpoint for this function is broken so I have been unable to test it. Do not use.
+   * **NOTE The sandbox REST endpoint for this function is broken so I have been unable to test it. Do not use.**
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Change_Summary_resource FamilySearch API Docs}
    *
@@ -3114,7 +3114,7 @@ define('notes',[
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/DallanQ// editable example}
+   * {@link http://jsfiddle.net/DallanQ/dV9uQ/ editable example}
    *
    * @param {String} caprid of the child and parents relationship
    * @param {String} nid of the note
