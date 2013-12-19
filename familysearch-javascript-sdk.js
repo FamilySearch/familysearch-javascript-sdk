@@ -4357,7 +4357,7 @@ define('user',[
 
   /**
    * @ngdoc function
-   * @name user.functions:getCurrentUserPerson
+   * @name user.functions:getCurrentUserPersonId
    * @function
    *
    * @description
@@ -4371,7 +4371,7 @@ define('user',[
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the (string) id of the current user person
    */
-  exports.getCurrentUserPerson = function(params, opts) {
+  exports.getCurrentUserPersonId = function(params, opts) {
     var promise = plumbing.get('/platform/tree/current-person', params, {}, opts);
     var d = globals.deferredWrapper();
     var returnedPromise = helpers.extendHttpPromise(d.promise, promise);
@@ -4615,7 +4615,7 @@ define('FamilySearch',[
     Agent: user.Agent,
     User: user.User,
     getCurrentUser: user.getCurrentUser,
-    getCurrentUserPerson: user.getCurrentUserPerson,
+    getCurrentUserPersonId: user.getCurrentUserPersonId,
     getAgent: user.getAgent,
 
     // plumbing

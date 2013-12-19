@@ -635,8 +635,8 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "user.functions:getCurrentUserPerson",
-      "shortName": "getCurrentUserPerson",
+      "id": "user.functions:getCurrentUserPersonId",
+      "shortName": "getCurrentUserPersonId",
       "type": "function",
       "keywords": "api current currently details docs during editable example familysearch for function functions get getperson http https id in init into net of options opts org params pass person promise specified the to tree unused user"
     },
