@@ -230,7 +230,9 @@ define([
       helpers.compose(
         helpers.objectExtender({getComments: function() { return maybe(maybe(this.discussions)[0]).comments || []; }}),
         helpers.constructorSetter(Comment, 'comments', function(response) {
-          return maybe(response.discussions)[0];
+          if (response) {
+            return maybe(response.discussions)[0];
+          }          
         })
       ));
   };
