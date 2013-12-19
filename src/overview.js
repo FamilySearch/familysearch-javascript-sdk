@@ -93,12 +93,14 @@
  * ## Handling responses
  *
  * API responses are typically json objects. The API calls add *convenience functions* for returning various objects from the response.
- * For example, the `getPerson('ID')` API call adds a `getPerson()` convenience function to return the {@link person.types:type.Person Person} object from the response.
+ * For example, the `getPerson('ID')` API call adds a `getPerson()` convenience function to return the
+ * {@link person.types:type.Person Person} object from the response.
  *
- * Often, the returned objects have custom constructors with additional convenience functions.
- * For example, the {@link person.types:type.Person Person} object has `getGivenName()` and `getSurname()` convenience
- * functions for returning the person's given name and surname respectively.
- * All of the convenience functions and object properties and methods are fully described in the docs.
+ * The returned objects contain the same properties as the original response json, but they have custom constructors whose
+ * prototypes have additional convenience functions.
+ * For example, the prototypes for {@link person.types:type.Person Person} objects have `getGivenName()` and `getSurname()`
+ * convenience functions for returning the person's given name and surname respectively.
+ * The object properties and convenience functions are fully described in the docs.
  *
  * You can add your own convenience functions to the returned objects.
  * For example, suppose you wanted to display someone's name followed by their id. You would write
@@ -119,9 +121,9 @@
  *
  * ## Plumbing
  *
- * The functions in the "plumbing" module are low-level functions that you would not normally call.
- * The higher-level functions that you normally call are built on top of the plumbing functions.
- * The plumbing functions are exposed in case you want to do something not anticipated by the higher-level functions.
+ * The functions in the *plumbing* module are low-level functions that you would not normally call.
+ * The higher-level API functions that you normally call are built on top of the plumbing functions.
+ * The plumbing functions are exposed in case you want to do something not anticipated by the API functions.
  * The plumbing functions here serve the same purpose as the
  * [plumbing functions in git](https://www.kernel.org/pub/software/scm/git/docs/#_low_level_commands_plumbing).
  *
