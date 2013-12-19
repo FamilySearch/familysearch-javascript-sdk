@@ -63,7 +63,9 @@ define([
       helpers.compose(
         helpers.objectExtender({getDiscussionRefs: function() { return maybe(maybe(this.persons)[0])['discussion-references'] || []; }}),
         helpers.constructorSetter(DiscussionRef, 'discussion-references', function(response) {
-          return maybe(response.persons)[0];
+          if (response) {
+            return maybe(response.persons)[0];
+          }
         })
       ));
   };
@@ -230,9 +232,7 @@ define([
       helpers.compose(
         helpers.objectExtender({getComments: function() { return maybe(maybe(this.discussions)[0]).comments || []; }}),
         helpers.constructorSetter(Comment, 'comments', function(response) {
-          if (response) {
-            return maybe(response.discussions)[0];
-          }          
+          return maybe(response.discussions)[0];
         })
       ));
   };
