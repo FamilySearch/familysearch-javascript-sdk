@@ -103,6 +103,13 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "discussions.functions:getMultiDiscussion",
+      "shortName": "getMultiDiscussion",
+      "type": "function",
+      "keywords": "all api at been by currently dids discussion discussions docs during editable example familysearch fulfilled function functions get getdiscussion have http https id ids in init is map multiple net of once opts org parallel params pass promise read requesting response returning specified that the them to unused when"
+    },
+    {
+      "section": "api",
       "id": "discussions.functions:getPersonDiscussionRefs",
       "shortName": "getPersonDiscussionRefs",
       "type": "function",
@@ -243,6 +250,27 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "notes.functions:getMultiChildAndParentsNote",
+      "shortName": "getMultiChildAndParentsNote",
+      "type": "function",
+      "keywords": "all and api at been by caprid child currently docs during editable example familysearch fulfilled function functions get getchildandparentsnote have http https id ids in init is map multiple net nids note noteref noterefs notes of once opts or org parallel params parents pass promise read relationship requesting response returning specified that the them to types unused when"
+    },
+    {
+      "section": "api",
+      "id": "notes.functions:getMultiCoupleNote",
+      "shortName": "getMultiCoupleNote",
+      "type": "function",
+      "keywords": "all api at been by couple crid currently docs during editable example familysearch fulfilled function functions get getcouplenote have http https id ids in init is map multiple net nids note noteref noterefs notes of once opts or org parallel params pass promise read relationship requesting response returning specified that the them to types unused when"
+    },
+    {
+      "section": "api",
+      "id": "notes.functions:getMultiPersonNote",
+      "shortName": "getMultiPersonNote",
+      "type": "function",
+      "keywords": "all api at been by currently docs during editable example familysearch fulfilled function functions get getpersonnote have http https id ids in init is map multiple net nids note noteref noterefs notes of once opts or org parallel params pass person pid promise read requesting response returning specified that the them to types unused when"
+    },
+    {
+      "section": "api",
       "id": "notes.functions:getPersonNote",
       "shortName": "getPersonNote",
       "type": "function",
@@ -267,7 +295,7 @@ NG_DOCS={
       "id": "notes.types:type.NoteRef",
       "shortName": "NoteRef",
       "type": "function",
-      "keywords": "api details for function functions getpersonnote id into note noteref notes of on pass person property reference subject the to types"
+      "keywords": "api details for function functions getchildandparentsnote getcouplenote getpersonnote id into note noteref notes of on or pass person property reference subject the to types"
     },
     {
       "section": "api",
@@ -281,7 +309,7 @@ NG_DOCS={
       "id": "parentsAndChildren.functions:getChildAndParents",
       "shortName": "getChildAndParents",
       "type": "function",
-      "keywords": "about access and api been can child childandparents convenience docs during each editable example familysearch following for function functions get getperson getrelationship has http https id if in includes information init net object of options opts org parameter params parents parentsandchildren pass person persons promise read relationship response return set specified the this to true types using which will you"
+      "keywords": "about access and api been can caprid child childandparents convenience docs during each editable example familysearch following for function functions get getperson getrelationship has http https id if in includes information init net object of options opts org parameter params parents parentsandchildren pass person persons promise read relationship response return set specified the this to true types using which will you"
     },
     {
       "section": "api",
@@ -337,7 +365,7 @@ NG_DOCS={
       "id": "person.functions:getPersonWithRelationships",
       "shortName": "getPersonWithRelationships",
       "type": "function",
-      "keywords": "addition and api are array as available child childandparents children convenience couple docs during each editable example familysearch father following for full function functions get getchildids getchildrelationships getchildren getfatherids getfathers getmotherids getmothers getparentrelationships getperson getprimaryid getprimaryperson getspouseids getspouserelationships getspouses has http https id ids if in init is mother net object objects of only options opts org other params parent parents pass person persons pid primary promise read relationship relationships relative requested response retrieve returns set specified spouse spouseid spouses the their to true types with"
+      "keywords": "addition all and api are array available child childandparents children convenience couple docs during each editable example familysearch father following for full function functions get getchildids getchildidsof getchildrelationships getchildrelationshipsof getchildren getchildrenof getfatherids getfathers getmotherids getmothers getparentrelationships getperson getprimaryid getprimaryperson getspouseids getspouserelationship getspouserelationships getspouses has http https id ids if in init is mother net null object objects of options opts org other params parent parents pass person persons pid primary promise read relationship relationships relative requested response retrieve return set specified spouse spouseid spouses the their to true types with without"
     },
     {
       "section": "api",
@@ -372,7 +400,7 @@ NG_DOCS={
       "id": "person.types:type.Couple",
       "shortName": "Couple",
       "type": "function",
-      "keywords": "api array couple fact facts function getfacts gethusbandid getwifeid husband id marriage of person property relationship the types wife"
+      "keywords": "api array couple fact facts function getfacts gethusbandid getmarriagefact getwifeid http husband id if marriage multiple of one org person property relationship the type types wife"
     },
     {
       "section": "api",
@@ -558,6 +586,13 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "sources.functions:getMultiSourceDescription",
+      "shortName": "getMultiSourceDescription",
+      "type": "function",
+      "keywords": "all api at been by currently description descriptions docs during editable example familysearch fulfilled function functions get getsourcedescription have http https id ids in init is map multiple net of once opts or org parallel params pass promise read requesting response returning sdids source sourceref sourcerefs sources specified that the them to types unused when"
+    },
+    {
+      "section": "api",
       "id": "sources.functions:getPersonSourceRefs",
       "shortName": "getPersonSourceRefs",
       "type": "function",
@@ -639,6 +674,13 @@ NG_DOCS={
       "shortName": "getCurrentUserPersonId",
       "type": "function",
       "keywords": "api current currently details docs during editable example familysearch for function functions get getperson http https id in init into net of options opts org params pass person promise specified the to tree unused user"
+    },
+    {
+      "section": "api",
+      "id": "user.functions:getMultiAgent",
+      "shortName": "getMultiAgent",
+      "type": "function",
+      "keywords": "agent agents aids all api at been by currently docs during editable example familysearch fulfilled function functions get getagent have http https id ids in init is map multiple net of once opts org parallel params pass promise read requesting response returning specified that the them to unused user when"
     },
     {
       "section": "api",

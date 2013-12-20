@@ -1,0 +1,26 @@
+<h1><code ng:non-bindable="">getMultiAgent</code>
+<span class="hint">(functions in module <code ng:non-bindable="">user</code>
+)</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>Get multiple agents at once by requesting them in parallel</p>
+
+<p><a href="https://familysearch.org/developers/docs/api/users/Agent_resource">FamilySearch API Docs</a></p>
+
+<p><a href="http://jsfiddle.net/DallanQ/hMhas/">editable example</a></p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getMultiAgent(aids[, params][, opts]);</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code ng:non-bindable="">aids – {Array} – </code>
+<p>Ids of the agents to read</p></li>
+<li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
+<p>pass to getAgent currently unused</p></li>
+<li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
+<p>pass to the http function specified during init</p></li>
+</ul>
+<h3 id="Returns">Returns</h3>
+<div class="returns"><code ng:non-bindable="">{Object}</code>
+– <p>promise that is fulfilled when all of the agents have been read,
+returning a map of agent id to response</p></div>
+</div>
+</div>

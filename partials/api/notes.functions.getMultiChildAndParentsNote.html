@@ -1,0 +1,28 @@
+<h1><code ng:non-bindable="">getMultiChildAndParentsNote</code>
+<span class="hint">(functions in module <code ng:non-bindable="">notes</code>
+)</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>Get multiple notes at once by requesting them in parallel</p>
+
+<p><a href="https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource">FamilySearch API Docs</a></p>
+
+<p><a href="http://jsfiddle.net/DallanQ/fn8NU/">editable example</a></p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getMultiChildAndParentsNote(caprid, nids[, params][, opts]);</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code ng:non-bindable="">caprid – {String} – </code>
+<p>of the child and parents relationship</p></li>
+<li><code ng:non-bindable="">nids – {Array} – </code>
+<p>Ids or <a href="#/api/notes.types:type.NoteRef">NoteRefs</a> of the notes to read</p></li>
+<li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
+<p>pass to getChildAndParentsNote currently unused</p></li>
+<li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
+<p>pass to the http function specified during init</p></li>
+</ul>
+<h3 id="Returns">Returns</h3>
+<div class="returns"><code ng:non-bindable="">{Object}</code>
+– <p>promise that is fulfilled when all of the notes have been read,
+returning a map of note id to response</p></div>
+</div>
+</div>

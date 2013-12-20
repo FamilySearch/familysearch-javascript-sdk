@@ -1562,6 +1562,32 @@ define('discussions',[
 
   /**
    * @ngdoc function
+   * @name discussions.functions:getMultiDiscussion
+   * @function
+   *
+   * @description
+   * Get multiple discussions at once by requesting them in parallel
+   *
+   * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/7GMBT/ editable example}
+   *
+   * @param {Array} dids Ids of the discussions to read
+   * @param {Object=} params pass to getDiscussion currently unused
+   * @param {Object=} opts pass to the http function specified during init
+   * @return {Object} promise that is fulfilled when all of the discussions have been read,
+   * returning a map of discussion id to response
+   */
+  exports.getMultiDiscussion = function(dids, params, opts) {
+    var promises = {};
+    helpers.forEach(dids, function(did) {
+      promises[did] = exports.getDiscussion(did, params, opts);
+    });
+    return helpers.promiseAll(promises);
+  };
+
+  /**
+   * @ngdoc function
    * @name discussions.types:type.Comment
    * @description
    *
@@ -2128,6 +2154,14 @@ define('person',[
 
     /**
      * @ngdoc function
+     * @name person.types:type.Couple#getMarriageFact
+     * @methodOf person.types:type.Couple
+     * @return {Fact} {@link person.types:type.Fact Fact} of type http://gedcomx.org/Marriage (first one if multiple)
+     */
+    getMarriageFact: function() { return helpers.find(this.facts, {type: 'http://gedcomx.org/Marriage'}); },
+
+    /**
+     * @ngdoc function
      * @name person.types:type.Couple#getHusbandId
      * @methodOf person.types:type.Couple
      * @function
@@ -2158,10 +2192,14 @@ define('person',[
    * - `getFatherIds()` - array of ids
    * - `getMotherIds()` - array of ids
    * - `getSpouseIds()` - array of ids
-   * - `getChildIds(spouseId)` - array of ids; if `spouseId` is specified, returns only ids of children with spouse as the other parent
+   * - `getChildIds()` - array of ids of all children
+   * - `getChildIdsOf(spouseId)` - array of ids; if `spouseId` is null/undefined, return ids of children without the other parent
    * - `getParentRelationships()` - array of {@link person.types:type.ChildAndParents ChildAndParents} relationship objects
    * - `getSpouseRelationships()` - array of {@link person.types:type.Couple Couple} relationship objects
+   * - `getSpouseRelationship(spouseId)` - {@link person.types:type.Couple Couple} relationship with the specified spouse
    * - `getChildRelationships()` - array of {@link person.types:type.ChildAndParents ChildAndParents} relationship objects
+   * - `getChildRelationshipsOf(spouseId)` - array of {@link person.types:type.ChildAndParents ChildAndParents} relationship objects
+   * if `spouseId` is null/undefined, return ids of child relationships without the other parent
    * - `getPrimaryPerson()` - {@link person.types:type.Person Person} object for the primary person
    *
    * In addition, the following functions are available if persons is set to true in params
@@ -2170,8 +2208,9 @@ define('person',[
    * - `getFathers()` - array of father {@link person.types:type.Person Persons}
    * - `getMothers()` - array of mother {@link person.types:type.Person Persons}
    * - `getSpouses()` - array of spouse {@link person.types:type.Person Persons}
-   * - `getChildren(spouseId)` - array of child {@link person.types:type.Person Persons};
-   * if `spouseId` is specified returns only children with spouse as the other parent
+   * - `getChildren()` - array of all child {@link person.types:type.Person Persons};
+   * - `getChildrenOf(spouseId)` - array of child {@link person.types:type.Person Persons};
+   * if `spouseId` is null/undefined, return children without the other parent
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource FamilySearch API Docs}
    *
@@ -2219,10 +2258,25 @@ define('person',[
         return r.type === 'http://gedcomx.org/Couple';
       });
     },
+    getSpouseRelationship:  function(spouseId) {
+      var primaryId = this.getPrimaryId();
+      return helpers.find(this.relationships, function(r) {
+        return r.type === 'http://gedcomx.org/Couple' &&
+          (primaryId === r.getHusbandId() ? r.getWifeId() : r.getHusbandId()) === spouseId;
+      });
+    },
     getChildRelationships: function() {
       var primaryId = this.getPrimaryId();
       return helpers.filter(this.childAndParentsRelationships, function(r) {
         return maybe(r.father).resourceId === primaryId || maybe(r.mother).resourceId === primaryId;
+      });
+    },
+    getChildRelationshipsOf: function(spouseId) {
+      var primaryId = this.getPrimaryId();
+      return helpers.filter(this.childAndParentsRelationships, function(r) {
+        /*jshint eqeqeq:false */
+        return (maybe(r.father).resourceId === primaryId || maybe(r.mother).resourceId === primaryId) &&
+          (maybe(r.father).resourceId == spouseId || maybe(r.mother).resourceId == spouseId); // allow spouseId to be null or undefined
       });
     },
     getFatherIds:  function() {
@@ -2255,17 +2309,20 @@ define('person',[
         }, this));
     },
     getSpouses:    function() { return helpers.map(this.getSpouseIds(), this.getPerson, this); },
-    getChildIds:   function(spouseId) {
-      return helpers.uniq(helpers.map(
-        helpers.filter(this.getChildRelationships(), function(r) {
-          return !!r.getChildId() &&
-            (!spouseId || r.getFatherId() === spouseId || r.getMotherId() === spouseId);
-        }),
+    getChildIds:   function() {
+      return helpers.uniq(helpers.map(this.getChildRelationships(),
         function(r) {
           return r.getChildId();
         }, this));
     },
-    getChildren:   function(spouseId) { return helpers.map(this.getChildIds(spouseId), this.getPerson, this); }
+    getChildren:   function() { return helpers.map(this.getChildIds(), this.getPerson, this); },
+    getChildIdsOf:   function(spouseId) {
+      return helpers.uniq(helpers.map(this.getChildRelationshipsOf(spouseId),
+        function(r) {
+          return r.getChildId();
+        }, this));
+    },
+    getChildrenOf:   function(spouseId) { return helpers.map(this.getChildIdsOf(spouseId), this.getPerson, this); }
   };
 
   /**
@@ -2884,7 +2941,9 @@ define('notes',[
      * @ngdoc property
      * @name notes.types:type.NoteRef#id
      * @propertyOf notes.types:type.NoteRef
-     * @return {String} Id of the note - pass into {@link notes.functions.getPersonNote getPersonNote} for details
+     * @return {String} Id of the note - pass into {@link notes.functions.getPersonNote getPersonNote},
+     * {@link notes.functions.getCoupleNote getCoupleNote}, or {@link notes.functions.getChildAndParentsNote getChildAndParentsNote}
+     * for details
      */
 
     /**
@@ -3011,6 +3070,34 @@ define('notes',[
 
   /**
    * @ngdoc function
+   * @name notes.functions:getMultiPersonNote
+   * @function
+   *
+   * @description
+   * Get multiple notes at once by requesting them in parallel
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Note_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/5dLd4/ editable example}
+   *
+   * @param {String} pid of the person
+   * @param {Array} nids Ids or {@link notes.types:type.NoteRef NoteRefs} of the notes to read
+   * @param {Object=} params pass to getPersonNote currently unused
+   * @param {Object=} opts pass to the http function specified during init
+   * @return {Object} promise that is fulfilled when all of the notes have been read,
+   * returning a map of note id to response
+   */
+  exports.getMultiPersonNote = function(pid, nids, params, opts) {
+    var promises = {};
+    helpers.forEach(nids, function(nid) {
+      var id = (nid instanceof NoteRef) ? nid.id : nid;
+      promises[id] = exports.getPersonNote(pid, id, params, opts);
+    });
+    return helpers.promiseAll(promises);
+  };
+
+  /**
+   * @ngdoc function
    * @name notes.functions:getCoupleNoteRefs
    * @function
    *
@@ -3068,6 +3155,34 @@ define('notes',[
           return maybe(maybe(response).relationships)[0];
         })
       ));
+  };
+
+  /**
+   * @ngdoc function
+   * @name notes.functions:getMultiCoupleNote
+   * @function
+   *
+   * @description
+   * Get multiple notes at once by requesting them in parallel
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/fn8NU/ editable example}
+   *
+   * @param {String} crid of the couple relationship
+   * @param {Array} nids Ids or {@link notes.types:type.NoteRef NoteRefs} of the notes to read
+   * @param {Object=} params pass to getCoupleNote currently unused
+   * @param {Object=} opts pass to the http function specified during init
+   * @return {Object} promise that is fulfilled when all of the notes have been read,
+   * returning a map of note id to response
+   */
+  exports.getMultiCoupleNote = function(crid, nids, params, opts) {
+    var promises = {};
+    helpers.forEach(nids, function(nid) {
+      var id = (nid instanceof NoteRef) ? nid.id : nid;
+      promises[id] = exports.getCoupleNote(crid, id, params, opts);
+    });
+    return helpers.promiseAll(promises);
   };
 
   /**
@@ -3133,6 +3248,34 @@ define('notes',[
       ));
   };
 
+  /**
+   * @ngdoc function
+   * @name notes.functions:getMultiChildAndParentsNote
+   * @function
+   *
+   * @description
+   * Get multiple notes at once by requesting them in parallel
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/fn8NU/ editable example}
+   *
+   * @param {String} caprid of the child and parents relationship
+   * @param {Array} nids Ids or {@link notes.types:type.NoteRef NoteRefs} of the notes to read
+   * @param {Object=} params pass to getChildAndParentsNote currently unused
+   * @param {Object=} opts pass to the http function specified during init
+   * @return {Object} promise that is fulfilled when all of the notes have been read,
+   * returning a map of note id to response
+   */
+  exports.getMultiChildAndParentsNote = function(caprid, nids, params, opts) {
+    var promises = {};
+    helpers.forEach(nids, function(nid) {
+      var id = (nid instanceof NoteRef) ? nid.id : nid;
+      promises[id] = exports.getChildAndParentsNote(caprid, id, params, opts);
+    });
+    return helpers.promiseAll(promises);
+  };
+
   return exports;
 });
 
@@ -3171,14 +3314,14 @@ define('parentsAndChildren',[
    *
    * {@link http://jsfiddle.net/DallanQ/C437t/ editable example}
    *
-   * @param {String} id of the relationship to read
+   * @param {String} caprid of the relationship to read
    * @param {Object=} params set `persons` true to return a person object for each person in the relationship,
    * which you can access using the `getPerson(id)` convenience function.
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getChildAndParents = function(id, params, opts) {
-    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(id), params, {'Accept': 'application/x-fs-v1+json'}, opts,
+  exports.getChildAndParents = function(caprid, params, opts) {
+    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(caprid), params, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.compose(
         helpers.constructorSetter(person.ChildAndParents, 'childAndParentsRelationships'),
         helpers.objectExtender(childAndParentsConvenienceFunctions),
@@ -3894,6 +4037,33 @@ define('sources',[
 
   /**
    * @ngdoc function
+   * @name sources.functions:getMultiSourceDescription
+   * @function
+   *
+   * @description
+   * Get multiple source descriptions at once by requesting them in parallel
+   *
+   * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/chQ64/ editable example}
+   *
+   * @param {Array} sdids Ids or {@link sources.types:type.SourceRef SourceRefs} of the source descriptions to read
+   * @param {Object=} params pass to getSourceDescription currently unused
+   * @param {Object=} opts pass to the http function specified during init
+   * @return {Object} promise that is fulfilled when all of the source descriptions have been read,
+   * returning a map of source description id to response
+   */
+  exports.getMultiSourceDescription = function(sdids, params, opts) {
+    var promises = {};
+    helpers.forEach(sdids, function(sdid) {
+      var id = (sdid instanceof SourceRef) ? sdid.getSourceDescriptionId() : sdid;
+      promises[id] = exports.getSourceDescription(id, params, opts);
+    });
+    return helpers.promiseAll(promises);
+  };
+
+  /**
+   * @ngdoc function
    * @name sources.functions:getCoupleSourceRefs
    * @function
    *
@@ -4499,6 +4669,32 @@ define('user',[
       ));
   };
 
+  /**
+   * @ngdoc function
+   * @name user.functions:getMultiAgent
+   * @function
+   *
+   * @description
+   * Get multiple agents at once by requesting them in parallel
+   *
+   * {@link https://familysearch.org/developers/docs/api/users/Agent_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/hMhas/ editable example}
+   *
+   * @param {Array} aids Ids of the agents to read
+   * @param {Object=} params pass to getAgent currently unused
+   * @param {Object=} opts pass to the http function specified during init
+   * @return {Object} promise that is fulfilled when all of the agents have been read,
+   * returning a map of agent id to response
+   */
+  exports.getMultiAgent = function(aids, params, opts) {
+    var promises = {};
+    helpers.forEach(aids, function(aid) {
+      promises[aid] = exports.getAgent(aid, params, opts);
+    });
+    return helpers.promiseAll(promises);
+  };
+
   return exports;
 });
 
@@ -4540,6 +4736,7 @@ define('FamilySearch',[
     Comment: discussions.Comment,
     getPersonDiscussionRefs: discussions.getPersonDiscussionRefs,
     getDiscussion: discussions.getDiscussion,
+    getMultiDiscussion: discussions.getMultiDiscussion,
     getComments: discussions.getComments,
 
     // memories
@@ -4558,10 +4755,13 @@ define('FamilySearch',[
     NoteRef: notes.NoteRef,
     getPersonNoteRefs: notes.getPersonNoteRefs,
     getPersonNote: notes.getPersonNote,
+    getMultiPersonNote: notes.getMultiPersonNote,
     getCoupleNoteRefs: notes.getCoupleNoteRefs,
     getCoupleNote: notes.getCoupleNote,
+    getMultiCoupleNote: notes.getMultiCoupleNote,
     getChildAndParentsNoteRefs: notes.getChildAndParentsNoteRefs,
     getChildAndParentsNote: notes.getChildAndParentsNote,
+    getMultiChildAndParentsNote: notes.getMultiChildAndParentsNote,
 
     // parents and children
     getChildAndParents: parentsAndChildren.getChildAndParents,
@@ -4604,6 +4804,7 @@ define('FamilySearch',[
     IdSourceRef: sources.IdSourceRef,
     getPersonSourceRefs: sources.getPersonSourceRefs,
     getSourceDescription: sources.getSourceDescription,
+    getMultiSourceDescription: sources.getMultiSourceDescription,
     getCoupleSourceRefs: sources.getCoupleSourceRefs,
     getChildAndParentsSourceRefs: sources.getChildAndParentsSourceRefs,
     getSourceRefsQuery: sources.getSourceRefsQuery,
@@ -4617,6 +4818,7 @@ define('FamilySearch',[
     getCurrentUser: user.getCurrentUser,
     getCurrentUserPersonId: user.getCurrentUserPersonId,
     getAgent: user.getAgent,
+    getMultiAgent: user.getMultiAgent,
 
     // plumbing
     get: plumbing.get,

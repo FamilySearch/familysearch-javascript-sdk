@@ -11,10 +11,14 @@ The response has the following convenience functions</p>
 <li><code>getFatherIds()</code> - array of ids</li>
 <li><code>getMotherIds()</code> - array of ids</li>
 <li><code>getSpouseIds()</code> - array of ids</li>
-<li><code>getChildIds(spouseId)</code> - array of ids; if <code>spouseId</code> is specified, returns only ids of children with spouse as the other parent</li>
+<li><code>getChildIds()</code> - array of ids of all children</li>
+<li><code>getChildIdsOf(spouseId)</code> - array of ids; if <code>spouseId</code> is null/undefined, return ids of children without the other parent</li>
 <li><code>getParentRelationships()</code> - array of <a href="#/api/person.types:type.ChildAndParents">ChildAndParents</a> relationship objects</li>
 <li><code>getSpouseRelationships()</code> - array of <a href="#/api/person.types:type.Couple">Couple</a> relationship objects</li>
+<li><code>getSpouseRelationship(spouseId)</code> - <a href="#/api/person.types:type.Couple">Couple</a> relationship with the specified spouse</li>
 <li><code>getChildRelationships()</code> - array of <a href="#/api/person.types:type.ChildAndParents">ChildAndParents</a> relationship objects</li>
+<li><code>getChildRelationshipsOf(spouseId)</code> - array of <a href="#/api/person.types:type.ChildAndParents">ChildAndParents</a> relationship objects
+if <code>spouseId</code> is null/undefined, return ids of child relationships without the other parent</li>
 <li><code>getPrimaryPerson()</code> - <a href="#/api/person.types:type.Person">Person</a> object for the primary person</li>
 </ul>
 
@@ -25,8 +29,9 @@ The response has the following convenience functions</p>
 <li><code>getFathers()</code> - array of father <a href="#/api/person.types:type.Person">Persons</a></li>
 <li><code>getMothers()</code> - array of mother <a href="#/api/person.types:type.Person">Persons</a></li>
 <li><code>getSpouses()</code> - array of spouse <a href="#/api/person.types:type.Person">Persons</a></li>
-<li><code>getChildren(spouseId)</code> - array of child <a href="#/api/person.types:type.Person">Persons</a>;
-if <code>spouseId</code> is specified returns only children with spouse as the other parent</li>
+<li><code>getChildren()</code> - array of all child <a href="#/api/person.types:type.Person">Persons</a>;</li>
+<li><code>getChildrenOf(spouseId)</code> - array of child <a href="#/api/person.types:type.Person">Persons</a>;
+if <code>spouseId</code> is null/undefined, return children without the other parent</li>
 </ul>
 
 <p><a href="https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource">FamilySearch API Docs</a></p>

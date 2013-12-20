@@ -1,0 +1,26 @@
+<h1><code ng:non-bindable="">getMultiDiscussion</code>
+<span class="hint">(functions in module <code ng:non-bindable="">discussions</code>
+)</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>Get multiple discussions at once by requesting them in parallel</p>
+
+<p><a href="https://familysearch.org/developers/docs/api/discussions/Discussion_resource">FamilySearch API Docs</a></p>
+
+<p><a href="http://jsfiddle.net/DallanQ/7GMBT/">editable example</a></p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getMultiDiscussion(dids[, params][, opts]);</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code ng:non-bindable="">dids – {Array} – </code>
+<p>Ids of the discussions to read</p></li>
+<li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
+<p>pass to getDiscussion currently unused</p></li>
+<li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
+<p>pass to the http function specified during init</p></li>
+</ul>
+<h3 id="Returns">Returns</h3>
+<div class="returns"><code ng:non-bindable="">{Object}</code>
+– <p>promise that is fulfilled when all of the discussions have been read,
+returning a map of discussion id to response</p></div>
+</div>
+</div>
