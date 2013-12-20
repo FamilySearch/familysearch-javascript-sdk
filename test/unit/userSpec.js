@@ -17,9 +17,19 @@ define(['FamilySearch'], function(FamilySearch) {
       });
     });
 
-    it('contributor is returned from getAgent', function() {
+    it('agent is returned from getAgent', function() {
       FamilySearch.getAgent('12345').then(function(response) {
         var agent = response.getAgent();
+        expect(agent.id).toBe('12345');
+        expect(agent.getName()).toBe('John Smith');
+        expect(agent.getAccountName()).toBe('account');
+        expect(agent.getEmail()).toBe('someone@somewhere.org');
+      });
+    });
+
+    it('agents is returned from getMultiAgent', function() {
+      FamilySearch.getMultiAgent(['12345']).then(function(response) {
+        var agent = response['12345'].getAgent();
         expect(agent.id).toBe('12345');
         expect(agent.getName()).toBe('John Smith');
         expect(agent.getAccountName()).toBe('account');

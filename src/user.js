@@ -236,5 +236,31 @@ define([
       ));
   };
 
+  /**
+   * @ngdoc function
+   * @name user.functions:getMultiAgent
+   * @function
+   *
+   * @description
+   * Get multiple agents at once by requesting them in parallel
+   *
+   * {@link https://familysearch.org/developers/docs/api/users/Agent_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/hMhas/ editable example}
+   *
+   * @param {Array} aids Ids of the agents to read
+   * @param {Object=} params pass to getAgent currently unused
+   * @param {Object=} opts pass to the http function specified during init
+   * @return {Object} promise that is fulfilled when all of the agents have been read,
+   * returning a map of agent id to response
+   */
+  exports.getMultiAgent = function(aids, params, opts) {
+    var promises = {};
+    helpers.forEach(aids, function(aid) {
+      promises[aid] = exports.getAgent(aid, params, opts);
+    });
+    return helpers.promiseAll(promises);
+  };
+
   return exports;
 });

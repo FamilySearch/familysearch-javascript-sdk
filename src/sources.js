@@ -216,6 +216,33 @@ define([
 
   /**
    * @ngdoc function
+   * @name sources.functions:getMultiSourceDescription
+   * @function
+   *
+   * @description
+   * Get multiple source descriptions at once by requesting them in parallel
+   *
+   * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/chQ64/ editable example}
+   *
+   * @param {Array} sdids Ids or {@link sources.types:type.SourceRef SourceRefs} of the source descriptions to read
+   * @param {Object=} params pass to getSourceDescription currently unused
+   * @param {Object=} opts pass to the http function specified during init
+   * @return {Object} promise that is fulfilled when all of the source descriptions have been read,
+   * returning a map of source description id to response
+   */
+  exports.getMultiSourceDescription = function(sdids, params, opts) {
+    var promises = {};
+    helpers.forEach(sdids, function(sdid) {
+      var id = (sdid instanceof SourceRef) ? sdid.getSourceDescriptionId() : sdid;
+      promises[id] = exports.getSourceDescription(id, params, opts);
+    });
+    return helpers.promiseAll(promises);
+  };
+
+  /**
+   * @ngdoc function
    * @name sources.functions:getCoupleSourceRefs
    * @function
    *

@@ -139,6 +139,32 @@ define([
 
   /**
    * @ngdoc function
+   * @name discussions.functions:getMultiDiscussion
+   * @function
+   *
+   * @description
+   * Get multiple discussions at once by requesting them in parallel
+   *
+   * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/7GMBT/ editable example}
+   *
+   * @param {Array} dids Ids of the discussions to read
+   * @param {Object=} params pass to getDiscussion currently unused
+   * @param {Object=} opts pass to the http function specified during init
+   * @return {Object} promise that is fulfilled when all of the discussions have been read,
+   * returning a map of discussion id to response
+   */
+  exports.getMultiDiscussion = function(dids, params, opts) {
+    var promises = {};
+    helpers.forEach(dids, function(did) {
+      promises[did] = exports.getDiscussion(did, params, opts);
+    });
+    return helpers.promiseAll(promises);
+  };
+
+  /**
+   * @ngdoc function
    * @name discussions.types:type.Comment
    * @description
    *

@@ -25,6 +25,14 @@ define(['FamilySearch'], function(FamilySearch) {
       });
     });
 
+    it('descriptions are returned from getMultiSourceDescription', function() {
+      FamilySearch.getMultiSourceDescription(['MMMM-MMM']).then(function(response) {
+        var sourceDesc = response['MMMM-MMM'].getSourceDescription();
+        expect(sourceDesc.id).toBe('MMMM-MMM');
+        expect(sourceDesc.getTitle()).toBe('1900 US Census, Ethel Hollivet');
+      });
+    });
+
     it('references are returned from getCoupleSourceRefs', function() {
       FamilySearch.getCoupleSourceRefs('RRRR-RRR').then(function(response) {
         var sourceRefs = response.getSourceRefs();

@@ -32,7 +32,9 @@ define([
      * @ngdoc property
      * @name notes.types:type.NoteRef#id
      * @propertyOf notes.types:type.NoteRef
-     * @return {String} Id of the note - pass into {@link notes.functions.getPersonNote getPersonNote} for details
+     * @return {String} Id of the note - pass into {@link notes.functions.getPersonNote getPersonNote},
+     * {@link notes.functions.getCoupleNote getCoupleNote}, or {@link notes.functions.getChildAndParentsNote getChildAndParentsNote}
+     * for details
      */
 
     /**
@@ -159,6 +161,34 @@ define([
 
   /**
    * @ngdoc function
+   * @name notes.functions:getMultiPersonNote
+   * @function
+   *
+   * @description
+   * Get multiple notes at once by requesting them in parallel
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Note_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/5dLd4/ editable example}
+   *
+   * @param {String} pid of the person
+   * @param {Array} nids Ids or {@link notes.types:type.NoteRef NoteRefs} of the notes to read
+   * @param {Object=} params pass to getPersonNote currently unused
+   * @param {Object=} opts pass to the http function specified during init
+   * @return {Object} promise that is fulfilled when all of the notes have been read,
+   * returning a map of note id to response
+   */
+  exports.getMultiPersonNote = function(pid, nids, params, opts) {
+    var promises = {};
+    helpers.forEach(nids, function(nid) {
+      var id = (nid instanceof NoteRef) ? nid.id : nid;
+      promises[id] = exports.getPersonNote(pid, id, params, opts);
+    });
+    return helpers.promiseAll(promises);
+  };
+
+  /**
+   * @ngdoc function
    * @name notes.functions:getCoupleNoteRefs
    * @function
    *
@@ -216,6 +246,34 @@ define([
           return maybe(maybe(response).relationships)[0];
         })
       ));
+  };
+
+  /**
+   * @ngdoc function
+   * @name notes.functions:getMultiCoupleNote
+   * @function
+   *
+   * @description
+   * Get multiple notes at once by requesting them in parallel
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/fn8NU/ editable example}
+   *
+   * @param {String} crid of the couple relationship
+   * @param {Array} nids Ids or {@link notes.types:type.NoteRef NoteRefs} of the notes to read
+   * @param {Object=} params pass to getCoupleNote currently unused
+   * @param {Object=} opts pass to the http function specified during init
+   * @return {Object} promise that is fulfilled when all of the notes have been read,
+   * returning a map of note id to response
+   */
+  exports.getMultiCoupleNote = function(crid, nids, params, opts) {
+    var promises = {};
+    helpers.forEach(nids, function(nid) {
+      var id = (nid instanceof NoteRef) ? nid.id : nid;
+      promises[id] = exports.getCoupleNote(crid, id, params, opts);
+    });
+    return helpers.promiseAll(promises);
   };
 
   /**
@@ -279,6 +337,34 @@ define([
           return maybe(maybe(response).childAndParentsRelationships)[0];
         })
       ));
+  };
+
+  /**
+   * @ngdoc function
+   * @name notes.functions:getMultiChildAndParentsNote
+   * @function
+   *
+   * @description
+   * Get multiple notes at once by requesting them in parallel
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/fn8NU/ editable example}
+   *
+   * @param {String} caprid of the child and parents relationship
+   * @param {Array} nids Ids or {@link notes.types:type.NoteRef NoteRefs} of the notes to read
+   * @param {Object=} params pass to getChildAndParentsNote currently unused
+   * @param {Object=} opts pass to the http function specified during init
+   * @return {Object} promise that is fulfilled when all of the notes have been read,
+   * returning a map of note id to response
+   */
+  exports.getMultiChildAndParentsNote = function(caprid, nids, params, opts) {
+    var promises = {};
+    helpers.forEach(nids, function(nid) {
+      var id = (nid instanceof NoteRef) ? nid.id : nid;
+      promises[id] = exports.getChildAndParentsNote(caprid, id, params, opts);
+    });
+    return helpers.promiseAll(promises);
   };
 
   return exports;

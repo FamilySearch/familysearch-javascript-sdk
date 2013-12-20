@@ -19,6 +19,14 @@ define(['FamilySearch'], function(FamilySearch) {
       });
     });
 
+    it('are returned from getMultiDiscussion', function() {
+      FamilySearch.getMultiDiscussion(['dis-MMMM-MMM']).then(function(response) {
+        var discussion = response['dis-MMMM-MMM'].getDiscussion();
+        expect(discussion.id).toBe('dis-MMMM-MMM');
+        expect(discussion.title).toBe('1900 US Census, Ethel Hollivet');
+      });
+    });
+
     it('comments are returned from getComments', function() {
       FamilySearch.getComments('dis-MMMM-MMM').then(function(response) {
         var comments = response.getComments();

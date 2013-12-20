@@ -58,7 +58,9 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getFatherIds()).toEqual(['PW8J-MZ1']);
         expect(response.getMotherIds()).toEqual(['PW8J-GZ2']);
         expect(response.getSpouseIds()).toEqual(['PA65-HG3']);
-        expect(response.getChildIds('PA65-HG3')).toEqual(['PS78-MH4']);
+        expect(response.getChildIds()).toEqual(['PS78-MH4']);
+        expect(response.getChildIdsOf('PA65-HG3')).toEqual(['PS78-MH4']);
+        expect(response.getChildIdsOf('FOO').length).toBe(0);
         expect(response.getParentRelationships().length).toBe(1);
         var rel = response.getParentRelationships()[0];
         expect(rel.id).toBe('PPPX-PP0');
@@ -75,6 +77,8 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(rel.getHusbandId()).toBe('PW8J-MZ0');
         expect(rel.getWifeId()).toBe('PA65-HG3');
         expect(rel.getFacts().length).toBe(0);
+        expect(response.getSpouseRelationship('PA65-HG3').id).toBe('C123-ABC');
+        expect(response.getSpouseRelationship('FOO')).toBeUndefined();
         expect(response.getChildRelationships().length).toBe(1);
         rel = response.getChildRelationships()[0];
         expect(rel.id).toBe('PPPY-PP0');
@@ -85,6 +89,8 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(rel.getFatherFacts()[0].type).toBe('http://gedcomx.org/AdoptiveParent');
         expect(rel.getMotherFacts().length).toBe(1);
         expect(rel.getMotherFacts()[0].type).toBe('http://gedcomx.org/BiologicalParent');
+        expect(response.getChildRelationshipsOf('PA65-HG3')[0].id).toBe('PPPY-PP0');
+        expect(response.getChildRelationshipsOf('FOO').length).toBe(0);
       });
     });
 
@@ -96,7 +102,9 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getSpouses()[0].id).toBe(response.getSpouseIds()[0]);
         expect(response.getSpouses()[0].id).toBe('KW7S-JB7');
         expect(response.getSpouses()[0].getName()).toBe('Delilah Ann Smith');
-        expect(response.getChildren('KW7S-JB7')[0].getName()).toEqual('Christian Ludvic Jensen');
+        expect(response.getChildren()[0].getName()).toEqual('Christian Ludvic Jensen');
+        expect(response.getChildrenOf('KW7S-JB7')[0].getName()).toEqual('Christian Ludvic Jensen');
+        expect(response.getChildrenOf('FOO').length).toBe(0);
       });
     });
 

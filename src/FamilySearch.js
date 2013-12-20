@@ -36,6 +36,7 @@ define([
     Comment: discussions.Comment,
     getPersonDiscussionRefs: discussions.getPersonDiscussionRefs,
     getDiscussion: discussions.getDiscussion,
+    getMultiDiscussion: discussions.getMultiDiscussion,
     getComments: discussions.getComments,
 
     // memories
@@ -54,10 +55,13 @@ define([
     NoteRef: notes.NoteRef,
     getPersonNoteRefs: notes.getPersonNoteRefs,
     getPersonNote: notes.getPersonNote,
+    getMultiPersonNote: notes.getMultiPersonNote,
     getCoupleNoteRefs: notes.getCoupleNoteRefs,
     getCoupleNote: notes.getCoupleNote,
+    getMultiCoupleNote: notes.getMultiCoupleNote,
     getChildAndParentsNoteRefs: notes.getChildAndParentsNoteRefs,
     getChildAndParentsNote: notes.getChildAndParentsNote,
+    getMultiChildAndParentsNote: notes.getMultiChildAndParentsNote,
 
     // parents and children
     getChildAndParents: parentsAndChildren.getChildAndParents,
@@ -100,6 +104,7 @@ define([
     IdSourceRef: sources.IdSourceRef,
     getPersonSourceRefs: sources.getPersonSourceRefs,
     getSourceDescription: sources.getSourceDescription,
+    getMultiSourceDescription: sources.getMultiSourceDescription,
     getCoupleSourceRefs: sources.getCoupleSourceRefs,
     getChildAndParentsSourceRefs: sources.getChildAndParentsSourceRefs,
     getSourceRefsQuery: sources.getSourceRefsQuery,
@@ -113,6 +118,7 @@ define([
     getCurrentUser: user.getCurrentUser,
     getCurrentUserPersonId: user.getCurrentUserPersonId,
     getAgent: user.getAgent,
+    getMultiAgent: user.getMultiAgent,
 
     // plumbing
     get: plumbing.get,

@@ -33,14 +33,14 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/C437t/ editable example}
    *
-   * @param {String} id of the relationship to read
+   * @param {String} caprid of the relationship to read
    * @param {Object=} params set `persons` true to return a person object for each person in the relationship,
    * which you can access using the `getPerson(id)` convenience function.
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getChildAndParents = function(id, params, opts) {
-    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(id), params, {'Accept': 'application/x-fs-v1+json'}, opts,
+  exports.getChildAndParents = function(caprid, params, opts) {
+    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(caprid), params, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.compose(
         helpers.constructorSetter(person.ChildAndParents, 'childAndParentsRelationships'),
         helpers.objectExtender(childAndParentsConvenienceFunctions),
