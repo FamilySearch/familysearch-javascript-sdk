@@ -12,11 +12,17 @@
 <li><code>environment</code> - sandbox, staging, or production</li>
 <li><code>http_function</code> - a function for issuing http requests: jQuery.ajax, and eventually angular's $http, or node.js's ...</li>
 <li><code>deferred_function</code> - a function for creating deferred's: jQuery.Deferred, and eventually angular's $q or Q</li>
-<li><code>auth_callback</code> - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist, but must have the same host and port as the server running your script</li>
-<li><code>auto_signin</code> - set to true if you want the user to be prompted to sign in when a call returns 401 unauthorized (must be false for node.js, and may require the user to enable popups in their browser)</li>
+<li><code>auth_callback</code> - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
+but must have the same host and port as the server running your script</li>
+<li><code>auto_expire</code> - set to true if you want to the system to clear the access token when it has expired
+(after one hour of inactivity or 24 hours, whichever comes first; should probably be false for node.js)</li>
+<li><code>auto_signin</code> - set to true if you want the user to be prompted to sign in whenever you call an API function
+without an access token (must be false for node.js, and may result in a blocked pop-up if the API call is
+not in direct response to a user-initiated action)</li>
+<li><code>save_access_token</code> - set to true if you want the access token to be saved and re-read in future init calls
+(uses a session cookie, must be false for node.js) - <em>setting <code>save_access_token</code> along with <code>auto_signin</code> and
+<code>auto_expire</code> is very convenient</em></li>
 <li><code>access_token</code> - pass this in if you already have an access token</li>
-<li><code>save_access_token</code> - set to true if you want the access token to be saved and re-read in future init calls (uses a session cookie)</li>
-<li><code>logging</code> - not currently used</li>
 </ul></div>
 <h2 id="Usage">Usage</h2>
 <div class="usage"><pre class="prettyprint linenums">init(opts);</pre>

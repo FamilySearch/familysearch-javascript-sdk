@@ -48,6 +48,7 @@ define('globals',{
   deferredWrapper: null,
   authCallbackUri: null,
   autoSignin: false,
+  autoExpire: false,
   accessToken: null,
   saveAccessToken: false,
   logging: false,
@@ -56,7 +57,9 @@ define('globals',{
   authCodePollDelay: 50,
   defaultThrottleRetryAfter: 500,
   maxHttpRequestRetries: 5,
-  server: {
+  maxAccessTokenInactivityTime: 3540000, // 59 minutes to be safe
+  maxAccessTokenCreationTime:  86340000, // 23 hours 59 minutes to be safe
+  apiServer: {
     'sandbox'   : 'https://sandbox.familysearch.org',
     'staging'   : 'https://stage.familysearch.org',
     'production': 'https://familysearch.org'
@@ -381,7 +384,19 @@ define('helpers',[
   exports.partialRight = function(fn) {
     var args = Array.prototype.slice.call(arguments, 1);
     return function() {
-      return fn.apply(this, Array.prototype.slice.call(arguments, 0).concat(args));
+      return fn.apply(this, Array.prototype.slice.call(arguments).concat(args));
+    };
+  };
+
+  /**
+   * Create a new function which is the specified function with the left-most arguments pre-filled with arguments from this call
+   * @param {function()} fn Function to wrap
+   * @returns {Function} Wrapped function
+   */
+  exports.partial = function(fn) {
+    var args = Array.prototype.slice.call(arguments, 1);
+    return function() {
+      return fn.apply(this, args.concat(Array.prototype.slice.call(arguments)));
     };
   };
 
@@ -529,12 +544,21 @@ define('helpers',[
   };
 
   /**
+   * Return true if this url is for the OAuth server
+   * @param url
+   * @returns {boolean}
+   */
+  exports.isOAuthServerUrl = function(url) {
+    return url.indexOf(globals.oauthServer[globals.environment]) === 0;
+  };
+
+  /**
    * Prepend api server to path if path doesn't start with https?://
    * @param path
    * @returns {string} server + path
    */
-  exports.getServerUrl = function(path) {
-    return getAbsoluteUrl(globals.server[globals.environment], path);
+  exports.getAPIServerUrl = function(path) {
+    return getAbsoluteUrl(globals.apiServer[globals.environment], path);
   };
 
   /**
@@ -696,11 +720,106 @@ define('helpers',[
     exports.createCookie(name,'',-1);
   };
 
+  var accessTokenInactiveTimer = null;
+  var accessTokenCreationTimer = null;
+
   /**
-   * Erase access token
+   * Set a timer, optionally clearing the old timer first
+   * @param {Function} fn Function to call
+   * @param {number} delay
+   * @param {number=} oldTimer Old timer to clear
+   * @returns {number} timer
+   */
+  function setTimer(fn, delay, oldTimer) {
+    if (oldTimer) {
+      clearTimeout(oldTimer);
+    }
+    return setTimeout(function() {
+      fn();
+    }, delay);
+  }
+
+  function setAccessTokenInactiveTimer(delay) {
+    accessTokenInactiveTimer = setTimer(exports.eraseAccessToken, delay, accessTokenInactiveTimer);
+  }
+
+  function setAccessTokenCreationTimer(delay) {
+    accessTokenCreationTimer = setTimer(exports.eraseAccessToken, delay, accessTokenCreationTimer);
+  }
+
+  function clearAccessTokenTimers() {
+    clearTimeout(accessTokenInactiveTimer);
+    accessTokenInactiveTimer = null;
+    clearTimeout(accessTokenCreationTimer);
+    accessTokenCreationTimer = null;
+  }
+
+  /**
+   * Read the access token from the cookie and start the expiry timers
+   */
+  exports.readAccessToken = function() {
+    var now = (new Date()).getTime();
+    var cookie = exports.readCookie(globals.accessTokenCookie);
+    if (cookie) {
+      var parts = cookie.split('|', 3);
+      if (parts.length === 3) {
+        var inactiveMillis = now - parseInt(parts[0],10);
+        var creationMillis = now - parseInt(parts[1],10);
+        if (inactiveMillis < globals.maxAccessTokenInactivityTime && creationMillis < globals.maxAccessTokenCreationTime) {
+          globals.accessToken = parts[2];
+          if (globals.autoExpire) {
+            setAccessTokenInactiveTimer(globals.maxAccessTokenInactivityTime - inactiveMillis);
+            setAccessTokenCreationTimer(globals.maxAccessTokenCreationTime - creationMillis);
+          }
+        }
+      }
+    }
+  };
+
+  /**
+   * Set the access token, start the expiry timers, and write the cookie
+   */
+  exports.setAccessToken = function(accessToken) {
+    globals.accessToken = accessToken;
+    if (globals.autoExpire) {
+      setAccessTokenInactiveTimer(globals.maxAccessTokenInactivityTime);
+      setAccessTokenCreationTimer(globals.maxAccessTokenCreationTime);
+    }
+    if (globals.saveAccessToken) {
+      var now = (new Date()).getTime();
+      var cookie = now+'|'+now+'|'+accessToken;
+      exports.createCookie(globals.accessTokenCookie, cookie, 0);
+    }
+  };
+
+  /**
+   * Refresh the access token by updating the inactive timer
+   */
+  exports.refreshAccessToken = function() {
+    var now = (new Date()).getTime();
+    if (globals.autoExpire) {
+      setAccessTokenInactiveTimer(globals.maxAccessTokenInactivityTime);
+    }
+    if (globals.saveAccessToken) {
+      var cookie = exports.readCookie(globals.accessTokenCookie);
+      if (cookie) {
+        var parts = cookie.split('|', 3);
+        if (parts.length === 3) {
+          cookie = now+'|'+parts[1]+'|'+parts[2];
+          exports.createCookie(globals.accessTokenCookie, cookie, 0);
+        }
+      }
+    }
+  };
+
+  /**
+   * Erase access token, clear the expiry timers, and erase the cookie
    */
   exports.eraseAccessToken = function() {
     globals.accessToken = null;
+    if (globals.autoExpire) {
+      clearAccessTokenTimers();
+    }
     if (globals.saveAccessToken) {
       exports.eraseCookie(globals.accessTokenCookie);
     }
@@ -804,11 +923,17 @@ define('init',[
    * - `environment` - sandbox, staging, or production
    * - `http_function` - a function for issuing http requests: jQuery.ajax, and eventually angular's $http, or node.js's ...
    * - `deferred_function` - a function for creating deferred's: jQuery.Deferred, and eventually angular's $q or Q
-   * - `auth_callback` - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist, but must have the same host and port as the server running your script
-   * - `auto_signin` - set to true if you want the user to be prompted to sign in when a call returns 401 unauthorized (must be false for node.js, and may require the user to enable popups in their browser)
+   * - `auth_callback` - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
+   * but must have the same host and port as the server running your script
+   * - `auto_expire` - set to true if you want to the system to clear the access token when it has expired
+   * (after one hour of inactivity or 24 hours, whichever comes first; should probably be false for node.js)
+   * - `auto_signin` - set to true if you want the user to be prompted to sign in whenever you call an API function
+   * without an access token (must be false for node.js, and may result in a blocked pop-up if the API call is
+   * not in direct response to a user-initiated action)
+   * - `save_access_token` - set to true if you want the access token to be saved and re-read in future init calls
+   * (uses a session cookie, must be false for node.js) - *setting `save_access_token` along with `auto_signin` and
+   * `auto_expire` is very convenient*
    * - `access_token` - pass this in if you already have an access token
-   * - `save_access_token` - set to true if you want the access token to be saved and re-read in future init calls (uses a session cookie)
-   * - `logging` - not currently used
    *
    * @param {Object} opts opts
    */
@@ -837,24 +962,20 @@ define('init',[
     }
     globals.deferredWrapper = jQueryWrappers.deferredWrapper(opts['deferred_function']);
 
-    if(opts['auth_callback']) {
-      globals.authCallbackUri = opts['auth_callback'];
-    }
+    globals.authCallbackUri = opts['auth_callback'];
 
-    if(opts['auto_signin']) {
-      globals.autoSignin = opts['auto_signin'];
-    }
+    globals.autoSignin = opts['auto_signin'];
+
+    globals.autoExpire = opts['auto_expire'];
 
     if (opts['save_access_token']) {
       globals.saveAccessToken = true;
-      globals.accessToken = helpers.readCookie(globals.accessTokenCookie);
+      helpers.readAccessToken();
     }
 
-    if(opts['access_token']) {
+    if (opts['access_token']) {
       globals.accessToken = opts['access_token'];
     }
-
-    globals.logging = opts['logging'];
   };
 
   return exports;
@@ -994,76 +1115,79 @@ define('plumbing',[
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   exports.http = function(method, url, headers, data, opts, responseMapper, retries) {
-    // prepend the server
-    var absoluteUrl = helpers.getServerUrl(url);
-
-    // append the access token as a query parameter to avoid cors pre-flight
-    // this is detrimental to browser caching across sessions, which seems less bad than cors pre-flight requests
-    // TODO investigate this further
-    if (globals.accessToken) {
-      absoluteUrl = helpers.appendQueryParameters(absoluteUrl, {'access_token': globals.accessToken});
-    }
-
-    // default retries
-    if (retries == null) { // also catches undefined
-      retries = globals.maxHttpRequestRetries;
-    }
-
-    // call the http wrapper
-    var promise = globals.httpWrapper(method, absoluteUrl, headers || {}, data || {}, opts || {});
-
-    // process the response
     var d = globals.deferredWrapper();
-    var returnedPromise = helpers.extendHttpPromise(d.promise, promise);
-    promise.then(
-      function(data) {
-        var processingTime = promise.getResponseHeader('X-PROCESSING-TIME');
-        if (processingTime) {
-          totalProcessingTime += parseInt(processingTime,10);
-        }
-        if (responseMapper) {
-          data = responseMapper(data, promise);
-        }
-        d.resolve(data);
-      },
-      function() {
-        var statusCode = promise.getStatusCode();
-        console.log('http failure', statusCode, retries, promise.getAllResponseHeaders());
-        if (statusCode === 401) {
-          helpers.eraseAccessToken();
-        }
-        if (retries > 0 && (statusCode === 429 || (statusCode === 401 && globals.autoSignin))) {
-          var retryAfter = 0;
-          if (statusCode === 429) {
-            var retryAfterHeader = promise.getResponseHeader('Retry-After');
-            console.log('retryAfter',retryAfterHeader, promise.getAllResponseHeaders());
-            if (retryAfterHeader) {
-              retryAfter = parseInt(retryAfterHeader,10);
-            }
-            else {
-              retryAfter = globals.defaultThrottleRetryAfter;
-            }
+    var returnedPromise = d.promise;
+    // prepend the server
+    var absoluteUrl = helpers.getAPIServerUrl(url);
+
+    // do we need to request an access token?
+    var accessTokenPromise;
+    if (!globals.accessToken && globals.autoSignin && !helpers.isOAuthServerUrl(absoluteUrl)) {
+      accessTokenPromise = globals.getAccessToken();
+    }
+    else {
+      accessTokenPromise = helpers.refPromise(globals.accessToken);
+    }
+    accessTokenPromise.then(function() {
+      // append the access token as a query parameter to avoid cors pre-flight
+      // this is detrimental to browser caching across sessions, which seems less bad than cors pre-flight requests
+      // TODO investigate this further
+      if (globals.accessToken) {
+        absoluteUrl = helpers.appendQueryParameters(absoluteUrl, {'access_token': globals.accessToken});
+      }
+
+      // default retries
+      if (retries == null) { // also catches undefined
+        retries = globals.maxHttpRequestRetries;
+      }
+
+      // call the http wrapper
+      var promise = globals.httpWrapper(method, absoluteUrl, headers || {}, data || {}, opts || {});
+
+      // process the response
+      returnedPromise = helpers.extendHttpPromise(returnedPromise, promise);
+      promise.then(
+        function(data) {
+          helpers.refreshAccessToken();
+          var processingTime = promise.getResponseHeader('X-PROCESSING-TIME');
+          if (processingTime) {
+            totalProcessingTime += parseInt(processingTime,10);
           }
-          // circular dependency on authentication.getAccessToken has been copied into globals
-          globals.getAccessToken().then(
-            function() { // promise will resolve right away if access code exists
-              setTimeout(function() {
-                promise = exports.http(method, url, headers, data, opts, responseMapper, retries-1);
-                helpers.extendHttpPromise(returnedPromise, promise);
-                promise.then(
-                  function(data) {
-                    d.resolve(data);
-                  },
-                  function() {
-                    d.reject.apply(d, arguments);
-                  });
-              }, retryAfter);
-            });
-        }
-        else {
-          d.reject.apply(d, arguments);
-        }
-      });
+          if (responseMapper) {
+            data = responseMapper(data, promise);
+          }
+          d.resolve(data);
+        },
+        function() {
+          var statusCode = promise.getStatusCode();
+          console.log('http failure', statusCode, retries, promise.getAllResponseHeaders());
+          if (statusCode === 401) {
+            helpers.eraseAccessToken();
+          }
+          if (retries > 0 && statusCode === 429) {
+            var retryAfterHeader = promise.getResponseHeader('Retry-After');
+            var retryAfter = retryAfterHeader ? parseInt(retryAfterHeader,10) : globals.defaultThrottleRetryAfter;
+            setTimeout(function() {
+              promise = exports.http(method, url, headers, data, opts, responseMapper, retries-1);
+              helpers.extendHttpPromise(returnedPromise, promise);
+              promise.then(
+                function(data) {
+                  d.resolve(data);
+                },
+                function() {
+                  d.reject.apply(d, arguments);
+                });
+            }, retryAfter);
+          }
+          else {
+            d.reject.apply(d, arguments);
+          }
+        });
+    },
+    function() {
+      d.reject.apply(d, arguments);
+    });
+
     return returnedPromise;
   };
 
@@ -1156,12 +1280,10 @@ define('authentication',[
           });
           promise.then(
             function(data) {
-              globals.accessToken = data['access_token'];
-              if (globals.accessToken) {
-                accessTokenDeferred.resolve(globals.accessToken);
-                if (globals.saveAccessToken) {
-                  helpers.createCookie(globals.accessTokenCookie, globals.accessToken, 0);
-                }
+              var accessToken = data['access_token'];
+              if (accessToken) {
+                helpers.setAccessToken(accessToken);
+                accessTokenDeferred.resolve(accessToken);
               }
               else {
                 accessTokenDeferred.reject(data['error']);
@@ -2899,7 +3021,7 @@ define('memories',[
    */
   // TODO add the default parameter
   exports.getPersonPortraitURL = function(id) {
-    return helpers.getServerUrl('/platform/tree/persons/'+encodeURI(id)+'/portrait');
+    return helpers.getAPIServerUrl('/platform/tree/persons/'+encodeURI(id)+'/portrait');
   };
 
   // TODO think about a way to test whether a person has a portrait: default to / and see if it redirects there

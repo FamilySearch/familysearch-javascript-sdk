@@ -141,7 +141,7 @@ NG_DOCS={
       "id": "init.functions:init",
       "shortName": "init",
       "type": "function",
-      "keywords": "$http $q access access_token ajax already an and angular api app_key as auth_callback auto_signin be browser but call calls cookie creating currently deferred deferred_function developer does enable environment eventually exist false familysearch for from function functions future have host http http_function if in init initialize issuing jquery js key logging may must need node not oauth2 object opts or pass popups port production prompted re-read received redirect registered requests require returns running same sandbox save_access_token saved script server session set sign staging the their this to token true unauthorized uri used user want when with you your"
+      "keywords": "$http $q access access_token action ajax along already an and angular api app_key as auth_callback auto_expire auto_signin be blocked but call calls clear comes convenient cookie creating deferred deferred_function developer direct does environment eventually exist expired false familysearch first for from function functions future has have host hour hours http http_function if in inactivity init initialize is issuing it jquery js key may must need node not oauth2 object of one opts or pass pop-up port probably production prompted re-read received redirect registered requests response result running same sandbox save_access_token saved script server session set should sign staging system the this to token true uri user user-initiated very want when whenever whichever with without you your"
     },
     {
       "section": "api",
