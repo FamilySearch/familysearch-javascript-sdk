@@ -132,76 +132,79 @@ define([
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   exports.http = function(method, url, headers, data, opts, responseMapper, retries) {
-    // prepend the server
-    var absoluteUrl = helpers.getServerUrl(url);
-
-    // append the access token as a query parameter to avoid cors pre-flight
-    // this is detrimental to browser caching across sessions, which seems less bad than cors pre-flight requests
-    // TODO investigate this further
-    if (globals.accessToken) {
-      absoluteUrl = helpers.appendQueryParameters(absoluteUrl, {'access_token': globals.accessToken});
-    }
-
-    // default retries
-    if (retries == null) { // also catches undefined
-      retries = globals.maxHttpRequestRetries;
-    }
-
-    // call the http wrapper
-    var promise = globals.httpWrapper(method, absoluteUrl, headers || {}, data || {}, opts || {});
-
-    // process the response
     var d = globals.deferredWrapper();
-    var returnedPromise = helpers.extendHttpPromise(d.promise, promise);
-    promise.then(
-      function(data) {
-        var processingTime = promise.getResponseHeader('X-PROCESSING-TIME');
-        if (processingTime) {
-          totalProcessingTime += parseInt(processingTime,10);
-        }
-        if (responseMapper) {
-          data = responseMapper(data, promise);
-        }
-        d.resolve(data);
-      },
-      function() {
-        var statusCode = promise.getStatusCode();
-        console.log('http failure', statusCode, retries, promise.getAllResponseHeaders());
-        if (statusCode === 401) {
-          helpers.eraseAccessToken();
-        }
-        if (retries > 0 && (statusCode === 429 || (statusCode === 401 && globals.autoSignin))) {
-          var retryAfter = 0;
-          if (statusCode === 429) {
-            var retryAfterHeader = promise.getResponseHeader('Retry-After');
-            console.log('retryAfter',retryAfterHeader, promise.getAllResponseHeaders());
-            if (retryAfterHeader) {
-              retryAfter = parseInt(retryAfterHeader,10);
-            }
-            else {
-              retryAfter = globals.defaultThrottleRetryAfter;
-            }
+    var returnedPromise = d.promise;
+    // prepend the server
+    var absoluteUrl = helpers.getAPIServerUrl(url);
+
+    // do we need to request an access token?
+    var accessTokenPromise;
+    if (!globals.accessToken && globals.autoSignin && !helpers.isOAuthServerUrl(absoluteUrl)) {
+      accessTokenPromise = globals.getAccessToken();
+    }
+    else {
+      accessTokenPromise = helpers.refPromise(globals.accessToken);
+    }
+    accessTokenPromise.then(function() {
+      // append the access token as a query parameter to avoid cors pre-flight
+      // this is detrimental to browser caching across sessions, which seems less bad than cors pre-flight requests
+      // TODO investigate this further
+      if (globals.accessToken) {
+        absoluteUrl = helpers.appendQueryParameters(absoluteUrl, {'access_token': globals.accessToken});
+      }
+
+      // default retries
+      if (retries == null) { // also catches undefined
+        retries = globals.maxHttpRequestRetries;
+      }
+
+      // call the http wrapper
+      var promise = globals.httpWrapper(method, absoluteUrl, headers || {}, data || {}, opts || {});
+
+      // process the response
+      returnedPromise = helpers.extendHttpPromise(returnedPromise, promise);
+      promise.then(
+        function(data) {
+          helpers.refreshAccessToken();
+          var processingTime = promise.getResponseHeader('X-PROCESSING-TIME');
+          if (processingTime) {
+            totalProcessingTime += parseInt(processingTime,10);
           }
-          // circular dependency on authentication.getAccessToken has been copied into globals
-          globals.getAccessToken().then(
-            function() { // promise will resolve right away if access code exists
-              setTimeout(function() {
-                promise = exports.http(method, url, headers, data, opts, responseMapper, retries-1);
-                helpers.extendHttpPromise(returnedPromise, promise);
-                promise.then(
-                  function(data) {
-                    d.resolve(data);
-                  },
-                  function() {
-                    d.reject.apply(d, arguments);
-                  });
-              }, retryAfter);
-            });
-        }
-        else {
-          d.reject.apply(d, arguments);
-        }
-      });
+          if (responseMapper) {
+            data = responseMapper(data, promise);
+          }
+          d.resolve(data);
+        },
+        function() {
+          var statusCode = promise.getStatusCode();
+          console.log('http failure', statusCode, retries, promise.getAllResponseHeaders());
+          if (statusCode === 401) {
+            helpers.eraseAccessToken();
+          }
+          if (retries > 0 && statusCode === 429) {
+            var retryAfterHeader = promise.getResponseHeader('Retry-After');
+            var retryAfter = retryAfterHeader ? parseInt(retryAfterHeader,10) : globals.defaultThrottleRetryAfter;
+            setTimeout(function() {
+              promise = exports.http(method, url, headers, data, opts, responseMapper, retries-1);
+              helpers.extendHttpPromise(returnedPromise, promise);
+              promise.then(
+                function(data) {
+                  d.resolve(data);
+                },
+                function() {
+                  d.reject.apply(d, arguments);
+                });
+            }, retryAfter);
+          }
+          else {
+            d.reject.apply(d, arguments);
+          }
+        });
+    },
+    function() {
+      d.reject.apply(d, arguments);
+    });
+
     return returnedPromise;
   };
 

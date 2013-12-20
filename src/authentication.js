@@ -84,12 +84,10 @@ define([
           });
           promise.then(
             function(data) {
-              globals.accessToken = data['access_token'];
-              if (globals.accessToken) {
-                accessTokenDeferred.resolve(globals.accessToken);
-                if (globals.saveAccessToken) {
-                  helpers.createCookie(globals.accessTokenCookie, globals.accessToken, 0);
-                }
+              var accessToken = data['access_token'];
+              if (accessToken) {
+                helpers.setAccessToken(accessToken);
+                accessTokenDeferred.resolve(accessToken);
               }
               else {
                 accessTokenDeferred.reject(data['error']);

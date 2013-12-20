@@ -311,7 +311,19 @@ define([
   exports.partialRight = function(fn) {
     var args = Array.prototype.slice.call(arguments, 1);
     return function() {
-      return fn.apply(this, Array.prototype.slice.call(arguments, 0).concat(args));
+      return fn.apply(this, Array.prototype.slice.call(arguments).concat(args));
+    };
+  };
+
+  /**
+   * Create a new function which is the specified function with the left-most arguments pre-filled with arguments from this call
+   * @param {function()} fn Function to wrap
+   * @returns {Function} Wrapped function
+   */
+  exports.partial = function(fn) {
+    var args = Array.prototype.slice.call(arguments, 1);
+    return function() {
+      return fn.apply(this, args.concat(Array.prototype.slice.call(arguments)));
     };
   };
 
@@ -459,12 +471,21 @@ define([
   };
 
   /**
+   * Return true if this url is for the OAuth server
+   * @param url
+   * @returns {boolean}
+   */
+  exports.isOAuthServerUrl = function(url) {
+    return url.indexOf(globals.oauthServer[globals.environment]) === 0;
+  };
+
+  /**
    * Prepend api server to path if path doesn't start with https?://
    * @param path
    * @returns {string} server + path
    */
-  exports.getServerUrl = function(path) {
-    return getAbsoluteUrl(globals.server[globals.environment], path);
+  exports.getAPIServerUrl = function(path) {
+    return getAbsoluteUrl(globals.apiServer[globals.environment], path);
   };
 
   /**
@@ -626,11 +647,106 @@ define([
     exports.createCookie(name,'',-1);
   };
 
+  var accessTokenInactiveTimer = null;
+  var accessTokenCreationTimer = null;
+
   /**
-   * Erase access token
+   * Set a timer, optionally clearing the old timer first
+   * @param {Function} fn Function to call
+   * @param {number} delay
+   * @param {number=} oldTimer Old timer to clear
+   * @returns {number} timer
+   */
+  function setTimer(fn, delay, oldTimer) {
+    if (oldTimer) {
+      clearTimeout(oldTimer);
+    }
+    return setTimeout(function() {
+      fn();
+    }, delay);
+  }
+
+  function setAccessTokenInactiveTimer(delay) {
+    accessTokenInactiveTimer = setTimer(exports.eraseAccessToken, delay, accessTokenInactiveTimer);
+  }
+
+  function setAccessTokenCreationTimer(delay) {
+    accessTokenCreationTimer = setTimer(exports.eraseAccessToken, delay, accessTokenCreationTimer);
+  }
+
+  function clearAccessTokenTimers() {
+    clearTimeout(accessTokenInactiveTimer);
+    accessTokenInactiveTimer = null;
+    clearTimeout(accessTokenCreationTimer);
+    accessTokenCreationTimer = null;
+  }
+
+  /**
+   * Read the access token from the cookie and start the expiry timers
+   */
+  exports.readAccessToken = function() {
+    var now = (new Date()).getTime();
+    var cookie = exports.readCookie(globals.accessTokenCookie);
+    if (cookie) {
+      var parts = cookie.split('|', 3);
+      if (parts.length === 3) {
+        var inactiveMillis = now - parseInt(parts[0],10);
+        var creationMillis = now - parseInt(parts[1],10);
+        if (inactiveMillis < globals.maxAccessTokenInactivityTime && creationMillis < globals.maxAccessTokenCreationTime) {
+          globals.accessToken = parts[2];
+          if (globals.autoExpire) {
+            setAccessTokenInactiveTimer(globals.maxAccessTokenInactivityTime - inactiveMillis);
+            setAccessTokenCreationTimer(globals.maxAccessTokenCreationTime - creationMillis);
+          }
+        }
+      }
+    }
+  };
+
+  /**
+   * Set the access token, start the expiry timers, and write the cookie
+   */
+  exports.setAccessToken = function(accessToken) {
+    globals.accessToken = accessToken;
+    if (globals.autoExpire) {
+      setAccessTokenInactiveTimer(globals.maxAccessTokenInactivityTime);
+      setAccessTokenCreationTimer(globals.maxAccessTokenCreationTime);
+    }
+    if (globals.saveAccessToken) {
+      var now = (new Date()).getTime();
+      var cookie = now+'|'+now+'|'+accessToken;
+      exports.createCookie(globals.accessTokenCookie, cookie, 0);
+    }
+  };
+
+  /**
+   * Refresh the access token by updating the inactive timer
+   */
+  exports.refreshAccessToken = function() {
+    var now = (new Date()).getTime();
+    if (globals.autoExpire) {
+      setAccessTokenInactiveTimer(globals.maxAccessTokenInactivityTime);
+    }
+    if (globals.saveAccessToken) {
+      var cookie = exports.readCookie(globals.accessTokenCookie);
+      if (cookie) {
+        var parts = cookie.split('|', 3);
+        if (parts.length === 3) {
+          cookie = now+'|'+parts[1]+'|'+parts[2];
+          exports.createCookie(globals.accessTokenCookie, cookie, 0);
+        }
+      }
+    }
+  };
+
+  /**
+   * Erase access token, clear the expiry timers, and erase the cookie
    */
   exports.eraseAccessToken = function() {
     globals.accessToken = null;
+    if (globals.autoExpire) {
+      clearAccessTokenTimers();
+    }
     if (globals.saveAccessToken) {
       exports.eraseCookie(globals.accessTokenCookie);
     }

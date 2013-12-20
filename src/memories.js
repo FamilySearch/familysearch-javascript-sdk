@@ -338,7 +338,7 @@ define([
    */
   // TODO add the default parameter
   exports.getPersonPortraitURL = function(id) {
-    return helpers.getServerUrl('/platform/tree/persons/'+encodeURI(id)+'/portrait');
+    return helpers.getAPIServerUrl('/platform/tree/persons/'+encodeURI(id)+'/portrait');
   };
 
   // TODO think about a way to test whether a person has a portrait: default to / and see if it redirects there

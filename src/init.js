@@ -26,11 +26,17 @@ define([
    * - `environment` - sandbox, staging, or production
    * - `http_function` - a function for issuing http requests: jQuery.ajax, and eventually angular's $http, or node.js's ...
    * - `deferred_function` - a function for creating deferred's: jQuery.Deferred, and eventually angular's $q or Q
-   * - `auth_callback` - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist, but must have the same host and port as the server running your script
-   * - `auto_signin` - set to true if you want the user to be prompted to sign in when a call returns 401 unauthorized (must be false for node.js, and may require the user to enable popups in their browser)
+   * - `auth_callback` - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
+   * but must have the same host and port as the server running your script
+   * - `auto_expire` - set to true if you want to the system to clear the access token when it has expired
+   * (after one hour of inactivity or 24 hours, whichever comes first; should probably be false for node.js)
+   * - `auto_signin` - set to true if you want the user to be prompted to sign in whenever you call an API function
+   * without an access token (must be false for node.js, and may result in a blocked pop-up if the API call is
+   * not in direct response to a user-initiated action)
+   * - `save_access_token` - set to true if you want the access token to be saved and re-read in future init calls
+   * (uses a session cookie, must be false for node.js) - *setting `save_access_token` along with `auto_signin` and
+   * `auto_expire` is very convenient*
    * - `access_token` - pass this in if you already have an access token
-   * - `save_access_token` - set to true if you want the access token to be saved and re-read in future init calls (uses a session cookie)
-   * - `logging` - not currently used
    *
    * @param {Object} opts opts
    */
@@ -59,24 +65,20 @@ define([
     }
     globals.deferredWrapper = jQueryWrappers.deferredWrapper(opts['deferred_function']);
 
-    if(opts['auth_callback']) {
-      globals.authCallbackUri = opts['auth_callback'];
-    }
+    globals.authCallbackUri = opts['auth_callback'];
 
-    if(opts['auto_signin']) {
-      globals.autoSignin = opts['auto_signin'];
-    }
+    globals.autoSignin = opts['auto_signin'];
+
+    globals.autoExpire = opts['auto_expire'];
 
     if (opts['save_access_token']) {
       globals.saveAccessToken = true;
-      globals.accessToken = helpers.readCookie(globals.accessTokenCookie);
+      helpers.readAccessToken();
     }
 
-    if(opts['access_token']) {
+    if (opts['access_token']) {
       globals.accessToken = opts['access_token'];
     }
-
-    globals.logging = opts['logging'];
   };
 
   return exports;

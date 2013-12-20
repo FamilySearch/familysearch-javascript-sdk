@@ -5,6 +5,7 @@ define({
   deferredWrapper: null,
   authCallbackUri: null,
   autoSignin: false,
+  autoExpire: false,
   accessToken: null,
   saveAccessToken: false,
   logging: false,
@@ -13,7 +14,9 @@ define({
   authCodePollDelay: 50,
   defaultThrottleRetryAfter: 500,
   maxHttpRequestRetries: 5,
-  server: {
+  maxAccessTokenInactivityTime: 3540000, // 59 minutes to be safe
+  maxAccessTokenCreationTime:  86340000, // 23 hours 59 minutes to be safe
+  apiServer: {
     'sandbox'   : 'https://sandbox.familysearch.org',
     'staging'   : 'https://stage.familysearch.org',
     'production': 'https://familysearch.org'
