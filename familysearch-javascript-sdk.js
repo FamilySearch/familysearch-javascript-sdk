@@ -1131,7 +1131,6 @@ define('plumbing',[
     accessTokenPromise.then(function() {
       // append the access token as a query parameter to avoid cors pre-flight
       // this is detrimental to browser caching across sessions, which seems less bad than cors pre-flight requests
-      // TODO investigate this further
       if (globals.accessToken) {
         absoluteUrl = helpers.appendQueryParameters(absoluteUrl, {'access_token': globals.accessToken});
       }
@@ -1164,6 +1163,7 @@ define('plumbing',[
           if (statusCode === 401) {
             helpers.eraseAccessToken();
           }
+          // TODO we might want to turn off general error retries for posts, but still retry for throttling; maybe *always* retry on 429 response?
           if (retries > 0 && statusCode === 429) {
             var retryAfterHeader = promise.getResponseHeader('Retry-After');
             var retryAfter = retryAfterHeader ? parseInt(retryAfterHeader,10) : globals.defaultThrottleRetryAfter;
@@ -2677,6 +2677,10 @@ define('person',[
   // TODO getPersonNotAMatch
   // TODO getPreferredSpouse
   // TODO getPreferredParent
+  // TODO new Parents endpoint (and drop getRelationshipsToParents?)
+  // TODO new Children endpoint (and drop getRelationshipsToChildren?)
+  // TODO use X-FS-Feature-Tag: parent-child-relationship-resources-consolidation on parents and children endpoints
+  //
 
   return exports;
 });
@@ -2728,6 +2732,7 @@ define('memories',[
      * @function
      * @return {String} Id of the memory; pass into {@link memories.functions:getMemory getMemory} for details
      */
+    // TODO how else to get the memory id?
     getMemoryId:  function() { return this.resource ? this.resource.replace(/^.*\/memories\/(\d+)\/.*$/, '$1') : this.resource; }
   };
 
@@ -3462,8 +3467,6 @@ define('parentsAndChildren',[
     getPerson:       function(id) { return helpers.find(this.persons, {id: id}); }
   };
 
-  // TODO getParentChild?
-
   return exports;
 });
 
@@ -3521,6 +3524,8 @@ define('pedigree',[
         })
       ));
   };
+
+  // TODO add marriageDetails query parameter and convenience functions
 
   /**
    * Generate ancestry or descendancy convenience functions
@@ -3633,13 +3638,6 @@ define('searchAndMatch',[
      * @name searchAndMatch.types:type.SearchResult#score
      * @propertyOf searchAndMatch.types:type.SearchResult
      * @return {Number} higher is better
-     */
-
-    /**
-     * @ngdoc property
-     * @name searchAndMatch.types:type.SearchResult#confidence
-     * @propertyOf searchAndMatch.types:type.SearchResult
-     * @return {Number} unsure how this relates to score
      */
 
     /**
@@ -3985,6 +3983,7 @@ define('sources',[
      * @function
      * @return {String} Id of the source description - pass into {@link sources.functions:getSourceDescription getSourceDescription} for details
      */
+    // TODO how else to get the source description id?
     getSourceDescriptionId: function() { return this.description ? this.description.replace(/.*\//, '').replace(/\?.*$/, '') : this.description; },
 
     /**
@@ -4847,11 +4846,15 @@ define('FamilySearch',[
     hasAccessToken: authentication.hasAccessToken,
     invalidateAccessToken: authentication.invalidateAccessToken,
 
+    // TODO authorities
+
     // changeHistory
     Change: changeHistory.Change,
     getPersonChanges: changeHistory.getPersonChanges,
     getChildAndParentsChanges: changeHistory.getChildAndParentsChanges,
     getCoupleChanges: changeHistory.getCoupleChanges,
+
+    // TODO discovery
 
     // discussions
     Discussion: discussions.Discussion,
@@ -4884,6 +4887,8 @@ define('FamilySearch',[
     getChildAndParentsNoteRefs: notes.getChildAndParentsNoteRefs,
     getChildAndParentsNote: notes.getChildAndParentsNote,
     getMultiChildAndParentsNote: notes.getMultiChildAndParentsNote,
+
+    // TODO ordinances
 
     // parents and children
     getChildAndParents: parentsAndChildren.getChildAndParents,

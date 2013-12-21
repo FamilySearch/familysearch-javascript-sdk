@@ -519,7 +519,7 @@ NG_DOCS={
       "id": "searchAndMatch.types:type.SearchResult",
       "shortName": "SearchResult",
       "type": "function",
-      "keywords": "and api array as aware be better child confidence do father for from function functions getchildids getchildren getfatherids getfathers getmotherids getmothers getperson getprimaryperson getspouseids getspouses have higher how id in information is mother much name not objects of or pedigree person persons primary property reference relates relationship result returned score search searchandmatch searchresult searchresults source spouse that the this title to types unsure various"
+      "keywords": "and api array as aware be better child do father for from function functions getchildids getchildren getfatherids getfathers getmotherids getmothers getperson getprimaryperson getspouseids getspouses have higher id in information is mother much name not objects of or pedigree person persons primary property reference relationship result returned score search searchandmatch searchresult searchresults source spouse that the this title to types various"
     },
     {
       "section": "api",
