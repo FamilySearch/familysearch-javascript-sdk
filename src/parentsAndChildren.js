@@ -59,7 +59,5 @@ define([
     getPerson:       function(id) { return helpers.find(this.persons, {id: id}); }
   };
 
-  // TODO getParentChild?
-
   return exports;
 });

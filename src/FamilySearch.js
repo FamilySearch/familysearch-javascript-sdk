@@ -25,11 +25,15 @@ define([
     hasAccessToken: authentication.hasAccessToken,
     invalidateAccessToken: authentication.invalidateAccessToken,
 
+    // TODO authorities
+
     // changeHistory
     Change: changeHistory.Change,
     getPersonChanges: changeHistory.getPersonChanges,
     getChildAndParentsChanges: changeHistory.getChildAndParentsChanges,
     getCoupleChanges: changeHistory.getCoupleChanges,
+
+    // TODO discovery
 
     // discussions
     Discussion: discussions.Discussion,
@@ -62,6 +66,8 @@ define([
     getChildAndParentsNoteRefs: notes.getChildAndParentsNoteRefs,
     getChildAndParentsNote: notes.getChildAndParentsNote,
     getMultiChildAndParentsNote: notes.getMultiChildAndParentsNote,
+
+    // TODO ordinances
 
     // parents and children
     getChildAndParents: parentsAndChildren.getChildAndParents,

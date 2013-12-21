@@ -8,7 +8,6 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(results[0].id).toBe('98765');
         expect(results[0].title).toBe('Person 98765');
         expect(results[0].score).toEqual(0.95);
-        expect(results[0].confidence).toBeUndefined();
         expect(results[0].getPrimaryPerson().id).toBe('98765');
         expect(results[0].getPrimaryPerson().getName()).toBe('Israel Heaton');
         expect(results[0].getPrimaryPerson().facts[0].getDate()).toBe('30 January 1880');
@@ -31,7 +30,6 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(results[0].id).toBe('98765');
         expect(results[0].title).toBe('Person 98765');
         expect(results[0].score).toEqual(0.95);
-        expect(results[0].confidence).toBeUndefined();
         expect(results[0].getPrimaryPerson().id).toBe('98765');
         expect(results[0].getChildren().length).toBe(1);
         expect(results[0].getChildren()[0].id).toBe('54321');
@@ -51,7 +49,6 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(results[0].id).toBe('98765');
         expect(results[0].title).toBe('Person 98765');
         expect(results[0].score).toEqual(0.95);
-        expect(results[0].confidence).toBeUndefined();
         expect(results[0].getPrimaryPerson().id).toBe('98765');
         expect(results[0].getChildren().length).toBe(1);
         expect(results[0].getChildren()[0].id).toBe('54321');

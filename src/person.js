@@ -890,6 +890,10 @@ define([
   // TODO getPersonNotAMatch
   // TODO getPreferredSpouse
   // TODO getPreferredParent
+  // TODO new Parents endpoint (and drop getRelationshipsToParents?)
+  // TODO new Children endpoint (and drop getRelationshipsToChildren?)
+  // TODO use X-FS-Feature-Tag: parent-child-relationship-resources-consolidation on parents and children endpoints
+  //
 
   return exports;
 });

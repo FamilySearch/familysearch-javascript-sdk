@@ -51,13 +51,6 @@ define([
      */
 
     /**
-     * @ngdoc property
-     * @name searchAndMatch.types:type.SearchResult#confidence
-     * @propertyOf searchAndMatch.types:type.SearchResult
-     * @return {Number} unsure how this relates to score
-     */
-
-    /**
      * @ngdoc function
      * @name searchAndMatch.types:type.SearchResult#getPerson
      * @methodOf searchAndMatch.types:type.SearchResult

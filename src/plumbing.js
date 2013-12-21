@@ -148,7 +148,6 @@ define([
     accessTokenPromise.then(function() {
       // append the access token as a query parameter to avoid cors pre-flight
       // this is detrimental to browser caching across sessions, which seems less bad than cors pre-flight requests
-      // TODO investigate this further
       if (globals.accessToken) {
         absoluteUrl = helpers.appendQueryParameters(absoluteUrl, {'access_token': globals.accessToken});
       }
@@ -181,6 +180,7 @@ define([
           if (statusCode === 401) {
             helpers.eraseAccessToken();
           }
+          // TODO we might want to turn off general error retries for posts, but still retry for throttling; maybe *always* retry on 429 response?
           if (retries > 0 && statusCode === 429) {
             var retryAfterHeader = promise.getResponseHeader('Retry-After');
             var retryAfter = retryAfterHeader ? parseInt(retryAfterHeader,10) : globals.defaultThrottleRetryAfter;

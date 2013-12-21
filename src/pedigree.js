@@ -53,6 +53,8 @@ define([
       ));
   };
 
+  // TODO add marriageDetails query parameter and convenience functions
+
   /**
    * Generate ancestry or descendancy convenience functions
    *
