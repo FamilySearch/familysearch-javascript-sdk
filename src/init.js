@@ -25,8 +25,9 @@ define([
    *
    * - `app_key` - the developer key you received from FamilySearch
    * - `environment` - sandbox, staging, or production
-   * - `http_function` - a function for issuing http requests: jQuery.ajax, and eventually angular's $http, or node.js's ...
-   * - `deferred_function` - a function for creating deferred's: jQuery.Deferred, and eventually angular's $q or Q
+   * - `http_function` - a function for issuing http requests: `jQuery.ajax` or angular's `$http`, or eventually node.js's ...
+   * - `deferred_function` - a function for creating deferred's: `jQuery.Deferred` or angular's `$q.defer` or eventually `Q`
+   * - `timeout_function` - optional timeout function: angular users should pass `$timeout`; otherwise the global `setTimeout` is used
    * - `auth_callback` - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
    * but must have the same host and port as the server running your script
    * - `auto_expire` - set to true if you want to the system to clear the access token when it has expired
@@ -72,11 +73,31 @@ define([
     }
     var deferredFunction = opts['deferred_function'];
     var d = deferredFunction();
+    d.resolve(); // required for unit tests
     if (!helpers.isFunction(d.promise)) {
       globals.deferredWrapper = angularjsWrappers.deferredWrapper(deferredFunction);
     }
     else {
       globals.deferredWrapper = jQueryWrappers.deferredWrapper(deferredFunction);
+    }
+
+    var timeout = opts['timeout_function'];
+    if (timeout) {
+      globals.setTimeout = function(fn, delay) {
+        return timeout(fn, delay);
+      };
+      globals.clearTimeout = function(timer) {
+        timeout.cancel(timer);
+      };
+    }
+    else {
+      // not sure why I can't just set globals.setTimeout = setTimeout, but it doesn't seem to work; anyone know why?
+      globals.setTimeout = function(fn, delay) {
+        return setTimeout(fn, delay);
+      };
+      globals.clearTimeout = function(timer) {
+        clearTimeout(timer);
+      };
     }
 
     globals.authCallbackUri = opts['auth_callback'];

@@ -74,7 +74,7 @@ define([
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   exports.post = function(url, data, headers, opts, responseMapper) {
-    return exports.http('POST', url, helpers.extend({'Content-type': 'application/x-www-form-urlencoded'},headers), data, opts, responseMapper);
+    return exports.http('POST', url, helpers.extend({'Content-Type': 'application/x-www-form-urlencoded'},headers), data, opts, responseMapper);
   };
 
   /**
@@ -93,7 +93,7 @@ define([
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   exports.put = function(url, data, headers, opts, responseMapper) {
-    return exports.http('PUT', url, helpers.extend({'Content-type': 'application/x-www-form-urlencoded'},headers), data, opts, responseMapper);
+    return exports.http('PUT', url, helpers.extend({'Content-Type': 'application/x-www-form-urlencoded'},headers), data, opts, responseMapper);
   };
 
   /**
@@ -184,7 +184,7 @@ define([
           if (retries > 0 && statusCode === 429) {
             var retryAfterHeader = promise.getResponseHeader('Retry-After');
             var retryAfter = retryAfterHeader ? parseInt(retryAfterHeader,10) : globals.defaultThrottleRetryAfter;
-            setTimeout(function() {
+            globals.setTimeout(function() {
               promise = exports.http(method, url, headers, data, opts, responseMapper, retries-1);
               helpers.extendHttpPromise(returnedPromise, promise);
               promise.then(

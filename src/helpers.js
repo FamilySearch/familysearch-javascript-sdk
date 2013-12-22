@@ -536,7 +536,7 @@ define([
    * @param {function()} cb Function to call
    */
   exports.nextTick = function(cb) {
-    setTimeout(function() {
+    globals.setTimeout(function() {
       cb();
     },0);
   };
@@ -659,9 +659,9 @@ define([
    */
   function setTimer(fn, delay, oldTimer) {
     if (oldTimer) {
-      clearTimeout(oldTimer);
+      globals.clearTimeout(oldTimer);
     }
-    return setTimeout(function() {
+    return globals.setTimeout(function() {
       fn();
     }, delay);
   }
@@ -675,9 +675,9 @@ define([
   }
 
   function clearAccessTokenTimers() {
-    clearTimeout(accessTokenInactiveTimer);
+    globals.clearTimeout(accessTokenInactiveTimer);
     accessTokenInactiveTimer = null;
-    clearTimeout(accessTokenCreationTimer);
+    globals.clearTimeout(accessTokenCreationTimer);
     accessTokenCreationTimer = null;
   }
 

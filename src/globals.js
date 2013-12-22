@@ -3,6 +3,8 @@ define({
   environment: null,
   httpWrapper: null,
   deferredWrapper: null,
+  setTimeout: null,
+  clearTimeout: null,
   authCallbackUri: null,
   autoSignin: false,
   autoExpire: false,

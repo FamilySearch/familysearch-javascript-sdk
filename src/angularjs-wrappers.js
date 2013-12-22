@@ -5,6 +5,50 @@ define([
   var exports = {};
 
   /**
+   * Converts an object to x-www-form-urlencoded serialization.
+   * borrowed from http://victorblog.com/2012/12/20/make-angularjs-http-service-behave-like-jquery-ajax/
+   * @param {Object} obj
+   * @return {String}
+   */
+  function formEncode(obj)
+  {
+    var query = '';
+    var name, value, fullSubName, subName, subValue, innerObj, i;
+
+    for(name in obj) {
+      if (obj.hasOwnProperty(name)) {
+        value = obj[name];
+
+        if(value instanceof Array) {
+          for(i=0; i<value.length; ++i) {
+            subValue = value[i];
+            fullSubName = name + '[' + i + ']';
+            innerObj = {};
+            innerObj[fullSubName] = subValue;
+            query += formEncode(innerObj) + '&';
+          }
+        }
+        else if(value instanceof Object) {
+          for(subName in value) {
+            if (value.hasOwnProperty(subName)) {
+              subValue = value[subName];
+              fullSubName = name + '[' + subName + ']';
+              innerObj = {};
+              innerObj[fullSubName] = subValue;
+              query += formEncode(innerObj) + '&';
+            }
+          }
+        }
+        else if(value !== undefined && value !== null) {
+          query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&';
+        }
+      }
+    }
+
+    return query.length ? query.substr(0, query.length - 1) : query;
+  }
+
+  /**
    * httpWrapper function based upon Angular's $http function
    * @param http Angular's $http function
    * @returns {Function} http function that exposes a standard interface
@@ -16,9 +60,12 @@ define([
         method: method,
         url: url,
         responseType: 'json',
-        data: data
+        data: data,
+        transformRequest: function(obj) {
+          return helpers.isObject(obj) && String(obj) !== '[object File]' ? formEncode(obj) : obj;
+        }
       }, opts);
-      opts.headers = helpers.extend({}, headers, opts.headers);
+      config.headers = helpers.extend({}, headers, opts.headers);
 
       // make the call
       var promise = http(config);
