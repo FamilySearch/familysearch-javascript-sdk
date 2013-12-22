@@ -164,14 +164,14 @@ will have the the methods <a href="http://api.jquery.com/Types/#Promise">describ
 <li><code>fail(function(jqXHR, textStatus, errorThrown) {})</code></li>
 </ul>
 
-<h4 id="angularjsnotyetimplemented">AngularJS -- not yet implemented</h5>
+<h4 id="angularjs">AngularJS</h5>
 
 <p>If you pass <code>$http</code> and <code>$q.defer</code> into the <code>FamilySearch.init</code> call, the returned promises
 will have the methods <a href="http://docs.angularjs.org/api/ng.$q#description_the-promise-api">described here</a>; for example</p>
 
 <ul>
 <li><code>then(function(response) {}, function({data: response, status: status, headers: headers, config: config}) {})</code></li>
-<li><code>catch(function(response, status, headers, config) {})</code></li>
+<li><code>catch(function({data: response, status: status, headers: headers, config: config}) {})</code></li>
 </ul>
 
 <h4 id="nodejsnotyetimplemented">Node.js -- not yet implemented</h5>

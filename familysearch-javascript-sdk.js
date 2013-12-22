@@ -46,6 +46,8 @@ define('globals',{
   environment: null,
   httpWrapper: null,
   deferredWrapper: null,
+  setTimeout: null,
+  clearTimeout: null,
   authCallbackUri: null,
   autoSignin: false,
   autoExpire: false,
@@ -609,7 +611,7 @@ define('helpers',[
    * @param {function()} cb Function to call
    */
   exports.nextTick = function(cb) {
-    setTimeout(function() {
+    globals.setTimeout(function() {
       cb();
     },0);
   };
@@ -732,9 +734,9 @@ define('helpers',[
    */
   function setTimer(fn, delay, oldTimer) {
     if (oldTimer) {
-      clearTimeout(oldTimer);
+      globals.clearTimeout(oldTimer);
     }
-    return setTimeout(function() {
+    return globals.setTimeout(function() {
       fn();
     }, delay);
   }
@@ -748,9 +750,9 @@ define('helpers',[
   }
 
   function clearAccessTokenTimers() {
-    clearTimeout(accessTokenInactiveTimer);
+    globals.clearTimeout(accessTokenInactiveTimer);
     accessTokenInactiveTimer = null;
-    clearTimeout(accessTokenCreationTimer);
+    globals.clearTimeout(accessTokenCreationTimer);
     accessTokenCreationTimer = null;
   }
 
@@ -828,6 +830,129 @@ define('helpers',[
   return exports;
 });
 
+define('angularjs-wrappers',[
+  'globals',
+  'helpers'
+], function(globals, helpers) {
+  var exports = {};
+
+  /**
+   * Converts an object to x-www-form-urlencoded serialization.
+   * borrowed from http://victorblog.com/2012/12/20/make-angularjs-http-service-behave-like-jquery-ajax/
+   * @param {Object} obj
+   * @return {String}
+   */
+  function formEncode(obj)
+  {
+    var query = '';
+    var name, value, fullSubName, subName, subValue, innerObj, i;
+
+    for(name in obj) {
+      if (obj.hasOwnProperty(name)) {
+        value = obj[name];
+
+        if(value instanceof Array) {
+          for(i=0; i<value.length; ++i) {
+            subValue = value[i];
+            fullSubName = name + '[' + i + ']';
+            innerObj = {};
+            innerObj[fullSubName] = subValue;
+            query += formEncode(innerObj) + '&';
+          }
+        }
+        else if(value instanceof Object) {
+          for(subName in value) {
+            if (value.hasOwnProperty(subName)) {
+              subValue = value[subName];
+              fullSubName = name + '[' + subName + ']';
+              innerObj = {};
+              innerObj[fullSubName] = subValue;
+              query += formEncode(innerObj) + '&';
+            }
+          }
+        }
+        else if(value !== undefined && value !== null) {
+          query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&';
+        }
+      }
+    }
+
+    return query.length ? query.substr(0, query.length - 1) : query;
+  }
+
+  /**
+   * httpWrapper function based upon Angular's $http function
+   * @param http Angular's $http function
+   * @returns {Function} http function that exposes a standard interface
+   */
+  exports.httpWrapper = function(http) {
+    return function(method, url, headers, data, opts) {
+      // set up the options
+      var config = helpers.extend({
+        method: method,
+        url: url,
+        responseType: 'json',
+        data: data,
+        transformRequest: function(obj) {
+          return helpers.isObject(obj) && String(obj) !== '[object File]' ? formEncode(obj) : obj;
+        }
+      }, opts);
+      config.headers = helpers.extend({}, headers, opts.headers);
+
+      // make the call
+      var promise = http(config);
+
+      // process the response
+      var d = globals.deferredWrapper();
+      var returnedPromise = d.promise;
+      var statusCode = null;
+      var headerGetter = null;
+      promise.then(
+        function(response) {
+          statusCode = response.status;
+          headerGetter = response.headers;
+          d.resolve(response.data);
+        },
+        function(response) {
+          statusCode = response.status;
+          headerGetter = response.headers;
+          d.reject(response);
+        });
+
+      // add http-specific functions to the returned promise
+      returnedPromise.getStatusCode = function() {
+        return statusCode;
+      };
+      returnedPromise.getResponseHeader = function(header) {
+        return headerGetter(header);
+      };
+      returnedPromise.getAllResponseHeaders = function() {
+        return headerGetter();
+      };
+
+      return returnedPromise;
+    };
+  };
+
+  /**
+   * deferredWrapper function based upon Angular's $q.defer function
+   * @param deferred Angular's $q.defer function
+   * @returns {Function} deferred function that exposes a standard interface
+   */
+  exports.deferredWrapper = function(deferred) {
+    return function() {
+      var d = deferred();
+      return {
+        promise: d.promise,
+        resolve: d.resolve,
+        reject: d.reject
+      };
+    };
+  };
+
+  return exports;
+});
+
 define('jquery-wrappers',[
   'globals',
   'helpers'
@@ -896,10 +1021,11 @@ define('jquery-wrappers',[
 });
 
 define('init',[
+  'angularjs-wrappers',
   'globals',
   'jquery-wrappers',
   'helpers'
-], function(globals, jQueryWrappers, helpers) {
+], function(angularjsWrappers, globals, jQueryWrappers, helpers) {
   /**
    * @ngdoc overview
    * @name init
@@ -921,8 +1047,9 @@ define('init',[
    *
    * - `app_key` - the developer key you received from FamilySearch
    * - `environment` - sandbox, staging, or production
-   * - `http_function` - a function for issuing http requests: jQuery.ajax, and eventually angular's $http, or node.js's ...
-   * - `deferred_function` - a function for creating deferred's: jQuery.Deferred, and eventually angular's $q or Q
+   * - `http_function` - a function for issuing http requests: `jQuery.ajax` or angular's `$http`, or eventually node.js's ...
+   * - `deferred_function` - a function for creating deferred's: `jQuery.Deferred` or angular's `$q.defer` or eventually `Q`
+   * - `timeout_function` - optional timeout function: angular users should pass `$timeout`; otherwise the global `setTimeout` is used
    * - `auth_callback` - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
    * but must have the same host and port as the server running your script
    * - `auto_expire` - set to true if you want to the system to clear the access token when it has expired
@@ -955,12 +1082,45 @@ define('init',[
     if(!opts['http_function']) {
       throw 'http must be set; e.g., jQuery.ajax';
     }
-    globals.httpWrapper = jQueryWrappers.httpWrapper(opts['http_function']);
+    var httpFunction = opts['http_function'];
+    if (httpFunction.defaults) {
+      globals.httpWrapper = angularjsWrappers.httpWrapper(httpFunction);
+    }
+    else {
+      globals.httpWrapper = jQueryWrappers.httpWrapper(httpFunction);
+    }
 
     if(!opts['deferred_function']) {
       throw 'deferred_function must be set; e.g., jQuery.Deferred';
     }
-    globals.deferredWrapper = jQueryWrappers.deferredWrapper(opts['deferred_function']);
+    var deferredFunction = opts['deferred_function'];
+    var d = deferredFunction();
+    d.resolve(); // required for unit tests
+    if (!helpers.isFunction(d.promise)) {
+      globals.deferredWrapper = angularjsWrappers.deferredWrapper(deferredFunction);
+    }
+    else {
+      globals.deferredWrapper = jQueryWrappers.deferredWrapper(deferredFunction);
+    }
+
+    var timeout = opts['timeout_function'];
+    if (timeout) {
+      globals.setTimeout = function(fn, delay) {
+        return timeout(fn, delay);
+      };
+      globals.clearTimeout = function(timer) {
+        timeout.cancel(timer);
+      };
+    }
+    else {
+      // not sure why I can't just set globals.setTimeout = setTimeout, but it doesn't seem to work; anyone know why?
+      globals.setTimeout = function(fn, delay) {
+        return setTimeout(fn, delay);
+      };
+      globals.clearTimeout = function(timer) {
+        clearTimeout(timer);
+      };
+    }
 
     globals.authCallbackUri = opts['auth_callback'];
 
@@ -1057,7 +1217,7 @@ define('plumbing',[
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   exports.post = function(url, data, headers, opts, responseMapper) {
-    return exports.http('POST', url, helpers.extend({'Content-type': 'application/x-www-form-urlencoded'},headers), data, opts, responseMapper);
+    return exports.http('POST', url, helpers.extend({'Content-Type': 'application/x-www-form-urlencoded'},headers), data, opts, responseMapper);
   };
 
   /**
@@ -1076,7 +1236,7 @@ define('plumbing',[
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   exports.put = function(url, data, headers, opts, responseMapper) {
-    return exports.http('PUT', url, helpers.extend({'Content-type': 'application/x-www-form-urlencoded'},headers), data, opts, responseMapper);
+    return exports.http('PUT', url, helpers.extend({'Content-Type': 'application/x-www-form-urlencoded'},headers), data, opts, responseMapper);
   };
 
   /**
@@ -1167,7 +1327,7 @@ define('plumbing',[
           if (retries > 0 && statusCode === 429) {
             var retryAfterHeader = promise.getResponseHeader('Retry-After');
             var retryAfter = retryAfterHeader ? parseInt(retryAfterHeader,10) : globals.defaultThrottleRetryAfter;
-            setTimeout(function() {
+            globals.setTimeout(function() {
               promise = exports.http(method, url, headers, data, opts, responseMapper, retries-1);
               helpers.extendHttpPromise(returnedPromise, promise);
               promise.then(

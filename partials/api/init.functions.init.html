@@ -10,8 +10,9 @@
 <ul>
 <li><code>app_key</code> - the developer key you received from FamilySearch</li>
 <li><code>environment</code> - sandbox, staging, or production</li>
-<li><code>http_function</code> - a function for issuing http requests: jQuery.ajax, and eventually angular's $http, or node.js's ...</li>
-<li><code>deferred_function</code> - a function for creating deferred's: jQuery.Deferred, and eventually angular's $q or Q</li>
+<li><code>http_function</code> - a function for issuing http requests: <code>jQuery.ajax</code> or angular's <code>$http</code>, or eventually node.js's ...</li>
+<li><code>deferred_function</code> - a function for creating deferred's: <code>jQuery.Deferred</code> or angular's <code>$q.defer</code> or eventually <code>Q</code></li>
+<li><code>timeout_function</code> - optional timeout function: angular users should pass <code>$timeout</code>; otherwise the global <code>setTimeout</code> is used</li>
 <li><code>auth_callback</code> - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
 but must have the same host and port as the server running your script</li>
 <li><code>auto_expire</code> - set to true if you want to the system to clear the access token when it has expired
