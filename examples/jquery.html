@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
+  <script data-main="../src/FamilySearch.js" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.9/require.min.js"></script>
+</head>
+
+<body>
+<script>
+  require(['FamilySearch'], function(FamilySearch) {
+    window.run = function() {
+      FamilySearch.getCurrentUser().then(function(response) {
+        $('#output').append('Hello '+response.getUser().contactName+'!');
+      });
+    };
+
+    FamilySearch.init({
+      app_key: 'YOUR_APP_KEY_GOES_HERE',
+      environment: 'sandbox',
+      auth_callback: 'http://localhost:9000/auth', // if you run this example on a port other than 9000, set the port here
+      http_function: $.ajax,
+      deferred_function: $.Deferred,
+      save_access_token: true,
+      auto_expire: true,
+      auto_signin: true
+    });
+  });
+</script>
+
+<a href="#" onclick="run()">Run</a>
+<div id="output"></div>
+</body>
+
+</html>

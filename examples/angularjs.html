@@ -1,0 +1,41 @@
+<!doctype html>
+<html ng-app>
+<head>
+  <script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
+  <script src="http://code.angularjs.org/1.2.5/angular.min.js"></script>
+  <script data-main="../src/FamilySearch.js" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.9/require.min.js"></script>
+  <script>
+    require(['FamilySearch'], function(FamilySearch) {
+      // This is a hack
+      // Normally you wouldn't mix requirejs with angular.
+      // Instead you would include familysearch-javascript-sdk.js directly and reference it as a browser global
+      window.FamilySearch = FamilySearch;
+    });
+
+    function DemoCntl($scope, $location, $http, $q) {
+      $scope.run = function() {
+        FamilySearch.init({
+          app_key: 'YOUR_APP_KEY_GOES_HERE',
+          environment: 'sandbox',
+          auth_callback: 'http://localhost:9000/auth', // if you run this example on a port other than 9000, set the port here
+          http_function: $http,
+          deferred_function: $q.defer,
+          save_access_token: true,
+          auto_expire: true,
+          auto_signin: true
+        });
+
+        FamilySearch.getCurrentUser().then(function(response) {
+          $scope.contactName = response.getUser().contactName;
+        });
+      };
+    }
+  </script>
+</head>
+<body>
+<div ng-controller="DemoCntl">
+  <button ng-click="run()">run</button>
+  <div class="winner" ng-show="contactName">Hello {{contactName}}!</div>
+</div>
+</body>
+</html>

@@ -150,13 +150,13 @@
  * - `done(function(response) {})`
  * - `fail(function(jqXHR, textStatus, errorThrown) {})`
  *
- * #### AngularJS -- not yet implemented
+ * #### AngularJS
  *
  * If you pass `$http` and `$q.defer` into the `FamilySearch.init` call, the returned promises
  * will have the methods [described here](http://docs.angularjs.org/api/ng.$q#description_the-promise-api); for example
  *
  * - `then(function(response) {}, function({data: response, status: status, headers: headers, config: config}) {})`
- * - `catch(function(response, status, headers, config) {})`
+ * - `catch(function({data: response, status: status, headers: headers, config: config}) {})`
  *
  * #### Node.js -- not yet implemented
  *

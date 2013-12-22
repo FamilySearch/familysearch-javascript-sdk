@@ -1,8 +1,9 @@
 define([
+  'angularjs-wrappers',
   'globals',
   'jquery-wrappers',
   'helpers'
-], function(globals, jQueryWrappers, helpers) {
+], function(angularjsWrappers, globals, jQueryWrappers, helpers) {
   /**
    * @ngdoc overview
    * @name init
@@ -58,12 +59,25 @@ define([
     if(!opts['http_function']) {
       throw 'http must be set; e.g., jQuery.ajax';
     }
-    globals.httpWrapper = jQueryWrappers.httpWrapper(opts['http_function']);
+    var httpFunction = opts['http_function'];
+    if (httpFunction.defaults) {
+      globals.httpWrapper = angularjsWrappers.httpWrapper(httpFunction);
+    }
+    else {
+      globals.httpWrapper = jQueryWrappers.httpWrapper(httpFunction);
+    }
 
     if(!opts['deferred_function']) {
       throw 'deferred_function must be set; e.g., jQuery.Deferred';
     }
-    globals.deferredWrapper = jQueryWrappers.deferredWrapper(opts['deferred_function']);
+    var deferredFunction = opts['deferred_function'];
+    var d = deferredFunction();
+    if (!helpers.isFunction(d.promise)) {
+      globals.deferredWrapper = angularjsWrappers.deferredWrapper(deferredFunction);
+    }
+    else {
+      globals.deferredWrapper = jQueryWrappers.deferredWrapper(deferredFunction);
+    }
 
     globals.authCallbackUri = opts['auth_callback'];
 
