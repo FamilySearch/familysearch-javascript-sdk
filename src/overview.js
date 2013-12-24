@@ -193,7 +193,21 @@
  * });
  * </pre>
  *
- * ## Plumbing
+ * ## Using the SDK with module loaders
+ *
+ * The SDK can be used
+ *
+ * - as a browser global (i.e., referring to it as `window.FamilySearch` or just `FamilySearch`),
+ * - with AMD loaders like *RequireJS* ([see the jQuery.html example](https://github.com/rootsdev/familysearch-javascript-sdk/blob/master/examples/jquery.html)),
+ * - or with CommonJS loaders like *Node.js* (no example yet).
+ *
+ * It does this by prepending [a 40-line header](https://github.com/rootsdev/familysearch-javascript-sdk/blob/master/src/header.frag)
+ * to the front of the combined file.
+ * This header should work for any project that needs to combine javascript source files located in a single directory
+ * written using the AMD *defines* format and make them available also for CommonJS or as a browser global.
+ * The header is far less code than using the [Almond loader](https://github.com/jrburke/almond), which is the other approach.
+ *
+ * ## Plumbing functions
  *
  * The functions in the *plumbing* module are low-level functions that you would not normally call.
  * The higher-level API functions that you normally call are built on top of the plumbing functions.
@@ -202,4 +216,31 @@
  * passed into the `init` call would call them with.
  * The plumbing functions serve the same purpose as the
  * [plumbing functions in git](https://www.kernel.org/pub/software/scm/git/docs/#_low_level_commands_plumbing).
+ *
+ * ## Contributing
+ *
+ * **Pull requests are welcome!**
+ *
+ * **Grunt** We use grunt as our build tool.  Grunt has targets to run jshint, unit tests, generate the HTML documentation,
+ * and combine and minify the javascript source files.
+ * Two of the most useful targets are `grunt server` which starts a server and watches the source files for changes, and
+ * `grunt build` which builds everything.
+ *
+ * **JSHint** We use a fairly strict .jshintrc file. JSHint is a great way to catch potential bugs before they occur.
+ * Please use grunt to run jshint over your files before submitting pull requests.
+ *
+ * **Unit tests** are created by copying and pasting the sample json responses provided on the FamilySearch
+ * developers website into files in the test/mock directory, then calling the corresponding function and running various
+ * expectations over the results.
+ * A test mock redirects the function call to read the response from the corresponding json file instead of calling the
+ * actual FamilySearch REST API.
+ * Your pull requests should contain unit tests for new functionality and make sure that existing unit tests all pass.
+ *
+ * **Documentation** is generated from JSDoc comments that have been extended with some *ngdoc* keywords.
+ * Take a look at the existing code for examples.
+ * Your pull requests should be documented.
+ *
+ * **Travis-CI** Whenever a push is made to github, Travis-CI calls grunt to run jshint, unit tests, generate the HTML
+ * documentation, combine and minify the javascript source files, and publish the documentation and combined & minified
+ * source to the gh-pages branch on github.
  */

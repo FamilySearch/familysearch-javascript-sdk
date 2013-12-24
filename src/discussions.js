@@ -36,6 +36,7 @@ define([
    * @return {Object} promise for the response
    */
   exports.getPersonDiscussionRefs = function(pid, params, opts) {
+    // TODO add discussion-reference-json-fix
     return plumbing.get('/platform/tree/persons/'+encodeURI(pid)+'/discussion-references', params, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.objectExtender({getDiscussionIds: function() {
         return helpers.map(maybe(maybe(this.persons)[0])['discussion-references'], function(url) {
