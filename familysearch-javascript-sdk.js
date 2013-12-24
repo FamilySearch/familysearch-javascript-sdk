@@ -681,15 +681,17 @@ define('helpers',[
    * @param {string} name Cookie name
    * @param {string} value Cookie value
    * @param {number} days Number of days to expiration; set to 0 for a session cookie
+   * @param {boolean} isSecure true if the cookie should be secure
    */
-  exports.createCookie = function(name, value, days) {
+  exports.createCookie = function(name, value, days, isSecure) {
     var expires = '';
     if (days) {
       var date = new Date();
       date.setTime(date.getTime()+(days*86400));
       expires = '; expires='+date.toUTCString();
     }
-    document.cookie = name+'='+value+expires+'; path=/';
+    //noinspection JSValidateTypes
+    document.cookie = name + '=' + value + expires + '; path=/' + (isSecure ? '; secure' : '');
   };
 
   /**
@@ -719,7 +721,7 @@ define('helpers',[
    * @param {string} name Cookie name
    */
   exports.eraseCookie = function(name) {
-    exports.createCookie(name,'',-1);
+    exports.createCookie(name,'',-1, true);
   };
 
   var accessTokenInactiveTimer = null;
@@ -790,7 +792,7 @@ define('helpers',[
     if (globals.saveAccessToken) {
       var now = (new Date()).getTime();
       var cookie = now+'|'+now+'|'+accessToken;
-      exports.createCookie(globals.accessTokenCookie, cookie, 0);
+      exports.createCookie(globals.accessTokenCookie, cookie, 0, true);
     }
   };
 
@@ -808,7 +810,7 @@ define('helpers',[
         var parts = cookie.split('|', 3);
         if (parts.length === 3) {
           cookie = now+'|'+parts[1]+'|'+parts[2];
-          exports.createCookie(globals.accessTokenCookie, cookie, 0);
+          exports.createCookie(globals.accessTokenCookie, cookie, 0, true);
         }
       }
     }
@@ -1741,6 +1743,7 @@ define('discussions',[
    * @return {Object} promise for the response
    */
   exports.getPersonDiscussionRefs = function(pid, params, opts) {
+    // TODO add discussion-reference-json-fix
     return plumbing.get('/platform/tree/persons/'+encodeURI(pid)+'/discussion-references', params, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.objectExtender({getDiscussionIds: function() {
         return helpers.map(maybe(maybe(this.persons)[0])['discussion-references'], function(url) {

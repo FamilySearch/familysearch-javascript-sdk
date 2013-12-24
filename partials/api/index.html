@@ -209,7 +209,23 @@ FamilySearch.getPerson('ID').then(function(response) {
 });
 </pre>
 
-<h2 id="plumbing">Plumbing</h3>
+<h2 id="usingthesdkwithmoduleloaders">Using the SDK with module loaders</h3>
+
+<p>The SDK can be used</p>
+
+<ul>
+<li>as a browser global (i.e., referring to it as <code>window.FamilySearch</code> or just <code>FamilySearch</code>),</li>
+<li>with AMD loaders like <em>RequireJS</em> (<a href="https://github.com/rootsdev/familysearch-javascript-sdk/blob/master/examples/jquery.html">see the jQuery.html example</a>),</li>
+<li>or with CommonJS loaders like <em>Node.js</em> (no example yet).</li>
+</ul>
+
+<p>It does this by prepending <a href="https://github.com/rootsdev/familysearch-javascript-sdk/blob/master/src/header.frag">a 40-line header</a>
+to the front of the combined file.
+This header should work for any project that needs to combine javascript source files located in a single directory
+written using the AMD <em>defines</em> format and make them available also for CommonJS or as a browser global.
+The header is far less code than using the <a href="https://github.com/jrburke/almond">Almond loader</a>, which is the other approach.</p>
+
+<h2 id="plumbingfunctions">Plumbing functions</h3>
 
 <p>The functions in the <em>plumbing</em> module are low-level functions that you would not normally call.
 The higher-level API functions that you normally call are built on top of the plumbing functions.
@@ -217,4 +233,31 @@ The plumbing functions are exposed in case you want to do something not anticipa
 Promises returned by plumbing functions call their callback functions with whatever the <code>http_function</code>
 passed into the <code>init</code> call would call them with.
 The plumbing functions serve the same purpose as the
-<a href="https://www.kernel.org/pub/software/scm/git/docs/#_low_level_commands_plumbing">plumbing functions in git</a>.</p></div>
+<a href="https://www.kernel.org/pub/software/scm/git/docs/#_low_level_commands_plumbing">plumbing functions in git</a>.</p>
+
+<h2 id="contributing">Contributing</h3>
+
+<p><strong>Pull requests are welcome!</strong></p>
+
+<p><strong>Grunt</strong> We use grunt as our build tool.  Grunt has targets to run jshint, unit tests, generate the HTML documentation,
+and combine and minify the javascript source files.
+Two of the most useful targets are <code>grunt server</code> which starts a server and watches the source files for changes, and
+<code>grunt build</code> which builds everything.</p>
+
+<p><strong>JSHint</strong> We use a fairly strict .jshintrc file. JSHint is a great way to catch potential bugs before they occur.
+Please use grunt to run jshint over your files before submitting pull requests.</p>
+
+<p><strong>Unit tests</strong> are created by copying and pasting the sample json responses provided on the FamilySearch
+developers website into files in the test/mock directory, then calling the corresponding function and running various
+expectations over the results.
+A test mock redirects the function call to read the response from the corresponding json file instead of calling the
+actual FamilySearch REST API.
+Your pull requests should contain unit tests for new functionality and make sure that existing unit tests all pass.</p>
+
+<p><strong>Documentation</strong> is generated from JSDoc comments that have been extended with some <em>ngdoc</em> keywords.
+Take a look at the existing code for examples.
+Your pull requests should be documented.</p>
+
+<p><strong>Travis-CI</strong> Whenever a push is made to github, Travis-CI calls grunt to run jshint, unit tests, generate the HTML
+documentation, combine and minify the javascript source files, and publish the documentation and combined &amp; minified
+source to the gh-pages branch on github.</p></div>
