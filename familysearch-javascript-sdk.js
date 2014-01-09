@@ -681,10 +681,10 @@ define('helpers',[
    * @param {string} name Cookie name
    * @param {string} value Cookie value
    * @param {number} days Number of days to expiration; set to 0 for a session cookie
-   * @param {boolean} isSecure true if the cookie should be secure
    */
-  exports.createCookie = function(name, value, days, isSecure) {
+  exports.createCookie = function(name, value, days) {
     var expires = '';
+    var isSecure = document.location.hostname !== 'localhost'; // can't set secure cookies on localhost in chrome
     if (days) {
       var date = new Date();
       date.setTime(date.getTime()+(days*86400));
@@ -721,7 +721,7 @@ define('helpers',[
    * @param {string} name Cookie name
    */
   exports.eraseCookie = function(name) {
-    exports.createCookie(name,'',-1, true);
+    exports.createCookie(name,'',-1);
   };
 
   var accessTokenInactiveTimer = null;
@@ -792,7 +792,7 @@ define('helpers',[
     if (globals.saveAccessToken) {
       var now = (new Date()).getTime();
       var cookie = now+'|'+now+'|'+accessToken;
-      exports.createCookie(globals.accessTokenCookie, cookie, 0, true);
+      exports.createCookie(globals.accessTokenCookie, cookie, 0);
     }
   };
 
@@ -810,7 +810,7 @@ define('helpers',[
         var parts = cookie.split('|', 3);
         if (parts.length === 3) {
           cookie = now+'|'+parts[1]+'|'+parts[2];
-          exports.createCookie(globals.accessTokenCookie, cookie, 0, true);
+          exports.createCookie(globals.accessTokenCookie, cookie, 0);
         }
       }
     }
@@ -2842,18 +2842,19 @@ define('person',[
   // TODO getPreferredParent
   // TODO new Parents endpoint (and drop getRelationshipsToParents?)
   // TODO new Children endpoint (and drop getRelationshipsToChildren?)
+  // TODO new Spouses endpoint
   // TODO use X-FS-Feature-Tag: parent-child-relationship-resources-consolidation on parents and children endpoints
-  //
 
   return exports;
 });
 
 define('memories',[
   'discussions',
+  'globals',
   'helpers',
   'person',
   'plumbing'
-], function(discussions, helpers, person, plumbing) {
+], function(discussions, globals, helpers, person, plumbing) {
   /**
    * @ngdoc overview
    * @name memories
@@ -3178,21 +3179,39 @@ define('memories',[
    * @function
    *
    * @description
-   * Get a URL that will redirect to the portrait of a person
+   * Get the URL of the portrait of a person
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Memories_Portrait_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/f8DU3/ editable example}
    *
-   * @param {String} id of the person
-   * @return {String} URL that will redirect to the portrait of a person
+   * @param {String} pid of the person
+   * @param {Object=} params `default` URL to redirect to if portrait doesn't exist;
+   * `followRedirect` if true, follow the redirect and return the final URL
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the URL
    */
-  // TODO add the default parameter
-  exports.getPersonPortraitURL = function(id) {
-    return helpers.getAPIServerUrl('/platform/tree/persons/'+encodeURI(id)+'/portrait');
+  exports.getPersonPortraitURL = function(pid, params, opts) {
+    var result;
+    var path = '/platform/tree/persons/'+encodeURI(pid)+'/portrait';
+    if (params && params.followRedirect) {
+      params = helpers.extend({}, params);
+      delete params.followRedirect;
+      var d = globals.deferredWrapper();
+      var promise = plumbing.get(path, params, {}, opts);
+      result = helpers.extendHttpPromise(d.promise, promise);
+      promise.then(function() {
+        d.resolve(promise.getStatusCode() === 200 ? promise.getResponseHeader('Content-Location') : '');
+      }, function() {
+        // We don't expect the image content-type, try to parse it as json, and fail, so rely upon the status code
+        d.resolve(promise.getStatusCode() === 200 ? promise.getResponseHeader('Content-Location') : '');
+      });
+    }
+    else {
+      result = helpers.getAPIServerUrl(path);
+    }
+    return helpers.refPromise(result);
   };
-
-  // TODO think about a way to test whether a person has a portrait: default to / and see if it redirects there
 
   return exports;
 });

@@ -1,29 +1,20 @@
 <h1><code ng:non-bindable="">http</code>
-<span class="hint">(functions in module <code ng:non-bindable="">plumbing</code>
-)</span>
-</h1>
-<div><h2 id="Description">Description</h2>
-<div class="description"><p>Low-level call to issue an http request to a specific REST endpoint from FamilySearch</p></div>
-<h2 id="Usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">http(method, url[, headers][, data][, opts][, responseMapper][, retries]);</pre>
-<h3 id="Parameters">Parameters</h3>
-<ul class="parameters"><li><code ng:non-bindable="">method – {String} – </code>
-<p>GET, POST, PUT, or DELETE</p></li>
-<li><code ng:non-bindable="">url – {String} – </code>
-<p>may be relative</p></li>
-<li><code ng:non-bindable="">headers<i>(optional)</i> – {Object=} – </code>
-<p>headers object</p></li>
-<li><code ng:non-bindable="">data<i>(optional)</i> – {Object=} – </code>
-<p>post data</p></li>
-<li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
-<p>options to pass to the http function specified during init</p></li>
-<li><code ng:non-bindable="">responseMapper<i>(optional)</i> – {Function=} – </code>
-<p>function to map response data into the data to return</p></li>
-<li><code ng:non-bindable="">retries<i>(optional)</i> – {Number=} – </code>
-<p>number of times to retry</p></li>
-</ul>
-<h3 id="Returns">Returns</h3>
-<div class="returns"><code ng:non-bindable="">{Object}</code>
-– <p>a promise that behaves like promises returned by the http function specified during init</p></div>
+<div><span class="hint">functions in module <code ng:non-bindable="">plumbing</code>
+</span>
 </div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="plumbing-functions-page plumbing-functions-http-page"><p>Low-level call to issue an http request to a specific REST endpoint from FamilySearch</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">http(method, url[, headers][, data][, opts][, responseMapper][, retries]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>method</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="plumbing-functions-page plumbing-functions-http-page"><p>GET, POST, PUT, or DELETE</p>
+</div></td></tr><tr><td>url</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="plumbing-functions-page plumbing-functions-http-page"><p>may be relative</p>
+</div></td></tr><tr><td>headers <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="plumbing-functions-page plumbing-functions-http-page"><p>headers object</p>
+</div></td></tr><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="plumbing-functions-page plumbing-functions-http-page"><p>post data</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="plumbing-functions-page plumbing-functions-http-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr><tr><td>responseMapper <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="plumbing-functions-page plumbing-functions-http-page"><p>function to map response data into the data to return</p>
+</div></td></tr><tr><td>retries <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="plumbing-functions-page plumbing-functions-http-page"><p>number of times to retry</p>
+</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="plumbing-functions-page plumbing-functions-http-page"><p>a promise that behaves like promises returned by the http function specified during init</p>
+</div></td></tr></table></div>
 </div>

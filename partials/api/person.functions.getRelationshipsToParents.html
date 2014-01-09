@@ -1,35 +1,26 @@
 <h1><code ng:non-bindable="">getRelationshipsToParents</code>
-<span class="hint">(functions in module <code ng:non-bindable="">person</code>
-)</span>
+<div><span class="hint">functions in module <code ng:non-bindable="">person</code>
+</span>
+</div>
 </h1>
-<div><h2 id="Description">Description</h2>
-<div class="description"><p>Get the relationships to a person's parents.
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="person-functions-page person-functions-getrelationshipstoparents-page"><p>Get the relationships to a person&#39;s parents.
 The response includes the following convenience function</p>
-
 <ul>
 <li><code>getRelationships()</code> - an array of { <code>id</code> - relationship id, <code>fatherId</code>, <code>motherId</code> }</li>
 <li><code>getPerson(pid)</code> - if the <code>persons</code> parameter has been set, this function will return a
 <a href="#/api/person.types:type.Person">Person</a> for a person id in the relationship</li>
 </ul>
-
 <p>Pass the relationship id into <a href="#/api/parentsAndChildren.functions:getChildAndParents">getChildAndParents</a> for more information</p>
-
 <p><a href="https://familysearch.org/developers/docs/api/tree/Relationships_to_Parents_resource">FamilySearch API Docs</a></p>
-
-<p><a href="http://jsfiddle.net/DallanQ/ajxpq/">editable example</a></p></div>
-<h2 id="Usage">Usage</h2>
+<p><a href="http://jsfiddle.net/DallanQ/ajxpq/">editable example</a></p>
+</div></div>
+<h2 id="usage">Usage</h2>
 <div class="usage"><pre class="prettyprint linenums">getRelationshipsToParents(pid[, params][, opts]);</pre>
-<h3 id="Parameters">Parameters</h3>
-<ul class="parameters"><li><code ng:non-bindable="">pid – {String} – </code>
-<p>of the person to read</p></li>
-<li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
-<p>set <code>persons</code> true to return a person object for each person in the relationships,
-which you can access using the <code>getPerson(id)</code> convenience function.</p></li>
-<li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
-<p>options to pass to the http function specified during init</p></li>
-</ul>
-<h3 id="Returns">Returns</h3>
-<div class="returns"><code ng:non-bindable="">{Object}</code>
-– <p>promise for the response</p></div>
-</div>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-functions-page person-functions-getrelationshipstoparents-page"><p>of the person to read</p>
+</div></td></tr><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getrelationshipstoparents-page"><p>set <code>persons</code> true to return a person object for each person in the relationships,
+which you can access using the <code>getPerson(id)</code> convenience function.</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getrelationshipstoparents-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getrelationshipstoparents-page"><p>promise for the response</p>
+</div></td></tr></table></div>
 </div>

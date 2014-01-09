@@ -1,11 +1,11 @@
 <h1><code ng:non-bindable="">getPersonWithRelationships</code>
-<span class="hint">(functions in module <code ng:non-bindable="">person</code>
-)</span>
+<div><span class="hint">functions in module <code ng:non-bindable="">person</code>
+</span>
+</div>
 </h1>
-<div><h2 id="Description">Description</h2>
-<div class="description"><p>Get a person and their children, spouses, and parents.
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="person-functions-page person-functions-getpersonwithrelationships-page"><p>Get a person and their children, spouses, and parents.
 The response has the following convenience functions</p>
-
 <ul>
 <li><code>getPrimaryId()</code> - id of the person requested</li>
 <li><code>getFatherIds()</code> - array of ids</li>
@@ -21,9 +21,7 @@ The response has the following convenience functions</p>
 if <code>spouseId</code> is null/undefined, return ids of child relationships without the other parent</li>
 <li><code>getPrimaryPerson()</code> - <a href="#/api/person.types:type.Person">Person</a> object for the primary person</li>
 </ul>
-
 <p>In addition, the following functions are available if persons is set to true in params</p>
-
 <ul>
 <li><code>getPerson(id)</code> - <a href="#/api/person.types:type.Person">Person</a> object for the person with <code>id</code></li>
 <li><code>getFathers()</code> - array of father <a href="#/api/person.types:type.Person">Persons</a></li>
@@ -33,22 +31,14 @@ if <code>spouseId</code> is null/undefined, return ids of child relationships wi
 <li><code>getChildrenOf(spouseId)</code> - array of child <a href="#/api/person.types:type.Person">Persons</a>;
 if <code>spouseId</code> is null/undefined, return children without the other parent</li>
 </ul>
-
 <p><a href="https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource">FamilySearch API Docs</a></p>
-
-<p><a href="http://jsfiddle.net/DallanQ/5Npsh/">editable example</a></p></div>
-<h2 id="Usage">Usage</h2>
+<p><a href="http://jsfiddle.net/DallanQ/5Npsh/">editable example</a></p>
+</div></div>
+<h2 id="usage">Usage</h2>
 <div class="usage"><pre class="prettyprint linenums">getPersonWithRelationships(pid[, params][, opts]);</pre>
-<h3 id="Parameters">Parameters</h3>
-<ul class="parameters"><li><code ng:non-bindable="">pid – {String} – </code>
-<p>person to read</p></li>
-<li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
-<p>set <code>persons</code> to true to retrieve full person objects for each relative</p></li>
-<li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
-<p>options to pass to the http function specified during init</p></li>
-</ul>
-<h3 id="Returns">Returns</h3>
-<div class="returns"><code ng:non-bindable="">{Object}</code>
-– <p>promise for the person with relationships</p></div>
-</div>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-functions-page person-functions-getpersonwithrelationships-page"><p>person to read</p>
+</div></td></tr><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getpersonwithrelationships-page"><p>set <code>persons</code> to true to retrieve full person objects for each relative</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getpersonwithrelationships-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getpersonwithrelationships-page"><p>promise for the person with relationships</p>
+</div></td></tr></table></div>
 </div>

@@ -1,39 +1,29 @@
 <h1><code ng:non-bindable="">getAncestry</code>
-<span class="hint">(functions in module <code ng:non-bindable="">pedigree</code>
-)</span>
+<div><span class="hint">functions in module <code ng:non-bindable="">pedigree</code>
+</span>
+</div>
 </h1>
-<div><h2 id="Description">Description</h2>
-<div class="description"><p>Get the ancestors of a specified person and optionally a specified spouse with the following convenience functions</p>
-
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="pedigree-functions-page pedigree-functions-getancestry-page"><p>Get the ancestors of a specified person and optionally a specified spouse with the following convenience functions</p>
 <ul>
 <li><code>getPersons()</code> - return an array of <a href="#/api/person.types:type.Person">Persons</a></li>
 <li><code>getPerson(ascendancyNumber)</code> - return a <a href="#/api/person.types:type.Person">Person</a></li>
 <li><code>exists(ascendancyNumber)</code> - return true if a person with ascendancy number exists</li>
 </ul>
-
-<h3 id="notes">Notes</h5>
-
+<h5 id="description_notes">Notes</h5>
 <ul>
-<li>Each Person object has an additional <code>getAscendancyNumber()</code> function that returns the person's ascendancy number.</li>
+<li>Each Person object has an additional <code>getAscendancyNumber()</code> function that returns the person&#39;s ascendancy number.</li>
 <li>Some information on the Person objects is available only if <code>params</code> includes <code>personDetails</code></li>
 </ul>
-
 <p><a href="https://familysearch.org/developers/docs/api/tree/Ancestry_resource">FamilySearch API Docs</a></p>
-
-<p><a href="http://jsfiddle.net/DallanQ/gt726/">editable example</a></p></div>
-<h2 id="Usage">Usage</h2>
+<p><a href="http://jsfiddle.net/DallanQ/gt726/">editable example</a></p>
+</div></div>
+<h2 id="usage">Usage</h2>
 <div class="usage"><pre class="prettyprint linenums">getAncestry(id[, params][, opts]);</pre>
-<h3 id="Parameters">Parameters</h3>
-<ul class="parameters"><li><code ng:non-bindable="">id – {String} – </code>
-<p>of the person</p></li>
-<li><code ng:non-bindable="">params<i>(optional)</i> – {Object=} – </code>
-<p>includes <code>generations</code> to retrieve max 8, <code>spouse</code> id to get ancestry of person and spouse,
-<code>personDetails</code> set to true to retrieve full person objects for each ancestor</p></li>
-<li><code ng:non-bindable="">opts<i>(optional)</i> – {Object=} – </code>
-<p>options to pass to the http function specified during init</p></li>
-</ul>
-<h3 id="Returns">Returns</h3>
-<div class="returns"><code ng:non-bindable="">{Object}</code>
-– <p>promise for the ancestry</p></div>
-</div>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="pedigree-functions-page pedigree-functions-getancestry-page"><p>of the person</p>
+</div></td></tr><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="pedigree-functions-page pedigree-functions-getancestry-page"><p>includes <code>generations</code> to retrieve max 8, <code>spouse</code> id to get ancestry of person and spouse,
+<code>personDetails</code> set to true to retrieve full person objects for each ancestor</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="pedigree-functions-page pedigree-functions-getancestry-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="pedigree-functions-page pedigree-functions-getancestry-page"><p>promise for the ancestry</p>
+</div></td></tr></table></div>
 </div>
