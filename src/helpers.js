@@ -606,10 +606,10 @@ define([
    * @param {string} name Cookie name
    * @param {string} value Cookie value
    * @param {number} days Number of days to expiration; set to 0 for a session cookie
-   * @param {boolean} isSecure true if the cookie should be secure
    */
-  exports.createCookie = function(name, value, days, isSecure) {
+  exports.createCookie = function(name, value, days) {
     var expires = '';
+    var isSecure = document.location.hostname !== 'localhost'; // can't set secure cookies on localhost in chrome
     if (days) {
       var date = new Date();
       date.setTime(date.getTime()+(days*86400));
@@ -646,7 +646,7 @@ define([
    * @param {string} name Cookie name
    */
   exports.eraseCookie = function(name) {
-    exports.createCookie(name,'',-1, true);
+    exports.createCookie(name,'',-1);
   };
 
   var accessTokenInactiveTimer = null;
@@ -717,7 +717,7 @@ define([
     if (globals.saveAccessToken) {
       var now = (new Date()).getTime();
       var cookie = now+'|'+now+'|'+accessToken;
-      exports.createCookie(globals.accessTokenCookie, cookie, 0, true);
+      exports.createCookie(globals.accessTokenCookie, cookie, 0);
     }
   };
 
@@ -735,7 +735,7 @@ define([
         var parts = cookie.split('|', 3);
         if (parts.length === 3) {
           cookie = now+'|'+parts[1]+'|'+parts[2];
-          exports.createCookie(globals.accessTokenCookie, cookie, 0, true);
+          exports.createCookie(globals.accessTokenCookie, cookie, 0);
         }
       }
     }
