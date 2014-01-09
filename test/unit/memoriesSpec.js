@@ -42,7 +42,9 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('portrait URL is returned from getPersonPortraitURL', function() {
-      expect(FamilySearch.getPersonPortraitURL('PID')).toBe('https://sandbox.familysearch.org/platform/tree/persons/PID/portrait');
+      FamilySearch.getPersonPortraitURL('PID').then(function(response) {
+        expect(response).toBe('https://sandbox.familysearch.org/platform/tree/persons/PID/portrait');
+      });
     });
 
     it('are returned from getPersonMemoriesQuery', function() {

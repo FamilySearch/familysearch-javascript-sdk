@@ -1,9 +1,10 @@
 define([
   'discussions',
+  'globals',
   'helpers',
   'person',
   'plumbing'
-], function(discussions, helpers, person, plumbing) {
+], function(discussions, globals, helpers, person, plumbing) {
   /**
    * @ngdoc overview
    * @name memories
@@ -328,21 +329,39 @@ define([
    * @function
    *
    * @description
-   * Get a URL that will redirect to the portrait of a person
+   * Get the URL of the portrait of a person
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Memories_Portrait_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/f8DU3/ editable example}
    *
-   * @param {String} id of the person
-   * @return {String} URL that will redirect to the portrait of a person
+   * @param {String} pid of the person
+   * @param {Object=} params `default` URL to redirect to if portrait doesn't exist;
+   * `followRedirect` if true, follow the redirect and return the final URL
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the URL
    */
-  // TODO add the default parameter
-  exports.getPersonPortraitURL = function(id) {
-    return helpers.getAPIServerUrl('/platform/tree/persons/'+encodeURI(id)+'/portrait');
+  exports.getPersonPortraitURL = function(pid, params, opts) {
+    var result;
+    var path = '/platform/tree/persons/'+encodeURI(pid)+'/portrait';
+    if (params && params.followRedirect) {
+      params = helpers.extend({}, params);
+      delete params.followRedirect;
+      var d = globals.deferredWrapper();
+      var promise = plumbing.get(path, params, {}, opts);
+      result = helpers.extendHttpPromise(d.promise, promise);
+      promise.then(function() {
+        d.resolve(promise.getStatusCode() === 200 ? promise.getResponseHeader('Content-Location') : '');
+      }, function() {
+        // We don't expect the image content-type, try to parse it as json, and fail, so rely upon the status code
+        d.resolve(promise.getStatusCode() === 200 ? promise.getResponseHeader('Content-Location') : '');
+      });
+    }
+    else {
+      result = helpers.getAPIServerUrl(path);
+    }
+    return helpers.refPromise(result);
   };
-
-  // TODO think about a way to test whether a person has a portrait: default to / and see if it redirects there
 
   return exports;
 });
