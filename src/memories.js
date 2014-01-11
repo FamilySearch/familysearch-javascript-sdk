@@ -26,8 +26,9 @@ define([
    * A {@link memories.types:type.Memory Memory} id and a Memory Persona Id.
    * See {@link memories.functions:getMemoryPersonas getMemoryPersonas} for more information about Memory Personas.
    */
-  var MemoryRef = exports.MemoryRef = function() {
-
+  var MemoryRef = exports.MemoryRef = function(location) {
+    this.resource = location;
+    this.resourceId = helpers.getLastUrlSegment(location);
   };
 
   exports.MemoryRef.prototype = {
@@ -46,7 +47,6 @@ define([
      * @function
      * @return {String} Id of the memory; pass into {@link memories.functions:getMemory getMemory} for details
      */
-    // TODO how else to get the memory id?
     getMemoryId:  function() { return this.resource ? this.resource.replace(/^.*\/memories\/(\d+)\/.*$/, '$1') : this.resource; }
   };
 
@@ -361,6 +361,91 @@ define([
       result = helpers.getAPIServerUrl(path);
     }
     return helpers.refPromise(result);
+  };
+
+  /**
+   * @ngdoc function
+   * @name memories.functions:createMemory
+   * @function
+   *
+   * @description
+   * Create a memory (story or photo)
+   *
+   * {@link https://familysearch.org/developers/docs/api/memories/Memories_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/2ghkh/ editable example}
+   *
+   * @param {String|FormData} data string or a FormData object
+   * @param {Object=} params `description`, `title`, `filename`, and `type` - artifact type
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the memory id
+   */
+  exports.createMemory = function(data, params, opts) {
+    return plumbing.post(helpers.appendQueryParameters('/platform/memories/memories', params),
+      data, { 'Content-Type': helpers.isString(data) ? 'text/plain' : false }, opts,
+      helpers.getLastResponseLocationSegment);
+  };
+
+  /**
+   * @ngdoc function
+   * @name memories.functions:createMemoryPersona
+   * @function
+   *
+   * @description
+   * Create a memory (story or photo)
+   *
+   * {@link https://familysearch.org/developers/docs/api/memories/Memory_Personas_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/dLfA8/ editable example}
+   *
+   * @param {String} mid memory id
+   * @param {Person} persona persona is a mini-Person object attached to the memory; people are attached to specific personas
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {MemoryRef} reference to the memory and persona id
+   */
+  exports.createMemoryPersona = function(mid, persona, params, opts) {
+    var data = {
+      persons: [ persona ]
+    };
+    return plumbing.post('/platform/memories/memories/'+mid+'/personas', data, {}, opts,
+      function(data, promise) {
+        var location = promise.getResponseHeader('Location');
+        return location ? new MemoryRef(location) : location;
+      });
+  };
+
+  /**
+   * @ngdoc function
+   * @name memories.functions:addPersonMemoryRef
+   * @function
+   *
+   * @description
+   * Create a memory (story or photo)
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_References_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/wrNj2/ editable example}
+   *
+   * @param {String} pid person id
+   * @param {MemoryRef} memoryRef reference to the memory and persona
+   * @param {Object=} params `changeMessage` change message
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the persona id
+   */
+  exports.addPersonMemoryRef = function(pid, memoryRef, params, opts) {
+    var data = {
+      persons: [{
+        evidence: [ memoryRef ]
+      }]
+    };
+    if (params && params.changeMessage) {
+      data.persons[0].attribution = {
+        changeMessage: params.changeMessage
+      };
+    }
+    return plumbing.post('/platform/tree/persons/'+pid+'/memory-references', data, {}, opts,
+      helpers.getLastResponseLocationSegment);
   };
 
   return exports;

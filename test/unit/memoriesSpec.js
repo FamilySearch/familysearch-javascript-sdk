@@ -68,5 +68,63 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(memories[0].getDescription()).toBeUndefined();
       });
     });
+
+    it('is created', function() {
+      var promise = FamilySearch.createMemory('Test', {title: 'Grandfather\'s Horse'});
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        expect(request.headers['Content-Type']).toBe('text/plain');
+        expect(request.data).toBe('Test');
+        expect(promise.getStatusCode()).toBe(201);
+        expect(response).toBe('12345');
+      });
+    });
+
+    it('persona is created', function() {
+      var persona = new FamilySearch.Person();
+      persona.addName('Anastasia Aleksandrova');
+      var promise = FamilySearch.createMemoryPersona('AR-1234', persona);
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualData({
+          persons: [{
+            names: [{
+              nameForms: [{
+                fullText: 'Anastasia Aleksandrova'
+              }]
+            }]
+          }]
+        });
+        expect(promise.getStatusCode()).toBe(201);
+        //noinspection JSUnresolvedFunction
+        expect(response).toEqualData({
+          resource: 'https://familysearch.org/platform/memories/memories/AR-1234/personas/PXX-1234',
+          resourceId: 'PXX-1234'
+        });
+      });
+    });
+
+    it('ref is added to a person', function() {
+      var memoryRef = new FamilySearch.MemoryRef('https://familysearch.org/platform/memories/memories/3649/personas/1083');
+      var promise = FamilySearch.addPersonMemoryRef('PPPP-PPP', memoryRef, {changeMessage:'...change message...'});
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualData({
+          'persons' : [ {
+            'attribution' : {
+              'changeMessage' : '...change message...'
+            },
+            'evidence' : [ {
+              'resource' : 'https://familysearch.org/platform/memories/memories/3649/personas/1083',
+              'resourceId' : '1083'
+            } ]
+          } ]
+        });
+        expect(promise.getStatusCode()).toBe(201);
+        expect(response).toBe('1083');
+      });
+    });
   });
 });

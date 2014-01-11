@@ -1,7 +1,7 @@
 /**
  * Helper functions for unit tests
  */
-define(['FamilySearch', 'jasmine-jquery'], function(FamilySearch) {
+define(['FamilySearch', '_', 'jasmine-jquery'], function(FamilySearch, _) {
   /**
    * Mock a deferred with a waitsFor call to tell jasmine to wait until the promise is resolved/rejected
    * based upon an idea described in http://darktalker.com/2013/promise-pattern-jasmine/
@@ -92,9 +92,16 @@ define(['FamilySearch', 'jasmine-jquery'], function(FamilySearch) {
     return result;
   }
 
+  function isEmpty(obj) {
+    return keys(obj).length === 0;
+  }
+
   function getFilename(opts) {
     var params = decodeQueryString(opts.url);
     var filename = opts.url.replace(/[^\/]*\/\/[^\/]+\//, '').replace(/\?.*$/, ''); // get path portion of URL
+    if (opts.type !== 'GET') {
+      filename = opts.type.toLowerCase() + '_' + filename;
+    }
     var sortedKeys = keys(params).sort(); // sort parameters in alphabetical order
     for (var i = 0, len = sortedKeys.length; i < len; i++) {
       var key = sortedKeys[i];
@@ -112,17 +119,25 @@ define(['FamilySearch', 'jasmine-jquery'], function(FamilySearch) {
    * @returns {Object} promise
    */
   function httpMock(opts) {
+    //console.log('httpMock options', opts);
     var filename = getFilename(opts);
-    //console.log('httpMock', opts.url, filename);
     var data = getJSONFixture(filename);
     var headers = {};
     if (data.headers) {
       headers = data.headers;
       delete data.headers;
     }
+    var status = 200;
+    if (data.status) {
+      status = data.status;
+      delete data.status;
+    }
+    if (opts.type === 'POST' && isEmpty(data)) {
+      data = null;
+    }
 
     var d = deferredMock();
-    d.resolve(data, '', { status: 200 });
+    d.resolve(data, '', { status: status });
     var returnedPromise = d.promise();
 
     returnedPromise.getAllResponseHeaders = function() {
@@ -139,11 +154,24 @@ define(['FamilySearch', 'jasmine-jquery'], function(FamilySearch) {
       return headers[header];
     };
 
+    returnedPromise.getRequest = function() {
+      return opts;
+    };
+
     return returnedPromise;
   }
 
   beforeEach(function() {
     jasmine.getJSONFixtures().fixturesPath='base/test/mock';
+    this.addMatchers({
+      toEqualData: function(expected) {
+        // get rid of any constructor functions
+        var actual = JSON.parse(JSON.stringify(this.actual).replace(/(\\t|\\n)/g,''));
+        expected = JSON.parse(JSON.stringify(expected).replace(/(\\t|\\n)/g,''));
+        // use deep comparison
+        return _.isEqual(actual, expected);
+      }
+    });
 
     FamilySearch.init({
       'app_key': 'mock',

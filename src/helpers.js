@@ -429,7 +429,7 @@ define([
    * @returns {Object} Destination promise with functions from source promise
    */
   exports.extendHttpPromise = function(destPromise, sourcePromise) {
-    return exports.wrapFunctions(destPromise, sourcePromise, ['getResponseHeader', 'getAllResponseHeaders', 'getStatusCode']);
+    return exports.wrapFunctions(destPromise, sourcePromise, ['getResponseHeader', 'getAllResponseHeaders', 'getStatusCode', 'getRequest']);
   };
 
   /**
@@ -444,6 +444,25 @@ define([
       }
     });
     return obj;
+  };
+
+  /**
+   * Get the last segment of a URL
+   * @param url
+   * @returns {string}
+   */
+  exports.getLastUrlSegment = function(url) {
+    return url ? url.replace(/^.*\//, '').replace(/\?.*$/, '') : url;
+  };
+
+  /**
+   * Response mapper that returns the last segment of the location header
+   * @param data ignored
+   * @param promise http promise
+   * @returns {string} last segment of the location response header
+   */
+  exports.getLastResponseLocationSegment = function(data, promise) {
+    return exports.getLastUrlSegment(promise.getResponseHeader('Location'));
   };
 
   /**

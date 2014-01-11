@@ -42,8 +42,9 @@ define([
      * @function
      * @return {String} Id of the source description - pass into {@link sources.functions:getSourceDescription getSourceDescription} for details
      */
-    // TODO how else to get the source description id?
-    getSourceDescriptionId: function() { return this.description ? this.description.replace(/.*\//, '').replace(/\?.*$/, '') : this.description; },
+    getSourceDescriptionId: function() {
+      return helpers.getLastUrlSegment(this.description);
+    },
 
     /**
      * @ngdoc function

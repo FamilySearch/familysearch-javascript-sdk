@@ -59,10 +59,10 @@ define([
       var config = helpers.extend({
         method: method,
         url: url,
-        responseType: 'json',
+        responseType: method === 'POST' ? 'text' : 'json',
         data: data,
         transformRequest: function(obj) {
-          return helpers.isObject(obj) && String(obj) !== '[object File]' ? formEncode(obj) : obj;
+          return helpers.isObject(obj) && String(obj) !== '[object FormData]' ? formEncode(obj) : obj;
         }
       }, opts);
       config.headers = helpers.extend({}, headers, opts.headers);
@@ -96,6 +96,9 @@ define([
       };
       returnedPromise.getAllResponseHeaders = function() {
         return headerGetter();
+      };
+      returnedPromise.getRequest = function() {
+        return config;
       };
 
       return returnedPromise;

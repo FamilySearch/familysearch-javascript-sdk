@@ -15,8 +15,9 @@ define([
       opts = helpers.extend({
         url: url,
         type: method,
-        dataType: 'json',
-        data: data
+        dataType: method === 'POST' ? 'text' : 'json',
+        data: data,
+        processData: (helpers.isObject(data) && String(data) !== '[object FormData]')
       }, opts);
       opts.headers = helpers.extend({}, headers, opts.headers);
 
@@ -41,6 +42,9 @@ define([
       helpers.wrapFunctions(returnedPromise, jqXHR, ['getResponseHeader', 'getAllResponseHeaders']);
       returnedPromise.getStatusCode = function() {
         return statusCode;
+      };
+      returnedPromise.getRequest = function() {
+        return opts;
       };
       return returnedPromise;
     };

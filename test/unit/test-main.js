@@ -14,7 +14,8 @@ requirejs.config({
 
   paths: {
     'jquery': '../test/vendor/jquery-1.10.1.min',
-    'jasmine-jquery': '../test/vendor/jasmine-jquery'
+    'jasmine-jquery': '../test/vendor/jasmine-jquery',
+    '_': '../test/vendor/lodash.min'
   },
 
   shim: {

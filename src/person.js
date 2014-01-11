@@ -23,7 +23,7 @@ define([
    * Person
    */
   var Person = exports.Person = function() {
-
+    this.names = [];
   };
 
   exports.Person.prototype = {
@@ -150,7 +150,21 @@ define([
     getSurname: function() { return maybe(helpers.find(
       maybe(maybe(maybe(helpers.findOrFirst(this.names, {preferred: true})).nameForms)[0]).parts,
       {type: 'http://gedcomx.org/Surname'}
-    )).value; }
+    )).value; },
+
+    /**
+     * @ngdoc function
+     * @name name person.types:type.Person#addName
+     * @methodOf person.types:type.Person
+     * @function
+     * @param {Name|String} name to add
+     */
+    addName: function(name) {
+      if (helpers.isString(name)) {
+        name = new Name(name);
+      }
+      this.names.push(name);
+    }
   };
 
   /**
@@ -160,8 +174,13 @@ define([
    *
    * Name
    */
-  var Name = exports.Name = function() {
-
+  var Name = exports.Name = function(name) {
+    this.nameForms = [];
+    if (name) {
+      this.nameForms.push({
+        fullText: name
+      });
+    }
   };
 
   exports.Name.prototype = {
@@ -786,7 +805,7 @@ define([
         ),
         function(relIdent) {
           return {
-            id: relIdent.replace(/^.*\//, '').replace(/\?.*$/, ''), // TODO how else to get the relationship id?
+            id: helpers.getLastUrlSegment(relIdent),
             fatherId: maybe(maybe(helpers.find(this.relationships, function(relationship) { // find this relationship with father link
               return maybe(relationship.identifiers)[CHILD_AND_PARENTS_RELATIONSHIP] === relIdent &&
                 !!maybe(relationship.links).father;
@@ -829,8 +848,7 @@ define([
      * @return {String} Id of the child and parents relationship
      */
     getChildAndParentsId: function() {
-      var url = maybe(this.identifiers)[CHILD_AND_PARENTS_RELATIONSHIP];
-      return url ? url.replace(/^.*\//, '').replace(/\?.*$/, '') : url; // TODO how else to get the relationship id?
+      return helpers.getLastUrlSegment(maybe(this.identifiers)[CHILD_AND_PARENTS_RELATIONSHIP]);
     },
 
     /**

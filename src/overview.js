@@ -33,37 +33,37 @@
  *
  * People with names and facts
  *
- * - {@link person.types.type:Person Person}
- * - {@link person.types.type:Fact Fact}
- * - {@link person.types.type:Name Name}
+ * - {@link person.types:type.Person Person}
+ * - {@link person.types:type.Fact Fact}
+ * - {@link person.types:type.Name Name}
  *
  * Relationships between people
  *
- * - {@link person.types.type:Couple Couple}
- * - {@link person.types.type:ChildAndParents ChildAndParents}
- * - {@link person.types.type:ParentChild ParentChild} (will hopefully go away in favor of ChildAndParents)
+ * - {@link person.types:type.Couple Couple}
+ * - {@link person.types:type.ChildAndParents ChildAndParents}
+ * - {@link person.types:type.ParentChild ParentChild} (will hopefully go away in favor of ChildAndParents)
  *
  * Ojects related to people (and relationships)
  *
- * - {@link notes.types.type:NoteRef NoteRef}
- * - {@link notes.types.type:Note Note}
- * - {@link sources.types.type:SourceRef SourceRef}
- * - {@link sources.types.type:SourceDescription SourceDescription}
- * - {@link sources.types.type:IdSourceRef IdSourceRef}
- * - {@link discussions.types.type:Discussion Discussion}
- * - {@link discussions.types.type:Comment Comment}
- * - {@link memories.types.type:MemoryRef MemoryRef}
- * - {@link memories.types.type:Memory Memory}
- * - {@link changeHistory.types.type:Change Change}
+ * - {@link notes.types:type.NoteRef NoteRef}
+ * - {@link notes.types:type.Note Note}
+ * - {@link sources.types:type.SourceRef SourceRef}
+ * - {@link sources.types:type.SourceDescription SourceDescription}
+ * - {@link sources.types:type.IdSourceRef IdSourceRef}
+ * - {@link discussions.types:type.Discussion Discussion}
+ * - {@link discussions.types:type.Comment Comment}
+ * - {@link memories.types:type.MemoryRef MemoryRef}
+ * - {@link memories.types:type.Memory Memory}
+ * - {@link changeHistory.types:type.Change Change}
  *
  * Search & match
  *
- * - {@link searchAndMatch.types.type:SearchResult SearchResult}
+ * - {@link searchAndMatch.types:type.SearchResult SearchResult}
  *
  * Users
  *
- * - {@link user.types.type:Agent Agent}
- * - {@link user.types.type:User User}
+ * - {@link user.types:type.Agent Agent}
+ * - {@link user.types:type.User User}
  *
  * ## Getting started
  *
@@ -136,6 +136,7 @@
  * - `getResponseHeader(header)`
  * - `getAllResponseHeaders()`
  * - `getStatusCode()`
+ * - `getRequest()`
  *
  * ### Examples
  *

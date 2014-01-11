@@ -53,6 +53,9 @@ define([
     getPersonPortraitURL: memories.getPersonPortraitURL,
     getPersonMemoriesQuery: memories.getPersonMemoriesQuery,
     getUserMemoriesQuery: memories.getUserMemoriesQuery,
+    createMemory: memories.createMemory,
+    createMemoryPersona: memories.createMemoryPersona,
+    addPersonMemoryRef: memories.addPersonMemoryRef,
 
     // notes
     Note: notes.Note,
