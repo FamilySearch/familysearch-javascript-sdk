@@ -160,7 +160,7 @@ define([
      * @param {Name|String} name to add
      */
     addName: function(name) {
-      if (helpers.isString(name)) {
+      if (!(name instanceof Name)) {
         name = new Name(name);
       }
       this.names.push(name);

@@ -81,7 +81,7 @@ define([
             'grant_type' : 'authorization_code',
             'code'       : authCode,
             'client_id'  : globals.appKey
-          });
+          }, {'Content-Type': 'application/x-www-form-urlencoded'});
           promise.then(
             function(data) {
               var accessToken = data['access_token'];

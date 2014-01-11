@@ -55,7 +55,12 @@ define([
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   exports.get = function(url, params, headers, opts, responseMapper) {
-    return exports.http('GET', helpers.appendQueryParameters(url, params), helpers.extend({'Accept': 'application/x-gedcomx-v1+json'}, headers), {}, opts, responseMapper);
+    return exports.http('GET',
+      helpers.appendQueryParameters(url, params),
+      helpers.extend({'Accept': 'application/x-gedcomx-v1+json'}, headers),
+      null,
+      opts,
+      responseMapper);
   };
 
   /**
@@ -74,7 +79,12 @@ define([
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   exports.post = function(url, data, headers, opts, responseMapper) {
-    return exports.http('POST', url, helpers.extend({'Content-Type': 'application/x-www-form-urlencoded'},headers), data, opts, responseMapper);
+    return exports.http('POST',
+      url,
+      helpers.extend({'Content-Type': 'application/x-gedcomx-v1+json'},headers),
+      data,
+      opts,
+      responseMapper);
   };
 
   /**
@@ -93,7 +103,12 @@ define([
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   exports.put = function(url, data, headers, opts, responseMapper) {
-    return exports.http('PUT', url, helpers.extend({'Content-Type': 'application/x-www-form-urlencoded'},headers), data, opts, responseMapper);
+    return exports.http('PUT',
+      url,
+      helpers.extend({'Content-Type': 'application/x-gedcomx-v1+json'},headers),
+      data,
+      opts,
+      responseMapper);
   };
 
   /**
@@ -113,6 +128,68 @@ define([
   exports.del = function(url, headers, opts, responseMapper) {
     return exports.http('DELETE', url, headers, {}, opts, responseMapper);
   };
+
+  /**
+   * Converts an object to x-www-form-urlencoded serialization.
+   * borrowed from http://victorblog.com/2012/12/20/make-angularjs-http-service-behave-like-jquery-ajax/
+   * @param {Object} obj
+   * @return {String}
+   */
+  function formEncode(obj)
+  {
+    var query = '';
+    var name, value, fullSubName, subName, subValue, innerObj, i;
+
+    for(name in obj) {
+      if (obj.hasOwnProperty(name)) {
+        value = obj[name];
+
+        if(value instanceof Array) {
+          for(i=0; i<value.length; ++i) {
+            subValue = value[i];
+            fullSubName = name + '[' + i + ']';
+            innerObj = {};
+            innerObj[fullSubName] = subValue;
+            query += formEncode(innerObj) + '&';
+          }
+        }
+        else if(value instanceof Object) {
+          for(subName in value) {
+            if (value.hasOwnProperty(subName)) {
+              subValue = value[subName];
+              fullSubName = name + '[' + subName + ']';
+              innerObj = {};
+              innerObj[fullSubName] = subValue;
+              query += formEncode(innerObj) + '&';
+            }
+          }
+        }
+        else if(value !== undefined && value !== null) {
+          query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&';
+        }
+      }
+    }
+
+    return query.length ? query.substr(0, query.length - 1) : query;
+  }
+
+  /**
+   * Transform data according to the content type header
+   * @param {*} data to transform
+   * @param {String} contentType header
+   * @returns {*}
+   */
+  function transformData(data, contentType) {
+    if (data && helpers.isObject(data) && String(data) !== '[object FormData]') {
+      if (contentType === 'application/x-www-form-urlencoded') {
+        return formEncode(data);
+      }
+      else if (contentType && contentType.indexOf('json') !== -1) {
+        return JSON.stringify(data);
+      }
+    }
+    return data;
+  }
 
   /**
    * @ngdoc function
@@ -136,6 +213,7 @@ define([
     var returnedPromise = d.promise;
     // prepend the server
     var absoluteUrl = helpers.getAPIServerUrl(url);
+    headers = headers || {};
 
     // do we need to request an access token?
     var accessTokenPromise;
@@ -158,7 +236,11 @@ define([
       }
 
       // call the http wrapper
-      var promise = globals.httpWrapper(method, absoluteUrl, headers || {}, data || {}, opts || {});
+      var promise = globals.httpWrapper(method,
+        absoluteUrl,
+        headers,
+        transformData(data, headers['Content-Type']),
+        opts || {});
 
       // process the response
       returnedPromise = helpers.extendHttpPromise(returnedPromise, promise);
@@ -180,8 +262,7 @@ define([
           if (statusCode === 401) {
             helpers.eraseAccessToken();
           }
-          // TODO we might want to turn off general error retries for posts, but still retry for throttling; maybe *always* retry on 429 response?
-          if (retries > 0 && statusCode === 429) {
+          if ((method === 'GET' && statusCode >= 500 && retries > 0) || statusCode === 429) {
             var retryAfterHeader = promise.getResponseHeader('Retry-After');
             var retryAfter = retryAfterHeader ? parseInt(retryAfterHeader,10) : globals.defaultThrottleRetryAfter;
             globals.setTimeout(function() {

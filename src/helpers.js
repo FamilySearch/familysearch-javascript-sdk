@@ -371,14 +371,16 @@ define([
     if (subObjectGenerator) {
       setConstructor = exports.constructorSetter(constructorFunction, attr);
       return function(obj) {
-        var subObjs = subObjectGenerator(obj);
-        if (exports.isArray(subObjs)) {
-          exports.forEach(subObjs, function(subObj) {
-            setConstructor(subObj);
-          });
-        }
-        else if (exports.isObject(subObjs)) {
-          setConstructor(subObjs);
+        if (exports.isObject(obj)) {
+          var subObjs = subObjectGenerator(obj);
+          if (exports.isArray(subObjs)) {
+            exports.forEach(subObjs, function(subObj) {
+              setConstructor(subObj);
+            });
+          }
+          else if (exports.isObject(subObjs)) {
+            setConstructor(subObjs);
+          }
         }
         return obj;
       };
@@ -386,13 +388,15 @@ define([
     else if (attr) {
       setConstructor = exports.constructorSetter(constructorFunction);
       return function(obj) {
-        if (exports.isArray(obj[attr])) {
-          obj[attr] = exports.map(obj[attr], function(o) {
-            return setConstructor(o);
-          });
-        }
-        else if (exports.isObject(obj[attr])) {
-          obj[attr] = setConstructor(obj[attr]);
+        if (exports.isObject(obj)) {
+          if (exports.isArray(obj[attr])) {
+            obj[attr] = exports.map(obj[attr], function(o) {
+              return setConstructor(o);
+            });
+          }
+          else if (exports.isObject(obj[attr])) {
+            obj[attr] = setConstructor(obj[attr]);
+          }
         }
         return obj;
       };

@@ -47,7 +47,7 @@ define([
      * @function
      * @return {String} Id of the memory; pass into {@link memories.functions:getMemory getMemory} for details
      */
-    getMemoryId:  function() { return this.resource ? this.resource.replace(/^.*\/memories\/(\d+)\/.*$/, '$1') : this.resource; }
+    getMemoryId:  function() { return this.resource ? this.resource.replace(/^.*\/memories\/([^\/]*)\/personas\/.*$/, '$1') : this.resource; }
   };
 
   /**
@@ -318,7 +318,7 @@ define([
   exports.getMemoryPersonas = function(mid, params, opts) {
     return plumbing.get('/platform/memories/memories/'+encodeURI(mid)+'/personas', params, {}, opts,
       helpers.compose(
-        helpers.objectExtender({getPersonas: function() { return this.persons || []; }}),
+        helpers.objectExtender({getPersonas: function() { return this && this.persons ? this.persons : []; }}),
         helpers.constructorSetter(person.Person, 'persons')
       ));
   };

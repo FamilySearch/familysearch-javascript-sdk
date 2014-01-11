@@ -165,9 +165,8 @@ define(['FamilySearch', '_', 'jasmine-jquery'], function(FamilySearch, _) {
     jasmine.getJSONFixtures().fixturesPath='base/test/mock';
     this.addMatchers({
       toEqualData: function(expected) {
-        // get rid of any constructor functions
-        var actual = JSON.parse(JSON.stringify(this.actual).replace(/(\\t|\\n)/g,''));
-        expected = JSON.parse(JSON.stringify(expected).replace(/(\\t|\\n)/g,''));
+        // if actual is a string, parse it
+        var actual = _.isString(this.actual) ? JSON.parse(this.actual) : this.actual;
         // use deep comparison
         return _.isEqual(actual, expected);
       }

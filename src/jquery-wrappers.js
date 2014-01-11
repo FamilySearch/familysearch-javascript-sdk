@@ -15,9 +15,9 @@ define([
       opts = helpers.extend({
         url: url,
         type: method,
-        dataType: method === 'POST' ? 'text' : 'json',
+        dataType: 'json',
         data: data,
-        processData: (helpers.isObject(data) && String(data) !== '[object FormData]')
+        processData: false
       }, opts);
       opts.headers = helpers.extend({}, headers, opts.headers);
 
@@ -35,7 +35,15 @@ define([
         },
         function(jqXHR, textStatus, errorThrown) {
           statusCode = jqXHR.status;
-          d.reject(jqXHR, textStatus, errorThrown);
+          if (!jqXHR.responseText) {
+            // FamilySearch sometimes returns no content in the response even though we have requested json
+            // No content is not valid json, so we get an error parsing it
+            // Treat it as valid but empty content
+            d.resolve(null);
+          }
+          else {
+            d.reject(jqXHR, textStatus, errorThrown);
+          }
         });
 
       // add http-specific functions to the returned promise

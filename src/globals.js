@@ -15,7 +15,7 @@ define({
   accessTokenCookie: 'FS_ACCESS_TOKEN',
   authCodePollDelay: 50,
   defaultThrottleRetryAfter: 500,
-  maxHttpRequestRetries: 5,
+  maxHttpRequestRetries: 2,
   maxAccessTokenInactivityTime: 3540000, // 59 minutes to be safe
   maxAccessTokenCreationTime:  86340000, // 23 hours 59 minutes to be safe
   apiServer: {

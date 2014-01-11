@@ -97,11 +97,9 @@ define(['FamilySearch'], function(FamilySearch) {
           }]
         });
         expect(promise.getStatusCode()).toBe(201);
-        //noinspection JSUnresolvedFunction
-        expect(response).toEqualData({
-          resource: 'https://familysearch.org/platform/memories/memories/AR-1234/personas/PXX-1234',
-          resourceId: 'PXX-1234'
-        });
+        expect(response instanceof FamilySearch.MemoryRef).toBeTruthy();
+        expect(response.getMemoryId()).toBe('AR-1234');
+        expect(response.resourceId).toBe('PXX-1234');
       });
     });
 
