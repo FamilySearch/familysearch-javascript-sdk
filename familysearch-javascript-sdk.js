@@ -58,7 +58,7 @@ define('globals',{
   accessTokenCookie: 'FS_ACCESS_TOKEN',
   authCodePollDelay: 50,
   defaultThrottleRetryAfter: 500,
-  maxHttpRequestRetries: 5,
+  maxHttpRequestRetries: 2,
   maxAccessTokenInactivityTime: 3540000, // 59 minutes to be safe
   maxAccessTokenCreationTime:  86340000, // 23 hours 59 minutes to be safe
   apiServer: {
@@ -446,14 +446,16 @@ define('helpers',[
     if (subObjectGenerator) {
       setConstructor = exports.constructorSetter(constructorFunction, attr);
       return function(obj) {
-        var subObjs = subObjectGenerator(obj);
-        if (exports.isArray(subObjs)) {
-          exports.forEach(subObjs, function(subObj) {
-            setConstructor(subObj);
-          });
-        }
-        else if (exports.isObject(subObjs)) {
-          setConstructor(subObjs);
+        if (exports.isObject(obj)) {
+          var subObjs = subObjectGenerator(obj);
+          if (exports.isArray(subObjs)) {
+            exports.forEach(subObjs, function(subObj) {
+              setConstructor(subObj);
+            });
+          }
+          else if (exports.isObject(subObjs)) {
+            setConstructor(subObjs);
+          }
         }
         return obj;
       };
@@ -461,13 +463,15 @@ define('helpers',[
     else if (attr) {
       setConstructor = exports.constructorSetter(constructorFunction);
       return function(obj) {
-        if (exports.isArray(obj[attr])) {
-          obj[attr] = exports.map(obj[attr], function(o) {
-            return setConstructor(o);
-          });
-        }
-        else if (exports.isObject(obj[attr])) {
-          obj[attr] = setConstructor(obj[attr]);
+        if (exports.isObject(obj)) {
+          if (exports.isArray(obj[attr])) {
+            obj[attr] = exports.map(obj[attr], function(o) {
+              return setConstructor(o);
+            });
+          }
+          else if (exports.isObject(obj[attr])) {
+            obj[attr] = setConstructor(obj[attr]);
+          }
         }
         return obj;
       };
@@ -858,50 +862,6 @@ define('angularjs-wrappers',[
   var exports = {};
 
   /**
-   * Converts an object to x-www-form-urlencoded serialization.
-   * borrowed from http://victorblog.com/2012/12/20/make-angularjs-http-service-behave-like-jquery-ajax/
-   * @param {Object} obj
-   * @return {String}
-   */
-  function formEncode(obj)
-  {
-    var query = '';
-    var name, value, fullSubName, subName, subValue, innerObj, i;
-
-    for(name in obj) {
-      if (obj.hasOwnProperty(name)) {
-        value = obj[name];
-
-        if(value instanceof Array) {
-          for(i=0; i<value.length; ++i) {
-            subValue = value[i];
-            fullSubName = name + '[' + i + ']';
-            innerObj = {};
-            innerObj[fullSubName] = subValue;
-            query += formEncode(innerObj) + '&';
-          }
-        }
-        else if(value instanceof Object) {
-          for(subName in value) {
-            if (value.hasOwnProperty(subName)) {
-              subValue = value[subName];
-              fullSubName = name + '[' + subName + ']';
-              innerObj = {};
-              innerObj[fullSubName] = subValue;
-              query += formEncode(innerObj) + '&';
-            }
-          }
-        }
-        else if(value !== undefined && value !== null) {
-          query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&';
-        }
-      }
-    }
-
-    return query.length ? query.substr(0, query.length - 1) : query;
-  }
-
-  /**
    * httpWrapper function based upon Angular's $http function
    * @param http Angular's $http function
    * @returns {Function} http function that exposes a standard interface
@@ -912,10 +872,10 @@ define('angularjs-wrappers',[
       var config = helpers.extend({
         method: method,
         url: url,
-        responseType: method === 'POST' ? 'text' : 'json',
+        responseType: 'json',
         data: data,
         transformRequest: function(obj) {
-          return helpers.isObject(obj) && String(obj) !== '[object FormData]' ? formEncode(obj) : obj;
+          return obj;
         }
       }, opts);
       config.headers = helpers.extend({}, headers, opts.headers);
@@ -994,9 +954,9 @@ define('jquery-wrappers',[
       opts = helpers.extend({
         url: url,
         type: method,
-        dataType: method === 'POST' ? 'text' : 'json',
+        dataType: 'json',
         data: data,
-        processData: (helpers.isObject(data) && String(data) !== '[object FormData]')
+        processData: false
       }, opts);
       opts.headers = helpers.extend({}, headers, opts.headers);
 
@@ -1014,7 +974,15 @@ define('jquery-wrappers',[
         },
         function(jqXHR, textStatus, errorThrown) {
           statusCode = jqXHR.status;
-          d.reject(jqXHR, textStatus, errorThrown);
+          if (!jqXHR.responseText) {
+            // FamilySearch sometimes returns no content in the response even though we have requested json
+            // No content is not valid json, so we get an error parsing it
+            // Treat it as valid but empty content
+            d.resolve(null);
+          }
+          else {
+            d.reject(jqXHR, textStatus, errorThrown);
+          }
         });
 
       // add http-specific functions to the returned promise
@@ -1226,7 +1194,12 @@ define('plumbing',[
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   exports.get = function(url, params, headers, opts, responseMapper) {
-    return exports.http('GET', helpers.appendQueryParameters(url, params), helpers.extend({'Accept': 'application/x-gedcomx-v1+json'}, headers), {}, opts, responseMapper);
+    return exports.http('GET',
+      helpers.appendQueryParameters(url, params),
+      helpers.extend({'Accept': 'application/x-gedcomx-v1+json'}, headers),
+      null,
+      opts,
+      responseMapper);
   };
 
   /**
@@ -1245,7 +1218,12 @@ define('plumbing',[
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   exports.post = function(url, data, headers, opts, responseMapper) {
-    return exports.http('POST', url, helpers.extend({'Content-Type': 'application/x-www-form-urlencoded'},headers), data, opts, responseMapper);
+    return exports.http('POST',
+      url,
+      helpers.extend({'Content-Type': 'application/x-gedcomx-v1+json'},headers),
+      data,
+      opts,
+      responseMapper);
   };
 
   /**
@@ -1264,7 +1242,12 @@ define('plumbing',[
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   exports.put = function(url, data, headers, opts, responseMapper) {
-    return exports.http('PUT', url, helpers.extend({'Content-Type': 'application/x-www-form-urlencoded'},headers), data, opts, responseMapper);
+    return exports.http('PUT',
+      url,
+      helpers.extend({'Content-Type': 'application/x-gedcomx-v1+json'},headers),
+      data,
+      opts,
+      responseMapper);
   };
 
   /**
@@ -1284,6 +1267,68 @@ define('plumbing',[
   exports.del = function(url, headers, opts, responseMapper) {
     return exports.http('DELETE', url, headers, {}, opts, responseMapper);
   };
+
+  /**
+   * Converts an object to x-www-form-urlencoded serialization.
+   * borrowed from http://victorblog.com/2012/12/20/make-angularjs-http-service-behave-like-jquery-ajax/
+   * @param {Object} obj
+   * @return {String}
+   */
+  function formEncode(obj)
+  {
+    var query = '';
+    var name, value, fullSubName, subName, subValue, innerObj, i;
+
+    for(name in obj) {
+      if (obj.hasOwnProperty(name)) {
+        value = obj[name];
+
+        if(value instanceof Array) {
+          for(i=0; i<value.length; ++i) {
+            subValue = value[i];
+            fullSubName = name + '[' + i + ']';
+            innerObj = {};
+            innerObj[fullSubName] = subValue;
+            query += formEncode(innerObj) + '&';
+          }
+        }
+        else if(value instanceof Object) {
+          for(subName in value) {
+            if (value.hasOwnProperty(subName)) {
+              subValue = value[subName];
+              fullSubName = name + '[' + subName + ']';
+              innerObj = {};
+              innerObj[fullSubName] = subValue;
+              query += formEncode(innerObj) + '&';
+            }
+          }
+        }
+        else if(value !== undefined && value !== null) {
+          query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&';
+        }
+      }
+    }
+
+    return query.length ? query.substr(0, query.length - 1) : query;
+  }
+
+  /**
+   * Transform data according to the content type header
+   * @param {*} data to transform
+   * @param {String} contentType header
+   * @returns {*}
+   */
+  function transformData(data, contentType) {
+    if (data && helpers.isObject(data) && String(data) !== '[object FormData]') {
+      if (contentType === 'application/x-www-form-urlencoded') {
+        return formEncode(data);
+      }
+      else if (contentType && contentType.indexOf('json') !== -1) {
+        return JSON.stringify(data);
+      }
+    }
+    return data;
+  }
 
   /**
    * @ngdoc function
@@ -1307,6 +1352,7 @@ define('plumbing',[
     var returnedPromise = d.promise;
     // prepend the server
     var absoluteUrl = helpers.getAPIServerUrl(url);
+    headers = headers || {};
 
     // do we need to request an access token?
     var accessTokenPromise;
@@ -1329,7 +1375,11 @@ define('plumbing',[
       }
 
       // call the http wrapper
-      var promise = globals.httpWrapper(method, absoluteUrl, headers || {}, data || {}, opts || {});
+      var promise = globals.httpWrapper(method,
+        absoluteUrl,
+        headers,
+        transformData(data, headers['Content-Type']),
+        opts || {});
 
       // process the response
       returnedPromise = helpers.extendHttpPromise(returnedPromise, promise);
@@ -1351,8 +1401,7 @@ define('plumbing',[
           if (statusCode === 401) {
             helpers.eraseAccessToken();
           }
-          // TODO we might want to turn off general error retries for posts, but still retry for throttling; maybe *always* retry on 429 response?
-          if (retries > 0 && statusCode === 429) {
+          if ((method === 'GET' && statusCode >= 500 && retries > 0) || statusCode === 429) {
             var retryAfterHeader = promise.getResponseHeader('Retry-After');
             var retryAfter = retryAfterHeader ? parseInt(retryAfterHeader,10) : globals.defaultThrottleRetryAfter;
             globals.setTimeout(function() {
@@ -1465,7 +1514,7 @@ define('authentication',[
             'grant_type' : 'authorization_code',
             'code'       : authCode,
             'client_id'  : globals.appKey
-          });
+          }, {'Content-Type': 'application/x-www-form-urlencoded'});
           promise.then(
             function(data) {
               var accessToken = data['access_token'];
@@ -2136,7 +2185,7 @@ define('person',[
      * @param {Name|String} name to add
      */
     addName: function(name) {
-      if (helpers.isString(name)) {
+      if (!(name instanceof Name)) {
         name = new Name(name);
       }
       this.names.push(name);
@@ -2941,7 +2990,7 @@ define('memories',[
      * @function
      * @return {String} Id of the memory; pass into {@link memories.functions:getMemory getMemory} for details
      */
-    getMemoryId:  function() { return this.resource ? this.resource.replace(/^.*\/memories\/(\d+)\/.*$/, '$1') : this.resource; }
+    getMemoryId:  function() { return this.resource ? this.resource.replace(/^.*\/memories\/([^\/]*)\/personas\/.*$/, '$1') : this.resource; }
   };
 
   /**
@@ -3212,7 +3261,7 @@ define('memories',[
   exports.getMemoryPersonas = function(mid, params, opts) {
     return plumbing.get('/platform/memories/memories/'+encodeURI(mid)+'/personas', params, {}, opts,
       helpers.compose(
-        helpers.objectExtender({getPersonas: function() { return this.persons || []; }}),
+        helpers.objectExtender({getPersonas: function() { return this && this.persons ? this.persons : []; }}),
         helpers.constructorSetter(person.Person, 'persons')
       ));
   };
