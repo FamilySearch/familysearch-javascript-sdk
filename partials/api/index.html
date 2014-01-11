@@ -27,37 +27,37 @@ whatever custom information is desired.</li>
 <p>Here is a list of objects returned in the SDK function responses</p>
 <p>People with names and facts</p>
 <ul>
-<li><a href="#/api/person.types.type:Person">Person</a></li>
-<li><a href="#/api/person.types.type:Fact">Fact</a></li>
-<li><a href="#/api/person.types.type:Name">Name</a></li>
+<li><a href="#/api/person.types:type.Person">Person</a></li>
+<li><a href="#/api/person.types:type.Fact">Fact</a></li>
+<li><a href="#/api/person.types:type.Name">Name</a></li>
 </ul>
 <p>Relationships between people</p>
 <ul>
-<li><a href="#/api/person.types.type:Couple">Couple</a></li>
-<li><a href="#/api/person.types.type:ChildAndParents">ChildAndParents</a></li>
-<li><a href="#/api/person.types.type:ParentChild">ParentChild</a> (will hopefully go away in favor of ChildAndParents)</li>
+<li><a href="#/api/person.types:type.Couple">Couple</a></li>
+<li><a href="#/api/person.types:type.ChildAndParents">ChildAndParents</a></li>
+<li><a href="#/api/person.types:type.ParentChild">ParentChild</a> (will hopefully go away in favor of ChildAndParents)</li>
 </ul>
 <p>Ojects related to people (and relationships)</p>
 <ul>
-<li><a href="#/api/notes.types.type:NoteRef">NoteRef</a></li>
-<li><a href="#/api/notes.types.type:Note">Note</a></li>
-<li><a href="#/api/sources.types.type:SourceRef">SourceRef</a></li>
-<li><a href="#/api/sources.types.type:SourceDescription">SourceDescription</a></li>
-<li><a href="#/api/sources.types.type:IdSourceRef">IdSourceRef</a></li>
-<li><a href="#/api/discussions.types.type:Discussion">Discussion</a></li>
-<li><a href="#/api/discussions.types.type:Comment">Comment</a></li>
-<li><a href="#/api/memories.types.type:MemoryRef">MemoryRef</a></li>
-<li><a href="#/api/memories.types.type:Memory">Memory</a></li>
-<li><a href="#/api/changeHistory.types.type:Change">Change</a></li>
+<li><a href="#/api/notes.types:type.NoteRef">NoteRef</a></li>
+<li><a href="#/api/notes.types:type.Note">Note</a></li>
+<li><a href="#/api/sources.types:type.SourceRef">SourceRef</a></li>
+<li><a href="#/api/sources.types:type.SourceDescription">SourceDescription</a></li>
+<li><a href="#/api/sources.types:type.IdSourceRef">IdSourceRef</a></li>
+<li><a href="#/api/discussions.types:type.Discussion">Discussion</a></li>
+<li><a href="#/api/discussions.types:type.Comment">Comment</a></li>
+<li><a href="#/api/memories.types:type.MemoryRef">MemoryRef</a></li>
+<li><a href="#/api/memories.types:type.Memory">Memory</a></li>
+<li><a href="#/api/changeHistory.types:type.Change">Change</a></li>
 </ul>
 <p>Search &amp; match</p>
 <ul>
-<li><a href="#/api/searchAndMatch.types.type:SearchResult">SearchResult</a></li>
+<li><a href="#/api/searchAndMatch.types:type.SearchResult">SearchResult</a></li>
 </ul>
 <p>Users</p>
 <ul>
-<li><a href="#/api/user.types.type:Agent">Agent</a></li>
-<li><a href="#/api/user.types.type:User">User</a></li>
+<li><a href="#/api/user.types:type.Agent">Agent</a></li>
+<li><a href="#/api/user.types:type.User">User</a></li>
 </ul>
 <h3 id="getting-started">Getting started</h3>
 <p>To use the SDK, you need to</p>
@@ -125,6 +125,7 @@ call would call it with.</p>
 <li><code>getResponseHeader(header)</code></li>
 <li><code>getAllResponseHeaders()</code></li>
 <li><code>getStatusCode()</code></li>
+<li><code>getRequest()</code></li>
 </ul>
 <h4 id="sdk-functions-return-promises_examples">Examples</h4>
 <h5 id="sdk-functions-return-promises_examples_jquery">jQuery</h5>

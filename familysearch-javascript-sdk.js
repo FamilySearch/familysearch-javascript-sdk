@@ -504,7 +504,7 @@ define('helpers',[
    * @returns {Object} Destination promise with functions from source promise
    */
   exports.extendHttpPromise = function(destPromise, sourcePromise) {
-    return exports.wrapFunctions(destPromise, sourcePromise, ['getResponseHeader', 'getAllResponseHeaders', 'getStatusCode']);
+    return exports.wrapFunctions(destPromise, sourcePromise, ['getResponseHeader', 'getAllResponseHeaders', 'getStatusCode', 'getRequest']);
   };
 
   /**
@@ -519,6 +519,25 @@ define('helpers',[
       }
     });
     return obj;
+  };
+
+  /**
+   * Get the last segment of a URL
+   * @param url
+   * @returns {string}
+   */
+  exports.getLastUrlSegment = function(url) {
+    return url ? url.replace(/^.*\//, '').replace(/\?.*$/, '') : url;
+  };
+
+  /**
+   * Response mapper that returns the last segment of the location header
+   * @param data ignored
+   * @param promise http promise
+   * @returns {string} last segment of the location response header
+   */
+  exports.getLastResponseLocationSegment = function(data, promise) {
+    return exports.getLastUrlSegment(promise.getResponseHeader('Location'));
   };
 
   /**
@@ -893,10 +912,10 @@ define('angularjs-wrappers',[
       var config = helpers.extend({
         method: method,
         url: url,
-        responseType: 'json',
+        responseType: method === 'POST' ? 'text' : 'json',
         data: data,
         transformRequest: function(obj) {
-          return helpers.isObject(obj) && String(obj) !== '[object File]' ? formEncode(obj) : obj;
+          return helpers.isObject(obj) && String(obj) !== '[object FormData]' ? formEncode(obj) : obj;
         }
       }, opts);
       config.headers = helpers.extend({}, headers, opts.headers);
@@ -930,6 +949,9 @@ define('angularjs-wrappers',[
       };
       returnedPromise.getAllResponseHeaders = function() {
         return headerGetter();
+      };
+      returnedPromise.getRequest = function() {
+        return config;
       };
 
       return returnedPromise;
@@ -972,8 +994,9 @@ define('jquery-wrappers',[
       opts = helpers.extend({
         url: url,
         type: method,
-        dataType: 'json',
-        data: data
+        dataType: method === 'POST' ? 'text' : 'json',
+        data: data,
+        processData: (helpers.isObject(data) && String(data) !== '[object FormData]')
       }, opts);
       opts.headers = helpers.extend({}, headers, opts.headers);
 
@@ -998,6 +1021,9 @@ define('jquery-wrappers',[
       helpers.wrapFunctions(returnedPromise, jqXHR, ['getResponseHeader', 'getAllResponseHeaders']);
       returnedPromise.getStatusCode = function() {
         return statusCode;
+      };
+      returnedPromise.getRequest = function() {
+        return opts;
       };
       return returnedPromise;
     };
@@ -1747,7 +1773,7 @@ define('discussions',[
     return plumbing.get('/platform/tree/persons/'+encodeURI(pid)+'/discussion-references', params, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.objectExtender({getDiscussionIds: function() {
         return helpers.map(maybe(maybe(this.persons)[0])['discussion-references'], function(url) {
-          return url ? url.replace(/^.*\//, '').replace(/\?.*$/, '') : url; // TODO how else to get the discussion id?
+          return helpers.getLastUrlSegment(url);
         });
       }}));
   };
@@ -1973,7 +1999,7 @@ define('person',[
    * Person
    */
   var Person = exports.Person = function() {
-
+    this.names = [];
   };
 
   exports.Person.prototype = {
@@ -2100,7 +2126,21 @@ define('person',[
     getSurname: function() { return maybe(helpers.find(
       maybe(maybe(maybe(helpers.findOrFirst(this.names, {preferred: true})).nameForms)[0]).parts,
       {type: 'http://gedcomx.org/Surname'}
-    )).value; }
+    )).value; },
+
+    /**
+     * @ngdoc function
+     * @name name person.types:type.Person#addName
+     * @methodOf person.types:type.Person
+     * @function
+     * @param {Name|String} name to add
+     */
+    addName: function(name) {
+      if (helpers.isString(name)) {
+        name = new Name(name);
+      }
+      this.names.push(name);
+    }
   };
 
   /**
@@ -2110,8 +2150,13 @@ define('person',[
    *
    * Name
    */
-  var Name = exports.Name = function() {
-
+  var Name = exports.Name = function(name) {
+    this.nameForms = [];
+    if (name) {
+      this.nameForms.push({
+        fullText: name
+      });
+    }
   };
 
   exports.Name.prototype = {
@@ -2736,7 +2781,7 @@ define('person',[
         ),
         function(relIdent) {
           return {
-            id: relIdent.replace(/^.*\//, '').replace(/\?.*$/, ''), // TODO how else to get the relationship id?
+            id: helpers.getLastUrlSegment(relIdent),
             fatherId: maybe(maybe(helpers.find(this.relationships, function(relationship) { // find this relationship with father link
               return maybe(relationship.identifiers)[CHILD_AND_PARENTS_RELATIONSHIP] === relIdent &&
                 !!maybe(relationship.links).father;
@@ -2779,8 +2824,7 @@ define('person',[
      * @return {String} Id of the child and parents relationship
      */
     getChildAndParentsId: function() {
-      var url = maybe(this.identifiers)[CHILD_AND_PARENTS_RELATIONSHIP];
-      return url ? url.replace(/^.*\//, '').replace(/\?.*$/, '') : url; // TODO how else to get the relationship id?
+      return helpers.getLastUrlSegment(maybe(this.identifiers)[CHILD_AND_PARENTS_RELATIONSHIP]);
     },
 
     /**
@@ -2876,8 +2920,9 @@ define('memories',[
    * A {@link memories.types:type.Memory Memory} id and a Memory Persona Id.
    * See {@link memories.functions:getMemoryPersonas getMemoryPersonas} for more information about Memory Personas.
    */
-  var MemoryRef = exports.MemoryRef = function() {
-
+  var MemoryRef = exports.MemoryRef = function(location) {
+    this.resource = location;
+    this.resourceId = helpers.getLastUrlSegment(location);
   };
 
   exports.MemoryRef.prototype = {
@@ -2896,7 +2941,6 @@ define('memories',[
      * @function
      * @return {String} Id of the memory; pass into {@link memories.functions:getMemory getMemory} for details
      */
-    // TODO how else to get the memory id?
     getMemoryId:  function() { return this.resource ? this.resource.replace(/^.*\/memories\/(\d+)\/.*$/, '$1') : this.resource; }
   };
 
@@ -3211,6 +3255,91 @@ define('memories',[
       result = helpers.getAPIServerUrl(path);
     }
     return helpers.refPromise(result);
+  };
+
+  /**
+   * @ngdoc function
+   * @name memories.functions:createMemory
+   * @function
+   *
+   * @description
+   * Create a memory (story or photo)
+   *
+   * {@link https://familysearch.org/developers/docs/api/memories/Memories_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/2ghkh/ editable example}
+   *
+   * @param {String|FormData} data string or a FormData object
+   * @param {Object=} params `description`, `title`, `filename`, and `type` - artifact type
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the memory id
+   */
+  exports.createMemory = function(data, params, opts) {
+    return plumbing.post(helpers.appendQueryParameters('/platform/memories/memories', params),
+      data, { 'Content-Type': helpers.isString(data) ? 'text/plain' : false }, opts,
+      helpers.getLastResponseLocationSegment);
+  };
+
+  /**
+   * @ngdoc function
+   * @name memories.functions:createMemoryPersona
+   * @function
+   *
+   * @description
+   * Create a memory (story or photo)
+   *
+   * {@link https://familysearch.org/developers/docs/api/memories/Memory_Personas_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/dLfA8/ editable example}
+   *
+   * @param {String} mid memory id
+   * @param {Person} persona persona is a mini-Person object attached to the memory; people are attached to specific personas
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {MemoryRef} reference to the memory and persona id
+   */
+  exports.createMemoryPersona = function(mid, persona, params, opts) {
+    var data = {
+      persons: [ persona ]
+    };
+    return plumbing.post('/platform/memories/memories/'+mid+'/personas', data, {}, opts,
+      function(data, promise) {
+        var location = promise.getResponseHeader('Location');
+        return location ? new MemoryRef(location) : location;
+      });
+  };
+
+  /**
+   * @ngdoc function
+   * @name memories.functions:addPersonMemoryRef
+   * @function
+   *
+   * @description
+   * Create a memory (story or photo)
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_References_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/wrNj2/ editable example}
+   *
+   * @param {String} pid person id
+   * @param {MemoryRef} memoryRef reference to the memory and persona
+   * @param {Object=} params `changeMessage` change message
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the persona id
+   */
+  exports.addPersonMemoryRef = function(pid, memoryRef, params, opts) {
+    var data = {
+      persons: [{
+        evidence: [ memoryRef ]
+      }]
+    };
+    if (params && params.changeMessage) {
+      data.persons[0].attribution = {
+        changeMessage: params.changeMessage
+      };
+    }
+    return plumbing.post('/platform/tree/persons/'+pid+'/memory-references', data, {}, opts,
+      helpers.getLastResponseLocationSegment);
   };
 
   return exports;
@@ -4165,8 +4294,9 @@ define('sources',[
      * @function
      * @return {String} Id of the source description - pass into {@link sources.functions:getSourceDescription getSourceDescription} for details
      */
-    // TODO how else to get the source description id?
-    getSourceDescriptionId: function() { return this.description ? this.description.replace(/.*\//, '').replace(/\?.*$/, '') : this.description; },
+    getSourceDescriptionId: function() {
+      return helpers.getLastUrlSegment(this.description);
+    },
 
     /**
      * @ngdoc function
@@ -5056,6 +5186,9 @@ define('FamilySearch',[
     getPersonPortraitURL: memories.getPersonPortraitURL,
     getPersonMemoriesQuery: memories.getPersonMemoriesQuery,
     getUserMemoriesQuery: memories.getUserMemoriesQuery,
+    createMemory: memories.createMemory,
+    createMemoryPersona: memories.createMemoryPersona,
+    addPersonMemoryRef: memories.addPersonMemoryRef,
 
     // notes
     Note: notes.Note,

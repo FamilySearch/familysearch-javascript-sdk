@@ -10,7 +10,7 @@ NG_DOCS={
       "type": "overview",
       "moduleName": "index",
       "shortDescription": "Overview",
-      "keywords": "$http $q _low_level_commands_plumbing access actual add addition additional adds agent ajax amd angularjs anticipated api app_key approach array arrays asynchronous auth_callback authentication automatically branch browser bugs build builds built call callback called calling calls case catch change changehistory changes childandparents code combine combined comment comments commonjs config console constructors consume contactname contributing convenience cookie copying correct corresponding couple created custom data defer deferred deferred_function dependencies described description_the-promise-api desired developers directory discussion discussions display docs documentation documented easier element elements endpoint endpoints environment error errors errorthrown example examples exist existing expectations expired exposed extended extracting fact facts fail fairly familysearch favor features file files format frag front fulfilled fully function functionality functions generate generated getaccesstoken getallresponseheaders getcurrentuser getgivenname getname getnameandid getperson getresponseheader getstatuscode getsurname getuser gh-pages git github global goal great grunt handle handled handling header headers hello higher-level hopefully host html http http_function idsourceref illustrated implemented includes init javascript jquery js jsdoc jshint jshintrc json kernel keywords list loader loaders located log low-level manage mapped match memories memory memoryref method methods minified minify mock model module my_access_key nameforms names navigate navigating node note noteref notes object objects occur ojects option optional options org original overview parameter parentchild parts pass passed pasting people performed person plumbing port potential prepending project promise promises properties prototype prototypes provided publish pull purpose push read redirect_goes_here redirects referring registered rejected relationships request requests required requires response responses rest retried return returned returning returns running sample sandbox saved script sdk search searchandmatch searchresult serve server set simple single source sourcedescription sourceref sources started starts status strict submitting success suppose surname targets test tests textstatus throttling token tool top transient travis-ci type types typically unit uri url user users var wanted watches website window work works wraps write written your_access_key_goes_here"
+      "keywords": "$http $q _low_level_commands_plumbing access actual add addition additional adds agent ajax amd angularjs anticipated api app_key approach array arrays asynchronous auth_callback authentication automatically branch browser bugs build builds built call callback called calling calls case catch change changehistory changes childandparents code combine combined comment comments commonjs config console constructors consume contactname contributing convenience cookie copying correct corresponding couple created custom data defer deferred deferred_function dependencies described description_the-promise-api desired developers directory discussion discussions display docs documentation documented easier element elements endpoint endpoints environment error errors errorthrown example examples exist existing expectations expired exposed extended extracting fact facts fail fairly familysearch favor features file files format frag front fulfilled fully function functionality functions generate generated getaccesstoken getallresponseheaders getcurrentuser getgivenname getname getnameandid getperson getrequest getresponseheader getstatuscode getsurname getuser gh-pages git github global goal great grunt handle handled handling header headers hello higher-level hopefully host html http http_function idsourceref illustrated implemented includes init javascript jquery js jsdoc jshint jshintrc json kernel keywords list loader loaders located log low-level manage mapped match memories memory memoryref method methods minified minify mock model module my_access_key nameforms names navigate navigating node note noteref notes object objects occur ojects option optional options org original overview parameter parentchild parts pass passed pasting people performed person plumbing port potential prepending project promise promises properties prototype prototypes provided publish pull purpose push read redirect_goes_here redirects referring registered rejected relationships request requests required requires response responses rest retried return returned returning returns running sample sandbox saved script sdk search searchandmatch searchresult serve server set simple single source sourcedescription sourceref sources started starts status strict submitting success suppose surname targets test tests textstatus throttling token tool top transient travis-ci type types typically unit uri url user users var wanted watches website window work works wraps write written your_access_key_goes_here"
     },
     {
       "section": "api",
@@ -191,6 +191,33 @@ NG_DOCS={
       "moduleName": "memories",
       "shortDescription": "Functions related to memories",
       "keywords": "api docs familysearch functions https memories org overview"
+    },
+    {
+      "section": "api",
+      "id": "memories.functions:addPersonMemoryRef",
+      "shortName": "addPersonMemoryRef",
+      "type": "function",
+      "moduleName": "memories",
+      "shortDescription": "Create a memory (story or photo)",
+      "keywords": "api change changemessage create docs editable example familysearch function functions http https init memories memory memoryref message net options opts org params pass person persona photo pid promise reference"
+    },
+    {
+      "section": "api",
+      "id": "memories.functions:createMemory",
+      "shortName": "createMemory",
+      "type": "function",
+      "moduleName": "memories",
+      "shortDescription": "Create a memory (story or photo)",
+      "keywords": "api artifact create data description docs editable example familysearch filename formdata function functions http https init memories memory net object options opts org params pass photo promise string title type"
+    },
+    {
+      "section": "api",
+      "id": "memories.functions:createMemoryPersona",
+      "shortName": "createMemoryPersona",
+      "type": "function",
+      "moduleName": "memories",
+      "shortDescription": "Create a memory (story or photo)",
+      "keywords": "api attached create currently docs editable example familysearch function functions http https init memories memory mid mini-person net object options opts org params pass people persona personas photo reference specific unused"
     },
     {
       "section": "api",
@@ -550,7 +577,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Person",
-      "keywords": "api array attributes birth birthdate birthplace death deathdate deathplace display fact facts false female function gender getbirthdate getbirthplace getdeathdate getdeathplace getfacts getgender getgivenname getlifespan getname getnames getsurname includes lifespan living male names person place preferred property surname true types year"
+      "keywords": "add addname api array attributes birth birthdate birthplace death deathdate deathplace display fact facts false female function gender getbirthdate getbirthplace getdeathdate getdeathplace getfacts getgender getgivenname getlifespan getname getnames getsurname includes lifespan living male names person place preferred property surname true types year"
     },
     {
       "section": "api",
