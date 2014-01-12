@@ -22,6 +22,7 @@ define([
     // authentication
     getAuthCode: authentication.getAuthCode,
     getAccessToken: authentication.getAccessToken,
+    getAccessTokenForMobile: authentication.getAccessTokenForMobile,
     hasAccessToken: authentication.hasAccessToken,
     invalidateAccessToken: authentication.invalidateAccessToken,
 

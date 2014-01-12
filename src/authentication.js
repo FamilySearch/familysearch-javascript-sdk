@@ -39,6 +39,29 @@ define([
   };
 
   /**
+   * Process the response from the access token endpoint
+   *
+   * @param {Object} promise promise from the access token endpoint
+   * @param {Object} accessTokenDeferred deferred that needs to be resolved or rejected
+   */
+  function handleAccessTokenResponse(promise, accessTokenDeferred) {
+    promise.then(
+      function(data) {
+        var accessToken = data['access_token'];
+        if (accessToken) {
+          helpers.setAccessToken(accessToken);
+          accessTokenDeferred.resolve(accessToken);
+        }
+        else {
+          accessTokenDeferred.reject(data['error']);
+        }
+      },
+      function() {
+        accessTokenDeferred.reject.apply(accessTokenDeferred, arguments);
+      });
+  }
+
+  /**
    * @ngdoc function
    * @name authentication.functions:getAccessToken
    * @function
@@ -78,29 +101,48 @@ define([
         function(authCode) {
           // get the access token given the auth code
           var promise = plumbing.post(helpers.getOAuthServerUrl('token'), {
-            'grant_type' : 'authorization_code',
-            'code'       : authCode,
-            'client_id'  : globals.appKey
-          }, {'Content-Type': 'application/x-www-form-urlencoded'});
-          promise.then(
-            function(data) {
-              var accessToken = data['access_token'];
-              if (accessToken) {
-                helpers.setAccessToken(accessToken);
-                accessTokenDeferred.resolve(accessToken);
-              }
-              else {
-                accessTokenDeferred.reject(data['error']);
-              }
+              'grant_type' : 'authorization_code',
+              'code'       : authCode,
+              'client_id'  : globals.appKey
             },
-            function() {
-              accessTokenDeferred.reject.apply(accessTokenDeferred, arguments);
-            });
+            {'Content-Type': 'application/x-www-form-urlencoded'}); // access token endpoint says it accepts json but it doesn't
+          handleAccessTokenResponse(promise, accessTokenDeferred);
         },
         function() {
           accessTokenDeferred.reject.apply(accessTokenDeferred, arguments);
         });
     }
+    return accessTokenDeferred.promise;
+  };
+
+  /**
+   * @ngdoc function
+   * @name authentication.functions:getAccessTokenForMobile
+   * @function
+   *
+   * @description
+   * Get the access token for the user, passing in their user name and password
+   * Call this only for mobile apps; otherwise call {@link authentication.functions:getAccessToken getAccessToken}
+   *
+   * You don't need to store the access token returned by this function; you just need to ensure that the promise
+   * returned by this function resolves before making calls that require authentication.
+   *
+   * {@link https://familysearch.org/developers/docs/api/authentication/Access_Token_resource FamilySearch API docs}
+   *
+   * @param {String} userName name of the user
+   * @param {String} password of the user
+   * @return {Object} a promise of the (string) access token.
+   */
+  exports.getAccessTokenForMobile = function(userName, password) {
+    var accessTokenDeferred = globals.deferredWrapper();
+    var promise = plumbing.post(helpers.getOAuthServerUrl('token'), {
+        'grant_type': 'password',
+        'client_id' : globals.appKey,
+        'username'  : userName,
+        'password'  : password
+      },
+      {'Content-Type': 'application/x-www-form-urlencoded'}); // access token endpoint says it accepts json but it doesn't
+    handleAccessTokenResponse(promise, accessTokenDeferred);
     return accessTokenDeferred.promise;
   };
 
