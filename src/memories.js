@@ -382,7 +382,7 @@ define([
    */
   exports.createMemory = function(data, params, opts) {
     return plumbing.post(helpers.appendQueryParameters('/platform/memories/memories', params),
-      data, { 'Content-Type': helpers.isString(data) ? 'text/plain' : false }, opts,
+      data, helpers.isString(data) ? { 'Content-Type': 'text/plain' } : {}, opts,
       helpers.getLastResponseLocationSegment);
   };
 
