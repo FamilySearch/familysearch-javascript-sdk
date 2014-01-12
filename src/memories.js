@@ -26,9 +26,17 @@ define([
    * A {@link memories.types:type.Memory Memory} id and a Memory Persona Id.
    * See {@link memories.functions:getMemoryPersonas getMemoryPersonas} for more information about Memory Personas.
    */
-  var MemoryRef = exports.MemoryRef = function(location) {
-    this.resource = location;
-    this.resourceId = helpers.getLastUrlSegment(location);
+  var MemoryRef = exports.MemoryRef = function(location, personaId) {
+    if (personaId) {
+      // MemoryRef(memoryId, personaId)
+      this.memoryId = helpers.getAPIServerUrl('/platform/memories/memories/' + location + '/personas/' + personaId);
+      this.resourceId = personaId;
+    }
+    else {
+      // MemoryRef(location)
+      this.resource = location;
+      this.resourceId = helpers.getLastUrlSegment(location);
+    }
   };
 
   exports.MemoryRef.prototype = {
@@ -47,7 +55,8 @@ define([
      * @function
      * @return {String} Id of the memory; pass into {@link memories.functions:getMemory getMemory} for details
      */
-    getMemoryId:  function() { return this.resource ? this.resource.replace(/^.*\/memories\/([^\/]*)\/personas\/.*$/, '$1') : this.resource; }
+    getMemoryId:  function() {
+      return this.resource ? this.resource.replace(/^.*\/memories\/([^\/]*)\/personas\/.*$/, '$1') : this.resource; }
   };
 
   /**
@@ -402,7 +411,7 @@ define([
    * @param {Person} persona persona is a mini-Person object attached to the memory; people are attached to specific personas
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
-   * @return {MemoryRef} reference to the memory and persona id
+   * @return {Object} promise for the MemoryRef (memory id and persona id)
    */
   exports.createMemoryPersona = function(mid, persona, params, opts) {
     var data = {
