@@ -1472,6 +1472,29 @@ define('authentication',[
   };
 
   /**
+   * Process the response from the access token endpoint
+   *
+   * @param {Object} promise promise from the access token endpoint
+   * @param {Object} accessTokenDeferred deferred that needs to be resolved or rejected
+   */
+  function handleAccessTokenResponse(promise, accessTokenDeferred) {
+    promise.then(
+      function(data) {
+        var accessToken = data['access_token'];
+        if (accessToken) {
+          helpers.setAccessToken(accessToken);
+          accessTokenDeferred.resolve(accessToken);
+        }
+        else {
+          accessTokenDeferred.reject(data['error']);
+        }
+      },
+      function() {
+        accessTokenDeferred.reject.apply(accessTokenDeferred, arguments);
+      });
+  }
+
+  /**
    * @ngdoc function
    * @name authentication.functions:getAccessToken
    * @function
@@ -1511,29 +1534,48 @@ define('authentication',[
         function(authCode) {
           // get the access token given the auth code
           var promise = plumbing.post(helpers.getOAuthServerUrl('token'), {
-            'grant_type' : 'authorization_code',
-            'code'       : authCode,
-            'client_id'  : globals.appKey
-          }, {'Content-Type': 'application/x-www-form-urlencoded'});
-          promise.then(
-            function(data) {
-              var accessToken = data['access_token'];
-              if (accessToken) {
-                helpers.setAccessToken(accessToken);
-                accessTokenDeferred.resolve(accessToken);
-              }
-              else {
-                accessTokenDeferred.reject(data['error']);
-              }
+              'grant_type' : 'authorization_code',
+              'code'       : authCode,
+              'client_id'  : globals.appKey
             },
-            function() {
-              accessTokenDeferred.reject.apply(accessTokenDeferred, arguments);
-            });
+            {'Content-Type': 'application/x-www-form-urlencoded'}); // access token endpoint says it accepts json but it doesn't
+          handleAccessTokenResponse(promise, accessTokenDeferred);
         },
         function() {
           accessTokenDeferred.reject.apply(accessTokenDeferred, arguments);
         });
     }
+    return accessTokenDeferred.promise;
+  };
+
+  /**
+   * @ngdoc function
+   * @name authentication.functions:getAccessTokenForMobile
+   * @function
+   *
+   * @description
+   * Get the access token for the user, passing in their user name and password
+   * Call this only for mobile apps; otherwise call {@link authentication.functions:getAccessToken getAccessToken}
+   *
+   * You don't need to store the access token returned by this function; you just need to ensure that the promise
+   * returned by this function resolves before making calls that require authentication.
+   *
+   * {@link https://familysearch.org/developers/docs/api/authentication/Access_Token_resource FamilySearch API docs}
+   *
+   * @param {String} userName name of the user
+   * @param {String} password of the user
+   * @return {Object} a promise of the (string) access token.
+   */
+  exports.getAccessTokenForMobile = function(userName, password) {
+    var accessTokenDeferred = globals.deferredWrapper();
+    var promise = plumbing.post(helpers.getOAuthServerUrl('token'), {
+        'grant_type': 'password',
+        'client_id' : globals.appKey,
+        'username'  : userName,
+        'password'  : password
+      },
+      {'Content-Type': 'application/x-www-form-urlencoded'}); // access token endpoint says it accepts json but it doesn't
+    handleAccessTokenResponse(promise, accessTokenDeferred);
     return accessTokenDeferred.promise;
   };
 
@@ -2969,9 +3011,17 @@ define('memories',[
    * A {@link memories.types:type.Memory Memory} id and a Memory Persona Id.
    * See {@link memories.functions:getMemoryPersonas getMemoryPersonas} for more information about Memory Personas.
    */
-  var MemoryRef = exports.MemoryRef = function(location) {
-    this.resource = location;
-    this.resourceId = helpers.getLastUrlSegment(location);
+  var MemoryRef = exports.MemoryRef = function(location, personaId) {
+    if (personaId) {
+      // MemoryRef(memoryId, personaId)
+      this.memoryId = helpers.getAPIServerUrl('/platform/memories/memories/' + location + '/personas/' + personaId);
+      this.resourceId = personaId;
+    }
+    else {
+      // MemoryRef(location)
+      this.resource = location;
+      this.resourceId = helpers.getLastUrlSegment(location);
+    }
   };
 
   exports.MemoryRef.prototype = {
@@ -2990,7 +3040,8 @@ define('memories',[
      * @function
      * @return {String} Id of the memory; pass into {@link memories.functions:getMemory getMemory} for details
      */
-    getMemoryId:  function() { return this.resource ? this.resource.replace(/^.*\/memories\/([^\/]*)\/personas\/.*$/, '$1') : this.resource; }
+    getMemoryId:  function() {
+      return this.resource ? this.resource.replace(/^.*\/memories\/([^\/]*)\/personas\/.*$/, '$1') : this.resource; }
   };
 
   /**
@@ -3345,7 +3396,7 @@ define('memories',[
    * @param {Person} persona persona is a mini-Person object attached to the memory; people are attached to specific personas
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
-   * @return {MemoryRef} reference to the memory and persona id
+   * @return {Object} promise for the MemoryRef (memory id and persona id)
    */
   exports.createMemoryPersona = function(mid, persona, params, opts) {
     var data = {
@@ -5204,6 +5255,7 @@ define('FamilySearch',[
     // authentication
     getAuthCode: authentication.getAuthCode,
     getAccessToken: authentication.getAccessToken,
+    getAccessTokenForMobile: authentication.getAccessTokenForMobile,
     hasAccessToken: authentication.hasAccessToken,
     invalidateAccessToken: authentication.invalidateAccessToken,
 

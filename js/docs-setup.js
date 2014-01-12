@@ -32,6 +32,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "authentication.functions:getAccessTokenForMobile",
+      "shortName": "getAccessTokenForMobile",
+      "type": "function",
+      "moduleName": "authentication",
+      "shortDescription": "Get the access token for the user, passing in their user name and password",
+      "keywords": "access api apps authentication call calls docs don ensure familysearch function functions getaccesstoken https making mobile org passing password promise require resolves returned store token user username"
+    },
+    {
+      "section": "api",
       "id": "authentication.functions:getAuthCode",
       "shortName": "getAuthCode",
       "type": "function",
@@ -217,7 +226,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Create a memory (story or photo)",
-      "keywords": "api attached create currently docs editable example familysearch function functions http https init memories memory mid mini-person net object options opts org params pass people persona personas photo reference specific unused"
+      "keywords": "api attached create currently docs editable example familysearch function functions http https init memories memory memoryref mid mini-person net object options opts org params pass people persona personas photo promise specific unused"
     },
     {
       "section": "api",
