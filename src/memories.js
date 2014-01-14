@@ -415,7 +415,12 @@ define([
    */
   exports.createMemoryPersona = function(mid, persona, params, opts) {
     var data = {
-      persons: [ persona ]
+      persons: [ helpers.extend({
+        media : [ {
+          description : 'https://familysearch.org/platform/memories/artifacts/' + mid + '/description'
+        } ]
+      }, persona)
+      ]
     };
     return plumbing.post('/platform/memories/memories/'+mid+'/personas', data, {}, opts,
       function(data, promise) {

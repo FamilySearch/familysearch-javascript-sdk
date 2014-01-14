@@ -89,6 +89,9 @@ define(['FamilySearch'], function(FamilySearch) {
         //noinspection JSUnresolvedFunction
         expect(request.data).toEqualData({
           persons: [{
+            media : [ {
+              description : 'https://familysearch.org/platform/memories/artifacts/AR-1234/description'
+            } ],
             names: [{
               nameForms: [{
                 fullText: 'Anastasia Aleksandrova'
