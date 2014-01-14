@@ -3014,7 +3014,7 @@ define('memories',[
   var MemoryRef = exports.MemoryRef = function(location, personaId) {
     if (personaId) {
       // MemoryRef(memoryId, personaId)
-      this.memoryId = helpers.getAPIServerUrl('/platform/memories/memories/' + location + '/personas/' + personaId);
+      this.resource = helpers.getAPIServerUrl('/platform/memories/memories/' + location + '/personas/' + personaId);
       this.resourceId = personaId;
     }
     else {
