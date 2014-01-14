@@ -34,7 +34,8 @@ define([
     }
     else {
       // MemoryRef(location)
-      this.resource = location;
+      // we must remove the access token in order to pass this into addPersonMemoryRef
+      this.resource = location.replace(/\?.*$/, '');
       this.resourceId = helpers.getLastUrlSegment(location);
     }
   };
