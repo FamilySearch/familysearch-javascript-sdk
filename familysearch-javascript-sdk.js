@@ -879,6 +879,11 @@ define('angularjs-wrappers',[
         }
       }, opts);
       config.headers = helpers.extend({}, headers, opts.headers);
+      if (config.headers['Content-Type'] === 'multipart/form-data') {
+        config.headers['Content-Type'] = void 0;
+      }
+
+      console.log('http opts', config);
 
       // make the call
       var promise = http(config);
@@ -959,6 +964,10 @@ define('jquery-wrappers',[
         processData: false
       }, opts);
       opts.headers = helpers.extend({}, headers, opts.headers);
+      if (opts.headers['Content-Type'] === 'multipart/form-data') {
+        opts.contentType = false;
+        delete opts.headers['Content-Type'];
+      }
 
       // make the call
       var jqXHR = ajax(opts);
@@ -3377,7 +3386,7 @@ define('memories',[
    */
   exports.createMemory = function(data, params, opts) {
     return plumbing.post(helpers.appendQueryParameters('/platform/memories/memories', params),
-      data, helpers.isString(data) ? { 'Content-Type': 'text/plain' } : {}, opts,
+      data, { 'Content-Type': helpers.isString(data) ? 'text/plain' : 'multipart/form-data' }, opts,
       helpers.getLastResponseLocationSegment);
   };
 
@@ -3401,12 +3410,7 @@ define('memories',[
    */
   exports.createMemoryPersona = function(mid, persona, params, opts) {
     var data = {
-      persons: [ helpers.extend({
-        media : [ {
-          description : 'https://familysearch.org/platform/memories/artifacts/' + mid + '/description'
-        } ]
-      }, persona)
-      ]
+      persons: [ persona ]
     };
     return plumbing.post('/platform/memories/memories/'+mid+'/personas', data, {}, opts,
       function(data, promise) {
@@ -4662,6 +4666,7 @@ define('sources',[
       ));
   };
 
+  // TODO replace IdSourceRef with a map from Id to SourceRef
   /**
    * @ngdoc function
    * @name sources.types:type.IdSourceRef
