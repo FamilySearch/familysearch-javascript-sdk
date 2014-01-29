@@ -376,7 +376,7 @@ define([
       promise.then(handler, handler);
     }
     else {
-      result = helpers.getAPIServerUrl(path);
+      result = helpers.appendAccessToken(helpers.getAPIServerUrl(path));
     }
     return helpers.refPromise(result);
   };

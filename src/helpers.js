@@ -519,7 +519,11 @@ define([
   exports.encodeQueryString = function(params) {
     var arr = [];
     forEach(params, function(value, key) {
-      arr.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+      var param = encodeURIComponent(key);
+      if (value != null) { // catches null and undefined
+        param += '=' + encodeURIComponent(value);
+      }
+      arr.push(param);
     });
     return arr.join('&');
   };
@@ -544,13 +548,16 @@ define([
    * @returns {Object} parameters object
    */
   exports.decodeQueryString = function(qs) {
-    var obj = {}, segments = qs.substring(qs.indexOf('?')+1).split('&');
-    forEach(segments, function(segment) {
-      var kv = segment.split('=', 2);
-      if (kv && kv[0]) {
-        obj[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1]);
-      }
-    });
+    var obj = {}, pos = qs.indexOf('?');
+    if (pos !== -1) {
+      var segments = qs.substring(pos+1).split('&');
+      forEach(segments, function(segment) {
+        var kv = segment.split('=', 2);
+        if (kv && kv[0]) {
+          obj[decodeURIComponent(kv[0])] = (kv[1] != null ? decodeURIComponent(kv[1]) : kv[1]); // catches null and undefined
+        }
+      });
+    }
     return obj;
   };
 
@@ -561,6 +568,10 @@ define([
    */
   exports.appendAccessToken = function(url) {
     var params = exports.decodeQueryString(url);
+    var pos = url.indexOf('?');
+    if (pos !== -1) {
+      url = url.substring(0, pos);
+    }
     params['access_token'] = globals.accessToken;
     return exports.appendQueryParameters(url, params);
   };
