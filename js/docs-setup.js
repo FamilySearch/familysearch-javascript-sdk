@@ -298,7 +298,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Memory",
-      "keywords": "api array description filenames function getartifactfilenames getdescription geticonurl getmodified getthumbnailurl gettitle http icon image media mediatype memories memory object org property resource resourcetype thumbnail timestamp title type types url"
+      "keywords": "access api array description filenames full function getartifactfilenames getdescription geticonurl getimageurl getmodified getthumbnailurl gettitle http icon image media mediatype memories memory object org property resource resourcetype thumbnail timestamp title token type types url"
     },
     {
       "section": "api",

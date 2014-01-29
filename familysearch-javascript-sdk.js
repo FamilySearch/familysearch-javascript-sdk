@@ -594,7 +594,11 @@ define('helpers',[
   exports.encodeQueryString = function(params) {
     var arr = [];
     forEach(params, function(value, key) {
-      arr.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+      var param = encodeURIComponent(key);
+      if (value != null) { // catches null and undefined
+        param += '=' + encodeURIComponent(value);
+      }
+      arr.push(param);
     });
     return arr.join('&');
   };
@@ -619,14 +623,32 @@ define('helpers',[
    * @returns {Object} parameters object
    */
   exports.decodeQueryString = function(qs) {
-    var obj = {}, segments = qs.substring(qs.indexOf('?')+1).split('&');
-    forEach(segments, function(segment) {
-      var kv = segment.split('=', 2);
-      if (kv && kv[0]) {
-        obj[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1]);
-      }
-    });
+    var obj = {}, pos = qs.indexOf('?');
+    if (pos !== -1) {
+      var segments = qs.substring(pos+1).split('&');
+      forEach(segments, function(segment) {
+        var kv = segment.split('=', 2);
+        if (kv && kv[0]) {
+          obj[decodeURIComponent(kv[0])] = (kv[1] != null ? decodeURIComponent(kv[1]) : kv[1]); // catches null and undefined
+        }
+      });
+    }
     return obj;
+  };
+
+  /**
+   * Append the access token to the url
+   * @param {string} url
+   * @returns {string} url with access token
+   */
+  exports.appendAccessToken = function(url) {
+    var params = exports.decodeQueryString(url);
+    var pos = url.indexOf('?');
+    if (pos !== -1) {
+      url = url.substring(0, pos);
+    }
+    params['access_token'] = globals.accessToken;
+    return exports.appendQueryParameters(url, params);
   };
 
   /**
@@ -882,8 +904,6 @@ define('angularjs-wrappers',[
       if (config.headers['Content-Type'] === 'multipart/form-data') {
         config.headers['Content-Type'] = void 0;
       }
-
-      console.log('http opts', config);
 
       // make the call
       var promise = http(config);
@@ -3161,18 +3181,27 @@ define('memories',[
      * @name memories.types:type.Memory#getIconURL
      * @methodOf memories.types:type.Memory
      * @function
-     * @return {String} URL of the icon
+     * @return {String} URL of the icon with access token
      */
-    getIconURL: function() { return maybe(maybe(this.links)['image-icon']).href; },
+    getIconURL: function() { return helpers.appendAccessToken(maybe(maybe(this.links)['image-icon']).href); },
 
     /**
      * @ngdoc function
      * @name memories.types:type.Memory#getThumbnailURL
      * @methodOf memories.types:type.Memory
      * @function
-     * @return {String} URL of the thumbnail
+     * @return {String} URL of the thumbnail with access token
      */
-    getThumbnailURL: function() { return maybe(maybe(this.links)['image-thumbnail']).href; },
+    getThumbnailURL: function() { return helpers.appendAccessToken(maybe(maybe(this.links)['image-thumbnail']).href); },
+
+    /**
+     * @ngdoc function
+     * @name memories.types:type.Memory#getImageURL
+     * @methodOf memories.types:type.Memory
+     * @function
+     * @return {String} URL of the full image with access token
+     */
+    getImageURL: function() { return helpers.appendAccessToken(maybe(maybe(this.links)['image']).href); },
 
     /**
      * @ngdoc function
@@ -3354,15 +3383,14 @@ define('memories',[
       var d = globals.deferredWrapper();
       var promise = plumbing.get(path, params, {}, opts);
       result = helpers.extendHttpPromise(d.promise, promise);
-      promise.then(function() {
-        d.resolve(promise.getStatusCode() === 200 ? promise.getResponseHeader('Content-Location') : '');
-      }, function() {
-        // We don't expect the image content-type, try to parse it as json, and fail, so rely upon the status code
-        d.resolve(promise.getStatusCode() === 200 ? promise.getResponseHeader('Content-Location') : '');
-      });
+      var handler = function() {
+        // We don't expect the image content-type. We try to parse it as json and fail, so rely upon the status code
+        d.resolve(promise.getStatusCode() === 200 ? helpers.appendAccessToken(promise.getResponseHeader('Content-Location')) : '');
+      };
+      promise.then(handler, handler);
     }
     else {
-      result = helpers.getAPIServerUrl(path);
+      result = helpers.appendAccessToken(helpers.getAPIServerUrl(path));
     }
     return helpers.refPromise(result);
   };
