@@ -23,8 +23,8 @@ define([
    * @description
    * Get the ancestors of a specified person and optionally a specified spouse with the following convenience functions
    *
-   * - `getPersons()` - return an array of {@link person.types:type.Person Persons}
-   * - `getPerson(ascendancyNumber)` - return a {@link person.types:type.Person Person}
+   * - `getPersons()` - return an array of {@link person.types:constructor.Person Persons}
+   * - `getPerson(ascendancyNumber)` - return a {@link person.types:constructor.Person Person}
    * - `exists(ascendancyNumber)` - return true if a person with ascendancy number exists
    *
    * ### Notes
@@ -85,8 +85,8 @@ define([
    * Get the descendants of a specified person and optionally a specified spouse with the following convenience functions
    * (similar convenience functions as getAncestry)
    *
-   * - `getPersons()` - return an array of {@link person.types:type.Person Persons}
-   * - `getPerson(descendancyNumber)` - return a {@link person.types:type.Person Person}
+   * - `getPersons()` - return an array of {@link person.types:constructor.Person Persons}
+   * - `getPerson(descendancyNumber)` - return a {@link person.types:constructor.Person Person}
    * - `exists(descendancyNumber)` - return true if a person with ascendancy number exists
    *
    * ### Notes

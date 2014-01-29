@@ -47,7 +47,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name discussions.types:type.Discussion
+   * @name discussions.types:constructor.Discussion
    * @description
    *
    * Discussion
@@ -60,50 +60,50 @@ define([
     constructor: Discussion,
     /**
      * @ngdoc property
-     * @name discussions.types:type.Discussion#id
-     * @propertyOf discussions.types:type.Discussion
+     * @name discussions.types:constructor.Discussion#id
+     * @propertyOf discussions.types:constructor.Discussion
      * @return {String} Id of the discussion
      */
 
     /**
      * @ngdoc property
-     * @name discussions.types:type.Discussion#title
-     * @propertyOf discussions.types:type.Discussion
+     * @name discussions.types:constructor.Discussion#title
+     * @propertyOf discussions.types:constructor.Discussion
      * @return {String} title of the discussion
      */
 
     /**
      * @ngdoc property
-     * @name discussions.types:type.Discussion#details
-     * @propertyOf discussions.types:type.Discussion
+     * @name discussions.types:constructor.Discussion#details
+     * @propertyOf discussions.types:constructor.Discussion
      * @return {String} description / text of the discussion
      */
 
     /**
      * @ngdoc property
-     * @name discussions.types:type.Discussion#created
-     * @propertyOf discussions.types:type.Discussion
+     * @name discussions.types:constructor.Discussion#created
+     * @propertyOf discussions.types:constructor.Discussion
      * @return {Number} timestamp
      */
 
     /**
      * @ngdoc property
-     * @name discussions.types:type.Discussion#modified
-     * @propertyOf discussions.types:type.Discussion
+     * @name discussions.types:constructor.Discussion#modified
+     * @propertyOf discussions.types:constructor.Discussion
      * @return {Number} timestamp
      */
 
     /**
      * @ngdoc property
-     * @name discussions.types:type.Discussion#numberOfComments
-     * @propertyOf discussions.types:type.Discussion
+     * @name discussions.types:constructor.Discussion#numberOfComments
+     * @propertyOf discussions.types:constructor.Discussion
      * @return {Number} number of comments
      */
 
     /**
      * @ngdoc function
-     * @name discussions.types:type.Discussion#getContributorId
-     * @methodOf discussions.types:type.Discussion
+     * @name discussions.types:constructor.Discussion#getContributorId
+     * @methodOf discussions.types:constructor.Discussion
      * @function
      * @return {String} Id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
      */
@@ -119,7 +119,7 @@ define([
    * Get information about a discussion
    * The response includes the following convenience function
    *
-   * - `getDiscussion()` - get the {@link discussions.types:type.Discussion Discussion} from the response
+   * - `getDiscussion()` - get the {@link discussions.types:constructor.Discussion Discussion} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
    *
@@ -166,7 +166,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name discussions.types:type.Comment
+   * @name discussions.types:constructor.Comment
    * @description
    *
    * Comment on a discussion
@@ -179,29 +179,29 @@ define([
     constructor: Comment,
     /**
      * @ngdoc property
-     * @name discussions.types:type.Comment#id
-     * @propertyOf discussions.types:type.Comment
+     * @name discussions.types:constructor.Comment#id
+     * @propertyOf discussions.types:constructor.Comment
      * @return {String} Id of the comment
      */
 
     /**
      * @ngdoc property
-     * @name discussions.types:type.Comment#text
-     * @propertyOf discussions.types:type.Comment
+     * @name discussions.types:constructor.Comment#text
+     * @propertyOf discussions.types:constructor.Comment
      * @return {String} text of the comment
      */
 
     /**
      * @ngdoc property
-     * @name discussions.types:type.Comment#created
-     * @propertyOf discussions.types:type.Comment
+     * @name discussions.types:constructor.Comment#created
+     * @propertyOf discussions.types:constructor.Comment
      * @return {Number} timestamp
      */
 
     /**
      * @ngdoc function
-     * @name discussions.types:type.Comment#getContributorId
-     * @methodOf discussions.types:type.Comment
+     * @name discussions.types:constructor.Comment#getContributorId
+     * @methodOf discussions.types:constructor.Comment
      * @function
      * @return {String} Id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
      */
@@ -217,7 +217,7 @@ define([
    * Get comments for a discussion
    * The response includes the following convenience function
    *
-   * - `getComments()` - get an array of {@link discussions.types:type.Comment Comments} from the response
+   * - `getComments()` - get an array of {@link discussions.types:constructor.Comment Comments} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/discussions/Comments_resource FamilySearch API Docs}
    *

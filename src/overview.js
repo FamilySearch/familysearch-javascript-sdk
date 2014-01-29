@@ -33,37 +33,37 @@
  *
  * People with names and facts
  *
- * - {@link person.types:type.Person Person}
- * - {@link person.types:type.Fact Fact}
- * - {@link person.types:type.Name Name}
+ * - {@link person.types:constructor.Person Person}
+ * - {@link person.types:constructor.Fact Fact}
+ * - {@link person.types:constructor.Name Name}
  *
  * Relationships between people
  *
- * - {@link person.types:type.Couple Couple}
- * - {@link person.types:type.ChildAndParents ChildAndParents}
- * - {@link person.types:type.ParentChild ParentChild} (will hopefully go away in favor of ChildAndParents)
+ * - {@link person.types:constructor.Couple Couple}
+ * - {@link person.types:constructor.ChildAndParents ChildAndParents}
+ * - {@link person.types:constructor.ParentChild ParentChild} (will hopefully go away in favor of ChildAndParents)
  *
  * Ojects related to people (and relationships)
  *
- * - {@link notes.types:type.NoteRef NoteRef}
- * - {@link notes.types:type.Note Note}
- * - {@link sources.types:type.SourceRef SourceRef}
- * - {@link sources.types:type.SourceDescription SourceDescription}
- * - {@link sources.types:type.IdSourceRef IdSourceRef}
- * - {@link discussions.types:type.Discussion Discussion}
- * - {@link discussions.types:type.Comment Comment}
- * - {@link memories.types:type.MemoryRef MemoryRef}
- * - {@link memories.types:type.Memory Memory}
- * - {@link changeHistory.types:type.Change Change}
+ * - {@link notes.types:constructor.NoteRef NoteRef}
+ * - {@link notes.types:constructor.Note Note}
+ * - {@link sources.types:constructor.SourceRef SourceRef}
+ * - {@link sources.types:constructor.SourceDescription SourceDescription}
+ * - {@link sources.types:constructor.IdSourceRef IdSourceRef}
+ * - {@link discussions.types:constructor.Discussion Discussion}
+ * - {@link discussions.types:constructor.Comment Comment}
+ * - {@link memories.types:constructor.MemoryRef MemoryRef}
+ * - {@link memories.types:constructor.Memory Memory}
+ * - {@link changeHistory.types:constructor.Change Change}
  *
  * Search & match
  *
- * - {@link searchAndMatch.types:type.SearchResult SearchResult}
+ * - {@link searchAndMatch.types:constructor.SearchResult SearchResult}
  *
  * Users
  *
- * - {@link user.types:type.Agent Agent}
- * - {@link user.types:type.User User}
+ * - {@link user.types:constructor.Agent Agent}
+ * - {@link user.types:constructor.User User}
  *
  * ## Getting started
  *
@@ -166,11 +166,11 @@
  * SDK function responses are typically json objects.
  * The SDK function calls add *convenience functions* for returning various objects from the response.
  * For example, the `getPerson('ID')` call adds a `response.getPerson()` convenience function that returns the
- * {@link person.types:type.Person Person} object from the response.
+ * {@link person.types:constructor.Person Person} object from the response.
  *
  * The returned objects contain the same properties as the original response json, but they have custom constructors whose
  * prototypes add convenience functions.
- * For example, the prototype for {@link person.types:type.Person Person} objects includes `getGivenName()` and `getSurname()`
+ * For example, the prototype for {@link person.types:constructor.Person Person} objects includes `getGivenName()` and `getSurname()`
  * convenience functions for returning the person's given name and surname respectively.
  * Without these convenience functions, you would have to navigate the `parts` elements of the `nameForms` array,
  * look for a part whose `type` element is `http://gedcomx.org/Given` or `http://gedcomx.org/Surname` respectively, and
@@ -185,7 +185,7 @@
  *   }
  * </pre>
  *
- * and from then on you could call `person.getNameAndId()` on any {@link person.types:type.Person Person} object.
+ * and from then on you could call `person.getNameAndId()` on any {@link person.types:constructor.Person Person} object.
  *
  * <pre>
  * FamilySearch.getPerson('ID').then(function(response) {

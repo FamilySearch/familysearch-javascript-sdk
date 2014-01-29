@@ -17,7 +17,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name notes.types:type.NoteRef
+   * @name notes.types:constructor.NoteRef
    * @description
    *
    * Reference to a note on a person
@@ -30,8 +30,8 @@ define([
     constructor: NoteRef
     /**
      * @ngdoc property
-     * @name notes.types:type.NoteRef#id
-     * @propertyOf notes.types:type.NoteRef
+     * @name notes.types:constructor.NoteRef#id
+     * @propertyOf notes.types:constructor.NoteRef
      * @return {String} Id of the note - pass into {@link notes.functions.getPersonNote getPersonNote},
      * {@link notes.functions.getCoupleNote getCoupleNote}, or {@link notes.functions.getChildAndParentsNote getChildAndParentsNote}
      * for details
@@ -39,8 +39,8 @@ define([
 
     /**
      * @ngdoc property
-     * @name notes.types:type.NoteRef#subject
-     * @propertyOf notes.types:type.NoteRef
+     * @name notes.types:constructor.NoteRef#subject
+     * @propertyOf notes.types:constructor.NoteRef
      * @return {String} subject of the note
      */
   };
@@ -54,7 +54,7 @@ define([
    * Get note references for a person
    * The response includes the following convenience function
    *
-   * - `getNoteRefs()` - get an array of {@link notes.types:type.NoteRef NoteRefs} from the response
+   * - `getNoteRefs()` - get an array of {@link notes.types:constructor.NoteRef NoteRefs} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Notes_resource FamilySearch API Docs}
    *
@@ -77,7 +77,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name notes.types:type.Note
+   * @name notes.types:constructor.Note
    * @description
    *
    * Note
@@ -90,29 +90,29 @@ define([
     constructor: Note,
     /**
      * @ngdoc property
-     * @name notes.types:type.Note#id
-     * @propertyOf notes.types:type.Note
+     * @name notes.types:constructor.Note#id
+     * @propertyOf notes.types:constructor.Note
      * @return {String} Id of the note
      */
 
     /**
      * @ngdoc property
-     * @name notes.types:type.Note#subject
-     * @propertyOf notes.types:type.Note
+     * @name notes.types:constructor.Note#subject
+     * @propertyOf notes.types:constructor.Note
      * @return {String} subject / title of the note
      */
 
     /**
      * @ngdoc property
-     * @name notes.types:type.Note#text
-     * @propertyOf notes.types:type.Note
+     * @name notes.types:constructor.Note#text
+     * @propertyOf notes.types:constructor.Note
      * @return {String} text of the note
      */
 
     /**
      * @ngdoc function
-     * @name notes.types:type.Note#getContributorId
-     * @methodOf notes.types:type.Note
+     * @name notes.types:constructor.Note#getContributorId
+     * @methodOf notes.types:constructor.Note
      * @function
      * @return {String} Id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
      */
@@ -120,8 +120,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name notes.types:type.Note#getModified
-     * @methodOf notes.types:type.Note
+     * @name notes.types:constructor.Note#getModified
+     * @methodOf notes.types:constructor.Note
      * @function
      * @return {Number} timestamp
      */
@@ -137,7 +137,7 @@ define([
    * Get information about a note
    * The response includes the following convenience function
    *
-   * - `getNote()` - get the {@link notes.types:type.Note Note} from the response
+   * - `getNote()` - get the {@link notes.types:constructor.Note Note} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Note_resource FamilySearch API Docs}
    *
@@ -172,7 +172,7 @@ define([
    * {@link http://jsfiddle.net/DallanQ/5dLd4/ editable example}
    *
    * @param {String} pid of the person
-   * @param {Array} nids Ids or {@link notes.types:type.NoteRef NoteRefs} of the notes to read
+   * @param {Array} nids Ids or {@link notes.types:constructor.NoteRef NoteRefs} of the notes to read
    * @param {Object=} params pass to getPersonNote currently unused
    * @param {Object=} opts pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the notes have been read,
@@ -196,7 +196,7 @@ define([
    * Get the note references for a couple relationship
    * The response includes the following convenience function
    *
-   * - `getNoteRefs()` - get an array of {@link notes.types:type.NoteRef NoteRefs} from the response
+   * - `getNoteRefs()` - get an array of {@link notes.types:constructor.NoteRef NoteRefs} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Notes_resource FamilySearch API Docs}
    *
@@ -226,7 +226,7 @@ define([
    * Get information about a couple relationship note
    * The response includes the following convenience function
    *
-   * - `getNote()` - get the {@link notes.types:type.Note Note} from the response
+   * - `getNote()` - get the {@link notes.types:constructor.Note Note} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource FamilySearch API Docs}
    *
@@ -261,7 +261,7 @@ define([
    * {@link http://jsfiddle.net/DallanQ/fn8NU/ editable example}
    *
    * @param {String} crid of the couple relationship
-   * @param {Array} nids Ids or {@link notes.types:type.NoteRef NoteRefs} of the notes to read
+   * @param {Array} nids Ids or {@link notes.types:constructor.NoteRef NoteRefs} of the notes to read
    * @param {Object=} params pass to getCoupleNote currently unused
    * @param {Object=} opts pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the notes have been read,
@@ -285,7 +285,7 @@ define([
    * Get the note references for a child and parents relationship
    * The response includes the following convenience function
    *
-   * - `getNoteRefs()` - get an array of {@link notes.types:type.NoteRef NoteRefs} from the response
+   * - `getNoteRefs()` - get an array of {@link notes.types:constructor.NoteRef NoteRefs} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Notes_resource FamilySearch API Docs}
    *
@@ -316,7 +316,7 @@ define([
    * Get information about a child and parents relationship note
    * The response includes the following convenience function
    *
-   * - `getNote()` - get the {@link notes.types:type.Note Note} from the response
+   * - `getNote()` - get the {@link notes.types:constructor.Note Note} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource FamilySearch API Docs}
    *
@@ -352,7 +352,7 @@ define([
    * {@link http://jsfiddle.net/DallanQ/fn8NU/ editable example}
    *
    * @param {String} caprid of the child and parents relationship
-   * @param {Array} nids Ids or {@link notes.types:type.NoteRef NoteRefs} of the notes to read
+   * @param {Array} nids Ids or {@link notes.types:constructor.NoteRef NoteRefs} of the notes to read
    * @param {Object=} params pass to getChildAndParentsNote currently unused
    * @param {Object=} opts pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the notes have been read,

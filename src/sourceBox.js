@@ -18,7 +18,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name sourceBox.types:type.Collection
+   * @name sourceBox.types:constructor.Collection
    * @description
    *
    * Collection
@@ -31,29 +31,29 @@ define([
     constructor: Collection,
     /**
      * @ngdoc property
-     * @name sourceBox.types:type.Collection#id
-     * @propertyOf sourceBox.types:type.Collection
+     * @name sourceBox.types:constructor.Collection#id
+     * @propertyOf sourceBox.types:constructor.Collection
      * @return {String} Id of the collection
      */
 
     /**
      * @ngdoc property
-     * @name sourceBox.types:type.Collection#title
-     * @propertyOf sourceBox.types:type.Collection
+     * @name sourceBox.types:constructor.Collection#title
+     * @propertyOf sourceBox.types:constructor.Collection
      * @return {String} title / folder of the collection
      */
 
     /**
      * @ngdoc property
-     * @name sourceBox.types:type.Collection#size
-     * @propertyOf sourceBox.types:type.Collection
+     * @name sourceBox.types:constructor.Collection#size
+     * @propertyOf sourceBox.types:constructor.Collection
      * @return {Number} number of sources in the collection
      */
 
     /**
      * @ngdoc function
-     * @name sourceBox.types:type.Collection#getContributorId
-     * @methodOf sourceBox.types:type.Collection
+     * @name sourceBox.types:constructor.Collection#getContributorId
+     * @methodOf sourceBox.types:constructor.Collection
      * @function
      * @return {String} Id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
      */
@@ -69,7 +69,7 @@ define([
    * Search people
    * The response includes the following convenience function
    *
-   * - `getCollections()` - get an array of {@link sourceBox.types:type.Collection Collections} from the response
+   * - `getCollections()` - get an array of {@link sourceBox.types:constructor.Collection Collections} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_for_a_User_resource FamilySearch API Docs}
    *
@@ -97,7 +97,7 @@ define([
    * Get information about a user-defined collection
    * The response includes the following convenience function
    *
-   * - `getCollection()` - get a {@link sourceBox.types:type.Collection Collection} from the response
+   * - `getCollection()` - get a {@link sourceBox.types:constructor.Collection Collection} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_resource FamilySearch API Docs}
    *
@@ -125,7 +125,7 @@ define([
    * Get a paged list of source descriptions in a user-defined collection
    * The response includes the following convenience function
    *
-   * - `getSourceDescriptions()` - get an array of {@link sources.types:type.SourceDescription SourceDescriptions} from the response
+   * - `getSourceDescriptions()` - get an array of {@link sources.types:constructor.SourceDescription SourceDescriptions} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_Source_Descriptions_resource FamilySearch API Docs}
    *
@@ -153,7 +153,7 @@ define([
    * Get a paged list of source descriptions in all user-defined collections defined by a user
    * The response includes the following convenience function
    *
-   * - `getSourceDescriptions()` - get an array of {@link sources.types:type.SourceDescription SourceDescriptions} from the response
+   * - `getSourceDescriptions()` - get an array of {@link sources.types:constructor.SourceDescription SourceDescriptions} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_Source_Descriptions_for_a_User_resource FamilySearch API Docs}
    *

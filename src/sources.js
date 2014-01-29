@@ -17,7 +17,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name sources.types:type.SourceRef
+   * @name sources.types:constructor.SourceRef
    * @description
    *
    * Reference from a person or relationship to a source
@@ -30,15 +30,15 @@ define([
     constructor: SourceRef,
     /**
      * @ngdoc property
-     * @name sources.types:type.SourceRef#id
-     * @propertyOf sources.types:type.SourceRef
+     * @name sources.types:constructor.SourceRef#id
+     * @propertyOf sources.types:constructor.SourceRef
      * @return {String} Id of the source reference
      */
 
     /**
      * @ngdoc function
-     * @name sources.types:type.SourceRef#getSourceDescriptionId
-     * @methodOf sources.types:type.SourceRef
+     * @name sources.types:constructor.SourceRef#getSourceDescriptionId
+     * @methodOf sources.types:constructor.SourceRef
      * @function
      * @return {String} Id of the source description - pass into {@link sources.functions:getSourceDescription getSourceDescription} for details
      */
@@ -48,8 +48,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name sources.types:type.SourceRef#getTagNames
-     * @methodOf sources.types:type.SourceRef
+     * @name sources.types:constructor.SourceRef#getTagNames
+     * @methodOf sources.types:constructor.SourceRef
      * @function
      * @return {String[]} an array of tag names; e.g., http://gedcomx.org/Name or http://gedcomx.org/Birth
      */
@@ -59,8 +59,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name sources.types:type.SourceRef#getContributorId
-     * @methodOf sources.types:type.SourceRef
+     * @name sources.types:constructor.SourceRef#getContributorId
+     * @methodOf sources.types:constructor.SourceRef
      * @function
      * @return {String} Id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
      */
@@ -68,8 +68,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name sources.types:type.SourceRef#getModified
-     * @methodOf sources.types:type.SourceRef
+     * @name sources.types:constructor.SourceRef#getModified
+     * @methodOf sources.types:constructor.SourceRef
      * @function
      * @return {Number} last modified timestamp
      */
@@ -77,8 +77,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name sources.types:type.SourceRef#getChangeMessage
-     * @methodOf sources.types:type.SourceRef
+     * @name sources.types:constructor.SourceRef#getChangeMessage
+     * @methodOf sources.types:constructor.SourceRef
      * @function
      * @return {String} Reason for the change
      */
@@ -94,7 +94,7 @@ define([
    * Get references to sources for a person
    * The response includes the following convenience function
    *
-   * - `getSourceRefs()` - get an array of {@link sources.types:type.SourceRef SourceRefs} from the response
+   * - `getSourceRefs()` - get an array of {@link sources.types:constructor.SourceRef SourceRefs} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Source_References_resource FamilySearch API Docs}
    *
@@ -117,7 +117,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name sources.types:type.SourceDescription
+   * @name sources.types:constructor.SourceDescription
    * @description
    *
    * Description of a source
@@ -130,22 +130,22 @@ define([
     constructor: SourceDescription,
     /**
      * @ngdoc property
-     * @name sources.types:type.SourceDescription#id
-     * @propertyOf sources.types:type.SourceDescription
+     * @name sources.types:constructor.SourceDescription#id
+     * @propertyOf sources.types:constructor.SourceDescription
      * @return {String} Id of the source description
      */
 
     /**
      * @ngdoc property
-     * @name sources.types:type.SourceDescription#about
-     * @propertyOf sources.types:type.SourceDescription
+     * @name sources.types:constructor.SourceDescription#about
+     * @propertyOf sources.types:constructor.SourceDescription
      * @return {String} URL (link to the record)
      */
 
     /**
      * @ngdoc function
-     * @name sources.types:type.SourceDescription#getCitation
-     * @methodOf sources.types:type.SourceDescription
+     * @name sources.types:constructor.SourceDescription#getCitation
+     * @methodOf sources.types:constructor.SourceDescription
      * @function
      * @return {String} source citation
      */
@@ -153,8 +153,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name sources.types:type.SourceDescription#getTitle
-     * @methodOf sources.types:type.SourceDescription
+     * @name sources.types:constructor.SourceDescription#getTitle
+     * @methodOf sources.types:constructor.SourceDescription
      * @function
      * @return {String} title of the source description
      */
@@ -162,8 +162,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name sources.types:type.SourceDescription#getText
-     * @methodOf sources.types:type.SourceDescription
+     * @name sources.types:constructor.SourceDescription#getText
+     * @methodOf sources.types:constructor.SourceDescription
      * @function
      * @return {String} Text / Description of the source
      */
@@ -171,8 +171,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name sources.types:type.SourceDescription#getContributorId
-     * @methodOf sources.types:type.SourceDescription
+     * @name sources.types:constructor.SourceDescription#getContributorId
+     * @methodOf sources.types:constructor.SourceDescription
      * @function
      * @return {String} Id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
      */
@@ -180,8 +180,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name sources.types:type.SourceDescription#getModified
-     * @methodOf sources.types:type.SourceDescription
+     * @name sources.types:constructor.SourceDescription#getModified
+     * @methodOf sources.types:constructor.SourceDescription
      * @function
      * @return {Number} last modified timestamp
      */
@@ -197,7 +197,7 @@ define([
    * Get information about a source
    * The response includes the following convenience function
    *
-   * - `getSourceDescription()` - get the {@link sources.types:type.SourceDescription SourceDescription} from the response
+   * - `getSourceDescription()` - get the {@link sources.types:constructor.SourceDescription SourceDescription} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
    *
@@ -228,7 +228,7 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/chQ64/ editable example}
    *
-   * @param {Array} sdids Ids or {@link sources.types:type.SourceRef SourceRefs} of the source descriptions to read
+   * @param {Array} sdids Ids or {@link sources.types:constructor.SourceRef SourceRefs} of the source descriptions to read
    * @param {Object=} params pass to getSourceDescription currently unused
    * @param {Object=} opts pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the source descriptions have been read,
@@ -252,7 +252,7 @@ define([
    * Get the source references for a couple relationship
    * The response includes the following convenience function
    *
-   * - `getSourceRefs()` - get an array of {@link sources.types:type.SourceRef SourceRefs} from the response
+   * - `getSourceRefs()` - get an array of {@link sources.types:constructor.SourceRef SourceRefs} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Source_References_resource FamilySearch API Docs}
    *
@@ -282,7 +282,7 @@ define([
    * Get the source references for a child and parents relationship
    * The response includes the following convenience function
    *
-   * - `getSourceRefs()` - get an array of {@link sources.types:type.SourceRef SourceRefs} from the response
+   * - `getSourceRefs()` - get an array of {@link sources.types:constructor.SourceRef SourceRefs} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource FamilySearch API Docs}
    *
@@ -307,10 +307,10 @@ define([
   // TODO replace IdSourceRef with a map from Id to SourceRef
   /**
    * @ngdoc function
-   * @name sources.types:type.IdSourceRef
+   * @name sources.types:constructor.IdSourceRef
    * @description
    *
-   * A person or relationship id and a {@link sources.types:type.SourceRef SourceRef}
+   * A person or relationship id and a {@link sources.types:constructor.SourceRef SourceRef}
    */
   var IdSourceRef = exports.IdSourceRef = function() {
 
@@ -320,17 +320,17 @@ define([
     constructor: IdSourceRef,
     /**
      * @ngdoc property
-     * @name sources.types:type.IdSourceRef#id
-     * @propertyOf sources.types:type.IdSourceRef
+     * @name sources.types:constructor.IdSourceRef#id
+     * @propertyOf sources.types:constructor.IdSourceRef
      * @return {String} Id of the person or relationship
      */
 
     /**
      * @ngdoc function
-     * @name sources.types:type.IdSourceRef#getSourceRef
-     * @methodOf sources.types:type.IdSourceRef
+     * @name sources.types:constructor.IdSourceRef#getSourceRef
+     * @methodOf sources.types:constructor.IdSourceRef
      * @function
-     * @return {SourceRef} {@link sources.types:type.SourceRef SourceRef}
+     * @return {SourceRef} {@link sources.types:constructor.SourceRef SourceRef}
      */
     getSourceRef: function() { return maybe(this.sources)[0]; }
   };
@@ -344,9 +344,9 @@ define([
    * Get the people, couples, and child-and-parents relationships referencing a source
    * The response includes the following convenience functions
    *
-   * - `getPersonIdSourceRefs()` - get an array of {@link sources.types:type.IdSourceRef IdSourceRefs} from the response
-   * - `getCoupleIdSourceRefs()` - get an array of {@link sources.types:type.IdSourceRef IdSourceRefs} from the response
-   * - `getChildAndParentsIdSourceRefs()` - get an array of {@link sources.types:type.IdSourceRef IdSourceRefs} from the response
+   * - `getPersonIdSourceRefs()` - get an array of {@link sources.types:constructor.IdSourceRef IdSourceRefs} from the response
+   * - `getCoupleIdSourceRefs()` - get an array of {@link sources.types:constructor.IdSourceRef IdSourceRefs} from the response
+   * - `getChildAndParentsIdSourceRefs()` - get an array of {@link sources.types:constructor.IdSourceRef IdSourceRefs} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Source_References_Query_resource FamilySearch API Docs}
    *

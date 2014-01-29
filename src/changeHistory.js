@@ -17,7 +17,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name changeHistory.types:type.Change
+   * @name changeHistory.types:constructor.Change
    * @description
    *
    * Change made to a person or relationship
@@ -30,29 +30,29 @@ define([
     constructor: Change,
     /**
      * @ngdoc property
-     * @name changeHistory.types:type.Change#id
-     * @propertyOf changeHistory.types:type.Change
+     * @name changeHistory.types:constructor.Change#id
+     * @propertyOf changeHistory.types:constructor.Change
      * @return {String} Id of the change
      */
 
     /**
      * @ngdoc property
-     * @name changeHistory.types:type.Change#title
-     * @propertyOf changeHistory.types:type.Change
+     * @name changeHistory.types:constructor.Change#title
+     * @propertyOf changeHistory.types:constructor.Change
      * @return {String} title of the change
      */
 
     /**
      * @ngdoc property
-     * @name changeHistory.types:type.Change#updated
-     * @propertyOf changeHistory.types:type.Change
+     * @name changeHistory.types:constructor.Change#updated
+     * @propertyOf changeHistory.types:constructor.Change
      * @return {Number} timestamp
      */
 
     /**
      * @ngdoc function
-     * @name changeHistory.types:type.Change#getContributorName
-     * @methodOf changeHistory.types:type.Change
+     * @name changeHistory.types:constructor.Change#getContributorName
+     * @methodOf changeHistory.types:constructor.Change
      * @function
      * @return {String} contributor name
      */
@@ -60,8 +60,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name changeHistory.types:type.Change#getChangeReason
-     * @methodOf changeHistory.types:type.Change
+     * @name changeHistory.types:constructor.Change#getChangeReason
+     * @methodOf changeHistory.types:constructor.Change
      * @function
      * @return {String} reason for the change
      */
@@ -82,7 +82,7 @@ define([
    * Get change history for a person
    * The response includes the following convenience function
    *
-   * - `getChanges()` - get the array of {@link changeHistory.types:type.Change Changes} from the response
+   * - `getChanges()` - get the array of {@link changeHistory.types:constructor.Change Changes} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Change_History_resource FamilySearch API Docs}
    *
@@ -107,7 +107,7 @@ define([
    * Get change history for a child and parents relationship
    * The response includes the following convenience function
    *
-   * - `getChanges()` - get the array of {@link changeHistory.types:type.Change Changes} from the response
+   * - `getChanges()` - get the array of {@link changeHistory.types:constructor.Change Changes} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Change_History_resource FamilySearch API Docs}
    *
@@ -132,7 +132,7 @@ define([
    * Get change history for a couple relationship
    * The response includes the following convenience function
    *
-   * - `getChanges()` - get the array of {@link changeHistory.types:type.Change Changes} from the response
+   * - `getChanges()` - get the array of {@link changeHistory.types:constructor.Change Changes} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Change_History_resource FamilySearch API Docs}
    *

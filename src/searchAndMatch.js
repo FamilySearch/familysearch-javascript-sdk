@@ -18,7 +18,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name searchAndMatch.types:type.SearchResult
+   * @name searchAndMatch.types:constructor.SearchResult
    * @description
    *
    * Reference from a person or relationship to a source
@@ -31,36 +31,36 @@ define([
     constructor: SearchResult,
     /**
      * @ngdoc property
-     * @name searchAndMatch.types:type.SearchResult#id
-     * @propertyOf searchAndMatch.types:type.SearchResult
+     * @name searchAndMatch.types:constructor.SearchResult#id
+     * @propertyOf searchAndMatch.types:constructor.SearchResult
      * @return {String} Id of the person for this search result
      */
 
     /**
      * @ngdoc property
-     * @name searchAndMatch.types:type.SearchResult#title
-     * @propertyOf searchAndMatch.types:type.SearchResult
+     * @name searchAndMatch.types:constructor.SearchResult#title
+     * @propertyOf searchAndMatch.types:constructor.SearchResult
      * @return {String} Id and Name
      */
 
     /**
      * @ngdoc property
-     * @name searchAndMatch.types:type.SearchResult#score
-     * @propertyOf searchAndMatch.types:type.SearchResult
+     * @name searchAndMatch.types:constructor.SearchResult#score
+     * @propertyOf searchAndMatch.types:constructor.SearchResult
      * @return {Number} higher is better
      */
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:type.SearchResult#getPerson
-     * @methodOf searchAndMatch.types:type.SearchResult
+     * @name searchAndMatch.types:constructor.SearchResult#getPerson
+     * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
      * @description
      *
      * **Note: Be aware that the `Person` objects returned from SearchResults do not have as much information
      * as `Person` objects returned from the various person and pedigree functions.**
      *
-     * @return {Person} the {@link person.types:type.Person Person} for this Id in this search result
+     * @return {Person} the {@link person.types:constructor.Person Person} for this Id in this search result
      */
     getPerson: function(id) {
       return helpers.find(maybe(maybe(this.content).gedcomx).persons, {id: id});
@@ -68,10 +68,10 @@ define([
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:type.SearchResult#getPrimaryPerson
-     * @methodOf searchAndMatch.types:type.SearchResult
+     * @name searchAndMatch.types:constructor.SearchResult#getPrimaryPerson
+     * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
-     * @return {Person} the primary {@link person.types:type.Person Person} for this search result
+     * @return {Person} the primary {@link person.types:constructor.Person Person} for this search result
      */
     getPrimaryPerson: function() {
       return this.getPerson(this.id);
@@ -79,8 +79,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:type.SearchResult#getFatherIds
-     * @methodOf searchAndMatch.types:type.SearchResult
+     * @name searchAndMatch.types:constructor.SearchResult#getFatherIds
+     * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
      * @return {String[]} array of father Id's for this search result
      */
@@ -99,17 +99,17 @@ define([
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:type.SearchResult#getFathers
-     * @methodOf searchAndMatch.types:type.SearchResult
+     * @name searchAndMatch.types:constructor.SearchResult#getFathers
+     * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
-     * @return {Person[]} array of father {@link person.types:type.Person Persons} for this search result
+     * @return {Person[]} array of father {@link person.types:constructor.Person Persons} for this search result
      */
     getFathers: function() { return helpers.map(this.getFatherIds(), this.getPerson, this); },
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:type.SearchResult#getMotherIds
-     * @methodOf searchAndMatch.types:type.SearchResult
+     * @name searchAndMatch.types:constructor.SearchResult#getMotherIds
+     * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
      * @return {String[]} array of mother Id's for this search result
      */
@@ -128,17 +128,17 @@ define([
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:type.SearchResult#getMothers
-     * @methodOf searchAndMatch.types:type.SearchResult
+     * @name searchAndMatch.types:constructor.SearchResult#getMothers
+     * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
-     * @return {Person[]} array of mother {@link person.types:type.Person Persons} for this search result
+     * @return {Person[]} array of mother {@link person.types:constructor.Person Persons} for this search result
      */
     getMothers: function() { return helpers.map(this.getMotherIds(), this.getPerson, this); },
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:type.SearchResult#getSpouseIds
-     * @methodOf searchAndMatch.types:type.SearchResult
+     * @name searchAndMatch.types:constructor.SearchResult#getSpouseIds
+     * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
      * @return {String[]} array of spouse Id's for this search result
      */
@@ -155,17 +155,17 @@ define([
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:type.SearchResult#getSpouses
-     * @methodOf searchAndMatch.types:type.SearchResult
+     * @name searchAndMatch.types:constructor.SearchResult#getSpouses
+     * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
-     * @return {Person[]} array of spouse {@link person.types:type.Person Persons} for this search result
+     * @return {Person[]} array of spouse {@link person.types:constructor.Person Persons} for this search result
      */
     getSpouses: function() { return helpers.map(this.getSpouseIds(), this.getPerson, this); },
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:type.SearchResult#getChildIds
-     * @methodOf searchAndMatch.types:type.SearchResult
+     * @name searchAndMatch.types:constructor.SearchResult#getChildIds
+     * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
      * @return {String[]} array of child Id's for this search result
      */
@@ -183,10 +183,10 @@ define([
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:type.SearchResult#getChildren
-     * @methodOf searchAndMatch.types:type.SearchResult
+     * @name searchAndMatch.types:constructor.SearchResult#getChildren
+     * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
-     * @return {Person[]} array of spouse {@link person.types:type.Person Persons} for this search result
+     * @return {Person[]} array of spouse {@link person.types:constructor.Person Persons} for this search result
      */
     getChildren: function() { return helpers.map(this.getChildIds(), this.getPerson, this); }
   };
@@ -201,7 +201,7 @@ define([
    * The response includes the following convenience functions
    *
    * - `getContext()` - get the search context to pass into subsequent requests for additional results
-   * - `getSearchResults()` - get the array of {@link searchAndMatch.types:type.SearchResult SearchResults} from the response
+   * - `getSearchResults()` - get the array of {@link searchAndMatch.types:constructor.SearchResult SearchResults} from the response
    * - `getResultsCount()` - get the total number of search results
    * - `getIndex()` - get the starting index of the results array
    *
@@ -297,7 +297,7 @@ define([
    * Get the matches (possible duplicates) for a person
    * The response includes the following convenience function
    *
-   * - `getSearchResults()` - get the array of {@link searchAndMatch.types:type.SearchResult SearchResults} from the response
+   * - `getSearchResults()` - get the array of {@link searchAndMatch.types:constructor.SearchResult SearchResults} from the response
    * - `getResultsCount()` - get the total number of search results
    * - `getIndex()` - get the starting index of the results array
    *
@@ -324,7 +324,7 @@ define([
    * Get matches for someone not in the tree
    * The response includes the following convenience function
    *
-   * - `getSearchResults()` - get the array of {@link searchAndMatch.types:type.SearchResult SearchResults} from the response
+   * - `getSearchResults()` - get the array of {@link searchAndMatch.types:constructor.SearchResult SearchResults} from the response
    * - `getResultsCount()` - get the total number of search results
    * - `getIndex()` - get the starting index of the results array
    *

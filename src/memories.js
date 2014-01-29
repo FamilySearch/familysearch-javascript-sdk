@@ -20,10 +20,10 @@ define([
 
   /**
    * @ngdoc function
-   * @name memories.types:type.MemoryRef
+   * @name memories.types:constructor.MemoryRef
    * @description
    *
-   * A {@link memories.types:type.Memory Memory} id and a Memory Persona Id.
+   * A {@link memories.types:constructor.Memory Memory} id and a Memory Persona Id.
    * See {@link memories.functions:getMemoryPersonas getMemoryPersonas} for more information about Memory Personas.
    */
   var MemoryRef = exports.MemoryRef = function(location, personaId) {
@@ -44,15 +44,15 @@ define([
     constructor: MemoryRef,
     /**
      * @ngdoc property
-     * @name memories.types:type.MemoryRef#resourceId
-     * @propertyOf memories.types:type.MemoryRef
+     * @name memories.types:constructor.MemoryRef#resourceId
+     * @propertyOf memories.types:constructor.MemoryRef
      * @return {String} Id of the Memory Persona to which this person is connected
      */
 
     /**
      * @ngdoc function
-     * @name memories.types:type.MemoryRef#getMemoryId
-     * @methodOf memories.types:type.MemoryRef
+     * @name memories.types:constructor.MemoryRef#getMemoryId
+     * @methodOf memories.types:constructor.MemoryRef
      * @function
      * @return {String} Id of the memory; pass into {@link memories.functions:getMemory getMemory} for details
      */
@@ -69,7 +69,7 @@ define([
    * Get references to memories for a person
    * The response includes the following convenience function
    *
-   * - `getMemoryRefs()` - get an array of {@link memories.types:type.MemoryRef MemoryRefs} from the response
+   * - `getMemoryRefs()` - get an array of {@link memories.types:constructor.MemoryRef MemoryRefs} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_References_resource FamilySearch API Docs}
    *
@@ -92,7 +92,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name memories.types:type.Memory
+   * @name memories.types:constructor.Memory
    * @description
    *
    * Memory
@@ -105,36 +105,36 @@ define([
     constructor: Memory,
     /**
      * @ngdoc property
-     * @name memories.types:type.Memory#id
-     * @propertyOf memories.types:type.Memory
+     * @name memories.types:constructor.Memory#id
+     * @propertyOf memories.types:constructor.Memory
      * @return {String} Id of the Memory
      */
 
     /**
      * @ngdoc property
-     * @name memories.types:type.Memory#mediaType
-     * @propertyOf memories.types:type.Memory
+     * @name memories.types:constructor.Memory#mediaType
+     * @propertyOf memories.types:constructor.Memory
      * @return {String} media type; e.g., image/jpeg
      */
 
     /**
      * @ngdoc property
-     * @name memories.types:type.Memory#resourceType
-     * @propertyOf memories.types:type.Memory
+     * @name memories.types:constructor.Memory#resourceType
+     * @propertyOf memories.types:constructor.Memory
      * @return {String} resource type; e.g., http://gedcomx.org/DigitalArtifact
      */
 
     /**
      * @ngdoc property
-     * @name memories.types:type.Memory#about
-     * @propertyOf memories.types:type.Memory
+     * @name memories.types:constructor.Memory#about
+     * @propertyOf memories.types:constructor.Memory
      * @return {String} URL of the media object
      */
 
     /**
      * @ngdoc function
-     * @name memories.types:type.Memory#getTitle
-     * @methodOf memories.types:type.Memory
+     * @name memories.types:constructor.Memory#getTitle
+     * @methodOf memories.types:constructor.Memory
      * @function
      * @return {String} title
      */
@@ -142,8 +142,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name memories.types:type.Memory#getDescription
-     * @methodOf memories.types:type.Memory
+     * @name memories.types:constructor.Memory#getDescription
+     * @methodOf memories.types:constructor.Memory
      * @function
      * @return {String} description
      */
@@ -151,8 +151,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name memories.types:type.Memory#getArtifactFilenames
-     * @methodOf memories.types:type.Memory
+     * @name memories.types:constructor.Memory#getArtifactFilenames
+     * @methodOf memories.types:constructor.Memory
      * @function
      * @return {String[]} array of filenames
      */
@@ -164,8 +164,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name memories.types:type.Memory#getIconURL
-     * @methodOf memories.types:type.Memory
+     * @name memories.types:constructor.Memory#getIconURL
+     * @methodOf memories.types:constructor.Memory
      * @function
      * @return {String} URL of the icon with access token
      */
@@ -173,8 +173,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name memories.types:type.Memory#getThumbnailURL
-     * @methodOf memories.types:type.Memory
+     * @name memories.types:constructor.Memory#getThumbnailURL
+     * @methodOf memories.types:constructor.Memory
      * @function
      * @return {String} URL of the thumbnail with access token
      */
@@ -182,8 +182,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name memories.types:type.Memory#getImageURL
-     * @methodOf memories.types:type.Memory
+     * @name memories.types:constructor.Memory#getImageURL
+     * @methodOf memories.types:constructor.Memory
      * @function
      * @return {String} URL of the full image with access token
      */
@@ -191,8 +191,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name memories.types:type.Memory#getModified
-     * @methodOf memories.types:type.Memory
+     * @name memories.types:constructor.Memory#getModified
+     * @methodOf memories.types:constructor.Memory
      * @function
      * @return {Number} timestamp
      */
@@ -208,7 +208,7 @@ define([
    * Get a paged list of memories for a person
    * The response includes the following convenience function
    *
-   * - `getMemories()` - get the array of {@link memories.types:type.Memory Memories} from the response
+   * - `getMemories()` - get the array of {@link memories.types:constructor.Memory Memories} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Memories_Query_resource FamilySearch API Docs}
    *
@@ -236,7 +236,7 @@ define([
    * Get a paged list of memories for a user
    * The response includes the following convenience function
    *
-   * - `getMemories()` - get the array of {@link memories.types:type.Memory Memories} from the response
+   * - `getMemories()` - get the array of {@link memories.types:constructor.Memory Memories} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/memories/User_Memories_Query_resource FamilySearch API Docs}
    *
@@ -264,7 +264,7 @@ define([
    * Get information about a memory
    * The response includes the following convenience function
    *
-   * - `getMemory()` - get the {@link memories.types:type.Memory Memory} from the response
+   * - `getMemory()` - get the {@link memories.types:constructor.Memory Memory} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/memories/Memory_resource FamilySearch API Docs}
    *
@@ -292,7 +292,7 @@ define([
    * Get comments for a memory
    * The response includes the following convenience function
    *
-   * - `getComments()` - get the array of {@link discussions.types:type.Comment Comments} from the response
+   * - `getComments()` - get the array of {@link discussions.types:constructor.Comment Comments} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/memories/Memory_Comments_resource FamilySearch API Docs}
    *
@@ -323,7 +323,7 @@ define([
    * The response includes the following convenience function
    *
    * - `getPersonas()` - get the array of *Personas* from the response; a *Persona* appears to be a scaled-down
-   * {@link person.types:type.Person Person} whose id is a *Persona Id* instead of a *Person Id*
+   * {@link person.types:constructor.Person Person} whose id is a *Persona Id* instead of a *Person Id*
    *
    * {@link https://familysearch.org/developers/docs/api/memories/Memory_Personas_resource FamilySearch API Docs}
    *

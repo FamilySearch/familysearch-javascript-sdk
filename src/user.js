@@ -18,7 +18,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name user.types:type.User
+   * @name user.types:constructor.User
    * @description
    *
    * User - a user is returned from {@link user.functions:getCurrentUser getCurrentUser};
@@ -32,36 +32,36 @@ define([
     constructor: User
     /**
      * @ngdoc property
-     * @name user.types:type.User#id
-     * @propertyOf user.types:type.User
+     * @name user.types:constructor.User#id
+     * @propertyOf user.types:constructor.User
      * @return {String} Id of the user
      */
 
     /**
      * @ngdoc property
-     * @name user.types:type.User#contactName
-     * @propertyOf user.types:type.User
+     * @name user.types:constructor.User#contactName
+     * @propertyOf user.types:constructor.User
      * @return {String} contact name of the user
      */
 
     /**
      * @ngdoc property
-     * @name user.types:type.User#fullName
-     * @propertyOf user.types:type.User
+     * @name user.types:constructor.User#fullName
+     * @propertyOf user.types:constructor.User
      * @return {String} full name of the user
      */
 
     /**
      * @ngdoc property
-     * @name user.types:type.User#email
-     * @propertyOf user.types:type.User
+     * @name user.types:constructor.User#email
+     * @propertyOf user.types:constructor.User
      * @return {String} email of the user
      */
 
     /**
      * @ngdoc property
-     * @name user.types:type.User#treeUserId
-     * @propertyOf user.types:type.User
+     * @name user.types:constructor.User#treeUserId
+     * @propertyOf user.types:constructor.User
      * @return {String} agent / contributor id of the user
      */
   };
@@ -74,7 +74,7 @@ define([
    * @description
    * Get the current user with the following convenience function
    *
-   * - `getUser()` - get the {@link user.types:type.User User} from the response
+   * - `getUser()` - get the {@link user.types:constructor.User User} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/users/Current_User_resource FamilySearch API Docs}
    *
@@ -159,7 +159,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name user.types:type.Agent
+   * @name user.types:constructor.Agent
    * @description
    *
    * An agent is returned from {@link user.functions:getAgent getAgent}.
@@ -173,15 +173,15 @@ define([
     constructor: Agent,
     /**
      * @ngdoc property
-     * @name user.types:type.Agent#id
-     * @propertyOf user.types:type.Agent
+     * @name user.types:constructor.Agent#id
+     * @propertyOf user.types:constructor.Agent
      * @return {String} Id of the agent
      */
 
     /**
      * @ngdoc function
-     * @name user.types:type.Agent#getName
-     * @methodOf user.types:type.Agent
+     * @name user.types:constructor.Agent#getName
+     * @methodOf user.types:constructor.Agent
      * @function
      * @return {String} name of the agent
      */
@@ -189,8 +189,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name user.types:type.Agent#getAccountName
-     * @methodOf user.types:type.Agent
+     * @name user.types:constructor.Agent#getAccountName
+     * @methodOf user.types:constructor.Agent
      * @function
      * @return {String} account / contact name of the agent
      */
@@ -198,8 +198,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name user.types:type.Agent#getEmail
-     * @methodOf user.types:type.Agent
+     * @name user.types:constructor.Agent#getEmail
+     * @methodOf user.types:constructor.Agent
      * @function
      * @return {String} email of the agent
      */
@@ -218,7 +218,7 @@ define([
    * Get information about the specified agent (contributor)
    * The response includes the following convenience function
    *
-   * - `getAgent()` - get the {@link user.types:type.Agent Agent} from the response
+   * - `getAgent()` - get the {@link user.types:constructor.Agent Agent} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/users/Agent_resource FamilySearch API Docs}
    *

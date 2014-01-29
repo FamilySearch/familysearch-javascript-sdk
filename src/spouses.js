@@ -25,9 +25,9 @@ define([
    * Get information about a couple relationship
    * The response includes the following convenience functions
    *
-   * - `getRelationship()` - a {@link person.types:type.Couple Couple} relationship
+   * - `getRelationship()` - a {@link person.types:constructor.Couple Couple} relationship
    * - `getPerson(pid)` - if the `persons` parameter has been set, this function will return a
-   * {@link person.types:type.Person Person} for a person id in the relationship
+   * {@link person.types:constructor.Person Person} for a person id in the relationship
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_resource FamilySearch API Docs}
    *

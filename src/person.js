@@ -17,7 +17,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name person.types:type.Person
+   * @name person.types:constructor.Person
    * @description
    *
    * Person
@@ -30,45 +30,45 @@ define([
     constructor: Person,
     /**
      * @ngdoc property
-     * @name person.types:type.Person#id
-     * @propertyOf person.types:type.Person
+     * @name person.types:constructor.Person#id
+     * @propertyOf person.types:constructor.Person
      * @return {String} Id of the person
      */
 
     /**
      * @ngdoc property
-     * @name person.types:type.Person#living
-     * @propertyOf person.types:type.Person
+     * @name person.types:constructor.Person#living
+     * @propertyOf person.types:constructor.Person
      * @return {Boolean} true or false
      */
 
     /**
      * @ngdoc property
-     * @name person.types:type.Person#display
-     * @propertyOf person.types:type.Person
+     * @name person.types:constructor.Person#display
+     * @propertyOf person.types:constructor.Person
      * @return {Object} includes `birthDate`, `birthPlace`, `deathDate`, `deathPlace`, `gender`, `lifespan`, and `name` attributes
      */
 
     /**
      * @ngdoc function
-     * @name person.types:type.Person#getNames
-     * @methodOf person.types:type.Person
-     * @return {Name[]} an array of {@link person.types:type.Name Names}
+     * @name person.types:constructor.Person#getNames
+     * @methodOf person.types:constructor.Person
+     * @return {Name[]} an array of {@link person.types:constructor.Name Names}
      */
     getNames: function() { return this.names || []; },
 
     /**
      * @ngdoc function
-     * @name person.types:type.Person#getFacts
-     * @methodOf person.types:type.Person
-     * @return {Fact[]} an array of {@link person.types:type.Fact Facts}
+     * @name person.types:constructor.Person#getFacts
+     * @methodOf person.types:constructor.Person
+     * @return {Fact[]} an array of {@link person.types:constructor.Fact Facts}
      */
     getFacts: function() { return this.facts || []; },
 
     /**
      * @ngdoc function
-     * @name person.types:type.Person#getBirthDate
-     * @methodOf person.types:type.Person
+     * @name person.types:constructor.Person#getBirthDate
+     * @methodOf person.types:constructor.Person
      * @function
      * @return {String} birth date
      */
@@ -76,8 +76,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.Person#getBirthPlace
-     * @methodOf person.types:type.Person
+     * @name person.types:constructor.Person#getBirthPlace
+     * @methodOf person.types:constructor.Person
      * @function
      * @return {String} birth place
      */
@@ -85,8 +85,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.Person#getDeathDate
-     * @methodOf person.types:type.Person
+     * @name person.types:constructor.Person#getDeathDate
+     * @methodOf person.types:constructor.Person
      * @function
      * @return {String} death date
      */
@@ -94,8 +94,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.Person#getDeathPlace
-     * @methodOf person.types:type.Person
+     * @name person.types:constructor.Person#getDeathPlace
+     * @methodOf person.types:constructor.Person
      * @function
      * @return {String} death place
      */
@@ -103,8 +103,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.Person#getGender
-     * @methodOf person.types:type.Person
+     * @name person.types:constructor.Person#getGender
+     * @methodOf person.types:constructor.Person
      * @function
      * @return {String} gender - Male or Female
      */
@@ -112,8 +112,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.Person#getLifeSpan
-     * @methodOf person.types:type.Person
+     * @name person.types:constructor.Person#getLifeSpan
+     * @methodOf person.types:constructor.Person
      * @function
      * @return {String} birth year - death year
      */
@@ -121,8 +121,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.Person#getName
-     * @methodOf person.types:type.Person
+     * @name person.types:constructor.Person#getName
+     * @methodOf person.types:constructor.Person
      * @function
      * @return {String} display name
      */
@@ -130,8 +130,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.Person#getGivenName
-     * @methodOf person.types:type.Person
+     * @name person.types:constructor.Person#getGivenName
+     * @methodOf person.types:constructor.Person
      * @function
      * @return {String} preferred given name
      */
@@ -142,8 +142,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.Person#getSurname
-     * @methodOf person.types:type.Person
+     * @name person.types:constructor.Person#getSurname
+     * @methodOf person.types:constructor.Person
      * @function
      * @return {String} preferred surname
      */
@@ -154,8 +154,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name name person.types:type.Person#addName
-     * @methodOf person.types:type.Person
+     * @name name person.types:constructor.Person#addName
+     * @methodOf person.types:constructor.Person
      * @function
      * @param {Name|String} name to add
      */
@@ -169,7 +169,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name person.types:type.Name
+   * @name person.types:constructor.Name
    * @description
    *
    * Name
@@ -187,29 +187,29 @@ define([
     constructor: Name,
     /**
      * @ngdoc property
-     * @name person.types:type.Name#id
-     * @propertyOf person.types:type.Name
+     * @name person.types:constructor.Name#id
+     * @propertyOf person.types:constructor.Name
      * @return {String} Id of the name
      */
 
     /**
      * @ngdoc property
-     * @name person.types:type.Name#type
-     * @propertyOf person.types:type.Name
+     * @name person.types:constructor.Name#type
+     * @propertyOf person.types:constructor.Name
      * @return {String} http://gedcomx.org/BirthName, etc.
      */
 
     /**
      * @ngdoc property
-     * @name person.types:type.Name#preferred
-     * @propertyOf person.types:type.Name
+     * @name person.types:constructor.Name#preferred
+     * @propertyOf person.types:constructor.Name
      * @return {Boolean} true if this name is preferred
      */
 
     /**
      * @ngdoc function
-     * @name person.types:type.Name#getContributorId
-     * @methodOf person.types:type.Name
+     * @name person.types:constructor.Name#getContributorId
+     * @methodOf person.types:constructor.Name
      * @function
      * @return {String} Id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
      */
@@ -217,8 +217,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.Name#getModified
-     * @methodOf person.types:type.Name
+     * @name person.types:constructor.Name#getModified
+     * @methodOf person.types:constructor.Name
      * @function
      * @return {Number} last modified timestamp
      */
@@ -226,8 +226,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.Name#getNameFormsCount
-     * @methodOf person.types:type.Name
+     * @name person.types:constructor.Name#getNameFormsCount
+     * @methodOf person.types:constructor.Name
      * @function
      * @return {Number} get the number of name forms
      */
@@ -235,8 +235,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.Name#getFullText
-     * @methodOf person.types:type.Name
+     * @name person.types:constructor.Name#getFullText
+     * @methodOf person.types:constructor.Name
      * @function
      * @param {Number=} i i'th name form to read
      * @return {String} get the full text of the `i`'th name form; if `i` is omitted; get the first
@@ -245,8 +245,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.Name#getGivenName
-     * @methodOf person.types:type.Name
+     * @name person.types:constructor.Name#getGivenName
+     * @methodOf person.types:constructor.Name
      * @function
      * @param {Number=} i i'th name form to read
      * @return {String} get the given part of the `i`'th name form; if `i` is omitted; get the first
@@ -258,8 +258,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.Name#getSurname
-     * @methodOf person.types:type.Name
+     * @name person.types:constructor.Name#getSurname
+     * @methodOf person.types:constructor.Name
      * @function
      * @param {Number=} i i'th name form to read
      * @return {String} get the surname part of the `i`'th name form; if `i` is omitted; get the first
@@ -272,7 +272,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name person.types:type.Fact
+   * @name person.types:constructor.Fact
    * @description
    *
    * Fact
@@ -285,22 +285,22 @@ define([
     constructor: Fact,
     /**
      * @ngdoc property
-     * @name person.types:type.Fact#id
-     * @propertyOf person.types:type.Fact
+     * @name person.types:constructor.Fact#id
+     * @propertyOf person.types:constructor.Fact
      * @return {String} Id of the name
      */
 
     /**
      * @ngdoc property
-     * @name person.types:type.Fact#type
-     * @propertyOf person.types:type.Fact
+     * @name person.types:constructor.Fact#type
+     * @propertyOf person.types:constructor.Fact
      * @return {String} http://gedcomx.org/Birth, etc.
      */
 
     /**
      * @ngdoc function
-     * @name person.types:type.Fact#getContributorId
-     * @methodOf person.types:type.Fact
+     * @name person.types:constructor.Fact#getContributorId
+     * @methodOf person.types:constructor.Fact
      * @function
      * @return {String} Id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
      */
@@ -308,8 +308,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.Fact#getModified
-     * @methodOf person.types:type.Fact
+     * @name person.types:constructor.Fact#getModified
+     * @methodOf person.types:constructor.Fact
      * @function
      * @return {Number} last modified timestamp
      */
@@ -317,8 +317,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.Fact#getDate
-     * @methodOf person.types:type.Fact
+     * @name person.types:constructor.Fact#getDate
+     * @methodOf person.types:constructor.Fact
      * @function
      * @return {String} original date
      */
@@ -326,8 +326,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.Fact#getFormalDate
-     * @methodOf person.types:type.Fact
+     * @name person.types:constructor.Fact#getFormalDate
+     * @methodOf person.types:constructor.Fact
      * @function
      * @return {String} standard form; e.g., +1836-04-13
      */
@@ -335,8 +335,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.Fact#getPlace
-     * @methodOf person.types:type.Fact
+     * @name person.types:constructor.Fact#getPlace
+     * @methodOf person.types:constructor.Fact
      * @function
      * @return {String} event place
      */
@@ -352,7 +352,7 @@ define([
    * Get the specified person
    * The response includes the following convenience function
    *
-   * - `getPerson()` - get the {@link person.types:type.Person Person} from the response
+   * - `getPerson()` - get the {@link person.types:constructor.Person Person} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
    *
@@ -416,7 +416,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name person.types:type.ChildAndParents
+   * @name person.types:constructor.ChildAndParents
    * @description
    *
    * Child and parents relationship *(not to be confused with the ParentChild relationship; in general, ChildAndParents is more useful)*
@@ -429,31 +429,31 @@ define([
     constructor: ChildAndParents,
     /**
      * @ngdoc property
-     * @name person.types:type.ChildAndParents#id
-     * @propertyOf person.types:type.ChildAndParents
+     * @name person.types:constructor.ChildAndParents#id
+     * @propertyOf person.types:constructor.ChildAndParents
      * @return {String} Id of the relationship
      */
 
     /**
      * @ngdoc function
-     * @name person.types:type.ChildAndParents#getFatherFacts
-     * @methodOf person.types:type.ChildAndParents
-     * @return {Fact[]} array of {@link person.types:type.Fact Facts}; e.g., parent-relationship type
+     * @name person.types:constructor.ChildAndParents#getFatherFacts
+     * @methodOf person.types:constructor.ChildAndParents
+     * @return {Fact[]} array of {@link person.types:constructor.Fact Facts}; e.g., parent-relationship type
      */
     getFatherFacts: function() { return this.fatherFacts || []; },
 
     /**
      * @ngdoc function
-     * @name person.types:type.ChildAndParents#getMotherFacts
-     * @methodOf person.types:type.ChildAndParents
-     * @return {Fact[]} array of {@link person.types:type.Fact Facts}; e.g., parent-relationship type
+     * @name person.types:constructor.ChildAndParents#getMotherFacts
+     * @methodOf person.types:constructor.ChildAndParents
+     * @return {Fact[]} array of {@link person.types:constructor.Fact Facts}; e.g., parent-relationship type
      */
     getMotherFacts: function() { return this.motherFacts || []; },
 
     /**
      * @ngdoc function
-     * @name person.types:type.ChildAndParents#getFatherId
-     * @methodOf person.types:type.ChildAndParents
+     * @name person.types:constructor.ChildAndParents#getFatherId
+     * @methodOf person.types:constructor.ChildAndParents
      * @function
      * @return {String} Id of the father
      */
@@ -461,8 +461,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.ChildAndParents#getMotherId
-     * @methodOf person.types:type.ChildAndParents
+     * @name person.types:constructor.ChildAndParents#getMotherId
+     * @methodOf person.types:constructor.ChildAndParents
      * @function
      * @return {String} Id of the mother
      */
@@ -470,8 +470,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.ChildAndParents#getChildId
-     * @methodOf person.types:type.ChildAndParents
+     * @name person.types:constructor.ChildAndParents#getChildId
+     * @methodOf person.types:constructor.ChildAndParents
      * @function
      * @return {String} Id of the child
      */
@@ -480,7 +480,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name person.types:type.Couple
+   * @name person.types:constructor.Couple
    * @description
    *
    * Couple relationship
@@ -493,31 +493,31 @@ define([
     constructor: Couple,
     /**
      * @ngdoc property
-     * @name person.types:type.Couple#id
-     * @propertyOf person.types:type.Couple
+     * @name person.types:constructor.Couple#id
+     * @propertyOf person.types:constructor.Couple
      * @return {String} Id of the relationship
      */
 
     /**
      * @ngdoc function
-     * @name person.types:type.Couple#getFacts
-     * @methodOf person.types:type.Couple
-     * @return {Fact[]} array of {@link person.types:type.Fact Facts}; e.g., marriage
+     * @name person.types:constructor.Couple#getFacts
+     * @methodOf person.types:constructor.Couple
+     * @return {Fact[]} array of {@link person.types:constructor.Fact Facts}; e.g., marriage
      */
     getFacts: function() { return this.facts || []; },
 
     /**
      * @ngdoc function
-     * @name person.types:type.Couple#getMarriageFact
-     * @methodOf person.types:type.Couple
-     * @return {Fact} {@link person.types:type.Fact Fact} of type http://gedcomx.org/Marriage (first one if multiple)
+     * @name person.types:constructor.Couple#getMarriageFact
+     * @methodOf person.types:constructor.Couple
+     * @return {Fact} {@link person.types:constructor.Fact Fact} of type http://gedcomx.org/Marriage (first one if multiple)
      */
     getMarriageFact: function() { return helpers.find(this.facts, {type: 'http://gedcomx.org/Marriage'}); },
 
     /**
      * @ngdoc function
-     * @name person.types:type.Couple#getHusbandId
-     * @methodOf person.types:type.Couple
+     * @name person.types:constructor.Couple#getHusbandId
+     * @methodOf person.types:constructor.Couple
      * @function
      * @return {String} Id of the husband
      */
@@ -525,8 +525,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.Couple#getWifeId
-     * @methodOf person.types:type.Couple
+     * @name person.types:constructor.Couple#getWifeId
+     * @methodOf person.types:constructor.Couple
      * @function
      * @return {String} Id of the wife
      */
@@ -548,22 +548,22 @@ define([
    * - `getSpouseIds()` - array of ids
    * - `getChildIds()` - array of ids of all children
    * - `getChildIdsOf(spouseId)` - array of ids; if `spouseId` is null/undefined, return ids of children without the other parent
-   * - `getParentRelationships()` - array of {@link person.types:type.ChildAndParents ChildAndParents} relationship objects
-   * - `getSpouseRelationships()` - array of {@link person.types:type.Couple Couple} relationship objects
-   * - `getSpouseRelationship(spouseId)` - {@link person.types:type.Couple Couple} relationship with the specified spouse
-   * - `getChildRelationships()` - array of {@link person.types:type.ChildAndParents ChildAndParents} relationship objects
-   * - `getChildRelationshipsOf(spouseId)` - array of {@link person.types:type.ChildAndParents ChildAndParents} relationship objects
+   * - `getParentRelationships()` - array of {@link person.types:constructor.ChildAndParents ChildAndParents} relationship objects
+   * - `getSpouseRelationships()` - array of {@link person.types:constructor.Couple Couple} relationship objects
+   * - `getSpouseRelationship(spouseId)` - {@link person.types:constructor.Couple Couple} relationship with the specified spouse
+   * - `getChildRelationships()` - array of {@link person.types:constructor.ChildAndParents ChildAndParents} relationship objects
+   * - `getChildRelationshipsOf(spouseId)` - array of {@link person.types:constructor.ChildAndParents ChildAndParents} relationship objects
    * if `spouseId` is null/undefined, return ids of child relationships without the other parent
-   * - `getPrimaryPerson()` - {@link person.types:type.Person Person} object for the primary person
+   * - `getPrimaryPerson()` - {@link person.types:constructor.Person Person} object for the primary person
    *
    * In addition, the following functions are available if persons is set to true in params
    *
-   * - `getPerson(id)` - {@link person.types:type.Person Person} object for the person with `id`
-   * - `getFathers()` - array of father {@link person.types:type.Person Persons}
-   * - `getMothers()` - array of mother {@link person.types:type.Person Persons}
-   * - `getSpouses()` - array of spouse {@link person.types:type.Person Persons}
-   * - `getChildren()` - array of all child {@link person.types:type.Person Persons};
-   * - `getChildrenOf(spouseId)` - array of child {@link person.types:type.Person Persons};
+   * - `getPerson(id)` - {@link person.types:constructor.Person Person} object for the person with `id`
+   * - `getFathers()` - array of father {@link person.types:constructor.Person Persons}
+   * - `getMothers()` - array of mother {@link person.types:constructor.Person Persons}
+   * - `getSpouses()` - array of spouse {@link person.types:constructor.Person Persons}
+   * - `getChildren()` - array of all child {@link person.types:constructor.Person Persons};
+   * - `getChildrenOf(spouseId)` - array of child {@link person.types:constructor.Person Persons};
    * if `spouseId` is null/undefined, return children without the other parent
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource FamilySearch API Docs}
@@ -716,9 +716,9 @@ define([
    * The response includes the following convenience functions
    *
    * - `getSpouseIds()` - an array of string ids
-   * - `getRelationships()` - an array of {@link person.types:type.Couple Couple} relationships
+   * - `getRelationships()` - an array of {@link person.types:constructor.Couple Couple} relationships
    * - `getPerson(pid)` - if the `persons` parameter has been set, this function will return a
-   * {@link person.types:type.Person Person} for a person id in the relationship
+   * {@link person.types:constructor.Person Person} for a person id in the relationship
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Relationships_to_Spouses_resource FamilySearch API Docs}
    *
@@ -765,7 +765,7 @@ define([
    *
    * - `getRelationships()` - an array of { `id` - relationship id, `fatherId`, `motherId` }
    * - `getPerson(pid)` - if the `persons` parameter has been set, this function will return a
-   * {@link person.types:type.Person Person} for a person id in the relationship
+   * {@link person.types:constructor.Person Person} for a person id in the relationship
    *
    * Pass the relationship id into {@link parentsAndChildren.functions:getChildAndParents getChildAndParents} for more information
    *
@@ -822,7 +822,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name person.types:type.ParentChild
+   * @name person.types:constructor.ParentChild
    * @description
    *
    * ParentChild relationship *(not to be confused with the ChildAndParents relationship; in general, ChildAndParents is more useful)*
@@ -835,15 +835,15 @@ define([
     constructor: ParentChild,
     /**
      * @ngdoc property
-     * @name person.types:type.ParentChild#id
-     * @propertyOf person.types:type.ParentChild
+     * @name person.types:constructor.ParentChild#id
+     * @propertyOf person.types:constructor.ParentChild
      * @return {String} Id of the parent-child relationship
      */
 
     /**
      * @ngdoc function
-     * @name person.types:type.ParentChild#getChildAndParentsId
-     * @methodOf person.types:type.ParentChild
+     * @name person.types:constructor.ParentChild#getChildAndParentsId
+     * @methodOf person.types:constructor.ParentChild
      * @function
      * @return {String} Id of the child and parents relationship
      */
@@ -853,8 +853,8 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:type.ParentChild#getChildId
-     * @methodOf person.types:type.ParentChild
+     * @name person.types:constructor.ParentChild#getChildId
+     * @methodOf person.types:constructor.ParentChild
      * @function
      * @return {String} Id of the child
      */
@@ -871,9 +871,9 @@ define([
    * The response includes the following convenience functions
    *
    * - `getChildIds()` - an array of string ids
-   * - `getRelationships()` - an array of {@link person.types:type.ParentChild ParentChild} relationships
+   * - `getRelationships()` - an array of {@link person.types:constructor.ParentChild ParentChild} relationships
    * - `getPerson(pid)` - if the `persons` parameter has been set, this function will return a
-   * {@link person.types:type.Person Person} for a person id in the relationship
+   * {@link person.types:constructor.Person Person} for a person id in the relationship
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Relationships_to_Children_resource FamilySearch API Docs}
    *
