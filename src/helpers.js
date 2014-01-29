@@ -555,6 +555,17 @@ define([
   };
 
   /**
+   * Append the access token to the url
+   * @param {string} url
+   * @returns {string} url with access token
+   */
+  exports.appendAccessToken = function(url) {
+    var params = exports.decodeQueryString(url);
+    params['access_token'] = globals.accessToken;
+    return exports.appendQueryParameters(url, params);
+  };
+
+  /**
    * Call the callback on the next tick
    * @param {function()} cb Function to call
    */

@@ -167,18 +167,27 @@ define([
      * @name memories.types:type.Memory#getIconURL
      * @methodOf memories.types:type.Memory
      * @function
-     * @return {String} URL of the icon
+     * @return {String} URL of the icon with access token
      */
-    getIconURL: function() { return maybe(maybe(this.links)['image-icon']).href; },
+    getIconURL: function() { return helpers.appendAccessToken(maybe(maybe(this.links)['image-icon']).href); },
 
     /**
      * @ngdoc function
      * @name memories.types:type.Memory#getThumbnailURL
      * @methodOf memories.types:type.Memory
      * @function
-     * @return {String} URL of the thumbnail
+     * @return {String} URL of the thumbnail with access token
      */
-    getThumbnailURL: function() { return maybe(maybe(this.links)['image-thumbnail']).href; },
+    getThumbnailURL: function() { return helpers.appendAccessToken(maybe(maybe(this.links)['image-thumbnail']).href); },
+
+    /**
+     * @ngdoc function
+     * @name memories.types:type.Memory#getImageURL
+     * @methodOf memories.types:type.Memory
+     * @function
+     * @return {String} URL of the full image with access token
+     */
+    getImageURL: function() { return helpers.appendAccessToken(maybe(maybe(this.links)['image']).href); },
 
     /**
      * @ngdoc function
@@ -360,12 +369,11 @@ define([
       var d = globals.deferredWrapper();
       var promise = plumbing.get(path, params, {}, opts);
       result = helpers.extendHttpPromise(d.promise, promise);
-      promise.then(function() {
-        d.resolve(promise.getStatusCode() === 200 ? promise.getResponseHeader('Content-Location') : '');
-      }, function() {
-        // We don't expect the image content-type, try to parse it as json, and fail, so rely upon the status code
-        d.resolve(promise.getStatusCode() === 200 ? promise.getResponseHeader('Content-Location') : '');
-      });
+      var handler = function() {
+        // We don't expect the image content-type. We try to parse it as json and fail, so rely upon the status code
+        d.resolve(promise.getStatusCode() === 200 ? helpers.appendAccessToken(promise.getResponseHeader('Content-Location')) : '');
+      };
+      promise.then(handler, handler);
     }
     else {
       result = helpers.getAPIServerUrl(path);

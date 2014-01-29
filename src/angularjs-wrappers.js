@@ -26,8 +26,6 @@ define([
         config.headers['Content-Type'] = void 0;
       }
 
-      console.log('http opts', config);
-
       // make the call
       var promise = http(config);
 
