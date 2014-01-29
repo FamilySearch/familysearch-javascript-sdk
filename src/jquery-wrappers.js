@@ -20,6 +20,10 @@ define([
         processData: false
       }, opts);
       opts.headers = helpers.extend({}, headers, opts.headers);
+      if (opts.headers['Content-Type'] === 'multipart/form-data') {
+        opts.contentType = false;
+        delete opts.headers['Content-Type'];
+      }
 
       // make the call
       var jqXHR = ajax(opts);

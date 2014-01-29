@@ -304,6 +304,7 @@ define([
       ));
   };
 
+  // TODO replace IdSourceRef with a map from Id to SourceRef
   /**
    * @ngdoc function
    * @name sources.types:type.IdSourceRef

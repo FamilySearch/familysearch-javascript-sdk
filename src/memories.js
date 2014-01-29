@@ -392,7 +392,7 @@ define([
    */
   exports.createMemory = function(data, params, opts) {
     return plumbing.post(helpers.appendQueryParameters('/platform/memories/memories', params),
-      data, helpers.isString(data) ? { 'Content-Type': 'text/plain' } : {}, opts,
+      data, { 'Content-Type': helpers.isString(data) ? 'text/plain' : 'multipart/form-data' }, opts,
       helpers.getLastResponseLocationSegment);
   };
 
@@ -416,12 +416,7 @@ define([
    */
   exports.createMemoryPersona = function(mid, persona, params, opts) {
     var data = {
-      persons: [ helpers.extend({
-        media : [ {
-          description : 'https://familysearch.org/platform/memories/artifacts/' + mid + '/description'
-        } ]
-      }, persona)
-      ]
+      persons: [ persona ]
     };
     return plumbing.post('/platform/memories/memories/'+mid+'/personas', data, {}, opts,
       function(data, promise) {

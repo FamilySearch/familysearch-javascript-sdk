@@ -83,6 +83,9 @@ define(['FamilySearch'], function(FamilySearch) {
     it('persona is created', function() {
       var persona = new FamilySearch.Person();
       persona.addName('Anastasia Aleksandrova');
+      persona.media = [{
+        description: 'https://familysearch.org/platform/memories/artifacts/AR-1234/description'
+      }];
       var promise = FamilySearch.createMemoryPersona('AR-1234', persona);
       promise.then(function(response) {
         var request = promise.getRequest();

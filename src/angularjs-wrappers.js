@@ -22,6 +22,11 @@ define([
         }
       }, opts);
       config.headers = helpers.extend({}, headers, opts.headers);
+      if (config.headers['Content-Type'] === 'multipart/form-data') {
+        config.headers['Content-Type'] = void 0;
+      }
+
+      console.log('http opts', config);
 
       // make the call
       var promise = http(config);
