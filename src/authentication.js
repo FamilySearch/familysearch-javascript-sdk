@@ -30,12 +30,14 @@ define([
    * @return {Object} a promise of the (string) auth code
    */
   exports.getAuthCode = function() {
-    var popup = openPopup(helpers.getOAuthServerUrl('authorization'), {
-      'response_type' : 'code',
-      'client_id'     : globals.appKey,
-      'redirect_uri'  : globals.authCallbackUri
+    return plumbing.getUrl('http://oauth.net/core/2.0/endpoint/authorize').then(function(url) {
+      var popup = openPopup(url, {
+        'response_type' : 'code',
+        'client_id'     : globals.appKey,
+        'redirect_uri'  : globals.authCallbackUri
+      });
+      return pollForAuthCode(popup);
     });
-    return pollForAuthCode(popup);
   };
 
   /**
@@ -100,13 +102,15 @@ define([
       authCodePromise.then(
         function(authCode) {
           // get the access token given the auth code
-          var promise = plumbing.post(helpers.getOAuthServerUrl('token'), {
-              'grant_type' : 'authorization_code',
-              'code'       : authCode,
-              'client_id'  : globals.appKey
-            },
-            {'Content-Type': 'application/x-www-form-urlencoded'}); // access token endpoint says it accepts json but it doesn't
-          handleAccessTokenResponse(promise, accessTokenDeferred);
+          plumbing.getUrl('http://oauth.net/core/2.0/endpoint/token').then(function(url) {
+            var promise = plumbing.post(url, {
+                'grant_type' : 'authorization_code',
+                'code'       : authCode,
+                'client_id'  : globals.appKey
+              },
+              {'Content-Type': 'application/x-www-form-urlencoded'}); // access token endpoint says it accepts json but it doesn't
+            handleAccessTokenResponse(promise, accessTokenDeferred);
+          });
         },
         function() {
           accessTokenDeferred.reject.apply(accessTokenDeferred, arguments);
@@ -135,14 +139,16 @@ define([
    */
   exports.getAccessTokenForMobile = function(userName, password) {
     var accessTokenDeferred = globals.deferredWrapper();
-    var promise = plumbing.post(helpers.getOAuthServerUrl('token'), {
-        'grant_type': 'password',
-        'client_id' : globals.appKey,
-        'username'  : userName,
-        'password'  : password
-      },
-      {'Content-Type': 'application/x-www-form-urlencoded'}); // access token endpoint says it accepts json but it doesn't
-    handleAccessTokenResponse(promise, accessTokenDeferred);
+    plumbing.getUrl('http://oauth.net/core/2.0/endpoint/token').then(function(url) {
+      var promise = plumbing.post(url, {
+          'grant_type': 'password',
+          'client_id' : globals.appKey,
+          'username'  : userName,
+          'password'  : password
+        },
+        {'Content-Type': 'application/x-www-form-urlencoded'}); // access token endpoint says it accepts json but it doesn't
+      handleAccessTokenResponse(promise, accessTokenDeferred);
+    });
     return accessTokenDeferred.promise;
   };
 
@@ -174,7 +180,9 @@ define([
    */
   exports.invalidateAccessToken = function() {
     helpers.eraseAccessToken();
-    return plumbing.del(helpers.getOAuthServerUrl('token'));
+    return plumbing.getUrl('http://oauth.net/core/2.0/endpoint/token').then(function(url) {
+      return plumbing.del(url);
+    });
   };
 
   /**

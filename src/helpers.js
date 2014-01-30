@@ -497,15 +497,6 @@ define([
   }
 
   /**
-   * Prepend oauth server to path if path doesn't start with https?://
-   * @param {string} path
-   * @returns {string} server + path
-   */
-  exports.getOAuthServerUrl = function(path) {
-    return getAbsoluteUrl(globals.oauthServer[globals.environment], path);
-  };
-
-  /**
    * Return true if this url is for the OAuth server
    * @param url
    * @returns {boolean}
