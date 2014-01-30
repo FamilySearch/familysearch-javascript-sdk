@@ -164,30 +164,30 @@ define([
 
     /**
      * @ngdoc function
-     * @name memories.types:constructor.Memory#getIconURL
+     * @name memories.types:constructor.Memory#getIconUrl
      * @methodOf memories.types:constructor.Memory
      * @function
      * @return {String} URL of the icon with access token
      */
-    getIconURL: function() { return helpers.appendAccessToken(maybe(maybe(this.links)['image-icon']).href); },
+    getIconUrl: function() { return helpers.appendAccessToken(maybe(maybe(this.links)['image-icon']).href); },
 
     /**
      * @ngdoc function
-     * @name memories.types:constructor.Memory#getThumbnailURL
+     * @name memories.types:constructor.Memory#getThumbnailUrl
      * @methodOf memories.types:constructor.Memory
      * @function
      * @return {String} URL of the thumbnail with access token
      */
-    getThumbnailURL: function() { return helpers.appendAccessToken(maybe(maybe(this.links)['image-thumbnail']).href); },
+    getThumbnailUrl: function() { return helpers.appendAccessToken(maybe(maybe(this.links)['image-thumbnail']).href); },
 
     /**
      * @ngdoc function
-     * @name memories.types:constructor.Memory#getImageURL
+     * @name memories.types:constructor.Memory#getImageUrl
      * @methodOf memories.types:constructor.Memory
      * @function
      * @return {String} URL of the full image with access token
      */
-    getImageURL: function() { return helpers.appendAccessToken(maybe(maybe(this.links)['image']).href); },
+    getImageUrl: function() { return helpers.appendAccessToken(maybe(maybe(this.links)['image']).href); },
 
     /**
      * @ngdoc function
@@ -344,7 +344,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name memories.functions:getPersonPortraitURL
+   * @name memories.functions:getPersonPortraitUrl
    * @function
    *
    * @description
@@ -360,7 +360,7 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the URL
    */
-  exports.getPersonPortraitURL = function(pid, params, opts) {
+  exports.getPersonPortraitUrl = function(pid, params, opts) {
     var result;
     var path = '/platform/tree/persons/'+encodeURI(pid)+'/portrait';
     if (params && params.followRedirect) {

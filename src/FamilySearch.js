@@ -51,7 +51,7 @@ define([
     getMemory: memories.getMemory,
     getMemoryComments: memories.getMemoryComments,
     getMemoryPersonas: memories.getMemoryPersonas,
-    getPersonPortraitURL: memories.getPersonPortraitURL,
+    getPersonPortraitUrl: memories.getPersonPortraitUrl,
     getPersonMemoriesQuery: memories.getPersonMemoriesQuery,
     getUserMemoriesQuery: memories.getUserMemoriesQuery,
     createMemory: memories.createMemory,

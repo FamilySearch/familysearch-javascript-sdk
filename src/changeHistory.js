@@ -70,12 +70,12 @@ define([
 
     /**
      * @ngdoc function
-     * @name changeHistory.types:constructor.Change#$getAgentURL
+     * @name changeHistory.types:constructor.Change#$getAgentUrl
      * @methodOf changeHistory.types:constructor.Change
      * @function
-     * @return {String} url of the agent
+     * @return {String} URL of the agent
      */
-    $getAgentURL: function() { return helpers.removeAccessToken(this.links.agent.href); },
+    $getAgentUrl: function() { return helpers.removeAccessToken(this.links.agent.href); },
 
     /**
      * @ngdoc function
@@ -84,7 +84,7 @@ define([
      * @function
      * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
      */
-    $getAgent: function() { return user.getAgent(this.$getAgentURL()); }
+    $getAgent: function() { return user.getAgent(this.$getAgentUrl()); }
   };
 
   var changeHistoryResponseMapper = helpers.compose(

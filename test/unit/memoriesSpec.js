@@ -15,8 +15,8 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(memory.id).toBe('ARXX-MMM');
         expect(memory.mediaType).toBe('image/jpeg');
         expect(memory.about).toBe('https://familysearch.org/platform/memories/artifacts/ARXX-MMM');
-        expect(memory.getIconURL()).toBe('https://familysearch.org/platform/memories/artifacts/ARXX-MMM?icon&access_token=mock');
-        expect(memory.getThumbnailURL()).toBe('https://familysearch.org/platform/memories/artifacts/ARXX-MMM?thumbnail&access_token=mock');
+        expect(memory.getIconUrl()).toBe('https://familysearch.org/platform/memories/artifacts/ARXX-MMM?icon&access_token=mock');
+        expect(memory.getThumbnailUrl()).toBe('https://familysearch.org/platform/memories/artifacts/ARXX-MMM?thumbnail&access_token=mock');
         expect(memory.getTitle()).toBe('Birth Certificate of Ethel Hollivet');
         expect(memory.getDescription()).toBe('Shows Ethel Hollivet was born 3 Aug 1899');
       });
@@ -41,8 +41,8 @@ define(['FamilySearch'], function(FamilySearch) {
       });
     });
 
-    it('portrait URL is returned from getPersonPortraitURL', function() {
-      FamilySearch.getPersonPortraitURL('PID').then(function(response) {
+    it('portrait URL is returned from getPersonPortraitUrl', function() {
+      FamilySearch.getPersonPortraitUrl('PID').then(function(response) {
         expect(response).toBe('https://sandbox.familysearch.org/platform/tree/persons/PID/portrait?access_token=mock');
       });
     });
