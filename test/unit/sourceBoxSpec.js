@@ -7,7 +7,12 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(collections[0].id).toEqual('MMMM-MMM');
         expect(collections[0].title).toBeUndefined();
         expect(collections[0].size).toBeUndefined();
-        expect(collections[0].getContributorId()).toBeUndefined(); // bad example data
+        expect(collections[0].attribution.$getAgentId()).toBe('12345');
+        expect(collections[0].attribution.$getAgentUrl()).toBe('https://familysearch.org/platform/users/agents/12345');
+        collections[0].attribution.$getAgent().then(function(response) {
+          var agent = response.getAgent();
+          expect(agent.$getName()).toBe('John Smith');
+        });
       });
     });
 
@@ -17,7 +22,7 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(collection.id).toEqual('sf-MMMM-MMM');
         expect(collection.title).toBe('Name');
         expect(collection.size).toBeUndefined();
-        expect(collection.getContributorId()).toBeUndefined(); // bad example data
+        expect(collection.attribution).toBeUndefined(); // bad example data
       });
     });
 
@@ -29,8 +34,7 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(sourceDescriptions[0].getTitle()).toBe('NEW TITLE');
         expect(sourceDescriptions[0].getCitation()).toBeUndefined();
         expect(sourceDescriptions[0].getText()).toBeUndefined();
-        expect(sourceDescriptions[0].getContributorId()).toBeUndefined(); // bad example data
-        expect(sourceDescriptions[0].getModified()).toBeUndefined(); // bad example data
+        expect(sourceDescriptions[0].attribution.$getAgentId()).toBe('UUUU-UUU'); // bad example data
       });
     });
 
@@ -42,8 +46,7 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(sourceDescriptions[0].getTitle()).toBe('NEW TITLE');
         expect(sourceDescriptions[0].getCitation()).toBeUndefined();
         expect(sourceDescriptions[0].getText()).toBeUndefined();
-        expect(sourceDescriptions[0].getContributorId()).toBeUndefined(); // bad example data
-        expect(sourceDescriptions[0].getModified()).toBeUndefined(); // bad example data
+        expect(sourceDescriptions[0].attribution).toBeUndefined(); // bad example data
       });
     });
   });

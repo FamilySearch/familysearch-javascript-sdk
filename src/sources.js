@@ -1,7 +1,8 @@
 define([
+  'attribution',
   'helpers',
   'plumbing'
-], function(helpers, plumbing) {
+], function(attribution, helpers, plumbing) {
   /**
    * @ngdoc overview
    * @name sources
@@ -87,6 +88,68 @@ define([
 
   /**
    * @ngdoc function
+   * @name sources.types:constructor.SourceDescription
+   * @description
+   *
+   * Description of a source
+   */
+  var SourceDescription = exports.SourceDescription = function() {
+
+  };
+
+  exports.SourceDescription.prototype = {
+    constructor: SourceDescription,
+    /**
+     * @ngdoc property
+     * @name sources.types:constructor.SourceDescription#id
+     * @propertyOf sources.types:constructor.SourceDescription
+     * @return {String} Id of the source description
+     */
+
+    /**
+     * @ngdoc property
+     * @name sources.types:constructor.SourceDescription#about
+     * @propertyOf sources.types:constructor.SourceDescription
+     * @return {String} URL (link to the record)
+     */
+
+    /**
+     * @ngdoc property
+     * @name sources.types:constructor.SourceDescription#attribution
+     * @propertyOf sources.types:constructor.SourceDescription
+     * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
+     */
+
+    /**
+     * @ngdoc function
+     * @name sources.types:constructor.SourceDescription#getCitation
+     * @methodOf sources.types:constructor.SourceDescription
+     * @function
+     * @return {String} source citation
+     */
+    getCitation: function() { return maybe(maybe(this.citations)[0]).value; },
+
+    /**
+     * @ngdoc function
+     * @name sources.types:constructor.SourceDescription#getTitle
+     * @methodOf sources.types:constructor.SourceDescription
+     * @function
+     * @return {String} title of the source description
+     */
+    getTitle: function() { return maybe(maybe(this.titles)[0]).value; },
+
+    /**
+     * @ngdoc function
+     * @name sources.types:constructor.SourceDescription#getText
+     * @methodOf sources.types:constructor.SourceDescription
+     * @function
+     * @return {String} Text / Description of the source
+     */
+    getText: function() { return maybe(maybe(this.notes)[0]).text; }
+  };
+
+  /**
+   * @ngdoc function
    * @name sources.functions:getPersonSourceRefs
    * @function
    *
@@ -117,79 +180,6 @@ define([
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceDescription
-   * @description
-   *
-   * Description of a source
-   */
-  var SourceDescription = exports.SourceDescription = function() {
-
-  };
-
-  exports.SourceDescription.prototype = {
-    constructor: SourceDescription,
-    /**
-     * @ngdoc property
-     * @name sources.types:constructor.SourceDescription#id
-     * @propertyOf sources.types:constructor.SourceDescription
-     * @return {String} Id of the source description
-     */
-
-    /**
-     * @ngdoc property
-     * @name sources.types:constructor.SourceDescription#about
-     * @propertyOf sources.types:constructor.SourceDescription
-     * @return {String} URL (link to the record)
-     */
-
-    /**
-     * @ngdoc function
-     * @name sources.types:constructor.SourceDescription#getCitation
-     * @methodOf sources.types:constructor.SourceDescription
-     * @function
-     * @return {String} source citation
-     */
-    getCitation: function() { return maybe(maybe(this.citations)[0]).value; },
-
-    /**
-     * @ngdoc function
-     * @name sources.types:constructor.SourceDescription#getTitle
-     * @methodOf sources.types:constructor.SourceDescription
-     * @function
-     * @return {String} title of the source description
-     */
-    getTitle: function() { return maybe(maybe(this.titles)[0]).value; },
-
-    /**
-     * @ngdoc function
-     * @name sources.types:constructor.SourceDescription#getText
-     * @methodOf sources.types:constructor.SourceDescription
-     * @function
-     * @return {String} Text / Description of the source
-     */
-    getText: function() { return maybe(maybe(this.notes)[0]).text; },
-
-    /**
-     * @ngdoc function
-     * @name sources.types:constructor.SourceDescription#getContributorId
-     * @methodOf sources.types:constructor.SourceDescription
-     * @function
-     * @return {String} Id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
-     */
-    getContributorId: function() { return maybe(maybe(this.attribution).contributor).resourceId; },
-
-    /**
-     * @ngdoc function
-     * @name sources.types:constructor.SourceDescription#getModified
-     * @methodOf sources.types:constructor.SourceDescription
-     * @function
-     * @return {Number} last modified timestamp
-     */
-    getModified: function() { return maybe(this.attribution).modified; }
-  };
-
-  /**
-   * @ngdoc function
    * @name sources.functions:getSourceDescription
    * @function
    *
@@ -212,7 +202,10 @@ define([
     return plumbing.get('/platform/sources/descriptions/'+encodeURI(sdid), params, {}, opts,
       helpers.compose(
         helpers.objectExtender({getSourceDescription: function() { return maybe(this.sourceDescriptions)[0]; }}),
-        helpers.constructorSetter(SourceDescription, 'sourceDescriptions')
+        helpers.constructorSetter(SourceDescription, 'sourceDescriptions'),
+        helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+          return response.sourceDescriptions;
+        })
       ));
   };
 

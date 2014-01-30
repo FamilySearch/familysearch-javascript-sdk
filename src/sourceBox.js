@@ -1,8 +1,9 @@
 define([
+  'attribution',
   'helpers',
   'plumbing',
   'sources'
-], function(helpers, plumbing, sources) {
+], function(attribution, helpers, plumbing, sources) {
   /**
    * @ngdoc overview
    * @name sourceBox
@@ -51,13 +52,23 @@ define([
      */
 
     /**
+     * @ngdoc property
+     * @name sourceBox.types:constructor.Collection#attribution
+     * @propertyOf sourceBox.types:constructor.Collection
+     * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
+     */
+
+    /**
      * @ngdoc function
-     * @name sourceBox.types:constructor.Collection#getContributorId
+     * @name sourceBox.types:constructor.Collection#$getSourceDescriptions
      * @methodOf sourceBox.types:constructor.Collection
      * @function
-     * @return {String} Id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
+     * @param {Object=} params `count` maximum to return (defaults to 25), `start` zero-based index of first source to return
+     * @return {Object} promise for the {@link sourceBox.functions:getCollectionSourceDescriptions getCollectionSourceDescriptions} response
      */
-    getContributorId: function() { return maybe(maybe(this.attribution).contributor).resourceId; }
+    $getSourceDescriptions: function(params) {
+      return exports.getCollectionSourceDescriptions(helpers.removeAccessToken(this.links['source-descriptions'].href), params);
+    }
   };
 
   /**
@@ -75,17 +86,22 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/et88N/ editable example}
    *
-   * @param {String} uid of the user who owns the source box
+   * @param {String} uid of the user or full URL of the collections-for-user endpoint
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   exports.getCollectionsForUser = function(uid, params, opts) {
-    return plumbing.get('/platform/sources/'+encodeURI(uid)+'/collections', {}, {'Accept': 'application/x-fs-v1+json'}, opts,
-      helpers.compose(
-        helpers.objectExtender({getCollections: function() { return this.collections || []; }}),
-        helpers.constructorSetter(Collection, 'collections')
-      ));
+    return plumbing.getUrl('user-collections-for-user-template', uid, {uid: uid}).then(function(url) {
+      return plumbing.get(url, {}, {'Accept': 'application/x-fs-v1+json'}, opts,
+        helpers.compose(
+          helpers.objectExtender({getCollections: function() { return this.collections || []; }}),
+          helpers.constructorSetter(Collection, 'collections'),
+          helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+            return response.collections;
+          })
+        ));
+    });
   };
 
   /**
@@ -103,17 +119,22 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/h5wCt/ editable example}
    *
-   * @param {String} id of the collection to read
+   * @param {String} udcid id or full URL of the collection
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getCollection = function(id, params, opts) {
-    return plumbing.get('/platform/sources/collections/'+encodeURI(id), params, {'Accept': 'application/x-fs-v1+json'}, opts,
-      helpers.compose(
-        helpers.objectExtender({getCollection: function() { return maybe(this.collections)[0]; }}),
-        helpers.constructorSetter(Collection, 'collections')
-      ));
+  exports.getCollection = function(udcid, params, opts) {
+    return plumbing.getUrl('user-collection-template', udcid, {udcid: udcid}).then(function(url) {
+      return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
+        helpers.compose(
+          helpers.objectExtender({getCollection: function() { return maybe(this.collections)[0]; }}),
+          helpers.constructorSetter(Collection, 'collections'),
+          helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+            return response.collections;
+          })
+        ));
+    });
   };
 
   /**
@@ -131,17 +152,22 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/7yDmE/ editable example}
    *
-   * @param {String} cid of the collection to read
+   * @param {String} udcid id of the collection or full URL of the collection-source-descriptions endpoint
    * @param {Object=} params `count` maximum to return (defaults to 25), `start` zero-based index of first source to return
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getCollectionSourceDescriptions = function(cid, params, opts) {
-    return plumbing.get('/platform/sources/collections/'+encodeURI(cid)+'/descriptions', params, {'Accept': 'application/x-fs-v1+json'}, opts,
-      helpers.compose(
-        helpers.objectExtender({getSourceDescriptions: function() { return this.sourceDescriptions || []; }}),
-        helpers.constructorSetter(sources.SourceDescription, 'sourceDescriptions')
-      ));
+  exports.getCollectionSourceDescriptions = function(udcid, params, opts) {
+    return plumbing.getUrl('user-collection-source-descriptions-template', udcid, {udcid: udcid}).then(function(url) {
+      return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
+        helpers.compose(
+          helpers.objectExtender({getSourceDescriptions: function() { return this.sourceDescriptions || []; }}),
+          helpers.constructorSetter(sources.SourceDescription, 'sourceDescriptions'),
+          helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+            return response.sourceDescriptions;
+          })
+        ));
+    });
   };
 
   /**
@@ -159,17 +185,22 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/4TSxJ/ editable example}
    *
-   * @param {String} uid of the user to read
+   * @param {String} uid of the user or full URL of the collection-source-descriptions-for-user endpoint
    * @param {Object=} params `count` maximum to return (defaults to 25), `start` zero-based index of first source to return
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   exports.getCollectionSourceDescriptionsForUser = function(uid, params, opts) {
-    return plumbing.get('/platform/sources/'+encodeURI(uid)+'/collections/descriptions', params, {'Accept': 'application/x-fs-v1+json'}, opts,
-      helpers.compose(
-        helpers.objectExtender({getSourceDescriptions: function() { return this.sourceDescriptions || []; }}),
-        helpers.constructorSetter(sources.SourceDescription, 'sourceDescriptions')
-      ));
+    return plumbing.getUrl('user-collections-source-descriptions-for-user-template', uid, {uid: uid}).then(function(url) {
+      return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
+        helpers.compose(
+          helpers.objectExtender({getSourceDescriptions: function() { return this.sourceDescriptions || []; }}),
+          helpers.constructorSetter(sources.SourceDescription, 'sourceDescriptions'),
+          helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+            return response.sourceDescriptions;
+          })
+        ));
+    });
   };
 
   return exports;

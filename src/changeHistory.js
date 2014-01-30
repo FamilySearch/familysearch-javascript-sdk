@@ -107,7 +107,7 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/6SqTH/ editable example}
    *
-   * @param {String} pid of the person to read
+   * @param {String} pid id of the person or full URL of the person changes endpoint
    * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
@@ -134,7 +134,7 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/Uk6HA/ editable example}
    *
-   * @param {String} caprid of the child and parents relationship to read
+   * @param {String} caprid id of the child and parents relationship or full URL of the child and parents relationship changes endpoint
    * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
@@ -161,7 +161,7 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/csG9t/ editable example}
    *
-   * @param {String} crid of the couple relationship to read
+   * @param {String} crid id of the couple relationship to read or full URL of the couple relationship changes endpoint
    * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response

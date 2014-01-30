@@ -362,8 +362,8 @@ define([
    * Return a function that takes an object and returns an object with the same properties but with the constructor function's prototype
    * @param {function()} constructorFunction Create new objects with this constructor
    * @param {string=} attr if passed in, the constructor function will be applied to (each) element of object[attr] instead of the object itself
-   * @param {function(Object)=} subObjectGenerator Function that takes an object and returns a set of sub-objects;
-   * if passed in, the constructor function will be applied to sub-object[attr], where the sub-objects are returned by subObjectGenerator
+   * @param {function(Object)=} subObjectGenerator Function that takes an object and returns a set of sub-objects (or a single sub-object);
+   * if passed in, the constructor function will be applied to sub-object[attr] for each sub-object returned by subObjectGenerator
    * @return {function(Object)} The constructor setter function
    */
   exports.constructorSetter = function(constructorFunction, attr, subObjectGenerator) {

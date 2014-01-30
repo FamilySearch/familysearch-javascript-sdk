@@ -1,6 +1,12 @@
 {
   "collections" : [ {
     "id" : "MMMM-MMM",
+    "attribution" : {
+      "contributor" : {
+        "resource" : "https://familysearch.org/platform/users/agents/12345",
+        "resourceId" : "12345"
+      }
+    },
     "links" : {
       "collection" : {
         "href" : "https://familysearch.org/platform/sources/collections/MMMM-MMM",

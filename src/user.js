@@ -227,7 +227,7 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/BpT8c/ editable example}
    *
-   * @param {String} aid of the agent / contributor
+   * @param {String} aid id or full URL of the agent / contributor
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    */
