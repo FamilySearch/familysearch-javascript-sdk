@@ -1,9 +1,10 @@
 define([
   'angularjs-wrappers',
   'globals',
+  'helpers',
   'jquery-wrappers',
-  'helpers'
-], function(angularjsWrappers, globals, jQueryWrappers, helpers) {
+  'plumbing'
+], function(angularjsWrappers, globals, helpers, jQueryWrappers, plumbing) {
   /**
    * @ngdoc overview
    * @name init
@@ -114,6 +115,9 @@ define([
     if (opts['access_token']) {
       globals.accessToken = opts['access_token'];
     }
+
+    // request the discovery resource
+    globals.discoveryPromise = plumbing.get(globals.discoveryUrl);
   };
 
   return exports;

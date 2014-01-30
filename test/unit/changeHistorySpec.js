@@ -8,7 +8,6 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getChanges()[0].title).toBe('Person Created');
         expect(response.getChanges()[0].updated).toBe(1386263928318);
         expect(response.getChanges()[0].$getChangeReason()).toBe('because it was necessary');
-        expect(response.getChanges()[0].$getAgentId()).toBe('UKMGTY');
         expect(response.getChanges()[0].$getAgentURL()).toBe('https://familysearch.org/platform/users/agents/UKMGTY');
         response.getChanges()[0].$getAgent().then(function(response) {
           var agent = response.getAgent();

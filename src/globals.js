@@ -27,5 +27,6 @@ define({
     'sandbox'   : 'https://sandbox.familysearch.org/cis-web/oauth2/v3',
     'staging'   : 'https://identbeta.familysearch.org/cis-web/oauth2/v3',
     'production': 'https://ident.familysearch.org/cis-web/oauth2/v3'
-  }
+  },
+  discoveryUrl: '/.well-known/app-meta'
 });

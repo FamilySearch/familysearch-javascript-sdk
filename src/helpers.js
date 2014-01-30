@@ -478,7 +478,7 @@ define([
    * @returns {boolean} true if url starts with https?://
    */
   exports.isAbsoluteUrl = function(url) {
-    return !!url.match(/^https?:\/\//);
+    return (/^https?:\/\//).test(url);
   };
 
   /**
@@ -617,6 +617,27 @@ define([
       url = exports.appendQueryParameters(url, params);
     }
     return url;
+  };
+
+  /**
+   * Populate template with uri-encoded parameters
+   * @param {string} template template with {param}'s to replace; e.g., /platform/tree/persons/{pid}/source-references/{srid}
+   * @param {Object} params parameters; e.g., {pid: 'X', srid: 'Y'}
+   * @returns {string} populated template
+   */
+  exports.populateUriTemplate = function(template, params) {
+    var segments = template.split(/[{}]/);
+    var inQuery = false;
+    for (var i = 0, len = segments.length; i < len; i++) {
+      if (i % 2 === 1) {
+        var param = params[segments[i]];
+        segments[i] = inQuery ? encodeURIComponent(param) : encodeURI(param);
+      }
+      else if (segments[i].indexOf('?') !== -1) {
+        inQuery = true;
+      }
+    }
+    return segments.join('');
   };
 
   /**

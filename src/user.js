@@ -85,11 +85,13 @@ define([
    * @return {Object} a promise for the current user
    */
   exports.getCurrentUser = function(params, opts) {
-    return plumbing.get('/platform/users/current', params, {}, opts,
-      helpers.compose(
-        helpers.objectExtender({getUser: function() { return maybe(this.users)[0]; }}),
-        helpers.constructorSetter(User, 'users')
-      ));
+    return plumbing.getUrl('current-user').then(function(url) {
+      return plumbing.get(url, params, {}, opts,
+        helpers.compose(
+          helpers.objectExtender({getUser: function() { return maybe(this.users)[0]; }}),
+          helpers.constructorSetter(User, 'users')
+        ));
+    });
   };
 
   /**
@@ -109,21 +111,22 @@ define([
    * @return {Object} promise for the (string) id of the current user person
    */
   exports.getCurrentUserPersonId = function(params, opts) {
-    var promise = plumbing.get('/platform/tree/current-person', params, {}, opts);
     var d = globals.deferredWrapper();
-    var returnedPromise = helpers.extendHttpPromise(d.promise, promise);
-    promise.then(
-      function() {
-        handleCurrentUserPersonResponse(d, promise);
-      },
-      function() {
-        // in Chrome, the current person response is expected to fail because it involves a redirect and chrome doesn't
-        // re-send the Accept header on a CORS redirect, so the response comes back as XML and jQuery can't parse it.
-        // That's ok, because we'll pick up the ID from the Content-Location header
-        handleCurrentUserPersonResponse(d, promise);
-      });
+    plumbing.getUrl('current-user-person').then(function(url) {
+      var promise = plumbing.get(url, params, {}, opts);
+      helpers.extendHttpPromise(d.promise, promise);
+      promise.then(
+        function() {
+          handleCurrentUserPersonResponse(d, promise);
+        }, function() {
+          // in Chrome, the current person response is expected to fail because it involves a redirect and chrome doesn't
+          // re-send the Accept header on a CORS redirect, so the response comes back as XML and jQuery can't parse it.
+          // That's ok, because we'll pick up the ID from the Content-Location header
+          handleCurrentUserPersonResponse(d, promise);
+        });
+    });
 
-    return returnedPromise;
+    return d.promise;
   };
 
   /**
@@ -229,12 +232,13 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    */
   exports.getAgent = function(aid, params, opts) {
-    var url = helpers.isAbsoluteUrl(aid) ? aid : '/platform/users/agents/'+encodeURI(aid);
-    return plumbing.get(url, params, {}, opts,
-      helpers.compose(
-        helpers.objectExtender({getAgent: function() { return maybe(this.agents)[0]; }}),
-        helpers.constructorSetter(Agent, 'agents')
-      ));
+    return plumbing.getUrl('agent-template', aid, {uid: aid}).then(function(url) {
+      return plumbing.get(url, params, {}, opts,
+        helpers.compose(
+          helpers.objectExtender({getAgent: function() { return maybe(this.agents)[0]; }}),
+          helpers.constructorSetter(Agent, 'agents')
+        ));
+    });
   };
 
   /**

@@ -20,9 +20,16 @@ define(['FamilySearch', '_', 'jasmine-jquery'], function(FamilySearch, _) {
       if (callback.done && resolveArgs) {
         var result = callback.done.apply(this, resolveArgs);
         if (chainedDeferred) {
-          // NOTE: this doesn't handle the case where result is a promise
-          // I think this is alright because we don't have any code that resolves a promise with another promise
-          chainedDeferred.resolve(result);
+          if (result && result.then) { // if result is a promise, resolve chainedDeferred with result's resolution
+            result.then(function() {
+              chainedDeferred.resolve.apply(this, arguments);
+            }, function() {
+              chainedDeferred.reject.apply(this, arguments);
+            });
+          }
+          else {
+            chainedDeferred.resolve(result);
+          }
         }
       }
       else if (callback.failed && rejectArgs) {

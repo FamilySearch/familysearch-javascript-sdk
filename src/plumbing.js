@@ -41,6 +41,38 @@ define([
 
   /**
    * @ngdoc function
+   * @name plumbing.functions:getUrl
+   * @function
+   *
+   * @description
+   * Low-level call to get a URL from the discovery resource given a resource name, an possible-url, and a set of parameters
+   *
+   * @param {string} resourceName resource name
+   * @param {string=} possibleUrl possible url - return this if it is an absolute url
+   * @param {Object=} params parameters
+   * @return {Object} promise for the url
+   */
+  exports.getUrl = function(resourceName, possibleUrl, params) {
+    return globals.discoveryPromise.then(function(discoveryResource) {
+      var url = '';
+      var resource = discoveryResource.links[resourceName];
+
+      if (helpers.isAbsoluteUrl(possibleUrl)) {
+        url = possibleUrl;
+      }
+      else if (resource['href']) {
+        url = resource['href'];
+      }
+      else if (resource['template']) {
+        var template = resource['template'].replace(/{\?[^}]*}/,''); // we will add query parameters later
+        url = helpers.populateUriTemplate(template, params || {});
+      }
+      return url;
+    });
+  };
+
+  /**
+   * @ngdoc function
    * @name plumbing.functions:get
    * @function
    *
@@ -217,7 +249,10 @@ define([
 
     // do we need to request an access token?
     var accessTokenPromise;
-    if (!globals.accessToken && globals.autoSignin && !helpers.isOAuthServerUrl(absoluteUrl)) {
+    if (!globals.accessToken &&
+        globals.autoSignin &&
+        !helpers.isOAuthServerUrl(absoluteUrl) &&
+        url !== globals.discoveryUrl) {
       accessTokenPromise = globals.getAccessToken();
     }
     else {

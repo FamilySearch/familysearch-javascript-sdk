@@ -70,15 +70,6 @@ define([
 
     /**
      * @ngdoc function
-     * @name changeHistory.types:constructor.Change#$getAgentId
-     * @methodOf changeHistory.types:constructor.Change
-     * @function
-     * @return {String} id of the agent
-     */
-    $getAgentId: function() { return helpers.getLastUrlSegment(this.links.agent.href); },
-
-    /**
-     * @ngdoc function
      * @name changeHistory.types:constructor.Change#$getAgentURL
      * @methodOf changeHistory.types:constructor.Change
      * @function
