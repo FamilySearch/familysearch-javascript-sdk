@@ -68,6 +68,58 @@ define([
 
   /**
    * @ngdoc function
+   * @name user.types:constructor.Agent
+   * @description
+   *
+   * An agent is returned from {@link user.functions:getAgent getAgent}.
+   * Contributor Ids are agent ids, not user ids.
+   */
+  var Agent = exports.Agent = function() {
+
+  };
+
+  exports.Agent.prototype = {
+    constructor: Agent,
+    /**
+     * @ngdoc property
+     * @name user.types:constructor.Agent#id
+     * @propertyOf user.types:constructor.Agent
+     * @return {String} Id of the agent
+     */
+
+    /**
+     * @ngdoc function
+     * @name user.types:constructor.Agent#$getName
+     * @methodOf user.types:constructor.Agent
+     * @function
+     * @return {String} name of the agent
+     */
+    $getName:        function() { return maybe(maybe(this.names)[0]).value; },
+
+    /**
+     * @ngdoc function
+     * @name user.types:constructor.Agent#$getAccountName
+     * @methodOf user.types:constructor.Agent
+     * @function
+     * @return {String} account / contact name of the agent
+     */
+    $getAccountName: function() { return maybe(maybe(this.accounts)[0]).accountName; },
+
+    /**
+     * @ngdoc function
+     * @name user.types:constructor.Agent#$getEmail
+     * @methodOf user.types:constructor.Agent
+     * @function
+     * @return {String} email of the agent
+     */
+    $getEmail:       function() {
+      var email = maybe(maybe(this.emails)[0]).resource;
+      return email ? email.replace(/^mailto:/,'') : email;
+    }
+  };
+
+  /**
+   * @ngdoc function
    * @name user.functions:getCurrentUser
    * @function
    *
@@ -159,58 +211,6 @@ define([
       d.reject('not found');
     }
   }
-
-  /**
-   * @ngdoc function
-   * @name user.types:constructor.Agent
-   * @description
-   *
-   * An agent is returned from {@link user.functions:getAgent getAgent}.
-   * Contributor Ids are agent ids, not user ids.
-   */
-  var Agent = exports.Agent = function() {
-
-  };
-
-  exports.Agent.prototype = {
-    constructor: Agent,
-    /**
-     * @ngdoc property
-     * @name user.types:constructor.Agent#id
-     * @propertyOf user.types:constructor.Agent
-     * @return {String} Id of the agent
-     */
-
-    /**
-     * @ngdoc function
-     * @name user.types:constructor.Agent#getName
-     * @methodOf user.types:constructor.Agent
-     * @function
-     * @return {String} name of the agent
-     */
-    getName:        function() { return maybe(maybe(this.names)[0]).value; },
-
-    /**
-     * @ngdoc function
-     * @name user.types:constructor.Agent#getAccountName
-     * @methodOf user.types:constructor.Agent
-     * @function
-     * @return {String} account / contact name of the agent
-     */
-    getAccountName: function() { return maybe(maybe(this.accounts)[0]).accountName; },
-
-    /**
-     * @ngdoc function
-     * @name user.types:constructor.Agent#getEmail
-     * @methodOf user.types:constructor.Agent
-     * @function
-     * @return {String} email of the agent
-     */
-    getEmail:       function() {
-      var email = maybe(maybe(this.emails)[0]).resource;
-      return email ? email.replace(/^mailto:/,'') : email;
-    }
-  };
 
   /**
    * @ngdoc function

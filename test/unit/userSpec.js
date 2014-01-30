@@ -21,9 +21,9 @@ define(['FamilySearch'], function(FamilySearch) {
       FamilySearch.getAgent('12345').then(function(response) {
         var agent = response.getAgent();
         expect(agent.id).toBe('12345');
-        expect(agent.getName()).toBe('John Smith');
-        expect(agent.getAccountName()).toBe('account');
-        expect(agent.getEmail()).toBe('someone@somewhere.org');
+        expect(agent.$getName()).toBe('John Smith');
+        expect(agent.$getAccountName()).toBe('account');
+        expect(agent.$getEmail()).toBe('someone@somewhere.org');
       });
     });
 
@@ -31,9 +31,9 @@ define(['FamilySearch'], function(FamilySearch) {
       FamilySearch.getMultiAgent(['12345']).then(function(response) {
         var agent = response['12345'].getAgent();
         expect(agent.id).toBe('12345');
-        expect(agent.getName()).toBe('John Smith');
-        expect(agent.getAccountName()).toBe('account');
-        expect(agent.getEmail()).toBe('someone@somewhere.org');
+        expect(agent.$getName()).toBe('John Smith');
+        expect(agent.$getAccountName()).toBe('account');
+        expect(agent.$getEmail()).toBe('someone@somewhere.org');
       });
     });
 

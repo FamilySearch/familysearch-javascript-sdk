@@ -11,7 +11,7 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getChanges()[0].$getAgentURL()).toBe('https://familysearch.org/platform/users/agents/UKMGTY');
         response.getChanges()[0].$getAgent().then(function(response) {
           var agent = response.getAgent();
-          expect(agent.getName()).toBe('Agent Smith');
+          expect(agent.$getName()).toBe('Agent Smith');
         });
       });
     });
