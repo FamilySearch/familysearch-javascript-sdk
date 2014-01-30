@@ -113,8 +113,10 @@ define([
    * @return {Object} promise for the response
    */
   exports.getPersonChanges = function(pid, params, opts) {
-    return plumbing.get('/platform/tree/persons/'+encodeURI(pid)+'/changes', params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-      changeHistoryResponseMapper);
+    return plumbing.getUrl('person-changes-template', pid, {pid: pid}).then(function(url) {
+      return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+        changeHistoryResponseMapper);
+    });
   };
 
   /**
@@ -138,8 +140,10 @@ define([
    * @return {Object} promise for the response
    */
   exports.getChildAndParentsChanges = function(caprid, params, opts) {
-    return plumbing.get('/platform/tree/child-and-parents-relationships/'+encodeURI(caprid)+'/changes', params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-      changeHistoryResponseMapper);
+    return plumbing.getUrl('child-and-parents-relationship-changes-template', caprid, {caprid: caprid}).then(function(url) {
+      return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+        changeHistoryResponseMapper);
+    });
   };
 
   /**
@@ -163,8 +167,10 @@ define([
    * @return {Object} promise for the response
    */
   exports.getCoupleChanges = function(crid, params, opts) {
-    return plumbing.get('/platform/tree/couple-relationships/'+encodeURI(crid)+'/changes', params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-      changeHistoryResponseMapper);
+    return plumbing.getUrl('couple-relationship-changes-template', crid, {crid: crid}).then(function(url) {
+      return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+        changeHistoryResponseMapper);
+    });
   };
 
   return exports;
