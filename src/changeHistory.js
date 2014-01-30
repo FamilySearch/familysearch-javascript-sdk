@@ -1,7 +1,8 @@
 define([
   'helpers',
-  'plumbing'
-], function(helpers, plumbing) {
+  'plumbing',
+  'user'
+], function(helpers, plumbing, user) {
   /**
    * @ngdoc overview
    * @name changeHistory
@@ -51,21 +52,48 @@ define([
 
     /**
      * @ngdoc function
-     * @name changeHistory.types:constructor.Change#getContributorName
+     * @name changeHistory.types:constructor.Change#$getContributorName
      * @methodOf changeHistory.types:constructor.Change
      * @function
      * @return {String} contributor name
      */
-    getContributorName: function() { return maybe(maybe(this.contributors)[0]).name; },
+    $getContributorName: function() { return maybe(maybe(this.contributors)[0]).name; },
 
     /**
      * @ngdoc function
-     * @name changeHistory.types:constructor.Change#getChangeReason
+     * @name changeHistory.types:constructor.Change#$getChangeReason
      * @methodOf changeHistory.types:constructor.Change
      * @function
      * @return {String} reason for the change
      */
-    getChangeReason: function() { return maybe(maybe(this.changeInfo)[0]).reason; }
+    $getChangeReason: function() { return maybe(maybe(this.changeInfo)[0]).reason; },
+
+    /**
+     * @ngdoc function
+     * @name changeHistory.types:constructor.Change#$getAgentId
+     * @methodOf changeHistory.types:constructor.Change
+     * @function
+     * @return {String} id of the agent
+     */
+    $getAgentId: function() { return helpers.getLastUrlSegment(this.links.agent.href); },
+
+    /**
+     * @ngdoc function
+     * @name changeHistory.types:constructor.Change#$getAgentURL
+     * @methodOf changeHistory.types:constructor.Change
+     * @function
+     * @return {String} url of the agent
+     */
+    $getAgentURL: function() { return helpers.removeAccessToken(this.links.agent.href); },
+
+    /**
+     * @ngdoc function
+     * @name changeHistory.types:constructor.Change#$getAgent
+     * @methodOf changeHistory.types:constructor.Change
+     * @function
+     * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
+     */
+    $getAgent: function() { return user.getAgent(this.$getAgentURL()); }
   };
 
   var changeHistoryResponseMapper = helpers.compose(

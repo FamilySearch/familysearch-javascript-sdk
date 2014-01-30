@@ -1,0 +1,20 @@
+{
+  "agents" : [ {
+    "id" : "IKMGTY",
+    "links" : {
+      "self" : {
+        "href" : "https://familysearch.org/platform/users/agents/UKMGTY"
+      }
+    },
+    "names" : [ {
+      "value" : "Agent Smith",
+      "type" : "http://familysearch.org/v1//DisplayName"
+    } ],
+    "accounts" : [ {
+      "accountName" : "account"
+    } ],
+    "emails" : [ {
+      "resource" : "mailto:someone@somewhere.org"
+    } ]
+  } ]
+}

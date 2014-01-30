@@ -456,7 +456,10 @@ define([
    * @returns {string}
    */
   exports.getLastUrlSegment = function(url) {
-    return url ? url.replace(/^.*\//, '').replace(/\?.*$/, '') : url;
+    if (url) {
+      url = url.replace(/^.*\//, '').replace(/\?.*$/, '');
+    }
+    return url;
   };
 
   /**
@@ -470,13 +473,22 @@ define([
   };
 
   /**
+   * Return true if url starts with https?://
+   * @param {string} url
+   * @returns {boolean} true if url starts with https?://
+   */
+  exports.isAbsoluteUrl = function(url) {
+    return !!url.match(/^https?:\/\//);
+  };
+
+  /**
    * Prepend server onto path if path does not start with https?://
    * @param {string} server
    * @param {string} path
    * @returns {string} server + path
    */
   function getAbsoluteUrl(server, path) {
-    if (!path.match(/^https?:\/\//)) {
+    if (!exports.isAbsoluteUrl(path)) {
       return server + (path.charAt(0) !== '/' ? '/' : '') + path;
     }
     else {
@@ -543,14 +555,15 @@ define([
   };
 
   /**
-   * Decode query string into an object
-   * @param {string} qs query string
+   * Decode query string part of a url into an object
+   * @param {string} url url
    * @returns {Object} parameters object
    */
-  exports.decodeQueryString = function(qs) {
-    var obj = {}, pos = qs.indexOf('?');
+  exports.decodeQueryString = function(url) {
+    var obj = {};
+    var pos = url.indexOf('?');
     if (pos !== -1) {
-      var segments = qs.substring(pos+1).split('&');
+      var segments = url.substring(pos+1).split('&');
       forEach(segments, function(segment) {
         var kv = segment.split('=', 2);
         if (kv && kv[0]) {
@@ -562,18 +575,48 @@ define([
   };
 
   /**
+   * Remove the query string from the url
+   * @param {string} url url
+   * @returns {string} url without query string
+   */
+  exports.removeQueryString = function(url) {
+    if (url) {
+      var pos = url.indexOf('?');
+      if (pos !== -1) {
+        url = url.substring(0, pos);
+      }
+    }
+    return url;
+  };
+
+  /**
    * Append the access token to the url
-   * @param {string} url
+   * @param {string} url url
    * @returns {string} url with access token
    */
   exports.appendAccessToken = function(url) {
-    var params = exports.decodeQueryString(url);
-    var pos = url.indexOf('?');
-    if (pos !== -1) {
-      url = url.substring(0, pos);
+    if (url) {
+      var params = exports.decodeQueryString(url);
+      url = exports.removeQueryString(url);
+      params['access_token'] = globals.accessToken;
+      url = exports.appendQueryParameters(url, params);
     }
-    params['access_token'] = globals.accessToken;
-    return exports.appendQueryParameters(url, params);
+    return url;
+  };
+
+  /**
+   * Remove the access token from the url
+   * @param {string} url url
+   * @returns {string} url without access token
+   */
+  exports.removeAccessToken = function(url) {
+    if (url) {
+      var params = exports.decodeQueryString(url);
+      url = exports.removeQueryString(url);
+      delete params['access_token'];
+      url = exports.appendQueryParameters(url, params);
+    }
+    return url;
   };
 
   /**

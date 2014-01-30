@@ -229,7 +229,8 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    */
   exports.getAgent = function(aid, params, opts) {
-    return plumbing.get('/platform/users/agents/'+encodeURI(aid), params, {}, opts,
+    var url = helpers.isAbsoluteUrl(aid) ? aid : '/platform/users/agents/'+encodeURI(aid);
+    return plumbing.get(url, params, {}, opts,
       helpers.compose(
         helpers.objectExtender({getAgent: function() { return maybe(this.agents)[0]; }}),
         helpers.constructorSetter(Agent, 'agents')
