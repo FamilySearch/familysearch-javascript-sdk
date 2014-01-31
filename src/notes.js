@@ -309,7 +309,7 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/5dLd4/ editable example}
    *
-   * @param {string|string[]||NoteRef[]} pid id of the person, or full URLs or {@link notes.types:constructor.NoteRef NoteRefs} of the notes
+   * @param {string|string[]|NoteRef[]} pid id of the person, or full URLs or {@link notes.types:constructor.NoteRef NoteRefs} of the notes
    * @param {string[]=} nids ids of the notes (required if pid is the id of the person)
    * @param {Object=} params pass to getPersonNote currently unused
    * @param {Object=} opts pass to the http function specified during init

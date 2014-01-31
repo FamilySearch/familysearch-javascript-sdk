@@ -1,6 +1,10 @@
 {
   "discussions" : [ {
     "id" : "dis-MMMM-MMM",
+    "contributor" : {
+      "resource" : "https://sandbox.familysearch.org/platform/users/agents/12345",
+      "resourceId" : "12345"
+    },
     "links" : {
       "comments" : {
         "href" : "https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMM/comments",

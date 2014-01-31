@@ -75,7 +75,7 @@ define([
      * @name changeHistory.types:constructor.Change#$getAgentUrl
      * @methodOf changeHistory.types:constructor.Change
      * @function
-     * @return {String} URL of the agent
+     * @return {String} URL of the agent - pass into {@link user.functions:getAgent getAgent} for details
      */
     $getAgentUrl: function() { return helpers.removeAccessToken(this.links.agent.href); },
 

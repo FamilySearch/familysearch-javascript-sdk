@@ -662,7 +662,6 @@ define([
     };
   };
 
-  //
   /**
    * borrowed from AngularJS's implementation of $q
    * @param {Array|Object} promises Array or object of promises

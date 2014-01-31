@@ -7,6 +7,8 @@
         "title" : "Person"
       }
     },
-    "discussion-references" : [ "https://familysearch.org/platform/discussions/discussions/67890", "https://familysearch.org/platform/discussions/discussions/67891" ]
+    "discussion-references" : [ {
+      "resource" : "https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMM"
+    } ]
   } ]
 }
