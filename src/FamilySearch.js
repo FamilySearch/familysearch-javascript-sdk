@@ -111,7 +111,6 @@ define([
     // sources
     SourceDescription: sources.SourceDescription,
     SourceRef: sources.SourceRef,
-    IdSourceRef: sources.IdSourceRef,
     getPersonSourceRefs: sources.getPersonSourceRefs,
     getSourceDescription: sources.getSourceDescription,
     getMultiSourceDescription: sources.getMultiSourceDescription,

@@ -45,7 +45,7 @@ define([
    * @function
    *
    * @description
-   * Low-level call to get a URL from the discovery resource given a resource name, an possible-url, and a set of parameters
+   * Low-level call to get a  URL from the discovery resource given a resource name, an possible-url, and a set of parameters
    *
    * @param {string} resourceName resource name
    * @param {string=} possibleUrl possible url - return this if it is an absolute url

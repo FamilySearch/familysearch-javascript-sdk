@@ -31,9 +31,9 @@ define(['FamilySearch'], function(FamilySearch) {
         var sourceDescriptions = response.getSourceDescriptions();
         expect(sourceDescriptions.length).toBe(1);
         expect(sourceDescriptions[0].id).toBe('MMMM-CCC');
-        expect(sourceDescriptions[0].getTitle()).toBe('NEW TITLE');
-        expect(sourceDescriptions[0].getCitation()).toBeUndefined();
-        expect(sourceDescriptions[0].getText()).toBeUndefined();
+        expect(sourceDescriptions[0].$getTitle()).toBe('NEW TITLE');
+        expect(sourceDescriptions[0].$getCitation()).toBeUndefined();
+        expect(sourceDescriptions[0].$getText()).toBeUndefined();
         expect(sourceDescriptions[0].attribution.$getAgentId()).toBe('UUUU-UUU'); // bad example data
       });
     });
@@ -43,9 +43,9 @@ define(['FamilySearch'], function(FamilySearch) {
         var sourceDescriptions = response.getSourceDescriptions();
         expect(sourceDescriptions.length).toBe(1);
         expect(sourceDescriptions[0].id).toBe('MMMM-CCC');
-        expect(sourceDescriptions[0].getTitle()).toBe('NEW TITLE');
-        expect(sourceDescriptions[0].getCitation()).toBeUndefined();
-        expect(sourceDescriptions[0].getText()).toBeUndefined();
+        expect(sourceDescriptions[0].$getTitle()).toBe('NEW TITLE');
+        expect(sourceDescriptions[0].$getCitation()).toBeUndefined();
+        expect(sourceDescriptions[0].$getText()).toBeUndefined();
         expect(sourceDescriptions[0].attribution).toBeUndefined(); // bad example data
       });
     });

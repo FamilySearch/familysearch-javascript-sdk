@@ -49,7 +49,6 @@
  * - {@link notes.types:constructor.Note Note}
  * - {@link sources.types:constructor.SourceRef SourceRef}
  * - {@link sources.types:constructor.SourceDescription SourceDescription}
- * - {@link sources.types:constructor.IdSourceRef IdSourceRef}
  * - {@link discussions.types:constructor.Discussion Discussion}
  * - {@link discussions.types:constructor.Comment Comment}
  * - {@link memories.types:constructor.MemoryRef MemoryRef}
