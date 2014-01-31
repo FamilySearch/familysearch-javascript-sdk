@@ -5,8 +5,13 @@ define(['FamilySearch'], function(FamilySearch) {
         var notes = response.getNoteRefs();
         expect(notes[0].id).toBe('1804317705');
         expect(notes[0].subject).toBe('note 0');
+        expect(notes[0].$getNoteUrl()).toBe('https://familysearch.org/platform/tree/persons/P12-3456/notes/1804317705');
         expect(notes[1].id).toBe('1805241226');
         expect(notes[1].subject).toBe('note 1');
+        notes[0].$getNote().then(function(response) {
+          var note = response.getNote();
+          expect(note.text).toBe('Sample note text');
+        });
       });
     });
 
@@ -16,8 +21,7 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(note.id).toBe('1586334607'); // bad example data
         expect(note.subject).toBe('Sample');
         expect(note.text).toBe('Sample note text');
-        expect(note.getContributorId()).toBeUndefined();
-        expect(note.getModified()).toBeUndefined();
+        expect(note.attribution).toBeUndefined(); // bad example data
       });
     });
 
@@ -45,8 +49,8 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(note.id).toBe('MMMM-ZP8');
         expect(note.subject).toBe('Couple Relationship Note Title');
         expect(note.text).toBe('Couple Relationship Note Text');
-        expect(note.getContributorId()).toBe('MMD8-3NT');
-        expect(note.getModified()).toBe(1387223690000);
+        expect(note.attribution.$getAgentId()).toBe('MMD8-3NT');
+        expect(note.attribution.modified).toBe(1387223690000);
       });
     });
 
@@ -74,8 +78,7 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(note.id).toBeUndefined(); // bad example data
         expect(note.subject).toBe('Sample');
         expect(note.text).toBe('Sample note text');
-        expect(note.getContributorId()).toBeUndefined();
-        expect(note.getModified()).toBeUndefined();
+        expect(note.attribution).toBeUndefined(); // bad example data
       });
     });
 

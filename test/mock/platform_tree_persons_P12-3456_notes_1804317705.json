@@ -1,0 +1,22 @@
+{
+  "persons" : [ {
+    "id" : "P12-3456",
+    "links" : {
+      "person" : {
+        "href" : "https://familysearch.org/platform/tree/persons/P12-3456",
+        "title" : "Person"
+      }
+    },
+    "notes" : [ {
+      "id" : "1804317705",
+      "links" : {
+        "notes" : {
+          "href" : "https://familysearch.org/platform/tree/persons/P12-3456/notes",
+          "title" : "Person Notes"
+        }
+      },
+      "subject" : "Sample",
+      "text" : "Sample note text"
+    } ]
+  } ]
+}

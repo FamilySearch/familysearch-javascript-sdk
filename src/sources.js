@@ -306,7 +306,7 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/chQ64/ editable example}
    *
-   * @param {Array} sdids ids or full URLs or {@link sources.types:constructor.SourceRef SourceRefs} of the source descriptions
+   * @param {string[]|SourceRef[]} sdids ids or full URLs or {@link sources.types:constructor.SourceRef SourceRefs} of the source descriptions
    * @param {Object=} params pass to getSourceDescription currently unused
    * @param {Object=} opts pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the source descriptions have been read,
@@ -315,8 +315,17 @@ define([
   exports.getMultiSourceDescription = function(sdids, params, opts) {
     var promises = {};
     helpers.forEach(sdids, function(sdid) {
-      var id = (sdid instanceof SourceRef) ? sdid.$getSourceDescriptionUrl() : sdid;
-      promises[id] = exports.getSourceDescription(id, params, opts);
+      var id, url;
+      if (sdid instanceof SourceRef) {
+        // TODO use source description id here when it is available
+        id = sdid.$getSourceDescriptionUrl();
+        url = sdid.$getSourceDescriptionUrl();
+      }
+      else {
+        id = sdid;
+        url = sdid;
+      }
+      promises[id] = exports.getSourceDescription(url, params, opts);
     });
     return helpers.promiseAll(promises);
   };

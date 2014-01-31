@@ -61,7 +61,7 @@ define([
         url = possibleUrl;
       }
       else if (resource['href']) {
-        url = resource['href'];
+        url = helpers.removeAccessToken(resource['href']);
       }
       else if (resource['template']) {
         var template = resource['template'].replace(/{\?[^}]*}/,''); // we will add query parameters later
