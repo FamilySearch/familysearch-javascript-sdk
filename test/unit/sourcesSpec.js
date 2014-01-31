@@ -45,9 +45,10 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('references are returned from getChildAndParentsSourceRefs', function() {
-      FamilySearch.getChildAndParentsSourceRefs('RRRR-RRR').then(function(response) {
+      FamilySearch.getChildAndParentsSourceRefs('PPPX-PP0').then(function(response) {
         var sourceRefs = response.getSourceRefs();
         expect(sourceRefs[0].$getTagNames()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
+        expect(sourceRefs[0].attribution.modified).toBe(123456789);
         expect(sourceRefs[1].$getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/BBBB-BBB');
         expect(sourceRefs[1].$getTagNames().length).toBe(0);
         expect(sourceRefs[1].attribution.$getAgentId()).toBe('UUUU-UUU');

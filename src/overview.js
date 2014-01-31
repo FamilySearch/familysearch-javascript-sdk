@@ -40,7 +40,7 @@
  * Relationships between people
  *
  * - {@link person.types:constructor.Couple Couple}
- * - {@link person.types:constructor.ChildAndParents ChildAndParents}
+ * - {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents}
  * - {@link person.types:constructor.ParentChild ParentChild} (will hopefully go away in favor of ChildAndParents)
  *
  * Ojects related to people (and relationships)

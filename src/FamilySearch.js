@@ -74,6 +74,7 @@ define([
     // TODO ordinances
 
     // parents and children
+    ChildAndParents: parentsAndChildren.ChildAndParents,
     getChildAndParents: parentsAndChildren.getChildAndParents,
 
     // pedigree
@@ -84,7 +85,6 @@ define([
     Person: person.Person,
     Name: person.Name,
     Fact: person.Fact,
-    ChildAndParents: person.ChildAndParents,
     Couple: person.Couple,
     ParentChild: person.ParentChild,
     getPerson: person.getPerson,

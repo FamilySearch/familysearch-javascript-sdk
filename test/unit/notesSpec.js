@@ -62,7 +62,7 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('references are returned from getChildAndParentsNoteRefs', function() {
-      FamilySearch.getChildAndParentsNoteRefs('R12-3456').then(function(response) {
+      FamilySearch.getChildAndParentsNoteRefs('PPPX-PP0').then(function(response) {
         var notes = response.getNoteRefs();
         expect(notes.length).toBe(2);
         expect(notes[0].id).toBe('1804317705');

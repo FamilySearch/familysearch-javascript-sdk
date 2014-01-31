@@ -1,16 +1,16 @@
 {
   "childAndParentsRelationships" : [ {
-    "id" : "RRRR-RRR",
+    "id" : "PPPX-PP0",
     "links" : {
       "relationship" : {
-        "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/RRRR-RRR",
+        "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0",
         "title" : "Child-and-Parents Relationship"
       }
     },
     "sources" : [ {
       "links" : {
         "source-reference" : {
-          "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/RRRR-RRR/source-references/120425165",
+          "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0/source-references/120425165",
           "title" : "Child-and-Parents Relationship Source Reference"
         }
       },
@@ -33,7 +33,7 @@
     }, {
       "links" : {
         "source-reference" : {
-          "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/RRRR-RRR/source-references/1056152681",
+          "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0/source-references/1056152681",
           "title" : "Child-and-Parents Relationship Source Reference"
         }
       },

@@ -1,7 +1,9 @@
 define([
+  'globals',
   'helpers',
+  'parentsAndChildren',
   'plumbing'
-], function(helpers, plumbing) {
+], function(globals, helpers, parentsAndChildren, plumbing) {
   /**
    * @ngdoc overview
    * @name person
@@ -10,6 +12,11 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/resources#person FamilySearch API Docs}
    */
+
+  //
+  // NOTE I've had to make three things global in this file: Fact, getPerson, and personMapper
+  // This is so parentsAndChildren and spouses can access them; otherwise we'd have a circular dependency
+  //
 
   var maybe = helpers.maybe; // shorthand
 
@@ -277,7 +284,7 @@ define([
    *
    * Fact
    */
-  var Fact = exports.Fact = function() {
+  var Fact = globals.Fact = exports.Fact = function() {  // put on globals so parentsAndChildren and spouses can access it
 
   };
 
@@ -345,141 +352,6 @@ define([
 
   /**
    * @ngdoc function
-   * @name person.functions:getPerson
-   * @function
-   *
-   * @description
-   * Get the specified person
-   * The response includes the following convenience function
-   *
-   * - `getPerson()` - get the {@link person.types:constructor.Person Person} from the response
-   *
-   * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
-   *
-   * {@link http://jsfiddle.net/DallanQ/cST4L/ editable example}
-   *
-   * @param {String} pid of the person to read
-   * @param {Object=} params currently unused
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the response
-   */
-  exports.getPerson = function(pid, params, opts) {
-    return plumbing.get('/platform/tree/persons/'+encodeURI(pid), params, {}, opts,
-      helpers.compose(
-        helpers.objectExtender({getPerson: function() { return this.persons[0]; }}),
-        exports.personMapper()
-      ));
-  };
-
-  /**
-   * Return a function that maps a response into a response with Person, Name, and Fact objects
-   * @param {Function=} subObjectGenerator generate sub-objects corresponding to parents of persons; used by search/match functions
-   * @returns {Function}
-   */
-  exports.personMapper = function(subObjectGenerator) {
-    var personsGenerator = function(response) {
-      return helpers.flatMap(subObjectGenerator ? subObjectGenerator(response) : [response], function(root) {
-        return root.persons;
-      });
-    };
-    return helpers.compose(
-      helpers.constructorSetter(Person, 'persons', subObjectGenerator),
-      helpers.constructorSetter(Name, 'names', personsGenerator),
-      helpers.constructorSetter(Fact, 'facts', personsGenerator)
-    );
-  };
-
-  /**
-   * @ngdoc function
-   * @name person.functions:getMultiPerson
-   * @function
-   *
-   * @description
-   * Get multiple people at once by requesting them in parallel
-   *
-   * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
-   *
-   * {@link http://jsfiddle.net/DallanQ/TF6Lg/ editable example}
-   *
-   * @param {Array} pids of the people to read
-   * @param {Object=} params to pass to getPerson currently unused
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise that is fulfilled when all of the people have been read, returning a map of person id to response
-   */
-  exports.getMultiPerson = function(pids, params, opts) {
-    var promises = {};
-    helpers.forEach(pids, function(pid) {
-      promises[pid] = exports.getPerson(pid, params, opts);
-    });
-    return helpers.promiseAll(promises);
-  };
-
-  /**
-   * @ngdoc function
-   * @name person.types:constructor.ChildAndParents
-   * @description
-   *
-   * Child and parents relationship *(not to be confused with the ParentChild relationship; in general, ChildAndParents is more useful)*
-   */
-  var ChildAndParents = exports.ChildAndParents = function() {
-
-  };
-
-  exports.ChildAndParents.prototype = {
-    constructor: ChildAndParents,
-    /**
-     * @ngdoc property
-     * @name person.types:constructor.ChildAndParents#id
-     * @propertyOf person.types:constructor.ChildAndParents
-     * @return {String} Id of the relationship
-     */
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.ChildAndParents#getFatherFacts
-     * @methodOf person.types:constructor.ChildAndParents
-     * @return {Fact[]} array of {@link person.types:constructor.Fact Facts}; e.g., parent-relationship type
-     */
-    getFatherFacts: function() { return this.fatherFacts || []; },
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.ChildAndParents#getMotherFacts
-     * @methodOf person.types:constructor.ChildAndParents
-     * @return {Fact[]} array of {@link person.types:constructor.Fact Facts}; e.g., parent-relationship type
-     */
-    getMotherFacts: function() { return this.motherFacts || []; },
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.ChildAndParents#getFatherId
-     * @methodOf person.types:constructor.ChildAndParents
-     * @function
-     * @return {String} Id of the father
-     */
-    getFatherId: function() { return maybe(this.father).resourceId; },
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.ChildAndParents#getMotherId
-     * @methodOf person.types:constructor.ChildAndParents
-     * @function
-     * @return {String} Id of the mother
-     */
-    getMotherId: function() { return maybe(this.mother).resourceId; },
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.ChildAndParents#getChildId
-     * @methodOf person.types:constructor.ChildAndParents
-     * @function
-     * @return {String} Id of the child
-     */
-    getChildId: function() { return maybe(this.child).resourceId; }
-  };
-
-  /**
-   * @ngdoc function
    * @name person.types:constructor.Couple
    * @description
    *
@@ -535,6 +407,78 @@ define([
 
   /**
    * @ngdoc function
+   * @name person.functions:getPerson
+   * @function
+   *
+   * @description
+   * Get the specified person
+   * The response includes the following convenience function
+   *
+   * - `getPerson()` - get the {@link person.types:constructor.Person Person} from the response
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/cST4L/ editable example}
+   *
+   * @param {String} pid of the person to read
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  globals.getPerson = exports.getPerson = function(pid, params, opts) { // put on globals so parentsAndChildren and spouses can access it
+    var url = helpers.isAbsoluteUrl(pid) ? pid : '/platform/tree/persons/'+encodeURI(pid);
+    return plumbing.get(url, params, {}, opts,
+      helpers.compose(
+        helpers.objectExtender({getPerson: function() { return this.persons[0]; }}),
+        exports.personMapper()
+      ));
+  };
+
+  /**
+   * Return a function that maps a response into a response with Person, Name, and Fact objects
+   * @param {Function=} subObjectGenerator generate sub-objects corresponding to parents of persons; used by search/match functions
+   * @returns {Function}
+   */
+  globals.personMapper = exports.personMapper = function(subObjectGenerator) { // put on globals so parentsAndChildren and spouses can access it
+    var personsGenerator = function(response) {
+      return helpers.flatMap(subObjectGenerator ? subObjectGenerator(response) : [response], function(root) {
+        return root.persons;
+      });
+    };
+    return helpers.compose(
+      helpers.constructorSetter(Person, 'persons', subObjectGenerator),
+      helpers.constructorSetter(Name, 'names', personsGenerator),
+      helpers.constructorSetter(Fact, 'facts', personsGenerator)
+    );
+  };
+
+  /**
+   * @ngdoc function
+   * @name person.functions:getMultiPerson
+   * @function
+   *
+   * @description
+   * Get multiple people at once by requesting them in parallel
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/TF6Lg/ editable example}
+   *
+   * @param {Array} pids of the people to read
+   * @param {Object=} params to pass to getPerson currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise that is fulfilled when all of the people have been read, returning a map of person id to response
+   */
+  exports.getMultiPerson = function(pids, params, opts) {
+    var promises = {};
+    helpers.forEach(pids, function(pid) {
+      promises[pid] = exports.getPerson(pid, params, opts);
+    });
+    return helpers.promiseAll(promises);
+  };
+
+  /**
+   * @ngdoc function
    * @name person.functions:getPersonWithRelationships
    * @function
    *
@@ -548,11 +492,11 @@ define([
    * - `getSpouseIds()` - array of ids
    * - `getChildIds()` - array of ids of all children
    * - `getChildIdsOf(spouseId)` - array of ids; if `spouseId` is null/undefined, return ids of children without the other parent
-   * - `getParentRelationships()` - array of {@link person.types:constructor.ChildAndParents ChildAndParents} relationship objects
+   * - `getParentRelationships()` - array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationship objects
    * - `getSpouseRelationships()` - array of {@link person.types:constructor.Couple Couple} relationship objects
    * - `getSpouseRelationship(spouseId)` - {@link person.types:constructor.Couple Couple} relationship with the specified spouse
-   * - `getChildRelationships()` - array of {@link person.types:constructor.ChildAndParents ChildAndParents} relationship objects
-   * - `getChildRelationshipsOf(spouseId)` - array of {@link person.types:constructor.ChildAndParents ChildAndParents} relationship objects
+   * - `getChildRelationships()` - array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationship objects
+   * - `getChildRelationshipsOf(spouseId)` - array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationship objects
    * if `spouseId` is null/undefined, return ids of child relationships without the other parent
    * - `getPrimaryPerson()` - {@link person.types:constructor.Person Person} object for the primary person
    *
@@ -588,7 +532,7 @@ define([
         helpers.constructorSetter(Fact, 'facts', function(response) {
           return maybe(response).relationships;
         }),
-        helpers.constructorSetter(ChildAndParents, 'childAndParentsRelationships'),
+        helpers.constructorSetter(parentsAndChildren.ChildAndParents, 'childAndParentsRelationships'),
         helpers.constructorSetter(Couple, 'relationships'), // some of the relationships are ParentChild relationships, but
                                                             // we don't have a way to change the constructor on only some elements of the array
         helpers.objectExtender(personWithRelationshipsConvenienceFunctions),
@@ -636,20 +580,20 @@ define([
     getFatherIds:  function() {
       return helpers.uniq(helpers.map(
         helpers.filter(this.getParentRelationships(), function(r) {
-          return !!r.getFatherId();
+          return !!r.$getFatherId();
         }),
         function(r) {
-          return r.getFatherId();
+          return r.$getFatherId();
         }, this));
     },
     getFathers:    function() { return helpers.map(this.getFatherIds(), this.getPerson, this); },
     getMotherIds:  function() {
       return helpers.uniq(helpers.map(
         helpers.filter(this.getParentRelationships(), function(r) {
-          return !!r.getMotherId();
+          return !!r.$getMotherId();
         }),
         function(r) {
-          return r.getMotherId();
+          return r.$getMotherId();
         }, this));
     },
     getMothers:    function() { return helpers.map(this.getMotherIds(), this.getPerson, this); },
@@ -666,14 +610,14 @@ define([
     getChildIds:   function() {
       return helpers.uniq(helpers.map(this.getChildRelationships(),
         function(r) {
-          return r.getChildId();
+          return r.$getChildId();
         }, this));
     },
     getChildren:   function() { return helpers.map(this.getChildIds(), this.getPerson, this); },
     getChildIdsOf:   function(spouseId) {
       return helpers.uniq(helpers.map(this.getChildRelationshipsOf(spouseId),
         function(r) {
-          return r.getChildId();
+          return r.$getChildId();
         }, this));
     },
     getChildrenOf:   function(spouseId) { return helpers.map(this.getChildIdsOf(spouseId), this.getPerson, this); }

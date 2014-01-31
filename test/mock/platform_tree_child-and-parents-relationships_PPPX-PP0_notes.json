@@ -1,9 +1,9 @@
 {
   "childAndParentsRelationships" : [ {
-    "id" : "R12-3456",
+    "id" : "PPPX-PP0",
     "links" : {
       "relationship" : {
-        "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/R12-3456",
+        "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0",
         "title" : "Child-and-Parents Relationship"
       }
     },
@@ -11,7 +11,7 @@
       "id" : "1804317705",
       "links" : {
         "note" : {
-          "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/R12-3456/notes/1804317705",
+          "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0/notes/1804317705",
           "title" : "Child-and-Parents Relationship Note"
         }
       },
@@ -20,7 +20,7 @@
       "id" : "1805241226",
       "links" : {
         "note" : {
-          "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/R12-3456/notes/1805241226",
+          "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0/notes/1805241226",
           "title" : "Child-and-Parents Relationship Note"
         }
       },

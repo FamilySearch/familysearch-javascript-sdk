@@ -21,7 +21,7 @@
         "title" : "Person"
       },
       "mother" : {
-        "href" : "https://familysearch.org/platform/tree/persons/PPPX-FP2",
+        "href" : "https://familysearch.org/platform/tree/persons/PPPJ-MYZ",
         "title" : "Person"
       },
       "notes" : {
@@ -29,17 +29,17 @@
         "title" : "Child-and-Parents Relationship Notes"
       },
       "father" : {
-        "href" : "https://familysearch.org/platform/tree/persons/PPPX-MP1",
+        "href" : "https://familysearch.org/platform/tree/persons/PPPJ-MYY",
         "title" : "Person"
       }
     },
     "father" : {
-      "resource" : "https://familysearch.org/platform/tree/persons/PPPX-MP1",
-      "resourceId" : "PPPX-MP1"
+      "resource" : "https://familysearch.org/platform/tree/persons/PPPJ-MYY",
+      "resourceId" : "PPPJ-MYY"
     },
     "mother" : {
-      "resource" : "https://familysearch.org/platform/tree/persons/PPPX-FP2",
-      "resourceId" : "PPPX-FP2"
+      "resource" : "https://familysearch.org/platform/tree/persons/PPPJ-MYZ",
+      "resourceId" : "PPPJ-MYZ"
     },
     "child" : {
       "resource" : "https://familysearch.org/platform/tree/persons/PPPX-PP3",
