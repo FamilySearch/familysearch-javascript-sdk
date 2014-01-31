@@ -54,6 +54,8 @@ define([
       return helpers.removeAccessToken(this.description);
     },
 
+    // TODO check for source description id
+
     /**
      * @ngdoc function
      * @name sources.types:constructor.SourceRef#$getSourceDescription
@@ -111,6 +113,8 @@ define([
      * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
      */
 
+    // TODO check for collection id and url
+
     /**
      * @ngdoc function
      * @name sources.types:constructor.SourceDescription#$getCitation
@@ -145,6 +149,7 @@ define([
      * @function
      * @return {Object} promise for the {@link sources.functions:getSourceRefsQuery getSourceRefsQuery} response
      */
+    // TODO verify this is available also from getCollectionSourceDescriptions(forUser)
     $getSourceRefsQuery: function() {
       return exports.getSourceRefsQuery(helpers.removeAccessToken(this.links['source-references-query'].href));
     }
@@ -351,7 +356,7 @@ define([
    * @return {Object} promise for the response
    */
   exports.getSourceRefsQuery = function(sdid, params, opts) {
-    // TODO add discovery resource lookup when it's working - and be careful how to substitute sdid
+    // TODO add discovery resource lookup when it's working - and be careful how to substitute sdid in the query parameters part
     var url = helpers.isAbsoluteUrl(sdid) ? sdid : helpers.appendQueryParameters('/platform/tree/source-references', {source: sdid});
     return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.compose(

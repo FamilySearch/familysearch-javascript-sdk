@@ -41,7 +41,7 @@ define([
      * @ngdoc property
      * @name sourceBox.types:constructor.Collection#title
      * @propertyOf sourceBox.types:constructor.Collection
-     * @return {String} title / folder of the collection
+     * @return {String} title of the collection folder
      */
 
     /**

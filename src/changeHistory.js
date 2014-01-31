@@ -68,6 +68,8 @@ define([
      */
     $getChangeReason: function() { return maybe(maybe(this.changeInfo)[0]).reason; },
 
+    // TODO check for agent id
+
     /**
      * @ngdoc function
      * @name changeHistory.types:constructor.Change#$getAgentUrl
