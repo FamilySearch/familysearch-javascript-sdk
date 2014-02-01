@@ -17,7 +17,7 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('for child and parents relationship is returned from getChildAndParentsChanges', function() {
-      FamilySearch.getChildAndParentsChanges('PC12-345').then(function(response) {
+      FamilySearch.getChildAndParentsChanges('PPPX-PP0').then(function(response) {
         expect(response.getChanges().length).toBe(3);
         expect(response.getChanges()[0].id).toBe('1386863479538');
         expect(response.getChanges()[0].$getContributorName()).toEqual('Mr. Contributor');
@@ -28,7 +28,7 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('for couple relationship is returned from getCoupleChanges', function() {
-      FamilySearch.getCoupleChanges('P12-345').then(function(response) {
+      FamilySearch.getCoupleChanges('12345').then(function(response) {
         expect(response.getChanges().length).toBe(3);
         expect(response.getChanges()[0].id).toBe('1386863423023');
         expect(response.getChanges()[0].$getContributorName()).toEqual('Mr. Contributor');

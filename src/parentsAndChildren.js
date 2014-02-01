@@ -1,10 +1,11 @@
 define([
+  'changeHistory',
   'globals',
   'helpers',
   'notes',
   'plumbing',
   'sources'
-], function(globals, helpers, notes, plumbing, sources) {
+], function(changeHistory, globals, helpers, notes, plumbing, sources) {
   /**
    * @ngdoc overview
    * @name parentsAndChildren
@@ -151,7 +152,16 @@ define([
      * @function
      * @return {Object} promise for the {@link sources.functions:getChildAndParentsSourceRefs getChildAndParentsSourceRefs} response
      */
-    $getSourceRefs: function() { return sources.getChildAndParentsSourceRefs(helpers.removeAccessToken(this.links['source-references'].href)); }
+    $getSourceRefs: function() { return sources.getChildAndParentsSourceRefs(helpers.removeAccessToken(maybe(this.links['source-references']).href)); },
+
+    /**
+     * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$getChanges
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @return {Object} __BROKEN__ promise for the {@link sources.functions:getChildAndParentsChanges getChildAndParentsChanges} response
+     */
+    $getChanges: function() { return changeHistory.getChildAndParentsChanges(helpers.removeAccessToken(maybe(this.links['change-history']).href)); }
   };
 
   /**
@@ -171,7 +181,7 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/C437t/ editable example}
    *
-   * @param {String} caprid of the relationship or full URL to the child-and-parents-relationship endpoint
+   * @param {String} caprid id or full URL of the child-and-parents relationship
    * @param {Object=} params set `persons` true to return a person object for each person in the relationship,
    * which you can access using the `getPerson(id)` convenience function.
    * @param {Object=} opts options to pass to the http function specified during init

@@ -11,15 +11,15 @@
         "title" : "Couple Relationship"
       },
       "person1" : {
-        "href" : "https://familysearch.org/platform/tree/persons/pid-1",
+        "href" : "https://familysearch.org/platform/tree/persons/PPPJ-MYY",
         "title" : "Person"
       },
       "person2" : {
-        "href" : "https://familysearch.org/platform/tree/persons/pid-2",
+        "href" : "https://familysearch.org/platform/tree/persons/PPPJ-MYZ",
         "title" : "Person"
       },
       "woman" : {
-        "href" : "https://familysearch.org/platform/tree/persons/pid-2",
+        "href" : "https://familysearch.org/platform/tree/persons/PPPJ-MYZ",
         "title" : "Person"
       },
       "change-history" : {
@@ -31,18 +31,18 @@
         "title" : "Couple Relationship Notes"
       },
       "man" : {
-        "href" : "https://familysearch.org/platform/tree/persons/pid-1",
+        "href" : "https://familysearch.org/platform/tree/persons/PPPJ-MYY",
         "title" : "Person"
       }
     },
     "type" : "http://gedcomx.org/Couple",
     "person1" : {
-      "resource" : "https://familysearch.org/platform/tree/persons/pid-1",
-      "resourceId" : "pid-1"
+      "resource" : "https://familysearch.org/platform/tree/persons/PPPJ-MYY",
+      "resourceId" : "PPPJ-MYY"
     },
     "person2" : {
-      "resource" : "https://familysearch.org/platform/tree/persons/pid-2",
-      "resourceId" : "pid-2"
+      "resource" : "https://familysearch.org/platform/tree/persons/PPPJ-MYZ",
+      "resourceId" : "PPPJ-MYZ"
     },
     "facts" : [ {
       "type" : "http://gedcomx.org/Marriage",

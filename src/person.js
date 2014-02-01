@@ -2,8 +2,9 @@ define([
   'globals',
   'helpers',
   'parentsAndChildren',
-  'plumbing'
-], function(globals, helpers, parentsAndChildren, plumbing) {
+  'plumbing',
+  'spouses'
+], function(globals, helpers, parentsAndChildren, plumbing, spouses) {
   /**
    * @ngdoc overview
    * @name person
@@ -352,61 +353,6 @@ define([
 
   /**
    * @ngdoc function
-   * @name person.types:constructor.Couple
-   * @description
-   *
-   * Couple relationship
-   */
-  var Couple = exports.Couple = function() {
-
-  };
-
-  exports.Couple.prototype = {
-    constructor: Couple,
-    /**
-     * @ngdoc property
-     * @name person.types:constructor.Couple#id
-     * @propertyOf person.types:constructor.Couple
-     * @return {String} Id of the relationship
-     */
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.Couple#getFacts
-     * @methodOf person.types:constructor.Couple
-     * @return {Fact[]} array of {@link person.types:constructor.Fact Facts}; e.g., marriage
-     */
-    getFacts: function() { return this.facts || []; },
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.Couple#getMarriageFact
-     * @methodOf person.types:constructor.Couple
-     * @return {Fact} {@link person.types:constructor.Fact Fact} of type http://gedcomx.org/Marriage (first one if multiple)
-     */
-    getMarriageFact: function() { return helpers.find(this.facts, {type: 'http://gedcomx.org/Marriage'}); },
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.Couple#getHusbandId
-     * @methodOf person.types:constructor.Couple
-     * @function
-     * @return {String} Id of the husband
-     */
-    getHusbandId: function() { return maybe(this.person1).resourceId; },
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.Couple#getWifeId
-     * @methodOf person.types:constructor.Couple
-     * @function
-     * @return {String} Id of the wife
-     */
-    getWifeId: function() { return maybe(this.person2).resourceId; }
-  };
-
-  /**
-   * @ngdoc function
    * @name person.functions:getPerson
    * @function
    *
@@ -493,8 +439,8 @@ define([
    * - `getChildIds()` - array of ids of all children
    * - `getChildIdsOf(spouseId)` - array of ids; if `spouseId` is null/undefined, return ids of children without the other parent
    * - `getParentRelationships()` - array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationship objects
-   * - `getSpouseRelationships()` - array of {@link person.types:constructor.Couple Couple} relationship objects
-   * - `getSpouseRelationship(spouseId)` - {@link person.types:constructor.Couple Couple} relationship with the specified spouse
+   * - `getSpouseRelationships()` - array of {@link spouses.types:constructor.Couple Couple} relationship objects
+   * - `getSpouseRelationship(spouseId)` - {@link spouses.types:constructor.Couple Couple} relationship with the specified spouse
    * - `getChildRelationships()` - array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationship objects
    * - `getChildRelationshipsOf(spouseId)` - array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationship objects
    * if `spouseId` is null/undefined, return ids of child relationships without the other parent
@@ -533,7 +479,7 @@ define([
           return maybe(response).relationships;
         }),
         helpers.constructorSetter(parentsAndChildren.ChildAndParents, 'childAndParentsRelationships'),
-        helpers.constructorSetter(Couple, 'relationships'), // some of the relationships are ParentChild relationships, but
+        helpers.constructorSetter(spouses.Couple, 'relationships'), // some of the relationships are ParentChild relationships, but
                                                             // we don't have a way to change the constructor on only some elements of the array
         helpers.objectExtender(personWithRelationshipsConvenienceFunctions),
         exports.personMapper()
@@ -560,7 +506,7 @@ define([
       var primaryId = this.getPrimaryId();
       return helpers.find(this.relationships, function(r) {
         return r.type === 'http://gedcomx.org/Couple' &&
-          (primaryId === r.getHusbandId() ? r.getWifeId() : r.getHusbandId()) === spouseId;
+          (primaryId === r.$getHusbandId() ? r.$getWifeId() : r.$getHusbandId()) === spouseId;
       });
     },
     getChildRelationships: function() {
@@ -600,10 +546,10 @@ define([
     getSpouseIds:  function() {
       return helpers.uniq(helpers.map(
         helpers.filter(this.getSpouseRelationships(), function(r) {
-          return r.getHusbandId() && r.getWifeId(); // only consider couple relationships with both spouses
+          return r.$getHusbandId() && r.$getWifeId(); // only consider couple relationships with both spouses
         }),
         function(r) {
-          return this.getPrimaryId() === r.getHusbandId() ? r.getWifeId() : r.getHusbandId();
+          return this.getPrimaryId() === r.$getHusbandId() ? r.$getWifeId() : r.$getHusbandId();
         }, this));
     },
     getSpouses:    function() { return helpers.map(this.getSpouseIds(), this.getPerson, this); },
@@ -660,7 +606,7 @@ define([
    * The response includes the following convenience functions
    *
    * - `getSpouseIds()` - an array of string ids
-   * - `getRelationships()` - an array of {@link person.types:constructor.Couple Couple} relationships
+   * - `getRelationships()` - an array of {@link spouses.types:constructor.Couple Couple} relationships
    * - `getPerson(pid)` - if the `persons` parameter has been set, this function will return a
    * {@link person.types:constructor.Person Person} for a person id in the relationship
    *
@@ -678,7 +624,7 @@ define([
     return plumbing.get('/platform/tree/persons/'+encodeURI(pid)+'/spouse-relationships', params, {}, opts,
       helpers.compose(
         helpers.objectExtender({getPrimaryId: function() { return pid; }}), // make id available to convenience functions
-        helpers.constructorSetter(Couple, 'relationships'),
+        helpers.constructorSetter(spouses.Couple, 'relationships'),
         helpers.objectExtender(relationshipsToSpousesConvenienceFunctions),
         helpers.constructorSetter(Fact, 'facts', function(response) {
           return maybe(response).relationships;
@@ -692,7 +638,7 @@ define([
     getSpouseIds:  function() {
       var primaryId = this.getPrimaryId();
       return helpers.uniq(helpers.map(this.getRelationships(), function(r) {
-        return r.getHusbandId() === primaryId ? r.getWifeId() : r.getHusbandId();
+        return r.$getHusbandId() === primaryId ? r.$getWifeId() : r.$getHusbandId();
       }, this));
     },
     getPerson:    function(id) { return helpers.find(this.persons, {id: id}); }

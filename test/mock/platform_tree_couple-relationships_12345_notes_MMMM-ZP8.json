@@ -1,10 +1,10 @@
 {
   "relationships": [
     {
-      "id": "MMM7-12S",
+      "id": "12345",
       "links": {
         "relationship": {
-          "href": "https://sandbox.familysearch.org/platform/tree/couple-relationships/MMM7-12S?access_token=USYS0FCF7776C680AD7DB5C0954B82E0F356_idses-int01.a.fsglobal.net",
+          "href": "https://sandbox.familysearch.org/platform/tree/couple-relationships/12345?access_token=USYS0FCF7776C680AD7DB5C0954B82E0F356_idses-int01.a.fsglobal.net",
           "title": "Relationship"
         }
       },
@@ -13,7 +13,7 @@
           "id": "MMMM-ZP8",
           "links": {
             "notes": {
-              "href": "https://sandbox.familysearch.org/platform/tree/couple-relationships/MMM7-12S/notes?access_token=USYS0FCF7776C680AD7DB5C0954B82E0F356_idses-int01.a.fsglobal.net",
+              "href": "https://sandbox.familysearch.org/platform/tree/couple-relationships/12345/notes?access_token=USYS0FCF7776C680AD7DB5C0954B82E0F356_idses-int01.a.fsglobal.net",
               "title": "Notes"
             }
           },

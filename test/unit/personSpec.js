@@ -74,9 +74,9 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getSpouseRelationships().length).toBe(1);
         rel = response.getSpouseRelationships()[0];
         expect(rel.id).toBe('C123-ABC');
-        expect(rel.getHusbandId()).toBe('PW8J-MZ0');
-        expect(rel.getWifeId()).toBe('PA65-HG3');
-        expect(rel.getFacts().length).toBe(0);
+        expect(rel.$getHusbandId()).toBe('PW8J-MZ0');
+        expect(rel.$getWifeId()).toBe('PA65-HG3');
+        expect(rel.$getFacts().length).toBe(0);
         expect(response.getSpouseRelationship('PA65-HG3').id).toBe('C123-ABC');
         expect(response.getSpouseRelationship('FOO')).toBeUndefined();
         expect(response.getChildRelationships().length).toBe(1);
@@ -123,10 +123,10 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getRelationships().length).toBe(1);
         var rel = response.getRelationships()[0];
         expect(rel.id).toBe('KJ8T-GZ0');
-        expect(rel.getHusbandId()).toBe('KJ8T-MP1');
-        expect(rel.getWifeId()).toBe('KJ8T-FP2');
-        expect(rel.getFacts().length).toBe(1);
-        expect(rel.getFacts()[0].getDate()).toBe('1 January 1786');
+        expect(rel.$getHusbandId()).toBe('KJ8T-MP1');
+        expect(rel.$getWifeId()).toBe('KJ8T-FP2');
+        expect(rel.$getFacts().length).toBe(1);
+        expect(rel.$getFacts()[0].getDate()).toBe('1 January 1786');
       });
     });
 

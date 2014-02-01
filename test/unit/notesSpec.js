@@ -33,7 +33,7 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('references are returned from getCoupleNoteRefs', function() {
-      FamilySearch.getCoupleNoteRefs('R12-3456').then(function(response) {
+      FamilySearch.getCoupleNoteRefs('12345').then(function(response) {
         var notes = response.getNoteRefs();
         expect(notes.length).toBe(2);
         expect(notes[0].id).toBe('1804317705');
@@ -44,7 +44,7 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('is returned from getCoupleNote', function() {
-      FamilySearch.getCoupleNote('MMM7-12S', 'MMMM-ZP8').then(function(response) {
+      FamilySearch.getCoupleNote('12345', 'MMMM-ZP8').then(function(response) {
         var note = response.getNote();
         expect(note.id).toBe('MMMM-ZP8');
         expect(note.subject).toBe('Couple Relationship Note Title');
@@ -55,7 +55,7 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('are returned from getMultiCoupleNote', function() {
-      FamilySearch.getMultiCoupleNote('MMM7-12S', ['MMMM-ZP8']).then(function(response) {
+      FamilySearch.getMultiCoupleNote('12345', ['MMMM-ZP8']).then(function(response) {
         var note = response['MMMM-ZP8'].getNote();
         expect(note.id).toBe('MMMM-ZP8');
       });

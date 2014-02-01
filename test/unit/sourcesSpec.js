@@ -33,7 +33,7 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('references are returned from getCoupleSourceRefs', function() {
-      FamilySearch.getCoupleSourceRefs('RRRR-RRR').then(function(response) {
+      FamilySearch.getCoupleSourceRefs('12345').then(function(response) {
         var sourceRefs = response.getSourceRefs();
         expect(sourceRefs[0].$getTagNames()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
         expect(sourceRefs[1].$getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/BBBB-BBB');

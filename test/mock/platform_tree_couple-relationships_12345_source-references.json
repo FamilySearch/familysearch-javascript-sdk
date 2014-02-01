@@ -1,16 +1,16 @@
 {
   "relationships" : [ {
-    "id" : "RRRR-RRR",
+    "id" : "12345",
     "links" : {
       "relationship" : {
-        "href" : "https://familysearch.org/platform/tree/couple-relationships/RRRR-RRR",
+        "href" : "https://familysearch.org/platform/tree/couple-relationships/12345",
         "title" : "Couple Relationship"
       }
     },
     "sources" : [ {
       "links" : {
         "source-references" : {
-          "href" : "https://familysearch.org/platform/tree/couple-relationships/RRRR-RRR/source-references/1363539460",
+          "href" : "https://familysearch.org/platform/tree/couple-relationships/12345/source-references/1363539460",
           "title" : "Couple Relationship Source Reference"
         }
       },
@@ -33,7 +33,7 @@
     }, {
       "links" : {
         "source-references" : {
-          "href" : "https://familysearch.org/platform/tree/couple-relationships/RRRR-RRR/source-references/1209707083",
+          "href" : "https://familysearch.org/platform/tree/couple-relationships/12345/source-references/1209707083",
           "title" : "Couple Relationship Source Reference"
         }
       },

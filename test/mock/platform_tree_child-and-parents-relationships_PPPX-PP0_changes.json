@@ -2,15 +2,15 @@
   "id" : "uuid:81175d0d-1bc3-4c44-a7f6-fdde90c96ec2",
   "links" : {
     "relationship" : {
-      "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PC12-345",
+      "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0",
       "title" : "Child-and-Parents Relationship"
     },
     "self" : {
-      "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PC12-345/changes",
+      "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0/changes",
       "title" : "Child-and-Parents Relationship Change History"
     }
   },
-  "title" : "Change History for Parent Relationship Pair PC12-345",
+  "title" : "Change History for Parent Relationship Pair PPPX-PP0",
   "updated" : 1386863479538,
   "entries" : [ {
     "contributors" : [ {

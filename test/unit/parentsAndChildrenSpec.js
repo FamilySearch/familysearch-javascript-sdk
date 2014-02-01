@@ -31,6 +31,12 @@ define(['FamilySearch'], function(FamilySearch) {
           expect(noteRefs.length).toBe(2);
           expect(noteRefs[0].id).toBe('1804317705');
         });
+        // TODO check if change-history link is in the right place, fix mock data, and test
+//        rel.$getChanges().then(function(response) {
+//          var changes = response.getChanges();
+//          expect(changes.length).toBe(3);
+//          expect(changes[0].id).toBe('1386863479538');
+//        });
       });
     });
   });

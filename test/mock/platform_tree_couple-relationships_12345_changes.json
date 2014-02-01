@@ -2,15 +2,15 @@
   "id" : "uuid:7c8261ea-bbbe-42d2-a4c6-d591bdcc185a",
   "links" : {
     "relationship" : {
-      "href" : "https://familysearch.org/platform/tree/couple-relationships/P12-345",
+      "href" : "https://familysearch.org/platform/tree/couple-relationships/12345",
       "title" : "Couple Relationship"
     },
     "self" : {
-      "href" : "https://familysearch.org/platform/tree/couple-relationships/P12-345/changes",
+      "href" : "https://familysearch.org/platform/tree/couple-relationships/12345/changes",
       "title" : "Couple Relationship Change History"
     }
   },
-  "title" : "Change History for Couple Relationship P12-345",
+  "title" : "Change History for Couple Relationship 12345",
   "updated" : 1386863423023,
   "entries" : [ {
     "contributors" : [ {

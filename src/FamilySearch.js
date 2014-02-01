@@ -85,7 +85,6 @@ define([
     Person: person.Person,
     Name: person.Name,
     Fact: person.Fact,
-    Couple: person.Couple,
     ParentChild: person.ParentChild,
     getPerson: person.getPerson,
     getMultiPerson: person.getMultiPerson,
@@ -119,6 +118,7 @@ define([
     getSourceRefsQuery: sources.getSourceRefsQuery,
 
     // spouses
+    Couple: spouses.Couple,
     getCouple: spouses.getCouple,
 
     // user
