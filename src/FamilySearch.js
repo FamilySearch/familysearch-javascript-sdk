@@ -85,14 +85,11 @@ define([
     Person: person.Person,
     Name: person.Name,
     Fact: person.Fact,
-    ParentChild: person.ParentChild,
     getPerson: person.getPerson,
     getMultiPerson: person.getMultiPerson,
     getPersonWithRelationships: person.getPersonWithRelationships,
     getPersonChangeSummary: person.getPersonChangeSummary,
     getRelationshipsToSpouses: person.getRelationshipsToSpouses,
-    getRelationshipsToParents: person.getRelationshipsToParents,
-    getRelationshipsToChildren: person.getRelationshipsToChildren,
 
     // search and match
     SearchResult: searchAndMatch.SearchResult,
