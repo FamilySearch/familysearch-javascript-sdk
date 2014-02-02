@@ -10,7 +10,25 @@ NG_DOCS={
       "type": "overview",
       "moduleName": "index",
       "shortDescription": "Overview",
-      "keywords": "$http $q _low_level_commands_plumbing access actual add addition additional adds agent ajax amd angularjs anticipated api app_key approach array arrays asynchronous auth_callback authentication automatically branch browser bugs build builds built call callback called calling calls case catch change changehistory changes childandparents code combine combined comment comments commonjs config console constructors consume contactname contributing convenience cookie copying correct corresponding couple created custom data defer deferred deferred_function dependencies described description_the-promise-api desired developers directory discussion discussions display docs documentation documented easier element elements endpoint endpoints environment error errors errorthrown example examples exist existing expectations expired exposed extended extracting fact facts fail fairly familysearch favor features file files format frag front fulfilled fully function functionality functions generate generated getaccesstoken getallresponseheaders getcurrentuser getgivenname getname getnameandid getperson getrequest getresponseheader getstatuscode getsurname getuser gh-pages git github global goal great grunt handle handled handling header headers hello higher-level hopefully host html http http_function idsourceref illustrated implemented includes init javascript jquery js jsdoc jshint jshintrc json kernel keywords list loader loaders located log low-level manage mapped match memories memory memoryref method methods minified minify mock model module my_access_key nameforms names navigate navigating node note noteref notes object objects occur ojects option optional options org original overview parameter parentchild parts pass passed pasting people performed person plumbing port potential prepending project promise promises properties prototype prototypes provided publish pull purpose push read redirect_goes_here redirects referring registered rejected relationships request requests required requires response responses rest retried return returned returning returns running sample sandbox saved script sdk search searchandmatch searchresult serve server set simple single source sourcedescription sourceref sources started starts status strict submitting success suppose surname targets test tests textstatus throttling token tool top transient travis-ci type types typically unit uri url user users var wanted watches website window work works wraps write written your_access_key_goes_here"
+      "keywords": "$http $q _low_level_commands_plumbing access actual add addition additional adds agent ajax amd angularjs anticipated api app_key approach array arrays asynchronous auth_callback authentication automatically branch browser bugs build builds built call callback called calling calls case catch change changehistory changes childandparents code combine combined comment comments commonjs config console constructors consume contactname contributing convenience cookie copying correct corresponding couple created custom data defer deferred deferred_function dependencies described description_the-promise-api desired developers directory discussion discussions display docs documentation documented easier element elements endpoint endpoints environment error errors errorthrown example examples exist existing expectations expired exposed extended extracting fact facts fail fairly familysearch features file files format frag front fulfilled fully function functionality functions generate generated getaccesstoken getallresponseheaders getcurrentuser getgivenname getname getnameandid getperson getrequest getresponseheader getstatuscode getsurname getuser gh-pages git github global goal great grunt handle handled handling header headers hello higher-level host html http http_function illustrated implemented includes init javascript jquery js jsdoc jshint jshintrc json kernel keywords list loader loaders located log low-level manage mapped match memories memory memorypersona memorypersonaref method methods minified minify mock model module my_access_key nameforms names navigate navigating node note noteref notes object objects occur ojects option optional options org original overview parameter parentsandchildren parts pass passed pasting people performed person plumbing port potential prepending project promise promises properties prototype prototypes provided publish pull purpose push read redirect_goes_here redirects referring registered rejected relationships request requests required requires response responses rest retried return returned returning returns running sample sandbox saved script sdk search searchandmatch searchresult serve server set simple single source sourcedescription sourceref sources spouses started starts status strict submitting success suppose surname targets test tests textstatus throttling token tool top transient travis-ci type types typically unit uri url user users var wanted watches website window work works wraps write written your_access_key_goes_here"
+    },
+    {
+      "section": "api",
+      "id": "attribution",
+      "shortName": "attribution",
+      "type": "overview",
+      "moduleName": "attribution",
+      "shortDescription": "Functions related to an attribution object",
+      "keywords": "api attribution functions object overview"
+    },
+    {
+      "section": "api",
+      "id": "attribution.types:constructor.Attribution",
+      "shortName": "constructor.Attribution",
+      "type": "function",
+      "moduleName": "attribution",
+      "shortDescription": "Attribution",
+      "keywords": "$getagent $getagentid $getagenturl agent api attribution change changemessage contributor details function functions getagent message modified pass promise property response timestamp types url user"
     },
     {
       "section": "api",
@@ -82,7 +100,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "changeHistory",
       "shortDescription": "Get change history for a child and parents relationship",
-      "keywords": "api array caprid change changehistory changes child convenience count docs editable entries example familysearch function functions getchanges history http https includes init net number options opts org params parents pass promise read relationship response return types"
+      "keywords": "api array caprid change changehistory changes child convenience count docs editable endpoint entries example familysearch full function functions getchanges history http https includes init net number options opts org params parents pass promise relationship response return types url"
     },
     {
       "section": "api",
@@ -91,7 +109,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "changeHistory",
       "shortDescription": "Get change history for a couple relationship",
-      "keywords": "api array change changehistory changes convenience count couple crid docs editable entries example familysearch function functions getchanges history http https includes init net number options opts org params pass promise read relationship response return types"
+      "keywords": "api array change changehistory changes convenience count couple crid docs editable endpoint entries example familysearch full function functions getchanges history http https includes init net number options opts org params pass promise read relationship response return types url"
     },
     {
       "section": "api",
@@ -100,16 +118,16 @@ NG_DOCS={
       "type": "function",
       "moduleName": "changeHistory",
       "shortDescription": "Get change history for a person",
-      "keywords": "api array change changehistory changes convenience count docs editable entries example familysearch function functions getchanges history http https includes init net number options opts org params pass person pid promise read response return types"
+      "keywords": "api array change changehistory changes convenience count docs editable endpoint entries example familysearch full function functions getchanges history http https includes init net number options opts org params pass person pid promise response return types url"
     },
     {
       "section": "api",
-      "id": "changeHistory.types:type.Change",
-      "shortName": "type.Change",
+      "id": "changeHistory.types:constructor.Change",
+      "shortName": "constructor.Change",
       "type": "function",
       "moduleName": "changeHistory",
       "shortDescription": "Change made to a person or relationship",
-      "keywords": "api change changehistory contributor function getchangereason getcontributorname person property reason relationship timestamp title types updated"
+      "keywords": "$getagent $getagenturl $getchangereason $getcontributorname agent api change changehistory contributor details function functions getagent pass person promise property reason relationship response timestamp title types updated url user"
     },
     {
       "section": "api",
@@ -127,7 +145,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Get comments for a discussion",
-      "keywords": "api array comment comments convenience currently discussion discussions docs editable example familysearch function functions getcomments http https includes init net options opts org params pass promise read response types unused"
+      "keywords": "api array comment comments convenience currently discussion discussion-comments discussions docs editable endpoint example familysearch full function functions getcomments http https includes init net options opts org params pass promise response types unused url"
     },
     {
       "section": "api",
@@ -136,7 +154,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Get information about a discussion",
-      "keywords": "api convenience currently discussion discussions docs editable example familysearch function functions getdiscussion http https includes init net options opts org params pass promise read response types unused"
+      "keywords": "api convenience currently discussion discussions docs editable example familysearch full function functions getdiscussion http https includes init net options opts org params pass promise read response types unused url"
     },
     {
       "section": "api",
@@ -145,7 +163,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Get multiple discussions at once by requesting them in parallel",
-      "keywords": "api currently dids discussion discussions docs editable example familysearch fulfilled function functions getdiscussion http https ids init map multiple net opts org parallel params pass promise read requesting response returning unused"
+      "keywords": "api currently dids discussion discussionref discussionrefs discussions docs editable example familysearch fulfilled full function functions getdiscussion http https init map multiple net opts org parallel params pass promise read requesting response returning types unused url urls"
     },
     {
       "section": "api",
@@ -154,25 +172,34 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Get references to discussions for a person",
-      "keywords": "api array convenience currently discussion discussions docs editable example familysearch function functions getdiscussionids http https ids includes init net options opts org params pass person pid promise read references response unused"
+      "keywords": "api array convenience currently discussionref discussionrefs discussions docs editable endpoint example familysearch full function functions getdiscussionrefs http https includes init net options opts org params pass person person-discussion-references pid promise read references response types unused url"
     },
     {
       "section": "api",
-      "id": "discussions.types:type.Comment",
-      "shortName": "type.Comment",
+      "id": "discussions.types:constructor.Comment",
+      "shortName": "constructor.Comment",
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Comment on a discussion",
-      "keywords": "api comment contributor created details discussion discussions function functions getagent getcontributorid pass property text timestamp types user"
+      "keywords": "$getagent $getagentid $getagenturl __broken__ api comment contributor created details discussion discussions function functions getagent pass promise property response text timestamp types url user"
     },
     {
       "section": "api",
-      "id": "discussions.types:type.Discussion",
-      "shortName": "type.Discussion",
+      "id": "discussions.types:constructor.Discussion",
+      "shortName": "constructor.Discussion",
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Discussion",
-      "keywords": "api comments contributor created description details discussion discussions function functions getagent getcontributorid modified number numberofcomments pass property text timestamp title types user"
+      "keywords": "$getagent $getagentid $getagenturl $getcomments $getcommentsurl __broken__ api comments contributor created description details discussion discussions endpoint function functions getagent getcomments modified number numberofcomments pass promise property response text timestamp title types url user"
+    },
+    {
+      "section": "api",
+      "id": "discussions.types:constructor.DiscussionRef",
+      "shortName": "constructor.DiscussionRef",
+      "type": "function",
+      "moduleName": "discussions",
+      "shortDescription": "Reference to a discussion on a person",
+      "keywords": "$getdiscussion $getdiscussionurl api details discussion discussionref discussions function functions getdiscussion pass person promise reference response types url"
     },
     {
       "section": "api",
@@ -203,12 +230,21 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "memories.functions:addPersonMemoryRef",
-      "shortName": "addPersonMemoryRef",
+      "id": "memories.functions:addMemoryPersona",
+      "shortName": "addMemoryPersona",
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Create a memory (story or photo)",
-      "keywords": "api change changemessage create docs editable example familysearch function functions http https init memories memory memoryref message net options opts org params pass person persona photo pid promise reference"
+      "keywords": "api attached create currently docs editable example familysearch full function functions http https init memories memory memorypersona memorypersonaref mid net options opts org params pass people personas photo promise types unused url"
+    },
+    {
+      "section": "api",
+      "id": "memories.functions:addMemoryPersonaRef",
+      "shortName": "addMemoryPersonaRef",
+      "type": "function",
+      "moduleName": "memories",
+      "shortDescription": "Create a memory (story or photo)",
+      "keywords": "api change changemessage create docs editable example familysearch function functions http https init memories memory memorypersonaref message net options opts org params pass person persona photo pid promise reference url"
     },
     {
       "section": "api",
@@ -217,16 +253,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Create a memory (story or photo)",
-      "keywords": "api artifact create data description docs editable example familysearch filename formdata function functions http https init memories memory net object options opts org params pass photo promise string title type"
-    },
-    {
-      "section": "api",
-      "id": "memories.functions:createMemoryPersona",
-      "shortName": "createMemoryPersona",
-      "type": "function",
-      "moduleName": "memories",
-      "shortDescription": "Create a memory (story or photo)",
-      "keywords": "api attached create currently docs editable example familysearch function functions http https init memories memory memoryref mid mini-person net object options opts org params pass people persona personas photo promise specific unused"
+      "keywords": "_must_ api artifact create data description docs document editable example familysearch field file filename formdata function functions http https image init memories memory net object options opts org params pass photo promise story string title type url"
     },
     {
       "section": "api",
@@ -235,7 +262,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Get information about a memory",
-      "keywords": "api convenience currently docs editable example familysearch function functions getmemory http https includes init memories memory net options opts org params pass promise read response types unused"
+      "keywords": "api convenience currently docs editable example familysearch full function functions getmemory http https includes init memories memory mid net options opts org params pass promise response types unused url"
     },
     {
       "section": "api",
@@ -244,7 +271,16 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Get comments for a memory",
-      "keywords": "api array comment comments convenience currently discussions docs editable example familysearch function functions getcomments http https includes init memories memory mid net options opts org params pass promise read response types unused"
+      "keywords": "api array comment comments convenience currently discussions docs editable endpoint example familysearch full function functions getcomments http https includes init memories memory memory-comments mid net options opts org params pass promise response types unused url"
+    },
+    {
+      "section": "api",
+      "id": "memories.functions:getMemoryPersonaRefs",
+      "shortName": "getMemoryPersonaRefs",
+      "type": "function",
+      "moduleName": "memories",
+      "shortDescription": "Get references to memories for a person",
+      "keywords": "api array convenience currently docs editable endpoint example familysearch full function functions getmemorypersonarefs http https includes init memories memorypersonaref memorypersonarefs net options opts org params pass person person-memory-references pid promise references response types unused url"
     },
     {
       "section": "api",
@@ -253,7 +289,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Get personas for a memory",
-      "keywords": "api appears array convenience currently docs editable example familysearch function functions getpersonas http https includes init memories memory mid net options opts org params pass person personas promise read response scaled-down types unused"
+      "keywords": "api appears array convenience currently docs editable endpoint example familysearch full function functions getpersonas http https includes init memories memory memory-personas mid net options opts org params pass person personas promise response scaled-down types unused url"
     },
     {
       "section": "api",
@@ -262,21 +298,12 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Get a paged list of memories for a person",
-      "keywords": "api array artifacts convenience count defaults docs editable example familysearch function functions getmemories http https includes init list maximum memories memory net number options opts org paged params pass person photo pid promise read response return start story type types values"
+      "keywords": "api array artifacts convenience count defaults docs editable endpoint example familysearch full function functions getmemories http https includes init list maximum memories memory net number options opts org paged params pass person person-memories-query photo pid promise response return start story type types url values"
     },
     {
       "section": "api",
-      "id": "memories.functions:getPersonMemoryRefs",
-      "shortName": "getPersonMemoryRefs",
-      "type": "function",
-      "moduleName": "memories",
-      "shortDescription": "Get references to memories for a person",
-      "keywords": "api array convenience currently docs editable example familysearch function functions getmemoryrefs http https includes init memories memoryref memoryrefs net options opts org params pass person pid promise read references response types unused"
-    },
-    {
-      "section": "api",
-      "id": "memories.functions:getPersonPortraitURL",
-      "shortName": "getPersonPortraitURL",
+      "id": "memories.functions:getPersonPortraitUrl",
+      "shortName": "getPersonPortraitUrl",
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Get the URL of the portrait of a person",
@@ -289,25 +316,43 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Get a paged list of memories for a user",
-      "keywords": "api array convenience count defaults docs editable example familysearch function functions getmemories http https includes init list maximum memories memory net number options opts org paged params pass promise response return start types user"
+      "keywords": "_agent_ _user_ api array convenience count defaults docs editable example familysearch full function functions getmemories http https includes init list maximum memories memory net note number options opts org paged params pass promise response return start types uid url user"
     },
     {
       "section": "api",
-      "id": "memories.types:type.Memory",
-      "shortName": "type.Memory",
+      "id": "memories.types:constructor.Memory",
+      "shortName": "constructor.Memory",
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Memory",
-      "keywords": "access api array description filenames full function getartifactfilenames getdescription geticonurl getimageurl getmodified getthumbnailurl gettitle http icon image media mediatype memories memory object org property resource resourcetype thumbnail timestamp title token type types url"
+      "keywords": "$addmemorypersona $getdescription $geticonurl $getimageurl $getmemoryartifacturl $getthumbnailurl $gettitle $setmemoryartifacturl access api array artifact artifactmetadata artifacttype attached attributes comma-separated currently description extracted filename full function http icon identifying image init lists media mediatype memories memory memoryartifactref memorypersona memorypersonaref numbers objects options opts org params pass people persona personas promise property qualifiers rectangle resource resourcetype thumbnail title token type types unused url"
     },
     {
       "section": "api",
-      "id": "memories.types:type.MemoryRef",
-      "shortName": "type.MemoryRef",
+      "id": "memories.types:constructor.MemoryArtifactRef",
+      "shortName": "constructor.MemoryArtifactRef",
       "type": "function",
       "moduleName": "memories",
-      "shortDescription": "A Memory id and a Memory Persona Id.",
-      "keywords": "api connected details function functions getmemory getmemoryid getmemorypersonas memories memory memoryref pass person persona personas property resourceid types"
+      "shortDescription": "Memory Artifact Reference",
+      "keywords": "api artifact function memories memory memoryartifactref reference types url"
+    },
+    {
+      "section": "api",
+      "id": "memories.types:constructor.MemoryPersona",
+      "shortName": "constructor.MemoryPersona",
+      "type": "function",
+      "moduleName": "memories",
+      "shortDescription": "Memory Persona (not a true persona; can only contain a name and a media artifact reference)",
+      "keywords": "$addmemoryartifactref $addname $getdisplayname $getgivenname $getmemoryartifactref $getnames $getpreferredname $getsurname add api array artifact display function mar media memories memory memoryartifactref memorypersona names person persona preferred reference surname true types url"
+    },
+    {
+      "section": "api",
+      "id": "memories.types:constructor.MemoryPersonaRef",
+      "shortName": "constructor.MemoryPersonaRef",
+      "type": "function",
+      "moduleName": "memories",
+      "shortDescription": "A reference to a MemoryPersona and a",
+      "keywords": "$getmemory $getmemoryid $getmemoryurl api details function functions getmemory memories memory memorypersona memorypersonaref pass persona promise property reference resource resourceid response types url"
     },
     {
       "section": "api",
@@ -325,7 +370,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Get information about a child and parents relationship note",
-      "keywords": "api caprid child convenience currently docs editable example familysearch function functions getnote http https includes init net nid note notes options opts org params parents pass promise relationship response types unused"
+      "keywords": "api caprid child convenience currently docs editable example familysearch full function functions getnote http https includes init net nid note notes options opts org params parents pass promise relationship response types unused url"
     },
     {
       "section": "api",
@@ -334,7 +379,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Get the note references for a child and parents relationship",
-      "keywords": "api array caprid child convenience currently docs editable example familysearch function functions getnoterefs http https includes init net note noteref noterefs notes options opts org params parents pass promise read references relationship response types unused"
+      "keywords": "api array caprid child child-and-parents-relationship-notes convenience currently docs editable endpoint example familysearch full function functions getnoterefs http https includes init net note noteref noterefs notes options opts org params parents pass promise references relationship response types unused url"
     },
     {
       "section": "api",
@@ -343,7 +388,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Get information about a couple relationship note",
-      "keywords": "api convenience couple crid currently docs editable example familysearch function functions getnote http https includes init net nid note notes options opts org params pass promise relationship response types unused"
+      "keywords": "api convenience couple crid currently docs editable example familysearch full function functions getnote http https includes init net nid note notes options opts org params pass promise relationship response types unused url"
     },
     {
       "section": "api",
@@ -352,7 +397,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Get the note references for a couple relationship",
-      "keywords": "api array convenience couple crid currently docs editable example familysearch function functions getnoterefs http https includes init net note noteref noterefs notes options opts org params pass promise read references relationship response types unused"
+      "keywords": "api array convenience couple couple-relationship-notes crid currently docs editable endpoint example familysearch full function functions getnoterefs http https includes init net note noteref noterefs notes options opts org params pass promise references relationship response types unused url"
     },
     {
       "section": "api",
@@ -361,7 +406,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Get multiple notes at once by requesting them in parallel",
-      "keywords": "api caprid child currently docs editable example familysearch fulfilled function functions getchildandparentsnote http https ids init map multiple net nids note noteref noterefs notes opts org parallel params parents pass promise read relationship requesting response returning types unused"
+      "keywords": "api caprid child currently docs editable example familysearch fulfilled full function functions getchildandparentsnote http https ids init map multiple net nids note noteref noterefs notes opts org parallel params parents pass promise read relationship requesting response returning types unused urls"
     },
     {
       "section": "api",
@@ -370,7 +415,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Get multiple notes at once by requesting them in parallel",
-      "keywords": "api couple crid currently docs editable example familysearch fulfilled function functions getcouplenote http https ids init map multiple net nids note noteref noterefs notes opts org parallel params pass promise read relationship requesting response returning types unused"
+      "keywords": "api couple crid currently docs editable example familysearch fulfilled full function functions getcouplenote http https ids init map multiple net nids note noteref noterefs notes opts org parallel params pass promise read relationship requesting response returning types unused urls"
     },
     {
       "section": "api",
@@ -379,7 +424,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Get multiple notes at once by requesting them in parallel",
-      "keywords": "api currently docs editable example familysearch fulfilled function functions getpersonnote http https ids init map multiple net nids note noteref noterefs notes opts org parallel params pass person pid promise read requesting response returning types unused"
+      "keywords": "api currently docs editable example familysearch fulfilled full function functions getpersonnote http https ids init map multiple net nids note noteref noterefs notes opts org parallel params pass person pid promise read requesting response returning types unused url urls"
     },
     {
       "section": "api",
@@ -388,7 +433,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Get information about a note",
-      "keywords": "api convenience currently docs editable example familysearch function functions getnote http https includes init net nid note notes options opts org params pass person pid promise response types unused"
+      "keywords": "api convenience currently docs editable example familysearch full function functions getnote http https includes init net nid note notes options opts org params pass person pid promise response types unused url"
     },
     {
       "section": "api",
@@ -397,25 +442,25 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Get note references for a person",
-      "keywords": "api array convenience currently docs editable example familysearch function functions getnoterefs http https includes init net note noteref noterefs notes options opts org params pass person pid promise read references response types unused"
+      "keywords": "api array convenience currently docs editable endpoint example familysearch full function functions getnoterefs http https includes init net note noteref noterefs notes options opts org params pass person person-notes pid promise references response types unused url"
     },
     {
       "section": "api",
-      "id": "notes.types:type.Note",
-      "shortName": "type.Note",
+      "id": "notes.types:constructor.Note",
+      "shortName": "constructor.Note",
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Note",
-      "keywords": "api contributor details function functions getagent getcontributorid getmodified note notes pass property subject text timestamp title types user"
+      "keywords": "api attribution function note notes object property subject text title types"
     },
     {
       "section": "api",
-      "id": "notes.types:type.NoteRef",
-      "shortName": "type.NoteRef",
+      "id": "notes.types:constructor.NoteRef",
+      "shortName": "constructor.NoteRef",
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Reference to a note on a person",
-      "keywords": "api details function functions getchildandparentsnote getcouplenote getpersonnote note noteref notes pass person property reference subject types"
+      "keywords": "$getnote $getnoteurl api details function functions getchildandparentsnote getcouplenote getpersonnote note noteref notes pass person promise property reference response sources subject types url"
     },
     {
       "section": "api",
@@ -433,7 +478,16 @@ NG_DOCS={
       "type": "function",
       "moduleName": "parentsAndChildren",
       "shortDescription": "Get information about a child and parents relationship.",
-      "keywords": "access api caprid child childandparents convenience docs editable example familysearch function functions getperson getrelationship http https includes init net object options opts org parameter params parents parentsandchildren pass person persons promise read relationship response return set true types"
+      "keywords": "access api caprid child child-and-parents childandparents convenience docs editable example familysearch full function functions getperson getrelationship http https includes init net object options opts org parameter params parents parentsandchildren pass person persons promise relationship response return set true types url"
+    },
+    {
+      "section": "api",
+      "id": "parentsAndChildren.types:constructor.ChildAndParents",
+      "shortName": "constructor.ChildAndParents",
+      "type": "function",
+      "moduleName": "parentsAndChildren",
+      "shortDescription": "Child and parents relationship",
+      "keywords": "$getchanges $getchild $getchildid $getchildurl $getfather $getfatherfacts $getfatherid $getfatherurl $getmother $getmotherfacts $getmotherid $getmotherurl $getnoterefs $getsourcerefs __broken__ api array child childandparents fact facts father function functions getchildandparentschanges getchildandparentsnoterefs getchildandparentssourcerefs getperson mother notes parent-relationship parents parentsandchildren person promise property relationship response sources type types url"
     },
     {
       "section": "api",
@@ -451,7 +505,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "pedigree",
       "shortDescription": "Get the ancestors of a specified person and optionally a specified spouse with the following convenience functions",
-      "keywords": "additional ancestor ancestors ancestry api array ascendancy convenience docs editable example exists familysearch full function functions generations getascendancynumber getperson getpersons http https includes init max net notes number object objects optionally options opts org params pass pedigree person persondetails persons promise retrieve return returns set spouse true types"
+      "keywords": "additional ancestor ancestors ancestry api array ascendancy convenience docs editable example exists familysearch full function functions generations getascendancynumber getperson getpersons http https includes init max net notes number object objects optionally options opts org params pass pedigree person persondetails persons pid promise retrieve return returns set spouse true types"
     },
     {
       "section": "api",
@@ -460,7 +514,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "pedigree",
       "shortDescription": "Get the descendants of a specified person and optionally a specified spouse with the following convenience functions",
-      "keywords": "additional api array ascendancy convenience descendancy descendants descendency docs editable example exists familysearch function functions generations getancestry getdescendancynumber getperson getpersons http https includes init max net notes number object objects optionally options opts org params parts pass pedigree person persons promise retrieve return returns separate spouse surname true types unavailable"
+      "keywords": "additional api array ascendancy convenience descendancy descendants descendency docs editable example exists familysearch function functions generations getancestry getdescendancynumber getperson getpersons http https includes init max net notes number object objects optionally options opts org params parts pass pedigree person persons pid promise retrieve return returns separate spouse surname true types unavailable"
     },
     {
       "section": "api",
@@ -487,7 +541,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Get the specified person",
-      "keywords": "api convenience currently docs editable example familysearch function functions getperson http https includes init net options opts org params pass person pid promise read response types unused"
+      "keywords": "api convenience currently docs editable example familysearch full function functions getperson http https includes init net options opts org params pass person pid promise response types unused url"
     },
     {
       "section": "api",
@@ -496,7 +550,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Get the change summary for a person. For detailed change information see functions in the changeHistory module",
-      "keywords": "api array broken change changehistory changes convenience currently detailed docs editable endpoint example familysearch function functions getchanges http https includes init module net options opts org params pass person pid promise published read response rest sandbox summary test timestamp title unable unused updated"
+      "keywords": "api array broken change changehistory changes convenience currently detailed docs editable endpoint example familysearch full function functions getchanges http https includes init module net options opts org params pass person person-change-summary pid promise published response rest sandbox summary timestamp title unused updated url"
     },
     {
       "section": "api",
@@ -505,25 +559,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Get a person and their children, spouses, and parents.",
-      "keywords": "addition api array child childandparents children convenience couple docs editable example familysearch father full function functions getchildids getchildidsof getchildrelationships getchildrelationshipsof getchildren getchildrenof getfatherids getfathers getmotherids getmothers getparentrelationships getperson getprimaryid getprimaryperson getspouseids getspouserelationship getspouserelationships getspouses http https ids init mother net null object objects options opts org params parent parents pass person persons pid primary promise read relationship relationships relative requested response retrieve return set spouse spouseid spouses true types"
-    },
-    {
-      "section": "api",
-      "id": "person.functions:getRelationshipsToChildren",
-      "shortName": "getRelationshipsToChildren",
-      "type": "function",
-      "moduleName": "person",
-      "shortDescription": "Get the relationships to a person&#39;s children.",
-      "keywords": "access api array children convenience docs editable example familysearch function functions getchildids getperson getrelationships http https ids includes init net object options opts org parameter params parentchild pass person persons pid promise read relationship relationships response return set string true types"
-    },
-    {
-      "section": "api",
-      "id": "person.functions:getRelationshipsToParents",
-      "shortName": "getRelationshipsToParents",
-      "type": "function",
-      "moduleName": "person",
-      "shortDescription": "Get the relationships to a person&#39;s parents.",
-      "keywords": "access api array convenience docs editable example familysearch fatherid function functions getchildandparents getperson getrelationships http https includes init motherid net object options opts org parameter params parents parentsandchildren pass person persons pid promise read relationship relationships response return set true types"
+      "keywords": "addition api array child childandparents children convenience couple docs editable example familysearch father full function functions getchildids getchildidsof getchildrelationships getchildrelationshipsof getchildren getchildrenof getfatherids getfathers getmotherids getmothers getparentrelationships getperson getprimaryid getprimaryperson getspouseids getspouserelationship getspouserelationships getspouses http https ids init mother net null object objects options opts org params parent parents parentsandchildren pass person persons pid primary promise relationship relationships relative requested response retrieve return set spouse spouseid spouses true types"
     },
     {
       "section": "api",
@@ -532,61 +568,34 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Get the relationships to a person&#39;s spouses.",
-      "keywords": "access api array convenience couple docs editable example familysearch function functions getperson getrelationships getspouseids http https ids includes init net object options opts org parameter params pass person persons pid promise read relationship relationships response return set spouses string true types"
+      "keywords": "access api array convenience couple docs editable endpoint example familysearch full function functions getperson getrelationships getspouseids http https ids includes init net object options opts org parameter params pass person persons pid promise relationship relationships response return set spouse-relationships spouses string true types url"
     },
     {
       "section": "api",
-      "id": "person.types:type.ChildAndParents",
-      "shortName": "type.ChildAndParents",
-      "type": "function",
-      "moduleName": "person",
-      "shortDescription": "Child and parents relationship (not to be confused with the ParentChild relationship; in general, ChildAndParents is more useful)",
-      "keywords": "api array child childandparents confused fact facts father function general getchildid getfatherfacts getfatherid getmotherfacts getmotherid mother parent-relationship parentchild parents person property relationship type types"
-    },
-    {
-      "section": "api",
-      "id": "person.types:type.Couple",
-      "shortName": "type.Couple",
-      "type": "function",
-      "moduleName": "person",
-      "shortDescription": "Couple relationship",
-      "keywords": "api array couple fact facts function getfacts gethusbandid getmarriagefact getwifeid http husband marriage multiple org person property relationship type types wife"
-    },
-    {
-      "section": "api",
-      "id": "person.types:type.Fact",
-      "shortName": "type.Fact",
+      "id": "person.types:constructor.Fact",
+      "shortName": "constructor.Fact",
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Fact",
-      "keywords": "api contributor details event fact form function functions getagent getcontributorid getdate getformaldate getmodified getplace http modified org original pass person place property standard timestamp type types user"
+      "keywords": "$getdate $getformaldate $getplace api attribution event fact form function http object org original person place property standard type types"
     },
     {
       "section": "api",
-      "id": "person.types:type.Name",
-      "shortName": "type.Name",
+      "id": "person.types:constructor.Name",
+      "shortName": "constructor.Name",
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Name",
-      "keywords": "api contributor details form forms full function functions getagent getcontributorid getfulltext getgivenname getmodified getnameformscount getsurname http modified number org pass person preferred property read surname text timestamp true type types user"
+      "keywords": "$getfulltext $getgivenname $getnameformscount $getsurname api attribution form forms full function http number object org person preferred property read surname text true type types"
     },
     {
       "section": "api",
-      "id": "person.types:type.ParentChild",
-      "shortName": "type.ParentChild",
-      "type": "function",
-      "moduleName": "person",
-      "shortDescription": "ParentChild relationship (not to be confused with the ChildAndParents relationship; in general, ChildAndParents is more useful)",
-      "keywords": "api child childandparents confused function general getchildandparentsid getchildid parent-child parentchild parents person property relationship types"
-    },
-    {
-      "section": "api",
-      "id": "person.types:type.Person",
-      "shortName": "type.Person",
+      "id": "person.types:constructor.Person",
+      "shortName": "constructor.Person",
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Person",
-      "keywords": "add addname api array attributes birth birthdate birthplace death deathdate deathplace display fact facts false female function gender getbirthdate getbirthplace getdeathdate getdeathplace getfacts getgender getgivenname getlifespan getname getnames getsurname includes lifespan living male names person place preferred property surname true types year"
+      "keywords": "$addmemorypersonaref $addname $getbirthdate $getbirthplace $getchanges $getdeathdate $getdeathplace $getdiscussionrefs $getdisplayname $getfacts $getgender $getgivenname $getlifespan $getmemorypersonarefs $getnames $getnoterefs $getpersistentidentifier $getpreferredname $getrelationshipstospouses $getsourcerefs $getsurname add api array arrays attributes attribution birth birthdate birthplace change changehistory changemessage changes conclusion confidence count death deathdate deathplace discussions display entries fact facts false female function functions gender getmemorypersonarefs getpersonchanges getpersondiscussionrefs getpersonnoterefs getpersonsourcerefs getrelationshipstospouses http identifers identifier includes init lifespan living male map memories memory memorypersonaref message names notes number object options opts params pass persistent person persona persons place preferred promise property reference relationships response return set sources surname true type types url values year"
     },
     {
       "section": "api",
@@ -623,6 +632,15 @@ NG_DOCS={
       "moduleName": "plumbing",
       "shortDescription": "Return the total &quot;processing time&quot; spent in FamilySearch REST endpoints",
       "keywords": "api endpoints familysearch function functions milliseconds plumbing processing rest return spent time total"
+    },
+    {
+      "section": "api",
+      "id": "plumbing.functions:getUrl",
+      "shortName": "getUrl",
+      "type": "function",
+      "moduleName": "plumbing",
+      "shortDescription": "Low-level call to get a  URL from the discovery resource given a resource name, an possible-url, and a set of parameters",
+      "keywords": "absolute api call discovery function functions low-level parameters params plumbing possible-url possibleurl promise resource resourcename return set url"
     },
     {
       "section": "api",
@@ -676,7 +694,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "searchAndMatch",
       "shortDescription": "Get the matches (possible duplicates) for a person",
-      "keywords": "api array convenience currently docs duplicates editable example familysearch function functions getindex getresultscount getsearchresults http https includes init matches net number options opts org params pass person promise read response search searchandmatch searchresult searchresults starting total types unused"
+      "keywords": "api array convenience currently docs duplicates editable endpoint example familysearch full function functions getindex getresultscount getsearchresults http https includes init matches net number options opts org params pass person person-matches pid promise response search searchandmatch searchresult searchresults starting total types unused url"
     },
     {
       "section": "api",
@@ -698,12 +716,12 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "searchAndMatch.types:type.SearchResult",
-      "shortName": "type.SearchResult",
+      "id": "searchAndMatch.types:constructor.SearchResult",
+      "shortName": "constructor.SearchResult",
       "type": "function",
       "moduleName": "searchAndMatch",
       "shortDescription": "Reference from a person or relationship to a source",
-      "keywords": "api array aware better child father function functions getchildids getchildren getfatherids getfathers getmotherids getmothers getperson getprimaryperson getspouseids getspouses higher mother objects pedigree person persons primary property reference relationship result returned score search searchandmatch searchresult searchresults source spouse title types"
+      "keywords": "$getchildids $getchildren $getfatherids $getfathers $getfullprimaryperson $getmotherids $getmothers $getperson $getprimaryperson $getspouseids $getspouses api array aware better child father function functions getperson higher mother objects pedigree person persons pid primary promise property reference relationship response result returned score search searchandmatch searchresult searchresults source spouse title types"
     },
     {
       "section": "api",
@@ -721,7 +739,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sourceBox",
       "shortDescription": "Get information about a user-defined collection",
-      "keywords": "api collection convenience currently docs editable example familysearch function functions getcollection http https includes init net options opts org params pass promise read response sourcebox types unused user-defined"
+      "keywords": "api collection convenience currently docs editable example familysearch full function functions getcollection http https includes init net options opts org params pass promise response sourcebox types udcid unused url user-defined"
     },
     {
       "section": "api",
@@ -730,7 +748,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sourceBox",
       "shortDescription": "Search people",
-      "keywords": "api array box collection collections convenience currently docs editable example familysearch function functions getcollections http https includes init net options opts org owns params pass people promise response search source sourcebox types uid unused user"
+      "keywords": "api array collection collections collections-for-user convenience currently docs editable endpoint example familysearch full function functions getcollections http https includes init net options opts org params pass people promise response search sourcebox types uid unused url user"
     },
     {
       "section": "api",
@@ -739,7 +757,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sourceBox",
       "shortDescription": "Get a paged list of source descriptions in a user-defined collection",
-      "keywords": "api array cid collection convenience count descriptions docs editable example familysearch function functions getsourcedescriptions http https includes init list maximum net options opts org paged params pass promise read response return source sourcebox sourcedescription sourcedescriptions sources start types user-defined zero-based"
+      "keywords": "api array collection collection-source-descriptions convenience count descriptions docs editable endpoint example familysearch full function functions getsourcedescriptions http https includes init list maximum net options opts org paged params pass promise response return source sourcebox sourcedescription sourcedescriptions sources start types udcid url user-defined zero-based"
     },
     {
       "section": "api",
@@ -748,16 +766,16 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sourceBox",
       "shortDescription": "Get a paged list of source descriptions in all user-defined collections defined by a user",
-      "keywords": "api array collections convenience count defined descriptions docs editable example familysearch function functions getsourcedescriptions http https includes init list maximum net options opts org paged params pass promise read response return source sourcebox sourcedescription sourcedescriptions sources start types uid user user-defined zero-based"
+      "keywords": "api array collection-source-descriptions-for-user collections convenience count defined descriptions docs editable endpoint example familysearch full function functions getsourcedescriptions http https includes init list maximum net options opts org paged params pass promise response return source sourcebox sourcedescription sourcedescriptions sources start types uid url user user-defined zero-based"
     },
     {
       "section": "api",
-      "id": "sourceBox.types:type.Collection",
-      "shortName": "type.Collection",
+      "id": "sourceBox.types:constructor.Collection",
+      "shortName": "constructor.Collection",
       "type": "function",
       "moduleName": "sourceBox",
       "shortDescription": "Collection",
-      "keywords": "api collection contributor details folder function functions getagent getcontributorid number pass property size sourcebox sources title types user"
+      "keywords": "$getsourcedescriptions api attribution collection count folder function functions getcollectionsourcedescriptions maximum number object params promise property response return size source sourcebox sources start title types zero-based"
     },
     {
       "section": "api",
@@ -775,7 +793,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Get the source references for a child and parents relationship",
-      "keywords": "api array child convenience currently docs editable example familysearch function functions getsourcerefs http https includes init net options opts org params parents pass promise read references relationship response source sourceref sourcerefs sources types unused"
+      "keywords": "api array caprid child convenience currently docs editable example familysearch full function functions getsourcerefs http https includes init net options opts org params parents pass promise references relationship response source sourceref sourcerefs sources types unused url"
     },
     {
       "section": "api",
@@ -784,7 +802,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Get the source references for a couple relationship",
-      "keywords": "api array convenience couple crid currently docs editable example familysearch function functions getsourcerefs http https includes init net options opts org params pass promise read references relationship response source sourceref sourcerefs sources types unused"
+      "keywords": "api array convenience couple crid currently docs editable example familysearch full function functions getsourcerefs http https includes init net options opts org params pass promise references relationship response source sourceref sourcerefs sources types unused url"
     },
     {
       "section": "api",
@@ -793,7 +811,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Get multiple source descriptions at once by requesting them in parallel",
-      "keywords": "api currently description descriptions docs editable example familysearch fulfilled function functions getsourcedescription http https ids init map multiple net opts org parallel params pass promise read requesting response returning sdids source sourceref sourcerefs sources types unused"
+      "keywords": "api currently description descriptions docs editable example familysearch fulfilled full function functions getsourcedescription http https ids init map multiple net opts org parallel params pass promise read requesting response returning sdids source sourceref sourcerefs sources types unused url urls"
     },
     {
       "section": "api",
@@ -802,7 +820,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Get references to sources for a person",
-      "keywords": "api array convenience currently docs editable example familysearch function functions getsourcerefs http https includes init net options opts org params pass person pid promise read references response sourceref sourcerefs sources types unused"
+      "keywords": "api array convenience currently docs editable endpoint example familysearch full function functions getsourcerefs http https includes init net options opts org params pass person person-source-references pid promise references response sourceref sourcerefs sources types unused url"
     },
     {
       "section": "api",
@@ -811,7 +829,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Get information about a source",
-      "keywords": "api convenience currently description docs editable example familysearch function functions getsourcedescription http https includes init net options opts org params pass promise read response sdid source sourcedescription sources types unused"
+      "keywords": "api convenience currently description docs editable endpoint example familysearch full function functions getsourcedescription http https includes init net options opts org params pass promise response sdid source source-description sourcedescription sources types unused url"
     },
     {
       "section": "api",
@@ -820,34 +838,25 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Get the people, couples, and child-and-parents relationships referencing a source",
-      "keywords": "api array child-and-parents convenience couples currently description docs editable example familysearch function functions getchildandparentsidsourcerefs getcoupleidsourcerefs getpersonidsourcerefs http https idsourceref idsourcerefs includes init net options opts org params pass people promise referencing relationships response sdid source sources types unused"
+      "keywords": "api child child-and-parents convenience couple couples currently description docs editable endpoint example familysearch full function functions getchildandparentssourcerefmap getcouplesourcerefmap getpersonsourcerefmap http https ids includes init map net options opts org params parent pass people person promise referencing relationship relationships response sdid source source-references-query sourceref sourcerefs sources types unused url"
     },
     {
       "section": "api",
-      "id": "sources.types:type.IdSourceRef",
-      "shortName": "type.IdSourceRef",
-      "type": "function",
-      "moduleName": "sources",
-      "shortDescription": "A person or relationship id and a SourceRef",
-      "keywords": "api function getsourceref idsourceref person property relationship sourceref sources types"
-    },
-    {
-      "section": "api",
-      "id": "sources.types:type.SourceDescription",
-      "shortName": "type.SourceDescription",
+      "id": "sources.types:constructor.SourceDescription",
+      "shortName": "constructor.SourceDescription",
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Description of a source",
-      "keywords": "api citation contributor description details function functions getagent getcitation getcontributorid getmodified gettext gettitle modified pass property record source sourcedescription sources text timestamp title types url user"
+      "keywords": "$getcitation $getsourcerefsquery $gettext $gettitle api attribution citation description function functions getsourcerefsquery object promise property record response source sourcedescription sources text title types url"
     },
     {
       "section": "api",
-      "id": "sources.types:type.SourceRef",
-      "shortName": "type.SourceRef",
+      "id": "sources.types:constructor.SourceRef",
+      "shortName": "constructor.SourceRef",
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Reference from a person or relationship to a source",
-      "keywords": "api array change contributor description details function functions getagent getchangemessage getcontributorid getmodified getsourcedescription getsourcedescriptionid gettagnames http modified names org pass person property reason reference relationship source sourceref sources tag timestamp types user"
+      "keywords": "$getsourcedescription $getsourcedescriptionurl $gettagnames api array attribution description details function functions getsourcedescription http names object org pass person promise property reference relationship response source sourceref sources tag types url"
     },
     {
       "section": "api",
@@ -865,7 +874,16 @@ NG_DOCS={
       "type": "function",
       "moduleName": "spouses",
       "shortDescription": "Get information about a couple relationship",
-      "keywords": "access api convenience couple crid docs editable example familysearch function functions getperson getrelationship http https includes init net object options opts org parameter params pass person persons promise read relationship response return set spouses true types"
+      "keywords": "access api convenience couple crid docs editable example familysearch full function functions getperson getrelationship http https includes init net object options opts org parameter params pass person persons promise relationship response return set spouses true types url"
+    },
+    {
+      "section": "api",
+      "id": "spouses.types:constructor.Couple",
+      "shortName": "constructor.Couple",
+      "type": "function",
+      "moduleName": "spouses",
+      "shortDescription": "Couple relationship",
+      "keywords": "$getchanges $getfacts $gethusband $gethusbandid $gethusbandurl $getmarriagefact $getnoterefs $getsourcerefs $getwife $getwifeid $getwifeurl api array couple exports fact facts function functions getcouplechanges getcouplenoterefs getcouplesourcerefs getperson http husband marriage multiple notes org person promise property relationship response sources spouses type types url wife"
     },
     {
       "section": "api",
@@ -883,7 +901,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "user",
       "shortDescription": "Get information about the specified agent (contributor)",
-      "keywords": "agent aid api contributor convenience currently docs editable example familysearch function functions getagent http https includes init net options opts org params pass response types unused user"
+      "keywords": "agent aid api contributor convenience currently docs editable example familysearch full function functions getagent http https includes init net options opts org params pass response types unused url user"
     },
     {
       "section": "api",
@@ -914,17 +932,17 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "user.types:type.Agent",
-      "shortName": "type.Agent",
+      "id": "user.types:constructor.Agent",
+      "shortName": "constructor.Agent",
       "type": "function",
       "moduleName": "user",
       "shortDescription": "An agent is returned from getAgent.",
-      "keywords": "account agent api contact contributor email function functions getaccountname getagent getemail getname ids property returned types user"
+      "keywords": "$getaccountname $getemail $getname account agent api contact contributor email function functions getagent ids property returned types user"
     },
     {
       "section": "api",
-      "id": "user.types:type.User",
-      "shortName": "type.User",
+      "id": "user.types:constructor.User",
+      "shortName": "constructor.User",
       "type": "function",
       "moduleName": "user",
       "shortDescription": "User - a user is returned from getCurrentUser;",

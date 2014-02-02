@@ -7,14 +7,14 @@
 <div class="description"><div class="sourcebox-functions-page sourcebox-functions-getcollection-page"><p>Get information about a user-defined collection
 The response includes the following convenience function</p>
 <ul>
-<li><code>getCollection()</code> - get a <a href="#/api/sourceBox.types:type.Collection">Collection</a> from the response</li>
+<li><code>getCollection()</code> - get a <a href="#/api/sourceBox.types:constructor.Collection">Collection</a> from the response</li>
 </ul>
 <p><a href="https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_resource">FamilySearch API Docs</a></p>
 <p><a href="http://jsfiddle.net/DallanQ/h5wCt/">editable example</a></p>
 </div></div>
 <h2 id="usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">getCollection(id[, params][, opts]);</pre>
-<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sourcebox-functions-page sourcebox-functions-getcollection-page"><p>of the collection to read</p>
+<div class="usage"><pre class="prettyprint linenums">getCollection(udcid[, params][, opts]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>udcid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sourcebox-functions-page sourcebox-functions-getcollection-page"><p>id or full URL of the collection</p>
 </div></td></tr><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sourcebox-functions-page sourcebox-functions-getcollection-page"><p>currently unused</p>
 </div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sourcebox-functions-page sourcebox-functions-getcollection-page"><p>options to pass to the http function specified during init</p>
 </div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sourcebox-functions-page sourcebox-functions-getcollection-page"><p>promise for the response</p>

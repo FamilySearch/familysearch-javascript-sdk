@@ -9,13 +9,13 @@ The response includes the following convenience function</p>
 <ul>
 <li><code>getChanges()</code> - get the array of changes from the response; each change has an <code>id</code>, <code>published</code> timestamp, <code>title</code>, and <code>updated</code> timestamp</li>
 </ul>
-<p><strong>NOTE The sandbox REST endpoint for this function is broken so I have been unable to test it. Do not use.</strong></p>
+<p><strong>NOTE The sandbox REST endpoint for this function is broken. Do not use.</strong></p>
 <p><a href="https://familysearch.org/developers/docs/api/tree/Person_Change_Summary_resource">FamilySearch API Docs</a></p>
 <p><a href="http://jsfiddle.net/DallanQ/ga37h/">editable example</a></p>
 </div></div>
 <h2 id="usage">Usage</h2>
 <div class="usage"><pre class="prettyprint linenums">getPersonChangeSummary(pid[, params][, opts]);</pre>
-<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-functions-page person-functions-getpersonchangesummary-page"><p>of the person to read</p>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-functions-page person-functions-getpersonchangesummary-page"><p>id of the person or full URL of the person-change-summary endpoint</p>
 </div></td></tr><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getpersonchangesummary-page"><p>currently unused</p>
 </div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getpersonchangesummary-page"><p>options to pass to the http function specified during init</p>
 </div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getpersonchangesummary-page"><p>promise for the response</p>

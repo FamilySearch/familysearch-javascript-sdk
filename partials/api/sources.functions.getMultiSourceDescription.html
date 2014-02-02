@@ -10,10 +10,10 @@
 </div></div>
 <h2 id="usage">Usage</h2>
 <div class="usage"><pre class="prettyprint linenums">getMultiSourceDescription(sdids[, params][, opts]);</pre>
-<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>sdids</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="sources-functions-page sources-functions-getmultisourcedescription-page"><p>Ids or <a href="#/api/sources.types:type.SourceRef">SourceRefs</a> of the source descriptions to read</p>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>sdids</td><td><a href="" class="label type-hint type-hint-string">string[]</a><a href="" class="label type-hint type-hint-sourceref">SourceRef[]</a></td><td><div class="sources-functions-page sources-functions-getmultisourcedescription-page"><p>ids or full URLs or <a href="#/api/sources.types:constructor.SourceRef">SourceRefs</a> of the source descriptions</p>
 </div></td></tr><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-functions-page sources-functions-getmultisourcedescription-page"><p>pass to getSourceDescription currently unused</p>
 </div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-functions-page sources-functions-getmultisourcedescription-page"><p>pass to the http function specified during init</p>
 </div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-functions-page sources-functions-getmultisourcedescription-page"><p>promise that is fulfilled when all of the source descriptions have been read,
-returning a map of source description id to response</p>
+returning a map of source description id or URL to promise response</p>
 </div></td></tr></table></div>
 </div>

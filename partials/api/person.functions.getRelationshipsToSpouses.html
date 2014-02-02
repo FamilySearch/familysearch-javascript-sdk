@@ -8,16 +8,16 @@
 The response includes the following convenience functions</p>
 <ul>
 <li><code>getSpouseIds()</code> - an array of string ids</li>
-<li><code>getRelationships()</code> - an array of <a href="#/api/person.types:type.Couple">Couple</a> relationships</li>
+<li><code>getRelationships()</code> - an array of <a href="#/api/spouses.types:constructor.Couple">Couple</a> relationships</li>
 <li><code>getPerson(pid)</code> - if the <code>persons</code> parameter has been set, this function will return a
-<a href="#/api/person.types:type.Person">Person</a> for a person id in the relationship</li>
+<a href="#/api/person.types:constructor.Person">Person</a> for a person id in the relationship</li>
 </ul>
 <p><a href="https://familysearch.org/developers/docs/api/tree/Person_Relationships_to_Spouses_resource">FamilySearch API Docs</a></p>
 <p><a href="http://jsfiddle.net/DallanQ/7zLEJ/">editable example</a></p>
 </div></div>
 <h2 id="usage">Usage</h2>
 <div class="usage"><pre class="prettyprint linenums">getRelationshipsToSpouses(pid[, params][, opts]);</pre>
-<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-functions-page person-functions-getrelationshipstospouses-page"><p>of the person to read</p>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-functions-page person-functions-getrelationshipstospouses-page"><p>id of the person or full URL of the spouse-relationships endpoint</p>
 </div></td></tr><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getrelationshipstospouses-page"><p>set <code>persons</code> true to return a person object for each person in the relationships,
 which you can access using the <code>getPerson(id)</code> convenience function.</p>
 </div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getrelationshipstospouses-page"><p>options to pass to the http function specified during init</p>
