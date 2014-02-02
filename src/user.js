@@ -137,13 +137,15 @@ define([
    * @return {Object} a promise for the current user
    */
   exports.getCurrentUser = function(params, opts) {
-    return plumbing.getUrl('current-user').then(function(url) {
-      return plumbing.get(url, params, {}, opts,
-        helpers.compose(
-          helpers.objectExtender({getUser: function() { return maybe(this.users)[0]; }}),
-          helpers.constructorSetter(User, 'users')
-        ));
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('current-user'),
+      function(url) {
+        return plumbing.get(url, params, {}, opts,
+          helpers.compose(
+            helpers.objectExtender({getUser: function() { return maybe(this.users)[0]; }}),
+            helpers.constructorSetter(User, 'users')
+          ));
+      });
   };
 
   /**
@@ -232,13 +234,15 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    */
   exports.getAgent = function(aid, params, opts) {
-    return plumbing.getUrl('agent-template', aid, {uid: aid}).then(function(url) {
-      return plumbing.get(url, params, {}, opts,
-        helpers.compose(
-          helpers.objectExtender({getAgent: function() { return maybe(this.agents)[0]; }}),
-          helpers.constructorSetter(Agent, 'agents')
-        ));
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('agent-template', aid, {uid: aid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts,
+          helpers.compose(
+            helpers.objectExtender({getAgent: function() { return maybe(this.agents)[0]; }}),
+            helpers.constructorSetter(Agent, 'agents')
+          ));
+      });
   };
 
   /**

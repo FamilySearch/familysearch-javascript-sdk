@@ -115,10 +115,12 @@ define([
    * @return {Object} promise for the response
    */
   exports.getPersonChanges = function(pid, params, opts) {
-    return plumbing.getUrl('person-changes-template', pid, {pid: pid}).then(function(url) {
-      return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-        changeHistoryResponseMapper);
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('person-changes-template', pid, {pid: pid}),
+      function(url) {
+        return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+          changeHistoryResponseMapper);
+      });
   };
 
   /**
@@ -142,10 +144,12 @@ define([
    * @return {Object} promise for the response
    */
   exports.getChildAndParentsChanges = function(caprid, params, opts) {
-    return plumbing.getUrl('child-and-parents-relationship-changes-template', caprid, {caprid: caprid}).then(function(url) {
-      return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-        changeHistoryResponseMapper);
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('child-and-parents-relationship-changes-template', caprid, {caprid: caprid}),
+      function(url) {
+        return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+          changeHistoryResponseMapper);
+      });
   };
 
   /**
@@ -169,10 +173,12 @@ define([
    * @return {Object} promise for the response
    */
   exports.getCoupleChanges = function(crid, params, opts) {
-    return plumbing.getUrl('couple-relationship-changes-template', crid, {crid: crid}).then(function(url) {
-      return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-        changeHistoryResponseMapper);
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('couple-relationship-changes-template', crid, {crid: crid}),
+      function(url) {
+        return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+          changeHistoryResponseMapper);
+      });
   };
 
   return exports;

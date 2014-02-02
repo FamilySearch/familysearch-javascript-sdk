@@ -176,18 +176,20 @@ define([
    * @return {Object} promise for the response
    */
   exports.getPersonSourceRefs = function(pid, params, opts) {
-    return plumbing.getUrl('person-source-references-template', pid, {pid: pid}).then(function(url) {
-      return plumbing.get(url, params, {}, opts,
-        helpers.compose(
-          helpers.objectExtender({getSourceRefs: function() { return maybe(maybe(this.persons)[0]).sources || []; }}),
-          helpers.constructorSetter(SourceRef, 'sources', function(response) {
-            return maybe(maybe(response).persons)[0];
-          }),
-          helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
-            return maybe(maybe(maybe(response).persons)[0]).sources;
-          })
-        ));
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('person-source-references-template', pid, {pid: pid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts,
+          helpers.compose(
+            helpers.objectExtender({getSourceRefs: function() { return maybe(maybe(this.persons)[0]).sources || []; }}),
+            helpers.constructorSetter(SourceRef, 'sources', function(response) {
+              return maybe(maybe(response).persons)[0];
+            }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return maybe(maybe(maybe(response).persons)[0]).sources;
+            })
+          ));
+      });
   };
 
   /**
@@ -211,18 +213,20 @@ define([
    * @return {Object} promise for the response
    */
   exports.getCoupleSourceRefs = function(crid, params, opts) {
-    return plumbing.getUrl('couple-relationship-source-references-template', crid, {crid: crid}).then(function(url) {
-      return plumbing.get(url, params, {}, opts,
-        helpers.compose(
-          helpers.objectExtender({getSourceRefs: function() { return maybe(maybe(this.relationships)[0]).sources || []; }}),
-          helpers.constructorSetter(SourceRef, 'sources', function(response) {
-            return maybe(maybe(response).relationships)[0];
-          }),
-          helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
-            return maybe(maybe(maybe(response).relationships)[0]).sources;
-          })
-        ));
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('couple-relationship-source-references-template', crid, {crid: crid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts,
+          helpers.compose(
+            helpers.objectExtender({getSourceRefs: function() { return maybe(maybe(this.relationships)[0]).sources || []; }}),
+            helpers.constructorSetter(SourceRef, 'sources', function(response) {
+              return maybe(maybe(response).relationships)[0];
+            }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return maybe(maybe(maybe(response).relationships)[0]).sources;
+            })
+          ));
+      });
   };
 
   /**
@@ -246,19 +250,21 @@ define([
    * @return {Object} promise for the response
    */
   exports.getChildAndParentsSourceRefs = function(caprid, params, opts) {
-    return plumbing.getUrl('child-and-parents-relationship-source-references-template', caprid, {caprid: caprid}).then(function(url) {
-      return plumbing.get(url, params,
-        {'Accept': 'application/x-fs-v1+json'}, opts,
-        helpers.compose(
-          helpers.objectExtender({getSourceRefs: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).sources || []; }}),
-          helpers.constructorSetter(SourceRef, 'sources', function(response) {
-            return maybe(maybe(response).childAndParentsRelationships)[0];
-          }),
-          helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
-            return maybe(maybe(maybe(response).childAndParentsRelationships)[0]).sources;
-          })
-        ));
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('child-and-parents-relationship-source-references-template', caprid, {caprid: caprid}),
+      function(url) {
+        return plumbing.get(url, params,
+          {'Accept': 'application/x-fs-v1+json'}, opts,
+          helpers.compose(
+            helpers.objectExtender({getSourceRefs: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).sources || []; }}),
+            helpers.constructorSetter(SourceRef, 'sources', function(response) {
+              return maybe(maybe(response).childAndParentsRelationships)[0];
+            }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return maybe(maybe(maybe(response).childAndParentsRelationships)[0]).sources;
+            })
+          ));
+      });
   };
 
   /**
@@ -282,16 +288,18 @@ define([
    * @return {Object} promise for the response
    */
   exports.getSourceDescription = function(sdid, params, opts) {
-    return plumbing.getUrl('source-description-template', sdid, {sdid: sdid}).then(function(url) {
-      return plumbing.get(url, params, {}, opts,
-        helpers.compose(
-          helpers.objectExtender({getSourceDescription: function() { return maybe(this.sourceDescriptions)[0]; }}),
-          helpers.constructorSetter(SourceDescription, 'sourceDescriptions'),
-          helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
-            return response.sourceDescriptions;
-          })
-        ));
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('source-description-template', sdid, {sdid: sdid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts,
+          helpers.compose(
+            helpers.objectExtender({getSourceDescription: function() { return maybe(this.sourceDescriptions)[0]; }}),
+            helpers.constructorSetter(SourceDescription, 'sourceDescriptions'),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return response.sourceDescriptions;
+            })
+          ));
+      });
   };
 
   /**

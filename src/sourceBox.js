@@ -92,16 +92,18 @@ define([
    * @return {Object} promise for the response
    */
   exports.getCollectionsForUser = function(uid, params, opts) {
-    return plumbing.getUrl('user-collections-for-user-template', uid, {uid: uid}).then(function(url) {
-      return plumbing.get(url, {}, {'Accept': 'application/x-fs-v1+json'}, opts,
-        helpers.compose(
-          helpers.objectExtender({getCollections: function() { return this.collections || []; }}),
-          helpers.constructorSetter(Collection, 'collections'),
-          helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
-            return response.collections;
-          })
-        ));
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('user-collections-for-user-template', uid, {uid: uid}),
+      function(url) {
+        return plumbing.get(url, {}, {'Accept': 'application/x-fs-v1+json'}, opts,
+          helpers.compose(
+            helpers.objectExtender({getCollections: function() { return this.collections || []; }}),
+            helpers.constructorSetter(Collection, 'collections'),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return response.collections;
+            })
+          ));
+      });
   };
 
   /**
@@ -125,16 +127,18 @@ define([
    * @return {Object} promise for the response
    */
   exports.getCollection = function(udcid, params, opts) {
-    return plumbing.getUrl('user-collection-template', udcid, {udcid: udcid}).then(function(url) {
-      return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-        helpers.compose(
-          helpers.objectExtender({getCollection: function() { return maybe(this.collections)[0]; }}),
-          helpers.constructorSetter(Collection, 'collections'),
-          helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
-            return response.collections;
-          })
-        ));
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('user-collection-template', udcid, {udcid: udcid}),
+      function(url) {
+        return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
+          helpers.compose(
+            helpers.objectExtender({getCollection: function() { return maybe(this.collections)[0]; }}),
+            helpers.constructorSetter(Collection, 'collections'),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return response.collections;
+            })
+          ));
+      });
   };
 
   /**
@@ -158,16 +162,18 @@ define([
    * @return {Object} promise for the response
    */
   exports.getCollectionSourceDescriptions = function(udcid, params, opts) {
-    return plumbing.getUrl('user-collection-source-descriptions-template', udcid, {udcid: udcid}).then(function(url) {
-      return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-        helpers.compose(
-          helpers.objectExtender({getSourceDescriptions: function() { return this.sourceDescriptions || []; }}),
-          helpers.constructorSetter(sources.SourceDescription, 'sourceDescriptions'),
-          helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
-            return response.sourceDescriptions;
-          })
-        ));
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('user-collection-source-descriptions-template', udcid, {udcid: udcid}),
+      function(url) {
+        return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
+          helpers.compose(
+            helpers.objectExtender({getSourceDescriptions: function() { return this.sourceDescriptions || []; }}),
+            helpers.constructorSetter(sources.SourceDescription, 'sourceDescriptions'),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return response.sourceDescriptions;
+            })
+          ));
+      });
   };
 
   /**
@@ -191,16 +197,18 @@ define([
    * @return {Object} promise for the response
    */
   exports.getCollectionSourceDescriptionsForUser = function(uid, params, opts) {
-    return plumbing.getUrl('user-collections-source-descriptions-for-user-template', uid, {uid: uid}).then(function(url) {
-      return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-        helpers.compose(
-          helpers.objectExtender({getSourceDescriptions: function() { return this.sourceDescriptions || []; }}),
-          helpers.constructorSetter(sources.SourceDescription, 'sourceDescriptions'),
-          helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
-            return response.sourceDescriptions;
-          })
-        ));
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('user-collections-source-descriptions-for-user-template', uid, {uid: uid}),
+      function(url) {
+        return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
+          helpers.compose(
+            helpers.objectExtender({getSourceDescriptions: function() { return this.sourceDescriptions || []; }}),
+            helpers.constructorSetter(sources.SourceDescription, 'sourceDescriptions'),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return response.sourceDescriptions;
+            })
+          ));
+      });
   };
 
   return exports;

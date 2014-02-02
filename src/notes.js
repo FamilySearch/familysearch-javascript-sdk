@@ -140,15 +140,17 @@ define([
    * @return {Object} promise for the response
    */
   exports.getPersonNoteRefs = function(pid, params, opts) {
-    return plumbing.getUrl('person-notes-template', pid, {pid: pid}).then(function(url) {
-      return plumbing.get(url, params, {}, opts,
-        helpers.compose(
-          helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.persons)[0]).notes || []; }}),
-          helpers.constructorSetter(NoteRef, 'notes', function(response) {
-            return maybe(maybe(response).persons)[0];
-          })
-        ));
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('person-notes-template', pid, {pid: pid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts,
+          helpers.compose(
+            helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.persons)[0]).notes || []; }}),
+            helpers.constructorSetter(NoteRef, 'notes', function(response) {
+              return maybe(maybe(response).persons)[0];
+            })
+          ));
+      });
   };
 
   /**
@@ -172,15 +174,17 @@ define([
    * @return {Object} promise for the response
    */
   exports.getCoupleNoteRefs = function(crid, params, opts) {
-    return plumbing.getUrl('couple-relationship-notes-template', crid, {crid: crid}).then(function(url) {
-      return plumbing.get(url, params, {}, opts,
-        helpers.compose(
-          helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.relationships)[0]).notes || []; }}),
-          helpers.constructorSetter(NoteRef, 'notes', function(response) {
-            return maybe(maybe(response).relationships)[0];
-          })
-        ));
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('couple-relationship-notes-template', crid, {crid: crid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts,
+          helpers.compose(
+            helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.relationships)[0]).notes || []; }}),
+            helpers.constructorSetter(NoteRef, 'notes', function(response) {
+              return maybe(maybe(response).relationships)[0];
+            })
+          ));
+      });
   };
 
   /**
@@ -204,16 +208,18 @@ define([
    * @return {Object} promise for the response
    */
   exports.getChildAndParentsNoteRefs = function(caprid, params, opts) {
-    return plumbing.getUrl('child-and-parents-relationship-notes-template', caprid, {caprid: caprid}).then(function(url) {
-      return plumbing.get(url, params,
-        {'Accept': 'application/x-fs-v1+json'}, opts,
-        helpers.compose(
-          helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).notes || []; }}),
-          helpers.constructorSetter(NoteRef, 'notes', function(response) {
-            return maybe(maybe(response).childAndParentsRelationships)[0];
-          })
-        ));
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('child-and-parents-relationship-notes-template', caprid, {caprid: caprid}),
+      function(url) {
+        return plumbing.get(url, params,
+          {'Accept': 'application/x-fs-v1+json'}, opts,
+          helpers.compose(
+            helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).notes || []; }}),
+            helpers.constructorSetter(NoteRef, 'notes', function(response) {
+              return maybe(maybe(response).childAndParentsRelationships)[0];
+            })
+          ));
+      });
   };
 
   function getRoot(obj) {
@@ -292,9 +298,11 @@ define([
    * @return {Object} promise for the response
    */
   exports.getPersonNote = function(pid, nid, params, opts) {
-    return plumbing.getUrl('person-note-template', pid, {pid: pid, nid: nid}).then(function(url) {
-      return getNote(url, params, opts);
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('person-note-template', pid, {pid: pid, nid: nid}),
+      function(url) {
+        return getNote(url, params, opts);
+      });
   };
 
   /**
@@ -343,9 +351,11 @@ define([
    * @return {Object} promise for the response
    */
   exports.getCoupleNote = function(crid, nid, params, opts) {
-    return plumbing.getUrl('couple-relationship-note-template', crid, {crid: crid, nid: nid}).then(function(url) {
-      return getNote(url, params, opts);
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('couple-relationship-note-template', crid, {crid: crid, nid: nid}),
+      function(url) {
+        return getNote(url, params, opts);
+      });
   };
 
   /**
@@ -394,9 +404,11 @@ define([
    * @return {Object} promise for the response
    */
   exports.getChildAndParentsNote = function(caprid, nid, params, opts) {
-    return plumbing.getUrl('child-and-parents-relationship-note-template', caprid, {caprid: caprid, nid: nid}).then(function(url) {
-      return getNote(url, params, opts);
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('child-and-parents-relationship-note-template', caprid, {caprid: caprid, nid: nid}),
+      function(url) {
+        return getNote(url, params, opts);
+      });
   };
 
   /**

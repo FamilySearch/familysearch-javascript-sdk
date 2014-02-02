@@ -161,17 +161,19 @@ define([
    * @return {Object} promise for the response
    */
   exports.getCouple = function(crid, params, opts) {
-    return plumbing.getUrl('couple-relationship-template', crid, {crid: crid}).then(function(url) {
-      return plumbing.get(url, params, {}, opts,
-        helpers.compose(
-          helpers.constructorSetter(Couple, 'relationships'),
-          helpers.objectExtender(coupleConvenienceFunctions),
-          helpers.constructorSetter(globals.Fact, 'facts', function(response) {
-            return maybe(response).relationships;
-          }),
-          globals.personMapper()
-        ));
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('couple-relationship-template', crid, {crid: crid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts,
+          helpers.compose(
+            helpers.constructorSetter(Couple, 'relationships'),
+            helpers.objectExtender(coupleConvenienceFunctions),
+            helpers.constructorSetter(globals.Fact, 'facts', function(response) {
+              return maybe(response).relationships;
+            }),
+            globals.personMapper()
+          ));
+      });
   };
 
   var coupleConvenienceFunctions = {

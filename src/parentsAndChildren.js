@@ -188,20 +188,22 @@ define([
    * @return {Object} promise for the response
    */
   exports.getChildAndParents = function(caprid, params, opts) {
-    return plumbing.getUrl('child-and-parents-relationship-template', caprid, {caprid: caprid}).then(function(url) {
-      return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-        helpers.compose(
-          helpers.constructorSetter(ChildAndParents, 'childAndParentsRelationships'),
-          helpers.objectExtender(childAndParentsConvenienceFunctions),
-          helpers.constructorSetter(globals.Fact, 'motherFacts', function(response) {
-            return maybe(response).childAndParentsRelationships;
-          }),
-          helpers.constructorSetter(globals.Fact, 'fatherFacts', function(response) {
-            return maybe(response).childAndParentsRelationships;
-          }),
-          globals.personMapper()
-        ));
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('child-and-parents-relationship-template', caprid, {caprid: caprid}),
+      function(url) {
+        return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
+          helpers.compose(
+            helpers.constructorSetter(ChildAndParents, 'childAndParentsRelationships'),
+            helpers.objectExtender(childAndParentsConvenienceFunctions),
+            helpers.constructorSetter(globals.Fact, 'motherFacts', function(response) {
+              return maybe(response).childAndParentsRelationships;
+            }),
+            helpers.constructorSetter(globals.Fact, 'fatherFacts', function(response) {
+              return maybe(response).childAndParentsRelationships;
+            }),
+            globals.personMapper()
+          ));
+      });
   };
 
   var childAndParentsConvenienceFunctions = {

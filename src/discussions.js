@@ -241,17 +241,19 @@ define([
    * @return {Object} promise for the response
    */
   exports.getPersonDiscussionRefs = function(pid, params, opts) {
-    return plumbing.getUrl('person-discussion-references-template', pid, {pid: pid}).then(function(url) {
-      // TODO remove discussion-reference-json-fix header when it becomes standard
-      return plumbing.get(url, params,
-        {'Accept': 'application/x-fs-v1+json', 'X-FS-Feature-Tag': 'discussion-reference-json-fix'}, opts,
-        helpers.compose(
-          helpers.objectExtender({getDiscussionRefs: function() { return maybe(maybe(this.persons)[0])['discussion-references'] || []; }}),
-          helpers.constructorSetter(DiscussionRef, 'discussion-references', function(response) {
-            return maybe(maybe(response).persons)[0];
-          })
-        ));
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('person-discussion-references-template', pid, {pid: pid}),
+      function(url) {
+        // TODO remove discussion-reference-json-fix header when it becomes standard
+        return plumbing.get(url, params,
+          {'Accept': 'application/x-fs-v1+json', 'X-FS-Feature-Tag': 'discussion-reference-json-fix'}, opts,
+          helpers.compose(
+            helpers.objectExtender({getDiscussionRefs: function() { return maybe(maybe(this.persons)[0])['discussion-references'] || []; }}),
+            helpers.constructorSetter(DiscussionRef, 'discussion-references', function(response) {
+              return maybe(maybe(response).persons)[0];
+            })
+          ));
+      });
   };
 
   /**
@@ -275,13 +277,15 @@ define([
    * @return {Object} promise for the response
    */
   exports.getDiscussion = function(did, params, opts) {
-    return plumbing.getUrl('discussion-template', did, {did: did}).then(function(url) {
-      return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-        helpers.compose(
-          helpers.objectExtender({getDiscussion: function() { return maybe(this.discussions)[0]; }}),
-          helpers.constructorSetter(Discussion, 'discussions')
-        ));
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('discussion-template', did, {did: did}),
+      function(url) {
+        return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
+          helpers.compose(
+            helpers.objectExtender({getDiscussion: function() { return maybe(this.discussions)[0]; }}),
+            helpers.constructorSetter(Discussion, 'discussions')
+          ));
+      });
   };
 
   /**
@@ -341,15 +345,17 @@ define([
    * @return {Object} promise for the response
    */
   exports.getComments = function(did, params, opts) {
-    return plumbing.getUrl('discussion-comments-template', did, {did: did}).then(function(url) {
-      return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-        helpers.compose(
-          helpers.objectExtender({getComments: function() { return maybe(maybe(this.discussions)[0]).comments || []; }}),
-          helpers.constructorSetter(Comment, 'comments', function(response) {
-            return maybe(maybe(response).discussions)[0];
-          })
-        ));
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('discussion-comments-template', did, {did: did}),
+      function(url) {
+        return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
+          helpers.compose(
+            helpers.objectExtender({getComments: function() { return maybe(maybe(this.discussions)[0]).comments || []; }}),
+            helpers.constructorSetter(Comment, 'comments', function(response) {
+              return maybe(maybe(response).discussions)[0];
+            })
+          ));
+      });
   };
 
   return exports;

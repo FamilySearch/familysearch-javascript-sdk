@@ -437,19 +437,19 @@ define([
   };
 
   /**
-   * Chain multiple http promises so the http functions (e.g., getResponseHeader) from the last promise are available in the the returned promise
-   * Pass an initial http promise and one or more http-promise-generating functions to chain
+   * Chain multiple http promises so the http functions (e.g., getResponseHeader) from the last promise are available in the returned promise
+   * Pass an initial promise and one or more http-promise-generating functions to chain
    * @returns {Object} promise with http functions
    */
   exports.chainHttpPromises = function() {
     var promise = arguments[0];
-    var bridge = {}; // bridge is needed because the "then" function is executed immediately in unit tests
+    var bridge = {}; // bridge object is needed because the "then" function is executed immediately in unit tests
     forEach(Array.prototype.slice.call(arguments, 1), function(fn) {
       promise = promise.then(function() {
         var result = fn.apply(null, arguments);
         if (result && result.then) {
           // the bridge object is extended with the functions from each promise-generating function,
-          // but the final function will win
+          // but the final functions will be those from the last promise-generating function
           exports.extendHttpPromise(bridge, result);
         }
         return result;

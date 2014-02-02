@@ -180,9 +180,11 @@ define([
    */
   exports.invalidateAccessToken = function() {
     helpers.eraseAccessToken();
-    return plumbing.getUrl('http://oauth.net/core/2.0/endpoint/token').then(function(url) {
-      return plumbing.del(url);
-    });
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('http://oauth.net/core/2.0/endpoint/token'),
+      function(url) {
+        return plumbing.del(url);
+      });
   };
 
   /**
