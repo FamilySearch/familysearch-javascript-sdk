@@ -1,8 +1,9 @@
 define([
+  'globals',
   'helpers',
   'person',
   'plumbing'
-], function(helpers, person, plumbing) {
+], function(globals, helpers, person, plumbing) {
   /**
    * @ngdoc overview
    * @name searchAndMatch
@@ -52,7 +53,7 @@ define([
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:constructor.SearchResult#getPerson
+     * @name searchAndMatch.types:constructor.SearchResult#$getPerson
      * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
      * @description
@@ -60,38 +61,39 @@ define([
      * **Note: Be aware that the `Person` objects returned from SearchResults do not have as much information
      * as `Person` objects returned from the various person and pedigree functions.**
      *
+     * @param {string} pid id of the person
      * @return {Person} the {@link person.types:constructor.Person Person} for this Id in this search result
      */
-    getPerson: function(id) {
-      return helpers.find(maybe(maybe(this.content).gedcomx).persons, {id: id});
+    $getPerson: function(pid) {
+      return helpers.find(maybe(maybe(this.content).gedcomx).persons, {id: pid});
     },
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:constructor.SearchResult#getPrimaryPerson
+     * @name searchAndMatch.types:constructor.SearchResult#$getPrimaryPerson
      * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
      * @return {Person} the primary {@link person.types:constructor.Person Person} for this search result
      */
-    getPrimaryPerson: function() {
-      return this.getPerson(this.id);
+    $getPrimaryPerson: function() {
+      return this.$getPerson(this.id);
     },
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:constructor.SearchResult#getFatherIds
+     * @name searchAndMatch.types:constructor.SearchResult#$getFatherIds
      * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
      * @return {String[]} array of father Id's for this search result
      */
-    getFatherIds: function() {
+    $getFatherIds: function() {
       var primaryId = this.id, self = this;
       return helpers.uniq(helpers.map(
         helpers.filter(maybe(maybe(this.content).gedcomx).relationships, function(r) {
           return r.type === 'http://gedcomx.org/ParentChild' &&
             r.person2.resourceId === primaryId &&
             r.person1 &&
-            maybe(self.getPerson(r.person1.resourceId).gender).type === 'http://gedcomx.org/Male';
+            maybe(self.$getPerson(r.person1.resourceId).gender).type === 'http://gedcomx.org/Male';
         }),
         function(r) { return r.person1.resourceId; }
       ));
@@ -99,28 +101,28 @@ define([
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:constructor.SearchResult#getFathers
+     * @name searchAndMatch.types:constructor.SearchResult#$getFathers
      * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
      * @return {Person[]} array of father {@link person.types:constructor.Person Persons} for this search result
      */
-    getFathers: function() { return helpers.map(this.getFatherIds(), this.getPerson, this); },
+    $getFathers: function() { return helpers.map(this.$getFatherIds(), this.$getPerson, this); },
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:constructor.SearchResult#getMotherIds
+     * @name searchAndMatch.types:constructor.SearchResult#$getMotherIds
      * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
      * @return {String[]} array of mother Id's for this search result
      */
-    getMotherIds: function() {
+    $getMotherIds: function() {
       var primaryId = this.id, self = this;
       return helpers.uniq(helpers.map(
         helpers.filter(maybe(maybe(this.content).gedcomx).relationships, function(r) {
           return r.type === 'http://gedcomx.org/ParentChild' &&
             r.person2.resourceId === primaryId &&
             r.person1 &&
-            maybe(self.getPerson(r.person1.resourceId).gender).type !== 'http://gedcomx.org/Male';
+            maybe(self.$getPerson(r.person1.resourceId).gender).type !== 'http://gedcomx.org/Male';
         }),
         function(r) { return r.person1.resourceId; }
       ));
@@ -128,21 +130,21 @@ define([
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:constructor.SearchResult#getMothers
+     * @name searchAndMatch.types:constructor.SearchResult#$getMothers
      * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
      * @return {Person[]} array of mother {@link person.types:constructor.Person Persons} for this search result
      */
-    getMothers: function() { return helpers.map(this.getMotherIds(), this.getPerson, this); },
+    $getMothers: function() { return helpers.map(this.$getMotherIds(), this.$getPerson, this); },
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:constructor.SearchResult#getSpouseIds
+     * @name searchAndMatch.types:constructor.SearchResult#$getSpouseIds
      * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
      * @return {String[]} array of spouse Id's for this search result
      */
-    getSpouseIds:  function() {
+    $getSpouseIds:  function() {
       var primaryId = this.id;
       return helpers.uniq(helpers.map(
         helpers.filter(maybe(maybe(this.content).gedcomx).relationships, function(r) {
@@ -155,21 +157,21 @@ define([
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:constructor.SearchResult#getSpouses
+     * @name searchAndMatch.types:constructor.SearchResult#$getSpouses
      * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
      * @return {Person[]} array of spouse {@link person.types:constructor.Person Persons} for this search result
      */
-    getSpouses: function() { return helpers.map(this.getSpouseIds(), this.getPerson, this); },
+    $getSpouses: function() { return helpers.map(this.$getSpouseIds(), this.$getPerson, this); },
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:constructor.SearchResult#getChildIds
+     * @name searchAndMatch.types:constructor.SearchResult#$getChildIds
      * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
      * @return {String[]} array of child Id's for this search result
      */
-    getChildIds:  function() {
+    $getChildIds:  function() {
       var primaryId = this.id;
       return helpers.uniq(helpers.map(
         helpers.filter(maybe(maybe(this.content).gedcomx).relationships, function(r) {
@@ -183,12 +185,12 @@ define([
 
     /**
      * @ngdoc function
-     * @name searchAndMatch.types:constructor.SearchResult#getChildren
+     * @name searchAndMatch.types:constructor.SearchResult#$getChildren
      * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function
      * @return {Person[]} array of spouse {@link person.types:constructor.Person Persons} for this search result
      */
-    getChildren: function() { return helpers.map(this.getChildIds(), this.getPerson, this); }
+    $getChildren: function() { return helpers.map(this.$getChildIds(), this.$getPerson, this); }
   };
 
   /**
@@ -242,22 +244,26 @@ define([
    * @return {Object} promise for the response
    */
   exports.getPersonSearch = function(params, opts) {
-    return plumbing.get('/platform/tree/search', helpers.removeEmptyProperties({
-      q: getQuery(params),
-      start: params.start,
-      count: params.count,
-      context: params.context
-    }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-      helpers.compose(
-        searchMatchResponseMapper,
-        function(obj, promise) {
-          obj.getContext = function() {
-            return promise.getResponseHeader('X-FS-Page-Context');
-          };
-          return obj;
-        }
-      )
-    );
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('person-search'),
+      function(url) {
+        return plumbing.get(url, helpers.removeEmptyProperties({
+            q: getQuery(params),
+            start: params.start,
+            count: params.count,
+            context: params.context
+          }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+          helpers.compose(
+            searchMatchResponseMapper,
+            function(obj, promise) {
+              obj.getContext = function() {
+                return promise.getResponseHeader('X-FS-Page-Context');
+              };
+              return obj;
+            }
+          )
+        );
+      });
   };
 
   var nonQueryParams = {start: true, count: true, context: true};
@@ -305,14 +311,18 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/5uwyf/ editable example}
    *
-   * @param {String} id of the person to read
+   * @param {String} pid id of the person or full URL of the person-matches endpoint
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getPersonMatches = function(id, params, opts) {
-    return plumbing.get('/platform/tree/persons/'+encodeURI(id)+'/matches', params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-      searchMatchResponseMapper);
+  exports.getPersonMatches = function(pid, params, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('person-matches-template', pid, {pid: pid}),
+      function(url) {
+        return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+          searchMatchResponseMapper);
+      });
   };
 
   /**
@@ -338,12 +348,16 @@ define([
    * @return {Object} promise for the response
    */
   exports.getPersonMatchesQuery = function(params, opts) {
-    return plumbing.get('/platform/tree/matches', helpers.removeEmptyProperties({
-      q: getQuery(params),
-      start: params.start,
-      count: params.count
-    }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-      searchMatchResponseMapper);
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('person-matches-query'),
+      function(url) {
+        return plumbing.get(url, helpers.removeEmptyProperties({
+            q: getQuery(params),
+            start: params.start,
+            count: params.count
+          }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+          searchMatchResponseMapper);
+      });
   };
 
   return exports;

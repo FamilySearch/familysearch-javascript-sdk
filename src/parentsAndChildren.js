@@ -78,7 +78,7 @@ define([
      * @name parentsAndChildren.types:constructor.ChildAndParents#$getFather
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
-     * @return {Object} promise for the {@link exports.functions:getPerson getPerson} response
+     * @return {Object} promise for the {@link person.functions:getPerson getPerson} response
      */
     $getFather: function() { return globals.getPerson(this.$getFatherUrl()); },
 
@@ -105,7 +105,7 @@ define([
      * @name parentsAndChildren.types:constructor.ChildAndParents#$getMother
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
-     * @return {Object} promise for the {@link exports.functions:getPerson getPerson} response
+     * @return {Object} promise for the {@link person.functions:getPerson getPerson} response
      */
     $getMother: function() { return globals.getPerson(this.$getMotherUrl()); },
 
@@ -132,7 +132,7 @@ define([
      * @name parentsAndChildren.types:constructor.ChildAndParents#$getChild
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
-     * @return {Object} promise for the {@link exports.functions:getPerson getPerson} response
+     * @return {Object} promise for the {@link person.functions:getPerson getPerson} response
      */
     $getChild: function() { return globals.getPerson(this.$getChildUrl()); },
 
