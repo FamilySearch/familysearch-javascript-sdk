@@ -43,7 +43,7 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(personas[0].id).toBe('123');
         expect(personas[0].extracted).toBeTruthy();
         expect(personas[0].$getDisplayName()).toBe('Anastasia Aleksandrova');
-        expect(personas[0].$getPreferredName().getFullText()).toBe('Anastasia Aleksandrova');
+        expect(personas[0].$getPreferredName().$getFullText()).toBe('Anastasia Aleksandrova');
         expect(personas[0].$getNames().length).toBe(1);
         expect(personas[0].$getMemoryArtifactRef().$getMemoryArtifactUrl()).toBe('https://familysearch.org/platform/memories/artifacts/132692/description?access_token=mock');
       });

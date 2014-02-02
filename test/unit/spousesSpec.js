@@ -17,10 +17,10 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(rel.$getFacts().length).toBe(1);
         var fact = rel.$getFacts()[0];
         expect(fact.type).toBe('http://gedcomx.org/Marriage');
-        expect(rel.$getMarriageFact().getDate()).toBe('June 1800');
-        expect(fact.getDate()).toBe('June 1800');
-        expect(fact.getFormalDate()).toBe('+1800-06');
-        expect(fact.getPlace()).toBe('Provo, Utah, Utah, United States');
+        expect(rel.$getMarriageFact().$getDate()).toBe('June 1800');
+        expect(fact.$getDate()).toBe('June 1800');
+        expect(fact.$getFormalDate()).toBe('+1800-06');
+        expect(fact.$getPlace()).toBe('Provo, Utah, Utah, United States');
         rel.$getSourceRefs().then(function(response) {
           var sourceRefs = response.getSourceRefs();
           expect(sourceRefs.length).toBe(2);

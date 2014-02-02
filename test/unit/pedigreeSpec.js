@@ -9,11 +9,11 @@ define(['FamilySearch'], function(FamilySearch) {
 
         expect(response.exists(2)).toBe(true);
         expect(response.getPerson(2).id).toBe('12345');
-        expect(response.getPerson(2).getDisplayName()).toBe('Daniel Earl Bishop');
+        expect(response.getPerson(2).$getDisplayName()).toBe('Daniel Earl Bishop');
 
         expect(response.exists(3)).toBe(true);
         expect(response.getPerson(3).id).toBe('2914');
-        expect(response.getPerson(3).getDisplayName()).toBe('Maude Langston');
+        expect(response.getPerson(3).$getDisplayName()).toBe('Maude Langston');
 
         expect(response.exists(0)).toBe(false);
         expect(response.exists(16)).toBe(false);
@@ -26,15 +26,15 @@ define(['FamilySearch'], function(FamilySearch) {
 
         expect(response.exists('1')).toBe(true);
         expect(response.getPerson('1').id).toBe('12345');
-        expect(response.getPerson('1').getDisplayName()).toBe('Daniel Earl Bishop');
+        expect(response.getPerson('1').$getDisplayName()).toBe('Daniel Earl Bishop');
 
         expect(response.exists('1-S')).toBe(true);
         expect(response.getPerson('1-S').id).toBe('3526');
-        expect(response.getPerson('1-S').getDisplayName()).toBe('Maude Langston');
+        expect(response.getPerson('1-S').$getDisplayName()).toBe('Maude Langston');
 
         expect(response.exists('1.1')).toBe(true);
         expect(response.getPerson('1.1').id).toBe('8413');
-        expect(response.getPerson('1.1').getDisplayName()).toBe('Nelda Bishop');
+        expect(response.getPerson('1.1').$getDisplayName()).toBe('Nelda Bishop');
 
         expect(response.exists('1.10')).toBe(false);
       });

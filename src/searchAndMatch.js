@@ -80,6 +80,15 @@ define([
 
     /**
      * @ngdoc function
+     * @name searchAndMatch.types:constructor.SearchResult#$getFullPrimaryPerson
+     * @methodOf searchAndMatch.types:constructor.SearchResult
+     * @function
+     * @return {Object} promise for the {@link person.functions:getPerson getPerson} response
+     */
+    $getFullPrimaryPerson: function() { return globals.getPerson(this.id); },
+
+    /**
+     * @ngdoc function
      * @name searchAndMatch.types:constructor.SearchResult#$getFatherIds
      * @methodOf searchAndMatch.types:constructor.SearchResult
      * @function

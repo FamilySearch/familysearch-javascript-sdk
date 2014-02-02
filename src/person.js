@@ -1,11 +1,16 @@
 define([
+  'attribution',
+  'changeHistory',
+  'discussions',
   'globals',
   'helpers',
   'memories',
+  'notes',
   'parentsAndChildren',
   'plumbing',
+  'sources',
   'spouses'
-], function(globals, helpers, memories, parentsAndChildren, plumbing, spouses) {
+], function(attribution, changeHistory, discussions, globals, helpers, memories, notes, parentsAndChildren, plumbing, sources, spouses) {
   /**
    * @ngdoc overview
    * @name person
@@ -59,131 +64,226 @@ define([
      */
 
     /**
-     * @ngdoc function
-     * @name person.types:constructor.Person#getFacts
-     * @methodOf person.types:constructor.Person
-     * @return {Fact[]} an array of {@link person.types:constructor.Fact Facts}
+     * @ngdoc property
+     * @name person.types:constructor.Person#identifers
+     * @propertyOf person.types:constructor.Person
+     * @return {Object} map of identifers to arrays of values
      */
-    getFacts: function() { return this.facts || []; },
+
+    /**
+     * @ngdoc property
+     * @name person.types:constructor.Person#gender
+     * @propertyOf person.types:constructor.Person
+     * @return {Object} gender conclusion with id, type, attribution, and confidence
+     */
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#getBirthDate
+     * @name person.types:constructor.Person#$getFacts
+     * @methodOf person.types:constructor.Person
+     * @return {Fact[]} an array of {@link person.types:constructor.Fact Facts}
+     */
+    $getFacts: function() { return this.facts || []; },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getBirthDate
      * @methodOf person.types:constructor.Person
      * @function
      * @return {String} birth date
      */
-    getBirthDate: function() { return maybe(this.display).birthDate; },
+    $getBirthDate: function() { return maybe(this.display).birthDate; },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#getBirthPlace
+     * @name person.types:constructor.Person#$getBirthPlace
      * @methodOf person.types:constructor.Person
      * @function
      * @return {String} birth place
      */
-    getBirthPlace: function() { return maybe(this.display).birthPlace; },
+    $getBirthPlace: function() { return maybe(this.display).birthPlace; },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#getDeathDate
+     * @name person.types:constructor.Person#$getDeathDate
      * @methodOf person.types:constructor.Person
      * @function
      * @return {String} death date
      */
-    getDeathDate: function() { return maybe(this.display).deathDate; },
+    $getDeathDate: function() { return maybe(this.display).deathDate; },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#getDeathPlace
+     * @name person.types:constructor.Person#$getDeathPlace
      * @methodOf person.types:constructor.Person
      * @function
      * @return {String} death place
      */
-    getDeathPlace: function() { return maybe(this.display).deathPlace; },
+    $getDeathPlace: function() { return maybe(this.display).deathPlace; },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#getGender
+     * @name person.types:constructor.Person#$getGender
      * @methodOf person.types:constructor.Person
      * @function
      * @return {String} gender - Male or Female
      */
-    getGender: function() { return maybe(this.display).gender; },
+    $getGender: function() { return maybe(this.display).gender; },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#getLifeSpan
+     * @name person.types:constructor.Person#$getLifeSpan
      * @methodOf person.types:constructor.Person
      * @function
      * @return {String} birth year - death year
      */
-    getLifeSpan: function() { return maybe(this.display).lifespan; },
+    $getLifeSpan: function() { return maybe(this.display).lifespan; },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#getNames
+     * @name person.types:constructor.Person#$getNames
      * @methodOf person.types:constructor.Person
      * @return {Name[]} an array of {@link person.types:constructor.Name Names}
      */
-    getNames: function() { return this.names || []; },
+    $getNames: function() { return this.names || []; },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#getDisplayName
+     * @name person.types:constructor.Person#$getDisplayName
      * @methodOf person.types:constructor.Person
      * @function
      * @return {string} display name
      */
-    getDisplayName: function() { return maybe(this.display).name; },
+    $getDisplayName: function() { return maybe(this.display).name; },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#getPreferredName
+     * @name person.types:constructor.Person#$getPreferredName
      * @methodOf person.types:constructor.Person
      * @function
      * @return {string} preferred {@link person.types:constructor.Name Name}
      */
-    getPreferredName: function() { return helpers.findOrFirst(this.names, {preferred: true}); },
+    $getPreferredName: function() { return helpers.findOrFirst(this.names, {preferred: true}); },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#getGivenName
+     * @name person.types:constructor.Person#$getGivenName
      * @methodOf person.types:constructor.Person
      * @function
      * @return {String} preferred given name
      */
-    getGivenName: function() {
-      var name = this.getPreferredName();
+    $getGivenName: function() {
+      var name = this.$getPreferredName();
       if (name) {
-        name = name.getGivenName();
+        name = name.$getGivenName();
       }
       return name;
     },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#getSurname
+     * @name person.types:constructor.Person#$getSurname
      * @methodOf person.types:constructor.Person
      * @function
      * @return {String} preferred surname
      */
-    getSurname: function() {
-      var name = this.getPreferredName();
+    $getSurname: function() {
+      var name = this.$getPreferredName();
       if (name) {
-        name = name.getSurname();
+        name = name.$getSurname();
       }
       return name;
     },
 
+    // TODO add unit tests for the following functions
+
     /**
      * @ngdoc function
-     * @name name person.types:constructor.Person#addName
+     * @name person.types:constructor.Person#$getPersistentIdentifier
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {String} persistent identifier
+     */
+    $getPersistentIdentifier: function() { return maybe(maybe(this.identifiers)['http://gedcomx.org/Persistent'])[0]; },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getChanges
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
+     * @return {Object} promise for the {@link changeHistory.functions:getPersonChanges getPersonChanges} response
+     */
+    $getChanges: function(params) {
+      return changeHistory.getPersonChanges(helpers.removeAccessToken(this.links['change-history'].href), params);
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getDiscussionRefs
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {Object} promise for the {@link discussions.functions:getPersonDiscussionRefs getPersonDiscussionRefs} response
+     */
+    $getDiscussionRefs: function() {
+      return discussions.getPersonDiscussionRefs(helpers.removeAccessToken(this.links['discussion-references'].href));
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getMemoryPersonaRefs
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {Object} promise for the {@link memories.functions:getMemoryPersonaRefs getMemoryPersonaRefs} response
+     */
+    $getMemoryPersonaRefs: function() {
+      return memories.getMemoryPersonaRefs(helpers.removeAccessToken(this.links['evidence-references'].href));
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getNoteRefs
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {Object} promise for the {@link notes.functions:getPersonNoteRefs getPersonNoteRefs} response
+     */
+    $getNoteRefs: function() {
+      return notes.getPersonNoteRefs(helpers.removeAccessToken(this.links['notes'].href));
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getSourceRefs
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {Object} promise for the {@link sources.functions:getPersonSourceRefs getPersonSourceRefs} response
+     */
+    $getPersonSourceRefs: function() {
+      return sources.getPersonSourceRefs(helpers.removeAccessToken(this.links['source-references'].href));
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getRelationshipsToSpouses
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {Object=} params set `persons` true to return a person object for each person in the relationships
+     * @return {Object} promise for the {@link person.functions:getRelationshipsToSpouses getRelationshipsToSpouses} response
+     */
+    $getRelationshipsToSpouses: function(params) {
+      return exports.getRelationshipsToSpouses(helpers.removeAccessToken(this.links['spouse-relationships'].href), params);
+    },
+
+    // TODO add links to ancestry, descendancy, person-with-relationships, child-relationships, parent-relationships, matches, portrait
+
+    /**
+     * @ngdoc function
+     * @name name person.types:constructor.Person#$addName
      * @methodOf person.types:constructor.Person
      * @function
      * @param {Name|string} name to add
      */
-    addName: function(name) {
+    $addName: function(name) {
       if (!(name instanceof Name)) {
         //noinspection JSValidateTypes
         name = new Name(name);
@@ -246,64 +346,53 @@ define([
      */
 
     /**
-     * @ngdoc function
-     * @name person.types:constructor.Name#getContributorId
-     * @methodOf person.types:constructor.Name
-     * @function
-     * @return {String} Id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
+     * @ngdoc property
+     * @name person.types:constructor.Name#attribution
+     * @propertyOf person.types:constructor.Name
+     * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
      */
-    getContributorId: function() { return maybe(maybe(this.attribution).contributor).resourceId; },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Name#getModified
-     * @methodOf person.types:constructor.Name
-     * @function
-     * @return {Number} last modified timestamp
-     */
-    getModified: function() { return maybe(this.attribution).modified; },
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.Name#getNameFormsCount
+     * @name person.types:constructor.Name#$getNameFormsCount
      * @methodOf person.types:constructor.Name
      * @function
      * @return {Number} get the number of name forms
      */
-    getNameFormsCount: function() { return this.nameForms ? this.nameForms.length : 0; },
+    $getNameFormsCount: function() { return this.nameForms ? this.nameForms.length : 0; },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Name#getFullText
+     * @name person.types:constructor.Name#$getFullText
      * @methodOf person.types:constructor.Name
      * @function
      * @param {Number=} i i'th name form to read
      * @return {String} get the full text of the `i`'th name form; if `i` is omitted; get the first
      */
-    getFullText: function(i) { return maybe(maybe(this.nameForms)[i || 0]).fullText; },
+    $getFullText: function(i) { return maybe(maybe(this.nameForms)[i || 0]).fullText; },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Name#getGivenName
+     * @name person.types:constructor.Name#$getGivenName
      * @methodOf person.types:constructor.Name
      * @function
      * @param {Number=} i i'th name form to read
      * @return {String} get the given part of the `i`'th name form; if `i` is omitted; get the first
      */
-    getGivenName: function(i) { return maybe(helpers.find(
+    $getGivenName: function(i) { return maybe(helpers.find(
       maybe(maybe(this.nameForms)[i || 0]).parts,
       {type: 'http://gedcomx.org/Given'}
     )).value; },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Name#getSurname
+     * @name person.types:constructor.Name#$getSurname
      * @methodOf person.types:constructor.Name
      * @function
      * @param {Number=} i i'th name form to read
      * @return {String} get the surname part of the `i`'th name form; if `i` is omitted; get the first
      */
-    getSurname:        function(i) { return maybe(helpers.find(
+    $getSurname:        function(i) { return maybe(helpers.find(
       maybe(maybe(this.nameForms)[i || 0]).parts,
       {type: 'http://gedcomx.org/Surname'}
     )).value; }
@@ -337,49 +426,38 @@ define([
      */
 
     /**
-     * @ngdoc function
-     * @name person.types:constructor.Fact#getContributorId
-     * @methodOf person.types:constructor.Fact
-     * @function
-     * @return {String} Id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
+     * @ngdoc property
+     * @name person.types:constructor.Fact#attribution
+     * @propertyOf person.types:constructor.Fact
+     * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
      */
-    getContributorId: function() { return maybe(maybe(this.attribution).contributor).resourceId; },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Fact#getModified
-     * @methodOf person.types:constructor.Fact
-     * @function
-     * @return {Number} last modified timestamp
-     */
-    getModified: function() { return maybe(this.attribution).modified; },
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.Fact#getDate
+     * @name person.types:constructor.Fact#$getDate
      * @methodOf person.types:constructor.Fact
      * @function
      * @return {String} original date
      */
-    getDate: function() { return maybe(this.date).original; },
+    $getDate: function() { return maybe(this.date).original; },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Fact#getFormalDate
+     * @name person.types:constructor.Fact#$getFormalDate
      * @methodOf person.types:constructor.Fact
      * @function
      * @return {String} standard form; e.g., +1836-04-13
      */
-    getFormalDate: function() { return maybe(this.date).formal; },
+    $getFormalDate: function() { return maybe(this.date).formal; },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Fact#getPlace
+     * @name person.types:constructor.Fact#$getPlace
      * @methodOf person.types:constructor.Fact
      * @function
      * @return {String} event place
      */
-    getPlace: function() { return maybe(this.place).original; }
+    $getPlace: function() { return maybe(this.place).original; }
   };
 
   /**
@@ -397,18 +475,21 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/cST4L/ editable example}
    *
-   * @param {String} pid of the person to read
+   * @param {String} pid id or full URL of the person
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   globals.getPerson = exports.getPerson = function(pid, params, opts) { // put on globals so parentsAndChildren and spouses can access it
-    var url = helpers.isAbsoluteUrl(pid) ? pid : '/platform/tree/persons/'+encodeURI(pid);
-    return plumbing.get(url, params, {}, opts,
-      helpers.compose(
-        helpers.objectExtender({getPerson: function() { return this.persons[0]; }}),
-        exports.personMapper()
-      ));
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('person-template', pid, {pid: pid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts,
+          helpers.compose(
+            helpers.objectExtender({getPerson: function() { return this.persons[0]; }}),
+            exports.personMapper()
+          ));
+      });
   };
 
   /**
@@ -425,7 +506,16 @@ define([
     return helpers.compose(
       helpers.constructorSetter(Person, 'persons', subObjectGenerator),
       helpers.constructorSetter(Name, 'names', personsGenerator),
-      helpers.constructorSetter(Fact, 'facts', personsGenerator)
+      helpers.constructorSetter(Fact, 'facts', personsGenerator),
+      helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+        return helpers.flatMap(personsGenerator(response), function(person) {
+          return helpers.union(
+            person.names || [],
+            person.facts || [],
+            person.gender ? [person.gender] : []
+          );
+        });
+      })
     );
   };
 
@@ -491,30 +581,34 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/5Npsh/ editable example}
    *
-   * @param {String} pid person to read
+   * @param {String} pid id of the person
    * @param {Object=} params set `persons` to true to retrieve full person objects for each relative
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the person with relationships
    */
   exports.getPersonWithRelationships = function(pid, params, opts) {
-    return plumbing.get('/platform/tree/persons-with-relationships', helpers.extend({'person': pid}, params), {}, opts,
-      helpers.compose(
-        helpers.objectExtender({getPrimaryId: function() { return pid; }}), // make id available
-        helpers.constructorSetter(Fact, 'fatherFacts', function(response) {
-          return maybe(response).childAndParentsRelationships;
-        }),
-        helpers.constructorSetter(Fact, 'motherFacts', function(response) {
-          return maybe(response).childAndParentsRelationships;
-        }),
-        helpers.constructorSetter(Fact, 'facts', function(response) {
-          return maybe(response).relationships;
-        }),
-        helpers.constructorSetter(parentsAndChildren.ChildAndParents, 'childAndParentsRelationships'),
-        helpers.constructorSetter(spouses.Couple, 'relationships'), // some of the relationships are ParentChild relationships, but
-                                                            // we don't have a way to change the constructor on only some elements of the array
-        helpers.objectExtender(personWithRelationshipsConvenienceFunctions),
-        exports.personMapper()
-      ));
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('person-with-relationships-query'),
+      function(url) {
+        return plumbing.get(url, helpers.extend({'person': pid}, params), {}, opts,
+          helpers.compose(
+            helpers.objectExtender({getPrimaryId: function() { return pid; }}), // make id available
+            helpers.constructorSetter(Fact, 'fatherFacts', function(response) {
+              return maybe(response).childAndParentsRelationships;
+            }),
+            helpers.constructorSetter(Fact, 'motherFacts', function(response) {
+              return maybe(response).childAndParentsRelationships;
+            }),
+            helpers.constructorSetter(Fact, 'facts', function(response) {
+              return maybe(response).relationships;
+            }),
+            helpers.constructorSetter(parentsAndChildren.ChildAndParents, 'childAndParentsRelationships'),
+            helpers.constructorSetter(spouses.Couple, 'relationships'), // some of the relationships are ParentChild relationships, but
+            // we don't have a way to change the constructor on only some elements of the array
+            helpers.objectExtender(personWithRelationshipsConvenienceFunctions),
+            exports.personMapper()
+          ));
+      });
   };
 
   // Functions to extract various pieces of the response
@@ -611,20 +705,25 @@ define([
    *
    * - `getChanges()` - get the array of changes from the response; each change has an `id`, `published` timestamp, `title`, and `updated` timestamp
    *
-   * **NOTE The sandbox REST endpoint for this function is broken so I have been unable to test it. Do not use.**
+   * **NOTE The sandbox REST endpoint for this function is broken. Do not use.**
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Change_Summary_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/ga37h/ editable example}
    *
-   * @param {String} pid of the person to read
+   * @param {String} pid id of the person or full URL of the person-change-summary endpoint
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
+  // TODO check if this has been fixed
   exports.getPersonChangeSummary = function(pid, params, opts) {
-    return plumbing.get('/platform/tree/persons/'+encodeURI(pid)+'/change-summary', params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-      helpers.objectExtender({getChanges: function() { return this.entries || []; }}));
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('person-change-summary-template', pid, {pid: pid}),
+      function(url) {
+        return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+          helpers.objectExtender({getChanges: function() { return this.entries || []; }}));
+      });
   };
 
   /**
@@ -645,23 +744,27 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/7zLEJ/ editable example}
    *
-   * @param {String} pid of the person to read
+   * @param {String} pid id of the person or full URL of the spouse-relationships endpoint
    * @param {Object=} params set `persons` true to return a person object for each person in the relationships,
    * which you can access using the `getPerson(id)` convenience function.
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   exports.getRelationshipsToSpouses = function(pid, params, opts) {
-    return plumbing.get('/platform/tree/persons/'+encodeURI(pid)+'/spouse-relationships', params, {}, opts,
-      helpers.compose(
-        helpers.objectExtender({getPrimaryId: function() { return pid; }}), // make id available to convenience functions
-        helpers.constructorSetter(spouses.Couple, 'relationships'),
-        helpers.objectExtender(relationshipsToSpousesConvenienceFunctions),
-        helpers.constructorSetter(Fact, 'facts', function(response) {
-          return maybe(response).relationships;
-        }),
-        exports.personMapper()
-      ));
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('spouse-relationships-template', pid, {pid: pid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts,
+          helpers.compose(
+            helpers.objectExtender({getPrimaryId: function() { return pid; }}), // make id available to convenience functions
+            helpers.constructorSetter(spouses.Couple, 'relationships'),
+            helpers.objectExtender(relationshipsToSpousesConvenienceFunctions),
+            helpers.constructorSetter(Fact, 'facts', function(response) {
+              return maybe(response).relationships;
+            }),
+            exports.personMapper()
+          ));
+      });
   };
 
   var relationshipsToSpousesConvenienceFunctions = {

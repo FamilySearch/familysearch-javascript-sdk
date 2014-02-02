@@ -4,33 +4,33 @@ define(['FamilySearch'], function(FamilySearch) {
       FamilySearch.getPerson('PPPJ-MYZ').then(function(response) {
         var person = response.getPerson();
         expect(person.id).toBe('PPPJ-MYZ');
-        expect(person.getBirthDate()).toBe('3 Apr 1836');
-        expect(person.getBirthPlace()).toBe('Moscow, Russia');
-        expect(person.getDeathDate()).toBeUndefined();
-        expect(person.getDeathPlace()).toBeUndefined();
-        expect(person.getGender()).toBe('Male');
-        expect(person.getLifeSpan()).toBe('3 Apr 1836 - Dead');
-        expect(person.getDisplayName()).toBe('Alex Aleksandrova');
+        expect(person.$getBirthDate()).toBe('3 Apr 1836');
+        expect(person.$getBirthPlace()).toBe('Moscow, Russia');
+        expect(person.$getDeathDate()).toBeUndefined();
+        expect(person.$getDeathPlace()).toBeUndefined();
+        expect(person.$getGender()).toBe('Male');
+        expect(person.$getLifeSpan()).toBe('3 Apr 1836 - Dead');
+        expect(person.$getDisplayName()).toBe('Alex Aleksandrova');
         expect(person.living).toBe(true);
-        expect(person.getGivenName()).toBe('Alex');
-        expect(person.getSurname()).toBe('Aleksandrova');
-        expect(person.getNames().length).toBe(1);
-        var name = person.getNames()[0];
+        expect(person.$getGivenName()).toBe('Alex');
+        expect(person.$getSurname()).toBe('Aleksandrova');
+        expect(person.$getNames().length).toBe(1);
+        var name = person.$getNames()[0];
         expect(name.id).toBe('name-id');
-        expect(name.getContributorId()).toBe('KNCV-RMZ');
+        expect(name.attribution.$getAgentId()).toBe('KNCV-RMZ');
         expect(name.type).toBe('http://gedcomx.org/BirthName');
-        expect(name.getNameFormsCount()).toBe(2);
-        expect(name.getFullText()).toBe('Alex Aleksandrova');
-        expect(name.getGivenName(1)).toBe('Анастасия');
-        expect(name.getSurname(0)).toBe('Aleksandrova');
-        expect(person.getFacts().length).toBe(2);
-        var facts = person.getFacts();
+        expect(name.$getNameFormsCount()).toBe(2);
+        expect(name.$getFullText()).toBe('Alex Aleksandrova');
+        expect(name.$getGivenName(1)).toBe('Анастасия');
+        expect(name.$getSurname(0)).toBe('Aleksandrova');
+        expect(person.$getFacts().length).toBe(2);
+        var facts = person.$getFacts();
         expect(facts[0].id).toBe('born');
-        expect(facts[0].getContributorId()).toBe('RMQW-LPK');
+        expect(facts[0].attribution.$getAgentId()).toBe('RMQW-LPK');
         expect(facts[0].type).toBe('http://gedcomx.org/Birth');
-        expect(facts[0].getDate()).toBe('3 Apr 1836');
-        expect(facts[0].getFormalDate()).toBe('+1836');
-        expect(facts[0].getPlace()).toBe('Moscow, Russia');
+        expect(facts[0].$getDate()).toBe('3 Apr 1836');
+        expect(facts[0].$getFormalDate()).toBe('+1836');
+        expect(facts[0].$getPlace()).toBe('Moscow, Russia');
         expect(facts[1].id).toBe('res');
         expect(facts[1].type).toBe('http://gedcomx.org/Residence');
       });
@@ -40,13 +40,13 @@ define(['FamilySearch'], function(FamilySearch) {
       FamilySearch.getMultiPerson(['PPPJ-MYZ','PPPJ-MYY']).then(function(response) {
         var person = response['PPPJ-MYZ'].getPerson();
         expect(person.id).toBe('PPPJ-MYZ');
-        expect(person.getDisplayName()).toBe('Alex Aleksandrova');
-        expect(person.getGender()).toBe('Male');
+        expect(person.$getDisplayName()).toBe('Alex Aleksandrova');
+        expect(person.$getGender()).toBe('Male');
 
         person = response['PPPJ-MYY'].getPerson();
         expect(person.id).toBe('PPPJ-MYY');
-        expect(person.getDisplayName()).toBe('Alexa Aleksandrova');
-        expect(person.getGender()).toBe('Female');
+        expect(person.$getDisplayName()).toBe('Alexa Aleksandrova');
+        expect(person.$getGender()).toBe('Female');
       });
     });
 
@@ -54,7 +54,7 @@ define(['FamilySearch'], function(FamilySearch) {
       FamilySearch.getPersonWithRelationships('PW8J-MZ0').then(function(response) {
         expect(response.getPrimaryId()).toBe('PW8J-MZ0');
         expect(response.getPerson(response.getPrimaryId())).toBe(response.getPrimaryPerson());
-        expect(response.getPrimaryPerson().getDisplayName()).toBe('Alex Aleksandrova');
+        expect(response.getPrimaryPerson().$getDisplayName()).toBe('Alex Aleksandrova');
         expect(response.getFatherIds()).toEqual(['PW8J-MZ1']);
         expect(response.getMotherIds()).toEqual(['PW8J-GZ2']);
         expect(response.getSpouseIds()).toEqual(['PA65-HG3']);
@@ -96,14 +96,14 @@ define(['FamilySearch'], function(FamilySearch) {
 
     it('is returned with populated relationships from getPersonWithRelationships with persons parameter', function() {
       FamilySearch.getPersonWithRelationships('KW7S-VQJ', {persons: true}).then(function(response) {
-        expect(response.getFathers()[0].getDisplayName()).toBe('Jens Christian Jensen');
-        expect(response.getMothers()[0].getDisplayName()).toBe('Ane Christensdr');
-        expect(response.getPerson(response.getParentRelationships()[0].$getFatherId()).getDisplayName()).toEqual('Jens Christian Jensen');
+        expect(response.getFathers()[0].$getDisplayName()).toBe('Jens Christian Jensen');
+        expect(response.getMothers()[0].$getDisplayName()).toBe('Ane Christensdr');
+        expect(response.getPerson(response.getParentRelationships()[0].$getFatherId()).$getDisplayName()).toEqual('Jens Christian Jensen');
         expect(response.getSpouses()[0].id).toBe(response.getSpouseIds()[0]);
         expect(response.getSpouses()[0].id).toBe('KW7S-JB7');
-        expect(response.getSpouses()[0].getDisplayName()).toBe('Delilah Ann Smith');
-        expect(response.getChildren()[0].getDisplayName()).toEqual('Christian Ludvic Jensen');
-        expect(response.getChildrenOf('KW7S-JB7')[0].getDisplayName()).toEqual('Christian Ludvic Jensen');
+        expect(response.getSpouses()[0].$getDisplayName()).toBe('Delilah Ann Smith');
+        expect(response.getChildren()[0].$getDisplayName()).toEqual('Christian Ludvic Jensen');
+        expect(response.getChildrenOf('KW7S-JB7')[0].$getDisplayName()).toEqual('Christian Ludvic Jensen');
         expect(response.getChildrenOf('FOO').length).toBe(0);
       });
     });
@@ -126,7 +126,7 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(rel.$getHusbandId()).toBe('KJ8T-MP1');
         expect(rel.$getWifeId()).toBe('KJ8T-FP2');
         expect(rel.$getFacts().length).toBe(1);
-        expect(rel.$getFacts()[0].getDate()).toBe('1 January 1786');
+        expect(rel.$getFacts()[0].$getDate()).toBe('1 January 1786');
       });
     });
 
