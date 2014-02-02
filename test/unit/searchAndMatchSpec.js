@@ -9,7 +9,7 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(results[0].title).toBe('Person 98765');
         expect(results[0].score).toEqual(0.95);
         expect(results[0].getPrimaryPerson().id).toBe('98765');
-        expect(results[0].getPrimaryPerson().getName()).toBe('Israel Heaton');
+        expect(results[0].getPrimaryPerson().getDisplayName()).toBe('Israel Heaton');
         expect(results[0].getPrimaryPerson().facts[0].getDate()).toBe('30 January 1880');
         expect(results[0].getPrimaryPerson().names[0].getFullText()).toBe('Israel Heaton');
         expect(results[0].getChildren().length).toBe(1);

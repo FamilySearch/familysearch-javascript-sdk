@@ -38,6 +38,7 @@ define([
 
     // discussions
     Discussion: discussions.Discussion,
+    DiscussionRef: discussions.DiscussionRef,
     Comment: discussions.Comment,
     getPersonDiscussionRefs: discussions.getPersonDiscussionRefs,
     getDiscussion: discussions.getDiscussion,
@@ -46,8 +47,9 @@ define([
 
     // memories
     Memory: memories.Memory,
-    MemoryRef: memories.MemoryRef,
-    getPersonMemoryRefs: memories.getPersonMemoryRefs,
+    MemoryPersonaRef: memories.MemoryPersonaRef,
+    MemoryPersona: memories.MemoryPersona,
+    getMemoryPersonaRefs: memories.getMemoryPersonaRefs,
     getMemory: memories.getMemory,
     getMemoryComments: memories.getMemoryComments,
     getMemoryPersonas: memories.getMemoryPersonas,
@@ -55,8 +57,8 @@ define([
     getPersonMemoriesQuery: memories.getPersonMemoriesQuery,
     getUserMemoriesQuery: memories.getUserMemoriesQuery,
     createMemory: memories.createMemory,
-    createMemoryPersona: memories.createMemoryPersona,
-    addPersonMemoryRef: memories.addPersonMemoryRef,
+    addMemoryPersona: memories.addMemoryPersona,
+    addMemoryPersonaRef: memories.addMemoryPersonaRef,
 
     // notes
     Note: notes.Note,

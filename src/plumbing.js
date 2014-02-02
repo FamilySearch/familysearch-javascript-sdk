@@ -278,7 +278,7 @@ define([
         opts || {});
 
       // process the response
-      returnedPromise = helpers.extendHttpPromise(returnedPromise, promise);
+      helpers.extendHttpPromise(returnedPromise, promise);
       promise.then(
         function(data) {
           helpers.refreshAccessToken();

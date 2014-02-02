@@ -437,6 +437,30 @@ define([
   };
 
   /**
+   * Chain multiple http promises so the http functions (e.g., getResponseHeader) from the last promise are available in the the returned promise
+   * Pass an initial http promise and one or more http-promise-generating functions to chain
+   * @returns {Object} promise with http functions
+   */
+  exports.chainHttpPromises = function() {
+    var promise = arguments[0];
+    var bridge = {}; // bridge is needed because the "then" function is executed immediately in unit tests
+    forEach(Array.prototype.slice.call(arguments, 1), function(fn) {
+      promise = promise.then(function() {
+        var result = fn.apply(null, arguments);
+        if (result && result.then) {
+          // the bridge object is extended with the functions from each promise-generating function,
+          // but the final function will win
+          exports.extendHttpPromise(bridge, result);
+        }
+        return result;
+      });
+    });
+    // the returned promise will call into the bridge object for the http functions
+    exports.extendHttpPromise(promise, bridge);
+    return promise;
+  };
+
+  /**
    * "empty" properties are undefined, null, or the empty string
    * @param {Object} obj Object to remove properties from
    * @returns {Object} Object with empty properties removed
@@ -460,6 +484,16 @@ define([
       url = url.replace(/^.*\//, '').replace(/\?.*$/, '');
     }
     return url;
+  };
+
+  /**
+   * Response mapper that returns the location header
+   * @param data ignored
+   * @param promise http promise
+   * @returns {string} the location response header
+   */
+  exports.getResponseLocation = function(data, promise) {
+    return exports.removeAccessToken(promise.getResponseHeader('Location'));
   };
 
   /**
@@ -552,15 +586,17 @@ define([
    */
   exports.decodeQueryString = function(url) {
     var obj = {};
-    var pos = url.indexOf('?');
-    if (pos !== -1) {
-      var segments = url.substring(pos+1).split('&');
-      forEach(segments, function(segment) {
-        var kv = segment.split('=', 2);
-        if (kv && kv[0]) {
-          obj[decodeURIComponent(kv[0])] = (kv[1] != null ? decodeURIComponent(kv[1]) : kv[1]); // catches null and undefined
-        }
-      });
+    if (url) {
+      var pos = url.indexOf('?');
+      if (pos !== -1) {
+        var segments = url.substring(pos+1).split('&');
+        forEach(segments, function(segment) {
+          var kv = segment.split('=', 2);
+          if (kv && kv[0]) {
+            obj[decodeURIComponent(kv[0])] = (kv[1] != null ? decodeURIComponent(kv[1]) : kv[1]); // catches null and undefined
+          }
+        });
+      }
     }
     return obj;
   };

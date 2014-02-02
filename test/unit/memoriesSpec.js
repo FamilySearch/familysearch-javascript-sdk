@@ -1,11 +1,16 @@
 define(['FamilySearch'], function(FamilySearch) {
   describe('Memory', function() {
     it('references are returned from getPersonMemoryRefs', function() {
-      FamilySearch.getPersonMemoryRefs('PPPP-PPP').then(function(response) {
-        var memoryRefs = response.getMemoryRefs();
+      FamilySearch.getMemoryPersonaRefs('PPPP-PPP').then(function(response) {
+        var memoryRefs = response.getMemoryPersonaRefs();
         expect(memoryRefs.length).toBe(2);
-        expect(memoryRefs[0].getMemoryId()).toBe('3649');
+        expect(memoryRefs[0].resource).toBe('https://familysearch.org/platform/memories/memories/ARXX-MMM/personas/1083');
         expect(memoryRefs[0].resourceId).toBe('1083');
+        expect(memoryRefs[0].$getMemoryId()).toBe('ARXX-MMM');
+        memoryRefs[0].$getMemory().then(function(response) {
+          var memory = response.getMemory();
+          expect(memory.id).toBe('ARXX-MMM');
+        });
       });
     });
 
@@ -15,10 +20,10 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(memory.id).toBe('ARXX-MMM');
         expect(memory.mediaType).toBe('image/jpeg');
         expect(memory.about).toBe('https://familysearch.org/platform/memories/artifacts/ARXX-MMM');
-        expect(memory.getIconUrl()).toBe('https://familysearch.org/platform/memories/artifacts/ARXX-MMM?icon&access_token=mock');
-        expect(memory.getThumbnailUrl()).toBe('https://familysearch.org/platform/memories/artifacts/ARXX-MMM?thumbnail&access_token=mock');
-        expect(memory.getTitle()).toBe('Birth Certificate of Ethel Hollivet');
-        expect(memory.getDescription()).toBe('Shows Ethel Hollivet was born 3 Aug 1899');
+        expect(memory.$getIconUrl()).toBe('https://familysearch.org/platform/memories/artifacts/ARXX-MMM?icon&access_token=mock');
+        expect(memory.$getThumbnailUrl()).toBe('https://familysearch.org/platform/memories/artifacts/ARXX-MMM?thumbnail&access_token=mock');
+        expect(memory.$getTitle()).toBe('Birth Certificate of Ethel Hollivet');
+        expect(memory.$getDescription()).toBe('Shows Ethel Hollivet was born 3 Aug 1899');
       });
     });
 
@@ -37,7 +42,10 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(personas.length).toBe(1);
         expect(personas[0].id).toBe('123');
         expect(personas[0].extracted).toBeTruthy();
-        expect(personas[0].getName()).toBe('Anastasia Aleksandrova');
+        expect(personas[0].$getDisplayName()).toBe('Anastasia Aleksandrova');
+        expect(personas[0].$getPreferredName().getFullText()).toBe('Anastasia Aleksandrova');
+        expect(personas[0].$getNames().length).toBe(1);
+        expect(personas[0].$getMemoryArtifactRef().$getMemoryArtifactUrl()).toBe('https://familysearch.org/platform/memories/artifacts/132692/description?access_token=mock');
       });
     });
 
@@ -53,8 +61,8 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(memories.length).toBe(2);
         expect(memories[0].id).toBe('904106');
         expect(memories[0].about).toBe('https://familysearch.org/photos/images/904106');
-        expect(memories[0].getTitle()).toBe('Missionary Portrait');
-        expect(memories[0].getDescription()).toBe('Alma Heaton while on a mission to Canada.');
+        expect(memories[0].$getTitle()).toBe('Missionary Portrait');
+        expect(memories[0].$getDescription()).toBe('Alma Heaton while on a mission to Canada.');
       });
     });
 
@@ -64,8 +72,8 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(memories.length).toBe(1);
         expect(memories[0].id).toBe('MMMM-PPP');
         expect(memories[0].about).toBeUndefined();
-        expect(memories[0].getTitle()).toBe('NEW ARTIFACT TITLE');
-        expect(memories[0].getDescription()).toBeUndefined();
+        expect(memories[0].$getTitle()).toBe('NEW ARTIFACT TITLE');
+        expect(memories[0].$getDescription()).toBeUndefined();
       });
     });
 
@@ -76,21 +84,17 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(request.headers['Content-Type']).toBe('text/plain');
         expect(request.data).toBe('Test');
         expect(promise.getStatusCode()).toBe(201);
-        expect(response).toBe('12345');
+        expect(response).toBe('https://familysearch.org/platform/memories/memories/12345');
       });
     });
 
     it('persona is created', function() {
-      var persona = new FamilySearch.Person();
-      persona.addName('Anastasia Aleksandrova');
-      persona.media = [{
-        description: 'https://familysearch.org/platform/memories/artifacts/AR-1234/description'
-      }];
-      var promise = FamilySearch.createMemoryPersona('AR-1234', persona);
+      var persona = new FamilySearch.MemoryPersona('Anastasia Aleksandrova', 'https://familysearch.org/platform/memories/artifacts/AR-1234/description');
+      var promise = FamilySearch.addMemoryPersona('AR-1234', persona);
       promise.then(function(response) {
         var request = promise.getRequest();
         //noinspection JSUnresolvedFunction
-        expect(request.data).toEqualData({
+        expect(request.data).toEqualJson({
           persons: [{
             media : [ {
               description : 'https://familysearch.org/platform/memories/artifacts/AR-1234/description'
@@ -103,19 +107,19 @@ define(['FamilySearch'], function(FamilySearch) {
           }]
         });
         expect(promise.getStatusCode()).toBe(201);
-        expect(response instanceof FamilySearch.MemoryRef).toBeTruthy();
-        expect(response.getMemoryId()).toBe('AR-1234');
-        expect(response.resourceId).toBe('PXX-1234');
+        expect(response instanceof FamilySearch.MemoryPersonaRef).toBeTruthy();
+        expect(response.$getMemoryId()).toBe('AR-1234');
+        expect(response.resource).toBe('https://familysearch.org/platform/memories/memories/AR-1234/personas/PXX-1234');
       });
     });
 
     it('ref is added to a person', function() {
-      var memoryRef = new FamilySearch.MemoryRef('https://familysearch.org/platform/memories/memories/3649/personas/1083');
-      var promise = FamilySearch.addPersonMemoryRef('PPPP-PPP', memoryRef, {changeMessage:'...change message...'});
+      var memoryPersonaRef = new FamilySearch.MemoryPersonaRef('https://familysearch.org/platform/memories/memories/3649/personas/1083');
+      var promise = FamilySearch.addMemoryPersonaRef('PPPP-PPP', memoryPersonaRef, {changeMessage:'...change message...'});
       promise.then(function(response) {
         var request = promise.getRequest();
         //noinspection JSUnresolvedFunction
-        expect(request.data).toEqualData({
+        expect(request.data).toEqualJson({
           'persons' : [ {
             'attribution' : {
               'changeMessage' : '...change message...'
@@ -127,7 +131,7 @@ define(['FamilySearch'], function(FamilySearch) {
           } ]
         });
         expect(promise.getStatusCode()).toBe(201);
-        expect(response).toBe('1083');
+        expect(response).toBe('https://familysearch.org/platform/tree/persons/PPPP-PPP/memory-references/1083');
       });
     });
   });

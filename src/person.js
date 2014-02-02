@@ -1,10 +1,11 @@
 define([
   'globals',
   'helpers',
+  'memories',
   'parentsAndChildren',
   'plumbing',
   'spouses'
-], function(globals, helpers, parentsAndChildren, plumbing, spouses) {
+], function(globals, helpers, memories, parentsAndChildren, plumbing, spouses) {
   /**
    * @ngdoc overview
    * @name person
@@ -15,8 +16,8 @@ define([
    */
 
   //
-  // NOTE I've had to make three things global in this file: Fact, getPerson, and personMapper
-  // This is so parentsAndChildren and spouses can access them; otherwise we'd have a circular dependency
+  // NOTE I've had to make several things global in this file: Fact, Name, getPerson, and personMapper
+  // This is so parentsAndChildren and spouses and memories can access them; otherwise we'd have a circular dependency
   //
 
   var maybe = helpers.maybe; // shorthand
@@ -56,14 +57,6 @@ define([
      * @propertyOf person.types:constructor.Person
      * @return {Object} includes `birthDate`, `birthPlace`, `deathDate`, `deathPlace`, `gender`, `lifespan`, and `name` attributes
      */
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.Person#getNames
-     * @methodOf person.types:constructor.Person
-     * @return {Name[]} an array of {@link person.types:constructor.Name Names}
-     */
-    getNames: function() { return this.names || []; },
 
     /**
      * @ngdoc function
@@ -129,12 +122,29 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#getName
+     * @name person.types:constructor.Person#getNames
+     * @methodOf person.types:constructor.Person
+     * @return {Name[]} an array of {@link person.types:constructor.Name Names}
+     */
+    getNames: function() { return this.names || []; },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#getDisplayName
      * @methodOf person.types:constructor.Person
      * @function
-     * @return {String} display name
+     * @return {string} display name
      */
-    getName: function() { return maybe(this.display).name; },
+    getDisplayName: function() { return maybe(this.display).name; },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#getPreferredName
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {string} preferred {@link person.types:constructor.Name Name}
+     */
+    getPreferredName: function() { return helpers.findOrFirst(this.names, {preferred: true}); },
 
     /**
      * @ngdoc function
@@ -143,10 +153,13 @@ define([
      * @function
      * @return {String} preferred given name
      */
-    getGivenName: function() { return maybe(helpers.find(
-      maybe(maybe(maybe(helpers.findOrFirst(this.names, {preferred: true})).nameForms)[0]).parts,
-      {type: 'http://gedcomx.org/Given'}
-    )).value; },
+    getGivenName: function() {
+      var name = this.getPreferredName();
+      if (name) {
+        name = name.getGivenName();
+      }
+      return name;
+    },
 
     /**
      * @ngdoc function
@@ -155,23 +168,41 @@ define([
      * @function
      * @return {String} preferred surname
      */
-    getSurname: function() { return maybe(helpers.find(
-      maybe(maybe(maybe(helpers.findOrFirst(this.names, {preferred: true})).nameForms)[0]).parts,
-      {type: 'http://gedcomx.org/Surname'}
-    )).value; },
+    getSurname: function() {
+      var name = this.getPreferredName();
+      if (name) {
+        name = name.getSurname();
+      }
+      return name;
+    },
 
     /**
      * @ngdoc function
      * @name name person.types:constructor.Person#addName
      * @methodOf person.types:constructor.Person
      * @function
-     * @param {Name|String} name to add
+     * @param {Name|string} name to add
      */
     addName: function(name) {
       if (!(name instanceof Name)) {
+        //noinspection JSValidateTypes
         name = new Name(name);
       }
       this.names.push(name);
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$addMemoryPersonaRef
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {MemoryPersonaRef} memoryPersonaRef reference to the memory persona
+     * @param {Object=} params `changeMessage` change message
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise for the persona URL
+     */
+    $addMemoryPersonaRef: function(memoryPersonaRef, params, opts) {
+      return memories.addMemoryPersona(this.id, memoryPersonaRef, params, opts);
     }
   };
 
@@ -182,7 +213,7 @@ define([
    *
    * Name
    */
-  var Name = exports.Name = function(name) {
+  var Name = globals.Name = exports.Name = function(name) {  // put on globals so memories can access it
     this.nameForms = [];
     if (name) {
       this.nameForms.push({

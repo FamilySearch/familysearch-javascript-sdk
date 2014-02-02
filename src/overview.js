@@ -50,7 +50,8 @@
  * - {@link sources.types:constructor.SourceDescription SourceDescription}
  * - {@link discussions.types:constructor.Discussion Discussion}
  * - {@link discussions.types:constructor.Comment Comment}
- * - {@link memories.types:constructor.MemoryRef MemoryRef}
+ * - {@link memories.types:constructor.MemoryPersonaRef MemoryPersonaRef}
+ * - {@link memories.types:constructor.MemoryPersona MemoryPersona}
  * - {@link memories.types:constructor.Memory Memory}
  * - {@link changeHistory.types:constructor.Change Change}
  *
