@@ -1,9 +1,8 @@
 define([
   'globals',
   'helpers',
-  'person',
   'plumbing'
-], function(globals, helpers, person, plumbing) {
+], function(globals, helpers, plumbing) {
   /**
    * @ngdoc overview
    * @name searchAndMatch
@@ -193,6 +192,35 @@ define([
     $getChildren: function() { return helpers.map(this.$getChildIds(), this.$getPerson, this); }
   };
 
+  var nonQueryParams = {start: true, count: true, context: true};
+
+  function quote(value) {
+    value = value.replace(/[:"]/g, '').trim();
+    return value.indexOf(' ') >= 0 ? '"' + value + '"' : value;
+  }
+
+  function getQuery(params) {
+    return helpers.map(helpers.filter(helpers.keys(params), function(key) { return !nonQueryParams[key]; }),
+      function(key) { return key+':'+quote(params[key]); }).join(' ');
+  }
+
+  var searchMatchResponseConvenienceFunctions = {
+    getSearchResults: function() { return this.entries || []; },
+    getResultsCount: function() { return this.results; },
+    getIndex: function() { return this.index; }
+  };
+
+  function getSearchMatchResponseMapper() {
+    return helpers.compose(
+      helpers.objectExtender(searchMatchResponseConvenienceFunctions),
+      helpers.constructorSetter(SearchResult, 'entries'),
+      globals.personMapper(function(response) {
+        return helpers.map(maybe(response).entries, function(entry) {
+          return maybe(entry.content).gedcomx;
+        });
+      }));
+  }
+
   /**
    * @ngdoc function
    * @name searchAndMatch.functions:getPersonSearch
@@ -254,7 +282,7 @@ define([
             context: params.context
           }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
           helpers.compose(
-            searchMatchResponseMapper,
+            getSearchMatchResponseMapper(),
             function(obj, promise) {
               obj.getContext = function() {
                 return promise.getResponseHeader('X-FS-Page-Context');
@@ -265,34 +293,6 @@ define([
         );
       });
   };
-
-  var nonQueryParams = {start: true, count: true, context: true};
-
-  function quote(value) {
-    value = value.replace(/[:"]/g, '').trim();
-    return value.indexOf(' ') >= 0 ? '"' + value + '"' : value;
-  }
-
-  function getQuery(params) {
-    return helpers.map(helpers.filter(helpers.keys(params), function(key) { return !nonQueryParams[key]; }),
-                       function(key) { return key+':'+quote(params[key]); }).join(' ');
-  }
-
-  var searchMatchResponseConvenienceFunctions = {
-    getSearchResults: function() { return this.entries || []; },
-    getResultsCount: function() { return this.results; },
-    getIndex: function() { return this.index; }
-  };
-
-  var searchMatchResponseMapper = helpers.compose(
-    helpers.objectExtender(searchMatchResponseConvenienceFunctions),
-    helpers.constructorSetter(SearchResult, 'entries'),
-    person.personMapper(function(response) {
-      return helpers.map(maybe(response).entries, function(entry) {
-        return maybe(entry.content).gedcomx;
-      });
-    })
-  );
 
   /**
    * @ngdoc function
@@ -321,7 +321,7 @@ define([
       plumbing.getUrl('person-matches-template', pid, {pid: pid}),
       function(url) {
         return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-          searchMatchResponseMapper);
+          getSearchMatchResponseMapper());
       });
   };
 
@@ -356,7 +356,7 @@ define([
             start: params.start,
             count: params.count
           }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-          searchMatchResponseMapper);
+          getSearchMatchResponseMapper());
       });
   };
 
