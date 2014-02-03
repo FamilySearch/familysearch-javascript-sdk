@@ -1,11 +1,12 @@
 define([
+  'attribution',
   'changeHistory',
   'globals',
   'helpers',
   'plumbing',
   'notes',
   'sources'
-], function(changeHistory, globals, helpers, plumbing, notes, sources) {
+], function(attribution, changeHistory, globals, helpers, plumbing, notes, sources) {
   /**
    * @ngdoc overview
    * @name spouses
@@ -170,6 +171,11 @@ define([
             helpers.objectExtender(coupleConvenienceFunctions),
             helpers.constructorSetter(globals.Fact, 'facts', function(response) {
               return maybe(response).relationships;
+            }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return helpers.flatMap(response.relationships, function(relationship) {
+                return relationship.facts;
+              });
             }),
             globals.personMapper()
           ));

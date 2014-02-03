@@ -62,7 +62,7 @@ define([
      * @ngdoc property
      * @name user.types:constructor.User#treeUserId
      * @propertyOf user.types:constructor.User
-     * @return {String} agent / contributor id of the user
+     * @return {String} agent (contributor) id of the user
      */
   };
 
@@ -229,7 +229,7 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/BpT8c/ editable example}
    *
-   * @param {String} aid id or full URL of the agent / contributor
+   * @param {String} aid id or full URL of the agent (contributor)
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    */
@@ -257,11 +257,11 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/hMhas/ editable example}
    *
-   * @param {Array} aids Ids of the agents to read
+   * @param {Array} aids Ids or full URLs of the agents (contributors) to read
    * @param {Object=} params pass to getAgent currently unused
    * @param {Object=} opts pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the agents have been read,
-   * returning a map of agent id to response
+   * returning a map of agent id to {@link user.functions:getAgent getAgent} response
    */
   exports.getMultiAgent = function(aids, params, opts) {
     var promises = {};

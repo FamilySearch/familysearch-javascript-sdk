@@ -52,12 +52,12 @@ define([
 
     /**
      * @ngdoc function
-     * @name changeHistory.types:constructor.Change#$getContributorName
+     * @name changeHistory.types:constructor.Change#$getAgentName
      * @methodOf changeHistory.types:constructor.Change
      * @function
-     * @return {String} contributor name
+     * @return {String} agent (contributor) name
      */
-    $getContributorName: function() { return maybe(maybe(this.contributors)[0]).name; },
+    $getAgentName: function() { return maybe(maybe(this.contributors)[0]).name; },
 
     /**
      * @ngdoc function

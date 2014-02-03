@@ -1,11 +1,12 @@
 define([
+  'attribution',
   'changeHistory',
   'globals',
   'helpers',
   'notes',
   'plumbing',
   'sources'
-], function(changeHistory, globals, helpers, notes, plumbing, sources) {
+], function(attribution, changeHistory, globals, helpers, notes, plumbing, sources) {
   /**
    * @ngdoc overview
    * @name parentsAndChildren
@@ -200,6 +201,11 @@ define([
             }),
             helpers.constructorSetter(globals.Fact, 'fatherFacts', function(response) {
               return maybe(response).childAndParentsRelationships;
+            }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return helpers.flatMap(response.childAndParentsRelationships, function(relationship) {
+                return helpers.union(relationship.motherFacts, relationship.fatherFacts);
+              });
             }),
             globals.personMapper()
           ));

@@ -136,6 +136,13 @@ define([
      */
 
     /**
+     * @ngdoc property
+     * @name memories.types:constructor.Memory#attribution
+     * @propertyOf memories.types:constructor.Memory
+     * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
+     */
+
+    /**
      * @ngdoc function
      * @name memories.types:constructor.Memory#$getTitle
      * @methodOf memories.types:constructor.Memory
@@ -187,7 +194,7 @@ define([
      * @name memories.types:constructor.Memory#$addMemoryPersona
      * @methodOf memories.types:constructor.Memory
      * @function
-     * @param {MemoryPersona} memoryPersona people are attached to memory personas
+     * @param {MemoryPersona} memoryPersona people are attached to {@link memories.types:constructor.MemoryPersona MemoryPersonas}
      * @param {Object=} params currently unused
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the {@link memories.types:constructor.MemoryPersonaRef MemoryPersonaRef}
@@ -225,21 +232,21 @@ define([
     /**
      * @ngdoc property
      * @name memories.types:constructor.MemoryPersona#id
-     * @propertyOf memories.types:constructor.Memory
+     * @propertyOf memories.types:constructor.MemoryPersona
      * @return {String} Id of the Memory Persona
      */
 
     /**
      * @ngdoc property
      * @name memories.types:constructor.MemoryPersona#extracted
-     * @propertyOf memories.types:constructor.Memory
+     * @propertyOf memories.types:constructor.MemoryPersona
      * @return {String} not sure what this means
      */
 
     /**
      * @ngdoc function
      * @name memories.types:constructor.MemoryPersona#$getMemoryArtifactRef
-     * @propertyOf memories.types:constructor.MemoryPersona
+     * @methodOf memories.types:constructor.MemoryPersona
      * @return {MemoryArtifactRef} {@link memories.types:constructor.MemoryArtifactRef MemoryArtifactRef}
      */
     $getMemoryArtifactRef: function() { return maybe(this.media)[0]; },
@@ -280,7 +287,7 @@ define([
     $getGivenName: function() {
       var name = this.$getPreferredName();
       if (name) {
-        name = name.getGivenName();
+        name = name.$getGivenName();
       }
       return name;
     },
@@ -295,7 +302,7 @@ define([
     $getSurname: function() {
       var name = this.$getPreferredName();
       if (name) {
-        name = name.getSurname();
+        name = name.$getSurname();
       }
       return name;
     },
@@ -347,30 +354,30 @@ define([
     /**
      * @ngdoc property
      * @name memories.types:constructor.MemoryArtifactRef#id
-     * @propertyOf memories.types:constructor.Memory
+     * @propertyOf memories.types:constructor.MemoryArtifactRef
      * @return {String} Id of the Memory Artifact
      */
 
     /**
      * @ngdoc property
-     * @name memories.types:constructor.MemoryPersona#qualifiers
-     * @propertyOf memories.types:constructor.Memory
+     * @name memories.types:constructor.MemoryArtifactRef#qualifiers
+     * @propertyOf memories.types:constructor.MemoryArtifactRef
      * @return {Object[]} array of objects with `value` attributes that are comma-separated lists of four numbers, possibly identifying a rectangle in the image?
      */
 
     /**
      * @ngdoc function
-     * @name memories.types:constructor.Memory#$getMemoryArtifactUrl
-     * @methodOf memories.types:constructor.Memory
+     * @name memories.types:constructor.MemoryArtifactRef#$getMemoryArtifactUrl
+     * @methodOf memories.types:constructor.MemoryArtifactRef
      * @function
-     * @return {String} URL of the full image with access token
+     * @return {String} URL of the memory artifact with access token
      */
     $getMemoryArtifactUrl: function() { return helpers.appendAccessToken(this.description); },
 
     /**
      * @ngdoc function
-     * @name memories.types:constructor.Memory#$setMemoryArtifactUrl
-     * @methodOf memories.types:constructor.Memory
+     * @name memories.types:constructor.MemoryArtifactRef#$setMemoryArtifactUrl
+     * @methodOf memories.types:constructor.MemoryArtifactRef
      * @function
      * @param {string} url URL of the memory artifact
      */
@@ -557,8 +564,7 @@ define([
    * Get personas for a memory
    * The response includes the following convenience function
    *
-   * - `getPersonas()` - get the array of *Personas* from the response; a *Persona* appears to be a scaled-down
-   * {@link person.types:constructor.Person Person} whose id is a *Persona Id* instead of a *Person Id*
+   * - `getMemoryPersonas()` - get the array of {@link memories.types:constructor.MemoryPersona MemoryPersonas} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/memories/Memory_Personas_resource FamilySearch API Docs}
    *
@@ -575,7 +581,7 @@ define([
       function(url) {
         return plumbing.get(url, params, {}, opts,
           helpers.compose(
-            helpers.objectExtender({getPersonas: function() { return this && this.persons ? this.persons : []; }}),
+            helpers.objectExtender({getMemoryPersonas: function() { return this && this.persons ? this.persons : []; }}),
             helpers.constructorSetter(MemoryPersona, 'persons'),
             helpers.constructorSetter(globals.Name, 'names', function(response) {
               return maybe(response).persons;
@@ -667,7 +673,7 @@ define([
    * {@link http://jsfiddle.net/DallanQ/dLfA8/ editable example}
    *
    * @param {string|Memory} mid id or full URL of a memory
-   * @param {MemoryPersona} memoryPersona people are attached to memory personas
+   * @param {MemoryPersona} memoryPersona people are attached to {@link memories.types:constructor.MemoryPersona MemoryPersonas}
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the {@link memories.types:constructor.MemoryPersonaRef MemoryPersonaRef}
@@ -699,7 +705,7 @@ define([
    * {@link http://jsfiddle.net/DallanQ/wrNj2/ editable example}
    *
    * @param {String} pid person id
-   * @param {MemoryPersonaRef} memoryPersonaRef reference to the memory persona
+   * @param {MemoryPersonaRef} memoryPersonaRef {@link memories.types:constructor.MemoryPersonaRef MemoryPersonaRef}
    * @param {Object=} params `changeMessage` change message
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the persona URL

@@ -304,7 +304,7 @@ define([
    * @param {Object=} params pass to getDiscussion currently unused
    * @param {Object=} opts pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the discussions have been read,
-   * returning a map of discussion id or URL to response
+   * returning a map of discussion id or URL to {@link discussions.functions:getDiscussion getDiscussion} response
    */
   exports.getMultiDiscussion = function(dids, params, opts) {
     var promises = {};

@@ -33,8 +33,8 @@ define([
      * @ngdoc property
      * @name notes.types:constructor.NoteRef#id
      * @propertyOf notes.types:constructor.NoteRef
-     * @return {String} Id of the note - pass into {@link notes.functions.getPersonNote getPersonNote},
-     * {@link notes.functions.getCoupleNote getCoupleNote}, or {@link notes.functions.getChildAndParentsNote getChildAndParentsNote}
+     * @return {String} Id of the note - pass into {@link notes.functions:getPersonNote getPersonNote},
+     * {@link notes.functions:getCoupleNote getCoupleNote}, or {@link notes.functions:getChildAndParentsNote getChildAndParentsNote}
      * for details
      */
 
@@ -291,13 +291,17 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/96EkL/ editable example}
    *
-   * @param {string} pid id of the person or full URL of the note
-   * @param {string=} nid id of the note (required if pid is not the full URL of the note)
+   * @param {string|NoteRef} pid id of the person or full URL or {@link notes.types:constructor.NoteRef NoteRef} of the note
+   * @param {string=} nid id of the note (required if pid is the id of the person)
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   exports.getPersonNote = function(pid, nid, params, opts) {
+    if (pid instanceof NoteRef) {
+      //noinspection JSUnresolvedFunction
+      pid = pid.$getNoteUrl();
+    }
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-note-template', pid, {pid: pid, nid: nid}),
       function(url) {
@@ -322,7 +326,7 @@ define([
    * @param {Object=} params pass to getPersonNote currently unused
    * @param {Object=} opts pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the notes have been read,
-   * returning a map of note id or URL to response
+   * returning a map of note id or URL to {@link notes.functions:getPersonNote getPersonNote} response
    */
   exports.getMultiPersonNote = function(pid, nids, params, opts) {
     var promises = getMultiNote(pid, nids, params, opts, exports.getPersonNote);
@@ -344,13 +348,17 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/T7xj2/ editable example}
    *
-   * @param {string} crid id of the couple relationship or full URL of the note
-   * @param {string=} nid id of the note (required if crid is not the full URL of the note)
+   * @param {string|NoteRef} crid id of the couple relationship or full URL or {@link notes.types:constructor.NoteRef NoteRef} of the note
+   * @param {string=} nid id of the note (required if crid is the id of the couple relationship)
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   exports.getCoupleNote = function(crid, nid, params, opts) {
+    if (crid instanceof NoteRef) {
+      //noinspection JSUnresolvedFunction
+      crid = crid.$getNoteUrl();
+    }
     return helpers.chainHttpPromises(
       plumbing.getUrl('couple-relationship-note-template', crid, {crid: crid, nid: nid}),
       function(url) {
@@ -368,14 +376,14 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/DallanQ/fn8NU/ editable example}
+   * {@link http://jsfiddle.net/DallanQ/TsFky/ editable example}
    *
    * @param {string|string[]||NoteRef[]} crid id of the couple relationship, or full URLs or {@link notes.types:constructor.NoteRef NoteRefs} of the notes
    * @param {string[]=} nids ids of the notes (required if crid is the id of the couple relationship)
    * @param {Object=} params pass to getCoupleNote currently unused
    * @param {Object=} opts pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the notes have been read,
-   * returning a map of note id to response
+   * returning a map of note id to {@link notes.functions:getCoupleNote getCoupleNote} response
    */
   exports.getMultiCoupleNote = function(crid, nids, params, opts) {
     var promises = getMultiNote(crid, nids, params, opts, exports.getCoupleNote);
@@ -397,13 +405,17 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/dV9uQ/ editable example}
    *
-   * @param {string} caprid id of the child and parents relationship or full URL of the note
-   * @param {string=} nid id of the note (required if caprid is not the full URL of the note)
+   * @param {string} caprid id of the child and parents relationship or full URL or {@link notes.types:constructor.NoteRef NoteRef} of the note
+   * @param {string=} nid id of the note (required if caprid is the id of the child and parents relationship)
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   exports.getChildAndParentsNote = function(caprid, nid, params, opts) {
+    if (caprid instanceof NoteRef) {
+      //noinspection JSUnresolvedFunction
+      caprid = caprid.$getNoteUrl();
+    }
     return helpers.chainHttpPromises(
       plumbing.getUrl('child-and-parents-relationship-note-template', caprid, {caprid: caprid, nid: nid}),
       function(url) {
@@ -428,7 +440,7 @@ define([
    * @param {Object=} params pass to getChildAndParentsNote currently unused
    * @param {Object=} opts pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the notes have been read,
-   * returning a map of note id to response
+   * returning a map of note id to {@link notes.functions:getChildAndParentsNote getChildAndParentsNote} response
    */
   exports.getMultiChildAndParentsNote = function(caprid, nids, params, opts) {
     var promises = getMultiNote(caprid, nids, params, opts, exports.getChildAndParentsNote);

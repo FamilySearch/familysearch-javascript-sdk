@@ -78,6 +78,13 @@ define([
      */
 
     /**
+     * @ngdoc property
+     * @name person.types:constructor.Person#attribution
+     * @propertyOf person.types:constructor.Person
+     * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
+     */
+
+    /**
      * @ngdoc function
      * @name person.types:constructor.Person#$getFacts
      * @methodOf person.types:constructor.Person
@@ -510,8 +517,9 @@ define([
       helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
         return helpers.flatMap(personsGenerator(response), function(person) {
           return helpers.union(
-            person.names || [],
-            person.facts || [],
+            [person],
+            person.names,
+            person.facts,
             person.gender ? [person.gender] : []
           );
         });
@@ -534,7 +542,8 @@ define([
    * @param {Array} pids of the people to read
    * @param {Object=} params to pass to getPerson currently unused
    * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise that is fulfilled when all of the people have been read, returning a map of person id to response
+   * @return {Object} promise that is fulfilled when all of the people have been read,
+   * returning a map of person id to {@link person.functions:getPerson getPerson} response
    */
   exports.getMultiPerson = function(pids, params, opts) {
     var promises = {};
@@ -594,13 +603,23 @@ define([
           helpers.compose(
             helpers.objectExtender({getPrimaryId: function() { return pid; }}), // make id available
             helpers.constructorSetter(Fact, 'fatherFacts', function(response) {
-              return maybe(response).childAndParentsRelationships;
+              return response.childAndParentsRelationships;
             }),
             helpers.constructorSetter(Fact, 'motherFacts', function(response) {
-              return maybe(response).childAndParentsRelationships;
+              return response.childAndParentsRelationships;
+            }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return helpers.flatMap(response.childAndParentsRelationships, function(rel) {
+                return helpers.union(rel.fatherFacts, rel.motherFacts);
+              });
             }),
             helpers.constructorSetter(Fact, 'facts', function(response) {
-              return maybe(response).relationships;
+              return response.relationships;
+            }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return helpers.flatMap(response.relationships, function(rel) {
+                return rel.facts;
+              });
             }),
             helpers.constructorSetter(parentsAndChildren.ChildAndParents, 'childAndParentsRelationships'),
             helpers.constructorSetter(spouses.Couple, 'relationships'), // some of the relationships are ParentChild relationships, but
@@ -703,7 +722,7 @@ define([
    * Get the change summary for a person. For detailed change information see functions in the changeHistory module
    * The response includes the following convenience function
    *
-   * - `getChanges()` - get the array of changes from the response; each change has an `id`, `published` timestamp, `title`, and `updated` timestamp
+   * - `getChanges()` - get the array of {@link changeHistory.types:constructor.Change Changes} from the response
    *
    * **NOTE The sandbox REST endpoint for this function is broken. Do not use.**
    *
@@ -716,13 +735,15 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  // TODO check if this has been fixed
+  // TODO check if this has been fixed, and check if the entries really contain changeInfo and contributors attributes
   exports.getPersonChangeSummary = function(pid, params, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-change-summary-template', pid, {pid: pid}),
       function(url) {
         return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-          helpers.objectExtender({getChanges: function() { return this.entries || []; }}));
+          helpers.compose(
+            helpers.objectExtender({getChanges: function() { return this.entries || []; }}),
+            helpers.constructorSetter(changeHistory.Change, 'entries')));
       });
   };
 
@@ -760,7 +781,12 @@ define([
             helpers.constructorSetter(spouses.Couple, 'relationships'),
             helpers.objectExtender(relationshipsToSpousesConvenienceFunctions),
             helpers.constructorSetter(Fact, 'facts', function(response) {
-              return maybe(response).relationships;
+              return response.relationships;
+            }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return helpers.flatMap(response.relationships, function(rel) {
+                return rel.facts;
+              });
             }),
             exports.personMapper()
           ));

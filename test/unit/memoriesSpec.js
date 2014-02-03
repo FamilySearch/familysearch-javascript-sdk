@@ -38,7 +38,7 @@ define(['FamilySearch'], function(FamilySearch) {
 
     it('personas are returned from getMemoryPersonas', function() {
       FamilySearch.getMemoryPersonas('AR-1234').then(function(response) {
-        var personas = response.getPersonas();
+        var personas = response.getMemoryPersonas();
         expect(personas.length).toBe(1);
         expect(personas[0].id).toBe('123');
         expect(personas[0].extracted).toBeTruthy();

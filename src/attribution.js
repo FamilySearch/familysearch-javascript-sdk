@@ -53,7 +53,7 @@ define([
      * @name attribution.types:constructor.Attribution#$getAgentId
      * @methodOf attribution.types:constructor.Attribution
      * @function
-     * @return {String} id of the agent / contributor - pass into {@link user.functions:getAgent getAgent} for details
+     * @return {String} id of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
      */
     $getAgentId: function() { return maybe(this.contributor).resourceId; },
 
@@ -62,7 +62,7 @@ define([
      * @name attribution.types:constructor.Attribution#$getAgentUrl
      * @methodOf attribution.types:constructor.Attribution
      * @function
-     * @return {String} URL of the agent / contributor - pass into {@link user.functions:getAgent getAgent} for details
+     * @return {String} URL of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
      */
     $getAgentUrl: function() { return helpers.removeAccessToken(maybe(this.contributor).resource); },
 

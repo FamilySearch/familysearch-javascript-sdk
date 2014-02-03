@@ -282,12 +282,16 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/eECJx/ editable example}
    *
-   * @param {String} sdid of the source description or full URL of the source-description endpoint
+   * @param {String|SourceRef} sdid id or full URL or {@link sources.types:constructor.SourceRef SourceRef} of the source description
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   exports.getSourceDescription = function(sdid, params, opts) {
+    if (sdid instanceof SourceRef) {
+      //noinspection JSUnresolvedFunction
+      sdid = sdid.$getSourceDescriptionUrl();
+    }
     return helpers.chainHttpPromises(
       plumbing.getUrl('source-description-template', sdid, {sdid: sdid}),
       function(url) {
@@ -318,7 +322,7 @@ define([
    * @param {Object=} params pass to getSourceDescription currently unused
    * @param {Object=} opts pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the source descriptions have been read,
-   * returning a map of source description id or URL to promise response
+   * returning a map of source description id or URL to {@link sources.functions:getSourceDescription getSourceDescription} response
    */
   exports.getMultiSourceDescription = function(sdids, params, opts) {
     var promises = {};
