@@ -11,7 +11,7 @@
 </div>
 <div class="member method"><h2 id="methods">Methods</h2>
 <ul class="methods"><li><h3 id="methods_$addmemorypersona">$addMemoryPersona(memoryPersona, params, opts)</h3>
-<div class="$addmemorypersona"><h5 id="methods_$addmemorypersona_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>memoryPersona</td><td><a href="" class="label type-hint type-hint-memorypersona">MemoryPersona</a></td><td><div class="memories-types-page memories-types-constructor-memory-addmemorypersona-page"><p>people are attached to memory personas</p>
+<div class="$addmemorypersona"><h5 id="methods_$addmemorypersona_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>memoryPersona</td><td><a href="" class="label type-hint type-hint-memorypersona">MemoryPersona</a></td><td><div class="memories-types-page memories-types-constructor-memory-addmemorypersona-page"><p>people are attached to <a href="#/api/memories.types:constructor.MemoryPersona">MemoryPersonas</a></p>
 </div></td></tr><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memory-addmemorypersona-page"><p>currently unused</p>
 </div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memory-addmemorypersona-page"><p>options to pass to the http function specified during init</p>
 </div></td></tr></tbody></table><h5 id="methods_$addmemorypersona_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memory-addmemorypersona-page"><p>promise for the <a href="#/api/memories.types:constructor.MemoryPersonaRef">MemoryPersonaRef</a></p>
@@ -29,10 +29,6 @@
 <div class="$getimageurl"><h5 id="methods_$getimageurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getimageurl-page"><p>URL of the full image with access token</p>
 </div></td></tr></table></div>
 </li>
-<li><h3 id="methods_$getmemoryartifacturl">$getMemoryArtifactUrl()</h3>
-<div class="$getmemoryartifacturl"><h5 id="methods_$getmemoryartifacturl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getmemoryartifacturl-page"><p>URL of the full image with access token</p>
-</div></td></tr></table></div>
-</li>
 <li><h3 id="methods_$getthumbnailurl">$getThumbnailUrl()</h3>
 <div class="$getthumbnailurl"><h5 id="methods_$getthumbnailurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getthumbnailurl-page"><p>URL of the thumbnail with access token</p>
 </div></td></tr></table></div>
@@ -40,10 +36,6 @@
 <li><h3 id="methods_$gettitle">$getTitle()</h3>
 <div class="$gettitle"><h5 id="methods_$gettitle_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-gettitle-page"><p>title</p>
 </div></td></tr></table></div>
-</li>
-<li><h3 id="methods_$setmemoryartifacturl">$setMemoryArtifactUrl(url)</h3>
-<div class="$setmemoryartifacturl"><h5 id="methods_$setmemoryartifacturl_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>url</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="memories-types-page memories-types-constructor-memory-setmemoryartifacturl-page"><p>URL of the memory artifact</p>
-</div></td></tr></tbody></table></div>
 </li>
 </ul>
 </div>
@@ -56,6 +48,10 @@
 <div class="artifactmetadata"><h5 id="properties_artifactmetadata_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object[]</a></td><td><div class="memories-types-page memories-types-constructor-memory-artifactmetadata-page"><p>array of { <code>artifactType</code>, <code>filename</code> }</p>
 </div></td></tr></table></div>
 </li>
+<li><h3 id="properties_attribution">attribution</h3>
+<div class="attribution"><h5 id="properties_attribution_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-attribution">Attribution</a></td><td><div class="memories-types-page memories-types-constructor-memory-attribution-page"><p><a href="#/api/attribution.types:constructor.Attribution">Attribution</a> object</p>
+</div></td></tr></table></div>
+</li>
 <li><h3 id="properties_id">id</h3>
 <div class="id"><h5 id="properties_id_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-id-page"><p>Id of the Memory</p>
 </div></td></tr></table></div>
@@ -66,22 +62,6 @@
 </li>
 <li><h3 id="properties_resourcetype">resourceType</h3>
 <div class="resourcetype"><h5 id="properties_resourcetype_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-resourcetype-page"><p>resource type; e.g., <a href="http://gedcomx.org/DigitalArtifact">http://gedcomx.org/DigitalArtifact</a></p>
-</div></td></tr></table></div>
-</li>
-<li><h3 id="properties_id">id</h3>
-<div class="id"><h5 id="properties_id_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memoryartifactref-id-page"><p>Id of the Memory Artifact</p>
-</div></td></tr></table></div>
-</li>
-<li><h3 id="properties_extracted">extracted</h3>
-<div class="extracted"><h5 id="properties_extracted_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-extracted-page"><p>not sure what this means</p>
-</div></td></tr></table></div>
-</li>
-<li><h3 id="properties_id">id</h3>
-<div class="id"><h5 id="properties_id_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-id-page"><p>Id of the Memory Persona</p>
-</div></td></tr></table></div>
-</li>
-<li><h3 id="properties_qualifiers">qualifiers</h3>
-<div class="qualifiers"><h5 id="properties_qualifiers_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object[]</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-qualifiers-page"><p>array of objects with <code>value</code> attributes that are comma-separated lists of four numbers, possibly identifying a rectangle in the image?</p>
 </div></td></tr></table></div>
 </li>
 </ul>

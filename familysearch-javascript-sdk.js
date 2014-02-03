@@ -1902,7 +1902,7 @@ define('user',[
      * @ngdoc property
      * @name user.types:constructor.User#treeUserId
      * @propertyOf user.types:constructor.User
-     * @return {String} agent / contributor id of the user
+     * @return {String} agent (contributor) id of the user
      */
   };
 
@@ -2069,7 +2069,7 @@ define('user',[
    *
    * {@link http://jsfiddle.net/DallanQ/BpT8c/ editable example}
    *
-   * @param {String} aid id or full URL of the agent / contributor
+   * @param {String} aid id or full URL of the agent (contributor)
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    */
@@ -2097,11 +2097,11 @@ define('user',[
    *
    * {@link http://jsfiddle.net/DallanQ/hMhas/ editable example}
    *
-   * @param {Array} aids Ids of the agents to read
+   * @param {Array} aids Ids or full URLs of the agents (contributors) to read
    * @param {Object=} params pass to getAgent currently unused
    * @param {Object=} opts pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the agents have been read,
-   * returning a map of agent id to response
+   * returning a map of agent id to {@link user.functions:getAgent getAgent} response
    */
   exports.getMultiAgent = function(aids, params, opts) {
     var promises = {};
@@ -2168,12 +2168,12 @@ define('changeHistory',[
 
     /**
      * @ngdoc function
-     * @name changeHistory.types:constructor.Change#$getContributorName
+     * @name changeHistory.types:constructor.Change#$getAgentName
      * @methodOf changeHistory.types:constructor.Change
      * @function
-     * @return {String} contributor name
+     * @return {String} agent (contributor) name
      */
-    $getContributorName: function() { return maybe(maybe(this.contributors)[0]).name; },
+    $getAgentName: function() { return maybe(maybe(this.contributors)[0]).name; },
 
     /**
      * @ngdoc function
@@ -2606,7 +2606,7 @@ define('discussions',[
    * @param {Object=} params pass to getDiscussion currently unused
    * @param {Object=} opts pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the discussions have been read,
-   * returning a map of discussion id or URL to response
+   * returning a map of discussion id or URL to {@link discussions.functions:getDiscussion getDiscussion} response
    */
   exports.getMultiDiscussion = function(dids, params, opts) {
     var promises = {};
@@ -2718,7 +2718,7 @@ define('attribution',[
      * @name attribution.types:constructor.Attribution#$getAgentId
      * @methodOf attribution.types:constructor.Attribution
      * @function
-     * @return {String} id of the agent / contributor - pass into {@link user.functions:getAgent getAgent} for details
+     * @return {String} id of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
      */
     $getAgentId: function() { return maybe(this.contributor).resourceId; },
 
@@ -2727,7 +2727,7 @@ define('attribution',[
      * @name attribution.types:constructor.Attribution#$getAgentUrl
      * @methodOf attribution.types:constructor.Attribution
      * @function
-     * @return {String} URL of the agent / contributor - pass into {@link user.functions:getAgent getAgent} for details
+     * @return {String} URL of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
      */
     $getAgentUrl: function() { return helpers.removeAccessToken(maybe(this.contributor).resource); },
 
@@ -2882,6 +2882,13 @@ define('memories',[
      */
 
     /**
+     * @ngdoc property
+     * @name memories.types:constructor.Memory#attribution
+     * @propertyOf memories.types:constructor.Memory
+     * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
+     */
+
+    /**
      * @ngdoc function
      * @name memories.types:constructor.Memory#$getTitle
      * @methodOf memories.types:constructor.Memory
@@ -2933,7 +2940,7 @@ define('memories',[
      * @name memories.types:constructor.Memory#$addMemoryPersona
      * @methodOf memories.types:constructor.Memory
      * @function
-     * @param {MemoryPersona} memoryPersona people are attached to memory personas
+     * @param {MemoryPersona} memoryPersona people are attached to {@link memories.types:constructor.MemoryPersona MemoryPersonas}
      * @param {Object=} params currently unused
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the {@link memories.types:constructor.MemoryPersonaRef MemoryPersonaRef}
@@ -2971,21 +2978,21 @@ define('memories',[
     /**
      * @ngdoc property
      * @name memories.types:constructor.MemoryPersona#id
-     * @propertyOf memories.types:constructor.Memory
+     * @propertyOf memories.types:constructor.MemoryPersona
      * @return {String} Id of the Memory Persona
      */
 
     /**
      * @ngdoc property
      * @name memories.types:constructor.MemoryPersona#extracted
-     * @propertyOf memories.types:constructor.Memory
+     * @propertyOf memories.types:constructor.MemoryPersona
      * @return {String} not sure what this means
      */
 
     /**
      * @ngdoc function
      * @name memories.types:constructor.MemoryPersona#$getMemoryArtifactRef
-     * @propertyOf memories.types:constructor.MemoryPersona
+     * @methodOf memories.types:constructor.MemoryPersona
      * @return {MemoryArtifactRef} {@link memories.types:constructor.MemoryArtifactRef MemoryArtifactRef}
      */
     $getMemoryArtifactRef: function() { return maybe(this.media)[0]; },
@@ -3026,7 +3033,7 @@ define('memories',[
     $getGivenName: function() {
       var name = this.$getPreferredName();
       if (name) {
-        name = name.getGivenName();
+        name = name.$getGivenName();
       }
       return name;
     },
@@ -3041,7 +3048,7 @@ define('memories',[
     $getSurname: function() {
       var name = this.$getPreferredName();
       if (name) {
-        name = name.getSurname();
+        name = name.$getSurname();
       }
       return name;
     },
@@ -3093,30 +3100,30 @@ define('memories',[
     /**
      * @ngdoc property
      * @name memories.types:constructor.MemoryArtifactRef#id
-     * @propertyOf memories.types:constructor.Memory
+     * @propertyOf memories.types:constructor.MemoryArtifactRef
      * @return {String} Id of the Memory Artifact
      */
 
     /**
      * @ngdoc property
-     * @name memories.types:constructor.MemoryPersona#qualifiers
-     * @propertyOf memories.types:constructor.Memory
+     * @name memories.types:constructor.MemoryArtifactRef#qualifiers
+     * @propertyOf memories.types:constructor.MemoryArtifactRef
      * @return {Object[]} array of objects with `value` attributes that are comma-separated lists of four numbers, possibly identifying a rectangle in the image?
      */
 
     /**
      * @ngdoc function
-     * @name memories.types:constructor.Memory#$getMemoryArtifactUrl
-     * @methodOf memories.types:constructor.Memory
+     * @name memories.types:constructor.MemoryArtifactRef#$getMemoryArtifactUrl
+     * @methodOf memories.types:constructor.MemoryArtifactRef
      * @function
-     * @return {String} URL of the full image with access token
+     * @return {String} URL of the memory artifact with access token
      */
     $getMemoryArtifactUrl: function() { return helpers.appendAccessToken(this.description); },
 
     /**
      * @ngdoc function
-     * @name memories.types:constructor.Memory#$setMemoryArtifactUrl
-     * @methodOf memories.types:constructor.Memory
+     * @name memories.types:constructor.MemoryArtifactRef#$setMemoryArtifactUrl
+     * @methodOf memories.types:constructor.MemoryArtifactRef
      * @function
      * @param {string} url URL of the memory artifact
      */
@@ -3303,8 +3310,7 @@ define('memories',[
    * Get personas for a memory
    * The response includes the following convenience function
    *
-   * - `getPersonas()` - get the array of *Personas* from the response; a *Persona* appears to be a scaled-down
-   * {@link person.types:constructor.Person Person} whose id is a *Persona Id* instead of a *Person Id*
+   * - `getMemoryPersonas()` - get the array of {@link memories.types:constructor.MemoryPersona MemoryPersonas} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/memories/Memory_Personas_resource FamilySearch API Docs}
    *
@@ -3321,7 +3327,7 @@ define('memories',[
       function(url) {
         return plumbing.get(url, params, {}, opts,
           helpers.compose(
-            helpers.objectExtender({getPersonas: function() { return this && this.persons ? this.persons : []; }}),
+            helpers.objectExtender({getMemoryPersonas: function() { return this && this.persons ? this.persons : []; }}),
             helpers.constructorSetter(MemoryPersona, 'persons'),
             helpers.constructorSetter(globals.Name, 'names', function(response) {
               return maybe(response).persons;
@@ -3413,7 +3419,7 @@ define('memories',[
    * {@link http://jsfiddle.net/DallanQ/dLfA8/ editable example}
    *
    * @param {string|Memory} mid id or full URL of a memory
-   * @param {MemoryPersona} memoryPersona people are attached to memory personas
+   * @param {MemoryPersona} memoryPersona people are attached to {@link memories.types:constructor.MemoryPersona MemoryPersonas}
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the {@link memories.types:constructor.MemoryPersonaRef MemoryPersonaRef}
@@ -3445,7 +3451,7 @@ define('memories',[
    * {@link http://jsfiddle.net/DallanQ/wrNj2/ editable example}
    *
    * @param {String} pid person id
-   * @param {MemoryPersonaRef} memoryPersonaRef reference to the memory persona
+   * @param {MemoryPersonaRef} memoryPersonaRef {@link memories.types:constructor.MemoryPersonaRef MemoryPersonaRef}
    * @param {Object=} params `changeMessage` change message
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the persona URL
@@ -3507,8 +3513,8 @@ define('notes',[
      * @ngdoc property
      * @name notes.types:constructor.NoteRef#id
      * @propertyOf notes.types:constructor.NoteRef
-     * @return {String} Id of the note - pass into {@link notes.functions.getPersonNote getPersonNote},
-     * {@link notes.functions.getCoupleNote getCoupleNote}, or {@link notes.functions.getChildAndParentsNote getChildAndParentsNote}
+     * @return {String} Id of the note - pass into {@link notes.functions:getPersonNote getPersonNote},
+     * {@link notes.functions:getCoupleNote getCoupleNote}, or {@link notes.functions:getChildAndParentsNote getChildAndParentsNote}
      * for details
      */
 
@@ -3765,13 +3771,17 @@ define('notes',[
    *
    * {@link http://jsfiddle.net/DallanQ/96EkL/ editable example}
    *
-   * @param {string} pid id of the person or full URL of the note
-   * @param {string=} nid id of the note (required if pid is not the full URL of the note)
+   * @param {string|NoteRef} pid id of the person or full URL or {@link notes.types:constructor.NoteRef NoteRef} of the note
+   * @param {string=} nid id of the note (required if pid is the id of the person)
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   exports.getPersonNote = function(pid, nid, params, opts) {
+    if (pid instanceof NoteRef) {
+      //noinspection JSUnresolvedFunction
+      pid = pid.$getNoteUrl();
+    }
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-note-template', pid, {pid: pid, nid: nid}),
       function(url) {
@@ -3796,7 +3806,7 @@ define('notes',[
    * @param {Object=} params pass to getPersonNote currently unused
    * @param {Object=} opts pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the notes have been read,
-   * returning a map of note id or URL to response
+   * returning a map of note id or URL to {@link notes.functions:getPersonNote getPersonNote} response
    */
   exports.getMultiPersonNote = function(pid, nids, params, opts) {
     var promises = getMultiNote(pid, nids, params, opts, exports.getPersonNote);
@@ -3818,13 +3828,17 @@ define('notes',[
    *
    * {@link http://jsfiddle.net/DallanQ/T7xj2/ editable example}
    *
-   * @param {string} crid id of the couple relationship or full URL of the note
-   * @param {string=} nid id of the note (required if crid is not the full URL of the note)
+   * @param {string|NoteRef} crid id of the couple relationship or full URL or {@link notes.types:constructor.NoteRef NoteRef} of the note
+   * @param {string=} nid id of the note (required if crid is the id of the couple relationship)
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   exports.getCoupleNote = function(crid, nid, params, opts) {
+    if (crid instanceof NoteRef) {
+      //noinspection JSUnresolvedFunction
+      crid = crid.$getNoteUrl();
+    }
     return helpers.chainHttpPromises(
       plumbing.getUrl('couple-relationship-note-template', crid, {crid: crid, nid: nid}),
       function(url) {
@@ -3842,14 +3856,14 @@ define('notes',[
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/DallanQ/fn8NU/ editable example}
+   * {@link http://jsfiddle.net/DallanQ/TsFky/ editable example}
    *
    * @param {string|string[]||NoteRef[]} crid id of the couple relationship, or full URLs or {@link notes.types:constructor.NoteRef NoteRefs} of the notes
    * @param {string[]=} nids ids of the notes (required if crid is the id of the couple relationship)
    * @param {Object=} params pass to getCoupleNote currently unused
    * @param {Object=} opts pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the notes have been read,
-   * returning a map of note id to response
+   * returning a map of note id to {@link notes.functions:getCoupleNote getCoupleNote} response
    */
   exports.getMultiCoupleNote = function(crid, nids, params, opts) {
     var promises = getMultiNote(crid, nids, params, opts, exports.getCoupleNote);
@@ -3871,13 +3885,17 @@ define('notes',[
    *
    * {@link http://jsfiddle.net/DallanQ/dV9uQ/ editable example}
    *
-   * @param {string} caprid id of the child and parents relationship or full URL of the note
-   * @param {string=} nid id of the note (required if caprid is not the full URL of the note)
+   * @param {string} caprid id of the child and parents relationship or full URL or {@link notes.types:constructor.NoteRef NoteRef} of the note
+   * @param {string=} nid id of the note (required if caprid is the id of the child and parents relationship)
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   exports.getChildAndParentsNote = function(caprid, nid, params, opts) {
+    if (caprid instanceof NoteRef) {
+      //noinspection JSUnresolvedFunction
+      caprid = caprid.$getNoteUrl();
+    }
     return helpers.chainHttpPromises(
       plumbing.getUrl('child-and-parents-relationship-note-template', caprid, {caprid: caprid, nid: nid}),
       function(url) {
@@ -3902,7 +3920,7 @@ define('notes',[
    * @param {Object=} params pass to getChildAndParentsNote currently unused
    * @param {Object=} opts pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the notes have been read,
-   * returning a map of note id to response
+   * returning a map of note id to {@link notes.functions:getChildAndParentsNote getChildAndParentsNote} response
    */
   exports.getMultiChildAndParentsNote = function(caprid, nids, params, opts) {
     var promises = getMultiNote(caprid, nids, params, opts, exports.getChildAndParentsNote);
@@ -4196,12 +4214,16 @@ define('sources',[
    *
    * {@link http://jsfiddle.net/DallanQ/eECJx/ editable example}
    *
-   * @param {String} sdid of the source description or full URL of the source-description endpoint
+   * @param {String|SourceRef} sdid id or full URL or {@link sources.types:constructor.SourceRef SourceRef} of the source description
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   exports.getSourceDescription = function(sdid, params, opts) {
+    if (sdid instanceof SourceRef) {
+      //noinspection JSUnresolvedFunction
+      sdid = sdid.$getSourceDescriptionUrl();
+    }
     return helpers.chainHttpPromises(
       plumbing.getUrl('source-description-template', sdid, {sdid: sdid}),
       function(url) {
@@ -4232,7 +4254,7 @@ define('sources',[
    * @param {Object=} params pass to getSourceDescription currently unused
    * @param {Object=} opts pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the source descriptions have been read,
-   * returning a map of source description id or URL to promise response
+   * returning a map of source description id or URL to {@link sources.functions:getSourceDescription getSourceDescription} response
    */
   exports.getMultiSourceDescription = function(sdids, params, opts) {
     var promises = {};
@@ -4304,13 +4326,14 @@ define('sources',[
 });
 
 define('parentsAndChildren',[
+  'attribution',
   'changeHistory',
   'globals',
   'helpers',
   'notes',
   'plumbing',
   'sources'
-], function(changeHistory, globals, helpers, notes, plumbing, sources) {
+], function(attribution, changeHistory, globals, helpers, notes, plumbing, sources) {
   /**
    * @ngdoc overview
    * @name parentsAndChildren
@@ -4506,6 +4529,11 @@ define('parentsAndChildren',[
             helpers.constructorSetter(globals.Fact, 'fatherFacts', function(response) {
               return maybe(response).childAndParentsRelationships;
             }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return helpers.flatMap(response.childAndParentsRelationships, function(relationship) {
+                return helpers.union(relationship.motherFacts, relationship.fatherFacts);
+              });
+            }),
             globals.personMapper()
           ));
       });
@@ -4646,13 +4674,14 @@ define('pedigree',[
   return exports;
 });
 define('spouses',[
+  'attribution',
   'changeHistory',
   'globals',
   'helpers',
   'plumbing',
   'notes',
   'sources'
-], function(changeHistory, globals, helpers, plumbing, notes, sources) {
+], function(attribution, changeHistory, globals, helpers, plumbing, notes, sources) {
   /**
    * @ngdoc overview
    * @name spouses
@@ -4818,6 +4847,11 @@ define('spouses',[
             helpers.constructorSetter(globals.Fact, 'facts', function(response) {
               return maybe(response).relationships;
             }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return helpers.flatMap(response.relationships, function(relationship) {
+                return relationship.facts;
+              });
+            }),
             globals.personMapper()
           ));
       });
@@ -4908,6 +4942,13 @@ define('person',[
      * @name person.types:constructor.Person#gender
      * @propertyOf person.types:constructor.Person
      * @return {Object} gender conclusion with id, type, attribution, and confidence
+     */
+
+    /**
+     * @ngdoc property
+     * @name person.types:constructor.Person#attribution
+     * @propertyOf person.types:constructor.Person
+     * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
      */
 
     /**
@@ -5343,8 +5384,9 @@ define('person',[
       helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
         return helpers.flatMap(personsGenerator(response), function(person) {
           return helpers.union(
-            person.names || [],
-            person.facts || [],
+            [person],
+            person.names,
+            person.facts,
             person.gender ? [person.gender] : []
           );
         });
@@ -5367,7 +5409,8 @@ define('person',[
    * @param {Array} pids of the people to read
    * @param {Object=} params to pass to getPerson currently unused
    * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise that is fulfilled when all of the people have been read, returning a map of person id to response
+   * @return {Object} promise that is fulfilled when all of the people have been read,
+   * returning a map of person id to {@link person.functions:getPerson getPerson} response
    */
   exports.getMultiPerson = function(pids, params, opts) {
     var promises = {};
@@ -5427,13 +5470,23 @@ define('person',[
           helpers.compose(
             helpers.objectExtender({getPrimaryId: function() { return pid; }}), // make id available
             helpers.constructorSetter(Fact, 'fatherFacts', function(response) {
-              return maybe(response).childAndParentsRelationships;
+              return response.childAndParentsRelationships;
             }),
             helpers.constructorSetter(Fact, 'motherFacts', function(response) {
-              return maybe(response).childAndParentsRelationships;
+              return response.childAndParentsRelationships;
+            }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return helpers.flatMap(response.childAndParentsRelationships, function(rel) {
+                return helpers.union(rel.fatherFacts, rel.motherFacts);
+              });
             }),
             helpers.constructorSetter(Fact, 'facts', function(response) {
-              return maybe(response).relationships;
+              return response.relationships;
+            }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return helpers.flatMap(response.relationships, function(rel) {
+                return rel.facts;
+              });
             }),
             helpers.constructorSetter(parentsAndChildren.ChildAndParents, 'childAndParentsRelationships'),
             helpers.constructorSetter(spouses.Couple, 'relationships'), // some of the relationships are ParentChild relationships, but
@@ -5536,7 +5589,7 @@ define('person',[
    * Get the change summary for a person. For detailed change information see functions in the changeHistory module
    * The response includes the following convenience function
    *
-   * - `getChanges()` - get the array of changes from the response; each change has an `id`, `published` timestamp, `title`, and `updated` timestamp
+   * - `getChanges()` - get the array of {@link changeHistory.types:constructor.Change Changes} from the response
    *
    * **NOTE The sandbox REST endpoint for this function is broken. Do not use.**
    *
@@ -5549,13 +5602,15 @@ define('person',[
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  // TODO check if this has been fixed
+  // TODO check if this has been fixed, and check if the entries really contain changeInfo and contributors attributes
   exports.getPersonChangeSummary = function(pid, params, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-change-summary-template', pid, {pid: pid}),
       function(url) {
         return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-          helpers.objectExtender({getChanges: function() { return this.entries || []; }}));
+          helpers.compose(
+            helpers.objectExtender({getChanges: function() { return this.entries || []; }}),
+            helpers.constructorSetter(changeHistory.Change, 'entries')));
       });
   };
 
@@ -5593,7 +5648,12 @@ define('person',[
             helpers.constructorSetter(spouses.Couple, 'relationships'),
             helpers.objectExtender(relationshipsToSpousesConvenienceFunctions),
             helpers.constructorSetter(Fact, 'facts', function(response) {
-              return maybe(response).relationships;
+              return response.relationships;
+            }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return helpers.flatMap(response.relationships, function(rel) {
+                return rel.facts;
+              });
             }),
             exports.personMapper()
           ));
