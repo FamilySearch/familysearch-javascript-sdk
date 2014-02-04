@@ -29,7 +29,7 @@
  *
  * ### Object model
  *
- * Here is a list of objects returned in the SDK function responses
+ * <img src="https://docs.google.com/drawings/d/1o3vRqYQSXoao94Z0cdaK9dR8MveS9U2jCsBOobw0xks/pub?w=650&amp;h=492"/>
  *
  * People with names and facts
  *
@@ -42,22 +42,28 @@
  * - {@link spouses.types:constructor.Couple Couple}
  * - {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents}
  *
- * Ojects related to people (and relationships)
+ * Ojects related to people and relationships
  *
  * - {@link notes.types:constructor.NoteRef NoteRef}
  * - {@link notes.types:constructor.Note Note}
  * - {@link sources.types:constructor.SourceRef SourceRef}
  * - {@link sources.types:constructor.SourceDescription SourceDescription}
+ * - {@link discussions.types:constructor.DiscussionRef DiscussionRef}
  * - {@link discussions.types:constructor.Discussion Discussion}
  * - {@link discussions.types:constructor.Comment Comment}
  * - {@link memories.types:constructor.MemoryPersonaRef MemoryPersonaRef}
  * - {@link memories.types:constructor.MemoryPersona MemoryPersona}
  * - {@link memories.types:constructor.Memory Memory}
+ * - {@link memories.types:constructor.MemoryArtifactRef MemoryArtifactRef}
  * - {@link changeHistory.types:constructor.Change Change}
  *
  * Search & match
  *
  * - {@link searchAndMatch.types:constructor.SearchResult SearchResult}
+ *
+ * Attribution
+ *
+ * - {@link attribution.types:constructor.Attribution Attribution}
  *
  * Users
  *
