@@ -2005,54 +2005,15 @@ define('user',[
    * @return {Object} promise for the (string) id of the current user person
    */
   exports.getCurrentUserPersonId = function(params, opts) {
-    var d = globals.deferredWrapper();
-    plumbing.getUrl('current-user-person').then(function(url) {
-      var promise = plumbing.get(url, params, {}, opts);
-      helpers.extendHttpPromise(d.promise, promise);
-      promise.then(
-        function() {
-          handleCurrentUserPersonResponse(d, promise);
-        }, function() {
-          // in Chrome, the current person response is expected to fail because it involves a redirect and chrome doesn't
-          // re-send the Accept header on a CORS redirect, so the response comes back as XML and jQuery can't parse it.
-          // That's ok, because we'll pick up the ID from the Content-Location header
-          handleCurrentUserPersonResponse(d, promise);
-        });
+    return plumbing.getUrl('current-user-person').then(function(url) {
+      // pass in .json suffix to force the the accept-header-less redirect to return a json response that we can parse
+      // however, since .json this isn't a _versioned_ accept header, don't trust it too much
+      // just get the id field and hand it back
+      return plumbing.get(url+'.json', params, {}, opts).then(function(response) {
+        return maybe(maybe(maybe(response).persons)[0]).id;
+      });
     });
-
-    return d.promise;
   };
-
-  /**
-   * Common code for current user person promise fulfillment and failure
-   * @param {Object} d deferred
-   * @param {Object} promise promise from get
-   */
-  function handleCurrentUserPersonResponse(d, promise) {
-    var id = null;
-    // this is the expected result for Node.js because it doesn't follow redirects
-    var location = promise.getResponseHeader('Location');
-    if (!location) {
-      // this is the expected result for browsers because they follow redirects
-      // NOTE: Chrome doesn't re-send the accept header on CORS redirect requests, so the request fails because we can't
-      // parse the returned XML into JSON. We still get a Content-Location header though.
-      location = promise.getResponseHeader('Content-Location');
-    }
-
-    if (location) {
-      var matchResult = location.match(/\/persons\/([^?]*)/);
-      if (matchResult) {
-        id = matchResult[1];
-      }
-    }
-
-    if (id) {
-      d.resolve(id);
-    }
-    else {
-      d.reject('not found');
-    }
-  }
 
   /**
    * @ngdoc function
