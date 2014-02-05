@@ -5176,7 +5176,7 @@ define('person',[
      * @return {Object} promise for the persona URL
      */
     $addMemoryPersonaRef: function(memoryPersonaRef, params, opts) {
-      return memories.addMemoryPersona(this.id, memoryPersonaRef, params, opts);
+      return memories.addMemoryPersonaRef(this.id, memoryPersonaRef, params, opts);
     }
   };
 
