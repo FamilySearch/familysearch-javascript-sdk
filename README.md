@@ -54,17 +54,18 @@ end of the year, I will add semantic version numbering to the downloads. Once we
 Documentation
 =============
 
-[API docs](http://rootsdev.org/familysearch-javascript-sdk)
+* [API docs](http://rootsdev.org/familysearch-javascript-sdk)
+* [Slides from 2014 RootsTech talk](http://dallanq.github.io/rootstech-2014-fs-js-sdk-slides).
 
 Roadmap
 =======
 
-####Milestone 1 - December 24, 2013
+####Milestone 1 - complete
 * Create functions for basic read operations
-* Make the SDK work with jQuery, AngularJS, and Node.js
+* Make the SDK work with jQuery and AngularJS
 
-####Milestone 2 - Feb 5, 2014
-* Create an example application showing how to use the SDK.
+####Milestone 2 - complete
+* Create an example application (RootSnap) showing how to use the SDK.
 
-####Milestone 3 - Feb 28, 2014
+####Milestone 3 - March 31, 2014
 * Create functions for the basic create, update, and delete operations
