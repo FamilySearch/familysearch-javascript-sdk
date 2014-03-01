@@ -270,6 +270,13 @@ define([
         retries = globals.maxHttpRequestRetries;
       }
 
+      // remove $... and _... attrs from data
+      if (data) {
+        data = helpers.clonePartial(data, function(key) {
+          return (!(helpers.isString(key) && (key.charAt(0) === '$' || key.charAt(0) === '_')));
+        });
+      }
+
       // call the http wrapper
       var promise = globals.httpWrapper(method,
         absoluteUrl,

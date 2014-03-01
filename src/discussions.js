@@ -16,50 +16,15 @@ define([
 
   var exports = {};
 
-  /**
-   * @ngdoc function
-   * @name discussions.types:constructor.DiscussionRef
-   * @description
-   *
-   * Reference to a discussion on a person
-   */
-  var DiscussionRef = exports.DiscussionRef = function() {
-
-  };
-
-  exports.DiscussionRef.prototype = {
-    constructor: DiscussionRef,
-    // TODO look for resourceId property if it becomes available
-    /**
-     * @ngdoc function
-     * @name discussions.types:constructor.DiscussionRef#$getDiscussionUrl
-     * @methodOf discussions.types:constructor.DiscussionRef
-     * @function
-     * @return {string} URL of the discussion - pass into {@link discussions.functions:getDiscussion getDiscussion} for details
-     */
-    $getDiscussionUrl: function() {
-      return helpers.removeAccessToken(this.resource);
-    },
-
-    /**
-     * @ngdoc function
-     * @name discussions.types:constructor.DiscussionRef#$getDiscussion
-     * @methodOf discussions.types:constructor.DiscussionRef
-     * @function
-     * @return {Object} promise for the {@link discussions.functions:getDiscussion getDiscussion} response
-     */
-    $getDiscussion: function() {
-      return exports.getDiscussion(this.$getDiscussionUrl());
-    }
-  };
-
+  /**********************************/
   /**
    * @ngdoc function
    * @name discussions.types:constructor.Discussion
    * @description
    *
    * Discussion
-   */
+   **********************************/
+
   var Discussion = exports.Discussion = function() {
 
   };
@@ -156,13 +121,62 @@ define([
     $getAgent: function() { return user.getAgent(this.$getAgentUrl()); }
   };
 
+  /**********************************/
+  /**
+   * @ngdoc function
+   * @name discussions.types:constructor.DiscussionRef
+   * @description
+   *
+   * Reference to a discussion on a person
+   **********************************/
+
+  var DiscussionRef = exports.DiscussionRef = function() {
+
+  };
+
+  exports.DiscussionRef.prototype = {
+    constructor: DiscussionRef,
+    // TODO look for resourceId property if it becomes available - this is the discussion id
+
+    /**
+     * @ngdoc property
+     * @name discussions.types:constructor.DiscussionRef#$personId
+     * @propertyOf discussions.types:constructor.DiscussionRef
+     * @return {String} Id of the person to whom this discussion is attached
+     */
+
+    /**
+     * @ngdoc function
+     * @name discussions.types:constructor.DiscussionRef#$getDiscussionUrl
+     * @methodOf discussions.types:constructor.DiscussionRef
+     * @function
+     * @return {string} URL of the discussion - pass into {@link discussions.functions:getDiscussion getDiscussion} for details
+     */
+    $getDiscussionUrl: function() {
+      return helpers.removeAccessToken(this.resource);
+    },
+
+    /**
+     * @ngdoc function
+     * @name discussions.types:constructor.DiscussionRef#$getDiscussion
+     * @methodOf discussions.types:constructor.DiscussionRef
+     * @function
+     * @return {Object} promise for the {@link discussions.functions:getDiscussion getDiscussion} response
+     */
+    $getDiscussion: function() {
+      return exports.getDiscussion(this.$getDiscussionUrl());
+    }
+  };
+
+  /**********************************/
   /**
    * @ngdoc function
    * @name discussions.types:constructor.Comment
    * @description
    *
    * Comment on a discussion
-   */
+   **********************************/
+
   var Comment = exports.Comment = function() {
 
   };
@@ -191,6 +205,20 @@ define([
      */
 
     // TODO check for familysearch fixing the resource and resourceId fields to be the agent id, not the user id
+
+    /**
+     * @ngdoc property
+     * @name discussions.types:constructor.Comment#$discussionId
+     * @propertyOf discussions.types:constructor.Comment
+     * @return {String} Id of the discussion if this is a discussion comment
+     */
+
+    /**
+     * @ngdoc property
+     * @name discussions.types:constructor.Comment#$memoryId
+     * @propertyOf discussions.types:constructor.Comment
+     * @return {String} Id of the memory if this is a memory comment
+     */
 
     /**
      * @ngdoc function
@@ -222,42 +250,6 @@ define([
 
   /**
    * @ngdoc function
-   * @name discussions.functions:getPersonDiscussionRefs
-   * @function
-   *
-   * @description
-   * Get references to discussions for a person
-   * The response includes the following convenience function
-   *
-   * - `getDiscussionRefs()` - get an array of {@link discussions.types:constructor.DiscussionRef DiscussionRefs} from the response
-   *
-   * {@link https://familysearch.org/developers/docs/api/tree/Person_Discussion_References_resource FamilySearch API Docs}
-   *
-   * {@link http://jsfiddle.net/DallanQ/kd39K/ editable example}
-   *
-   * @param {String} pid id of the person to read or full URL of the person-discussion-references endpoint
-   * @param {Object=} params currently unused
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the response
-   */
-  exports.getPersonDiscussionRefs = function(pid, params, opts) {
-    return helpers.chainHttpPromises(
-      plumbing.getUrl('person-discussion-references-template', pid, {pid: pid}),
-      function(url) {
-        // TODO remove discussion-reference-json-fix header when it becomes standard
-        return plumbing.get(url, params,
-          {'Accept': 'application/x-fs-v1+json', 'X-FS-Feature-Tag': 'discussion-reference-json-fix'}, opts,
-          helpers.compose(
-            helpers.objectExtender({getDiscussionRefs: function() { return maybe(maybe(this.persons)[0])['discussion-references'] || []; }}),
-            helpers.constructorSetter(DiscussionRef, 'discussion-references', function(response) {
-              return maybe(maybe(response).persons)[0];
-            })
-          ));
-      });
-  };
-
-  /**
-   * @ngdoc function
    * @name discussions.functions:getDiscussion
    * @function
    *
@@ -282,7 +274,9 @@ define([
       function(url) {
         return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
           helpers.compose(
-            helpers.objectExtender({getDiscussion: function() { return maybe(this.discussions)[0]; }}),
+            helpers.objectExtender({getDiscussion: function() {
+              return maybe(maybe(this).discussions)[0];
+            }}),
             helpers.constructorSetter(Discussion, 'discussions')
           ));
       });
@@ -326,6 +320,49 @@ define([
 
   /**
    * @ngdoc function
+   * @name discussions.functions:getPersonDiscussionRefs
+   * @function
+   *
+   * @description
+   * Get references to discussions for a person
+   * The response includes the following convenience function
+   *
+   * - `getDiscussionRefs()` - get an array of {@link discussions.types:constructor.DiscussionRef DiscussionRefs} from the response
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Discussion_References_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/kd39K/ editable example}
+   *
+   * @param {String} pid id of the person to read or full URL of the person-discussion-references endpoint
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getPersonDiscussionRefs = function(pid, params, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('person-discussion-references-template', pid, {pid: pid}),
+      function(url) {
+        // TODO remove discussion-reference-json-fix header when it becomes standard
+        return plumbing.get(url, params,
+          {'Accept': 'application/x-fs-v1+json', 'X-FS-Feature-Tag': 'discussion-reference-json-fix'}, opts,
+          helpers.compose(
+            helpers.objectExtender({getDiscussionRefs: function() {
+              return maybe(maybe(maybe(this).persons)[0])['discussion-references'] || [];
+            }}),
+            helpers.constructorSetter(DiscussionRef, 'discussion-references', function(response) {
+              return maybe(maybe(response).persons)[0];
+            }),
+            helpers.objectExtender(function(response) {
+              return { $personId: maybe(maybe(maybe(response).persons)[0]).id };
+            }, function(response) {
+              return maybe(maybe(maybe(response).persons)[0])['discussion-references'];
+            })
+          ));
+      });
+  };
+
+  /**
+   * @ngdoc function
    * @name discussions.functions:getComments
    * @function
    *
@@ -350,9 +387,16 @@ define([
       function(url) {
         return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
           helpers.compose(
-            helpers.objectExtender({getComments: function() { return maybe(maybe(this.discussions)[0]).comments || []; }}),
+            helpers.objectExtender({getComments: function() {
+              return maybe(maybe(maybe(this).discussions)[0]).comments || [];
+            }}),
             helpers.constructorSetter(Comment, 'comments', function(response) {
               return maybe(maybe(response).discussions)[0];
+            }),
+            helpers.objectExtender(function(response) {
+              return { $discussionId: maybe(maybe(maybe(response).discussions)[0]).id };
+            }, function(response) {
+              return maybe(maybe(maybe(response).discussions)[0])['comments'];
             })
           ));
       });

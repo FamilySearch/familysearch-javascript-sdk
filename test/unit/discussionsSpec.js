@@ -4,6 +4,7 @@ define(['FamilySearch'], function(FamilySearch) {
       FamilySearch.getPersonDiscussionRefs('12345').then(function(response) {
         var refs = response.getDiscussionRefs();
         expect(refs.length).toBe(1);
+        expect(refs[0].$personId).toBe('12345');
         refs[0].$getDiscussion().then(function(response) {
           var discussion = response.getDiscussion();
           expect(discussion.id).toBe('dis-MMMM-MMM');
@@ -47,6 +48,7 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(comments.length).toBe(1);
         expect(comments[0].id).toBe('CMMM-MMM');
         expect(comments[0].text).toBe('Just a comment.');
+        expect(comments[0].$discussionId).toBe('dis-MMMM-MMM');
         expect(comments[0].created).toBeUndefined();       // bad example data
         expect(comments[0].$getAgentId()).toBeUndefined(); // bad example data
       });

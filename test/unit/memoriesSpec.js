@@ -2,12 +2,13 @@ define(['FamilySearch'], function(FamilySearch) {
   describe('Memory', function() {
     it('references are returned from getPersonMemoryRefs', function() {
       FamilySearch.getMemoryPersonaRefs('PPPP-PPP').then(function(response) {
-        var memoryRefs = response.getMemoryPersonaRefs();
-        expect(memoryRefs.length).toBe(2);
-        expect(memoryRefs[0].resource).toBe('https://familysearch.org/platform/memories/memories/ARXX-MMM/personas/1083');
-        expect(memoryRefs[0].resourceId).toBe('1083');
-        expect(memoryRefs[0].$getMemoryId()).toBe('ARXX-MMM');
-        memoryRefs[0].$getMemory().then(function(response) {
+        var personaRefs = response.getMemoryPersonaRefs();
+        expect(personaRefs.length).toBe(2);
+        expect(personaRefs[0].resource).toBe('https://familysearch.org/platform/memories/memories/ARXX-MMM/personas/1083');
+        expect(personaRefs[0].resourceId).toBe('1083');
+        expect(personaRefs[0].$personId).toBe('PPPP-PPP');
+        expect(personaRefs[0].$getMemoryId()).toBe('ARXX-MMM');
+        personaRefs[0].$getMemory().then(function(response) {
           var memory = response.getMemory();
           expect(memory.id).toBe('ARXX-MMM');
         });
@@ -32,6 +33,7 @@ define(['FamilySearch'], function(FamilySearch) {
         var comments = response.getComments();
         expect(comments.length).toBe(1);
         expect(comments[0].id).toBe('CMMM-MMM');
+        expect(comments[0].$memoryId).toBe('AR-1234');
         expect(comments[0].text).toBe('Just a comment.');
       });
     });
@@ -42,6 +44,7 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(personas.length).toBe(1);
         expect(personas[0].id).toBe('123');
         expect(personas[0].extracted).toBeTruthy();
+        expect(personas[0].$memoryId).toBe('AR-1234');
         expect(personas[0].$getDisplayName()).toBe('Anastasia Aleksandrova');
         expect(personas[0].$getPreferredName().$getFullText()).toBe('Anastasia Aleksandrova');
         expect(personas[0].$getNames().length).toBe(1);

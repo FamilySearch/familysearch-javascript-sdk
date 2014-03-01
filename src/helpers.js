@@ -18,6 +18,16 @@ define([
     })();
   }
 
+  // Object.getPrototypeOf polyfill
+  // copied from http://ejohn.org/blog/objectgetprototypeof/
+  if (typeof Object.getPrototypeOf !== 'function') {
+    /* jshint camelcase:false,proto:true */
+    Object.getPrototypeOf = (typeof ''.__proto__ === 'object') ?
+      function(object) { return object.__proto__; } :
+      // May break if the constructor has been tampered with
+      function(object) { return object.constructor.prototype; };
+  }
+
   /**
    * borrowed from underscore.js
    * @param {*} value to test
@@ -304,6 +314,54 @@ define([
   };
 
   /**
+   * clone with a filter function to limit which fields are cloned
+   * borowed from http://stackoverflow.com/questions/728360/most-elegant-way-to-clone-a-javascript-object
+   * doesn't handle cyclic objects, functions, may not handle regex's
+   * @param {Object} obj Object to clone
+   * @param {Function} filter Function(key) returns true to clone the field
+   * @returns {Object} cloned object
+   */
+  exports.clonePartial = function(obj, filter) {
+    var copy;
+    // Handle the 3 simple types, and null or undefined
+    if (null == obj || 'object' !== typeof(obj)) {
+      return obj;
+    }
+
+    // Handle Date
+    if (obj instanceof Date) {
+      copy = new Date();
+      copy.setTime(obj.getTime());
+      return copy;
+    }
+
+    // Handle Array
+    if (obj instanceof Array) {
+      copy = [];
+      for (var i = 0, len = obj.length; i < len; i++) {
+        if (filter(i)) {
+          copy.push(exports.clonePartial(obj[i], filter));
+        }
+      }
+      return copy;
+    }
+
+    // Handle Object
+    if (obj instanceof Object) {
+      // set the constructor on the cloned object
+      copy = Object.create(Object.getPrototypeOf(obj));
+      for (var attr in obj) {
+        if (obj.hasOwnProperty(attr) && filter(attr)) {
+          copy[attr] = exports.clonePartial(obj[attr], filter);
+        }
+      }
+      return copy;
+    }
+
+    throw new Error('Unable to copy obj');
+  };
+
+  /**
    * Create a new function which is the specified function with the right-most arguments pre-filled with arguments from this call
    * @param {function()} fn Function to wrap
    * @returns {Function} Wrapped function
@@ -338,24 +396,24 @@ define([
 
   /**
    * Return a function that takes an object and extends it with the specified extensions
-   * @param {Object} extensions
+   * @param {Object|function(Object)} extensions object or a function that takes the object and extension point and returns an extensions object
    * @param {function(Object)=} extensionPointGetter Optional function that returns (sub)objects to extend
    * @return {function(Object)} The extender function
    */
   exports.objectExtender = function(extensions, extensionPointGetter) {
-    if (extensionPointGetter) {
-      return function(obj) {
-        if (obj) {
+    return function(obj) {
+      if (obj) {
+        if (extensionPointGetter) {
           forEach(extensionPointGetter(obj), function(extensionPoint) {
-            exports.extend(extensionPoint, extensions);
+            exports.extend(extensionPoint, exports.isFunction(extensions) ? extensions(obj, extensionPoint) : extensions);
           });
         }
-        return obj;
-      };
-    }
-    else {
-      return exports.partialRight(exports.extend, extensions);
-    }
+        else {
+          exports.extend(obj, exports.isFunction(extensions) ? extensions(obj, obj) : extensions);
+        }
+      }
+      return obj;
+    };
   };
 
   /**

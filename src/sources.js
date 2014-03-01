@@ -16,76 +16,15 @@ define([
 
   var exports = {};
 
-  /**
-   * @ngdoc function
-   * @name sources.types:constructor.SourceRef
-   * @description
-   *
-   * Reference from a person or relationship to a source
-   */
-  var SourceRef = exports.SourceRef = function() {
-
-  };
-
-  exports.SourceRef.prototype = {
-    constructor: SourceRef,
-    /**
-     * @ngdoc property
-     * @name sources.types:constructor.SourceRef#id
-     * @propertyOf sources.types:constructor.SourceRef
-     * @return {string} Id of the source reference
-     */
-
-    /**
-     * @ngdoc property
-     * @name sources.types:constructor.SourceRef#attribution
-     * @propertyOf sources.types:constructor.SourceRef
-     * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
-     */
-
-    /**
-     * @ngdoc function
-     * @name sources.types:constructor.SourceRef#$getSourceDescriptionUrl
-     * @methodOf sources.types:constructor.SourceRef
-     * @function
-     * @return {string} URL of the source description - pass into {@link sources.functions:getSourceDescription getSourceDescription} for details
-     */
-    $getSourceDescriptionUrl: function() {
-      return helpers.removeAccessToken(this.description);
-    },
-
-    // TODO check for source description id
-
-    /**
-     * @ngdoc function
-     * @name sources.types:constructor.SourceRef#$getSourceDescription
-     * @methodOf sources.types:constructor.SourceRef
-     * @function
-     * @return {Object} promise for the {@link sources.functions:getSourceDescription getSourceDescription} response
-     */
-    $getSourceDescription: function() {
-      return exports.getSourceDescription(this.$getSourceDescriptionUrl());
-    },
-
-    /**
-     * @ngdoc function
-     * @name sources.types:constructor.SourceRef#$getTagNames
-     * @methodOf sources.types:constructor.SourceRef
-     * @function
-     * @return {string[]} an array of tag names; e.g., http://gedcomx.org/Name or http://gedcomx.org/Birth
-     */
-    $getTagNames: function() { return helpers.map(this.tags, function(tag) {
-      return tag.resource;
-    }); }
-  };
-
+  /**********************************/
   /**
    * @ngdoc function
    * @name sources.types:constructor.SourceDescription
    * @description
    *
    * Description of a source
-   */
+   **********************************/
+
   var SourceDescription = exports.SourceDescription = function() {
 
   };
@@ -155,6 +94,92 @@ define([
     }
   };
 
+  /**********************************/
+  /**
+   * @ngdoc function
+   * @name sources.types:constructor.SourceRef
+   * @description
+   *
+   * Reference from a person or relationship to a source
+   **********************************/
+
+  var SourceRef = exports.SourceRef = function() {
+
+  };
+
+  exports.SourceRef.prototype = {
+    constructor: SourceRef,
+    /**
+     * @ngdoc property
+     * @name sources.types:constructor.SourceRef#id
+     * @propertyOf sources.types:constructor.SourceRef
+     * @return {string} Id of the source reference
+     */
+
+    /**
+     * @ngdoc property
+     * @name sources.types:constructor.SourceRef#attribution
+     * @propertyOf sources.types:constructor.SourceRef
+     * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
+     */
+
+    /**
+     * @ngdoc property
+     * @name sources.types:constructor.SourceRef#$personId
+     * @propertyOf sources.types:constructor.SourceRef
+     * @return {String} Id of the person to which this source is attached if it is attached to a person
+     */
+
+    /**
+     * @ngdoc property
+     * @name sources.types:constructor.SourceRef#$childAndParentsId
+     * @propertyOf sources.types:constructor.SourceRef
+     * @return {String} Id of the child and parents relationship to which this source is attached if it is attached to child and parents
+     */
+
+    /**
+     * @ngdoc property
+     * @name sources.types:constructor.SourceRef#$coupleId
+     * @propertyOf sources.types:constructor.SourceRef
+     * @return {String} Id of the couple relationship to which this source is attached if it is attached to a couple
+     */
+
+    /**
+     * @ngdoc function
+     * @name sources.types:constructor.SourceRef#$getSourceDescriptionUrl
+     * @methodOf sources.types:constructor.SourceRef
+     * @function
+     * @return {string} URL of the source description - pass into {@link sources.functions:getSourceDescription getSourceDescription} for details
+     */
+    $getSourceDescriptionUrl: function() {
+      return helpers.removeAccessToken(this.description);
+    },
+
+    // TODO check for source description id
+
+    /**
+     * @ngdoc function
+     * @name sources.types:constructor.SourceRef#$getSourceDescription
+     * @methodOf sources.types:constructor.SourceRef
+     * @function
+     * @return {Object} promise for the {@link sources.functions:getSourceDescription getSourceDescription} response
+     */
+    $getSourceDescription: function() {
+      return exports.getSourceDescription(this.$getSourceDescriptionUrl());
+    },
+
+    /**
+     * @ngdoc function
+     * @name sources.types:constructor.SourceRef#$getTagNames
+     * @methodOf sources.types:constructor.SourceRef
+     * @function
+     * @return {string[]} an array of tag names; e.g., http://gedcomx.org/Name or http://gedcomx.org/Birth
+     */
+    $getTagNames: function() { return helpers.map(this.tags, function(tag) {
+      return tag.resource;
+    }); }
+  };
+
   /**
    * @ngdoc function
    * @name sources.functions:getPersonSourceRefs
@@ -181,11 +206,18 @@ define([
       function(url) {
         return plumbing.get(url, params, {}, opts,
           helpers.compose(
-            helpers.objectExtender({getSourceRefs: function() { return maybe(maybe(this.persons)[0]).sources || []; }}),
+            helpers.objectExtender({getSourceRefs: function() {
+              return maybe(maybe(this.persons)[0]).sources || [];
+            }}),
             helpers.constructorSetter(SourceRef, 'sources', function(response) {
               return maybe(maybe(response).persons)[0];
             }),
             helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return maybe(maybe(maybe(response).persons)[0]).sources;
+            }),
+            helpers.objectExtender(function(response) {
+              return { $personId: maybe(maybe(maybe(response).persons)[0]).id };
+            }, function(response) {
               return maybe(maybe(maybe(response).persons)[0]).sources;
             })
           ));
@@ -218,11 +250,18 @@ define([
       function(url) {
         return plumbing.get(url, params, {}, opts,
           helpers.compose(
-            helpers.objectExtender({getSourceRefs: function() { return maybe(maybe(this.relationships)[0]).sources || []; }}),
+            helpers.objectExtender({getSourceRefs: function() {
+              return maybe(maybe(this.relationships)[0]).sources || [];
+            }}),
             helpers.constructorSetter(SourceRef, 'sources', function(response) {
               return maybe(maybe(response).relationships)[0];
             }),
             helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return maybe(maybe(maybe(response).relationships)[0]).sources;
+            }),
+            helpers.objectExtender(function(response) {
+              return { $coupleId: maybe(maybe(maybe(response).relationships)[0]).id };
+            }, function(response) {
               return maybe(maybe(maybe(response).relationships)[0]).sources;
             })
           ));
@@ -256,11 +295,18 @@ define([
         return plumbing.get(url, params,
           {'Accept': 'application/x-fs-v1+json'}, opts,
           helpers.compose(
-            helpers.objectExtender({getSourceRefs: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).sources || []; }}),
+            helpers.objectExtender({getSourceRefs: function() {
+              return maybe(maybe(this.childAndParentsRelationships)[0]).sources || [];
+            }}),
             helpers.constructorSetter(SourceRef, 'sources', function(response) {
               return maybe(maybe(response).childAndParentsRelationships)[0];
             }),
             helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return maybe(maybe(maybe(response).childAndParentsRelationships)[0]).sources;
+            }),
+            helpers.objectExtender(function(response) {
+              return { $childAndParentsId: maybe(maybe(maybe(response).childAndParentsRelationships)[0]).id };
+            }, function(response) {
               return maybe(maybe(maybe(response).childAndParentsRelationships)[0]).sources;
             })
           ));
@@ -342,18 +388,6 @@ define([
     return helpers.promiseAll(promises);
   };
 
-  function createSourceRefMap(objects) {
-    var result = {};
-    if (helpers.isArray(objects)) {
-      helpers.forEach(objects, function(obj) {
-        if (helpers.isArray(obj.sources)) {
-          result[obj.id] = obj.sources[0];
-        }
-      });
-    }
-    return result;
-  }
-
   /**
    * @ngdoc function
    * @name sources.functions:getSourceRefsQuery
@@ -363,9 +397,9 @@ define([
    * Get the people, couples, and child-and-parents relationships referencing a source
    * The response includes the following convenience functions
    *
-   * - `getPersonSourceRefMap()` - get a map of person id to {@link sources.types:constructor.SourceRef SourceRefs} from the response
-   * - `getCoupleSourceRefMap()` - get a map of couple relationship id to {@link sources.types:constructor.SourceRef SourceRefs} from the response
-   * - `getChildAndParentsSourceRefMap()` - get a map of child and parent relationship ids to {@link sources.types:constructor.SourceRef SourceRefs} from the response
+   * - `getPersonSourceRefs()` - get an array of person {@link sources.types:constructor.SourceRef SourceRefs} from the response
+   * - `getCoupleSourceRefs()` - get an array of couple relationship {@link sources.types:constructor.SourceRef SourceRefs} from the response
+   * - `getChildAndParentsSourceRefs()` - get an array of child and parent relationship {@link sources.types:constructor.SourceRef SourceRefs} from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Source_References_Query_resource FamilySearch API Docs}
    *
@@ -381,11 +415,62 @@ define([
     var url = helpers.isAbsoluteUrl(sdid) ? sdid : helpers.appendQueryParameters('/platform/tree/source-references', {source: sdid});
     return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
       helpers.compose(
-        helpers.objectExtender({getPersonSourceRefMap: function() { return createSourceRefMap(this.persons); }}),
-        helpers.objectExtender({getCoupleSourceRefMap: function() { return createSourceRefMap(this.relationships); }}),
-        helpers.objectExtender({getChildAndParentsSourceRefMap: function() { return createSourceRefMap(this.childAndParentsRelationships); }}),
+        helpers.objectExtender({getPersonSourceRefs: function() {
+          return helpers.flatMap(maybe(this.persons), function(person) {
+            return person.sources;
+          });
+        }}),
+        helpers.objectExtender({getCoupleSourceRefs: function() {
+          return helpers.flatMap(maybe(this.relationships), function(couple) {
+            return couple.sources;
+          });
+        }}),
+        helpers.objectExtender({getChildAndParentsSourceRefs: function() {
+          return helpers.flatMap(maybe(this.childAndParentsRelationships), function(childAndParents) {
+            return childAndParents.sources;
+          });
+        }}),
         helpers.constructorSetter(SourceRef, 'sources', function(response) {
           return helpers.union(maybe(response).persons, maybe(response).relationships, maybe(response).childAndParentsRelationships);
+        }),
+        helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+          var personsRelationships = helpers.union(maybe(response).persons, maybe(response).relationships, maybe(response).childAndParentsRelationships);
+          return helpers.flatMap(personsRelationships, function(personRelationship) {
+            return personRelationship.sources;
+          });
+        }),
+        helpers.objectExtender(function(response, sourceRef) {
+          // get the person that contains this source ref
+          var person = helpers.find(maybe(response).persons, function(person) {
+            return !!helpers.find(maybe(person).sources, {id: sourceRef.id});
+          });
+          return { $personId: person.id };
+        }, function(response) {
+          return helpers.flatMap(maybe(response).persons, function(person) {
+            return person.sources;
+          });
+        }),
+        helpers.objectExtender(function(response, sourceRef) {
+          // get the couple that contains this source ref
+          var couple = helpers.find(maybe(response).relationships, function(couple) {
+            return !!helpers.find(maybe(couple).sources, {id: sourceRef.id});
+          });
+          return { $coupleId: couple.id };
+        }, function(response) {
+          return helpers.flatMap(maybe(response).relationships, function(couple) {
+            return couple.sources;
+          });
+        }),
+        helpers.objectExtender(function(response, sourceRef) {
+          // get the child-and-parents that contains this source ref
+          var childAndParents = helpers.find(maybe(response).childAndParentsRelationships, function(childAndParents) {
+            return !!helpers.find(maybe(childAndParents).sources, {id: sourceRef.id});
+          });
+          return { $childAndParentsId: childAndParents.id };
+        }, function(response) {
+          return helpers.flatMap(maybe(response).childAndParentsRelationships, function(childAndParents) {
+            return childAndParents.sources;
+          });
         })
       ));
   };

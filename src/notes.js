@@ -16,13 +16,59 @@ define([
 
   var exports = {};
 
+  /**********************************/
+  /**
+   * @ngdoc function
+   * @name notes.types:constructor.Note
+   * @description
+   *
+   * Note
+   **********************************/
+
+  var Note = exports.Note = function() {
+
+  };
+
+  exports.Note.prototype = {
+    constructor: Note
+    /**
+     * @ngdoc property
+     * @name notes.types:constructor.Note#id
+     * @propertyOf notes.types:constructor.Note
+     * @return {String} Id of the note
+     */
+
+    /**
+     * @ngdoc property
+     * @name notes.types:constructor.Note#subject
+     * @propertyOf notes.types:constructor.Note
+     * @return {String} subject / title of the note
+     */
+
+    /**
+     * @ngdoc property
+     * @name notes.types:constructor.Note#text
+     * @propertyOf notes.types:constructor.Note
+     * @return {String} text of the note
+     */
+
+    /**
+     * @ngdoc property
+     * @name notes.types:constructor.Note#attribution
+     * @propertyOf notes.types:constructor.Note
+     * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
+     */
+  };
+
+  /**********************************/
   /**
    * @ngdoc function
    * @name notes.types:constructor.NoteRef
    * @description
    *
    * Reference to a note on a person
-   */
+   **********************************/
+
   var NoteRef = exports.NoteRef = function() {
 
   };
@@ -43,6 +89,27 @@ define([
      * @name notes.types:constructor.NoteRef#subject
      * @propertyOf notes.types:constructor.NoteRef
      * @return {String} subject of the note
+     */
+
+    /**
+     * @ngdoc property
+     * @name notes.types:constructor.NoteRef#$personId
+     * @propertyOf notes.types:constructor.NoteRef
+     * @return {String} Id of the person to which this note is attached if it is a person note
+     */
+
+    /**
+     * @ngdoc property
+     * @name notes.types:constructor.NoteRef#$childAndParentsId
+     * @propertyOf notes.types:constructor.NoteRef
+     * @return {String} Id of the child and parents relationship to which this note is attached if it is a child and parents note
+     */
+
+    /**
+     * @ngdoc property
+     * @name notes.types:constructor.NoteRef#$coupleId
+     * @propertyOf notes.types:constructor.NoteRef
+     * @return {String} Id of the couple relationship to which this note is attached if it is a couple note
      */
 
     /**
@@ -79,48 +146,6 @@ define([
 
   /**
    * @ngdoc function
-   * @name notes.types:constructor.Note
-   * @description
-   *
-   * Note
-   */
-  var Note = exports.Note = function() {
-
-  };
-
-  exports.Note.prototype = {
-    constructor: Note
-    /**
-     * @ngdoc property
-     * @name notes.types:constructor.Note#id
-     * @propertyOf notes.types:constructor.Note
-     * @return {String} Id of the note
-     */
-
-    /**
-     * @ngdoc property
-     * @name notes.types:constructor.Note#subject
-     * @propertyOf notes.types:constructor.Note
-     * @return {String} subject / title of the note
-     */
-
-    /**
-     * @ngdoc property
-     * @name notes.types:constructor.Note#text
-     * @propertyOf notes.types:constructor.Note
-     * @return {String} text of the note
-     */
-
-    /**
-     * @ngdoc property
-     * @name notes.types:constructor.Note#attribution
-     * @propertyOf notes.types:constructor.Note
-     * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
-     */
-  };
-
-  /**
-   * @ngdoc function
    * @name notes.functions:getPersonNoteRefs
    * @function
    *
@@ -145,9 +170,16 @@ define([
       function(url) {
         return plumbing.get(url, params, {}, opts,
           helpers.compose(
-            helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.persons)[0]).notes || []; }}),
+            helpers.objectExtender({getNoteRefs: function() {
+              return maybe(maybe(maybe(this).persons)[0]).notes || [];
+            }}),
             helpers.constructorSetter(NoteRef, 'notes', function(response) {
               return maybe(maybe(response).persons)[0];
+            }),
+            helpers.objectExtender(function(response) {
+              return { $personId: maybe(maybe(maybe(response).persons)[0]).id };
+            }, function(response) {
+              return maybe(maybe(maybe(response).persons)[0]).notes;
             })
           ));
       });
@@ -179,9 +211,16 @@ define([
       function(url) {
         return plumbing.get(url, params, {}, opts,
           helpers.compose(
-            helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.relationships)[0]).notes || []; }}),
+            helpers.objectExtender({getNoteRefs: function() {
+              return maybe(maybe(this.relationships)[0]).notes || [];
+            }}),
             helpers.constructorSetter(NoteRef, 'notes', function(response) {
               return maybe(maybe(response).relationships)[0];
+            }),
+            helpers.objectExtender(function(response) {
+              return { $coupleId: maybe(maybe(maybe(response).relationships)[0]).id };
+            }, function(response) {
+              return maybe(maybe(maybe(response).relationships)[0]).notes;
             })
           ));
       });
@@ -214,9 +253,16 @@ define([
         return plumbing.get(url, params,
           {'Accept': 'application/x-fs-v1+json'}, opts,
           helpers.compose(
-            helpers.objectExtender({getNoteRefs: function() { return maybe(maybe(this.childAndParentsRelationships)[0]).notes || []; }}),
+            helpers.objectExtender({getNoteRefs: function() {
+              return maybe(maybe(this.childAndParentsRelationships)[0]).notes || [];
+            }}),
             helpers.constructorSetter(NoteRef, 'notes', function(response) {
               return maybe(maybe(response).childAndParentsRelationships)[0];
+            }),
+            helpers.objectExtender(function(response) {
+              return { $childAndParentsId: maybe(maybe(maybe(response).childAndParentsRelationships)[0]).id };
+            }, function(response) {
+              return maybe(maybe(maybe(response).childAndParentsRelationships)[0]).notes;
             })
           ));
       });

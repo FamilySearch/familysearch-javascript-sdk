@@ -4,6 +4,7 @@ define(['FamilySearch'], function(FamilySearch) {
       FamilySearch.getPersonSourceRefs('PPPP-PPP').then(function(response) {
         var sourceRefs = response.getSourceRefs();
         expect(sourceRefs[0].$getTagNames()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
+        expect(sourceRefs[0].$personId).toBe('PPPP-PPP');
         expect(sourceRefs[1].$getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/BBBB-BBB');
         expect(sourceRefs[1].$getTagNames().length).toBe(0);
         expect(sourceRefs[1].attribution.$getAgentId()).toBe('UUUU-UUU');
@@ -36,6 +37,7 @@ define(['FamilySearch'], function(FamilySearch) {
       FamilySearch.getCoupleSourceRefs('12345').then(function(response) {
         var sourceRefs = response.getSourceRefs();
         expect(sourceRefs[0].$getTagNames()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
+        expect(sourceRefs[0].$coupleId).toBe('12345');
         expect(sourceRefs[1].$getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/BBBB-BBB');
         expect(sourceRefs[1].$getTagNames().length).toBe(0);
         expect(sourceRefs[1].attribution.$getAgentId()).toBe('UUUU-UUU');
@@ -49,6 +51,7 @@ define(['FamilySearch'], function(FamilySearch) {
         var sourceRefs = response.getSourceRefs();
         expect(sourceRefs[0].$getTagNames()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
         expect(sourceRefs[0].attribution.modified).toBe(123456789);
+        expect(sourceRefs[0].$childAndParentsId).toBe('PPPX-PP0');
         expect(sourceRefs[1].$getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/BBBB-BBB');
         expect(sourceRefs[1].$getTagNames().length).toBe(0);
         expect(sourceRefs[1].attribution.$getAgentId()).toBe('UUUU-UUU');
@@ -59,12 +62,23 @@ define(['FamilySearch'], function(FamilySearch) {
 
     it('references are returned from getSourceRefsQuery', function() {
       FamilySearch.getSourceRefsQuery('MM93-JFK').then(function(response) {
-        expect(response.getPersonSourceRefMap()['KW7V-Y32'].id).toBe('MMM9-NNG');
-        expect(response.getPersonSourceRefMap()['KW7V-Y32'].$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/MM93-JFK');
-        expect(response.getCoupleSourceRefMap()['MMM7-12S'].id).toBe('MMMM-S3D');
-        expect(response.getCoupleSourceRefMap()['MMM7-12S'].$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/MM93-JFK');
-        expect(response.getChildAndParentsSourceRefMap()['MMMP-KN5'].id).toBe('MMMM-S36');
-        expect(response.getChildAndParentsSourceRefMap()['MMMP-KN5'].$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/MM93-JFK');
+        var personSourceRef = response.getPersonSourceRefs()[0];
+        expect(personSourceRef.id).toBe('MMM9-NNG');
+        expect(personSourceRef.$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/MM93-JFK');
+        expect(personSourceRef.attribution.$getAgentId()).toBe('MMD8-3NT');
+        expect(personSourceRef.$personId).toBe('KW7V-Y32');
+
+        var coupleSourceRef = response.getCoupleSourceRefs()[0];
+        expect(coupleSourceRef.id).toBe('MMMM-S3D');
+        expect(coupleSourceRef.$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/MM93-JFK');
+        expect(coupleSourceRef.attribution.$getAgentId()).toBe('MMD8-3NT');
+        expect(coupleSourceRef.$coupleId).toBe('MMM7-12S');
+
+        var childAndParentsSourceRef = response.getChildAndParentsSourceRefs()[0];
+        expect(childAndParentsSourceRef.id).toBe('MMMM-S36');
+        expect(childAndParentsSourceRef.$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/MM93-JFK');
+        expect(childAndParentsSourceRef.attribution.$getAgentId()).toBe('MMD8-3NT');
+        expect(childAndParentsSourceRef.$childAndParentsId).toBe('MMMP-KN5');
       });
     });
   });

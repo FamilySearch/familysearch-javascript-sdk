@@ -18,82 +18,15 @@ define([
 
   var exports = {};
 
-  /**
-   * @ngdoc function
-   * @name memories.types:constructor.MemoryPersonaRef
-   * @description
-   *
-   * A reference to a {@link memories.types:constructor.MemoryPersona MemoryPersona} and a
-   * {@link memories.types:constructor.Memory Memory}
-   *
-   * @param {string=} url URL of the Memory Persona
-   */
-  var MemoryPersonaRef = exports.MemoryPersonaRef = function(url) {
-    // we must remove the access token in order to pass this into addMemoryPersonaRef
-    this.resource = helpers.removeAccessToken(url);
-    this.resourceId = helpers.getLastUrlSegment(this.resource);
-  };
-
-  exports.MemoryPersonaRef.prototype = {
-    constructor: MemoryPersonaRef,
-    /**
-     * @ngdoc property
-     * @name memories.types:constructor.MemoryPersonaRef#resourceId
-     * @propertyOf memories.types:constructor.MemoryPersonaRef
-     * @return {String} Id of the Memory Persona
-     */
-
-    /**
-     * @ngdoc property
-     * @name memories.types:constructor.MemoryPersonaRef#resource
-     * @propertyOf memories.types:constructor.MemoryPersonaRef
-     * @return {String} URL of the Memory Persona
-     */
-
-    // TODO when we can read a memory persona, add a function to read it
-
-    // TODO stop hacking into the resource when we have a separate link to the memory
-    /**
-     * @ngdoc function
-     * @name memories.types:constructor.MemoryPersonaRef#$getMemoryId
-     * @methodOf memories.types:constructor.MemoryPersonaRef
-     * @function
-     * @return {String} Id of the memory; pass into {@link memories.functions:getMemory getMemory} for details
-     */
-    $getMemoryId:  function() {
-      return this.resource ? this.resource.replace(/^.*\/memories\/([^\/]*)\/personas\/.*$/, '$1') : this.resource;
-    },
-
-    /**
-     * @ngdoc function
-     * @name memories.types:constructor.MemoryPersonaRef#$getMemoryUrl
-     * @methodOf memories.types:constructor.MemoryPersonaRef
-     * @function
-     * @return {String} URL of the memory; pass into {@link memories.functions:getMemory getMemory} for details
-     */
-    $getMemoryUrl:  function() {
-      return this.resource ? helpers.removeAccessToken(this.resource.replace(/(^.*\/memories\/[^\/]*)\/personas\/.*$/, '$1')) : this.resource;
-    },
-
-    /**
-     * @ngdoc function
-     * @name memories.types:constructor.MemoryPersonaRef#$getMemory
-     * @methodOf memories.types:constructor.MemoryPersonaRef
-     * @function
-     * @return {Object} promise for the {@link memories.functions:getMemory getMemory} response
-     */
-    $getMemory:  function() {
-      return exports.getMemory(this.$getMemoryUrl());
-    }
-  };
-
+  /******************************************/
   /**
    * @ngdoc function
    * @name memories.types:constructor.Memory
    * @description
    *
    * Memory
-   */
+   ******************************************/
+
   var Memory = exports.Memory = function() {
 
   };
@@ -204,6 +137,7 @@ define([
     }
 };
 
+  /**********************************/
   /**
    * @ngdoc function
    * @name memories.types:constructor.MemoryPersona
@@ -213,7 +147,8 @@ define([
    *
    * @param {Name|string=} name name to add
    * @param {string|MemoryArtifactRef=} mar URL of the memory artifact or the memory artifact ref to add
-   */
+   *********************************/
+
   var MemoryPersona = exports.MemoryPersona = function(name, mar) {
     this.names = [];
     this.media = [];
@@ -241,6 +176,13 @@ define([
      * @name memories.types:constructor.MemoryPersona#extracted
      * @propertyOf memories.types:constructor.MemoryPersona
      * @return {String} not sure what this means
+     */
+
+    /**
+     * @ngdoc property
+     * @name memories.types:constructor.MemoryPersona#$memoryId
+     * @propertyOf memories.types:constructor.MemoryPersona
+     * @return {String} Id of the memory to which this persona is attached
      */
 
     /**
@@ -337,6 +279,85 @@ define([
     }
   };
 
+  /**********************************/
+  /**
+   * @ngdoc function
+   * @name memories.types:constructor.MemoryPersonaRef
+   * @description
+   *
+   * A reference to a {@link memories.types:constructor.MemoryPersona MemoryPersona} and a
+   * {@link memories.types:constructor.Memory Memory}
+   *
+   * @param {string=} url URL of the Memory Persona
+   *********************************/
+
+  var MemoryPersonaRef = exports.MemoryPersonaRef = function(url) {
+    // we must remove the access token in order to pass this into addMemoryPersonaRef
+    this.resource = helpers.removeAccessToken(url);
+    this.resourceId = helpers.getLastUrlSegment(this.resource);
+  };
+
+  exports.MemoryPersonaRef.prototype = {
+    constructor: MemoryPersonaRef,
+    /**
+     * @ngdoc property
+     * @name memories.types:constructor.MemoryPersonaRef#resourceId
+     * @propertyOf memories.types:constructor.MemoryPersonaRef
+     * @return {String} Id of the Memory Persona
+     */
+
+    /**
+     * @ngdoc property
+     * @name memories.types:constructor.MemoryPersonaRef#resource
+     * @propertyOf memories.types:constructor.MemoryPersonaRef
+     * @return {String} URL of the Memory Persona
+     */
+
+    // TODO when we can read a memory persona, add a function to read it
+
+    /**
+     * @ngdoc property
+     * @name memories.types:constructor.MemoryPersonaRef#$personId
+     * @propertyOf memories.types:constructor.MemoryPersonaRef
+     * @return {String} Id of the person to which this persona is attached
+     */
+
+    // TODO stop hacking into the resource when we have a separate link to the memory
+    /**
+     * @ngdoc function
+     * @name memories.types:constructor.MemoryPersonaRef#$getMemoryId
+     * @methodOf memories.types:constructor.MemoryPersonaRef
+     * @function
+     * @return {String} Id of the memory; pass into {@link memories.functions:getMemory getMemory} for details
+     */
+    $getMemoryId:  function() {
+      return this.resource ? this.resource.replace(/^.*\/memories\/([^\/]*)\/personas\/.*$/, '$1') : this.resource;
+    },
+
+    /**
+     * @ngdoc function
+     * @name memories.types:constructor.MemoryPersonaRef#$getMemoryUrl
+     * @methodOf memories.types:constructor.MemoryPersonaRef
+     * @function
+     * @return {String} URL of the memory; pass into {@link memories.functions:getMemory getMemory} for details
+     */
+    $getMemoryUrl:  function() {
+      return this.resource ? helpers.removeAccessToken(this.resource.replace(/(^.*\/memories\/[^\/]*)\/personas\/.*$/, '$1')) : this.resource;
+    },
+
+    /**
+     * @ngdoc function
+     * @name memories.types:constructor.MemoryPersonaRef#$getMemory
+     * @methodOf memories.types:constructor.MemoryPersonaRef
+     * @function
+     * @return {Object} promise for the {@link memories.functions:getMemory getMemory} response
+     */
+    $getMemory:  function() {
+      return exports.getMemory(this.$getMemoryUrl());
+    }
+  };
+
+  /**********************************/
   /**
    * @ngdoc function
    * @name memories.types:constructor.MemoryArtifactRef
@@ -344,7 +365,8 @@ define([
    *
    * Memory Artifact Reference
    * @param {string=} url memory artifact url
-   */
+   *********************************/
+
   var MemoryArtifactRef = exports.MemoryArtifactRef = function(url) {
     this.description = url;
   };
@@ -382,38 +404,6 @@ define([
      * @param {string} url URL of the memory artifact
      */
     $setMemoryArtifactUrl: function(url) { this.description = url; }
-  };
-
-  /**
-   * @ngdoc function
-   * @name memories.functions:getMemoryPersonaRefs
-   * @function
-   *
-   * @description
-   * Get references to memories for a person
-   * The response includes the following convenience function
-   *
-   * - `getMemoryPersonaRefs()` - get an array of {@link memories.types:constructor.MemoryPersonaRef MemoryPersonaRefs} from the response
-   *
-   * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_References_resource FamilySearch API Docs}
-   *
-   * {@link http://jsfiddle.net/DallanQ/vt79D/ editable example}
-   *
-   * @param {String} pid id of the person or full URL of the person-memory-references endpoint
-   * @param {Object=} params currently unused
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the response
-   */
-  exports.getMemoryPersonaRefs = function(pid, params, opts) {
-    // TODO check if memory-references endpoint template has been added to the discovery resource
-    var url = helpers.isAbsoluteUrl(pid) ? pid : '/platform/tree/persons/'+encodeURI(pid)+'/memory-references';
-    return plumbing.get(url, params, {}, opts,
-      helpers.compose(
-        helpers.objectExtender({getMemoryPersonaRefs: function() { return maybe(maybe(this.persons)[0]).evidence || []; }}),
-        helpers.constructorSetter(MemoryPersonaRef, 'evidence', function(response) {
-          return maybe(maybe(response).persons)[0];
-        })
-      ));
   };
 
   /**
@@ -547,9 +537,17 @@ define([
       function(url) {
         return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
           helpers.compose(
-            helpers.objectExtender({getComments: function() { return maybe(maybe(this.discussions)[0]).comments || []; }}),
+            helpers.objectExtender({getComments: function() {
+              return maybe(maybe(this.discussions)[0]).comments || [];
+            }}),
             helpers.constructorSetter(discussions.Comment, 'comments', function(response) {
               return maybe(maybe(response).discussions)[0];
+            }),
+            helpers.objectExtender(function(response, comment) {
+              var href = maybe(maybe(maybe(comment).links).comment).href;
+              return { $memoryId: href ? helpers.removeAccessToken(href.replace(/^.*\/memories\/([^\/]*)\/comments\/.*$/, '$1')) : href };
+            }, function(response) {
+              return maybe(maybe(maybe(response).discussions)[0])['comments'];
             })
           ));
       });
@@ -581,16 +579,63 @@ define([
       function(url) {
         return plumbing.get(url, params, {}, opts,
           helpers.compose(
-            helpers.objectExtender({getMemoryPersonas: function() { return this && this.persons ? this.persons : []; }}),
+            helpers.objectExtender({getMemoryPersonas: function() {
+              return this && this.persons ? this.persons : [];
+            }}),
             helpers.constructorSetter(MemoryPersona, 'persons'),
             helpers.constructorSetter(globals.Name, 'names', function(response) {
               return maybe(response).persons;
             }),
             helpers.constructorSetter(MemoryArtifactRef, 'media', function(response) {
               return maybe(response).persons;
+            }),
+            helpers.objectExtender(function(response, persona) {
+              var href = maybe(maybe(maybe(persona).links).persona).href;
+              return { $memoryId: href ? helpers.removeAccessToken(href.replace(/^.*\/memories\/([^\/]*)\/personas\/.*$/, '$1')) : href };
+            }, function(response) {
+              return maybe(response).persons;
             })
           ));
       });
+  };
+
+  /**
+   * @ngdoc function
+   * @name memories.functions:getMemoryPersonaRefs
+   * @function
+   *
+   * @description
+   * Get references to memories for a person
+   * The response includes the following convenience function
+   *
+   * - `getMemoryPersonaRefs()` - get an array of {@link memories.types:constructor.MemoryPersonaRef MemoryPersonaRefs} from the response
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_References_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/vt79D/ editable example}
+   *
+   * @param {String} pid id of the person or full URL of the person-memory-references endpoint
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getMemoryPersonaRefs = function(pid, params, opts) {
+    // TODO check if memory-references endpoint template has been added to the discovery resource
+    var url = helpers.isAbsoluteUrl(pid) ? pid : '/platform/tree/persons/'+encodeURI(pid)+'/memory-references';
+    return plumbing.get(url, params, {}, opts,
+      helpers.compose(
+        helpers.objectExtender({getMemoryPersonaRefs: function() {
+          return maybe(maybe(this.persons)[0]).evidence || [];
+        }}),
+        helpers.constructorSetter(MemoryPersonaRef, 'evidence', function(response) {
+          return maybe(maybe(response).persons)[0];
+        }),
+        helpers.objectExtender(function(response) {
+          return { $personId: maybe(maybe(maybe(response).persons)[0]).id };
+        }, function(response) {
+          return maybe(maybe(maybe(response).persons)[0]).evidence;
+        })
+      ));
   };
 
   /**
