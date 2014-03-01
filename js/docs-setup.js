@@ -181,7 +181,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Comment on a discussion",
-      "keywords": "$getagent $getagentid $getagenturl __broken__ api comment contributor created details discussion discussions function functions getagent pass promise property response text timestamp types url user"
+      "keywords": "$discussionid $getagent $getagentid $getagenturl $memoryid __broken__ api comment contributor created details discussion discussions function functions getagent memory pass promise property response text timestamp types url user"
     },
     {
       "section": "api",
@@ -199,7 +199,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Reference to a discussion on a person",
-      "keywords": "$getdiscussion $getdiscussionurl api details discussion discussionref discussions function functions getdiscussion pass person promise reference response types url"
+      "keywords": "$getdiscussion $getdiscussionurl $personid api attached details discussion discussionref discussions function functions getdiscussion pass person promise property reference response types url"
     },
     {
       "section": "api",
@@ -343,7 +343,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Memory Persona (not a true persona; can only contain a name and a media artifact reference)",
-      "keywords": "$addmemoryartifactref $addname $getdisplayname $getgivenname $getmemoryartifactref $getnames $getpreferredname $getsurname add api array artifact display extracted function mar media memories memory memoryartifactref memorypersona names person persona preferred property reference surname true types url"
+      "keywords": "$addmemoryartifactref $addname $getdisplayname $getgivenname $getmemoryartifactref $getnames $getpreferredname $getsurname $memoryid add api array artifact attached display extracted function mar media memories memory memoryartifactref memorypersona names person persona preferred property reference surname true types url"
     },
     {
       "section": "api",
@@ -352,7 +352,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "A reference to a MemoryPersona and a",
-      "keywords": "$getmemory $getmemoryid $getmemoryurl api details function functions getmemory memories memory memorypersona memorypersonaref pass persona promise property reference resource resourceid response types url"
+      "keywords": "$getmemory $getmemoryid $getmemoryurl $personid api attached details function functions getmemory memories memory memorypersona memorypersonaref pass person persona promise property reference resource resourceid response types url"
     },
     {
       "section": "api",
@@ -460,7 +460,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Reference to a note on a person",
-      "keywords": "$getnote $getnoteurl api details function functions getchildandparentsnote getcouplenote getpersonnote note noteref notes pass person promise property reference response sources subject types url"
+      "keywords": "$childandparentsid $coupleid $getnote $getnoteurl $personid api attached child couple details function functions getchildandparentsnote getcouplenote getpersonnote note noteref notes parents pass person promise property reference relationship response sources subject types url"
     },
     {
       "section": "api",
@@ -838,7 +838,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Get the people, couples, and child-and-parents relationships referencing a source",
-      "keywords": "api child child-and-parents convenience couple couples currently description docs editable endpoint example familysearch full function functions getchildandparentssourcerefmap getcouplesourcerefmap getpersonsourcerefmap http https ids includes init map net options opts org params parent pass people person promise referencing relationship relationships response sdid source source-references-query sourceref sourcerefs sources types unused url"
+      "keywords": "api array child child-and-parents convenience couple couples currently description docs editable endpoint example familysearch full function functions getchildandparentssourcerefs getcouplesourcerefs getpersonsourcerefs http https includes init net options opts org params parent pass people person promise referencing relationship relationships response sdid source source-references-query sourceref sourcerefs sources types unused url"
     },
     {
       "section": "api",
@@ -856,7 +856,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Reference from a person or relationship to a source",
-      "keywords": "$getsourcedescription $getsourcedescriptionurl $gettagnames api array attribution description details function functions getsourcedescription http names object org pass person promise property reference relationship response source sourceref sources tag types url"
+      "keywords": "$childandparentsid $coupleid $getsourcedescription $getsourcedescriptionurl $gettagnames $personid api array attached attribution child couple description details function functions getsourcedescription http names object org parents pass person promise property reference relationship response source sourceref sources tag types url"
     },
     {
       "section": "api",
