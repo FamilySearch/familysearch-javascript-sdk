@@ -6186,6 +6186,10 @@ define('person',[
     return (!conclusion.attribution || !conclusion.attribution.changeMessage || conclusion.attribution.contributor);
   }
 
+  function spacePrefix(namePiece) {
+    return namePiece ? ' ' + namePiece : '';
+  }
+
   exports.Person.prototype = {
     constructor: Person,
     /**
@@ -6762,6 +6766,11 @@ define('person',[
       // send names that are new or updated
       helpers.forEach(this.names, function(name) {
         if (!name.id || name.$changed) {
+          // default full text if not set
+          if (!name.$getFullText()) {
+            name.$setFullText((name.$getPrefix() + spacePrefix(name.$getGivenName()) + spacePrefix(name.$getSurname()) +
+                               spacePrefix(name.$getSuffix())).trim());
+          }
           // set change message if none set
           if (changeMessage && attributionNeeded(name)) {
             name.$setChangeMessage(changeMessage);
@@ -7924,6 +7933,7 @@ define('FamilySearch',[
 
     // person
     Person: person.Person,
+    deletePerson: person.deletePerson,
     getPerson: person.getPerson,
     getMultiPerson: person.getMultiPerson,
     getPersonWithRelationships: person.getPersonWithRelationships,
