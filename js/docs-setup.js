@@ -10,7 +10,7 @@ NG_DOCS={
       "type": "overview",
       "moduleName": "index",
       "shortDescription": "Overview",
-      "keywords": "$http $q _low_level_commands_plumbing access actual add addition additional adds agent ajax amd angularjs anticipated api app_key approach array arrays asynchronous attribution auth_callback authentication automatically branch browser bugs build builds built call callback called calling calls case catch change changehistory changes childandparents code combine combined comment comments commonjs config console constructors consume contactname contributing convenience cookie copying correct corresponding couple created custom data defer deferred deferred_function dependencies described description_the-promise-api desired developers directory discussion discussionref discussions display docs documentation documented easier element elements endpoint endpoints environment error errors errorthrown example examples exist existing expectations expired exposed extended extracting fact facts fail fairly familysearch features file files format frag front fulfilled fully function functionality functions generate generated getaccesstoken getallresponseheaders getcurrentuser getgivenname getname getnameandid getperson getrequest getresponseheader getstatuscode getsurname getuser gh-pages git github global goal google great grunt handle handled handling header headers hello higher-level host html http http_function https illustrated implemented includes init javascript jquery js jsdoc jshint jshintrc json kernel keywords loader loaders located log low-level manage mapped match memories memory memoryartifactref memorypersona memorypersonaref method methods minified minify mock model module my_access_key nameforms names navigate navigating node note noteref notes object objects occur ojects option optional options org original overview parameter parentsandchildren parts pass passed pasting people performed person plumbing port potential prepending project promise promises properties prototype prototypes provided publish pull purpose push read redirect_goes_here redirects referring registered rejected relationships request requests required requires response responses rest retried return returned returning returns running sample sandbox saved script sdk search searchandmatch searchresult serve server set simple single source sourcedescription sourceref sources spouses src started starts status strict submitting success suppose surname targets test tests textstatus throttling token tool top transient travis-ci type types typically unit uri url user users var wanted watches website window work works wraps write written your_access_key_goes_here"
+      "keywords": "$getgivenname $getsurname $http $q _getnameandid _low_level_commands_plumbing access actual add addition additional adds agent ajax amd angularjs anticipated api app_key approach array arrays asynchronous attribution auth_callback authentication automatically avoid branch browser bugs build builds built call callback called calling calls case catch change changehistory changes childandparents code combine combined comment comments commonjs config conflicts console constructors consume contactname contributing convenience cookie copying correct corresponding couple created custom data defer deferred deferred_function dependencies described description_the-promise-api desired developers directory discussion discussionref discussions display docs documentation documented easier element elements endpoint endpoints environment error errors errorthrown example examples exist existing expectations expired exposed extended extracting fact facts fail fairly familysearch features file files format frag free front fulfilled fully function functionality functions generate generated getaccesstoken getallresponseheaders getcurrentuser getname getperson getrequest getresponseheader getstatuscode getuser gh-pages git github global goal google great grunt handle handled handling header headers hello higher-level host html http http_function https illustrated implemented includes init javascript jquery js jsdoc jshint jshintrc json kernel keywords loader loaders located log low-level manage mapped match memories memory memoryartifactref memorypersona memorypersonaref method methods minified minify mock model module my_access_key nameforms names navigate navigating node note noteref notes object objects occur ojects option optional options org original overview parameter parentsandchildren parts pass passed pasting people performed person plumbing port posting potential prepending project promise promises properties property prototype prototypes provided publish pull purpose push read recommend redirect_goes_here redirects referring registered rejected relationships removed request requests required requires response responses rest retried return returned returning returns running sample sandbox saved script sdk search searchandmatch searchresult serve server set simple single source sourcedescription sourceref sources spouses src started starts status strict submitting success suppose surname targets test tests textstatus throttling token tool top transient travis-ci type types typically unit uri url user users var wanted watches website window work works wraps write written your_access_key_goes_here"
     },
     {
       "section": "api",
@@ -83,6 +83,51 @@ NG_DOCS={
       "moduleName": "authentication",
       "shortDescription": "Invalidate the current access token",
       "keywords": "access api authentication current function functions invalidate invalidated promise resolved token"
+    },
+    {
+      "section": "api",
+      "id": "authorities",
+      "shortName": "authorities",
+      "type": "overview",
+      "moduleName": "authorities",
+      "shortDescription": "Functions related to authorities",
+      "keywords": "api authorities docs familysearch functions https org overview"
+    },
+    {
+      "section": "api",
+      "id": "authorities.functions:getDate",
+      "shortName": "getDate",
+      "type": "function",
+      "moduleName": "authorities",
+      "shortDescription": "Get the standardized date",
+      "keywords": "api authorities docs editable example familysearch function functions getdate http https init net options opts org pass promise response standardize standardized text types"
+    },
+    {
+      "section": "api",
+      "id": "authorities.functions:getPlace",
+      "shortName": "getPlace",
+      "type": "function",
+      "moduleName": "authorities",
+      "shortDescription": "Get the standardized place",
+      "keywords": "api array authorities docs editable example familysearch function functions getplaces http https init net options opts org pass place places promise response standardize standardized text types"
+    },
+    {
+      "section": "api",
+      "id": "authorities.types:constructor.Date",
+      "shortName": "constructor.Date",
+      "type": "function",
+      "moduleName": "authorities",
+      "shortDescription": "Standardized date",
+      "keywords": "$getformaldate ambiguous api astro authorities earliest formal format function gedcom-x latest normalized numeric original property range requested standardize standardized true types valid"
+    },
+    {
+      "section": "api",
+      "id": "authorities.types:constructor.Place",
+      "shortName": "constructor.Place",
+      "type": "function",
+      "moduleName": "authorities",
+      "shortDescription": "Standardized place",
+      "keywords": "$getnormalizedplace administrative api array authorities convenience culture division element first-order fully-normalized function idea iso minnesota names normalized official original place property requestedid return standardize standardized type types united us-mn"
     },
     {
       "section": "api",
@@ -200,6 +245,24 @@ NG_DOCS={
       "moduleName": "discussions",
       "shortDescription": "Reference to a discussion on a person",
       "keywords": "$getdiscussion $getdiscussionurl $personid api attached details discussion discussionref discussions function functions getdiscussion pass person promise property reference response types url"
+    },
+    {
+      "section": "api",
+      "id": "fact",
+      "shortName": "fact",
+      "type": "overview",
+      "moduleName": "fact",
+      "shortDescription": "Fact",
+      "keywords": "api fact overview"
+    },
+    {
+      "section": "api",
+      "id": "fact.types:constructor.Fact",
+      "shortName": "constructor.Fact",
+      "type": "function",
+      "moduleName": "fact",
+      "shortDescription": "Fact",
+      "keywords": "$getdate $getformaldate $getnormalizedplace $getnormalizedplaceid $getplace $setchangemessage $setdate $setformaldate $setnormalizedplace $setnormalizedplaceid $setplace $settype api attributes attribution authorities authority change changemessage event fact formal formaldate format function gedcomx http message normalized normalizedplace normalizedplaceid object optional org original place property sets standard string text type types update user written"
     },
     {
       "section": "api",
@@ -343,7 +406,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Memory Persona (not a true persona; can only contain a name and a media artifact reference)",
-      "keywords": "$addmemoryartifactref $addname $getdisplayname $getgivenname $getmemoryartifactref $getnames $getpreferredname $getsurname $memoryid add api array artifact attached display extracted function mar media memories memory memoryartifactref memorypersona names person persona preferred property reference surname true types url"
+      "keywords": "$addmemoryartifactref $addname $getdisplayname $getgivenname $getmemoryartifactref $getnames $getpreferredname $getsurname $memoryid add api array artifact attached display extracted function mar media memories memory memoryartifactref memorypersona names persona preferred property reference surname true types url"
     },
     {
       "section": "api",
@@ -353,6 +416,24 @@ NG_DOCS={
       "moduleName": "memories",
       "shortDescription": "A reference to a MemoryPersona and a",
       "keywords": "$getmemory $getmemoryid $getmemoryurl $personid api attached details function functions getmemory memories memory memorypersona memorypersonaref pass person persona promise property reference resource resourceid response types url"
+    },
+    {
+      "section": "api",
+      "id": "name",
+      "shortName": "name",
+      "type": "overview",
+      "moduleName": "name",
+      "shortDescription": "Name",
+      "keywords": "api overview"
+    },
+    {
+      "section": "api",
+      "id": "name.types:constructor.Name",
+      "shortName": "constructor.Name",
+      "type": "function",
+      "moduleName": "name",
+      "shortDescription": "Name",
+      "keywords": "$changed $getfulltext $getgivenname $getnameformscount $getnamepart $getprefix $getsuffix $getsurname $setchangemessage $setfulltext $setgivenname $setnamepart $setpreferred $setprefix $setsuffix $setsurname $settype __note__ api attributes attribution call change changemessage created defaults flag form forms full fulltext function givenname http initially ispreferred message number object optional org person preferred prefix property read read-only set sets string suffix surname text true type types update"
     },
     {
       "section": "api",
@@ -527,6 +608,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "person.functions:deletePerson",
+      "shortName": "deletePerson",
+      "type": "function",
+      "moduleName": "person",
+      "shortDescription": "Delete the specified person",
+      "keywords": "api changemessage delete deletion docs editable example familysearch full function functions http https init net options opts org pass person pid promise reason url"
+    },
+    {
+      "section": "api",
       "id": "person.functions:getMultiPerson",
       "shortName": "getMultiPerson",
       "type": "function",
@@ -572,30 +662,12 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "person.types:constructor.Fact",
-      "shortName": "constructor.Fact",
-      "type": "function",
-      "moduleName": "person",
-      "shortDescription": "Fact",
-      "keywords": "$getdate $getformaldate $getplace api attribution event fact form function http object org original person place property standard type types"
-    },
-    {
-      "section": "api",
-      "id": "person.types:constructor.Name",
-      "shortName": "constructor.Name",
-      "type": "function",
-      "moduleName": "person",
-      "shortDescription": "Name",
-      "keywords": "$getfulltext $getgivenname $getnameformscount $getsurname api attribution form forms full function http number object org person preferred property read surname text true type types"
-    },
-    {
-      "section": "api",
       "id": "person.types:constructor.Person",
       "shortName": "constructor.Person",
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Person",
-      "keywords": "$addmemorypersonaref $addname $getbirthdate $getbirthplace $getchanges $getdeathdate $getdeathplace $getdiscussionrefs $getdisplayname $getfacts $getgender $getgivenname $getlifespan $getmemorypersonarefs $getnames $getnoterefs $getpersistentidentifier $getpreferredname $getrelationshipstospouses $getsourcerefs $getsurname add api array arrays attributes attribution birth birthdate birthplace change changehistory changemessage changes conclusion confidence count death deathdate deathplace discussions display entries fact facts false female function functions gender getmemorypersonarefs getpersonchanges getpersondiscussionrefs getpersonnoterefs getpersonsourcerefs getrelationshipstospouses http identifers identifier includes init lifespan living male map memories memory memorypersonaref message names notes number object options opts params pass persistent person persona persons place preferred promise property reference relationships response return set sources surname true type types url values year"
+      "keywords": "$addfact $addmemorypersonaref $addname $delete $deletefact $deletename $getbirth $getbirthdate $getbirthplace $getburial $getburialdate $getburialplace $getchanges $getchristening $getchristeningdate $getchristeningplace $getdeath $getdeathdate $getdeathplace $getdiscussionrefs $getdisplaybirthdate $getdisplaybirthplace $getdisplaydeathdate $getdisplaydeathplace $getdisplaygender $getdisplaylifespan $getdisplayname $getfact $getfacts $getgivenname $getmemorypersonarefs $getnames $getnoterefs $getpersistentidentifier $getpreferredname $getrelationshipstospouses $getsourcerefs $getsurname $save $setgender add adds api array arrays attributes attribution birth birthdate birthplace burial change changehistory changemessage changes christening christning conclusion count create death deathdate deathplace default delete deletes discussions display docs editable entries example existing fact facts false familysearch female fulfilled function functions gender getmemorypersonarefs getpersonchanges getpersondiscussionrefs getpersonnoterefs getpersonsourcerefs getrelationshipstospouses http https identifers identifier includes init lifespan living male map memories memory memorypersonaref message methods names net note notes number object options opts org params pass passed persistent person persona persons place preferred promise property read reference refresh relationships remove removes response return saves set sources surname true type types update updated updates updating url values year"
     },
     {
       "section": "api",
@@ -883,7 +955,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "spouses",
       "shortDescription": "Couple relationship",
-      "keywords": "$getchanges $getfacts $gethusband $gethusbandid $gethusbandurl $getmarriagefact $getnoterefs $getsourcerefs $getwife $getwifeid $getwifeurl api array couple exports fact facts function functions getcouplechanges getcouplenoterefs getcouplesourcerefs getperson http husband marriage multiple notes org person promise property relationship response sources spouses type types url wife"
+      "keywords": "$getchanges $getfacts $gethusband $gethusbandid $gethusbandurl $getmarriagefact $getnoterefs $getsourcerefs $getwife $getwifeid $getwifeurl api array couple exports fact facts function functions getcouplechanges getcouplenoterefs getcouplesourcerefs getperson http husband marriage multiple notes org promise property relationship response sources spouses type types url wife"
     },
     {
       "section": "api",

@@ -70,6 +70,11 @@ define('globals',{
     'staging'   : 'https://identbeta.familysearch.org/cis-web/oauth2/v3',
     'production': 'https://ident.familysearch.org/cis-web/oauth2/v3'
   },
+  authoritiesServer: {
+    'sandbox'   : 'https://sandbox.familysearch.org',
+    'staging'   : 'https://stage.familysearch.org',
+    'production': 'https://api.familysearch.org'
+  },
   discoveryUrl: '/.well-known/app-meta'
 });
 
@@ -121,6 +126,15 @@ define('helpers',[
   exports.isNumber = function(value) {
     /*jshint eqeqeq:false */
     return Object.prototype.toString.call(value) == '[object Number]';
+  };
+
+  /**
+   * borrowed from http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric
+   * @param {*} value to test
+   * @returns {boolean}
+   */
+  exports.isNumeric = function(value) {
+    return !isNaN(parseFloat(value)) && isFinite(value);
   };
 
   /**
@@ -208,18 +222,29 @@ define('helpers',[
     return keys;
   };
 
+  // return true if all corresponding object properties match
+  function templateMatches(template, obj) {
+    for (var key in template) {
+      if (template.hasOwnProperty(key) && obj[key] !== template[key]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   /**
    * Simplified version of underscore's filter
    * @param {Array|Object} arr Array or object to iterate over
-   * @param {function(elm)} fn Function returns true to keep element
+   * @param {Object|function(elm)} objOrFn if object, return matching objects; otherwise return objects where function(obj) returns true
    * @param {Object=} context Object for this
    * @returns {Array} Filtered array
    */
-  exports.filter = function(arr, fn, context) {
+  exports.filter = function(arr, objOrFn, context) {
     var result = [];
-    forEach(arr, function(e) {
-      if (fn.call(context, e)) {
-        result.push(e);
+    var isFn = exports.isFunction(objOrFn);
+    forEach(arr, function(elm) {
+      if (isFn ? objOrFn.call(context, elm) : templateMatches(objOrFn, elm)) {
+        result.push(elm);
       }
     });
     return result;
@@ -263,6 +288,24 @@ define('helpers',[
   };
 
   /**
+   * simplified version of underscore's indexOf
+   * @param {Array} arr array to search
+   * @param {*} item item to find
+   * @returns {number} position of item in array or -1 if not found
+   */
+  exports.indexOf = function(arr, item) {
+    if (Array.prototype.indexOf === arr.indexOf) {
+      return arr.indexOf(item);
+    }
+    for (var i = 0, len = arr.length; i < len; i++) {
+      if (arr[i] === item) {
+        return i;
+      }
+    }
+    return -1;
+  };
+
+  /**
    * simplified version of underscore's uniq
    * @param {Array} arr Array to extract unique elements from
    * @returns {Array} Contains only one instance of each element
@@ -291,20 +334,7 @@ define('helpers',[
     if (arr) {
       for (var i = 0, len = arr.length; i < len; i++) {
         var elm = arr[i];
-        var matches;
-        if (isFn) {
-          matches = objOrFn.call(context, elm);
-        }
-        else {
-          matches = true;
-          for (var key in objOrFn) {
-            if (objOrFn.hasOwnProperty(key) && elm[key] !== objOrFn[key]) {
-              matches = false;
-              break;
-            }
-          }
-        }
-        if (matches) {
+        if (isFn ? objOrFn.call(context, elm) : templateMatches(objOrFn, elm)) {
           result = elm;
           break;
         }
@@ -389,11 +419,23 @@ define('helpers',[
   };
 
   /**
+   * remove all properties of an object
+   * @param {Object} obj object to delete properties from
+   */
+  exports.deleteProperties = function(obj) {
+    for (var attr in obj) {
+      if (obj.hasOwnProperty(attr)) {
+        delete obj[attr];
+      }
+    }
+  };
+
+  /**
    * clone with a filter function to limit which fields are cloned
    * borowed from http://stackoverflow.com/questions/728360/most-elegant-way-to-clone-a-javascript-object
    * doesn't handle cyclic objects, functions, may not handle regex's
    * @param {Object} obj Object to clone
-   * @param {Function} filter Function(key) returns true to clone the field
+   * @param {Function=} filter Function(key) returns true to clone the field; all fields are cloned if omitted
    * @returns {Object} cloned object
    */
   exports.clonePartial = function(obj, filter) {
@@ -414,7 +456,7 @@ define('helpers',[
     if (obj instanceof Array) {
       copy = [];
       for (var i = 0, len = obj.length; i < len; i++) {
-        if (filter(i)) {
+        if (!filter || filter(i)) {
           copy.push(exports.clonePartial(obj[i], filter));
         }
       }
@@ -426,7 +468,7 @@ define('helpers',[
       // set the constructor on the cloned object
       copy = Object.create(Object.getPrototypeOf(obj));
       for (var attr in obj) {
-        if (obj.hasOwnProperty(attr) && filter(attr)) {
+        if (obj.hasOwnProperty(attr) && (!filter || filter(attr))) {
           copy[attr] = exports.clonePartial(obj[attr], filter);
         }
       }
@@ -620,6 +662,16 @@ define('helpers',[
   };
 
   /**
+   * Response mapper that returns the X-ENTITY-ID header
+   * @param data ignored
+   * @param promise http promise
+   * @returns {string} the X-ENTITY-ID response header
+   */
+  exports.getResponseEntityId = function(data, promise) {
+    return promise.getResponseHeader('X-ENTITY-ID');
+  };
+
+  /**
    * Response mapper that returns the location header
    * @param data ignored
    * @param promise http promise
@@ -680,6 +732,25 @@ define('helpers',[
   exports.getAPIServerUrl = function(path) {
     return getAbsoluteUrl(globals.apiServer[globals.environment], path);
   };
+
+  /**
+   * Return true if this url is for the OAuth server
+   * @param url
+   * @returns {boolean}
+   */
+  exports.isAuthoritiesServerUrl = function(url) {
+    return url.indexOf('/authorities/v1/') === 0;
+  };
+
+  /**
+   * Prepend authorities server to path if path doesn't start with https?://
+   * @param path
+   * @returns {string} server + path
+   */
+  exports.getAuthoritiesServerUrl = function(path) {
+    return getAbsoluteUrl(globals.authoritiesServer[globals.environment], path);
+  };
+
 
   /**
    * Create a URL-encoded query string from an object
@@ -1456,8 +1527,11 @@ define('plumbing',[
     accessTokenPromise.then(function() {
       // append the access token as a query parameter to avoid cors pre-flight
       // this is detrimental to browser caching across sessions, which seems less bad than cors pre-flight requests
-      if (globals.accessToken && absoluteUrl.indexOf('access_token=') === -1) {
-        absoluteUrl = helpers.appendQueryParameters(absoluteUrl, {'access_token': globals.accessToken});
+      var accessTokenName = helpers.isAuthoritiesServerUrl(absoluteUrl) ? 'sessionId' : 'access_token';
+      if (globals.accessToken && absoluteUrl.indexOf(accessTokenName+'=') === -1) {
+        var accessTokenParam = {};
+        accessTokenParam[accessTokenName] = globals.accessToken;
+        absoluteUrl = helpers.appendQueryParameters(absoluteUrl, accessTokenParam);
       }
 
       // default retries
@@ -1898,6 +1972,322 @@ define('authentication',[
     }
     return d.promise;
   }
+
+  return exports;
+});
+
+define('authorities',[
+  'helpers',
+  'plumbing'
+], function(helpers, plumbing) {
+  /**
+   * @ngdoc overview
+   * @name authorities
+   * @description
+   * Functions related to authorities
+   *
+   * {@link https://familysearch.org/developers/docs/guides/authorities FamilySearch API Docs}
+   */
+
+  var maybe = helpers.maybe; // shorthand
+
+  var exports = {};
+
+  /**
+   * @ngdoc function
+   * @name authorities.types:constructor.Date
+   * @description
+   *
+   * Standardized date
+   */
+  var Date = exports.Date = function() {
+
+  };
+
+  // construct formal date from [about|after|before] [[day] month] year [BC]
+  // export for unit testing
+  var constructFormalDate = exports.constructFormalDate = function(fields, ignoreModifiers) {
+    var prefix = '', suffix = '', day = '', month = '', year, sign = '+';
+    var pos = 0;
+    // handle modifier
+    if (fields[pos] === 'about') {
+      if (!ignoreModifiers) {
+        prefix = 'A';
+      }
+      pos++;
+    }
+    else if (fields[pos] === 'before') {
+      if (!ignoreModifiers) {
+        prefix = 'A/';
+      }
+      pos++;
+    }
+    else if (fields[pos] === 'after') {
+      if (!ignoreModifiers) {
+        prefix = 'A';
+        suffix = '/';
+      }
+      pos++;
+    }
+    // handle day (no month names are <= 2 characters)
+    if (fields[pos].length <= 2) {
+      day = (fields[pos].length === 1 ? '0' : '') + fields[pos];
+      pos++;
+    }
+    // handle month
+    var monthNum = ['january','february','march','april','may','june','july','august','september','october','november','december']
+      .indexOf(fields[pos]) + 1;
+    if (monthNum > 0) {
+      month = (monthNum < 10 ? '0' : '') + monthNum.toString();
+      pos++;
+    }
+    // handle year (required)
+    year = fields[pos];
+    pos++;
+    // handle bc
+    if (pos < fields.length && fields[pos] === 'bc') {
+      sign = '-';
+    }
+    // construct formal date
+    return prefix+sign+year+(month ? '-' : '')+month+(day ? '-' : '')+day+suffix;
+  };
+
+  exports.Date.prototype = {
+    constructor: Date,
+
+    /**
+     * @ngdoc property
+     * @name authorities.types:constructor.Date#normalized
+     * @propertyOf authorities.types:constructor.Date
+     * @return {string} normalized date
+     */
+
+    /**
+     * @ngdoc property
+     * @name authorities.types:constructor.Date#earliest
+     * @propertyOf authorities.types:constructor.Date
+     * @return {Object} information (normalized, numeric, astro) about earliest date in a range
+     */
+
+    /**
+     * @ngdoc property
+     * @name authorities.types:constructor.Date#latest
+     * @propertyOf authorities.types:constructor.Date
+     * @return {Object} information (normalized, numeric, astro) about latest date in a range
+     */
+
+    /**
+     * @ngdoc property
+     * @name authorities.types:constructor.Date#requested
+     * @propertyOf authorities.types:constructor.Date
+     * @return {string} requested date to standardize
+     */
+
+    /**
+     * @ngdoc property
+     * @name authorities.types:constructor.Date#original
+     * @propertyOf authorities.types:constructor.Date
+     * @return {string} original date to standardize
+     */
+
+    /**
+     * @ngdoc property
+     * @name authorities.types:constructor.Date#ambiguous
+     * @propertyOf authorities.types:constructor.Date
+     * @return {boolean} true if ambiguous
+     */
+
+    /**
+     * @ngdoc property
+     * @name authorities.types:constructor.Date#valid
+     * @propertyOf authorities.types:constructor.Date
+     * @return {boolean} true if valid
+     */
+
+    /**
+     * @ngdoc function
+     * @name authorities.types:constructor.Date#$getFormalDate
+     * @methodOf authorities.types:constructor.Date
+     * @function
+     * @return {string} GEDCOM-X formal date format
+     */
+    $getFormalDate: function() {
+      // as far as I can tell, normalized date appears in one of three formats:
+      // [about|after|before] [[day] month] year [BC]
+      // from [[day] month] year [BC] to [[day] month] year [BC]
+      // [[day] month] year [BC] (/ [[day] month] year [BC])+
+      var formalDate = '';
+      if (this.normalized) {
+        // split into fields
+        var fields = this.normalized.trim().toLowerCase().split(' ');
+        // GEDCOM-X formal date doesn't allow the third format, so keep just the first date
+        var pos = fields.indexOf('/');
+        if (pos >= 0) {
+          fields = fields.slice(0, pos);
+        }
+        // handle from <date> to <date>
+        if (fields[0] === 'from') {
+          pos = fields.indexOf('to');
+          // date normalization has a bug where "before 20 Mar 2006 - after 16 dec 2007"
+          // is normalized to "from after 20 March 2006 to 16 December 2007"
+          // to get around this bug, ignore date modifiers when parsing date-range dates so we return simply "+2006-03-20/+2007-12-16"
+          formalDate = constructFormalDate(fields.slice(1,pos), true)+'/'+constructFormalDate(fields.slice(pos+1), true);
+        }
+        else {
+          // handle <date>
+          formalDate = constructFormalDate(fields, false);
+        }
+      }
+      return formalDate;
+    }
+  };
+
+  /**
+   * @ngdoc function
+   * @name authorities.types:constructor.Place
+   * @description
+   *
+   * Standardized place
+   */
+  var Place = exports.Place = function() {
+
+  };
+
+  exports.Place.prototype = {
+    constructor: Place,
+
+    /**
+     * @ngdoc property
+     * @name authorities.types:constructor.Place#official
+     * @propertyOf authorities.types:constructor.Place
+     * @return {string} normalized place name; e.g., Minnesota
+     */
+
+    /**
+     * @ngdoc property
+     * @name authorities.types:constructor.Place#normalized
+     * @propertyOf authorities.types:constructor.Place
+     * @return {string[]} array of fully-normalized place names; e.g., ["Minnesota, United States"]
+     */
+
+    /**
+     * @ngdoc property
+     * @name authorities.types:constructor.Place#original
+     * @propertyOf authorities.types:constructor.Place
+     * @return {string} original place to standardize
+     */
+
+    /**
+     * @ngdoc property
+     * @name authorities.types:constructor.Place#id
+     * @propertyOf authorities.types:constructor.Place
+     * @return {string} place id
+     */
+
+    /**
+     * @ngdoc property
+     * @name authorities.types:constructor.Place#requestedId
+     * @propertyOf authorities.types:constructor.Place
+     * @return {string} no idea
+     */
+
+    /**
+     * @ngdoc property
+     * @name authorities.types:constructor.Place#type
+     * @propertyOf authorities.types:constructor.Place
+     * @return {string} type of the place; e.g., First-Order Administrative Division
+     */
+
+    /**
+     * @ngdoc property
+     * @name authorities.types:constructor.Place#culture
+     * @propertyOf authorities.types:constructor.Place
+     * @return {string} id of the culture
+     */
+
+    /**
+     * @ngdoc property
+     * @name authorities.types:constructor.Place#iso
+     * @propertyOf authorities.types:constructor.Place
+     * @return {string} ISO place id; e.g., US-MN
+     */
+
+    /**
+     * @ngdoc function
+     * @name authorities.types:constructor.Date#$getNormalizedPlace
+     * @methodOf authorities.types:constructor.Place
+     * @function
+     * @return {string} convenience function to return the first element of the normalized array
+     */
+    $getNormalizedPlace: function() {
+      return maybe(this.normalized)[0];
+    }
+  };
+
+  /**
+   * @ngdoc function
+   * @name authorities.functions:getDate
+   * @function
+   *
+   * @description
+   * Get the standardized date
+   *
+   * - `getDate()` - get the {@link authorities.types:constructor.Date Date} from the response
+   *
+   * {@link https://familysearch.org/developers/docs/guides/authorities/date-authority FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/4ab5M/ editable example}
+   *
+   * @param {String} date text to standardize
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getDate = function(date, opts) {
+    var params = {
+      date: date,
+      dataFormat: 'application/json'
+    };
+    return plumbing.get(helpers.getAuthoritiesServerUrl('/authorities/v1/date'), params, {'Accept': 'application/json'}, opts,
+      helpers.compose(
+        helpers.objectExtender({getDate: function() { return maybe(maybe(this.dates).date)[0]; }}),
+        helpers.constructorSetter(Date, 'date', function(response) {
+          return response.dates;
+        })
+      ));
+  };
+
+  /**
+   * @ngdoc function
+   * @name authorities.functions:getPlace
+   * @function
+   *
+   * @description
+   * Get the standardized place
+   *
+   * - `getPlaces()` - get the array of {@link authorities.types:constructor.Place Places} from the response
+   *
+   * {@link https://familysearch.org/developers/docs/guides/authorities/place-authority FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/xrsAQ/ editable example}
+   *
+   * @param {String} place text to standardize
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getPlace = function(place, opts) {
+    var params = {
+      place: place,
+      view: 'simple',
+      dataFormat: 'application/json'
+    };
+    return plumbing.get(helpers.getAuthoritiesServerUrl('/authorities/v1/place'), params, {'Accept': 'application/json'}, opts,
+      helpers.compose(
+        helpers.objectExtender({getPlaces: function() { return maybe(this.places).place; }}),
+        helpers.constructorSetter(Place, 'place', function(response) {
+          return response.places;
+        })
+      ));
+  };
 
   return exports;
 });
@@ -2754,20 +3144,16 @@ define('attribution',[
    * @description
    *
    * Attribution
+   * @param {String=} changeMessage change message
    */
-  var Attribution = exports.Attribution = function() {
-
+  var Attribution = exports.Attribution = function(changeMessage) {
+    if (changeMessage) {
+      this.changeMessage = changeMessage;
+    }
   };
 
   exports.Attribution.prototype = {
     constructor: Attribution,
-    /**
-     * @ngdoc property
-     * @name attribution.types:constructor.Attribution#id
-     * @propertyOf attribution.types:constructor.Attribution
-     * @return {String} Id of the attribution
-     */
-
     /**
      * @ngdoc property
      * @name attribution.types:constructor.Attribution#modified
@@ -2813,13 +3199,644 @@ define('attribution',[
   return exports;
 });
 
+define('fact',[
+  'attribution',
+  'authorities',
+  'helpers'
+], function(attribution, authorities, helpers) {
+  /**
+   * @ngdoc overview
+   * @name fact
+   * @description
+   * Fact
+   */
+
+  var maybe = helpers.maybe; // shorthand
+
+  var exports = {};
+
+  /**********************************/
+  /**
+   * @ngdoc function
+   * @name fact.types:constructor.Fact
+   * @description
+   *
+   * Fact
+   * @param {Object=} value with optional attributes
+   * {type, date, formalDate, place, normalizedPlace, normalizedPlaceId, changeMessage}
+   **********************************/
+
+  var Fact = exports.Fact = function(value) {
+    if (value) {
+      if (value.type) {
+        //noinspection JSUnresolvedFunction
+        this.$setType(value.type);
+      }
+      if (value.date) {
+        //noinspection JSUnresolvedFunction
+        this.$setDate(value.date);
+      }
+      if (value.formalDate) {
+        //noinspection JSUnresolvedFunction
+        this.$setFormalDate(value.formalDate);
+      }
+      if (value.place) {
+        //noinspection JSUnresolvedFunction
+        this.$setPlace(value.place);
+      }
+      if (value.normalizedPlace) {
+        //noinspection JSUnresolvedFunction
+        this.$setNormalizedPlace(value.normalizedPlace);
+      }
+      if (value.normalizedPlaceId) {
+        //noinspection JSUnresolvedFunction
+        this.$setNormalizedPlaceId(value.normalizedPlaceId);
+      }
+      if (value.changeMessage) {
+        //noinspection JSUnresolvedFunction
+        this.$setChangeMessage(value.changeMessage);
+      }
+    }
+  };
+
+  exports.Fact.prototype = {
+    constructor: Fact,
+    /**
+     * @ngdoc property
+     * @name fact.types:constructor.Fact#id
+     * @propertyOf fact.types:constructor.Fact
+     * @return {String} Id of the name
+     */
+
+    /**
+     * @ngdoc property
+     * @name fact.types:constructor.Fact#type
+     * @propertyOf fact.types:constructor.Fact
+     * @return {String} http://gedcomx.org/Birth, etc.
+     */
+
+    /**
+     * @ngdoc property
+     * @name fact.types:constructor.Fact#attribution
+     * @propertyOf fact.types:constructor.Fact
+     * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
+     */
+
+    /**
+     * @ngdoc function
+     * @name fact.types:constructor.Fact#$getDate
+     * @methodOf fact.types:constructor.Fact
+     * @function
+     * @return {String} original date
+     */
+    $getDate: function() { return maybe(this.date).original; },
+
+    /**
+     * @ngdoc function
+     * @name fact.types:constructor.Fact#$getFormalDate
+     * @methodOf fact.types:constructor.Fact
+     * @function
+     * @return {String} date in gedcomx format; e.g., +1836-04-13
+     */
+    $getFormalDate: function() { return maybe(this.date).formal; },
+
+    /**
+     * @ngdoc function
+     * @name fact.types:constructor.Fact#$getPlace
+     * @methodOf fact.types:constructor.Fact
+     * @function
+     * @return {String} event place
+     */
+    $getPlace: function() { return maybe(this.place).original; },
+
+    /**
+     * @ngdoc function
+     * @name fact.types:constructor.Fact#$getNormalizedPlace
+     * @methodOf fact.types:constructor.Fact
+     * @function
+     * @return {String} normalized place text
+     */
+    $getNormalizedPlace: function() { return maybe(maybe(this.place).normalized).value; },
+
+    /**
+     * @ngdoc function
+     * @name fact.types:constructor.Fact#$getNormalizedPlaceId
+     * @methodOf fact.types:constructor.Fact
+     * @function
+     * @return {String} normalized place id
+     */
+    $getNormalizedPlaceId: function() {
+      var desc = maybe(this.place).description;
+      return (desc && desc.charAt(0) === '#') ? desc.substr(1) : '';
+    },
+
+    /**
+     * @ngdoc function
+     * @name fact.types:constructor.Fact#$setType
+     * @methodOf fact.types:constructor.Fact
+     * @function
+     * @description sets the fact type
+     * @param {String} type e.g., http://gedcomx.org/Birth
+     * @return {Fact} this fact
+     */
+    $setType: function(type) {
+      this.$changed = true;
+      this.type = type;
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name fact.types:constructor.Fact#$setDate
+     * @methodOf fact.types:constructor.Fact
+     * @function
+     * @description sets the fact date
+     * @param {String|Object|Date} date either a date string as written by the user, or {date, formalDate},
+     * or a {@link authorities.types:constructor.Date Date} object
+     * @return {Fact} this fact
+     */
+    $setDate: function(date) {
+      this.$changed = true;
+      if (!this.date) {
+        this.date = {};
+      }
+      if (helpers.isString(date)) {
+        this.date.original = date;
+      }
+      else if (date instanceof authorities.Date) {
+        this.date.original = date.original;
+        //noinspection JSUnresolvedFunction
+        this.$setFormalDate(date.$getFormalDate());
+      }
+      else if (helpers.isObject(date)) {
+        this.date.original = date.date;
+        this.$setFormalDate(date.formalDate);
+      }
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name fact.types:constructor.Fact#$setFormalDate
+     * @methodOf fact.types:constructor.Fact
+     * @function
+     * @description sets the formal date
+     * @param {String} formalDate from the date authority; e.g., +1836-04-06
+     * @return {Fact} this fact
+     */
+    $setFormalDate: function(formalDate) {
+      this.$changed = true;
+      if (!this.date) {
+        this.date = {};
+      }
+      this.date.formal = formalDate;
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name fact.types:constructor.Fact#$setPlace
+     * @methodOf fact.types:constructor.Fact
+     * @function
+     * @description sets the place
+     * @param {String|Object|Date} place either a place string as written by the user, or {place, normalizedPlace, normalizedPlaceId},
+     * or a {@link authorities.types:constructor.Place Place} object
+     * @return {Fact} this fact
+     */
+    $setPlace: function(place) {
+      this.$changed = true;
+      if (!this.place) {
+        this.place = {};
+      }
+      if (helpers.isString(place)) {
+        this.place.original = place;
+      }
+      else if (place instanceof authorities.Place) {
+        this.place.original = place.original;
+        //noinspection JSUnresolvedFunction
+        this.$setNormalizedPlace(place.$getNormalizedPlace());
+        this.$setNormalizedPlaceId(place.id);
+      }
+      else if (helpers.isObject(place)) {
+        this.place.original = place.place;
+        this.$setNormalizedPlace(place.normalizedPlace);
+        this.$setNormalizedPlaceId(place.normalizedPlaceId);
+      }
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name fact.types:constructor.Fact#$setNormalizedPlace
+     * @methodOf fact.types:constructor.Fact
+     * @function
+     * @description sets the standard place text
+     * @param {String} normalizedPlace from the place authority
+     * @return {Fact} this fact
+     */
+    $setNormalizedPlace: function(normalizedPlace) {
+      this.$changed = true;
+      if (!this.place) {
+        this.place = {};
+      }
+      this.place.normalized = { value: normalizedPlace };
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name fact.types:constructor.Fact#$setNormalizedPlaceId
+     * @methodOf fact.types:constructor.Fact
+     * @function
+     * @description sets the standard place id
+     * @param {String} normalizedPlaceId from the place authority
+     * @return {Fact} this fact
+     */
+    $setNormalizedPlaceId: function(normalizedPlaceId) {
+      this.$changed = true;
+      this.place.description = '#'+normalizedPlaceId;
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name fact.types:constructor.Fact#$setChangeMessage
+     * @methodOf fact.types:constructor.Fact
+     * @function
+     * @description sets the changeMessage used to update the fact
+     * @param {String} changeMessage change message
+     * @return {Fact} this fact
+     */
+    $setChangeMessage: function(changeMessage) {
+      this.attribution = new attribution.Attribution(changeMessage);
+      //noinspection JSValidateTypes
+      return this;
+    }
+  };
+
+  return exports;
+});
+
+define('name',[
+  'attribution',
+  'helpers'
+], function(attribution, helpers) {
+  /**
+   * @ngdoc overview
+   * @name name
+   * @description
+   * Name
+   */
+
+  var maybe = helpers.maybe; // shorthand
+
+  var exports = {};
+
+  /**********************************/
+  /**
+   * @ngdoc function
+   * @name name.types:constructor.Name
+   * @description
+   *
+   * Name
+   *
+   * @param {Object|String=} value either a fullText string or an object with optional attributes
+   * {type, givenName, surname, prefix, suffix, fullText, preferred, changeMessage}
+   **********************************/
+
+  var Name = exports.Name = function(value) {
+    if (value) {
+      if (helpers.isString(value)) {
+        //noinspection JSUnresolvedFunction
+        this.$setFullText(value);
+      }
+      else {
+        if (value.type) {
+          //noinspection JSUnresolvedFunction
+          this.$setType(value.type);
+        }
+        if (value.givenName) {
+          //noinspection JSUnresolvedFunction
+          this.$setGivenName(value.givenName);
+        }
+        if (value.surname) {
+          //noinspection JSUnresolvedFunction
+          this.$setSurname(value.surname);
+        }
+        if (value.prefix) {
+          //noinspection JSUnresolvedFunction
+          this.$setPrefix(value.prefix);
+        }
+        if (value.suffix) {
+          //noinspection JSUnresolvedFunction
+          this.$setSuffix(value.suffix);
+        }
+        if (value.fullText) {
+          //noinspection JSUnresolvedFunction
+          this.$setFullText(value.fullText);
+        }
+        //noinspection JSUnresolvedFunction
+        this.$setPreferred(!!value.preferred);
+        if (value.changeMessage) {
+          //noinspection JSUnresolvedFunction
+          this.$setChangeMessage(value.changeMessage);
+        }
+      }
+    }
+  };
+
+  // return the i'th name form; add it if it doesn't exist
+  function ensureNameForm(name, i) {
+    var pos = i || 0; // just to be clear
+    if (!helpers.isArray(name.nameForms)) {
+      name.nameForms = [];
+    }
+    while (pos >= name.nameForms.length) {
+      name.nameForms.push({});
+    }
+    return name.nameForms[pos];
+  }
+
+  exports.Name.prototype = {
+    constructor: Name,
+    /**
+     * @ngdoc property
+     * @name name.types:constructor.Name#id
+     * @propertyOf name.types:constructor.Name
+     * @return {String} Id of the name
+     */
+
+    /**
+     * @ngdoc property
+     * @name name.types:constructor.Name#type
+     * @propertyOf name.types:constructor.Name
+     * @return {String} http://gedcomx.org/BirthName, etc.
+     */
+
+    /**
+     * @ngdoc property
+     * @name name.types:constructor.Name#preferred
+     * @propertyOf name.types:constructor.Name
+     * @return {Boolean} true if this name is preferred
+     */
+
+    /**
+     * @ngdoc property
+     * @name name.types:constructor.Name#attribution
+     * @propertyOf name.types:constructor.Name
+     * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
+     */
+
+    /**
+     * @ngdoc function
+     * @name name.types:constructor.Name#$getNameFormsCount
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @return {Number} get the number of name forms
+     */
+    $getNameFormsCount: function() { return this.nameForms ? this.nameForms.length : 0; },
+
+    /**
+     * @ngdoc function
+     * @name name.types:constructor.Name#$getFullText
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @param {Number=} i name form to read; defaults to 0
+     * @return {String} get the full text of the `i`'th name form
+     */
+    $getFullText: function(i) { return maybe(maybe(this.nameForms)[i || 0]).fullText; },
+
+    /**
+     * @ngdoc function
+     * @name name.types:constructor.Name#$getNamePart
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @description you can call $getGivenName, $getSurname, $getPrefix, or $getSuffix instead of this function
+     * @param {String} type http://gedcomx.org/Given or http://gedcomx.org/Surname
+     * @param {Number=} i name form to read; defaults to 0
+     * @return {String} get the specified part of the `i`'th name form
+     */
+    $getNamePart: function(type, i) {
+      return maybe(helpers.find(maybe(maybe(this.nameForms)[i || 0]).parts, {type: type})).value;
+    },
+
+    /**
+     * @ngdoc function
+     * @name name.types:constructor.Name#$getGivenName
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @param {Number=} i name form to read; defaults to 0
+     * @return {String} get the given part of the `i`'th name form
+     */
+    $getGivenName: function(i) {
+      return this.$getNamePart('http://gedcomx.org/Given', i);
+    },
+
+    /**
+     * @ngdoc function
+     * @name name.types:constructor.Name#$getSurname
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @param {Number=} i name form to read; defaults to 0
+     * @return {String} get the surname part of the `i`'th name form
+     */
+    $getSurname: function(i) {
+      return this.$getNamePart('http://gedcomx.org/Surname', i);
+    },
+
+    /**
+     * @ngdoc function
+     * @name name.types:constructor.Name#$getPrefix
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @param {Number=} i name form to read; defaults to 0
+     * @return {String} get the prefix part of the `i`'th name form
+     */
+    $getPrefix: function(i) {
+      return this.$getNamePart('http://gedcomx.org/Prefix', i);
+    },
+
+    /**
+     * @ngdoc function
+     * @name name.types:constructor.Name#$getSuffix
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @param {Number=} i name form to read; defaults to 0
+     * @return {String} get the suffix part of the `i`'th name form
+     */
+    $getSuffix: function(i) {
+      return this.$getNamePart('http://gedcomx.org/Suffix', i);
+    },
+
+    /**
+     * @ngdoc function
+     * @name name.types:constructor.Name#$setType
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @description sets the $changed flag as well as the value
+     * @param {String} type e.g., http://gedcomx.org/BirthName
+     * @return {Name} this name
+     */
+    $setType: function(type) {
+      this.$changed = true;
+      this.type = type;
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name name.types:constructor.Name#$setPreferred
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @description sets the $changed flag as well as the value
+     *
+     * __NOTE__: the preferred name flag can be set only when the person is initially created; after that it is read-only
+     * @param {boolean} isPreferred true if preferred
+     * @return {Name} this name
+     */
+    $setPreferred: function(isPreferred) {
+      this.$changed = true;
+      this.preferred = isPreferred;
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name name.types:constructor.Name#$setFullText
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @description sets the $changed flag as well as the value
+     * @param {String} fullText value
+     * @param {Number=} i name form to set; defaults to 0
+     * @return {Name} this name
+     */
+    $setFullText: function(fullText, i) {
+      this.$changed = true;
+      var nameForm = ensureNameForm(this, i);
+      nameForm.fullText = fullText;
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name name.types:constructor.Name#$setNamePart
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @description sets the $changed flag as well as the value;
+     * you can call $setGivenName, $setSurname, $setPrefix, and $setSuffix instead of this function
+     * @param {String} name value
+     * @param {String} type http://gedcomx.org/Given or http://gedcomx.org/Surname
+     * @param {Number=} i name form to set; defaults to 0
+     * @return {Name} this name
+     */
+    $setNamePart: function(name, type, i) {
+      this.$changed = true;
+      var nameForm = ensureNameForm(this, i);
+      if (!helpers.isArray(nameForm.parts)) {
+        nameForm.parts = [];
+      }
+      var part = helpers.find(nameForm.parts, {type: type});
+      if (!part) {
+        part = {type: type};
+        nameForm.parts.push(part);
+      }
+      part.value = name;
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name name.types:constructor.Name#$setGivenName
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @description sets the $changed flag as well as the value
+     * @param {String} givenName value
+     * @param {Number=} i name form to set; defaults to 0
+     * @return {Name} this name
+     */
+    $setGivenName: function(givenName, i) {
+      return this.$setNamePart(givenName, 'http://gedcomx.org/Given', i);
+    },
+
+    /**
+     * @ngdoc function
+     * @name name.types:constructor.Name#$setSurname
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @description sets the $changed flag as well as the value
+     * @param {String} surname value
+     * @param {Number=} i name form to set; defaults to 0
+     * @return {Name} this name
+     */
+    $setSurname: function(surname, i) {
+      return this.$setNamePart(surname, 'http://gedcomx.org/Surname', i);
+    },
+
+    /**
+     * @ngdoc function
+     * @name name.types:constructor.Name#$setPrefix
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @description sets the $changed flag as well as the value
+     * @param {String} prefix value
+     * @param {Number=} i name form to set; defaults to 0
+     * @return {Name} this name
+     */
+    $setPrefix: function(prefix, i) {
+      return this.$setNamePart(prefix, 'http://gedcomx.org/Prefix', i);
+    },
+
+    /**
+     * @ngdoc function
+     * @name name.types:constructor.Name#$setSuffix
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @description sets the $changed flag as well as the value
+     * @param {String} suffix value
+     * @param {Number=} i name form to set; defaults to 0
+     * @return {Name} this name
+     */
+    $setSuffix: function(suffix, i) {
+      return this.$setNamePart(suffix, 'http://gedcomx.org/Suffix', i);
+    },
+
+    /**
+     * @ngdoc function
+     * @name name.types:constructor.Name#$setChangeMessage
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @description sets the changeMessage used to update the name
+     * @param {String} changeMessage change message
+     * @return {Name} this name
+     */
+    $setChangeMessage: function(changeMessage) {
+      this.attribution = new attribution.Attribution(changeMessage);
+      //noinspection JSValidateTypes
+      return this;
+    }
+  };
+
+  return exports;
+});
+
 define('memories',[
   'attribution',
   'discussions',
   'globals',
   'helpers',
+  'name',
   'plumbing'
-], function(attribution, discussions, globals, helpers, plumbing) {
+], function(attribution, discussions, globals, helpers, name, plumbing) {
   /**
    * @ngdoc overview
    * @name memories
@@ -3012,7 +4029,7 @@ define('memories',[
      * @ngdoc function
      * @name memories.types:constructor.MemoryPersona#$getNames
      * @methodOf memories.types:constructor.MemoryPersona
-     * @return {Name[]} an array of {@link person.types:constructor.Name Names}
+     * @return {Name[]} an array of {@link name.types:constructor.Name Names}
      */
     $getNames: function() { return this.names || []; },
 
@@ -3030,7 +4047,7 @@ define('memories',[
      * @name memories.types:constructor.MemoryPersona#$getPreferredName
      * @methodOf memories.types:constructor.MemoryPersona
      * @function
-     * @return {string} preferred {@link person.types:constructor.Name Name}
+     * @return {string} preferred {@link name.types:constructor.Name Name}
      */
     $getPreferredName: function() { return helpers.findOrFirst(this.names, {preferred: true}); },
 
@@ -3066,22 +4083,22 @@ define('memories',[
 
     /**
      * @ngdoc function
-     * @name name memories.types:constructor.MemoryPersona#$addName
+     * @name memories.types:constructor.MemoryPersona#$addName
      * @methodOf memories.types:constructor.MemoryPersona
      * @function
-     * @param {Name|string} name to add
+     * @param {Name|string} value name to add
      */
-    $addName: function(name) {
-      if (!(name instanceof globals.Name)) {
+    $addName: function(value) {
+      if (!(value instanceof name.Name)) {
         //noinspection JSValidateTypes
-        name = new globals.Name(name);
+        value = new name.Name(value);
       }
-      this.names.push(name);
+      this.names.push(value);
     },
 
     /**
      * @ngdoc function
-     * @name name memories.types:constructor.MemoryPersona#$addMemoryArtifactRef
+     * @name memories.types:constructor.MemoryPersona#$addMemoryArtifactRef
      * @methodOf memories.types:constructor.MemoryPersona
      * @function
      * @param {string|MemoryArtifactRef} mar URL of the memory artifact or the memory artifact ref to add
@@ -3398,7 +4415,7 @@ define('memories',[
               return this && this.persons ? this.persons : [];
             }}),
             helpers.constructorSetter(MemoryPersona, 'persons'),
-            helpers.constructorSetter(globals.Name, 'names', function(response) {
+            helpers.constructorSetter(name.Name, 'names', function(response) {
               return maybe(response).persons;
             }),
             helpers.constructorSetter(MemoryArtifactRef, 'media', function(response) {
@@ -4573,12 +5590,13 @@ define('sources',[
 define('parentsAndChildren',[
   'attribution',
   'changeHistory',
+  'fact',
   'globals',
   'helpers',
   'notes',
   'plumbing',
   'sources'
-], function(attribution, changeHistory, globals, helpers, notes, plumbing, sources) {
+], function(attribution, changeHistory, fact, globals, helpers, notes, plumbing, sources) {
   /**
    * @ngdoc overview
    * @name parentsAndChildren
@@ -4616,7 +5634,7 @@ define('parentsAndChildren',[
      * @ngdoc function
      * @name parentsAndChildren.types:constructor.ChildAndParents#$getFatherFacts
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-     * @return {Fact[]} array of {@link person.types:constructor.Fact Facts}; e.g., parent-relationship type
+     * @return {Fact[]} array of {@link fact.types:constructor.Fact Facts}; e.g., parent-relationship type
      */
     $getFatherFacts: function() { return this.fatherFacts || []; },
 
@@ -4624,7 +5642,7 @@ define('parentsAndChildren',[
      * @ngdoc function
      * @name parentsAndChildren.types:constructor.ChildAndParents#$getMotherFacts
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-     * @return {Fact[]} array of {@link person.types:constructor.Fact Facts}; e.g., parent-relationship type
+     * @return {Fact[]} array of {@link fact.types:constructor.Fact Facts}; e.g., parent-relationship type
      */
     $getMotherFacts: function() { return this.motherFacts || []; },
 
@@ -4768,10 +5786,10 @@ define('parentsAndChildren',[
           helpers.compose(
             helpers.constructorSetter(ChildAndParents, 'childAndParentsRelationships'),
             helpers.objectExtender(childAndParentsConvenienceFunctions),
-            helpers.constructorSetter(globals.Fact, 'motherFacts', function(response) {
+            helpers.constructorSetter(fact.Fact, 'motherFacts', function(response) {
               return maybe(response).childAndParentsRelationships;
             }),
-            helpers.constructorSetter(globals.Fact, 'fatherFacts', function(response) {
+            helpers.constructorSetter(fact.Fact, 'fatherFacts', function(response) {
               return maybe(response).childAndParentsRelationships;
             }),
             helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
@@ -4921,12 +5939,13 @@ define('pedigree',[
 define('spouses',[
   'attribution',
   'changeHistory',
+  'fact',
   'globals',
   'helpers',
   'plumbing',
   'notes',
   'sources'
-], function(attribution, changeHistory, globals, helpers, plumbing, notes, sources) {
+], function(attribution, changeHistory, fact, globals, helpers, plumbing, notes, sources) {
   /**
    * @ngdoc overview
    * @name spouses
@@ -4964,7 +5983,7 @@ define('spouses',[
      * @ngdoc function
      * @name spouses.types:constructor.Couple#$getFacts
      * @methodOf spouses.types:constructor.Couple
-     * @return {Fact[]} array of {@link person.types:constructor.Fact Facts}; e.g., marriage
+     * @return {Fact[]} array of {@link fact.types:constructor.Fact Facts}; e.g., marriage
      */
     $getFacts: function() { return this.facts || []; },
 
@@ -4972,7 +5991,7 @@ define('spouses',[
      * @ngdoc function
      * @name spouses.types:constructor.Couple#$getMarriageFact
      * @methodOf spouses.types:constructor.Couple
-     * @return {Fact} {@link person.types:constructor.Fact Fact} of type http://gedcomx.org/Marriage (first one if multiple)
+     * @return {Fact} {@link fact.types:constructor.Fact Fact} of type http://gedcomx.org/Marriage (first one if multiple)
      */
     $getMarriageFact: function() { return helpers.find(this.facts, {type: 'http://gedcomx.org/Marriage'}); },
 
@@ -5089,7 +6108,7 @@ define('spouses',[
           helpers.compose(
             helpers.constructorSetter(Couple, 'relationships'),
             helpers.objectExtender(coupleConvenienceFunctions),
-            helpers.constructorSetter(globals.Fact, 'facts', function(response) {
+            helpers.constructorSetter(fact.Fact, 'facts', function(response) {
               return maybe(response).relationships;
             }),
             helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
@@ -5114,15 +6133,17 @@ define('person',[
   'attribution',
   'changeHistory',
   'discussions',
+  'fact',
   'globals',
   'helpers',
   'memories',
+  'name',
   'notes',
   'parentsAndChildren',
   'plumbing',
   'sources',
   'spouses'
-], function(attribution, changeHistory, discussions, globals, helpers, memories, notes, parentsAndChildren, plumbing, sources, spouses) {
+], function(attribution, changeHistory, discussions, fact, globals, helpers, memories, name, notes, parentsAndChildren, plumbing, sources, spouses) {
   /**
    * @ngdoc overview
    * @name person
@@ -5133,7 +6154,7 @@ define('person',[
    */
 
   //
-  // NOTE I've had to make several things global in this file: Fact, Name, getPerson, and personMapper
+  // NOTE I've had to make two things global in this file: getPerson, and personMapper
   // This is so parentsAndChildren and spouses and memories can access them; otherwise we'd have a circular dependency
   //
 
@@ -5141,16 +6162,29 @@ define('person',[
 
   var exports = {};
 
+  // TODO see if upgrading to grunt-ngdocs 0.2.1 will allow links to _methods_ like $save and $delete
+
+  /**********************************/
   /**
    * @ngdoc function
    * @name person.types:constructor.Person
    * @description
    *
    * Person
-   */
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
+   *
+   * Two methods to note below are _$save_ and _$delete_. _$save_ saves the various adds, deletes, and updates
+   * made to names, facts, and gender; _$delete_ removes the person.
+   **********************************/
+
   var Person = exports.Person = function() {
-    this.names = [];
   };
+
+  function attributionNeeded(conclusion) {
+    // return true if no attribution or attribution without a change message or an existing attribution
+    return (!conclusion.attribution || !conclusion.attribution.changeMessage || conclusion.attribution.contributor);
+  }
 
   exports.Person.prototype = {
     constructor: Person,
@@ -5186,7 +6220,7 @@ define('person',[
      * @ngdoc property
      * @name person.types:constructor.Person#gender
      * @propertyOf person.types:constructor.Person
-     * @return {Object} gender conclusion with id, type, attribution, and confidence
+     * @return {Object} gender conclusion with id, type (value), and attribution
      */
 
     /**
@@ -5200,71 +6234,219 @@ define('person',[
      * @ngdoc function
      * @name person.types:constructor.Person#$getFacts
      * @methodOf person.types:constructor.Person
-     * @return {Fact[]} an array of {@link person.types:constructor.Fact Facts}
+     * @function
+     * @param {string=} type if present, return only facts with this type
+     * @return {Fact[]} an array of {@link fact.types:constructor.Fact Facts}
      */
-    $getFacts: function() { return this.facts || []; },
+    $getFacts: function(type) {
+      return (type ? helpers.filter(this.facts, {type: type}) : this.facts) || [];
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getFact
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {string} type fact type; e.g., http://gedcomx.org/Birth
+     * @return {Fact} return first {@link fact.types:constructor.Fact Fact} having specified type
+     */
+    $getFact: function(type) {
+      return helpers.find(this.facts, {type: type});
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getBirth
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {Fact} Birth {@link fact.types:constructor.Fact Fact}
+     */
+    $getBirth: function() {
+      return this.$getFact('http://gedcomx.org/Birth');
+    },
 
     /**
      * @ngdoc function
      * @name person.types:constructor.Person#$getBirthDate
      * @methodOf person.types:constructor.Person
      * @function
-     * @return {String} birth date
+     * @return {string} Birth date
      */
-    $getBirthDate: function() { return maybe(this.display).birthDate; },
+    $getBirthDate: function() {
+      var fact = this.$getBirth();
+      return fact ? fact.$getDate() : '';
+    },
 
     /**
      * @ngdoc function
      * @name person.types:constructor.Person#$getBirthPlace
      * @methodOf person.types:constructor.Person
      * @function
-     * @return {String} birth place
+     * @return {string} Birth place
      */
-    $getBirthPlace: function() { return maybe(this.display).birthPlace; },
+    $getBirthPlace: function() {
+      var fact = this.$getBirth();
+      return fact ? fact.$getPlace() : '';
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getChristening
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {Fact} Christening {@link fact.types:constructor.Fact Fact}
+     */
+    $getChristening: function() {
+      return this.$getFact('http://gedcomx.org/Christening');
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getChristeningDate
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {string} Christening date
+     */
+    $getChristeningDate: function() {
+      var fact = this.$getChristening();
+      return fact ? fact.$getDate() : '';
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getChristeningPlace
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {string} Christning place
+     */
+    $getChristeningPlace: function() {
+      var fact = this.$getChristening();
+      return fact ? fact.$getPlace() : '';
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getDeath
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {Fact} Death {@link fact.types:constructor.Fact Fact}
+     */
+    $getDeath: function() {
+      return this.$getFact('http://gedcomx.org/Death');
+    },
 
     /**
      * @ngdoc function
      * @name person.types:constructor.Person#$getDeathDate
      * @methodOf person.types:constructor.Person
      * @function
-     * @return {String} death date
+     * @return {string} Death date
      */
-    $getDeathDate: function() { return maybe(this.display).deathDate; },
+    $getDeathDate: function() {
+      var fact = this.$getDeath();
+      return fact ? fact.$getDate() : '';
+    },
 
     /**
      * @ngdoc function
      * @name person.types:constructor.Person#$getDeathPlace
      * @methodOf person.types:constructor.Person
      * @function
-     * @return {String} death place
+     * @return {string} Death place
      */
-    $getDeathPlace: function() { return maybe(this.display).deathPlace; },
+    $getDeathPlace: function() {
+      var fact = this.$getDeath();
+      return fact ? fact.$getPlace() : '';
+    },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#$getGender
+     * @name person.types:constructor.Person#$getBurial
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {Fact} Burial {@link fact.types:constructor.Fact Fact}
+     */
+    $getBurial: function() {
+      return this.$getFact('http://gedcomx.org/Burial');
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getBurialDate
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {string} Burial date
+     */
+    $getBurialDate: function() {
+      var fact = this.$getBurial();
+      return fact ? fact.$getDate() : '';
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getBurialPlace
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {string} Birth place
+     */
+    $getBurialPlace: function() {
+      var fact = this.$getBurial();
+      return fact ? fact.$getPlace() : '';
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getDisplayBirthDate
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {String} birth date
+     */
+    $getDisplayBirthDate: function() { return maybe(this.display).birthDate; },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getDisplayBirthPlace
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {String} birth place
+     */
+    $getDisplayBirthPlace: function() { return maybe(this.display).birthPlace; },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getDisplayDeathDate
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {String} death date
+     */
+    $getDisplayDeathDate: function() { return maybe(this.display).deathDate; },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getDisplayDeathPlace
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {String} death place
+     */
+    $getDisplayDeathPlace: function() { return maybe(this.display).deathPlace; },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getDisplayGender
      * @methodOf person.types:constructor.Person
      * @function
      * @return {String} gender - Male or Female
      */
-    $getGender: function() { return maybe(this.display).gender; },
+    $getDisplayGender: function() { return maybe(this.display).gender; },
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#$getLifeSpan
+     * @name person.types:constructor.Person#$getDisplayLifeSpan
      * @methodOf person.types:constructor.Person
      * @function
-     * @return {String} birth year - death year
+     * @returns {string} birth year - death year
      */
-    $getLifeSpan: function() { return maybe(this.display).lifespan; },
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.Person#$getNames
-     * @methodOf person.types:constructor.Person
-     * @return {Name[]} an array of {@link person.types:constructor.Name Names}
-     */
-    $getNames: function() { return this.names || []; },
+    $getDisplayLifeSpan: function() { return maybe(this.display).lifespan; },
 
     /**
      * @ngdoc function
@@ -5277,10 +6459,22 @@ define('person',[
 
     /**
      * @ngdoc function
+     * @name person.types:constructor.Person#$getNames
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {string=} type if present, return only names with this type
+     * @return {Name[]} an array of {@link name.types:constructor.Name Names}
+     */
+    $getNames: function(type) {
+      return (type ? helpers.filter(this.names, {type: type}) : this.names) || [];
+    },
+
+    /**
+     * @ngdoc function
      * @name person.types:constructor.Person#$getPreferredName
      * @methodOf person.types:constructor.Person
      * @function
-     * @return {string} preferred {@link person.types:constructor.Name Name}
+     * @return {string} preferred {@link name.types:constructor.Name Name}
      */
     $getPreferredName: function() { return helpers.findOrFirst(this.names, {preferred: true}); },
 
@@ -5330,7 +6524,7 @@ define('person',[
      * @name person.types:constructor.Person#$getChanges
      * @methodOf person.types:constructor.Person
      * @function
-     * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
+     * @param {Object=} params `count` is the number of change entries to return, `from` to return changes following this id
      * @return {Object} promise for the {@link changeHistory.functions:getPersonChanges getPersonChanges} response
      */
     $getChanges: function(params) {
@@ -5397,17 +6591,255 @@ define('person',[
 
     /**
      * @ngdoc function
-     * @name name person.types:constructor.Person#$addName
+     * @name person.types:constructor.Person#$addName
      * @methodOf person.types:constructor.Person
      * @function
-     * @param {Name|string} name to add
+     * @param {Name|Object|string} value name to add; if value is not a Name, it is passed into the Name constructor
+     * @return {Person} this person
      */
-    $addName: function(name) {
-      if (!(name instanceof Name)) {
-        //noinspection JSValidateTypes
-        name = new Name(name);
+    $addName: function(value) {
+      if (!helpers.isArray(this.names)) {
+        this.names = [];
       }
-      this.names.push(name);
+      if (!(value instanceof name.Name)) {
+        value = new name.Name(value);
+      }
+      this.names.push(value);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$deleteName
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {Name|string} value name or name id to remove
+     * @param {String=} changeMessage change message
+     * @return {Person} this person
+     */
+    $deleteName: function(value, changeMessage) {
+      if (!(value instanceof name.Name)) {
+        value = helpers.find(this.names, { id: value });
+      }
+      var pos = helpers.indexOf(this.names, value);
+      if (pos >= 0) {
+        // add name to $deleted map
+        if (!this.$deletedConclusions) {
+          this.$deletedConclusions = {};
+        }
+        this.$deletedConclusions[value.id] = changeMessage;
+        // remove name from array
+        this.names.splice(pos,1);
+      }
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$addFact
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {Fact|Object} value fact to add; if value is not a Fact, it is passed into the Fact constructor
+     * @return {Person} this person
+     */
+    $addFact: function(value) {
+      if (!helpers.isArray(this.facts)) {
+        this.facts = [];
+      }
+      if (!(value instanceof fact.Fact)) {
+        value = new fact.Fact(value);
+      }
+      this.facts.push(value);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$deleteFact
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {Fact|string} value fact or fact id to remove
+     * @param {String=} changeMessage change message
+     * @return {Person} this person
+     */
+    $deleteFact: function(value, changeMessage) {
+      if (!(value instanceof fact.Fact)) {
+        value = helpers.find(this.facts, { id: value });
+      }
+      var pos = helpers.indexOf(this.facts, value);
+      if (pos >= 0) {
+        // add fact to $deleted map
+        if (!this.$deletedConclusions) {
+          this.$deletedConclusions = {};
+        }
+        this.$deletedConclusions[value.id] = changeMessage;
+        // remove fact from array
+        this.facts.splice(pos,1);
+      }
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$setGender
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {String} gender e.g., http://gedcomx.org/Female
+     * @param {String=} changeMessage change message
+     * @return {Person} this person
+     */
+    $setGender: function(gender, changeMessage) {
+      if (!this.gender) {
+        this.gender = {};
+      }
+      this.gender.$changed = true;
+      this.gender.type = gender;
+      if (changeMessage) {
+        this.gender.attribution = new attribution.Attribution(changeMessage);
+      }
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$save
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @description
+     * Create a new person (if this person does not have an id) or update the existing person
+     *
+     * {@link http://jsfiddle.net/DallanQ/CM3Lz/ editable example}
+     *
+     * @param {String=} changeMessage default change message to use when name/fact/gender-specific changeMessage is not specified
+     * @param {boolean=} refresh true to read the person after updating
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise of the person id, which is fulfilled after person has been updated, and if refresh is true, after the person has been read
+     */
+    $save: function(changeMessage, refresh, opts) {
+      var postData = new Person();
+      var isChanged = false;
+      if (this.id) {
+        postData.id = this.id; // updating existing person
+      }
+
+      // TODO don't "push down" attribution to individual conclusions once the global attribution bug has been fixed
+
+      // if person is new, default a few things
+      if (!this.id) {
+        // default gender to unknown
+        if (!this.gender) {
+          this.$setGender('http://gedcomx.org/Unknown');
+        }
+        // default name to Unknown if no names
+        if (!helpers.isArray(this.names) || this.names.length === 0) {
+          this.$addName({fullText: 'Unknown', givenName: 'Unknown'});
+        }
+        // default first name to preferred if no names are preferred
+        if (!helpers.find(this.names, {preferred: true})) {
+          this.names[0].$setPreferred(true);
+        }
+        // default name type to birth name if there is only one name
+        if (this.names.length === 1 && !this.names[0].type) {
+          this.names[0].$setType('http://gedcomx.org/BirthName');
+        }
+      }
+
+      // send gender if gender is new or changed
+      if (this.gender && (!this.gender.id || this.gender.$changed)) {
+        // set change message if none set
+        if (changeMessage && attributionNeeded(this.gender)) {
+          this.gender.attribution = new attribution.Attribution(changeMessage);
+        }
+        postData.gender = this.gender;
+        isChanged = true;
+      }
+
+      // send names that are new or updated
+      helpers.forEach(this.names, function(name) {
+        if (!name.id || name.$changed) {
+          // set change message if none set
+          if (changeMessage && attributionNeeded(name)) {
+            name.$setChangeMessage(changeMessage);
+          }
+          postData.$addName(name);
+          isChanged = true;
+        }
+      });
+
+      // send facts that are new or updated
+      helpers.forEach(this.facts, function(fact) {
+        if (!fact.id || fact.$changed) {
+          // set change message if none set
+          if (changeMessage && attributionNeeded(fact)) {
+            fact.$setChangeMessage(changeMessage);
+          }
+          postData.$addFact(fact);
+          isChanged = true;
+        }
+      });
+
+      var promises = [];
+
+      // post update
+      if (isChanged) {
+        promises.push(helpers.chainHttpPromises(
+          postData.id ? plumbing.getUrl('person-template', null, {pid: postData.id}) : plumbing.getUrl('persons'),
+          function(url) {
+            return plumbing.post(url, { persons: [ postData ] }, {}, opts, helpers.getResponseEntityId);
+          }));
+      }
+
+      // post deletions
+      if (this.id && this.$deletedConclusions) {
+        helpers.forEach(this.$deletedConclusions, function(value, key) {
+          value = value || changeMessage; // default to global change message
+          promises.push(helpers.chainHttpPromises(
+            plumbing.getUrl('person-conclusion-template', null, {pid: postData.id, cid: key}),
+            function(url) {
+              return plumbing.del(url, value ? {'X-Reason': value} : {}, opts);
+            }
+          ));
+        });
+      }
+
+      var person = this;
+      // wait for all promises to be fulfilled
+      var promise = helpers.promiseAll(promises).then(function(results) {
+        var id = postData.id ? postData.id : results[0]; // if we're adding a new person, get the id from the first (and only) promise
+        helpers.extendHttpPromise(promise, promises[0]); // extend the first promise into the returned promise
+
+        if (refresh) {
+          // re-read the person and set this object's properties from response
+          return exports.getPerson(id, {}, opts).then(function(response) {
+            helpers.deleteProperties(person);
+            helpers.extend(person, response.getPerson());
+            return id;
+          });
+        }
+        else {
+          return id;
+        }
+      });
+      return promise;
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$delete
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @description delete this person
+     * @param {string} changeMessage change message
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise for the person id
+     */
+    $delete: function(changeMessage, opts) {
+      return exports.deletePerson(helpers.removeAccessToken(maybe(maybe(this.links).person).href) || this.id, changeMessage, opts);
     },
 
     /**
@@ -5423,160 +6855,6 @@ define('person',[
     $addMemoryPersonaRef: function(memoryPersonaRef, params, opts) {
       return memories.addMemoryPersonaRef(this.id, memoryPersonaRef, params, opts);
     }
-  };
-
-  /**
-   * @ngdoc function
-   * @name person.types:constructor.Name
-   * @description
-   *
-   * Name
-   */
-  var Name = globals.Name = exports.Name = function(name) {  // put on globals so memories can access it
-    this.nameForms = [];
-    if (name) {
-      this.nameForms.push({
-        fullText: name
-      });
-    }
-  };
-
-  exports.Name.prototype = {
-    constructor: Name,
-    /**
-     * @ngdoc property
-     * @name person.types:constructor.Name#id
-     * @propertyOf person.types:constructor.Name
-     * @return {String} Id of the name
-     */
-
-    /**
-     * @ngdoc property
-     * @name person.types:constructor.Name#type
-     * @propertyOf person.types:constructor.Name
-     * @return {String} http://gedcomx.org/BirthName, etc.
-     */
-
-    /**
-     * @ngdoc property
-     * @name person.types:constructor.Name#preferred
-     * @propertyOf person.types:constructor.Name
-     * @return {Boolean} true if this name is preferred
-     */
-
-    /**
-     * @ngdoc property
-     * @name person.types:constructor.Name#attribution
-     * @propertyOf person.types:constructor.Name
-     * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
-     */
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.Name#$getNameFormsCount
-     * @methodOf person.types:constructor.Name
-     * @function
-     * @return {Number} get the number of name forms
-     */
-    $getNameFormsCount: function() { return this.nameForms ? this.nameForms.length : 0; },
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.Name#$getFullText
-     * @methodOf person.types:constructor.Name
-     * @function
-     * @param {Number=} i i'th name form to read
-     * @return {String} get the full text of the `i`'th name form; if `i` is omitted; get the first
-     */
-    $getFullText: function(i) { return maybe(maybe(this.nameForms)[i || 0]).fullText; },
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.Name#$getGivenName
-     * @methodOf person.types:constructor.Name
-     * @function
-     * @param {Number=} i i'th name form to read
-     * @return {String} get the given part of the `i`'th name form; if `i` is omitted; get the first
-     */
-    $getGivenName: function(i) { return maybe(helpers.find(
-      maybe(maybe(this.nameForms)[i || 0]).parts,
-      {type: 'http://gedcomx.org/Given'}
-    )).value; },
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.Name#$getSurname
-     * @methodOf person.types:constructor.Name
-     * @function
-     * @param {Number=} i i'th name form to read
-     * @return {String} get the surname part of the `i`'th name form; if `i` is omitted; get the first
-     */
-    $getSurname:        function(i) { return maybe(helpers.find(
-      maybe(maybe(this.nameForms)[i || 0]).parts,
-      {type: 'http://gedcomx.org/Surname'}
-    )).value; }
-  };
-
-  /**
-   * @ngdoc function
-   * @name person.types:constructor.Fact
-   * @description
-   *
-   * Fact
-   */
-  var Fact = globals.Fact = exports.Fact = function() {  // put on globals so parentsAndChildren and spouses can access it
-
-  };
-
-  exports.Fact.prototype = {
-    constructor: Fact,
-    /**
-     * @ngdoc property
-     * @name person.types:constructor.Fact#id
-     * @propertyOf person.types:constructor.Fact
-     * @return {String} Id of the name
-     */
-
-    /**
-     * @ngdoc property
-     * @name person.types:constructor.Fact#type
-     * @propertyOf person.types:constructor.Fact
-     * @return {String} http://gedcomx.org/Birth, etc.
-     */
-
-    /**
-     * @ngdoc property
-     * @name person.types:constructor.Fact#attribution
-     * @propertyOf person.types:constructor.Fact
-     * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
-     */
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.Fact#$getDate
-     * @methodOf person.types:constructor.Fact
-     * @function
-     * @return {String} original date
-     */
-    $getDate: function() { return maybe(this.date).original; },
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.Fact#$getFormalDate
-     * @methodOf person.types:constructor.Fact
-     * @function
-     * @return {String} standard form; e.g., +1836-04-13
-     */
-    $getFormalDate: function() { return maybe(this.date).formal; },
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.Fact#$getPlace
-     * @methodOf person.types:constructor.Fact
-     * @function
-     * @return {String} event place
-     */
-    $getPlace: function() { return maybe(this.place).original; }
   };
 
   /**
@@ -5599,7 +6877,7 @@ define('person',[
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  globals.getPerson = exports.getPerson = function(pid, params, opts) { // put on globals so parentsAndChildren and spouses can access it
+  globals.getPerson = exports.getPerson = function(pid, params, opts) { // put on globals so parentsAndChildren and spouses and searchAndMatch can access it
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-template', pid, {pid: pid}),
       function(url) {
@@ -5616,7 +6894,7 @@ define('person',[
    * @param {Function=} subObjectGenerator generate sub-objects corresponding to parents of persons; used by search/match functions
    * @returns {Function}
    */
-  globals.personMapper = exports.personMapper = function(subObjectGenerator) { // put on globals so parentsAndChildren and spouses can access it
+  globals.personMapper = exports.personMapper = function(subObjectGenerator) { // put on globals so parentsAndChildren and spouses and searchAndMatch and pedigree can access it
     var personsGenerator = function(response) {
       return helpers.flatMap(subObjectGenerator ? subObjectGenerator(response) : [response], function(root) {
         return root.persons;
@@ -5624,8 +6902,8 @@ define('person',[
     };
     return helpers.compose(
       helpers.constructorSetter(Person, 'persons', subObjectGenerator),
-      helpers.constructorSetter(Name, 'names', personsGenerator),
-      helpers.constructorSetter(Fact, 'facts', personsGenerator),
+      helpers.constructorSetter(name.Name, 'names', personsGenerator),
+      helpers.constructorSetter(fact.Fact, 'facts', personsGenerator),
       helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
         return helpers.flatMap(personsGenerator(response), function(person) {
           return helpers.union(
@@ -5714,10 +6992,10 @@ define('person',[
         return plumbing.get(url, helpers.extend({'person': pid}, params), {}, opts,
           helpers.compose(
             helpers.objectExtender({getPrimaryId: function() { return pid; }}), // make id available
-            helpers.constructorSetter(Fact, 'fatherFacts', function(response) {
+            helpers.constructorSetter(fact.Fact, 'fatherFacts', function(response) {
               return response.childAndParentsRelationships;
             }),
-            helpers.constructorSetter(Fact, 'motherFacts', function(response) {
+            helpers.constructorSetter(fact.Fact, 'motherFacts', function(response) {
               return response.childAndParentsRelationships;
             }),
             helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
@@ -5725,7 +7003,7 @@ define('person',[
                 return helpers.union(rel.fatherFacts, rel.motherFacts);
               });
             }),
-            helpers.constructorSetter(Fact, 'facts', function(response) {
+            helpers.constructorSetter(fact.Fact, 'facts', function(response) {
               return response.relationships;
             }),
             helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
@@ -5892,7 +7170,7 @@ define('person',[
             helpers.objectExtender({getPrimaryId: function() { return pid; }}), // make id available to convenience functions
             helpers.constructorSetter(spouses.Couple, 'relationships'),
             helpers.objectExtender(relationshipsToSpousesConvenienceFunctions),
-            helpers.constructorSetter(Fact, 'facts', function(response) {
+            helpers.constructorSetter(fact.Fact, 'facts', function(response) {
               return response.relationships;
             }),
             helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
@@ -5914,6 +7192,34 @@ define('person',[
       }, this));
     },
     getPerson:    function(id) { return helpers.find(this.persons, {id: id}); }
+  };
+
+  /**
+   * @ngdoc function
+   * @name person.functions:deletePerson
+   * @function
+   *
+   * @description
+   * Delete the specified person
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/N9kzf/ editable example}
+   *
+   * @param {string} pid id or full URL of the person
+   * @param {string} changeMessage reason for the deletion
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the person id
+   */
+  exports.deletePerson = function(pid, changeMessage, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('person-template', pid, {pid: pid}),
+      function(url) {
+        return plumbing.del(url, changeMessage ? {'X-Reason': changeMessage} : {}, opts, function() {
+          return pid;
+        });
+      }
+    );
   };
 
   // TODO getPersonMerge
@@ -5970,7 +7276,7 @@ define('searchAndMatch',[
      * @ngdoc property
      * @name searchAndMatch.types:constructor.SearchResult#title
      * @propertyOf searchAndMatch.types:constructor.SearchResult
-     * @return {String} Id and Name
+     * @return {String} Id and name
      */
 
     /**
@@ -6521,9 +7827,12 @@ define('sourceBox',[
 define('FamilySearch',[
   'init',
   'authentication',
+  'authorities',
   'changeHistory',
   'discussions',
+  'fact',
   'memories',
+  'name',
   'notes',
   'parentsAndChildren',
   'pedigree',
@@ -6534,7 +7843,7 @@ define('FamilySearch',[
   'spouses',
   'user',
   'plumbing'
-], function(init, authentication, changeHistory, discussions, memories, notes, parentsAndChildren, pedigree, person,
+], function(init, authentication, authorities, changeHistory, discussions, fact, memories, name, notes, parentsAndChildren, pedigree, person,
             searchAndMatch, sourceBox, sources, spouses, user, plumbing) {
   return {
     init: init.init,
@@ -6546,7 +7855,11 @@ define('FamilySearch',[
     hasAccessToken: authentication.hasAccessToken,
     invalidateAccessToken: authentication.invalidateAccessToken,
 
-    // TODO authorities
+    // authorities
+    Date: authorities.Date,
+    Place: authorities.Place,
+    getDate: authorities.getDate,
+    getPlace: authorities.getPlace,
 
     // changeHistory
     Change: changeHistory.Change,
@@ -6565,6 +7878,9 @@ define('FamilySearch',[
     getMultiDiscussion: discussions.getMultiDiscussion,
     getComments: discussions.getComments,
 
+    // fact
+    Fact: fact.Fact,
+
     // memories
     Memory: memories.Memory,
     MemoryPersonaRef: memories.MemoryPersonaRef,
@@ -6579,6 +7895,9 @@ define('FamilySearch',[
     createMemory: memories.createMemory,
     addMemoryPersona: memories.addMemoryPersona,
     addMemoryPersonaRef: memories.addMemoryPersonaRef,
+
+    // name
+    Name: name.Name,
 
     // notes
     Note: notes.Note,
@@ -6605,8 +7924,6 @@ define('FamilySearch',[
 
     // person
     Person: person.Person,
-    Name: person.Name,
-    Fact: person.Fact,
     getPerson: person.getPerson,
     getMultiPerson: person.getMultiPerson,
     getPersonWithRelationships: person.getPersonWithRelationships,

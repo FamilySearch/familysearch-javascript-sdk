@@ -28,8 +28,8 @@ whatever custom information is desired.</li>
 <p>People with names and facts</p>
 <ul>
 <li><a href="#/api/person.types:constructor.Person">Person</a></li>
-<li><a href="#/api/person.types:constructor.Fact">Fact</a></li>
-<li><a href="#/api/person.types:constructor.Name">Name</a></li>
+<li><a href="#/api/fact.types:constructor.Fact">Fact</a></li>
+<li><a href="#/api/name.types:constructor.Name">Name</a></li>
 </ul>
 <p>Relationships between people</p>
 <ul>
@@ -157,26 +157,30 @@ For example, the <code>getPerson(&#39;ID&#39;)</code> call adds a <code>response
 <a href="#/api/person.types:constructor.Person">Person</a> object from the response.</p>
 <p>The returned objects contain the same properties as the original response json, but they have custom constructors whose
 prototypes add convenience functions.
-For example, the prototype for <a href="#/api/person.types:constructor.Person">Person</a> objects includes <code>getGivenName()</code> and <code>getSurname()</code>
+For example, the prototype for <a href="#/api/person.types:constructor.Person">Person</a> objects includes <code>$getGivenName()</code> and <code>$getSurname()</code>
 convenience functions for returning the person&#39;s given name and surname respectively.
 Without these convenience functions, you would have to navigate the <code>parts</code> elements of the <code>nameForms</code> array,
 look for a part whose <code>type</code> element is <code>http://gedcomx.org/Given</code> or <code>http://gedcomx.org/Surname</code> respectively, and
-then return the <code>value</code> element of that part.  <code>getGivenName()</code> and <code>getSurname()</code> do this for you.
+then return the <code>value</code> element of that part.  <code>$getGivenName()</code> and <code>$getSurname()</code> do this for you.
+All convenience functions added by the SDK begin with a <code>$</code> to avoid name conflicts with FamilySearch property names.
 The object properties and convenience functions are fully described in the docs.</p>
 <p>You can add your own convenience functions to the returned objects.
 For example, suppose you wanted to display someone&#39;s name followed by their id. You could write
 <pre class="prettyprint linenums">
-  FamilySearch.Person.prototype.getNameAndId = function() {
+  FamilySearch.Person.prototype._getNameAndId = function() {
     return this.getName() + ' (' + this.id + ')';
   }
 </pre>
-<p>and from then on you could call <code>person.getNameAndId()</code> on any <a href="#/api/person.types:constructor.Person">Person</a> object.</p>
+<p>and from then on you could call <code>person._getNameAndId()</code> on any <a href="#/api/person.types:constructor.Person">Person</a> object.</p>
 <pre class="prettyprint linenums">
 FamilySearch.getPerson('ID').then(function(response) {
   var person = response.getPerson();
-  console.log('Hello '+person.getNameAndId());
+  console.log('Hello '+person._getNameAndId());
 });
 </pre>
+<p>To avoid name conflicts with FamilySearch property names and SDK convenience functions, we recommend that you begin
+your convenience functions with a <code>_</code>, though you are free to begin your convenience functions however you want.</p>
+<p>Object properties beginning with <code>$</code> or <code>_</code> are removed before posting data to FamilySearch.</p>
 <h3 id="using-the-sdk-with-module-loaders">Using the SDK with module loaders</h3>
 <p>The SDK can be used</p>
 <ul>

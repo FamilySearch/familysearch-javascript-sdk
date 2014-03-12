@@ -1,0 +1,96 @@
+<h1><code ng:non-bindable="">Fact</code>
+<div><span class="hint">type in module <code ng:non-bindable="">fact</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="fact-types-page fact-types-constructor-fact-page"><p>Fact</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">Fact([value]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="fact-types-page fact-types-constructor-fact-page"><p>with optional attributes
+{type, date, formalDate, place, normalizedPlace, normalizedPlaceId, changeMessage}</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_$getdate">$getDate()</h3>
+<div class="$getdate"><h5 id="methods_$getdate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="fact-types-page fact-types-constructor-fact-getdate-page"><p>original date</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getformaldate">$getFormalDate()</h3>
+<div class="$getformaldate"><h5 id="methods_$getformaldate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="fact-types-page fact-types-constructor-fact-getformaldate-page"><p>date in gedcomx format; e.g., +1836-04-13</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getnormalizedplace">$getNormalizedPlace()</h3>
+<div class="$getnormalizedplace"><h5 id="methods_$getnormalizedplace_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="fact-types-page fact-types-constructor-fact-getnormalizedplace-page"><p>normalized place text</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getnormalizedplaceid">$getNormalizedPlaceId()</h3>
+<div class="$getnormalizedplaceid"><h5 id="methods_$getnormalizedplaceid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="fact-types-page fact-types-constructor-fact-getnormalizedplaceid-page"><p>normalized place id</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getplace">$getPlace()</h3>
+<div class="$getplace"><h5 id="methods_$getplace_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="fact-types-page fact-types-constructor-fact-getplace-page"><p>event place</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setchangemessage">$setChangeMessage(changeMessage)</h3>
+<div class="$setchangemessage"><div class="fact-types-page fact-types-constructor-fact-setchangemessage-page"><p>sets the changeMessage used to update the fact</p>
+</div><h5 id="methods_$setchangemessage_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="fact-types-page fact-types-constructor-fact-setchangemessage-page"><p>change message</p>
+</div></td></tr></tbody></table><h5 id="methods_$setchangemessage_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="fact-types-page fact-types-constructor-fact-setchangemessage-page"><p>this fact</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setdate">$setDate(date)</h3>
+<div class="$setdate"><div class="fact-types-page fact-types-constructor-fact-setdate-page"><p>sets the fact date</p>
+</div><h5 id="methods_$setdate_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>date</td><td><a href="" class="label type-hint type-hint-string">String</a><a href="" class="label type-hint type-hint-object">Object</a><a href="" class="label type-hint type-hint-date">Date</a></td><td><div class="fact-types-page fact-types-constructor-fact-setdate-page"><p>either a date string as written by the user, or {date, formalDate},
+or a <a href="#/api/authorities.types:constructor.Date">Date</a> object</p>
+</div></td></tr></tbody></table><h5 id="methods_$setdate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="fact-types-page fact-types-constructor-fact-setdate-page"><p>this fact</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setformaldate">$setFormalDate(formalDate)</h3>
+<div class="$setformaldate"><div class="fact-types-page fact-types-constructor-fact-setformaldate-page"><p>sets the formal date</p>
+</div><h5 id="methods_$setformaldate_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>formalDate</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="fact-types-page fact-types-constructor-fact-setformaldate-page"><p>from the date authority; e.g., +1836-04-06</p>
+</div></td></tr></tbody></table><h5 id="methods_$setformaldate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="fact-types-page fact-types-constructor-fact-setformaldate-page"><p>this fact</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setnormalizedplace">$setNormalizedPlace(normalizedPlace)</h3>
+<div class="$setnormalizedplace"><div class="fact-types-page fact-types-constructor-fact-setnormalizedplace-page"><p>sets the standard place text</p>
+</div><h5 id="methods_$setnormalizedplace_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>normalizedPlace</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="fact-types-page fact-types-constructor-fact-setnormalizedplace-page"><p>from the place authority</p>
+</div></td></tr></tbody></table><h5 id="methods_$setnormalizedplace_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="fact-types-page fact-types-constructor-fact-setnormalizedplace-page"><p>this fact</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setnormalizedplaceid">$setNormalizedPlaceId(normalizedPlaceId)</h3>
+<div class="$setnormalizedplaceid"><div class="fact-types-page fact-types-constructor-fact-setnormalizedplaceid-page"><p>sets the standard place id</p>
+</div><h5 id="methods_$setnormalizedplaceid_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>normalizedPlaceId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="fact-types-page fact-types-constructor-fact-setnormalizedplaceid-page"><p>from the place authority</p>
+</div></td></tr></tbody></table><h5 id="methods_$setnormalizedplaceid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="fact-types-page fact-types-constructor-fact-setnormalizedplaceid-page"><p>this fact</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setplace">$setPlace(place)</h3>
+<div class="$setplace"><div class="fact-types-page fact-types-constructor-fact-setplace-page"><p>sets the place</p>
+</div><h5 id="methods_$setplace_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>place</td><td><a href="" class="label type-hint type-hint-string">String</a><a href="" class="label type-hint type-hint-object">Object</a><a href="" class="label type-hint type-hint-date">Date</a></td><td><div class="fact-types-page fact-types-constructor-fact-setplace-page"><p>either a place string as written by the user, or {place, normalizedPlace, normalizedPlaceId},
+or a <a href="#/api/authorities.types:constructor.Place">Place</a> object</p>
+</div></td></tr></tbody></table><h5 id="methods_$setplace_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="fact-types-page fact-types-constructor-fact-setplace-page"><p>this fact</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$settype">$setType(type)</h3>
+<div class="$settype"><div class="fact-types-page fact-types-constructor-fact-settype-page"><p>sets the fact type</p>
+</div><h5 id="methods_$settype_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>type</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="fact-types-page fact-types-constructor-fact-settype-page"><p>e.g., <a href="http://gedcomx.org/Birth">http://gedcomx.org/Birth</a></p>
+</div></td></tr></tbody></table><h5 id="methods_$settype_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="fact-types-page fact-types-constructor-fact-settype-page"><p>this fact</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_attribution">attribution</h3>
+<div class="attribution"><h5 id="properties_attribution_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-attribution">Attribution</a></td><td><div class="fact-types-page fact-types-constructor-fact-attribution-page"><p><a href="#/api/attribution.types:constructor.Attribution">Attribution</a> object</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="properties_id">id</h3>
+<div class="id"><h5 id="properties_id_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="fact-types-page fact-types-constructor-fact-id-page"><p>Id of the name</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="properties_type">type</h3>
+<div class="type"><h5 id="properties_type_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="fact-types-page fact-types-constructor-fact-type-page"><p><a href="http://gedcomx.org/Birth">http://gedcomx.org/Birth</a>, etc.</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>
