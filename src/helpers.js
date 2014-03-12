@@ -654,12 +654,12 @@ define([
   };
 
   /**
-   * Return true if this url is for the OAuth server
+   * Return true if this url is for the Authorities server
    * @param url
    * @returns {boolean}
    */
   exports.isAuthoritiesServerUrl = function(url) {
-    return url.indexOf('/authorities/v1/') === 0;
+    return url.indexOf('/authorities/v1/') !== -1;
   };
 
   /**
