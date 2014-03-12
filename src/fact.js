@@ -115,7 +115,7 @@ define([
      * @function
      * @return {String} normalized place text
      */
-    $getNormalizedPlace: function() { return maybe(maybe(this.place).normalized).value; },
+    $getNormalizedPlace: function() { return maybe(maybe(maybe(this.place).normalized)[0]).value; },
 
     /**
      * @ngdoc function
@@ -242,7 +242,7 @@ define([
       if (!this.place) {
         this.place = {};
       }
-      this.place.normalized = { value: normalizedPlace };
+      this.place.normalized = [{ value: normalizedPlace }];
       //noinspection JSValidateTypes
       return this;
     },
