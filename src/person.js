@@ -55,6 +55,10 @@ define([
     return (!conclusion.attribution || !conclusion.attribution.changeMessage || conclusion.attribution.contributor);
   }
 
+  function spacePrefix(namePiece) {
+    return namePiece ? ' ' + namePiece : '';
+  }
+
   exports.Person.prototype = {
     constructor: Person,
     /**
@@ -631,6 +635,11 @@ define([
       // send names that are new or updated
       helpers.forEach(this.names, function(name) {
         if (!name.id || name.$changed) {
+          // default full text if not set
+          if (!name.$getFullText()) {
+            name.$setFullText((name.$getPrefix() + spacePrefix(name.$getGivenName()) + spacePrefix(name.$getSurname()) +
+                               spacePrefix(name.$getSuffix())).trim());
+          }
           // set change message if none set
           if (changeMessage && attributionNeeded(name)) {
             name.$setChangeMessage(changeMessage);
