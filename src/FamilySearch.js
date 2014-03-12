@@ -98,6 +98,7 @@ define([
 
     // person
     Person: person.Person,
+    deletePerson: person.deletePerson,
     getPerson: person.getPerson,
     getMultiPerson: person.getMultiPerson,
     getPersonWithRelationships: person.getPersonWithRelationships,
