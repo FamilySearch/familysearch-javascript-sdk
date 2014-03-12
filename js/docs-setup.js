@@ -262,7 +262,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "fact",
       "shortDescription": "Fact",
-      "keywords": "$getdate $getformaldate $getnormalizedplace $getnormalizedplaceid $getplace $setchangemessage $setdate $setformaldate $setnormalizedplace $setnormalizedplaceid $setplace $settype api attributes attribution authorities authority change changemessage event fact formal formaldate format function gedcomx http message normalized normalizedplace normalizedplaceid object optional org original place property sets standard string text type types update user written"
+      "keywords": "$getdate $getformaldate $getnormalizedplace $getnormalizedplaceid $getplace $setchangemessage $setdate $setformaldate $setnormalizedplace $setplace $settype api attributes attribution authorities authority change changemessage event fact formal formaldate format function gedcomx http message normalized normalizedplace object optional org original place property sets standard string text type types update user written"
     },
     {
       "section": "api",

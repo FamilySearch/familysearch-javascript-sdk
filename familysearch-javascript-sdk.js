@@ -3223,7 +3223,7 @@ define('fact',[
    *
    * Fact
    * @param {Object=} value with optional attributes
-   * {type, date, formalDate, place, normalizedPlace, normalizedPlaceId, changeMessage}
+   * {type, date, formalDate, place, normalizedPlace, changeMessage}
    **********************************/
 
   var Fact = exports.Fact = function(value) {
@@ -3247,10 +3247,6 @@ define('fact',[
       if (value.normalizedPlace) {
         //noinspection JSUnresolvedFunction
         this.$setNormalizedPlace(value.normalizedPlace);
-      }
-      if (value.normalizedPlaceId) {
-        //noinspection JSUnresolvedFunction
-        this.$setNormalizedPlaceId(value.normalizedPlaceId);
       }
       if (value.changeMessage) {
         //noinspection JSUnresolvedFunction
@@ -3402,7 +3398,7 @@ define('fact',[
      * @methodOf fact.types:constructor.Fact
      * @function
      * @description sets the place
-     * @param {String|Object|Date} place either a place string as written by the user, or {place, normalizedPlace, normalizedPlaceId},
+     * @param {String|Object|Date} place either a place string as written by the user, or {place, normalizedPlace},
      * or a {@link authorities.types:constructor.Place Place} object
      * @return {Fact} this fact
      */
@@ -3418,12 +3414,10 @@ define('fact',[
         this.place.original = place.original;
         //noinspection JSUnresolvedFunction
         this.$setNormalizedPlace(place.$getNormalizedPlace());
-        this.$setNormalizedPlaceId(place.id);
       }
       else if (helpers.isObject(place)) {
         this.place.original = place.place;
         this.$setNormalizedPlace(place.normalizedPlace);
-        this.$setNormalizedPlaceId(place.normalizedPlaceId);
       }
       //noinspection JSValidateTypes
       return this;
@@ -3444,22 +3438,6 @@ define('fact',[
         this.place = {};
       }
       this.place.normalized = [{ value: normalizedPlace }];
-      //noinspection JSValidateTypes
-      return this;
-    },
-
-    /**
-     * @ngdoc function
-     * @name fact.types:constructor.Fact#$setNormalizedPlaceId
-     * @methodOf fact.types:constructor.Fact
-     * @function
-     * @description sets the standard place id
-     * @param {String} normalizedPlaceId from the place authority
-     * @return {Fact} this fact
-     */
-    $setNormalizedPlaceId: function(normalizedPlaceId) {
-      this.$changed = true;
-      this.place.description = '#'+normalizedPlaceId;
       //noinspection JSValidateTypes
       return this;
     },

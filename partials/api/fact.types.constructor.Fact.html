@@ -9,7 +9,7 @@
 <h2 id="usage">Usage</h2>
 <div class="usage"><pre class="prettyprint linenums">Fact([value]);</pre>
 <h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="fact-types-page fact-types-constructor-fact-page"><p>with optional attributes
-{type, date, formalDate, place, normalizedPlace, normalizedPlaceId, changeMessage}</p>
+{type, date, formalDate, place, normalizedPlace, changeMessage}</p>
 </div></td></tr></tbody></table></div>
 <div class="member method"><h2 id="methods">Methods</h2>
 <ul class="methods"><li><h3 id="methods_$getdate">$getDate()</h3>
@@ -57,15 +57,9 @@ or a <a href="#/api/authorities.types:constructor.Date">Date</a> object</p>
 </div></td></tr></tbody></table><h5 id="methods_$setnormalizedplace_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="fact-types-page fact-types-constructor-fact-setnormalizedplace-page"><p>this fact</p>
 </div></td></tr></table></div>
 </li>
-<li><h3 id="methods_$setnormalizedplaceid">$setNormalizedPlaceId(normalizedPlaceId)</h3>
-<div class="$setnormalizedplaceid"><div class="fact-types-page fact-types-constructor-fact-setnormalizedplaceid-page"><p>sets the standard place id</p>
-</div><h5 id="methods_$setnormalizedplaceid_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>normalizedPlaceId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="fact-types-page fact-types-constructor-fact-setnormalizedplaceid-page"><p>from the place authority</p>
-</div></td></tr></tbody></table><h5 id="methods_$setnormalizedplaceid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="fact-types-page fact-types-constructor-fact-setnormalizedplaceid-page"><p>this fact</p>
-</div></td></tr></table></div>
-</li>
 <li><h3 id="methods_$setplace">$setPlace(place)</h3>
 <div class="$setplace"><div class="fact-types-page fact-types-constructor-fact-setplace-page"><p>sets the place</p>
-</div><h5 id="methods_$setplace_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>place</td><td><a href="" class="label type-hint type-hint-string">String</a><a href="" class="label type-hint type-hint-object">Object</a><a href="" class="label type-hint type-hint-date">Date</a></td><td><div class="fact-types-page fact-types-constructor-fact-setplace-page"><p>either a place string as written by the user, or {place, normalizedPlace, normalizedPlaceId},
+</div><h5 id="methods_$setplace_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>place</td><td><a href="" class="label type-hint type-hint-string">String</a><a href="" class="label type-hint type-hint-object">Object</a><a href="" class="label type-hint type-hint-date">Date</a></td><td><div class="fact-types-page fact-types-constructor-fact-setplace-page"><p>either a place string as written by the user, or {place, normalizedPlace},
 or a <a href="#/api/authorities.types:constructor.Place">Place</a> object</p>
 </div></td></tr></tbody></table><h5 id="methods_$setplace_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="fact-types-page fact-types-constructor-fact-setplace-page"><p>this fact</p>
 </div></td></tr></table></div>
