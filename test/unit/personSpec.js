@@ -176,9 +176,9 @@ define(['FamilySearch'], function(FamilySearch) {
     it('is created', function() {
       var promise = new FamilySearch.Person()
         .$setGender('http://gedcomx.org/Female', '...change message...')
-        .$addName({fullText: 'Anastasia Aleksandrova', givenName: 'Anastasia', surname: 'Aleksandrova', changeMessage: '...change message...'})
+        .$addName({givenName: 'Anastasia', surname: 'Aleksandrova'})
         .$addFact({type: 'http://gedcomx.org/Birth', date: '3 Apr 1836', formalDate: '+1836-04-03', place: 'Moscow, Russia', changeMessage: '...change message...'})
-        .$save();
+        .$save('...default change message...');
       promise.then(function(response) {
         var request = promise.getRequest();
         //noinspection JSUnresolvedFunction
@@ -203,7 +203,7 @@ define(['FamilySearch'], function(FamilySearch) {
               } ],
               'preferred' : true,
               'attribution' : {
-                'changeMessage' : '...change message...'
+                'changeMessage' : '...default change message...'
               },
               'type' : 'http://gedcomx.org/BirthName'
             } ],

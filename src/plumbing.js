@@ -158,7 +158,7 @@ define([
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   exports.del = function(url, headers, opts, responseMapper) {
-    return exports.http('DELETE', url, headers, {}, opts, responseMapper);
+    return exports.http('DELETE', url, headers, null, opts, responseMapper);
   };
 
   /**

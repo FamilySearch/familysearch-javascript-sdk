@@ -591,7 +591,8 @@ define([
      * @param {String=} changeMessage default change message to use when name/fact/gender-specific changeMessage is not specified
      * @param {boolean=} refresh true to read the person after updating
      * @param {Object=} opts options to pass to the http function specified during init
-     * @return {Object} promise of the person id, which is fulfilled after person has been updated, and if refresh is true, after the person has been read
+     * @return {Object} promise of the person id, which is fulfilled after person has been updated,
+     * and if refresh is true, after the person has been read
      */
     $save: function(changeMessage, refresh, opts) {
       var postData = new Person();
@@ -637,8 +638,8 @@ define([
         if (!name.id || name.$changed) {
           // default full text if not set
           if (!name.$getFullText()) {
-            name.$setFullText((name.$getPrefix() + spacePrefix(name.$getGivenName()) + spacePrefix(name.$getSurname()) +
-                               spacePrefix(name.$getSuffix())).trim());
+            name.$setFullText((spacePrefix(name.$getPrefix()) + spacePrefix(name.$getGivenName()) +
+                               spacePrefix(name.$getSurname()) + spacePrefix(name.$getSuffix())).trim());
           }
           // set change message if none set
           if (changeMessage && attributionNeeded(name)) {
@@ -688,7 +689,7 @@ define([
       var person = this;
       // wait for all promises to be fulfilled
       var promise = helpers.promiseAll(promises).then(function(results) {
-        var id = postData.id ? postData.id : results[0]; // if we're adding a new person, get the id from the first (and only) promise
+        var id = postData.id ? postData.id : results[0]; // if we're adding a new person, get id from the first (only) promise
         helpers.extendHttpPromise(promise, promises[0]); // extend the first promise into the returned promise
 
         if (refresh) {
@@ -755,7 +756,8 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  globals.getPerson = exports.getPerson = function(pid, params, opts) { // put on globals so parentsAndChildren and spouses and searchAndMatch can access it
+  globals.getPerson = exports.getPerson = function(pid, params, opts) { // put on globals so parentsAndChildren and spouses
+                                                                        // and searchAndMatch can access it
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-template', pid, {pid: pid}),
       function(url) {
@@ -772,7 +774,8 @@ define([
    * @param {Function=} subObjectGenerator generate sub-objects corresponding to parents of persons; used by search/match functions
    * @returns {Function}
    */
-  globals.personMapper = exports.personMapper = function(subObjectGenerator) { // put on globals so parentsAndChildren and spouses and searchAndMatch and pedigree can access it
+  globals.personMapper = exports.personMapper = function(subObjectGenerator) { // put on globals so parentsAndChildren and spouses
+                                                                               // and searchAndMatch and pedigree can access it
     var personsGenerator = function(response) {
       return helpers.flatMap(subObjectGenerator ? subObjectGenerator(response) : [response], function(root) {
         return root.persons;
