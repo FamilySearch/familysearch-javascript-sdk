@@ -1,9 +1,12 @@
 define([
   'init',
   'authentication',
+  'authorities',
   'changeHistory',
   'discussions',
+  'fact',
   'memories',
+  'name',
   'notes',
   'parentsAndChildren',
   'pedigree',
@@ -14,7 +17,7 @@ define([
   'spouses',
   'user',
   'plumbing'
-], function(init, authentication, changeHistory, discussions, memories, notes, parentsAndChildren, pedigree, person,
+], function(init, authentication, authorities, changeHistory, discussions, fact, memories, name, notes, parentsAndChildren, pedigree, person,
             searchAndMatch, sourceBox, sources, spouses, user, plumbing) {
   return {
     init: init.init,
@@ -26,7 +29,11 @@ define([
     hasAccessToken: authentication.hasAccessToken,
     invalidateAccessToken: authentication.invalidateAccessToken,
 
-    // TODO authorities
+    // authorities
+    Date: authorities.Date,
+    Place: authorities.Place,
+    getDate: authorities.getDate,
+    getPlace: authorities.getPlace,
 
     // changeHistory
     Change: changeHistory.Change,
@@ -45,6 +52,9 @@ define([
     getMultiDiscussion: discussions.getMultiDiscussion,
     getComments: discussions.getComments,
 
+    // fact
+    Fact: fact.Fact,
+
     // memories
     Memory: memories.Memory,
     MemoryPersonaRef: memories.MemoryPersonaRef,
@@ -59,6 +69,9 @@ define([
     createMemory: memories.createMemory,
     addMemoryPersona: memories.addMemoryPersona,
     addMemoryPersonaRef: memories.addMemoryPersonaRef,
+
+    // name
+    Name: name.Name,
 
     // notes
     Note: notes.Note,
@@ -85,8 +98,6 @@ define([
 
     // person
     Person: person.Person,
-    Name: person.Name,
-    Fact: person.Fact,
     getPerson: person.getPerson,
     getMultiPerson: person.getMultiPerson,
     getPersonWithRelationships: person.getPersonWithRelationships,

@@ -40,7 +40,7 @@ define([
      * @ngdoc property
      * @name searchAndMatch.types:constructor.SearchResult#title
      * @propertyOf searchAndMatch.types:constructor.SearchResult
-     * @return {String} Id and Name
+     * @return {String} Id and name
      */
 
     /**

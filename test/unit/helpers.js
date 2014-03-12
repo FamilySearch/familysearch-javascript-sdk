@@ -132,19 +132,25 @@ define(['FamilySearch', '_', 'jasmine-jquery'], function(FamilySearch, _) {
     var headers = {};
     if (data.headers) {
       headers = data.headers;
-      delete data.headers;
     }
     var status = 200;
     if (data.status) {
       status = data.status;
-      delete data.status;
     }
-    if (opts.type === 'POST' && isEmpty(data)) {
-      data = null;
+    var returnedData = {};
+    for (var key in data) {
+      if (data.hasOwnProperty(key)) {
+        if (key !== 'headers' && key !== 'status') {
+          returnedData[key] = data[key];
+        }
+      }
+    }
+    if (opts.type === 'POST' && isEmpty(returnedData)) {
+      returnedData = null;
     }
 
     var d = deferredMock();
-    d.resolve(data, '', { status: status });
+    d.resolve(returnedData, '', { status: status });
     var returnedPromise = d.promise();
 
     returnedPromise.getAllResponseHeaders = function() {

@@ -34,8 +34,8 @@
  * People with names and facts
  *
  * - {@link person.types:constructor.Person Person}
- * - {@link person.types:constructor.Fact Fact}
- * - {@link person.types:constructor.Name Name}
+ * - {@link fact.types:constructor.Fact Fact}
+ * - {@link name.types:constructor.Name Name}
  *
  * Relationships between people
  *
@@ -175,29 +175,35 @@
  *
  * The returned objects contain the same properties as the original response json, but they have custom constructors whose
  * prototypes add convenience functions.
- * For example, the prototype for {@link person.types:constructor.Person Person} objects includes `getGivenName()` and `getSurname()`
+ * For example, the prototype for {@link person.types:constructor.Person Person} objects includes `$getGivenName()` and `$getSurname()`
  * convenience functions for returning the person's given name and surname respectively.
  * Without these convenience functions, you would have to navigate the `parts` elements of the `nameForms` array,
  * look for a part whose `type` element is `http://gedcomx.org/Given` or `http://gedcomx.org/Surname` respectively, and
- * then return the `value` element of that part.  `getGivenName()` and `getSurname()` do this for you.
+ * then return the `value` element of that part.  `$getGivenName()` and `$getSurname()` do this for you.
+ * All convenience functions added by the SDK begin with a `$` to avoid name conflicts with FamilySearch property names.
  * The object properties and convenience functions are fully described in the docs.
  *
  * You can add your own convenience functions to the returned objects.
  * For example, suppose you wanted to display someone's name followed by their id. You could write
  * <pre>
- *   FamilySearch.Person.prototype.getNameAndId = function() {
+ *   FamilySearch.Person.prototype._getNameAndId = function() {
  *     return this.getName() + ' (' + this.id + ')';
  *   }
  * </pre>
  *
- * and from then on you could call `person.getNameAndId()` on any {@link person.types:constructor.Person Person} object.
+ * and from then on you could call `person._getNameAndId()` on any {@link person.types:constructor.Person Person} object.
  *
  * <pre>
  * FamilySearch.getPerson('ID').then(function(response) {
  *   var person = response.getPerson();
- *   console.log('Hello '+person.getNameAndId());
+ *   console.log('Hello '+person._getNameAndId());
  * });
  * </pre>
+ *
+ * To avoid name conflicts with FamilySearch property names and SDK convenience functions, we recommend that you begin
+ * your convenience functions with a `_`, though you are free to begin your convenience functions however you want.
+ *
+ * Object properties beginning with `$` or `_` are removed before posting data to FamilySearch.
  *
  * ## Using the SDK with module loaders
  *

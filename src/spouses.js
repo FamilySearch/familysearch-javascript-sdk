@@ -1,12 +1,13 @@
 define([
   'attribution',
   'changeHistory',
+  'fact',
   'globals',
   'helpers',
   'plumbing',
   'notes',
   'sources'
-], function(attribution, changeHistory, globals, helpers, plumbing, notes, sources) {
+], function(attribution, changeHistory, fact, globals, helpers, plumbing, notes, sources) {
   /**
    * @ngdoc overview
    * @name spouses
@@ -44,7 +45,7 @@ define([
      * @ngdoc function
      * @name spouses.types:constructor.Couple#$getFacts
      * @methodOf spouses.types:constructor.Couple
-     * @return {Fact[]} array of {@link person.types:constructor.Fact Facts}; e.g., marriage
+     * @return {Fact[]} array of {@link fact.types:constructor.Fact Facts}; e.g., marriage
      */
     $getFacts: function() { return this.facts || []; },
 
@@ -52,7 +53,7 @@ define([
      * @ngdoc function
      * @name spouses.types:constructor.Couple#$getMarriageFact
      * @methodOf spouses.types:constructor.Couple
-     * @return {Fact} {@link person.types:constructor.Fact Fact} of type http://gedcomx.org/Marriage (first one if multiple)
+     * @return {Fact} {@link fact.types:constructor.Fact Fact} of type http://gedcomx.org/Marriage (first one if multiple)
      */
     $getMarriageFact: function() { return helpers.find(this.facts, {type: 'http://gedcomx.org/Marriage'}); },
 
@@ -169,7 +170,7 @@ define([
           helpers.compose(
             helpers.constructorSetter(Couple, 'relationships'),
             helpers.objectExtender(coupleConvenienceFunctions),
-            helpers.constructorSetter(globals.Fact, 'facts', function(response) {
+            helpers.constructorSetter(fact.Fact, 'facts', function(response) {
               return maybe(response).relationships;
             }),
             helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {

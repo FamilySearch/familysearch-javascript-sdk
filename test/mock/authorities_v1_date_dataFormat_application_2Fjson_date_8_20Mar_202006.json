@@ -1,0 +1,37 @@
+{
+  "statusCode":200,
+  "statusMessage":"OK",
+  "deprecated":null,
+  "version":"1.8.20131212.2323",
+  "places":null,
+  "names":null,
+  "dates":{
+    "version":"1.6.7.1",
+    "count":1,
+    "date":[{
+      "normalized":"8 March 2006",
+      "earliest":{
+        "normalized":"8 March 2006",
+        "numeric":"2006-03-08",
+        "astro":"2453803",
+        "requested":null,
+        "original":null,
+        "ambiguous":null,
+        "valid":null
+      },
+      "latest":{
+        "normalized":"8 March 2006",
+        "numeric":"2006-03-08",
+        "astro":"2453803",
+        "requested":null,
+        "original":null,
+        "ambiguous":null,
+        "valid":null
+      },
+      "requested":"8 March 2006",
+      "original":"8 March 2006",
+      "ambiguous":false,
+      "valid":true
+    }]
+  }
+}

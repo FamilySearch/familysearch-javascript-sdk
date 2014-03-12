@@ -1,15 +1,58 @@
 define(['FamilySearch'], function(FamilySearch) {
   describe('A person', function() {
+    it('is updated in memory', function() {
+      var person = new FamilySearch.Person();
+      person.$addName('fulltext');
+      expect(person.$getNames()[0].$getFullText()).toBe('fulltext');
+
+      person = new FamilySearch.Person();
+      person.$addName({givenName: 'given', surname: 'surname', fullText: 'fulltext', preferred: true});
+      expect(person.$getPreferredName().$getFullText()).toBe('fulltext');
+      expect(person.$getGivenName()).toBe('given');
+      expect(person.$getSurname()).toBe('surname');
+
+      person = new FamilySearch.Person();
+      person.$addName(new FamilySearch.Name({givenName: 'given', surname: 'surname', fullText: 'fulltext', preferred: true}));
+      expect(person.$getPreferredName().$getFullText()).toBe('fulltext');
+      expect(person.$getGivenName()).toBe('given');
+      expect(person.$getSurname()).toBe('surname');
+
+      person = new FamilySearch.Person();
+      var name = new FamilySearch.Name({givenName: 'given', surname: 'surname', fullText: 'fulltext', preferred: true});
+      name.id = 'id';
+      person.$addName(name);
+      person.$deleteName(name, 'changeMessage');
+      expect(person.$deletedConclusions['id']).toBe('changeMessage');
+
+      person = new FamilySearch.Person();
+      person.$addFact(new FamilySearch.Fact({type: 'http://gedcomx.org/Birth', date: 'date', place: 'place'}));
+      expect(person.$getBirthDate()).toBe('date');
+      expect(person.$getBirthPlace()).toBe('place');
+
+      person = new FamilySearch.Person();
+      var fact = new FamilySearch.Fact({type: 'http://gedcomx.org/Birth', date: 'date', place: 'place'});
+      fact.id = 'id';
+      person.$addFact(fact);
+      person.$deleteFact(fact, 'changeMessage');
+      expect(person.$deletedConclusions['id']).toBe('changeMessage');
+
+      person = new FamilySearch.Person();
+      person.$setGender('gender', 'changeMessage');
+      expect(person.gender.type).toBe('gender');
+      expect(person.gender.$changed).toBeTruthy();
+      expect(person.gender.attribution.changeMessage).toBe('changeMessage');
+    });
+
     it('is returned from getPerson', function() {
       FamilySearch.getPerson('PPPJ-MYZ').then(function(response) {
         var person = response.getPerson();
         expect(person.id).toBe('PPPJ-MYZ');
         expect(person.$getBirthDate()).toBe('3 Apr 1836');
         expect(person.$getBirthPlace()).toBe('Moscow, Russia');
-        expect(person.$getDeathDate()).toBeUndefined();
-        expect(person.$getDeathPlace()).toBeUndefined();
-        expect(person.$getGender()).toBe('Male');
-        expect(person.$getLifeSpan()).toBe('3 Apr 1836 - Dead');
+        expect(person.$getDeathDate()).toBe('');
+        expect(person.$getDeathPlace()).toBe('');
+        expect(person.$getDisplayGender()).toBe('Male');
+        expect(person.$getDisplayLifeSpan()).toBe('3 Apr 1836 - Dead');
         expect(person.$getDisplayName()).toBe('Alex Aleksandrova');
         expect(person.living).toBe(true);
         expect(person.$getGivenName()).toBe('Alex');
@@ -41,12 +84,12 @@ define(['FamilySearch'], function(FamilySearch) {
         var person = response['PPPJ-MYZ'].getPerson();
         expect(person.id).toBe('PPPJ-MYZ');
         expect(person.$getDisplayName()).toBe('Alex Aleksandrova');
-        expect(person.$getGender()).toBe('Male');
+        expect(person.$getDisplayGender()).toBe('Male');
 
         person = response['PPPJ-MYY'].getPerson();
         expect(person.id).toBe('PPPJ-MYY');
         expect(person.$getDisplayName()).toBe('Alexa Aleksandrova');
-        expect(person.$getGender()).toBe('Female');
+        expect(person.$getDisplayGender()).toBe('Female');
       });
     });
 
@@ -127,6 +170,162 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(rel.$getWifeId()).toBe('KJ8T-FP2');
         expect(rel.$getFacts().length).toBe(1);
         expect(rel.$getFacts()[0].$getDate()).toBe('1 January 1786');
+      });
+    });
+
+    it('is created', function() {
+      var promise = new FamilySearch.Person()
+        .$setGender('http://gedcomx.org/Female', '...change message...')
+        .$addName({fullText: 'Anastasia Aleksandrova', givenName: 'Anastasia', surname: 'Aleksandrova', changeMessage: '...change message...'})
+        .$addFact({type: 'http://gedcomx.org/Birth', date: '3 Apr 1836', formalDate: '+1836-04-03', place: 'Moscow, Russia', changeMessage: '...change message...'})
+        .$save();
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualJson({
+          'persons' : [ {
+            'gender' : {
+              'type' : 'http://gedcomx.org/Female',
+              'attribution' : {
+                'changeMessage' : '...change message...'
+              }
+            },
+            'names' : [ {
+              'nameForms' : [ {
+                'parts' : [ {
+                  'type' : 'http://gedcomx.org/Given',
+                  'value' : 'Anastasia'
+                }, {
+                  'type' : 'http://gedcomx.org/Surname',
+                  'value' : 'Aleksandrova'
+                } ],
+                'fullText' : 'Anastasia Aleksandrova'
+              } ],
+              'preferred' : true,
+              'attribution' : {
+                'changeMessage' : '...change message...'
+              },
+              'type' : 'http://gedcomx.org/BirthName'
+            } ],
+            'facts' : [ {
+              'type' : 'http://gedcomx.org/Birth',
+              'date' : {
+                'original' : '3 Apr 1836',
+                'formal' : '+1836-04-03'
+              },
+              'place' : {
+                'original' : 'Moscow, Russia'
+              },
+              'attribution' : {
+                'changeMessage' : '...change message...'
+              }
+            } ]
+          } ]
+        });
+        expect(promise.getStatusCode()).toBe(201);
+        expect(response).toBe('12345');
+      });
+    });
+
+    it('conclusion is added', function() {
+      var person = new FamilySearch.Person();
+      person.id = '12345';
+      var promise = person
+        .$addFact({type: 'http://gedcomx.org/Birth', date: '3 Apr 1836', formalDate: '+1836-04-03', place: 'Moscow, Russia', changeMessage: '...change message...'})
+        .$save();
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualJson({
+          'persons' : [ {
+            'id' : '12345',
+            'facts' : [ {
+              'type' : 'http://gedcomx.org/Birth',
+              'date' : {
+                'original' : '3 Apr 1836',
+                'formal' : '+1836-04-03'
+              },
+              'place' : {
+                'original' : 'Moscow, Russia'
+              },
+              'attribution' : {
+                'changeMessage' : '...change message...'
+              }
+            } ]
+          } ]
+        });
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('12345');
+      });
+    });
+
+    it('conclusion is updated', function() {
+      // construct mock person with existing birth fact
+      var person = new FamilySearch.Person();
+      person.id = '12345';
+      var fact = new FamilySearch.Fact({type: 'http://gedcomx.org/Birth', date: '3 Apr 1836', formalDate: '+1836-04-03'});
+      fact.id = 'ABCDE';
+      fact.$changed = false;
+      person.$addFact(fact);
+
+      // set birth place
+      person.$getBirth().$setPlace('Moscow, Russia').$setChangeMessage('...change message...');
+      var promise = person.$save();
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualJson({
+          'persons' : [ {
+            'id' : '12345',
+            'facts' : [ {
+              'id' : 'ABCDE',
+              'type' : 'http://gedcomx.org/Birth',
+              'date' : {
+                'original' : '3 Apr 1836',
+                'formal' : '+1836-04-03'
+              },
+              'place' : {
+                'original' : 'Moscow, Russia'
+              },
+              'attribution' : {
+                'changeMessage' : '...change message...'
+              }
+            } ]
+          } ]
+        });
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('12345');
+      });
+    });
+
+    it('conclusion is deleted', function() {
+      // construct mock person with existing birth fact
+      var person = new FamilySearch.Person();
+      person.id = '12345';
+      var fact = new FamilySearch.Fact({type: 'http://gedcomx.org/Birth', date: '3 Apr 1836', formalDate: '+1836-04-03'});
+      fact.id = '1';
+      fact.$changed = false;
+      person.$addFact(fact);
+
+      // delete fact
+      person.$deleteFact(fact);
+      var promise = person.$save('...change message...');
+      promise.then(function(response) {
+        expect(promise.getStatusCode()).toBe(204);
+        expect(promise.getRequest().headers['X-Reason']).toBe('...change message...');
+        expect(response).toBe('12345');
+      });
+    });
+
+    it('is deleted', function() {
+      var person = new FamilySearch.Person();
+      person.id = 'PPPJ-MYZ';
+
+      var promise = person.$delete('Reason for delete');
+      promise.then(function(response) {
+        expect(promise.getStatusCode()).toBe(204);
+        expect(promise.getRequest().headers['X-Reason']).toBe('Reason for delete');
+        expect(response).toBe('PPPJ-MYZ');
       });
     });
 

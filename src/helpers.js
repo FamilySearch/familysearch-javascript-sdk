@@ -49,6 +49,15 @@ define([
   };
 
   /**
+   * borrowed from http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric
+   * @param {*} value to test
+   * @returns {boolean}
+   */
+  exports.isNumeric = function(value) {
+    return !isNaN(parseFloat(value)) && isFinite(value);
+  };
+
+  /**
    * borrowed from underscore.js
    * @param {*} value to test
    * @returns {boolean}
@@ -133,18 +142,29 @@ define([
     return keys;
   };
 
+  // return true if all corresponding object properties match
+  function templateMatches(template, obj) {
+    for (var key in template) {
+      if (template.hasOwnProperty(key) && obj[key] !== template[key]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   /**
    * Simplified version of underscore's filter
    * @param {Array|Object} arr Array or object to iterate over
-   * @param {function(elm)} fn Function returns true to keep element
+   * @param {Object|function(elm)} objOrFn if object, return matching objects; otherwise return objects where function(obj) returns true
    * @param {Object=} context Object for this
    * @returns {Array} Filtered array
    */
-  exports.filter = function(arr, fn, context) {
+  exports.filter = function(arr, objOrFn, context) {
     var result = [];
-    forEach(arr, function(e) {
-      if (fn.call(context, e)) {
-        result.push(e);
+    var isFn = exports.isFunction(objOrFn);
+    forEach(arr, function(elm) {
+      if (isFn ? objOrFn.call(context, elm) : templateMatches(objOrFn, elm)) {
+        result.push(elm);
       }
     });
     return result;
@@ -188,6 +208,24 @@ define([
   };
 
   /**
+   * simplified version of underscore's indexOf
+   * @param {Array} arr array to search
+   * @param {*} item item to find
+   * @returns {number} position of item in array or -1 if not found
+   */
+  exports.indexOf = function(arr, item) {
+    if (Array.prototype.indexOf === arr.indexOf) {
+      return arr.indexOf(item);
+    }
+    for (var i = 0, len = arr.length; i < len; i++) {
+      if (arr[i] === item) {
+        return i;
+      }
+    }
+    return -1;
+  };
+
+  /**
    * simplified version of underscore's uniq
    * @param {Array} arr Array to extract unique elements from
    * @returns {Array} Contains only one instance of each element
@@ -216,20 +254,7 @@ define([
     if (arr) {
       for (var i = 0, len = arr.length; i < len; i++) {
         var elm = arr[i];
-        var matches;
-        if (isFn) {
-          matches = objOrFn.call(context, elm);
-        }
-        else {
-          matches = true;
-          for (var key in objOrFn) {
-            if (objOrFn.hasOwnProperty(key) && elm[key] !== objOrFn[key]) {
-              matches = false;
-              break;
-            }
-          }
-        }
-        if (matches) {
+        if (isFn ? objOrFn.call(context, elm) : templateMatches(objOrFn, elm)) {
           result = elm;
           break;
         }
@@ -314,11 +339,23 @@ define([
   };
 
   /**
+   * remove all properties of an object
+   * @param {Object} obj object to delete properties from
+   */
+  exports.deleteProperties = function(obj) {
+    for (var attr in obj) {
+      if (obj.hasOwnProperty(attr)) {
+        delete obj[attr];
+      }
+    }
+  };
+
+  /**
    * clone with a filter function to limit which fields are cloned
    * borowed from http://stackoverflow.com/questions/728360/most-elegant-way-to-clone-a-javascript-object
    * doesn't handle cyclic objects, functions, may not handle regex's
    * @param {Object} obj Object to clone
-   * @param {Function} filter Function(key) returns true to clone the field
+   * @param {Function=} filter Function(key) returns true to clone the field; all fields are cloned if omitted
    * @returns {Object} cloned object
    */
   exports.clonePartial = function(obj, filter) {
@@ -339,7 +376,7 @@ define([
     if (obj instanceof Array) {
       copy = [];
       for (var i = 0, len = obj.length; i < len; i++) {
-        if (filter(i)) {
+        if (!filter || filter(i)) {
           copy.push(exports.clonePartial(obj[i], filter));
         }
       }
@@ -351,7 +388,7 @@ define([
       // set the constructor on the cloned object
       copy = Object.create(Object.getPrototypeOf(obj));
       for (var attr in obj) {
-        if (obj.hasOwnProperty(attr) && filter(attr)) {
+        if (obj.hasOwnProperty(attr) && (!filter || filter(attr))) {
           copy[attr] = exports.clonePartial(obj[attr], filter);
         }
       }
@@ -545,6 +582,16 @@ define([
   };
 
   /**
+   * Response mapper that returns the X-ENTITY-ID header
+   * @param data ignored
+   * @param promise http promise
+   * @returns {string} the X-ENTITY-ID response header
+   */
+  exports.getResponseEntityId = function(data, promise) {
+    return promise.getResponseHeader('X-ENTITY-ID');
+  };
+
+  /**
    * Response mapper that returns the location header
    * @param data ignored
    * @param promise http promise
@@ -605,6 +652,25 @@ define([
   exports.getAPIServerUrl = function(path) {
     return getAbsoluteUrl(globals.apiServer[globals.environment], path);
   };
+
+  /**
+   * Return true if this url is for the OAuth server
+   * @param url
+   * @returns {boolean}
+   */
+  exports.isAuthoritiesServerUrl = function(url) {
+    return url.indexOf('/authorities/v1/') === 0;
+  };
+
+  /**
+   * Prepend authorities server to path if path doesn't start with https?://
+   * @param path
+   * @returns {string} server + path
+   */
+  exports.getAuthoritiesServerUrl = function(path) {
+    return getAbsoluteUrl(globals.authoritiesServer[globals.environment], path);
+  };
+
 
   /**
    * Create a URL-encoded query string from an object

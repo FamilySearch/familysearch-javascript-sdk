@@ -261,8 +261,11 @@ define([
     accessTokenPromise.then(function() {
       // append the access token as a query parameter to avoid cors pre-flight
       // this is detrimental to browser caching across sessions, which seems less bad than cors pre-flight requests
-      if (globals.accessToken && absoluteUrl.indexOf('access_token=') === -1) {
-        absoluteUrl = helpers.appendQueryParameters(absoluteUrl, {'access_token': globals.accessToken});
+      var accessTokenName = helpers.isAuthoritiesServerUrl(absoluteUrl) ? 'sessionId' : 'access_token';
+      if (globals.accessToken && absoluteUrl.indexOf(accessTokenName+'=') === -1) {
+        var accessTokenParam = {};
+        accessTokenParam[accessTokenName] = globals.accessToken;
+        absoluteUrl = helpers.appendQueryParameters(absoluteUrl, accessTokenParam);
       }
 
       // default retries

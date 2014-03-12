@@ -1,12 +1,13 @@
 define([
   'attribution',
   'changeHistory',
+  'fact',
   'globals',
   'helpers',
   'notes',
   'plumbing',
   'sources'
-], function(attribution, changeHistory, globals, helpers, notes, plumbing, sources) {
+], function(attribution, changeHistory, fact, globals, helpers, notes, plumbing, sources) {
   /**
    * @ngdoc overview
    * @name parentsAndChildren
@@ -44,7 +45,7 @@ define([
      * @ngdoc function
      * @name parentsAndChildren.types:constructor.ChildAndParents#$getFatherFacts
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-     * @return {Fact[]} array of {@link person.types:constructor.Fact Facts}; e.g., parent-relationship type
+     * @return {Fact[]} array of {@link fact.types:constructor.Fact Facts}; e.g., parent-relationship type
      */
     $getFatherFacts: function() { return this.fatherFacts || []; },
 
@@ -52,7 +53,7 @@ define([
      * @ngdoc function
      * @name parentsAndChildren.types:constructor.ChildAndParents#$getMotherFacts
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-     * @return {Fact[]} array of {@link person.types:constructor.Fact Facts}; e.g., parent-relationship type
+     * @return {Fact[]} array of {@link fact.types:constructor.Fact Facts}; e.g., parent-relationship type
      */
     $getMotherFacts: function() { return this.motherFacts || []; },
 
@@ -196,10 +197,10 @@ define([
           helpers.compose(
             helpers.constructorSetter(ChildAndParents, 'childAndParentsRelationships'),
             helpers.objectExtender(childAndParentsConvenienceFunctions),
-            helpers.constructorSetter(globals.Fact, 'motherFacts', function(response) {
+            helpers.constructorSetter(fact.Fact, 'motherFacts', function(response) {
               return maybe(response).childAndParentsRelationships;
             }),
-            helpers.constructorSetter(globals.Fact, 'fatherFacts', function(response) {
+            helpers.constructorSetter(fact.Fact, 'fatherFacts', function(response) {
               return maybe(response).childAndParentsRelationships;
             }),
             helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {

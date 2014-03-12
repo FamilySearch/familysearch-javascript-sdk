@@ -20,20 +20,16 @@ define([
    * @description
    *
    * Attribution
+   * @param {String=} changeMessage change message
    */
-  var Attribution = exports.Attribution = function() {
-
+  var Attribution = exports.Attribution = function(changeMessage) {
+    if (changeMessage) {
+      this.changeMessage = changeMessage;
+    }
   };
 
   exports.Attribution.prototype = {
     constructor: Attribution,
-    /**
-     * @ngdoc property
-     * @name attribution.types:constructor.Attribution#id
-     * @propertyOf attribution.types:constructor.Attribution
-     * @return {String} Id of the attribution
-     */
-
     /**
      * @ngdoc property
      * @name attribution.types:constructor.Attribution#modified

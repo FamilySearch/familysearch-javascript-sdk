@@ -28,5 +28,10 @@ define({
     'staging'   : 'https://identbeta.familysearch.org/cis-web/oauth2/v3',
     'production': 'https://ident.familysearch.org/cis-web/oauth2/v3'
   },
+  authoritiesServer: {
+    'sandbox'   : 'https://sandbox.familysearch.org',
+    'staging'   : 'https://stage.familysearch.org',
+    'production': 'https://api.familysearch.org'
+  },
   discoveryUrl: '/.well-known/app-meta'
 });

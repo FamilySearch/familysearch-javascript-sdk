@@ -3,8 +3,9 @@ define([
   'discussions',
   'globals',
   'helpers',
+  'name',
   'plumbing'
-], function(attribution, discussions, globals, helpers, plumbing) {
+], function(attribution, discussions, globals, helpers, name, plumbing) {
   /**
    * @ngdoc overview
    * @name memories
@@ -197,7 +198,7 @@ define([
      * @ngdoc function
      * @name memories.types:constructor.MemoryPersona#$getNames
      * @methodOf memories.types:constructor.MemoryPersona
-     * @return {Name[]} an array of {@link person.types:constructor.Name Names}
+     * @return {Name[]} an array of {@link name.types:constructor.Name Names}
      */
     $getNames: function() { return this.names || []; },
 
@@ -215,7 +216,7 @@ define([
      * @name memories.types:constructor.MemoryPersona#$getPreferredName
      * @methodOf memories.types:constructor.MemoryPersona
      * @function
-     * @return {string} preferred {@link person.types:constructor.Name Name}
+     * @return {string} preferred {@link name.types:constructor.Name Name}
      */
     $getPreferredName: function() { return helpers.findOrFirst(this.names, {preferred: true}); },
 
@@ -251,22 +252,22 @@ define([
 
     /**
      * @ngdoc function
-     * @name name memories.types:constructor.MemoryPersona#$addName
+     * @name memories.types:constructor.MemoryPersona#$addName
      * @methodOf memories.types:constructor.MemoryPersona
      * @function
-     * @param {Name|string} name to add
+     * @param {Name|string} value name to add
      */
-    $addName: function(name) {
-      if (!(name instanceof globals.Name)) {
+    $addName: function(value) {
+      if (!(value instanceof name.Name)) {
         //noinspection JSValidateTypes
-        name = new globals.Name(name);
+        value = new name.Name(value);
       }
-      this.names.push(name);
+      this.names.push(value);
     },
 
     /**
      * @ngdoc function
-     * @name name memories.types:constructor.MemoryPersona#$addMemoryArtifactRef
+     * @name memories.types:constructor.MemoryPersona#$addMemoryArtifactRef
      * @methodOf memories.types:constructor.MemoryPersona
      * @function
      * @param {string|MemoryArtifactRef} mar URL of the memory artifact or the memory artifact ref to add
@@ -583,7 +584,7 @@ define([
               return this && this.persons ? this.persons : [];
             }}),
             helpers.constructorSetter(MemoryPersona, 'persons'),
-            helpers.constructorSetter(globals.Name, 'names', function(response) {
+            helpers.constructorSetter(name.Name, 'names', function(response) {
               return maybe(response).persons;
             }),
             helpers.constructorSetter(MemoryArtifactRef, 'media', function(response) {

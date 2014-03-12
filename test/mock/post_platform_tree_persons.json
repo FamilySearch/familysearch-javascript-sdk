@@ -1,0 +1,6 @@
+{
+  "status": 201,
+  "headers": {
+    "X-ENTITY-ID": "12345"
+  }
+}
