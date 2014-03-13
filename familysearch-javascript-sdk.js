@@ -7011,7 +7011,6 @@ define('person',[
   };
 
   // Functions to extract various pieces of the response
-  // TODO how identify preferred parents?
   var personWithRelationshipsConvenienceFunctions = {
     getPerson:     function(id) { return helpers.find(this.persons, {id: id}); },
     getPrimaryPerson: function() { return this.getPerson(this.getPrimaryId()); },
@@ -7127,61 +7126,117 @@ define('person',[
       });
   };
 
+  var relationshipsResponseMapper = helpers.compose(
+    helpers.constructorSetter(spouses.Couple, 'relationships'),
+    helpers.constructorSetter(parentsAndChildren.ChildAndParents, 'childAndParentsRelationships'),
+    helpers.objectExtender({
+      getCoupleRelationships: function() { return helpers.filter(this.relationships, {type: 'http://gedcomx.org/Couple'}) || []; },
+      getChildAndParentsRelationships: function() { return this.childAndParentsRelationships || []; },
+      getPerson:    function(id) { return helpers.find(this.persons, {id: id}); }
+    }),
+    helpers.constructorSetter(fact.Fact, 'facts', function(response) {
+      return response.relationships;
+    }),
+    helpers.constructorSetter(fact.Fact, 'fatherFacts', function(response) {
+      return response.childAndParentsRelationships;
+    }),
+    helpers.constructorSetter(fact.Fact, 'motherFacts', function(response) {
+      return response.childAndParentsRelationships;
+    }),
+    helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+      return helpers.union(
+        helpers.flatMap(response.relationships, function(rel) {
+          return rel.facts;
+        }),
+        helpers.flatMap(response.childAndParentsRelationships, function(rel) {
+          return helpers.union(rel.fatherFacts, rel.motherFacts);
+        }));
+    }),
+    exports.personMapper()
+  );
+
   /**
    * @ngdoc function
-   * @name person.functions:getRelationshipsToSpouses
+   * @name person.functions:getSpouses
    * @function
    *
    * @description
    * Get the relationships to a person's spouses.
    * The response includes the following convenience functions
    *
-   * - `getSpouseIds()` - an array of string ids
-   * - `getRelationships()` - an array of {@link spouses.types:constructor.Couple Couple} relationships
-   * - `getPerson(pid)` - if the `persons` parameter has been set, this function will return a
-   * {@link person.types:constructor.Person Person} for a person id in the relationship
+   * - `getCoupleRelationships()` - an array of {@link spouses.types:constructor.Couple Couple} relationships
+   * - `getChildAndParentsRelationships()` - an array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents}
+   * relationships for children of the couples
+   * - `getPerson(pid)` - a {@link person.types:constructor.Person Person} for any person id in a relationship except children
    *
-   * {@link https://familysearch.org/developers/docs/api/tree/Person_Relationships_to_Spouses_resource FamilySearch API Docs}
+   * {@link https://familysearch.org/developers/docs/api/tree/Spouses_of_a_Person_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/7zLEJ/ editable example}
    *
-   * @param {String} pid id of the person or full URL of the spouse-relationships endpoint
-   * @param {Object=} params set `persons` true to return a person object for each person in the relationships,
-   * which you can access using the `getPerson(id)` convenience function.
+   * @param {String} pid id of the person or full URL of the spouses endpoint
+   * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getRelationshipsToSpouses = function(pid, params, opts) {
-    return helpers.chainHttpPromises(
-      plumbing.getUrl('spouse-relationships-template', pid, {pid: pid}),
-      function(url) {
-        return plumbing.get(url, params, {}, opts,
-          helpers.compose(
-            helpers.objectExtender({getPrimaryId: function() { return pid; }}), // make id available to convenience functions
-            helpers.constructorSetter(spouses.Couple, 'relationships'),
-            helpers.objectExtender(relationshipsToSpousesConvenienceFunctions),
-            helpers.constructorSetter(fact.Fact, 'facts', function(response) {
-              return response.relationships;
-            }),
-            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
-              return helpers.flatMap(response.relationships, function(rel) {
-                return rel.facts;
-              });
-            }),
-            exports.personMapper()
-          ));
-      });
+  exports.getSpouses = function(pid, params, opts) {
+    // TODO add discovery resource lookup when it's working
+    var url = helpers.isAbsoluteUrl(pid) ? pid : '/platform/tree/persons/' + encodeURI(pid) + '/spouses';
+    return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
   };
 
-  var relationshipsToSpousesConvenienceFunctions = {
-    getRelationships: function() { return this.relationships || []; },
-    getSpouseIds:  function() {
-      var primaryId = this.getPrimaryId();
-      return helpers.uniq(helpers.map(this.getRelationships(), function(r) {
-        return r.$getHusbandId() === primaryId ? r.$getWifeId() : r.$getHusbandId();
-      }, this));
-    },
-    getPerson:    function(id) { return helpers.find(this.persons, {id: id}); }
+  /**
+   * @ngdoc function
+   * @name person.functions:getParents
+   * @function
+   *
+   * @description
+   * Get the relationships to a person's parents.
+   * The response includes the following convenience functions
+   *
+   * - `getChildAndParentsRelationships()` - an array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationships
+   * - `getCoupleRelationships()` - an array of {@link spouses.types:constructor.Couple Couple} relationships for parents
+   * - `getPerson(pid)` - a {@link person.types:constructor.Person Person} for any person id in a relationship
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Parents_of_a_person_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/L3U3j/ editable example}
+   *
+   * @param {String} pid id of the person or full URL of the parents endpoint
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getParents = function(pid, params, opts) {
+    // TODO add discovery resource lookup when it's working
+    var url = helpers.isAbsoluteUrl(pid) ? pid : '/platform/tree/persons/' + encodeURI(pid) + '/parents';
+    return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+  };
+
+  /**
+   * @ngdoc function
+   * @name person.functions:getChildren
+   * @function
+   *
+   * @description
+   * Get the relationships to a person's children
+   * The response includes the following convenience functions
+   *
+   * - `getChildAndParentsRelationships()` - an array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationships
+   * - `getPerson(pid)` - a {@link person.types:constructor.Person Person} for any person id in a relationship
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Children_of_a_person_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/F8wVM/ editable example}
+   *
+   * @param {String} pid id of the person or full URL of the children endpoint
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getChildren = function(pid, params, opts) {
+    // TODO add discovery resource lookup when it's working
+    var url = helpers.isAbsoluteUrl(pid) ? pid : '/platform/tree/persons/' + encodeURI(pid) + '/children';
+    return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
   };
 
   /**
@@ -7216,10 +7271,6 @@ define('person',[
   // TODO getPersonNotAMatch
   // TODO getPreferredSpouse
   // TODO getPreferredParent
-  // TODO new Parents endpoint
-  // TODO new Children endpoint
-  // TODO new Spouses endpoint
-  // TODO use X-FS-Feature-Tag: parent-child-relationship-resources-consolidation on parents and children endpoints
 
   return exports;
 });
@@ -7919,7 +7970,9 @@ define('FamilySearch',[
     getMultiPerson: person.getMultiPerson,
     getPersonWithRelationships: person.getPersonWithRelationships,
     getPersonChangeSummary: person.getPersonChangeSummary,
-    getRelationshipsToSpouses: person.getRelationshipsToSpouses,
+    getSpouses: person.getSpouses,
+    getParents: person.getParents,
+    getChildren: person.getChildren,
 
     // search and match
     SearchResult: searchAndMatch.SearchResult,

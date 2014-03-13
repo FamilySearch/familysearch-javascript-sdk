@@ -617,12 +617,30 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "person.functions:getChildren",
+      "shortName": "getChildren",
+      "type": "function",
+      "moduleName": "person",
+      "shortDescription": "Get the relationships to a person&#39;s children",
+      "keywords": "api array childandparents children convenience currently docs editable endpoint example familysearch full function functions getchildandparentsrelationships getperson http https includes init net options opts org params parentsandchildren pass person pid promise relationship relationships response types unused url"
+    },
+    {
+      "section": "api",
       "id": "person.functions:getMultiPerson",
       "shortName": "getMultiPerson",
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Get multiple people at once by requesting them in parallel",
       "keywords": "api currently docs editable example familysearch fulfilled function functions getperson http https init map multiple net options opts org parallel params pass people person pids promise read requesting response returning unused"
+    },
+    {
+      "section": "api",
+      "id": "person.functions:getParents",
+      "shortName": "getParents",
+      "type": "function",
+      "moduleName": "person",
+      "shortDescription": "Get the relationships to a person&#39;s parents.",
+      "keywords": "api array childandparents convenience couple currently docs editable endpoint example familysearch full function functions getchildandparentsrelationships getcouplerelationships getperson http https includes init net options opts org params parents parentsandchildren pass person pid promise relationship relationships response spouses types unused url"
     },
     {
       "section": "api",
@@ -653,12 +671,12 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "person.functions:getRelationshipsToSpouses",
-      "shortName": "getRelationshipsToSpouses",
+      "id": "person.functions:getSpouses",
+      "shortName": "getSpouses",
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Get the relationships to a person&#39;s spouses.",
-      "keywords": "access api array convenience couple docs editable endpoint example familysearch full function functions getperson getrelationships getspouseids http https ids includes init net object options opts org parameter params pass person persons pid promise relationship relationships response return set spouse-relationships spouses string true types url"
+      "keywords": "api array childandparents children convenience couple couples currently docs editable endpoint example familysearch full function functions getchildandparentsrelationships getcouplerelationships getperson http https includes init net options opts org params parentsandchildren pass person pid promise relationship relationships response spouses types unused url"
     },
     {
       "section": "api",
