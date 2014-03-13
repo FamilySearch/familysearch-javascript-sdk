@@ -1,0 +1,357 @@
+{
+  "persons" : [ {
+    "id" : "FJP-M4RK",
+    "links" : {
+      "person" : {
+        "href" : "https://familysearch.org/platform/tree/persons/FJP-M4RK",
+        "title" : "Person"
+      }
+    },
+    "attribution" : {
+      "changeMessage" : "wikipedia knows"
+    },
+    "living" : true,
+    "gender" : {
+      "type" : "http://gedcomx.org/Male"
+    },
+    "names" : [ {
+      "id" : "name-id",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "urn:name-attribution",
+          "resourceId" : "KNCV-RMZ"
+        }
+      },
+      "type" : "http://gedcomx.org/BirthName",
+      "nameForms" : [ {
+        "fullText" : "Alex Aleksandrova",
+        "parts" : [ {
+          "type" : "http://gedcomx.org/Given",
+          "value" : "Alex"
+        }, {
+          "type" : "http://gedcomx.org/Surname",
+          "value" : "Aleksandrova"
+        } ]
+      }, {
+        "fullText" : "Анастасия Александрова",
+        "parts" : [ {
+          "type" : "http://gedcomx.org/Given",
+          "value" : "Анастасия"
+        }, {
+          "type" : "http://gedcomx.org/Surname",
+          "value" : "Александрова"
+        } ]
+      } ],
+      "preferred" : true
+    } ],
+    "facts" : [ {
+      "id" : "born",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "urn:fact-attribution",
+          "resourceId" : "RMQW-LPK"
+        }
+      },
+      "type" : "http://gedcomx.org/Birth",
+      "date" : {
+        "original" : "3 Apr 1836",
+        "formal" : "+1836"
+      },
+      "place" : {
+        "original" : "Moscow, Russia"
+      }
+    }, {
+      "id" : "res",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://familysearch.org/platform/users/agents/JNYR-KJP",
+          "resourceId" : "JNYR-KJP"
+        }
+      },
+      "type" : "http://gedcomx.org/Residence",
+      "date" : {
+        "original" : "13 Apr 1836",
+        "formal" : "+1836-04-13"
+      },
+      "place" : {
+        "original" : "Moscow, Russia",
+        "description" : "#-1276974106",
+        "normalized" : [ {
+          "value" : "Moskva, Moscow, Russia"
+        } ]
+      }
+    } ],
+    "display" : {
+      "name" : "Alex Aleksandrova",
+      "gender" : "Male",
+      "lifespan" : "3 Apr 1836 - Dead",
+      "birthDate" : "3 Apr 1836",
+      "birthPlace" : "Moscow, Russia"
+    }
+  }, {
+    "id" : "JRW-NMSD",
+    "links" : {
+      "person" : {
+        "href" : "https://familysearch.org/platform/tree/persons/JRW-NMSD",
+        "title" : "Person"
+      }
+    },
+    "attribution" : {
+      "changeMessage" : "wikipedia knows"
+    },
+    "living" : true,
+    "gender" : {
+      "type" : "http://gedcomx.org/Female"
+    },
+    "names" : [ {
+      "id" : "name-id",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "urn:name-attribution",
+          "resourceId" : "KNCV-RMZ"
+        }
+      },
+      "type" : "http://gedcomx.org/BirthName",
+      "nameForms" : [ {
+        "fullText" : "Anastasia Aleksandrova",
+        "parts" : [ {
+          "type" : "http://gedcomx.org/Given",
+          "value" : "Anastasia"
+        }, {
+          "type" : "http://gedcomx.org/Surname",
+          "value" : "Aleksandrova"
+        } ]
+      }, {
+        "fullText" : "Анастасия Александрова",
+        "parts" : [ {
+          "type" : "http://gedcomx.org/Given",
+          "value" : "Анастасия"
+        }, {
+          "type" : "http://gedcomx.org/Surname",
+          "value" : "Александрова"
+        } ]
+      } ],
+      "preferred" : true
+    } ],
+    "facts" : [ {
+      "id" : "born",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "urn:fact-attribution",
+          "resourceId" : "RMQW-LPK"
+        }
+      },
+      "type" : "http://gedcomx.org/Birth",
+      "date" : {
+        "original" : "3 Apr 1836",
+        "formal" : "+1836"
+      },
+      "place" : {
+        "original" : "Moscow, Russia"
+      }
+    }, {
+      "id" : "res",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://familysearch.org/platform/users/agents/JNYR-KJP",
+          "resourceId" : "JNYR-KJP"
+        }
+      },
+      "type" : "http://gedcomx.org/Residence",
+      "date" : {
+        "original" : "13 Apr 1836",
+        "formal" : "+1836-04-13"
+      },
+      "place" : {
+        "original" : "Moscow, Russia",
+        "description" : "#-1276974106",
+        "normalized" : [ {
+          "value" : "Moskva, Moscow, Russia"
+        } ]
+      }
+    } ],
+    "display" : {
+      "name" : "Anastasia Aleksandrova",
+      "gender" : "Female",
+      "lifespan" : "3 Apr 1836 - Dead",
+      "birthDate" : "3 Apr 1836",
+      "birthPlace" : "Moscow, Russia"
+    }
+  }, {
+    "id" : "LKM-MJNZ",
+    "links" : {
+      "person" : {
+        "href" : "https://familysearch.org/platform/tree/persons/LKM-MJNZ",
+        "title" : "Person"
+      }
+    },
+    "attribution" : {
+      "changeMessage" : "wikipedia knows"
+    },
+    "living" : true,
+    "gender" : {
+      "type" : "http://gedcomx.org/Male"
+    },
+    "names" : [ {
+      "id" : "name-id",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "urn:name-attribution",
+          "resourceId" : "KNCV-RMZ"
+        }
+      },
+      "type" : "http://gedcomx.org/BirthName",
+      "nameForms" : [ {
+        "fullText" : "Alex Aleksandrova",
+        "parts" : [ {
+          "type" : "http://gedcomx.org/Given",
+          "value" : "Alex"
+        }, {
+          "type" : "http://gedcomx.org/Surname",
+          "value" : "Aleksandrova"
+        } ]
+      }, {
+        "fullText" : "Анастасия Александрова",
+        "parts" : [ {
+          "type" : "http://gedcomx.org/Given",
+          "value" : "Анастасия"
+        }, {
+          "type" : "http://gedcomx.org/Surname",
+          "value" : "Александрова"
+        } ]
+      } ],
+      "preferred" : true
+    } ],
+    "facts" : [ {
+      "id" : "born",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "urn:fact-attribution",
+          "resourceId" : "RMQW-LPK"
+        }
+      },
+      "type" : "http://gedcomx.org/Birth",
+      "date" : {
+        "original" : "3 Apr 1836",
+        "formal" : "+1836"
+      },
+      "place" : {
+        "original" : "Moscow, Russia"
+      }
+    }, {
+      "id" : "res",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://familysearch.org/platform/users/agents/JNYR-KJP",
+          "resourceId" : "JNYR-KJP"
+        }
+      },
+      "type" : "http://gedcomx.org/Residence",
+      "date" : {
+        "original" : "13 Apr 1836",
+        "formal" : "+1836-04-13"
+      },
+      "place" : {
+        "original" : "Moscow, Russia",
+        "description" : "#-1276974106",
+        "normalized" : [ {
+          "value" : "Moskva, Moscow, Russia"
+        } ]
+      }
+    } ],
+    "display" : {
+      "name" : "Alex Aleksandrova",
+      "gender" : "Male",
+      "lifespan" : "3 Apr 1836 - Dead",
+      "birthDate" : "3 Apr 1836",
+      "birthPlace" : "Moscow, Russia"
+    }
+  } ],
+  "relationships" : [ {
+    "id" : "cid",
+    "links" : {
+      "source-references" : {
+        "href" : "https://familysearch.org/platform/tree/couple-relationships/cid/source-references",
+        "title" : "Couple Relationship Source References"
+      },
+      "relationship" : {
+        "href" : "https://familysearch.org/platform/tree/couple-relationships/cid",
+        "title" : "Couple Relationship"
+      },
+      "person1" : {
+        "href" : "https://familysearch.org/platform/tree/persons/FJP-M4RK",
+        "title" : "Person"
+      },
+      "person2" : {
+        "href" : "https://familysearch.org/platform/tree/persons/JRW-NMSD",
+        "title" : "Person"
+      },
+      "woman" : {
+        "href" : "https://familysearch.org/platform/tree/persons/JRW-NMSD",
+        "title" : "Person"
+      },
+      "change-history" : {
+        "href" : "https://familysearch.org/platform/tree/couple-relationships/cid/changes",
+        "title" : "Couple Relationship Change History"
+      },
+      "notes" : {
+        "href" : "https://familysearch.org/platform/tree/couple-relationships/cid/notes",
+        "title" : "Couple Relationship Notes"
+      },
+      "man" : {
+        "href" : "https://familysearch.org/platform/tree/persons/FJP-M4RK",
+        "title" : "Person"
+      }
+    },
+    "type" : "http://gedcomx.org/Couple",
+    "person1" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/FJP-M4RK",
+      "resourceId" : "FJP-M4RK"
+    },
+    "person2" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/JRW-NMSD",
+      "resourceId" : "JRW-NMSD"
+    },
+    "facts" : [ {
+      "type" : "http://gedcomx.org/Marriage",
+      "date" : {
+        "original" : "June 1800",
+        "formal" : "+1800-06"
+      },
+      "place" : {
+        "original" : "Provo, Utah, Utah, United States"
+      }
+    } ]
+  } ],
+  "places" : [ {
+    "id" : "-1276974106",
+    "names" : [ {
+      "value" : "Moskva, Moscow, Russia"
+    } ],
+    "latitude" : 37.613983,
+    "longitude" : 55.784296
+  } ],
+  "childAndParentsRelationships" : [ {
+    "id" : "PPPX-PP0",
+    "father" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/LKM-MJNZ",
+      "resourceId" : "LKM-MJNZ"
+    },
+    "mother" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/FJP-M4RK",
+      "resourceId" : "FJP-M4RK"
+    },
+    "child" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/WRT-VSDX",
+      "resourceId" : "WRT-VSDX"
+    },
+    "fatherFacts" : [ {
+      "id" : "C.1",
+      "type" : "http://gedcomx.org/AdoptiveParent"
+    } ],
+    "motherFacts" : [ {
+      "id" : "C.2",
+      "type" : "http://gedcomx.org/BiologicalParent"
+    } ]
+  } ]
+}

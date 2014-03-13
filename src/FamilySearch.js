@@ -103,7 +103,9 @@ define([
     getMultiPerson: person.getMultiPerson,
     getPersonWithRelationships: person.getPersonWithRelationships,
     getPersonChangeSummary: person.getPersonChangeSummary,
-    getRelationshipsToSpouses: person.getRelationshipsToSpouses,
+    getSpouses: person.getSpouses,
+    getParents: person.getParents,
+    getChildren: person.getChildren,
 
     // search and match
     SearchResult: searchAndMatch.SearchResult,

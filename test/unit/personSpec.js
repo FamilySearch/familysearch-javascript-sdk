@@ -160,16 +160,56 @@ define(['FamilySearch'], function(FamilySearch) {
       });
     });
 
-    it('spouse relationships are returned from getRelationshipsToSpouses', function() {
-      FamilySearch.getRelationshipsToSpouses('12345').then(function(response) {
-        expect(response.getSpouseIds()).toEqual(['KJ8T-MP1']);
-        expect(response.getRelationships().length).toBe(1);
-        var rel = response.getRelationships()[0];
-        expect(rel.id).toBe('KJ8T-GZ0');
-        expect(rel.$getHusbandId()).toBe('KJ8T-MP1');
-        expect(rel.$getWifeId()).toBe('KJ8T-FP2');
+    it('spouse relationships are returned from getSpouses', function() {
+      FamilySearch.getSpouses('FJP-M4RK').then(function(response) {
+        expect(response.getCoupleRelationships().length).toBe(1);
+        var rel = response.getCoupleRelationships()[0];
+        expect(rel.id).toBe('cid');
+        expect(rel.$getHusbandId()).toBe('FJP-M4RK');
+        expect(rel.$getWifeId()).toBe('JRW-NMSD');
         expect(rel.$getFacts().length).toBe(1);
-        expect(rel.$getFacts()[0].$getDate()).toBe('1 January 1786');
+        expect(rel.$getFacts()[0].$getDate()).toBe('June 1800');
+        expect(response.getChildAndParentsRelationships().length).toBe(1);
+        rel = response.getChildAndParentsRelationships()[0];
+        expect(rel.id).toBe('PPPX-PP0');
+        expect(rel.$getFatherFacts().length).toBe(1);
+        expect(rel.$getFatherFacts()[0].type).toBe('http://gedcomx.org/AdoptiveParent');
+        expect(rel.$getFatherFacts()[0] instanceof FamilySearch.Fact).toBeTruthy();
+      });
+    });
+
+    it('parent relationships are returned from getParents', function() {
+      FamilySearch.getParents('KW31-H9P').then(function(response) {
+        expect(response.getChildAndParentsRelationships().length).toBe(1);
+        var rel = response.getChildAndParentsRelationships()[0];
+        expect(rel.id).toBe('MMMP-KWL');
+        expect(rel.$getFatherId()).toBe('KW7V-Y32');
+        expect(rel.$getMotherId()).toBe('KW72-8QM');
+        expect(rel.$getChildId()).toBe('KW31-H9P');
+        expect(rel.$getFatherFacts().length).toBe(1);
+        expect(rel.$getFatherFacts()[0].$getDate()).toBe('1955');
+        expect(rel.$getFatherFacts()[0].attribution.$getAgentId()).toBe('MMD8-3NT');
+        expect(response.getCoupleRelationships().length).toBe(1);
+        rel = response.getCoupleRelationships()[0];
+        expect(rel.id).toBe('MMM7-129');
+        expect(rel.facts.length).toBe(1);
+        expect(rel.facts[0].$getPlace()).toBe('Minnesota, United States');
+        expect(rel.facts[0].attribution.$getAgentId()).toBe('MMD8-3NT');
+      });
+    });
+
+    it('child relationships are returned from getChildren', function() {
+      FamilySearch.getChildren('PPP0-MP1').then(function(response) {
+        expect(response.getChildAndParentsRelationships().length).toBe(2);
+        var rel = response.getChildAndParentsRelationships()[0];
+        expect(rel.id).toBe('PPP0-PP0');
+        expect(rel.$getFatherId()).toBe('PPP0-MP1');
+        expect(rel.$getChildId()).toBe('PPP0-PP3');
+        expect(rel.$getFatherFacts().length).toBe(1);
+        expect(rel.$getFatherFacts()[0].type).toBe('http://gedcomx.org/AdoptiveParent');
+        expect(rel.$getFatherFacts()[0] instanceof FamilySearch.Fact).toBeTruthy();
+        expect(rel.$getMotherFacts().length).toBe(0);
+        expect(response.getPerson(rel.$getChildId()).$getPreferredName().$getFullText()).toBe('Anastasia Aleksandrova');
       });
     });
 
