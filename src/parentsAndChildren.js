@@ -310,6 +310,7 @@ define([
      * @name parentsAndChildren.types:constructor.ChildAndParents#$addFatherFact
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
+     * @description NOTE: dates are not supported for BiologicalParent, and places are not supported at all
      * @param {Fact|Object} value fact to add; if value is not a Fact, it is passed into the Fact constructor
      * @return {Person} this person
      */
@@ -324,6 +325,7 @@ define([
      * @name parentsAndChildren.types:constructor.ChildAndParents#$addMotherFact
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
+     * @description NOTE: dates are not supported for BiologicalParent, and places are not supported at all
      * @param {Fact|Object} value fact to add; if value is not a Fact, it is passed into the Fact constructor
      * @return {Person} this person
      */
@@ -385,6 +387,7 @@ define([
       var caprid = this.id;
 
       // TODO don't "push down" attribution to individual conclusions once the global attribution bug has been fixed
+      // support attribution at the top-level
 
       // send father if new or changed
       if (!this.id || this.$fatherChanged) {

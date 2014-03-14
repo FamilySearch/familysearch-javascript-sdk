@@ -188,5 +188,7 @@ define([
     getPerson:       function(id) { return helpers.find(this.persons, {id: id}); }
   };
 
+  // TODO support attribution at the top-level
+
   return exports;
 });
