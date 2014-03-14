@@ -554,6 +554,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "parentsAndChildren.functions:deleteChildAndParents",
+      "shortName": "deleteChildAndParents",
+      "type": "function",
+      "moduleName": "parentsAndChildren",
+      "shortDescription": "Delete the specified relationship",
+      "keywords": "api caprid changemessage child-and-parents delete deletion docs editable example familysearch full function functions http https init net options opts org parentsandchildren pass promise reason relationship url"
+    },
+    {
+      "section": "api",
       "id": "parentsAndChildren.functions:getChildAndParents",
       "shortName": "getChildAndParents",
       "type": "function",
@@ -568,7 +577,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "parentsAndChildren",
       "shortDescription": "Child and parents relationship",
-      "keywords": "$getchanges $getchild $getchildid $getchildurl $getfather $getfatherfacts $getfatherid $getfatherurl $getmother $getmotherfacts $getmotherid $getmotherurl $getnoterefs $getsourcerefs __broken__ api array child childandparents fact facts father function functions getchildandparentschanges getchildandparentsnoterefs getchildandparentssourcerefs getperson mother notes parent-relationship parents parentsandchildren person promise property relationship response sources type types url"
+      "keywords": "$addfatherfact $addmotherfact $delete $deletefather $deletefatherfact $deletemother $deletemotherfact $getchanges $getchild $getchildid $getchildurl $getfather $getfatherfacts $getfatherid $getfatherurl $getmother $getmotherfacts $getmotherid $getmotherurl $getnoterefs $getsourcerefs $save $setchild $setfather $setmother __broken__ add api array call change changed changemessage child childandparents create default delete editable example existing fact facts father fulfilled function functions getchildandparentschanges getchildandparentsnoterefs getchildandparentssourcerefs getperson http init initializing longer message mother net note notes options opts parent-relationship parents parentsandchildren pass passed person plan promise property read refresh relationship remove response saved sdk seconds sources true type types update updated updating url"
     },
     {
       "section": "api",
@@ -685,7 +694,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Person",
-      "keywords": "$addfact $addmemorypersonaref $addname $delete $deletefact $deletename $getbirth $getbirthdate $getbirthplace $getburial $getburialdate $getburialplace $getchanges $getchristening $getchristeningdate $getchristeningplace $getdeath $getdeathdate $getdeathplace $getdiscussionrefs $getdisplaybirthdate $getdisplaybirthplace $getdisplaydeathdate $getdisplaydeathplace $getdisplaygender $getdisplaylifespan $getdisplayname $getfact $getfacts $getgivenname $getmemorypersonarefs $getnames $getnoterefs $getpersistentidentifier $getpreferredname $getrelationshipstospouses $getsourcerefs $getsurname $save $setgender add adds api array arrays attributes attribution birth birthdate birthplace burial change changehistory changemessage changes christening christning conclusion count create death deathdate deathplace default delete deletes discussions display docs editable entries example existing fact facts false familysearch female fulfilled function functions gender getmemorypersonarefs getpersonchanges getpersondiscussionrefs getpersonnoterefs getpersonsourcerefs getrelationshipstospouses http https identifers identifier includes init lifespan living male map memories memory memorypersonaref message methods names net note notes number object options opts org params pass passed persistent person persona persons place preferred promise property read reference refresh relationships remove removes response return saves set sources surname true type types update updated updates updating url values year"
+      "keywords": "$addfact $addmemorypersonaref $addname $delete $deletefact $deletename $getbirth $getbirthdate $getbirthplace $getburial $getburialdate $getburialplace $getchanges $getchildren $getchristening $getchristeningdate $getchristeningplace $getdeath $getdeathdate $getdeathplace $getdiscussionrefs $getdisplaybirthdate $getdisplaybirthplace $getdisplaydeathdate $getdisplaydeathplace $getdisplaygender $getdisplaylifespan $getdisplayname $getfact $getfacts $getgivenname $getmemorypersonarefs $getnames $getnoterefs $getparents $getpersistentidentifier $getpreferredname $getsourcerefs $getspouses $getsurname $geturl $save $setgender add adds api array arrays attributes attribution birth birthdate birthplace burial change changehistory changemessage changes christening christning conclusion count create death deathdate deathplace default delete deletes discussions display docs editable entries example existing fact facts false familysearch female fulfilled function functions gender getchildren getmemorypersonarefs getparents getpersonchanges getpersondiscussionrefs getpersonnoterefs getpersonsourcerefs getspouses http https identifers identifier includes init lifespan living male map memories memory memorypersonaref message methods names net note notes number object options opts org params pass passed persistent person persona place preferred promise property read reference refresh remove removes response return saves sources surname true type types update updated updates updating url values year"
     },
     {
       "section": "api",

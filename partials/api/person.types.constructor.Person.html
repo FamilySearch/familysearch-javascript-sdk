@@ -34,7 +34,7 @@ made to names, facts, and gender; <em>$delete</em> removes the person.</p>
 <div class="$delete"><div class="person-types-page person-types-constructor-person-delete-page"><p>delete this person</p>
 </div><h5 id="methods_$delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-delete-page"><p>change message</p>
 </div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-delete-page"><p>options to pass to the http function specified during init</p>
-</div></td></tr></tbody></table><h5 id="methods_$delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-delete-page"><p>promise for the person id</p>
+</div></td></tr></tbody></table><h5 id="methods_$delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-delete-page"><p>promise for the person URL</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_$deletefact">$deleteFact(value, changeMessage)</h3>
@@ -76,6 +76,10 @@ made to names, facts, and gender; <em>$delete</em> removes the person.</p>
 <li><h3 id="methods_$getchanges">$getChanges(params)</h3>
 <div class="$getchanges"><h5 id="methods_$getchanges_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getchanges-page"><p><code>count</code> is the number of change entries to return, <code>from</code> to return changes following this id</p>
 </div></td></tr></tbody></table><h5 id="methods_$getchanges_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getchanges-page"><p>promise for the <a href="#/api/changeHistory.functions:getPersonChanges">getPersonChanges</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getchildren">$getChildren()</h3>
+<div class="$getchildren"><h5 id="methods_$getchildren_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getchildren-page"><p>promise for the <a href="#/api/person.functions:getChildren">getChildren</a> response</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_$getchristening">$getChristening()</h3>
@@ -161,6 +165,10 @@ made to names, facts, and gender; <em>$delete</em> removes the person.</p>
 <div class="$getnoterefs"><h5 id="methods_$getnoterefs_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getnoterefs-page"><p>promise for the <a href="#/api/notes.functions:getPersonNoteRefs">getPersonNoteRefs</a> response</p>
 </div></td></tr></table></div>
 </li>
+<li><h3 id="methods_$getparents">$getParents()</h3>
+<div class="$getparents"><h5 id="methods_$getparents_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getparents-page"><p>promise for the <a href="#/api/person.functions:getParents">getParents</a> response</p>
+</div></td></tr></table></div>
+</li>
 <li><h3 id="methods_$getpersistentidentifier">$getPersistentIdentifier()</h3>
 <div class="$getpersistentidentifier"><h5 id="methods_$getpersistentidentifier_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-types-page person-types-constructor-person-getpersistentidentifier-page"><p>persistent identifier</p>
 </div></td></tr></table></div>
@@ -169,17 +177,20 @@ made to names, facts, and gender; <em>$delete</em> removes the person.</p>
 <div class="$getpreferredname"><h5 id="methods_$getpreferredname_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-getpreferredname-page"><p>preferred <a href="#/api/name.types:constructor.Name">Name</a></p>
 </div></td></tr></table></div>
 </li>
-<li><h3 id="methods_$getrelationshipstospouses">$getRelationshipsToSpouses(params)</h3>
-<div class="$getrelationshipstospouses"><h5 id="methods_$getrelationshipstospouses_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getrelationshipstospouses-page"><p>set <code>persons</code> true to return a person object for each person in the relationships</p>
-</div></td></tr></tbody></table><h5 id="methods_$getrelationshipstospouses_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getrelationshipstospouses-page"><p>promise for the <a href="#/api/person.functions:getRelationshipsToSpouses">getRelationshipsToSpouses</a> response</p>
-</div></td></tr></table></div>
-</li>
 <li><h3 id="methods_$getsourcerefs">$getSourceRefs()</h3>
 <div class="$getsourcerefs"><h5 id="methods_$getsourcerefs_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getsourcerefs-page"><p>promise for the <a href="#/api/sources.functions:getPersonSourceRefs">getPersonSourceRefs</a> response</p>
 </div></td></tr></table></div>
 </li>
+<li><h3 id="methods_$getspouses">$getSpouses()</h3>
+<div class="$getspouses"><h5 id="methods_$getspouses_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getspouses-page"><p>promise for the <a href="#/api/person.functions:getSpouses">getSpouses</a> response</p>
+</div></td></tr></table></div>
+</li>
 <li><h3 id="methods_$getsurname">$getSurname()</h3>
 <div class="$getsurname"><h5 id="methods_$getsurname_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-types-page person-types-constructor-person-getsurname-page"><p>preferred surname</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$geturl">$getUrl()</h3>
+<div class="$geturl"><h5 id="methods_$geturl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-types-page person-types-constructor-person-geturl-page"><p>Url of the person</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_$save">$save(changeMessage, refresh, opts)</h3>

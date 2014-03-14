@@ -751,7 +751,6 @@ define('helpers',[
     return getAbsoluteUrl(globals.authoritiesServer[globals.environment], path);
   };
 
-
   /**
    * Create a URL-encoded query string from an object
    * @param {Object} params Parameters
@@ -869,6 +868,35 @@ define('helpers',[
       }
     }
     return segments.join('');
+  };
+
+  /**
+   * get a URL from the provided discoveryResource by combining resourceName with params
+   * @param discoveryResource discovery resource
+   * @param resourceName resource name
+   * @param params object of params to populate in template
+   * @returns {string} url
+   */
+  exports.getUrlFromDiscoveryResource = function(discoveryResource, resourceName, params) {
+    var url = '';
+    var resource = discoveryResource.links[resourceName];
+    if (resource['href']) {
+      url = exports.removeAccessToken(resource['href']);
+    }
+    else if (resource['template']) {
+      var template = resource['template'].replace(/{\?[^}]*}/,''); // we will add query parameters later
+      url = exports.populateUriTemplate(template, params || {});
+    }
+    return url;
+  };
+
+  /**
+   * return true if no attribution or attribution without a change message or an existing attribution
+   * @param {Object} conclusion name or fact or gender - anything with an attribution
+   * @returns {boolean}
+   */
+  exports.attributionNeeded = function(conclusion) {
+    return !!(!conclusion.attribution || !conclusion.attribution.changeMessage || conclusion.attribution.contributor);
   };
 
   /**
@@ -1321,17 +1349,12 @@ define('plumbing',[
   exports.getUrl = function(resourceName, possibleUrl, params) {
     return globals.discoveryPromise.then(function(discoveryResource) {
       var url = '';
-      var resource = discoveryResource.links[resourceName];
 
       if (helpers.isAbsoluteUrl(possibleUrl)) {
         url = possibleUrl;
       }
-      else if (resource['href']) {
-        url = helpers.removeAccessToken(resource['href']);
-      }
-      else if (resource['template']) {
-        var template = resource['template'].replace(/{\?[^}]*}/,''); // we will add query parameters later
-        url = helpers.populateUriTemplate(template, params || {});
+      else {
+        url = helpers.getUrlFromDiscoveryResource(discoveryResource, resourceName, params);
       }
       return url;
     });
@@ -1723,6 +1746,9 @@ define('init',[
 
     // request the discovery resource
     globals.discoveryPromise = plumbing.get(globals.discoveryUrl);
+    globals.discoveryPromise.then(function(discoveryResource) {
+      globals.discoveryResource = discoveryResource;
+    });
   };
 
   return exports;
@@ -5599,6 +5625,63 @@ define('parentsAndChildren',[
 
   };
 
+  // private functions - called with this set to the relationship
+
+  // person may be a Person, a URL, or an ID
+  function setMember(role, person) {
+    if (!this[role]) {
+      this[role] = {};
+    }
+    if (person instanceof globals.Person) {
+      this[role].resource = person.$getUrl();
+    }
+    else if (helpers.isAbsoluteUrl(person)) {
+      this[role].resource = person;
+    }
+    else {
+      this[role].resource = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'person-template', {pid: person});
+    }
+  }
+
+  function deleteMember(role, changeMessage) {
+    if (!this.$deletedMembers) {
+      this.$deletedMembers = {};
+    }
+    this.$deletedMembers[role] = changeMessage;
+    delete this[role];
+  }
+
+  function addFact(role, value) {
+    var prop = role + 'Facts';
+    if (!helpers.isArray(this[prop])) {
+      this[prop] = [];
+    }
+    if (!(value instanceof fact.Fact)) {
+      value = new fact.Fact(value);
+    }
+    this[prop].push(value);
+  }
+
+  function deleteFact(role, value, changeMessage) {
+    var prop = role + 'Facts';
+    if (!(value instanceof fact.Fact)) {
+      value = helpers.find(this[prop], { id: value });
+    }
+    var pos = helpers.indexOf(this[prop], value);
+    if (pos >= 0) {
+      // add fact to $deletedFacts map; key is the href to delete
+      var key = maybe(maybe(maybe(value).links).conclusion).href;
+      if (key) {
+        if (!this.$deletedFacts) {
+          this.$deletedFacts = {};
+        }
+        this.$deletedFacts[key] = changeMessage;
+      }
+      // remove fact from array
+      this[prop].splice(pos,1);
+    }
+  }
+
   exports.ChildAndParents.prototype = {
     constructor: ChildAndParents,
     /**
@@ -5730,7 +5813,266 @@ define('parentsAndChildren',[
      * @function
      * @return {Object} __BROKEN__ promise for the {@link sources.functions:getChildAndParentsChanges getChildAndParentsChanges} response
      */
-    $getChanges: function() { return changeHistory.getChildAndParentsChanges(helpers.removeAccessToken(maybe(this.links['change-history']).href)); }
+    $getChanges: function() { return changeHistory.getChildAndParentsChanges(helpers.removeAccessToken(maybe(this.links['change-history']).href)); },
+
+    /**
+     * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$setFather
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @description NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id
+     * @param {Person|string} father person or URL or id
+     * @return {ChildAndParents} this relationship
+     */
+    $setFather: function(father) {
+      setMember.call(this, 'father', father);
+      this.$fatherChanged = true;
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$setMother
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @description NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id
+     * @param {Person|string} mother person or URL or id
+     * @return {ChildAndParents} this relationship
+     */
+    $setMother: function(mother) {
+      setMember.call(this, 'mother', mother);
+      this.$motherChanged = true;
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$setChild
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @description NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id
+     * Also note: Once the relationship has been saved, the child can no longer be changed
+     * @param {Person|string} child person or URL or id
+     * @return {ChildAndParents} this relationship
+     */
+    $setChild: function(child) {
+      setMember.call(this, 'child', child);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$deleteFather
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @description remove father from the relationship
+     * @param {String=} changeMessage change message
+     * @return {Person} this person
+     */
+    $deleteFather: function(changeMessage) {
+      deleteMember.call(this, 'father', changeMessage);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$deleteMother
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @description remove mother from the relationship
+     * @param {String=} changeMessage change message
+     * @return {Person} this person
+     */
+    $deleteMother: function(changeMessage) {
+      deleteMember.call(this, 'mother', changeMessage);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$addFatherFact
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @param {Fact|Object} value fact to add; if value is not a Fact, it is passed into the Fact constructor
+     * @return {Person} this person
+     */
+    $addFatherFact: function(value) {
+      addFact.call(this, 'father', value);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$addMotherFact
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @param {Fact|Object} value fact to add; if value is not a Fact, it is passed into the Fact constructor
+     * @return {Person} this person
+     */
+    $addMotherFact: function(value) {
+      addFact.call(this, 'mother', value);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$deleteFatherFact
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @param {Fact|string} value fact or fact id to remove
+     * @param {String=} changeMessage change message
+     * @return {Person} this person
+     */
+    $deleteFatherFact: function(value, changeMessage) {
+      deleteFact.call(this, 'father', value, changeMessage);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$deleteMotherFact
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @param {Fact|string} value fact or fact id to remove
+     * @param {String=} changeMessage change message
+     * @return {Person} this person
+     */
+    $deleteMotherFact: function(value, changeMessage) {
+      deleteFact.call(this, 'mother', value, changeMessage);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$save
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @description
+     * Create a new relationship if this relationship does not have an id, or update the existing relationship
+     *
+     * {@link http://jsfiddle.net/DallanQ/PXN34/ editable example}
+     *
+     * @param {String=} changeMessage default change message to use when fact/deletion-specific changeMessage was not specified
+     * @param {boolean=} refresh true to read the relationship after updating
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise of the relationship id, which is fulfilled after the relationship has been updated,
+     * and if refresh is true, after the relationship has been read
+     */
+    $save: function(changeMessage, refresh, opts) {
+      var postData = new ChildAndParents();
+      var isChanged = false;
+      var caprid = this.id;
+
+      // TODO don't "push down" attribution to individual conclusions once the global attribution bug has been fixed
+
+      // send father if new or changed
+      if (!this.id || this.$fatherChanged) {
+        postData.father = this.father;
+        isChanged = true;
+      }
+
+      // send mother if new or changed
+      if (!this.id || this.$motherChanged) {
+        postData.mother = this.mother;
+        isChanged = true;
+      }
+
+      // send child if new (can't change child)
+      if (!this.id) {
+        postData.child = this.child;
+        isChanged = true;
+      }
+
+      // send facts if new or changed
+      helpers.forEach(['father', 'mother'], function(role) {
+        helpers.forEach(this[role+'Facts'], function(fact) {
+          if (!caprid || !fact.id || fact.$changed) {
+            // set change message if none set
+            if (changeMessage && helpers.attributionNeeded(fact)) {
+              fact.$setChangeMessage(changeMessage);
+            }
+            addFact.call(postData, role, fact);
+            isChanged = true;
+          }
+        });
+      }, this);
+
+      var promises = [];
+
+      // post update
+      if (isChanged) {
+        promises.push(helpers.chainHttpPromises(
+          caprid ? plumbing.getUrl('child-and-parents-relationship-template', null, {caprid: caprid}) :
+                   plumbing.getUrl('relationships'),
+          function(url) {
+            return plumbing.post(url, { childAndParentsRelationships: [ postData ] }, {}, opts, helpers.getResponseEntityId);
+          }));
+      }
+
+      // post deleted members that haven't been re-set to something else
+      helpers.forEach(['father', 'mother'], function(role) {
+        if (this.id && this.$deletedMembers && this.$deletedMembers.hasOwnProperty(role) && !this[role]) {
+          var msg = this.$deletedMembers[role] || changeMessage; // default to global change message
+          promises.push(helpers.chainHttpPromises(
+            plumbing.getUrl('child-and-parents-relationship-parent-template', null, {caprid: caprid, role: role}),
+            function(url) {
+              return plumbing.del(url, msg ? {'X-Reason': msg} : {}, opts);
+            }
+          ));
+        }
+      }, this);
+
+      // post deleted facts
+      if (caprid && this.$deletedFacts) {
+        helpers.forEach(this.$deletedFacts, function(value, key) {
+          value = value || changeMessage; // default to global change message
+          promises.push(plumbing.del(key, value ? {'X-Reason' : value} : {}, opts));
+        });
+      }
+
+      var relationship = this;
+      // wait for all promises to be fulfilled
+      var promise = helpers.promiseAll(promises).then(function(results) {
+        var id = caprid ? caprid : results[0]; // if we're adding a new relationship, get id from the first (only) promise
+        helpers.extendHttpPromise(promise, promises[0]); // extend the first promise into the returned promise
+
+        if (refresh) {
+          // re-read the relationship and set this object's properties from response
+          return exports.getChildAndParents(id, {}, opts).then(function(response) {
+            helpers.deleteProperties(relationship);
+            helpers.extend(relationship, response.getRelationship());
+            return id;
+          });
+        }
+        else {
+          return id;
+        }
+      });
+      return promise;
+    },
+
+    /**
+     * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$delete
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @description delete this relationship
+     * @param {string} changeMessage change message
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise for the relationship URL
+     */
+    $delete: function(changeMessage, opts) {
+      return exports.deleteChildAndParents(helpers.removeAccessToken(maybe(maybe(this.links).relationship).href) || this.id, changeMessage, opts);
+    }
   };
 
   /**
@@ -5783,6 +6125,34 @@ define('parentsAndChildren',[
   var childAndParentsConvenienceFunctions = {
     getRelationship: function() { return maybe(this.childAndParentsRelationships)[0]; },
     getPerson:       function(id) { return helpers.find(this.persons, {id: id}); }
+  };
+
+  /**
+   * @ngdoc function
+   * @name parentsAndChildren.functions:deleteChildAndParents
+   * @function
+   *
+   * @description
+   * Delete the specified relationship
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/LvUtM/ editable example}
+   *
+   * @param {string} caprid id or full URL of the child-and-parents relationship
+   * @param {string} changeMessage reason for the deletion
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the relationship id/URL
+   */
+  exports.deleteChildAndParents = function(caprid, changeMessage, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('child-and-parents-relationship-template', caprid, {caprid: caprid}),
+      function(url) {
+        return plumbing.del(url, changeMessage ? {'X-Reason': changeMessage} : {}, opts, function() {
+          return caprid;
+        });
+      }
+    );
   };
 
   return exports;
@@ -6132,8 +6502,8 @@ define('person',[
    */
 
   //
-  // NOTE I've had to make two things global in this file: getPerson, and personMapper
-  // This is so parentsAndChildren and spouses and memories can access them; otherwise we'd have a circular dependency
+  // NOTE I've had to make a few things global in this file: Person, getPerson, and personMapper
+  // This is so parentsAndChildren and spouses and memories can access them; otherwise we'd have circular dependencies
   //
 
   var maybe = helpers.maybe; // shorthand
@@ -6156,13 +6526,8 @@ define('person',[
    * made to names, facts, and gender; _$delete_ removes the person.
    **********************************/
 
-  var Person = exports.Person = function() {
+  var Person = globals.Person = exports.Person = function() {
   };
-
-  function attributionNeeded(conclusion) {
-    // return true if no attribution or attribution without a change message or an existing attribution
-    return (!conclusion.attribution || !conclusion.attribution.changeMessage || conclusion.attribution.contributor);
-  }
 
   function spacePrefix(namePiece) {
     return namePiece ? ' ' + namePiece : '';
@@ -6503,6 +6868,15 @@ define('person',[
 
     /**
      * @ngdoc function
+     * @name person.types:constructor.Person#$getUrl
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {String} Url of the person
+     */
+    $getUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).person).href); },
+
+    /**
+     * @ngdoc function
      * @name person.types:constructor.Person#$getChanges
      * @methodOf person.types:constructor.Person
      * @function
@@ -6559,17 +6933,38 @@ define('person',[
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#$getRelationshipsToSpouses
+     * @name person.types:constructor.Person#$getSpouses
      * @methodOf person.types:constructor.Person
      * @function
-     * @param {Object=} params set `persons` true to return a person object for each person in the relationships
-     * @return {Object} promise for the {@link person.functions:getRelationshipsToSpouses getRelationshipsToSpouses} response
+     * @return {Object} promise for the {@link person.functions:getSpouses getSpouses} response
      */
-    $getRelationshipsToSpouses: function(params) {
-      return exports.getRelationshipsToSpouses(helpers.removeAccessToken(this.links['spouse-relationships'].href), params);
+    $getSpouses: function() {
+      return exports.getSpouses(this.id);
     },
 
-    // TODO add links to ancestry, descendancy, person-with-relationships, child-relationships, parent-relationships, matches, portrait
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getParents
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {Object} promise for the {@link person.functions:getParents getParents} response
+     */
+    $getParents: function() {
+      return exports.getParents(this.id);
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getChildren
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {Object} promise for the {@link person.functions:getChildren getChildren} response
+     */
+    $getChildren: function() {
+      return exports.getChildren(this.id);
+    },
+
+    // TODO add links to ancestry, descendancy, person-with-relationships, matches, portrait
 
     /**
      * @ngdoc function
@@ -6735,7 +7130,7 @@ define('person',[
       // send gender if gender is new or changed
       if (this.gender && (!this.gender.id || this.gender.$changed)) {
         // set change message if none set
-        if (changeMessage && attributionNeeded(this.gender)) {
+        if (changeMessage && helpers.attributionNeeded(this.gender)) {
           this.gender.attribution = new attribution.Attribution(changeMessage);
         }
         postData.gender = this.gender;
@@ -6751,7 +7146,7 @@ define('person',[
                                spacePrefix(name.$getSurname()) + spacePrefix(name.$getSuffix())).trim());
           }
           // set change message if none set
-          if (changeMessage && attributionNeeded(name)) {
+          if (changeMessage && helpers.attributionNeeded(name)) {
             name.$setChangeMessage(changeMessage);
           }
           postData.$addName(name);
@@ -6763,7 +7158,7 @@ define('person',[
       helpers.forEach(this.facts, function(fact) {
         if (!fact.id || fact.$changed) {
           // set change message if none set
-          if (changeMessage && attributionNeeded(fact)) {
+          if (changeMessage && helpers.attributionNeeded(fact)) {
             fact.$setChangeMessage(changeMessage);
           }
           postData.$addFact(fact);
@@ -6824,7 +7219,7 @@ define('person',[
      * @description delete this person
      * @param {string} changeMessage change message
      * @param {Object=} opts options to pass to the http function specified during init
-     * @return {Object} promise for the person id
+     * @return {Object} promise for the person URL
      */
     $delete: function(changeMessage, opts) {
       return exports.deletePerson(helpers.removeAccessToken(maybe(maybe(this.links).person).href) || this.id, changeMessage, opts);
@@ -7179,9 +7574,11 @@ define('person',[
    * @return {Object} promise for the response
    */
   exports.getSpouses = function(pid, params, opts) {
-    // TODO add discovery resource lookup when it's working
-    var url = helpers.isAbsoluteUrl(pid) ? pid : '/platform/tree/persons/' + encodeURI(pid) + '/spouses';
-    return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('spouses-template', pid, {pid: pid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+      });
   };
 
   /**
@@ -7207,9 +7604,11 @@ define('person',[
    * @return {Object} promise for the response
    */
   exports.getParents = function(pid, params, opts) {
-    // TODO add discovery resource lookup when it's working
-    var url = helpers.isAbsoluteUrl(pid) ? pid : '/platform/tree/persons/' + encodeURI(pid) + '/parents';
-    return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('parents-template', pid, {pid: pid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+      });
   };
 
   /**
@@ -7234,9 +7633,11 @@ define('person',[
    * @return {Object} promise for the response
    */
   exports.getChildren = function(pid, params, opts) {
-    // TODO add discovery resource lookup when it's working
-    var url = helpers.isAbsoluteUrl(pid) ? pid : '/platform/tree/persons/' + encodeURI(pid) + '/children';
-    return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('children-template', pid, {pid: pid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+      });
   };
 
   /**
@@ -7254,7 +7655,7 @@ define('person',[
    * @param {string} pid id or full URL of the person
    * @param {string} changeMessage reason for the deletion
    * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the person id
+   * @return {Object} promise for the person id/URL
    */
   exports.deletePerson = function(pid, changeMessage, opts) {
     return helpers.chainHttpPromises(
@@ -7957,6 +8358,7 @@ define('FamilySearch',[
 
     // parents and children
     ChildAndParents: parentsAndChildren.ChildAndParents,
+    deleteChildAndParents: parentsAndChildren.deleteChildAndParents,
     getChildAndParents: parentsAndChildren.getChildAndParents,
 
     // pedigree
