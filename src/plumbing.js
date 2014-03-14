@@ -55,17 +55,12 @@ define([
   exports.getUrl = function(resourceName, possibleUrl, params) {
     return globals.discoveryPromise.then(function(discoveryResource) {
       var url = '';
-      var resource = discoveryResource.links[resourceName];
 
       if (helpers.isAbsoluteUrl(possibleUrl)) {
         url = possibleUrl;
       }
-      else if (resource['href']) {
-        url = helpers.removeAccessToken(resource['href']);
-      }
-      else if (resource['template']) {
-        var template = resource['template'].replace(/{\?[^}]*}/,''); // we will add query parameters later
-        url = helpers.populateUriTemplate(template, params || {});
+      else {
+        url = helpers.getUrlFromDiscoveryResource(discoveryResource, resourceName, params);
       }
       return url;
     });

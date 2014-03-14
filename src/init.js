@@ -118,6 +118,9 @@ define([
 
     // request the discovery resource
     globals.discoveryPromise = plumbing.get(globals.discoveryUrl);
+    globals.discoveryPromise.then(function(discoveryResource) {
+      globals.discoveryResource = discoveryResource;
+    });
   };
 
   return exports;

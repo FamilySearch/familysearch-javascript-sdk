@@ -671,7 +671,6 @@ define([
     return getAbsoluteUrl(globals.authoritiesServer[globals.environment], path);
   };
 
-
   /**
    * Create a URL-encoded query string from an object
    * @param {Object} params Parameters
@@ -789,6 +788,35 @@ define([
       }
     }
     return segments.join('');
+  };
+
+  /**
+   * get a URL from the provided discoveryResource by combining resourceName with params
+   * @param discoveryResource discovery resource
+   * @param resourceName resource name
+   * @param params object of params to populate in template
+   * @returns {string} url
+   */
+  exports.getUrlFromDiscoveryResource = function(discoveryResource, resourceName, params) {
+    var url = '';
+    var resource = discoveryResource.links[resourceName];
+    if (resource['href']) {
+      url = exports.removeAccessToken(resource['href']);
+    }
+    else if (resource['template']) {
+      var template = resource['template'].replace(/{\?[^}]*}/,''); // we will add query parameters later
+      url = exports.populateUriTemplate(template, params || {});
+    }
+    return url;
+  };
+
+  /**
+   * return true if no attribution or attribution without a change message or an existing attribution
+   * @param {Object} conclusion name or fact or gender - anything with an attribution
+   * @returns {boolean}
+   */
+  exports.attributionNeeded = function(conclusion) {
+    return !!(!conclusion.attribution || !conclusion.attribution.changeMessage || conclusion.attribution.contributor);
   };
 
   /**

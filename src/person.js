@@ -23,8 +23,8 @@ define([
    */
 
   //
-  // NOTE I've had to make two things global in this file: getPerson, and personMapper
-  // This is so parentsAndChildren and spouses and memories can access them; otherwise we'd have a circular dependency
+  // NOTE I've had to make a few things global in this file: Person, getPerson, and personMapper
+  // This is so parentsAndChildren and spouses and memories can access them; otherwise we'd have circular dependencies
   //
 
   var maybe = helpers.maybe; // shorthand
@@ -47,13 +47,8 @@ define([
    * made to names, facts, and gender; _$delete_ removes the person.
    **********************************/
 
-  var Person = exports.Person = function() {
+  var Person = globals.Person = exports.Person = function() {
   };
-
-  function attributionNeeded(conclusion) {
-    // return true if no attribution or attribution without a change message or an existing attribution
-    return (!conclusion.attribution || !conclusion.attribution.changeMessage || conclusion.attribution.contributor);
-  }
 
   function spacePrefix(namePiece) {
     return namePiece ? ' ' + namePiece : '';
@@ -394,6 +389,15 @@ define([
 
     /**
      * @ngdoc function
+     * @name person.types:constructor.Person#$getUrl
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {String} Url of the person
+     */
+    $getUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).person).href); },
+
+    /**
+     * @ngdoc function
      * @name person.types:constructor.Person#$getChanges
      * @methodOf person.types:constructor.Person
      * @function
@@ -450,17 +454,38 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#$getRelationshipsToSpouses
+     * @name person.types:constructor.Person#$getSpouses
      * @methodOf person.types:constructor.Person
      * @function
-     * @param {Object=} params set `persons` true to return a person object for each person in the relationships
-     * @return {Object} promise for the {@link person.functions:getRelationshipsToSpouses getRelationshipsToSpouses} response
+     * @return {Object} promise for the {@link person.functions:getSpouses getSpouses} response
      */
-    $getRelationshipsToSpouses: function(params) {
-      return exports.getRelationshipsToSpouses(helpers.removeAccessToken(this.links['spouse-relationships'].href), params);
+    $getSpouses: function() {
+      return exports.getSpouses(this.id);
     },
 
-    // TODO add links to ancestry, descendancy, person-with-relationships, child-relationships, parent-relationships, matches, portrait
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getParents
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {Object} promise for the {@link person.functions:getParents getParents} response
+     */
+    $getParents: function() {
+      return exports.getParents(this.id);
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getChildren
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {Object} promise for the {@link person.functions:getChildren getChildren} response
+     */
+    $getChildren: function() {
+      return exports.getChildren(this.id);
+    },
+
+    // TODO add links to ancestry, descendancy, person-with-relationships, matches, portrait
 
     /**
      * @ngdoc function
@@ -626,7 +651,7 @@ define([
       // send gender if gender is new or changed
       if (this.gender && (!this.gender.id || this.gender.$changed)) {
         // set change message if none set
-        if (changeMessage && attributionNeeded(this.gender)) {
+        if (changeMessage && helpers.attributionNeeded(this.gender)) {
           this.gender.attribution = new attribution.Attribution(changeMessage);
         }
         postData.gender = this.gender;
@@ -642,7 +667,7 @@ define([
                                spacePrefix(name.$getSurname()) + spacePrefix(name.$getSuffix())).trim());
           }
           // set change message if none set
-          if (changeMessage && attributionNeeded(name)) {
+          if (changeMessage && helpers.attributionNeeded(name)) {
             name.$setChangeMessage(changeMessage);
           }
           postData.$addName(name);
@@ -654,7 +679,7 @@ define([
       helpers.forEach(this.facts, function(fact) {
         if (!fact.id || fact.$changed) {
           // set change message if none set
-          if (changeMessage && attributionNeeded(fact)) {
+          if (changeMessage && helpers.attributionNeeded(fact)) {
             fact.$setChangeMessage(changeMessage);
           }
           postData.$addFact(fact);
@@ -715,7 +740,7 @@ define([
      * @description delete this person
      * @param {string} changeMessage change message
      * @param {Object=} opts options to pass to the http function specified during init
-     * @return {Object} promise for the person id
+     * @return {Object} promise for the person URL
      */
     $delete: function(changeMessage, opts) {
       return exports.deletePerson(helpers.removeAccessToken(maybe(maybe(this.links).person).href) || this.id, changeMessage, opts);
@@ -1070,9 +1095,11 @@ define([
    * @return {Object} promise for the response
    */
   exports.getSpouses = function(pid, params, opts) {
-    // TODO add discovery resource lookup when it's working
-    var url = helpers.isAbsoluteUrl(pid) ? pid : '/platform/tree/persons/' + encodeURI(pid) + '/spouses';
-    return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('spouses-template', pid, {pid: pid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+      });
   };
 
   /**
@@ -1098,9 +1125,11 @@ define([
    * @return {Object} promise for the response
    */
   exports.getParents = function(pid, params, opts) {
-    // TODO add discovery resource lookup when it's working
-    var url = helpers.isAbsoluteUrl(pid) ? pid : '/platform/tree/persons/' + encodeURI(pid) + '/parents';
-    return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('parents-template', pid, {pid: pid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+      });
   };
 
   /**
@@ -1125,9 +1154,11 @@ define([
    * @return {Object} promise for the response
    */
   exports.getChildren = function(pid, params, opts) {
-    // TODO add discovery resource lookup when it's working
-    var url = helpers.isAbsoluteUrl(pid) ? pid : '/platform/tree/persons/' + encodeURI(pid) + '/children';
-    return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('children-template', pid, {pid: pid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+      });
   };
 
   /**
@@ -1145,7 +1176,7 @@ define([
    * @param {string} pid id or full URL of the person
    * @param {string} changeMessage reason for the deletion
    * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the person id
+   * @return {Object} promise for the person id/URL
    */
   exports.deletePerson = function(pid, changeMessage, opts) {
     return helpers.chainHttpPromises(

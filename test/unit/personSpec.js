@@ -299,15 +299,18 @@ define(['FamilySearch'], function(FamilySearch) {
       });
     });
 
-    it('conclusion is updated', function() {
-      // construct mock person with existing birth fact
+    function createMockPerson(pid, fid) {
       var person = new FamilySearch.Person();
-      person.id = '12345';
+      person.id = pid;
       var fact = new FamilySearch.Fact({type: 'http://gedcomx.org/Birth', date: '3 Apr 1836', formalDate: '+1836-04-03'});
-      fact.id = 'ABCDE';
+      fact.id = fid;
       fact.$changed = false;
       person.$addFact(fact);
+      return person;
+    }
 
+    it('conclusion is updated', function() {
+      var person = createMockPerson('12345', 'ABCDE');
       // set birth place
       person.$getBirth().$setPlace('Moscow, Russia').$setChangeMessage('...change message...');
       var promise = person.$save();
@@ -339,16 +342,9 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('conclusion is deleted', function() {
-      // construct mock person with existing birth fact
-      var person = new FamilySearch.Person();
-      person.id = '12345';
-      var fact = new FamilySearch.Fact({type: 'http://gedcomx.org/Birth', date: '3 Apr 1836', formalDate: '+1836-04-03'});
-      fact.id = '1';
-      fact.$changed = false;
-      person.$addFact(fact);
-
+      var person = createMockPerson('12345', '1');
       // delete fact
-      person.$deleteFact(fact);
+      person.$deleteFact(person.$getFacts()[0]);
       var promise = person.$save('...change message...');
       promise.then(function(response) {
         expect(promise.getStatusCode()).toBe(204);
@@ -358,9 +354,7 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('is deleted', function() {
-      var person = new FamilySearch.Person();
-      person.id = 'PPPJ-MYZ';
-
+      var person = createMockPerson('PPPJ-MYZ','fid');
       var promise = person.$delete('Reason for delete');
       promise.then(function(response) {
         expect(promise.getStatusCode()).toBe(204);

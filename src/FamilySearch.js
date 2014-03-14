@@ -90,6 +90,7 @@ define([
 
     // parents and children
     ChildAndParents: parentsAndChildren.ChildAndParents,
+    deleteChildAndParents: parentsAndChildren.deleteChildAndParents,
     getChildAndParents: parentsAndChildren.getChildAndParents,
 
     // pedigree
