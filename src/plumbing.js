@@ -108,7 +108,7 @@ define([
   exports.post = function(url, data, headers, opts, responseMapper) {
     return exports.http('POST',
       url,
-      helpers.extend({'Content-Type': 'application/x-gedcomx-v1+json'},headers),
+      helpers.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers),
       data,
       opts,
       responseMapper);
@@ -132,7 +132,7 @@ define([
   exports.put = function(url, data, headers, opts, responseMapper) {
     return exports.http('PUT',
       url,
-      helpers.extend({'Content-Type': 'application/x-gedcomx-v1+json'},headers),
+      helpers.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers),
       data,
       opts,
       responseMapper);
@@ -153,7 +153,12 @@ define([
    * @return {Object} a promise that behaves like promises returned by the http function specified during init
    */
   exports.del = function(url, headers, opts, responseMapper) {
-    return exports.http('DELETE', url, headers, null, opts, responseMapper);
+    return exports.http('DELETE',
+      url,
+      helpers.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers),
+      null,
+      opts,
+      responseMapper);
   };
 
   /**

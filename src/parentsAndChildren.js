@@ -27,6 +27,11 @@ define([
    * @description
    *
    * Child and parents relationship
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_resource FamilySearch API Docs}
+   *
+   * Two methods to note below are _$save_ and _$delete_. _$save_ saves the various adds, deletes, and updates
+   * made to the relationship; _$delete_ removes the relationship.
    */
   var ChildAndParents = exports.ChildAndParents = function() {
 
@@ -421,7 +426,11 @@ define([
           caprid ? plumbing.getUrl('child-and-parents-relationship-template', null, {caprid: caprid}) :
                    plumbing.getUrl('relationships'),
           function(url) {
-            return plumbing.post(url, { childAndParentsRelationships: [ postData ] }, {}, opts, helpers.getResponseEntityId);
+            return plumbing.post(url,
+              { childAndParentsRelationships: [ postData ] },
+              {'Content-Type': 'application/x-fs-v1+json'},
+              opts,
+              helpers.getResponseEntityId);
           }));
       }
 
@@ -432,7 +441,11 @@ define([
           promises.push(helpers.chainHttpPromises(
             plumbing.getUrl('child-and-parents-relationship-parent-template', null, {caprid: caprid, role: role}),
             function(url) {
-              return plumbing.del(url, msg ? {'X-Reason': msg} : {}, opts);
+              var headers = {'Content-Type': 'application/x-fs-v1+json'};
+              if (msg) {
+                headers['X-Reason'] = msg;
+              }
+              return plumbing.del(url, headers, opts);
             }
           ));
         }
@@ -442,7 +455,11 @@ define([
       if (caprid && this.$deletedFacts) {
         helpers.forEach(this.$deletedFacts, function(value, key) {
           value = value || changeMessage; // default to global change message
-          promises.push(plumbing.del(key, value ? {'X-Reason' : value} : {}, opts));
+          var headers = {'Content-Type': 'application/x-fs-v1+json'};
+          if (value) {
+            headers['X-Reason'] = value;
+          }
+          promises.push(plumbing.del(key, headers, opts));
         });
       }
 
@@ -555,7 +572,11 @@ define([
     return helpers.chainHttpPromises(
       plumbing.getUrl('child-and-parents-relationship-template', caprid, {caprid: caprid}),
       function(url) {
-        return plumbing.del(url, changeMessage ? {'X-Reason': changeMessage} : {}, opts, function() {
+        var headers = {'Content-Type': 'application/x-fs-v1+json'};
+        if (changeMessage) {
+          headers['X-Reason'] = changeMessage;
+        }
+        return plumbing.del(url, headers, opts, function() {
           return caprid;
         });
       }
