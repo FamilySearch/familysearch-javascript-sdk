@@ -116,7 +116,9 @@ define(['FamilySearch'], function(FamilySearch) {
           href: 'https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/'+rid+'/mother/conclusions/'+fid
         }};
       delete fact.$changed;
-      rel.$setMother('old').$setChild('PPPX-PP3').$addMotherFact(fact);
+      rel.$setMother('old')
+        .$setChild('PPPX-PP3')
+        .$addMotherFact(fact);
       delete rel.$motherChanged;
       return rel;
     }
@@ -124,7 +126,8 @@ define(['FamilySearch'], function(FamilySearch) {
     it('is updated', function() {
       var rel = createMockRelationship('12345', 'C.1');
       // update mother and mother fact
-      rel.$setMother('PPPX-FP2').$getMotherFacts()[0].$setType('http://gedcomx.org/AdoptiveParent');
+      rel.$setMother('PPPX-FP2')
+        .$getMotherFacts()[0].$setType('http://gedcomx.org/AdoptiveParent');
       var promise = rel.$save('...change message...');
       promise.then(function(response) {
         var request = promise.getRequest();
@@ -156,8 +159,9 @@ define(['FamilySearch'], function(FamilySearch) {
     it('conclusion is deleted', function() {
       var rel = createMockRelationship('R123-456', 'C123-456');
       // delete fact
-      rel.$deleteMotherFact(rel.$getMotherFacts()[0]);
-      var promise = rel.$save('Deleted for reason 1');
+      var promise = rel
+        .$deleteMotherFact(rel.$getMotherFacts()[0])
+        .$save('Deleted for reason 1');
       promise.then(function(response) {
         expect(promise.getStatusCode()).toBe(204);
         expect(promise.getRequest().headers['X-Reason']).toBe('Deleted for reason 1');
@@ -166,10 +170,10 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('parent is deleted', function() {
-      var rel = createMockRelationship('RRRX-RRX','fid');
-      // delete mother
-      rel.$deleteMother();
-      var promise = rel.$save('Deleted for reason 1');
+      var promise = createMockRelationship('RRRX-RRX','fid')
+        // delete mother
+        .$deleteMother()
+        .$save('Deleted for reason 1');
       promise.then(function(response) {
         expect(promise.getStatusCode()).toBe(204);
         expect(promise.getRequest().headers['X-Reason']).toBe('Deleted for reason 1');
@@ -178,8 +182,8 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('is deleted', function() {
-      var rel = createMockRelationship('PPPX-PP0','fid');
-      var promise = rel.$delete('Deleted for reason 1');
+      var promise = createMockRelationship('PPPX-PP0','fid')
+        .$delete('Deleted for reason 1');
       promise.then(function(response) {
         expect(promise.getStatusCode()).toBe(204);
         expect(promise.getRequest().headers['X-Reason']).toBe('Deleted for reason 1');

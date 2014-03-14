@@ -344,8 +344,9 @@ define(['FamilySearch'], function(FamilySearch) {
     it('conclusion is deleted', function() {
       var person = createMockPerson('12345', '1');
       // delete fact
-      person.$deleteFact(person.$getFacts()[0]);
-      var promise = person.$save('...change message...');
+      var promise = person
+        .$deleteFact(person.$getFacts()[0])
+        .$save('...change message...');
       promise.then(function(response) {
         expect(promise.getStatusCode()).toBe(204);
         expect(promise.getRequest().headers['X-Reason']).toBe('...change message...');
@@ -354,8 +355,8 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('is deleted', function() {
-      var person = createMockPerson('PPPJ-MYZ','fid');
-      var promise = person.$delete('Reason for delete');
+      var promise = createMockPerson('PPPJ-MYZ','fid')
+        .$delete('Reason for delete');
       promise.then(function(response) {
         expect(promise.getStatusCode()).toBe(204);
         expect(promise.getRequest().headers['X-Reason']).toBe('Reason for delete');
