@@ -563,15 +563,6 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "parentsAndChildren.functions:deleteCouple",
-      "shortName": "deleteCouple",
-      "type": "function",
-      "moduleName": "parentsAndChildren",
-      "shortDescription": "Delete the specified relationship",
-      "keywords": "api changemessage couple crid delete deletion docs editable example familysearch full function functions http https init net options opts org parentsandchildren pass promise reason relationship url"
-    },
-    {
-      "section": "api",
       "id": "parentsAndChildren.functions:getChildAndParents",
       "shortName": "getChildAndParents",
       "type": "function",
@@ -586,7 +577,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "parentsAndChildren",
       "shortDescription": "Child and parents relationship",
-      "keywords": "$addfatherfact $addmotherfact $delete $deletefather $deletefatherfact $deletemother $deletemotherfact $getchanges $getchild $getchildid $getchildurl $getfather $getfatherfacts $getfatherid $getfatherurl $getmother $getmotherfacts $getmotherid $getmotherurl $getnoterefs $getsourcerefs $save $setchild $setfather $setmother __broken__ add adds api array biologicalparent call change changed changemessage child childandparents create dates default delete deletes docs editable example existing fact facts familysearch father fulfilled function functions getchildandparentschanges getchildandparentsnoterefs getchildandparentssourcerefs getperson http https init initializing longer message methods mother net note notes options opts org parent-relationship parents parentsandchildren pass passed person places plan promise property read refresh relationship remove removes response saved saves sdk seconds sources supported true type types update updated updates updating url"
+      "keywords": "$addfatherfact $addmotherfact $delete $deletefather $deletefatherfact $deletemother $deletemotherfact $getchanges $getchild $getchildid $getchildurl $getfather $getfatherfacts $getfatherid $getfatherurl $getmother $getmotherfacts $getmotherid $getmotherurl $getnoterefs $getsourcerefs $save $setchild $setfather $setmother __broken__ add api array biologicalparent call change changed changemessage changes child childandparents create dates default delete docs editable example existing fact facts familysearch father fulfilled function functions getchildandparentschanges getchildandparentsnoterefs getchildandparentssourcerefs getperson http https init initializing longer message methods mother net note notes options opts org parent-relationship parents parentsandchildren pass passed persists person places plan promise property read refresh relationship remove removes response saved sdk seconds sources supported true type types update updated updating url"
     },
     {
       "section": "api",
@@ -703,7 +694,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Person",
-      "keywords": "$addfact $addmemorypersonaref $addname $delete $deletefact $deletename $getbirth $getbirthdate $getbirthplace $getburial $getburialdate $getburialplace $getchanges $getchildren $getchristening $getchristeningdate $getchristeningplace $getdeath $getdeathdate $getdeathplace $getdiscussionrefs $getdisplaybirthdate $getdisplaybirthplace $getdisplaydeathdate $getdisplaydeathplace $getdisplaygender $getdisplaylifespan $getdisplayname $getfact $getfacts $getgivenname $getmemorypersonarefs $getnames $getnoterefs $getparents $getpersistentidentifier $getpreferredname $getsourcerefs $getspouses $getsurname $geturl $save $setgender add adds api array arrays attributes attribution birth birthdate birthplace burial change changehistory changemessage changes christening christning conclusion count create death deathdate deathplace default delete deletes discussions display docs editable entries example existing fact facts false familysearch female fulfilled function functions gender getchildren getmemorypersonarefs getparents getpersonchanges getpersondiscussionrefs getpersonnoterefs getpersonsourcerefs getspouses http https identifers identifier includes init lifespan living male map memories memory memorypersonaref message methods names net note notes number object options opts org params pass passed persistent person persona place preferred promise property read reference refresh remove removes response return saves sources surname true type types update updated updates updating url values year"
+      "keywords": "$addfact $addmemorypersonaref $addname $delete $deletefact $deletename $getbirth $getbirthdate $getbirthplace $getburial $getburialdate $getburialplace $getchanges $getchildren $getchristening $getchristeningdate $getchristeningplace $getdeath $getdeathdate $getdeathplace $getdiscussionrefs $getdisplaybirthdate $getdisplaybirthplace $getdisplaydeathdate $getdisplaydeathplace $getdisplaygender $getdisplaylifespan $getdisplayname $getfact $getfacts $getgivenname $getmemorypersonarefs $getnames $getnoterefs $getparents $getpersistentidentifier $getpreferredname $getsourcerefs $getspouses $getsurname $geturl $save $setgender add api array arrays attributes attribution birth birthdate birthplace burial change changehistory changemessage changes christening christning conclusion count create death deathdate deathplace default delete discussions display docs editable entries example existing fact facts false familysearch female fulfilled function functions gender getchildren getmemorypersonarefs getparents getpersonchanges getpersondiscussionrefs getpersonnoterefs getpersonsourcerefs getspouses http https identifers identifier includes init lifespan living male map memories memory memorypersonaref message methods names net note notes number object options opts org params pass passed persistent persists person persona place preferred promise property read reference refresh remove removes response return sources surname true type types update updated updating url values year"
     },
     {
       "section": "api",
@@ -977,6 +968,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "spouses.functions:deleteCouple",
+      "shortName": "deleteCouple",
+      "type": "function",
+      "moduleName": "spouses",
+      "shortDescription": "Delete the specified relationship",
+      "keywords": "api changemessage couple crid delete deletion docs editable example familysearch full function functions http https init net options opts org pass promise reason relationship spouses url"
+    },
+    {
+      "section": "api",
       "id": "spouses.functions:getCouple",
       "shortName": "getCouple",
       "type": "function",
@@ -991,7 +991,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "spouses",
       "shortDescription": "Couple relationship",
-      "keywords": "$addfact $delete $deletefact $getchanges $getfacts $gethusband $gethusbandid $gethusbandurl $getmarriagefact $getnoterefs $getsourcerefs $getwife $getwifeid $getwifeurl $save $sethusband $setwife add api array call change changemessage couple create default delete editable example existing exports fact facts fulfilled function functions getcouplechanges getcouplenoterefs getcouplesourcerefs getperson http husband init initializing marriage message multiple net note notes options opts org pass passed person plan promise property read refresh relationship remove response sdk seconds sources spouses true type types update updated updating url wife"
+      "keywords": "$addfact $delete $deletefact $getchanges $getfacts $gethusband $gethusbandid $gethusbandurl $getmarriagefact $getnoterefs $getsourcerefs $getwife $getwifeid $getwifeurl $save $sethusband $setwife add api array call change changemessage changes couple create default delete editable example existing exports fact facts fulfilled function functions getcouplechanges getcouplenoterefs getcouplesourcerefs getperson http husband init initializing marriage message methods multiple net note notes options opts org pass passed persists person plan promise property read refresh relationship remove removes response sdk seconds sources spouses true type types update updated updating url wife"
     },
     {
       "section": "api",

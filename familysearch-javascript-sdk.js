@@ -5628,8 +5628,9 @@ define('parentsAndChildren',[
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_resource FamilySearch API Docs}
    *
-   * Two methods to note below are _$save_ and _$delete_. _$save_ saves the various adds, deletes, and updates
-   * made to the relationship; _$delete_ removes the relationship.
+   * Two methods to note below are _$save_ and _$delete_.
+   * _$save_ persists the changes made to father, mother, child, and facts;
+   * _$delete_ removes the relationship.
    */
   var ChildAndParents = exports.ChildAndParents = function() {
 
@@ -6343,6 +6344,10 @@ define('spouses',[
    * @description
    *
    * Couple relationship
+   *
+   * Two methods to note below are _$save_ and _$delete_.
+   * _$save_ persists the changes made to husband, wife, and facts;
+   * _$delete_ removes the relationship.
    */
   var Couple = exports.Couple = function() {
 
@@ -6561,6 +6566,9 @@ define('spouses',[
 
       // post update
       if (isChanged) {
+        if (!crid) {
+          postData.type = 'http://gedcomx.org/Couple'; // set type on new relationships
+        }
         promises.push(helpers.chainHttpPromises(
           crid ? plumbing.getUrl('couple-relationship-template', null, {crid: crid}) :
             plumbing.getUrl('relationships'),
@@ -6668,7 +6676,7 @@ define('spouses',[
 
   /**
    * @ngdoc function
-   * @name parentsAndChildren.functions:deleteCouple
+   * @name spouses.functions:deleteCouple
    * @function
    *
    * @description
@@ -6742,8 +6750,9 @@ define('person',[
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
    *
-   * Two methods to note below are _$save_ and _$delete_. _$save_ saves the various adds, deletes, and updates
-   * made to names, facts, and gender; _$delete_ removes the person.
+   * Two methods to note below are _$save_ and _$delete_.
+   * _$save_ persists the changes made to names, facts, and gender;
+   * _$delete_ removes the person.
    **********************************/
 
   var Person = globals.Person = exports.Person = function() {
