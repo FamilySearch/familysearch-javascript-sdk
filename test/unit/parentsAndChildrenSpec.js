@@ -1,6 +1,6 @@
 define(['FamilySearch'], function(FamilySearch) {
-  describe('Parents and Children', function() {
-    it('relationship is returned from getChildAndParents', function() {
+  describe('Parents and Children relationship', function() {
+    it('is returned from getChildAndParents', function() {
       FamilySearch.getChildAndParents('PPPX-PP0').then(function(response) {
         var rel = response.getRelationship();
         expect(rel.id).toBe('PPPX-PP0');

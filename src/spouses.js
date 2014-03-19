@@ -4,10 +4,11 @@ define([
   'fact',
   'globals',
   'helpers',
+  'parentsAndChildren',
   'plumbing',
   'notes',
   'sources'
-], function(attribution, changeHistory, fact, globals, helpers, plumbing, notes, sources) {
+], function(attribution, changeHistory, fact, globals, helpers, parentsAndChildren, plumbing, notes, sources) {
   /**
    * @ngdoc overview
    * @name spouses
@@ -136,7 +137,169 @@ define([
      * @function
      * @return {Object} promise for the {@link sources.functions:getCoupleChanges getCoupleChanges} response
      */
-    $getChanges: function() { return changeHistory.getCoupleChanges(helpers.removeAccessToken(maybe(this.links['change-history']).href)); }
+    $getChanges: function() { return changeHistory.getCoupleChanges(helpers.removeAccessToken(maybe(this.links['change-history']).href)); },
+
+    /**
+     * @ngdoc function
+     * @name spouses.types:constructor.Couple#$setHusband
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @description NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id
+     * @param {Person|string} husband person or URL or id
+     * @return {Couple} this relationship
+     */
+    $setHusband: function(husband) {
+      parentsAndChildren.setMember.call(this, 'person1', husband);
+      this.$husbandChanged = true;
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name spouses.types:constructor.Couple#$setWife
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @description NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id
+     * @param {Person|string} wife person or URL or id
+     * @return {Couple} this relationship
+     */
+    $setWife: function(wife) {
+      parentsAndChildren.setMember.call(this, 'person2', wife);
+      this.$wifeChanged = true;
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name spouses.types:constructor.Couple#$addFact
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @param {Fact|Object} value fact to add; if value is not a Fact, it is passed into the Fact constructor
+     * @return {Couple} this relationship
+     */
+    $addFact: function(value) {
+      parentsAndChildren.addFact.call(this, 'facts', value);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name spouses.types:constructor.Couple#$deleteFact
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @param {Fact|string} value fact or fact id to remove
+     * @param {String=} changeMessage change message
+     * @return {Couple} this relationship
+     */
+    $deleteFact: function(value, changeMessage) {
+      parentsAndChildren.deleteFact.call(this, 'facts', value, changeMessage);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name spouses.types:constructor.Couple#$save
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @description
+     * Create a new relationship if this relationship does not have an id, or update the existing relationship
+     *
+     * {@link http://jsfiddle.net/DallanQ/vgS9Q/ editable example}
+     *
+     * @param {String=} changeMessage default change message to use when fact/deletion-specific changeMessage was not specified
+     * @param {boolean=} refresh true to read the relationship after updating
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise of the relationship id, which is fulfilled after the relationship has been updated,
+     * and if refresh is true, after the relationship has been read
+     */
+    $save: function(changeMessage, refresh, opts) {
+      var postData = new Couple();
+      var isChanged = false;
+      var crid = this.id;
+
+      // TODO don't "push down" attribution to individual conclusions once the global attribution bug has been fixed
+      // support attribution at the top-level
+
+      // send husband and wife if new or either has changed
+      if (!this.id || this.$husbandChanged || this.$wifeChanged) {
+        postData.person1 = this.person1;
+        postData.person2 = this.person2;
+        isChanged = true;
+      }
+
+      helpers.forEach(this.facts, function(fact) {
+        if (!crid || !fact.id || fact.$changed) {
+          // set change message if none set
+          if (changeMessage && helpers.attributionNeeded(fact)) {
+            fact.$setChangeMessage(changeMessage);
+          }
+          parentsAndChildren.addFact.call(postData, 'facts', fact);
+          isChanged = true;
+        }
+      });
+
+      var promises = [];
+
+      // post update
+      if (isChanged) {
+        promises.push(helpers.chainHttpPromises(
+          crid ? plumbing.getUrl('couple-relationship-template', null, {crid: crid}) :
+            plumbing.getUrl('relationships'),
+          function(url) {
+            return plumbing.post(url,
+              { relationships: [ postData ] },
+              {},
+              opts,
+              helpers.getResponseEntityId);
+          }));
+      }
+
+      // post deleted facts
+      if (crid && this.$deletedFacts) {
+        helpers.forEach(this.$deletedFacts, function(value, key) {
+          value = value || changeMessage; // default to global change message
+          promises.push(plumbing.del(key, value ? {'X-Reason' : value} : {}, opts));
+        });
+      }
+
+      var relationship = this;
+      // wait for all promises to be fulfilled
+      var promise = helpers.promiseAll(promises).then(function(results) {
+        var id = crid ? crid : results[0]; // if we're adding a new relationship, get id from the first (only) promise
+        helpers.extendHttpPromise(promise, promises[0]); // extend the first promise into the returned promise
+
+        if (refresh) {
+          // re-read the relationship and set this object's properties from response
+          return exports.getCouple(id, {}, opts).then(function(response) {
+            helpers.deleteProperties(relationship);
+            helpers.extend(relationship, response.getRelationship());
+            return id;
+          });
+        }
+        else {
+          return id;
+        }
+      });
+      return promise;
+    },
+
+    /**
+     * @ngdoc function
+     * @name spouses.types:constructor.Couple#$delete
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @description delete this relationship
+     * @param {string} changeMessage change message
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise for the relationship URL
+     */
+    $delete: function(changeMessage, opts) {
+      return exports.deleteCouple(helpers.removeAccessToken(maybe(maybe(this.links).relationship).href) || this.id, changeMessage, opts);
+    }
   };
 
   /**
@@ -188,7 +351,33 @@ define([
     getPerson:       function(id) { return helpers.find(this.persons, {id: id}); }
   };
 
-  // TODO support attribution at the top-level
+  /**
+   * @ngdoc function
+   * @name parentsAndChildren.functions:deleteCouple
+   * @function
+   *
+   * @description
+   * Delete the specified relationship
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/ypHgL/ editable example}
+   *
+   * @param {string} crid id or full URL of the couple relationship
+   * @param {string} changeMessage reason for the deletion
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the relationship id/URL
+   */
+  exports.deleteCouple = function(crid, changeMessage, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('couple-relationship-template', crid, {crid: crid}),
+      function(url) {
+        return plumbing.del(url, changeMessage ? {'X-Reason' : changeMessage} : {}, opts, function() {
+          return crid;
+        });
+      }
+    );
+  };
 
   return exports;
 });

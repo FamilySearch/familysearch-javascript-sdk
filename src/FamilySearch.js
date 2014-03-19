@@ -133,6 +133,7 @@ define([
 
     // spouses
     Couple: spouses.Couple,
+    deleteCouple: spouses.deleteCouple,
     getCouple: spouses.getCouple,
 
     // user

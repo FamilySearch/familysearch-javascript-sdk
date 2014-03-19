@@ -37,10 +37,11 @@ define([
 
   };
 
-  // private functions - called with this set to the relationship
+  // helper functions - called with this set to the relationship
+  // export so we can use them in spouses.js
 
   // person may be a Person, a URL, or an ID
-  function setMember(role, person) {
+  exports.setMember = function(role, person) {
     if (!this[role]) {
       this[role] = {};
     }
@@ -53,18 +54,18 @@ define([
     else {
       this[role].resource = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'person-template', {pid: person});
     }
-  }
+    delete this[role].resourceId;
+  };
 
-  function deleteMember(role, changeMessage) {
+  exports.deleteMember = function(role, changeMessage) {
     if (!this.$deletedMembers) {
       this.$deletedMembers = {};
     }
     this.$deletedMembers[role] = changeMessage;
     delete this[role];
-  }
+  };
 
-  function addFact(role, value) {
-    var prop = role + 'Facts';
+  exports.addFact = function(prop, value) {
     if (!helpers.isArray(this[prop])) {
       this[prop] = [];
     }
@@ -72,17 +73,16 @@ define([
       value = new fact.Fact(value);
     }
     this[prop].push(value);
-  }
+  };
 
-  function deleteFact(role, value, changeMessage) {
-    var prop = role + 'Facts';
+  exports.deleteFact = function(prop, value, changeMessage) {
     if (!(value instanceof fact.Fact)) {
       value = helpers.find(this[prop], { id: value });
     }
     var pos = helpers.indexOf(this[prop], value);
     if (pos >= 0) {
       // add fact to $deletedFacts map; key is the href to delete
-      var key = maybe(maybe(maybe(value).links).conclusion).href;
+      var key = helpers.removeAccessToken(maybe(maybe(maybe(value).links).conclusion).href);
       if (key) {
         if (!this.$deletedFacts) {
           this.$deletedFacts = {};
@@ -92,7 +92,7 @@ define([
       // remove fact from array
       this[prop].splice(pos,1);
     }
-  }
+  };
 
   exports.ChildAndParents.prototype = {
     constructor: ChildAndParents,
@@ -237,7 +237,7 @@ define([
      * @return {ChildAndParents} this relationship
      */
     $setFather: function(father) {
-      setMember.call(this, 'father', father);
+      exports.setMember.call(this, 'father', father);
       this.$fatherChanged = true;
       //noinspection JSValidateTypes
       return this;
@@ -253,7 +253,7 @@ define([
      * @return {ChildAndParents} this relationship
      */
     $setMother: function(mother) {
-      setMember.call(this, 'mother', mother);
+      exports.setMember.call(this, 'mother', mother);
       this.$motherChanged = true;
       //noinspection JSValidateTypes
       return this;
@@ -270,7 +270,7 @@ define([
      * @return {ChildAndParents} this relationship
      */
     $setChild: function(child) {
-      setMember.call(this, 'child', child);
+      exports.setMember.call(this, 'child', child);
       //noinspection JSValidateTypes
       return this;
     },
@@ -282,10 +282,10 @@ define([
      * @function
      * @description remove father from the relationship
      * @param {String=} changeMessage change message
-     * @return {Person} this person
+     * @return {ChildAndParents} this relationship
      */
     $deleteFather: function(changeMessage) {
-      deleteMember.call(this, 'father', changeMessage);
+      exports.deleteMember.call(this, 'father', changeMessage);
       //noinspection JSValidateTypes
       return this;
     },
@@ -297,10 +297,10 @@ define([
      * @function
      * @description remove mother from the relationship
      * @param {String=} changeMessage change message
-     * @return {Person} this person
+     * @return {ChildAndParents} this relationship
      */
     $deleteMother: function(changeMessage) {
-      deleteMember.call(this, 'mother', changeMessage);
+      exports.deleteMember.call(this, 'mother', changeMessage);
       //noinspection JSValidateTypes
       return this;
     },
@@ -312,10 +312,10 @@ define([
      * @function
      * @description NOTE: dates are not supported for BiologicalParent, and places are not supported at all
      * @param {Fact|Object} value fact to add; if value is not a Fact, it is passed into the Fact constructor
-     * @return {Person} this person
+     * @return {ChildAndParents} this relationship
      */
     $addFatherFact: function(value) {
-      addFact.call(this, 'father', value);
+      exports.addFact.call(this, 'fatherFacts', value);
       //noinspection JSValidateTypes
       return this;
     },
@@ -327,10 +327,10 @@ define([
      * @function
      * @description NOTE: dates are not supported for BiologicalParent, and places are not supported at all
      * @param {Fact|Object} value fact to add; if value is not a Fact, it is passed into the Fact constructor
-     * @return {Person} this person
+     * @return {ChildAndParents} this relationship
      */
     $addMotherFact: function(value) {
-      addFact.call(this, 'mother', value);
+      exports.addFact.call(this, 'motherFacts', value);
       //noinspection JSValidateTypes
       return this;
     },
@@ -342,10 +342,10 @@ define([
      * @function
      * @param {Fact|string} value fact or fact id to remove
      * @param {String=} changeMessage change message
-     * @return {Person} this person
+     * @return {ChildAndParents} this relationship
      */
     $deleteFatherFact: function(value, changeMessage) {
-      deleteFact.call(this, 'father', value, changeMessage);
+      exports.deleteFact.call(this, 'fatherFacts', value, changeMessage);
       //noinspection JSValidateTypes
       return this;
     },
@@ -357,10 +357,10 @@ define([
      * @function
      * @param {Fact|string} value fact or fact id to remove
      * @param {String=} changeMessage change message
-     * @return {Person} this person
+     * @return {ChildAndParents} this relationship
      */
     $deleteMotherFact: function(value, changeMessage) {
-      deleteFact.call(this, 'mother', value, changeMessage);
+      exports.deleteFact.call(this, 'motherFacts', value, changeMessage);
       //noinspection JSValidateTypes
       return this;
     },
@@ -408,14 +408,14 @@ define([
       }
 
       // send facts if new or changed
-      helpers.forEach(['father', 'mother'], function(role) {
-        helpers.forEach(this[role+'Facts'], function(fact) {
+      helpers.forEach(['fatherFacts', 'motherFacts'], function(prop) {
+        helpers.forEach(this[prop], function(fact) {
           if (!caprid || !fact.id || fact.$changed) {
             // set change message if none set
             if (changeMessage && helpers.attributionNeeded(fact)) {
               fact.$setChangeMessage(changeMessage);
             }
-            addFact.call(postData, role, fact);
+            exports.addFact.call(postData, prop, fact);
             isChanged = true;
           }
         });
