@@ -563,6 +563,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "parentsAndChildren.functions:deleteCouple",
+      "shortName": "deleteCouple",
+      "type": "function",
+      "moduleName": "parentsAndChildren",
+      "shortDescription": "Delete the specified relationship",
+      "keywords": "api changemessage couple crid delete deletion docs editable example familysearch full function functions http https init net options opts org parentsandchildren pass promise reason relationship url"
+    },
+    {
+      "section": "api",
       "id": "parentsAndChildren.functions:getChildAndParents",
       "shortName": "getChildAndParents",
       "type": "function",
@@ -577,7 +586,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "parentsAndChildren",
       "shortDescription": "Child and parents relationship",
-      "keywords": "$addfatherfact $addmotherfact $delete $deletefather $deletefatherfact $deletemother $deletemotherfact $getchanges $getchild $getchildid $getchildurl $getfather $getfatherfacts $getfatherid $getfatherurl $getmother $getmotherfacts $getmotherid $getmotherurl $getnoterefs $getsourcerefs $save $setchild $setfather $setmother __broken__ add adds api array call change changed changemessage child childandparents create default delete deletes docs editable example existing fact facts familysearch father fulfilled function functions getchildandparentschanges getchildandparentsnoterefs getchildandparentssourcerefs getperson http https init initializing longer message methods mother net note notes options opts org parent-relationship parents parentsandchildren pass passed person plan promise property read refresh relationship remove removes response saved saves sdk seconds sources true type types update updated updates updating url"
+      "keywords": "$addfatherfact $addmotherfact $delete $deletefather $deletefatherfact $deletemother $deletemotherfact $getchanges $getchild $getchildid $getchildurl $getfather $getfatherfacts $getfatherid $getfatherurl $getmother $getmotherfacts $getmotherid $getmotherurl $getnoterefs $getsourcerefs $save $setchild $setfather $setmother __broken__ add adds api array biologicalparent call change changed changemessage child childandparents create dates default delete deletes docs editable example existing fact facts familysearch father fulfilled function functions getchildandparentschanges getchildandparentsnoterefs getchildandparentssourcerefs getperson http https init initializing longer message methods mother net note notes options opts org parent-relationship parents parentsandchildren pass passed person places plan promise property read refresh relationship remove removes response saved saves sdk seconds sources supported true type types update updated updates updating url"
     },
     {
       "section": "api",
@@ -982,7 +991,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "spouses",
       "shortDescription": "Couple relationship",
-      "keywords": "$getchanges $getfacts $gethusband $gethusbandid $gethusbandurl $getmarriagefact $getnoterefs $getsourcerefs $getwife $getwifeid $getwifeurl api array couple exports fact facts function functions getcouplechanges getcouplenoterefs getcouplesourcerefs getperson http husband marriage multiple notes org promise property relationship response sources spouses type types url wife"
+      "keywords": "$addfact $delete $deletefact $getchanges $getfacts $gethusband $gethusbandid $gethusbandurl $getmarriagefact $getnoterefs $getsourcerefs $getwife $getwifeid $getwifeurl $save $sethusband $setwife add api array call change changemessage couple create default delete editable example existing exports fact facts fulfilled function functions getcouplechanges getcouplenoterefs getcouplesourcerefs getperson http husband init initializing marriage message multiple net note notes options opts org pass passed person plan promise property read refresh relationship remove response sdk seconds sources spouses true type types update updated updating url wife"
     },
     {
       "section": "api",

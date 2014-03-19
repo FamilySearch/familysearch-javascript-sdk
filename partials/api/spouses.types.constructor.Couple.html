@@ -10,7 +10,25 @@
 <div class="usage"><pre class="prettyprint linenums">Couple();</pre>
 </div>
 <div class="member method"><h2 id="methods">Methods</h2>
-<ul class="methods"><li><h3 id="methods_$getchanges">$getChanges()</h3>
+<ul class="methods"><li><h3 id="methods_$addfact">$addFact(value)</h3>
+<div class="$addfact"><h5 id="methods_$addfact_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-fact">Fact</a><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-addfact-page"><p>fact to add; if value is not a Fact, it is passed into the Fact constructor</p>
+</div></td></tr></tbody></table><h5 id="methods_$addfact_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-couple">Couple</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-addfact-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$delete">$delete(changeMessage, opts)</h3>
+<div class="$delete"><div class="spouses-types-page spouses-types-constructor-couple-delete-page"><p>delete this relationship</p>
+</div><h5 id="methods_$delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-delete-page"><p>change message</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-delete-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-delete-page"><p>promise for the relationship URL</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$deletefact">$deleteFact(value, changeMessage)</h3>
+<div class="$deletefact"><h5 id="methods_$deletefact_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-fact">Fact</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-deletefact-page"><p>fact or fact id to remove</p>
+</div></td></tr><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-deletefact-page"><p>change message</p>
+</div></td></tr></tbody></table><h5 id="methods_$deletefact_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-couple">Couple</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-deletefact-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getchanges">$getChanges()</h3>
 <div class="$getchanges"><h5 id="methods_$getchanges_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-getchanges-page"><p>promise for the <a href="#/api/sources.functions:getCoupleChanges">getCoupleChanges</a> response</p>
 </div></td></tr></table></div>
 </li>
@@ -52,6 +70,28 @@
 </li>
 <li><h3 id="methods_$getwifeurl">$getWifeUrl()</h3>
 <div class="$getwifeurl"><h5 id="methods_$getwifeurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-getwifeurl-page"><p>URL of the wife</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$save">$save(changeMessage, refresh, opts)</h3>
+<div class="$save"><div class="spouses-types-page spouses-types-constructor-couple-save-page"><p>Create a new relationship if this relationship does not have an id, or update the existing relationship</p>
+<p><a href="http://jsfiddle.net/DallanQ/vgS9Q/">editable example</a></p>
+</div><h5 id="methods_$save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-save-page"><p>default change message to use when fact/deletion-specific changeMessage was not specified</p>
+</div></td></tr><tr><td>refresh <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-save-page"><p>true to read the relationship after updating</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-save-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-save-page"><p>promise of the relationship id, which is fulfilled after the relationship has been updated,
+and if refresh is true, after the relationship has been read</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$sethusband">$setHusband(husband)</h3>
+<div class="$sethusband"><div class="spouses-types-page spouses-types-constructor-couple-sethusband-page"><p>NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id</p>
+</div><h5 id="methods_$sethusband_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>husband</td><td><a href="" class="label type-hint type-hint-person">Person</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-sethusband-page"><p>person or URL or id</p>
+</div></td></tr></tbody></table><h5 id="methods_$sethusband_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-couple">Couple</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-sethusband-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setwife">$setWife(wife)</h3>
+<div class="$setwife"><div class="spouses-types-page spouses-types-constructor-couple-setwife-page"><p>NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id</p>
+</div><h5 id="methods_$setwife_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>wife</td><td><a href="" class="label type-hint type-hint-person">Person</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-setwife-page"><p>person or URL or id</p>
+</div></td></tr></tbody></table><h5 id="methods_$setwife_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-couple">Couple</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-setwife-page"><p>this relationship</p>
 </div></td></tr></table></div>
 </li>
 </ul>

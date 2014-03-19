@@ -5635,10 +5635,11 @@ define('parentsAndChildren',[
 
   };
 
-  // private functions - called with this set to the relationship
+  // helper functions - called with this set to the relationship
+  // export so we can use them in spouses.js
 
   // person may be a Person, a URL, or an ID
-  function setMember(role, person) {
+  exports.setMember = function(role, person) {
     if (!this[role]) {
       this[role] = {};
     }
@@ -5651,18 +5652,18 @@ define('parentsAndChildren',[
     else {
       this[role].resource = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'person-template', {pid: person});
     }
-  }
+    delete this[role].resourceId;
+  };
 
-  function deleteMember(role, changeMessage) {
+  exports.deleteMember = function(role, changeMessage) {
     if (!this.$deletedMembers) {
       this.$deletedMembers = {};
     }
     this.$deletedMembers[role] = changeMessage;
     delete this[role];
-  }
+  };
 
-  function addFact(role, value) {
-    var prop = role + 'Facts';
+  exports.addFact = function(prop, value) {
     if (!helpers.isArray(this[prop])) {
       this[prop] = [];
     }
@@ -5670,17 +5671,16 @@ define('parentsAndChildren',[
       value = new fact.Fact(value);
     }
     this[prop].push(value);
-  }
+  };
 
-  function deleteFact(role, value, changeMessage) {
-    var prop = role + 'Facts';
+  exports.deleteFact = function(prop, value, changeMessage) {
     if (!(value instanceof fact.Fact)) {
       value = helpers.find(this[prop], { id: value });
     }
     var pos = helpers.indexOf(this[prop], value);
     if (pos >= 0) {
       // add fact to $deletedFacts map; key is the href to delete
-      var key = maybe(maybe(maybe(value).links).conclusion).href;
+      var key = helpers.removeAccessToken(maybe(maybe(maybe(value).links).conclusion).href);
       if (key) {
         if (!this.$deletedFacts) {
           this.$deletedFacts = {};
@@ -5690,7 +5690,7 @@ define('parentsAndChildren',[
       // remove fact from array
       this[prop].splice(pos,1);
     }
-  }
+  };
 
   exports.ChildAndParents.prototype = {
     constructor: ChildAndParents,
@@ -5835,7 +5835,7 @@ define('parentsAndChildren',[
      * @return {ChildAndParents} this relationship
      */
     $setFather: function(father) {
-      setMember.call(this, 'father', father);
+      exports.setMember.call(this, 'father', father);
       this.$fatherChanged = true;
       //noinspection JSValidateTypes
       return this;
@@ -5851,7 +5851,7 @@ define('parentsAndChildren',[
      * @return {ChildAndParents} this relationship
      */
     $setMother: function(mother) {
-      setMember.call(this, 'mother', mother);
+      exports.setMember.call(this, 'mother', mother);
       this.$motherChanged = true;
       //noinspection JSValidateTypes
       return this;
@@ -5868,7 +5868,7 @@ define('parentsAndChildren',[
      * @return {ChildAndParents} this relationship
      */
     $setChild: function(child) {
-      setMember.call(this, 'child', child);
+      exports.setMember.call(this, 'child', child);
       //noinspection JSValidateTypes
       return this;
     },
@@ -5880,10 +5880,10 @@ define('parentsAndChildren',[
      * @function
      * @description remove father from the relationship
      * @param {String=} changeMessage change message
-     * @return {Person} this person
+     * @return {ChildAndParents} this relationship
      */
     $deleteFather: function(changeMessage) {
-      deleteMember.call(this, 'father', changeMessage);
+      exports.deleteMember.call(this, 'father', changeMessage);
       //noinspection JSValidateTypes
       return this;
     },
@@ -5895,10 +5895,10 @@ define('parentsAndChildren',[
      * @function
      * @description remove mother from the relationship
      * @param {String=} changeMessage change message
-     * @return {Person} this person
+     * @return {ChildAndParents} this relationship
      */
     $deleteMother: function(changeMessage) {
-      deleteMember.call(this, 'mother', changeMessage);
+      exports.deleteMember.call(this, 'mother', changeMessage);
       //noinspection JSValidateTypes
       return this;
     },
@@ -5908,11 +5908,12 @@ define('parentsAndChildren',[
      * @name parentsAndChildren.types:constructor.ChildAndParents#$addFatherFact
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
+     * @description NOTE: dates are not supported for BiologicalParent, and places are not supported at all
      * @param {Fact|Object} value fact to add; if value is not a Fact, it is passed into the Fact constructor
-     * @return {Person} this person
+     * @return {ChildAndParents} this relationship
      */
     $addFatherFact: function(value) {
-      addFact.call(this, 'father', value);
+      exports.addFact.call(this, 'fatherFacts', value);
       //noinspection JSValidateTypes
       return this;
     },
@@ -5922,11 +5923,12 @@ define('parentsAndChildren',[
      * @name parentsAndChildren.types:constructor.ChildAndParents#$addMotherFact
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
+     * @description NOTE: dates are not supported for BiologicalParent, and places are not supported at all
      * @param {Fact|Object} value fact to add; if value is not a Fact, it is passed into the Fact constructor
-     * @return {Person} this person
+     * @return {ChildAndParents} this relationship
      */
     $addMotherFact: function(value) {
-      addFact.call(this, 'mother', value);
+      exports.addFact.call(this, 'motherFacts', value);
       //noinspection JSValidateTypes
       return this;
     },
@@ -5938,10 +5940,10 @@ define('parentsAndChildren',[
      * @function
      * @param {Fact|string} value fact or fact id to remove
      * @param {String=} changeMessage change message
-     * @return {Person} this person
+     * @return {ChildAndParents} this relationship
      */
     $deleteFatherFact: function(value, changeMessage) {
-      deleteFact.call(this, 'father', value, changeMessage);
+      exports.deleteFact.call(this, 'fatherFacts', value, changeMessage);
       //noinspection JSValidateTypes
       return this;
     },
@@ -5953,10 +5955,10 @@ define('parentsAndChildren',[
      * @function
      * @param {Fact|string} value fact or fact id to remove
      * @param {String=} changeMessage change message
-     * @return {Person} this person
+     * @return {ChildAndParents} this relationship
      */
     $deleteMotherFact: function(value, changeMessage) {
-      deleteFact.call(this, 'mother', value, changeMessage);
+      exports.deleteFact.call(this, 'motherFacts', value, changeMessage);
       //noinspection JSValidateTypes
       return this;
     },
@@ -5983,6 +5985,7 @@ define('parentsAndChildren',[
       var caprid = this.id;
 
       // TODO don't "push down" attribution to individual conclusions once the global attribution bug has been fixed
+      // support attribution at the top-level
 
       // send father if new or changed
       if (!this.id || this.$fatherChanged) {
@@ -6003,14 +6006,14 @@ define('parentsAndChildren',[
       }
 
       // send facts if new or changed
-      helpers.forEach(['father', 'mother'], function(role) {
-        helpers.forEach(this[role+'Facts'], function(fact) {
+      helpers.forEach(['fatherFacts', 'motherFacts'], function(prop) {
+        helpers.forEach(this[prop], function(fact) {
           if (!caprid || !fact.id || fact.$changed) {
             // set change message if none set
             if (changeMessage && helpers.attributionNeeded(fact)) {
               fact.$setChangeMessage(changeMessage);
             }
-            addFact.call(postData, role, fact);
+            exports.addFact.call(postData, prop, fact);
             isChanged = true;
           }
         });
@@ -6316,10 +6319,11 @@ define('spouses',[
   'fact',
   'globals',
   'helpers',
+  'parentsAndChildren',
   'plumbing',
   'notes',
   'sources'
-], function(attribution, changeHistory, fact, globals, helpers, plumbing, notes, sources) {
+], function(attribution, changeHistory, fact, globals, helpers, parentsAndChildren, plumbing, notes, sources) {
   /**
    * @ngdoc overview
    * @name spouses
@@ -6448,7 +6452,169 @@ define('spouses',[
      * @function
      * @return {Object} promise for the {@link sources.functions:getCoupleChanges getCoupleChanges} response
      */
-    $getChanges: function() { return changeHistory.getCoupleChanges(helpers.removeAccessToken(maybe(this.links['change-history']).href)); }
+    $getChanges: function() { return changeHistory.getCoupleChanges(helpers.removeAccessToken(maybe(this.links['change-history']).href)); },
+
+    /**
+     * @ngdoc function
+     * @name spouses.types:constructor.Couple#$setHusband
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @description NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id
+     * @param {Person|string} husband person or URL or id
+     * @return {Couple} this relationship
+     */
+    $setHusband: function(husband) {
+      parentsAndChildren.setMember.call(this, 'person1', husband);
+      this.$husbandChanged = true;
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name spouses.types:constructor.Couple#$setWife
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @description NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id
+     * @param {Person|string} wife person or URL or id
+     * @return {Couple} this relationship
+     */
+    $setWife: function(wife) {
+      parentsAndChildren.setMember.call(this, 'person2', wife);
+      this.$wifeChanged = true;
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name spouses.types:constructor.Couple#$addFact
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @param {Fact|Object} value fact to add; if value is not a Fact, it is passed into the Fact constructor
+     * @return {Couple} this relationship
+     */
+    $addFact: function(value) {
+      parentsAndChildren.addFact.call(this, 'facts', value);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name spouses.types:constructor.Couple#$deleteFact
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @param {Fact|string} value fact or fact id to remove
+     * @param {String=} changeMessage change message
+     * @return {Couple} this relationship
+     */
+    $deleteFact: function(value, changeMessage) {
+      parentsAndChildren.deleteFact.call(this, 'facts', value, changeMessage);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name spouses.types:constructor.Couple#$save
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @description
+     * Create a new relationship if this relationship does not have an id, or update the existing relationship
+     *
+     * {@link http://jsfiddle.net/DallanQ/vgS9Q/ editable example}
+     *
+     * @param {String=} changeMessage default change message to use when fact/deletion-specific changeMessage was not specified
+     * @param {boolean=} refresh true to read the relationship after updating
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise of the relationship id, which is fulfilled after the relationship has been updated,
+     * and if refresh is true, after the relationship has been read
+     */
+    $save: function(changeMessage, refresh, opts) {
+      var postData = new Couple();
+      var isChanged = false;
+      var crid = this.id;
+
+      // TODO don't "push down" attribution to individual conclusions once the global attribution bug has been fixed
+      // support attribution at the top-level
+
+      // send husband and wife if new or either has changed
+      if (!this.id || this.$husbandChanged || this.$wifeChanged) {
+        postData.person1 = this.person1;
+        postData.person2 = this.person2;
+        isChanged = true;
+      }
+
+      helpers.forEach(this.facts, function(fact) {
+        if (!crid || !fact.id || fact.$changed) {
+          // set change message if none set
+          if (changeMessage && helpers.attributionNeeded(fact)) {
+            fact.$setChangeMessage(changeMessage);
+          }
+          parentsAndChildren.addFact.call(postData, 'facts', fact);
+          isChanged = true;
+        }
+      });
+
+      var promises = [];
+
+      // post update
+      if (isChanged) {
+        promises.push(helpers.chainHttpPromises(
+          crid ? plumbing.getUrl('couple-relationship-template', null, {crid: crid}) :
+            plumbing.getUrl('relationships'),
+          function(url) {
+            return plumbing.post(url,
+              { relationships: [ postData ] },
+              {},
+              opts,
+              helpers.getResponseEntityId);
+          }));
+      }
+
+      // post deleted facts
+      if (crid && this.$deletedFacts) {
+        helpers.forEach(this.$deletedFacts, function(value, key) {
+          value = value || changeMessage; // default to global change message
+          promises.push(plumbing.del(key, value ? {'X-Reason' : value} : {}, opts));
+        });
+      }
+
+      var relationship = this;
+      // wait for all promises to be fulfilled
+      var promise = helpers.promiseAll(promises).then(function(results) {
+        var id = crid ? crid : results[0]; // if we're adding a new relationship, get id from the first (only) promise
+        helpers.extendHttpPromise(promise, promises[0]); // extend the first promise into the returned promise
+
+        if (refresh) {
+          // re-read the relationship and set this object's properties from response
+          return exports.getCouple(id, {}, opts).then(function(response) {
+            helpers.deleteProperties(relationship);
+            helpers.extend(relationship, response.getRelationship());
+            return id;
+          });
+        }
+        else {
+          return id;
+        }
+      });
+      return promise;
+    },
+
+    /**
+     * @ngdoc function
+     * @name spouses.types:constructor.Couple#$delete
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @description delete this relationship
+     * @param {string} changeMessage change message
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise for the relationship URL
+     */
+    $delete: function(changeMessage, opts) {
+      return exports.deleteCouple(helpers.removeAccessToken(maybe(maybe(this.links).relationship).href) || this.id, changeMessage, opts);
+    }
   };
 
   /**
@@ -6498,6 +6664,34 @@ define('spouses',[
   var coupleConvenienceFunctions = {
     getRelationship: function() { return maybe(this.relationships)[0]; },
     getPerson:       function(id) { return helpers.find(this.persons, {id: id}); }
+  };
+
+  /**
+   * @ngdoc function
+   * @name parentsAndChildren.functions:deleteCouple
+   * @function
+   *
+   * @description
+   * Delete the specified relationship
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/ypHgL/ editable example}
+   *
+   * @param {string} crid id or full URL of the couple relationship
+   * @param {string} changeMessage reason for the deletion
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the relationship id/URL
+   */
+  exports.deleteCouple = function(crid, changeMessage, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('couple-relationship-template', crid, {crid: crid}),
+      function(url) {
+        return plumbing.del(url, changeMessage ? {'X-Reason' : changeMessage} : {}, opts, function() {
+          return crid;
+        });
+      }
+    );
   };
 
   return exports;
@@ -8427,6 +8621,7 @@ define('FamilySearch',[
 
     // spouses
     Couple: spouses.Couple,
+    deleteCouple: spouses.deleteCouple,
     getCouple: spouses.getCouple,
 
     // user
