@@ -68,7 +68,8 @@ define(['FamilySearch'], function(FamilySearch) {
               'attribution' : {
                 'changeMessage' : '...change message...'
               }
-            } ]
+            } ],
+            'type' : 'http://gedcomx.org/Couple'
           } ]
         });
         expect(promise.getStatusCode()).toBe(201);

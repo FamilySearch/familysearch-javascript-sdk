@@ -28,6 +28,10 @@ define([
    * @description
    *
    * Couple relationship
+   *
+   * Two methods to note below are _$save_ and _$delete_.
+   * _$save_ persists the changes made to husband, wife, and facts;
+   * _$delete_ removes the relationship.
    */
   var Couple = exports.Couple = function() {
 
@@ -246,6 +250,9 @@ define([
 
       // post update
       if (isChanged) {
+        if (!crid) {
+          postData.type = 'http://gedcomx.org/Couple'; // set type on new relationships
+        }
         promises.push(helpers.chainHttpPromises(
           crid ? plumbing.getUrl('couple-relationship-template', null, {crid: crid}) :
             plumbing.getUrl('relationships'),
@@ -353,7 +360,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name parentsAndChildren.functions:deleteCouple
+   * @name spouses.functions:deleteCouple
    * @function
    *
    * @description

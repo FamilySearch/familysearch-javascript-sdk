@@ -30,8 +30,9 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_resource FamilySearch API Docs}
    *
-   * Two methods to note below are _$save_ and _$delete_. _$save_ saves the various adds, deletes, and updates
-   * made to the relationship; _$delete_ removes the relationship.
+   * Two methods to note below are _$save_ and _$delete_.
+   * _$save_ persists the changes made to father, mother, child, and facts;
+   * _$delete_ removes the relationship.
    */
   var ChildAndParents = exports.ChildAndParents = function() {
 
