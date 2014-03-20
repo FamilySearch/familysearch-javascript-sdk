@@ -366,9 +366,7 @@ define(['FamilySearch'], function(FamilySearch) {
 
     it('preferred spouse is read', function() {
       FamilySearch.getPreferredSpouse('PPPJ-MYY').then(function(response) {
-        var rels = response.getCoupleRelationships();
-        expect(rels.length).toBe(1);
-        expect(rels[0].$getMarriageFact().$getDate()).toBe('June 1800');
+        expect(response).toBe('12345');
       });
     });
 
@@ -392,9 +390,7 @@ define(['FamilySearch'], function(FamilySearch) {
 
     it( 'preferred parents are read', function() {
       FamilySearch.getPreferredParents('PPPJ-MYY').then(function(response) {
-        var rels = response.getChildAndParentsRelationships();
-        expect(rels.length).toBe(1);
-        expect(rels[0].$getChildId()).toBe('PPPJ-MYY');
+        expect(response).toBe('12345');
       });
     });
 

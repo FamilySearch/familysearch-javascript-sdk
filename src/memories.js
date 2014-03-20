@@ -662,14 +662,10 @@ define([
       if (params && params.followRedirect) {
         params = helpers.extend({}, params);
         delete params.followRedirect;
-        var d = globals.deferredWrapper();
         var promise = plumbing.get(url, params, {}, opts);
-        var handler = function() {
-          // We don't expect the image content-type. We try to parse it as json and fail, so rely upon the status code
-          d.resolve(promise.getStatusCode() === 200 ? helpers.appendAccessToken(promise.getResponseHeader('Content-Location')) : '');
-        };
-        promise.then(handler, handler);
-        return helpers.extendHttpPromise(d.promise, promise);
+        return helpers.handleRedirect(promise, function(promise) {
+          return helpers.appendAccessToken(promise.getResponseHeader('Content-Location'));
+        });
       }
       else {
         return helpers.appendAccessToken(url);

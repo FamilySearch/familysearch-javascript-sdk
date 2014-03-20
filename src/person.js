@@ -1210,7 +1210,7 @@ define([
    * @param {string} pid id of the person
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the response
+   * @return {Object} promise for the preferred couple relationship id or null if no preference
    */
   exports.getPreferredSpouse = function(pid, params, opts) {
     return helpers.chainHttpPromises(
@@ -1220,7 +1220,12 @@ define([
         return plumbing.getUrl('preferred-spouse-relationship-template', null, {uid: uid, pid: pid});
       },
       function(url) {
-        return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+        var promise = plumbing.get(url, params, {}, opts);
+        // FamilySearch returns a 303 function to redirect to the preferred relationship, but the response may come back as XML in chrome.
+        // So just get the relationship id from the content-location header
+        return helpers.handleRedirect(promise, function(promise) {
+          return promise.getStatusCode() === 200 ? helpers.getLastUrlSegment(promise.getResponseHeader('Content-Location')) : null;
+        });
       }
     );
   };
@@ -1323,7 +1328,12 @@ define([
       },
       function(url) {
         // TODO remove accept header when FS bug is fixed
-        return plumbing.get(url, params, {Accept: 'application/x-fs-v1+json'}, opts, relationshipsResponseMapper);
+        var promise = plumbing.get(url, params, {Accept: 'application/x-fs-v1+json'}, opts);
+        // FamilySearch returns a 303 function to redirect to the preferred relationship, but the response may come back as XML in chrome.
+        // So just get the relationship id from the content-location header
+        return helpers.handleRedirect(promise, function(promise) {
+          return promise.getStatusCode() === 200 ? helpers.getLastUrlSegment(promise.getResponseHeader('Content-Location')) : null;
+        });
       }
     );
   };
