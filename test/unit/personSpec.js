@@ -364,5 +364,57 @@ define(['FamilySearch'], function(FamilySearch) {
       });
     });
 
+    it('preferred spouse is read', function() {
+      FamilySearch.getPreferredSpouse('PPPJ-MYY').then(function(response) {
+        var rels = response.getCoupleRelationships();
+        expect(rels.length).toBe(1);
+        expect(rels[0].$getMarriageFact().$getDate()).toBe('June 1800');
+      });
+    });
+
+    it('preferred spouse is set', function() {
+      var promise = FamilySearch.setPreferredSpouse('PPPJ-MYY', '12345');
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        expect(request.headers['Location']).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/12345');
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('PPPJ-MYY');
+      });
+    });
+
+    it('preferred spouse is deleted', function() {
+      var promise = FamilySearch.deletePreferredSpouse('PPPJ-MYY');
+      promise.then(function(response) {
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('PPPJ-MYY');
+      });
+    });
+
+    it( 'preferred parents are read', function() {
+      FamilySearch.getPreferredParents('PPPJ-MYY').then(function(response) {
+        var rels = response.getChildAndParentsRelationships();
+        expect(rels.length).toBe(1);
+        expect(rels[0].$getChildId()).toBe('PPPJ-MYY');
+      });
+    });
+
+    it('preferred parents are set', function() {
+      var promise = FamilySearch.setPreferredParents('PPPJ-MYY', '12345');
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        expect(request.headers['Location']).toBe('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/12345');
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('PPPJ-MYY');
+      });
+    });
+
+    it('preferred parents are deleted', function() {
+      var promise = FamilySearch.deletePreferredParents('PPPJ-MYY');
+      promise.then(function(response) {
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('PPPJ-MYY');
+      });
+    });
+
   });
 });

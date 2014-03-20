@@ -11,8 +11,9 @@ define([
   'parentsAndChildren',
   'plumbing',
   'sources',
-  'spouses'
-], function(attribution, changeHistory, discussions, fact, globals, helpers, memories, name, notes, parentsAndChildren, plumbing, sources, spouses) {
+  'spouses',
+  'user'
+], function(attribution, changeHistory, discussions, fact, globals, helpers, memories, name, notes, parentsAndChildren, plumbing, sources, spouses, user) {
   /**
    * @ngdoc overview
    * @name person
@@ -1047,8 +1048,8 @@ define([
     helpers.constructorSetter(spouses.Couple, 'relationships'),
     helpers.constructorSetter(parentsAndChildren.ChildAndParents, 'childAndParentsRelationships'),
     helpers.objectExtender({
-      getCoupleRelationships: function() { return helpers.filter(this.relationships, {type: 'http://gedcomx.org/Couple'}) || []; },
-      getChildAndParentsRelationships: function() { return this.childAndParentsRelationships || []; },
+      getCoupleRelationships: function() { return helpers.filter(maybe(this).relationships, {type: 'http://gedcomx.org/Couple'}) || []; },
+      getChildAndParentsRelationships: function() { return maybe(this).childAndParentsRelationships || []; },
       getPerson:    function(id) { return helpers.find(this.persons, {id: id}); }
     }),
     helpers.constructorSetter(fact.Fact, 'facts', function(response) {
@@ -1190,10 +1191,213 @@ define([
     );
   };
 
+  /**
+   * @ngdoc function
+   * @name person.functions:getPreferredSpouse
+   * @function
+   *
+   * @description
+   * Get the preferred spouse if any for this person and this user.
+   * The response includes the following convenience function
+   *
+   * - `getCoupleRelationships()` - an array of {@link spouses.types:constructor.Couple Couple} relationships;
+   * the array is of length 1 if this user has set a preferred spouse for this person, or 0 otherwise
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Spouse_Relationship_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/vBHBD/ editable example}
+   *
+   * @param {string} pid id of the person
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getPreferredSpouse = function(pid, params, opts) {
+    return helpers.chainHttpPromises(
+      user.getCurrentUser(),
+      function(response) {
+        var uid = response.getUser().treeUserId;
+        return plumbing.getUrl('preferred-spouse-relationship-template', null, {uid: uid, pid: pid});
+      },
+      function(url) {
+        return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+      }
+    );
+  };
+
+  /**
+   * @ngdoc function
+   * @name person.functions:setPreferredSpouse
+   * @function
+   *
+   * @description
+   * Set the preferred spouse for this person and this user
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Spouse_Relationship_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/SnYk9/ editable example}
+   *
+   * @param {string} pid id of the person
+   * @param {string} crid id or URL of the preferred Couple relationship
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the person id
+   */
+  exports.setPreferredSpouse = function(pid, crid, opts) {
+    var coupleUrl;
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('couple-relationship-template', crid, {crid: crid}),
+      function(url) {
+        coupleUrl = url;
+        return user.getCurrentUser();
+      },
+      function(response) {
+        var uid = response.getUser().treeUserId;
+        return plumbing.getUrl('preferred-spouse-relationship-template', null, {uid: uid, pid: pid});
+      },
+      function(url) {
+        return plumbing.put(url, null, {'Location': coupleUrl}, opts, function() {
+          return pid;
+        });
+      }
+    );
+  };
+
+  /**
+   * @ngdoc function
+   * @name person.functions:deletePreferredSpouse
+   * @function
+   *
+   * @description
+   * Delete the preferred spouse preference for this person and this user
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Spouse_Relationship_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/tzz6U/ editable example}
+   *
+   * @param {string} pid id of the person
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the person id
+   */
+  exports.deletePreferredSpouse = function(pid, opts) {
+    return helpers.chainHttpPromises(
+      user.getCurrentUser(),
+      function(response) {
+        var uid = response.getUser().treeUserId;
+        return plumbing.getUrl('preferred-spouse-relationship-template', null, {uid: uid, pid: pid});
+      },
+      function(url) {
+        return plumbing.del(url, {}, opts, function() {
+          return pid;
+        });
+      }
+    );
+  };
+
+  /**
+   * @ngdoc function
+   * @name person.functions:getPreferredParents
+   * @function
+   *
+   * @description
+   * Get the preferred parents if any for this person and this user.
+   * The response includes the following convenience function
+   *
+   * - `getChildAndParentsRelationships()` - an array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationships;
+   * the array is of length 1 if this user has set preferred parents for this person, or 0 otherwise
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Parent_Relationship_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/Ldk3q/ editable example}
+   *
+   * @param {string} pid id of the person
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getPreferredParents = function(pid, params, opts) {
+    return helpers.chainHttpPromises(
+      user.getCurrentUser(),
+      function(response) {
+        var uid = response.getUser().treeUserId;
+        return plumbing.getUrl('preferred-parent-relationship-template', null, {uid: uid, pid: pid});
+      },
+      function(url) {
+        // TODO remove accept header when FS bug is fixed
+        return plumbing.get(url, params, {Accept: 'application/x-fs-v1+json'}, opts, relationshipsResponseMapper);
+      }
+    );
+  };
+
+  /**
+   * @ngdoc function
+   * @name person.functions:setPreferredParents
+   * @function
+   *
+   * @description
+   * Set the preferred parents for this person and this user
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Parent_Relationship_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/4r3Dr/ editable example}
+   *
+   * @param {string} pid id of the person
+   * @param {string} caprid id or URL of the preferred ChildAndParents relationship
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the person id
+   */
+  exports.setPreferredParents = function(pid, caprid, opts) {
+    var childAndParentsUrl;
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('child-and-parents-relationship-template', caprid, {caprid: caprid}),
+      function(url) {
+        childAndParentsUrl = url;
+        return user.getCurrentUser();
+      },
+      function(response) {
+        var uid = response.getUser().treeUserId;
+        return plumbing.getUrl('preferred-parent-relationship-template', null, {uid: uid, pid: pid});
+      },
+      function(url) {
+        return plumbing.put(url, null, {'Location': childAndParentsUrl}, opts, function() {
+          return pid;
+        });
+      }
+    );
+  };
+
+  /**
+   * @ngdoc function
+   * @name person.functions:deletePreferredParents
+   * @function
+   *
+   * @description
+   * Delete the preferred parents preference for this person and this user
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Parent_Relationship_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/X4dbt/ editable example}
+   *
+   * @param {string} pid id of the person
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the person id
+   */
+  exports.deletePreferredParents = function(pid, opts) {
+    return helpers.chainHttpPromises(
+      user.getCurrentUser(),
+      function(response) {
+        var uid = response.getUser().treeUserId;
+        return plumbing.getUrl('preferred-parent-relationship-template', null, {uid: uid, pid: pid});
+      },
+      function(url) {
+        return plumbing.del(url, {}, opts, function() {
+          return pid;
+        });
+      }
+    );
+  };
+
   // TODO getPersonMerge
   // TODO getPersonNotAMatch
-  // TODO getPreferredSpouse
-  // TODO getPreferredParent
 
   return exports;
 });

@@ -107,6 +107,12 @@ define([
     getSpouses: person.getSpouses,
     getParents: person.getParents,
     getChildren: person.getChildren,
+    getPreferredSpouse: person.getPreferredSpouse,
+    setPreferredSpouse: person.setPreferredSpouse,
+    deletePreferredSpouse: person.deletePreferredSpouse,
+    getPreferredParents: person.getPreferredParents,
+    setPreferredParents: person.setPreferredParents,
+    deletePreferredParents: person.deletePreferredParents,
 
     // search and match
     SearchResult: searchAndMatch.SearchResult,
