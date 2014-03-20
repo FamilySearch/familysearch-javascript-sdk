@@ -1197,11 +1197,7 @@ define([
    * @function
    *
    * @description
-   * Get the preferred spouse if any for this person and this user.
-   * The response includes the following convenience function
-   *
-   * - `getCoupleRelationships()` - an array of {@link spouses.types:constructor.Couple Couple} relationships;
-   * the array is of length 1 if this user has set a preferred spouse for this person, or 0 otherwise
+   * Get the preferred Couple relationship id if any for this person and this user.
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Spouse_Relationship_resource FamilySearch API Docs}
    *
@@ -1304,11 +1300,7 @@ define([
    * @function
    *
    * @description
-   * Get the preferred parents if any for this person and this user.
-   * The response includes the following convenience function
-   *
-   * - `getChildAndParentsRelationships()` - an array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationships;
-   * the array is of length 1 if this user has set preferred parents for this person, or 0 otherwise
+   * Get the preferred ChildAndParents relationship id if any for this person and this user.
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Parent_Relationship_resource FamilySearch API Docs}
    *
@@ -1317,7 +1309,7 @@ define([
    * @param {string} pid id of the person
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the response
+   * @return {Object} promise for the preferred ChildAndParents relationship id or null if no preference
    */
   exports.getPreferredParents = function(pid, params, opts) {
     return helpers.chainHttpPromises(
