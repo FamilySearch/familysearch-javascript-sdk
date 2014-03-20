@@ -626,6 +626,24 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "person.functions:deletePreferredParents",
+      "shortName": "deletePreferredParents",
+      "type": "function",
+      "moduleName": "person",
+      "shortDescription": "Delete the preferred parents preference for this person and this user",
+      "keywords": "api delete docs editable example familysearch function functions http https init net options opts org parents pass person pid preference preferred promise user"
+    },
+    {
+      "section": "api",
+      "id": "person.functions:deletePreferredSpouse",
+      "shortName": "deletePreferredSpouse",
+      "type": "function",
+      "moduleName": "person",
+      "shortDescription": "Delete the preferred spouse preference for this person and this user",
+      "keywords": "api delete docs editable example familysearch function functions http https init net options opts org pass person pid preference preferred promise spouse user"
+    },
+    {
+      "section": "api",
       "id": "person.functions:getChildren",
       "shortName": "getChildren",
       "type": "function",
@@ -680,12 +698,48 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "person.functions:getPreferredParents",
+      "shortName": "getPreferredParents",
+      "type": "function",
+      "moduleName": "person",
+      "shortDescription": "Get the preferred parents if any for this person and this user.",
+      "keywords": "api array childandparents convenience currently docs editable example familysearch function functions getchildandparentsrelationships http https includes init length net options opts org params parents parentsandchildren pass person pid preferred promise relationships response set types unused user"
+    },
+    {
+      "section": "api",
+      "id": "person.functions:getPreferredSpouse",
+      "shortName": "getPreferredSpouse",
+      "type": "function",
+      "moduleName": "person",
+      "shortDescription": "Get the preferred spouse if any for this person and this user.",
+      "keywords": "api array convenience couple currently docs editable example familysearch function functions getcouplerelationships http https includes init length net options opts org params pass person pid preferred promise relationships response set spouse spouses types unused user"
+    },
+    {
+      "section": "api",
       "id": "person.functions:getSpouses",
       "shortName": "getSpouses",
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Get the relationships to a person&#39;s spouses.",
       "keywords": "api array childandparents children convenience couple couples currently docs editable endpoint example familysearch full function functions getchildandparentsrelationships getcouplerelationships getperson http https includes init net options opts org params parentsandchildren pass person pid promise relationship relationships response spouses types unused url"
+    },
+    {
+      "section": "api",
+      "id": "person.functions:setPreferredParents",
+      "shortName": "setPreferredParents",
+      "type": "function",
+      "moduleName": "person",
+      "shortDescription": "Set the preferred parents for this person and this user",
+      "keywords": "api caprid childandparents docs editable example familysearch function functions http https init net options opts org parents pass person pid preferred promise relationship set url user"
+    },
+    {
+      "section": "api",
+      "id": "person.functions:setPreferredSpouse",
+      "shortName": "setPreferredSpouse",
+      "type": "function",
+      "moduleName": "person",
+      "shortDescription": "Set the preferred spouse for this person and this user",
+      "keywords": "api couple crid docs editable example familysearch function functions http https init net options opts org pass person pid preferred promise relationship set spouse url user"
     },
     {
       "section": "api",
