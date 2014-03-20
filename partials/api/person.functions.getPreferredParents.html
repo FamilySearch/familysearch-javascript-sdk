@@ -4,12 +4,7 @@
 </div>
 </h1>
 <div><h2 id="description">Description</h2>
-<div class="description"><div class="person-functions-page person-functions-getpreferredparents-page"><p>Get the preferred parents if any for this person and this user.
-The response includes the following convenience function</p>
-<ul>
-<li><code>getChildAndParentsRelationships()</code> - an array of <a href="#/api/parentsAndChildren.types:constructor.ChildAndParents">ChildAndParents</a> relationships;
-the array is of length 1 if this user has set preferred parents for this person, or 0 otherwise</li>
-</ul>
+<div class="description"><div class="person-functions-page person-functions-getpreferredparents-page"><p>Get the preferred ChildAndParents relationship id if any for this person and this user.</p>
 <p><a href="https://familysearch.org/developers/docs/api/tree/Preferred_Parent_Relationship_resource">FamilySearch API Docs</a></p>
 <p><a href="http://jsfiddle.net/DallanQ/Ldk3q/">editable example</a></p>
 </div></div>
@@ -18,6 +13,6 @@ the array is of length 1 if this user has set preferred parents for this person,
 <h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-functions-page person-functions-getpreferredparents-page"><p>id of the person</p>
 </div></td></tr><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getpreferredparents-page"><p>currently unused</p>
 </div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getpreferredparents-page"><p>options to pass to the http function specified during init</p>
-</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getpreferredparents-page"><p>promise for the response</p>
+</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getpreferredparents-page"><p>promise for the preferred ChildAndParents relationship id or null if no preference</p>
 </div></td></tr></table></div>
 </div>
