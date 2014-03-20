@@ -692,6 +692,31 @@ define('helpers',[
   };
 
   /**
+   * Sometimes FamilySearch returns a 303, which the browser follows automatically.
+   * Unfortunately, chrome doesn't include the Accept header on the redirect request
+   * (the spec doesn't address the point of whether the browser should include headers on redirects)
+   * so data is returned in some other format, which we don't expect.
+   * We try to parse the response as json and fail, so rely upon the status code
+   *
+   * @param {Object} promise promise for the response
+   * @param {Function} resultGenerator function to generate a result
+   * @returns {Object} promise for the final result
+   */
+  exports.handleRedirect = function(promise, resultGenerator) {
+    var d = globals.deferredWrapper();
+    var handler = function() {
+      if (promise.getStatusCode() === 200 || promise.getStatusCode() === 204) {
+        d.resolve(resultGenerator(promise));
+      }
+      else {
+        d.reject(arguments);
+      }
+    };
+    promise.then(handler, handler);
+    return exports.extendHttpPromise(d.promise, promise);
+  };
+
+  /**
    * Return true if url starts with https?://
    * @param {string} url
    * @returns {boolean} true if url starts with https?://
@@ -4502,14 +4527,10 @@ define('memories',[
       if (params && params.followRedirect) {
         params = helpers.extend({}, params);
         delete params.followRedirect;
-        var d = globals.deferredWrapper();
         var promise = plumbing.get(url, params, {}, opts);
-        var handler = function() {
-          // We don't expect the image content-type. We try to parse it as json and fail, so rely upon the status code
-          d.resolve(promise.getStatusCode() === 200 ? helpers.appendAccessToken(promise.getResponseHeader('Content-Location')) : '');
-        };
-        promise.then(handler, handler);
-        return helpers.extendHttpPromise(d.promise, promise);
+        return helpers.handleRedirect(promise, function(promise) {
+          return helpers.appendAccessToken(promise.getResponseHeader('Content-Location'));
+        });
       }
       else {
         return helpers.appendAccessToken(url);
@@ -7917,7 +7938,7 @@ define('person',[
    * @param {string} pid id of the person
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the response
+   * @return {Object} promise for the preferred couple relationship id or null if no preference
    */
   exports.getPreferredSpouse = function(pid, params, opts) {
     return helpers.chainHttpPromises(
@@ -7927,7 +7948,12 @@ define('person',[
         return plumbing.getUrl('preferred-spouse-relationship-template', null, {uid: uid, pid: pid});
       },
       function(url) {
-        return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+        var promise = plumbing.get(url, params, {}, opts);
+        // FamilySearch returns a 303 function to redirect to the preferred relationship, but the response may come back as XML in chrome.
+        // So just get the relationship id from the content-location header
+        return helpers.handleRedirect(promise, function(promise) {
+          return promise.getStatusCode() === 200 ? helpers.getLastUrlSegment(promise.getResponseHeader('Content-Location')) : null;
+        });
       }
     );
   };
@@ -8030,7 +8056,12 @@ define('person',[
       },
       function(url) {
         // TODO remove accept header when FS bug is fixed
-        return plumbing.get(url, params, {Accept: 'application/x-fs-v1+json'}, opts, relationshipsResponseMapper);
+        var promise = plumbing.get(url, params, {Accept: 'application/x-fs-v1+json'}, opts);
+        // FamilySearch returns a 303 function to redirect to the preferred relationship, but the response may come back as XML in chrome.
+        // So just get the relationship id from the content-location header
+        return helpers.handleRedirect(promise, function(promise) {
+          return promise.getStatusCode() === 200 ? helpers.getLastUrlSegment(promise.getResponseHeader('Content-Location')) : null;
+        });
       }
     );
   };

@@ -712,7 +712,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Get the preferred spouse if any for this person and this user.",
-      "keywords": "api array convenience couple currently docs editable example familysearch function functions getcouplerelationships http https includes init length net options opts org params pass person pid preferred promise relationships response set spouse spouses types unused user"
+      "keywords": "api array convenience couple currently docs editable example familysearch function functions getcouplerelationships http https includes init length net null options opts org params pass person pid preference preferred promise relationship relationships response set spouse spouses types unused user"
     },
     {
       "section": "api",
