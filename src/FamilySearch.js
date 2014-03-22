@@ -51,6 +51,9 @@ define([
     getDiscussion: discussions.getDiscussion,
     getMultiDiscussion: discussions.getMultiDiscussion,
     getComments: discussions.getComments,
+    deleteDiscussion: discussions.deleteDiscussion,
+    deleteDiscussionRef: discussions.deleteDiscussionRef,
+    deleteDiscussionComment: discussions.deleteDiscussionComment,
 
     // fact
     Fact: fact.Fact,

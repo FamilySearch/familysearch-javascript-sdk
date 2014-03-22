@@ -771,5 +771,7 @@ define([
       });
   };
 
+  // TODO write a short deleteMemoryComment function
+
   return exports;
 });

@@ -53,5 +53,107 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(comments[0].$getAgentId()).toBeUndefined(); // bad example data
       });
     });
+
+    it('is created', function() {
+      var disc = new FamilySearch.Discussion({title: '1900 US Census, Ethel Hollivet', details: 'details'});
+      var promise = disc.$save(true);
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualJson({
+          'discussions' : [ {
+            'title' : '1900 US Census, Ethel Hollivet',
+            'details' : 'details'
+          } ]
+        });
+        expect(promise.getStatusCode()).toBe(201);
+        expect(response instanceof FamilySearch.DiscussionRef).toBeTruthy();
+        expect(response.resourceId).toBe('dis-MMMM-MMM');
+        expect(response.$getDiscussionUrl()).toBe('https://sandbox.familysearch.org/platform/discussions/discussions/dis-MMMM-MMM');
+        // discussion has been refreshed from database
+        expect(disc.details).toBe('Ethel Hollivet (line 75) with husband Albert Hollivet (line 74); also in the dwelling: step-father Joseph E Watkins (line 72), mother Lina Watkins (line 73), and grandmother -- Lina\'s mother -- Mary Sasnett (line 76).  ');
+      });
+    });
+
+    it('is updated', function() {
+      var disc = new FamilySearch.Discussion({title: '1900 US Census, Ethel Hollivet', details: 'details'});
+      disc.id = 'dis-MMMM-MMM';
+      var promise = disc.$save(true);
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualJson({
+          'discussions' : [ {
+            'id' : 'dis-MMMM-MMM',
+            'title' : '1900 US Census, Ethel Hollivet',
+            'details' : 'details'
+          } ]
+        });
+        expect(promise.getStatusCode()).toBe(201);
+        expect(response instanceof FamilySearch.DiscussionRef).toBeTruthy();
+      });
+    });
+
+    it('is deleted', function() {
+      var disc = new FamilySearch.Discussion({title: 'title', details: 'details'});
+      disc.id = 'dis-MMMM-MMM';
+      var promise = disc.$delete();
+      promise.then(function(response) {
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('dis-MMMM-MMM');
+      });
+    });
+
+    it('reference is created', function() {
+      var discRef = new FamilySearch.DiscussionRef({$personId: '12345', resourceId: 'dis-1'});
+      var promise = discRef.$save();
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualJson({
+          'persons' : [ {
+            'id' : '12345',
+            'discussion-references' : [ 'https://sandbox.familysearch.org/platform/discussions/discussions/dis-1' ]
+          } ]
+        });
+        expect(promise.getStatusCode()).toBe(201);
+        expect(response).toBe('https://sandbox.familysearch.org/platform/tree/persons/12345/discussion-references/dis-1');
+      });
+    });
+
+    it('reference is deleted', function() {
+      var promise = FamilySearch.deleteDiscussionRef('12345','67890');
+      promise.then(function(response) {
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('12345');
+      });
+    });
+
+    it('comment is created', function() {
+      var promise = new FamilySearch.Comment({text: 'Just a comment.', $discussionId: 'dis-MMMM-MMM'})
+        .$save();
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualJson({
+          'discussions' : [ {
+            'comments' : [ {
+              'text' : 'Just a comment.'
+            } ]
+          } ]
+        });
+        expect(promise.getStatusCode()).toBe(201);
+        expect(response).toBe('cmt-id');
+      });
+    });
+
+    it('comment is deleted', function() {
+      var promise = FamilySearch.deleteDiscussionComment('dis-MMMM-MMM', '1');
+      promise.then(function(response) {
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('dis-MMMM-MMM');
+      });
+    });
+
   });
 });

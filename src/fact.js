@@ -21,35 +21,35 @@ define([
    * @description
    *
    * Fact
-   * @param {Object=} value with optional attributes
+   * @param {Object=} data with optional attributes
    * {type, date, formalDate, place, normalizedPlace, changeMessage}
    **********************************/
 
-  var Fact = exports.Fact = function(value) {
-    if (value) {
-      if (value.type) {
+  var Fact = exports.Fact = function(data) {
+    if (data) {
+      if (data.type) {
         //noinspection JSUnresolvedFunction
-        this.$setType(value.type);
+        this.$setType(data.type);
       }
-      if (value.date) {
+      if (data.date) {
         //noinspection JSUnresolvedFunction
-        this.$setDate(value.date);
+        this.$setDate(data.date);
       }
-      if (value.formalDate) {
+      if (data.formalDate) {
         //noinspection JSUnresolvedFunction
-        this.$setFormalDate(value.formalDate);
+        this.$setFormalDate(data.formalDate);
       }
-      if (value.place) {
+      if (data.place) {
         //noinspection JSUnresolvedFunction
-        this.$setPlace(value.place);
+        this.$setPlace(data.place);
       }
-      if (value.normalizedPlace) {
+      if (data.normalizedPlace) {
         //noinspection JSUnresolvedFunction
-        this.$setNormalizedPlace(value.normalizedPlace);
+        this.$setNormalizedPlace(data.normalizedPlace);
       }
-      if (value.changeMessage) {
+      if (data.changeMessage) {
         //noinspection JSUnresolvedFunction
-        this.$setChangeMessage(value.changeMessage);
+        this.$setChangeMessage(data.changeMessage);
       }
     }
   };

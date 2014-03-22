@@ -21,46 +21,46 @@ define([
    *
    * Name
    *
-   * @param {Object|String=} value either a fullText string or an object with optional attributes
+   * @param {Object|String=} data either a fullText string or an object with optional attributes
    * {type, givenName, surname, prefix, suffix, fullText, preferred, changeMessage}
    **********************************/
 
-  var Name = exports.Name = function(value) {
-    if (value) {
-      if (helpers.isString(value)) {
+  var Name = exports.Name = function(data) {
+    if (data) {
+      if (helpers.isString(data)) {
         //noinspection JSUnresolvedFunction
-        this.$setFullText(value);
+        this.$setFullText(data);
       }
       else {
-        if (value.type) {
+        if (data.type) {
           //noinspection JSUnresolvedFunction
-          this.$setType(value.type);
+          this.$setType(data.type);
         }
-        if (value.givenName) {
+        if (data.givenName) {
           //noinspection JSUnresolvedFunction
-          this.$setGivenName(value.givenName);
+          this.$setGivenName(data.givenName);
         }
-        if (value.surname) {
+        if (data.surname) {
           //noinspection JSUnresolvedFunction
-          this.$setSurname(value.surname);
+          this.$setSurname(data.surname);
         }
-        if (value.prefix) {
+        if (data.prefix) {
           //noinspection JSUnresolvedFunction
-          this.$setPrefix(value.prefix);
+          this.$setPrefix(data.prefix);
         }
-        if (value.suffix) {
+        if (data.suffix) {
           //noinspection JSUnresolvedFunction
-          this.$setSuffix(value.suffix);
+          this.$setSuffix(data.suffix);
         }
-        if (value.fullText) {
+        if (data.fullText) {
           //noinspection JSUnresolvedFunction
-          this.$setFullText(value.fullText);
+          this.$setFullText(data.fullText);
         }
         //noinspection JSUnresolvedFunction
-        this.$setPreferred(!!value.preferred);
-        if (value.changeMessage) {
+        this.$setPreferred(!!data.preferred);
+        if (data.changeMessage) {
           //noinspection JSUnresolvedFunction
-          this.$setChangeMessage(value.changeMessage);
+          this.$setChangeMessage(data.changeMessage);
         }
       }
     }

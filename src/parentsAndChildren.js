@@ -41,6 +41,8 @@ define([
   // helper functions - called with this set to the relationship
   // export so we can use them in spouses.js
 
+  // TODO allow setting either resource or resourceId here, and then set resource from resourceId on save, and remove warnings
+
   // person may be a Person, a URL, or an ID
   exports.setMember = function(role, person) {
     if (!this[role]) {
@@ -430,6 +432,7 @@ define([
           caprid ? plumbing.getUrl('child-and-parents-relationship-template', null, {caprid: caprid}) :
                    plumbing.getUrl('relationships'),
           function(url) {
+            // TODO this is where postData[father|mother|child].resource could be set from resourceId
             return plumbing.post(url,
               { childAndParentsRelationships: [ postData ] },
               {'Content-Type': 'application/x-fs-v1+json'},

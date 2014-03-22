@@ -1,0 +1,7 @@
+{
+  "status": 201,
+  "headers": {
+    "X-ENTITY-ID" : "dis-MMMM-MMM",
+    "Location": "https://sandbox.familysearch.org/platform/discussions/discussions/dis-MMMM-MMM"
+  }
+}
