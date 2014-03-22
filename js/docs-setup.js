@@ -185,6 +185,33 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "discussions.functions:deleteDiscussion",
+      "shortName": "deleteDiscussion",
+      "type": "function",
+      "moduleName": "discussions",
+      "shortDescription": "Delete the specified discussion",
+      "keywords": "api delete discussion discussions docs editable example familysearch full function functions http https init net options opts org pass promise url"
+    },
+    {
+      "section": "api",
+      "id": "discussions.functions:deleteDiscussionComment",
+      "shortName": "deleteDiscussionComment",
+      "type": "function",
+      "moduleName": "discussions",
+      "shortDescription": "Delete the specified discussion comment",
+      "keywords": "api cmid comment delete discussion discussions docs editable example familysearch full function functions http https init net options opts org pass promise set url"
+    },
+    {
+      "section": "api",
+      "id": "discussions.functions:deleteDiscussionRef",
+      "shortName": "deleteDiscussionRef",
+      "type": "function",
+      "moduleName": "discussions",
+      "shortDescription": "Delete the specified discussion reference",
+      "keywords": "api delete discussion discussions docs drid editable example familysearch full function functions http https init net options opts org pass person pid promise reference set url"
+    },
+    {
+      "section": "api",
       "id": "discussions.functions:getComments",
       "shortName": "getComments",
       "type": "function",
@@ -226,7 +253,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Comment on a discussion",
-      "keywords": "$discussionid $getagent $getagentid $getagenturl $memoryid __broken__ api comment contributor created details discussion discussions function functions getagent memory pass promise property response text timestamp types url user"
+      "keywords": "$delete $discussionid $getagent $getagentid $getagenturl $memoryid $save __broken__ _refresh_ api attributes comment comments contributor create created currently data delete details discussion discussions editable empty example function functions getagent http individual init memory net note object optional options opts parameter pass promise property read response result set text timestamp types url user"
     },
     {
       "section": "api",
@@ -235,7 +262,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Discussion",
-      "keywords": "$getagent $getagentid $getagenturl $getcomments $getcommentsurl __broken__ api comments contributor created description details discussion discussions endpoint function functions getagent getcomments modified number numberofcomments pass promise property response text timestamp title types url user"
+      "keywords": "$delete $getagent $getagentid $getagenturl $getcomments $getcommentsurl $personid $save api attributes comments contributor create created data delete description details discussion discussionref discussions editable endpoint example existing fulfilled function functions getagent getcomments http init millis modified net number numberofcomments object optional options opts pass promise property read refresh resourceid response text timestamp title true types update updated updating url user"
     },
     {
       "section": "api",
@@ -243,8 +270,8 @@ NG_DOCS={
       "shortName": "constructor.DiscussionRef",
       "type": "function",
       "moduleName": "discussions",
-      "shortDescription": "Reference to a discussion on a person",
-      "keywords": "$getdiscussion $getdiscussionurl $personid api attached details discussion discussionref discussions function functions getdiscussion pass person promise property reference response types url"
+      "shortDescription": "Reference to a discussion on a person.",
+      "keywords": "$delete $getdiscussion $getdiscussionurl $personid $save $setdiscussionurl _refresh_ api attached attributes create data delete details discussion discussionref discussions discussionurl editable example function functions getdiscussion http individual init net note object optional options opts parameter pass person promise property read reference references resourceid response set types url"
     },
     {
       "section": "api",
@@ -262,7 +289,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "fact",
       "shortDescription": "Fact",
-      "keywords": "$getdate $getformaldate $getnormalizedplace $getnormalizedplaceid $getplace $setchangemessage $setdate $setformaldate $setnormalizedplace $setplace $settype api attributes attribution authorities authority change changemessage event fact formal formaldate format function gedcomx http message normalized normalizedplace object optional org original place property sets standard string text type types update user written"
+      "keywords": "$getdate $getformaldate $getnormalizedplace $getnormalizedplaceid $getplace $setchangemessage $setdate $setformaldate $setnormalizedplace $setplace $settype api attributes attribution authorities authority change changemessage data event fact formal formaldate format function gedcomx http message normalized normalizedplace object optional org original place property sets standard string text type types update user written"
     },
     {
       "section": "api",
@@ -433,7 +460,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "name",
       "shortDescription": "Name",
-      "keywords": "$changed $getfulltext $getgivenname $getnameformscount $getnamepart $getprefix $getsuffix $getsurname $setchangemessage $setfulltext $setgivenname $setnamepart $setpreferred $setprefix $setsuffix $setsurname $settype __note__ api attributes attribution call change changemessage created defaults flag form forms full fulltext function givenname http initially ispreferred message number object optional org person preferred prefix property read read-only set sets string suffix surname text true type types update"
+      "keywords": "$changed $getfulltext $getgivenname $getnameformscount $getnamepart $getprefix $getsuffix $getsurname $setchangemessage $setfulltext $setgivenname $setnamepart $setpreferred $setprefix $setsuffix $setsurname $settype __note__ api attributes attribution call change changemessage created data defaults flag form forms full fulltext function givenname http initially ispreferred message number object optional org person preferred prefix property read read-only set sets string suffix surname text true type types update"
     },
     {
       "section": "api",

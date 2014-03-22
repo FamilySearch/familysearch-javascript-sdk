@@ -2772,10 +2772,11 @@ define('changeHistory',[
 });
 
 define('discussions',[
+  'globals',
   'helpers',
   'plumbing',
   'user'
-], function(helpers, plumbing, user) {
+], function(globals, helpers, plumbing, user) {
   /**
    * @ngdoc overview
    * @name discussions
@@ -2796,10 +2797,15 @@ define('discussions',[
    * @description
    *
    * Discussion
+   *
+   * @param {Object=} data an object with optional attributes {title, details}
    **********************************/
 
-  var Discussion = exports.Discussion = function() {
-
+  var Discussion = exports.Discussion = function(data) {
+    if (data) {
+      this.title = data.title;
+      this.details = data.details;
+    }
   };
 
   exports.Discussion.prototype = {
@@ -2829,14 +2835,14 @@ define('discussions',[
      * @ngdoc property
      * @name discussions.types:constructor.Discussion#created
      * @propertyOf discussions.types:constructor.Discussion
-     * @return {Number} timestamp
+     * @return {Number} timestamp in millis
      */
 
     /**
      * @ngdoc property
      * @name discussions.types:constructor.Discussion#modified
      * @propertyOf discussions.types:constructor.Discussion
-     * @return {Number} timestamp
+     * @return {Number} timestamp in millis
      */
 
     /**
@@ -2864,14 +2870,12 @@ define('discussions',[
      */
     $getComments: function() { return exports.getComments(this.$getCommentsUrl()); },
 
-    // TODO check for familysearch fixing the resource and resourceId fields to be the agent id, not the user id
-
     /**
      * @ngdoc function
      * @name discussions.types:constructor.Discussion#$getAgentId
      * @methodOf discussions.types:constructor.Discussion
      * @function
-     * @return {String}  __BROKEN__ id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
+     * @return {String} id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
      */
     $getAgentId: function() { return maybe(this.contributor).resourceId; },
 
@@ -2880,7 +2884,7 @@ define('discussions',[
      * @name discussions.types:constructor.Discussion#$getAgentUrl
      * @methodOf discussions.types:constructor.Discussion
      * @function
-     * @return {String} __BROKEN__ URL of the contributor - pass into {@link user.functions:getAgent getAgent} for details
+     * @return {String} URL of the contributor - pass into {@link user.functions:getAgent getAgent} for details
      */
     $getAgentUrl: function() { return helpers.removeAccessToken(maybe(this.contributor).resource); },
 
@@ -2889,9 +2893,71 @@ define('discussions',[
      * @name discussions.types:constructor.Discussion#$getAgent
      * @methodOf discussions.types:constructor.Discussion
      * @function
-     * @return {Object} __BROKEN__ promise for the {@link user.functions:getAgent getAgent} response
+     * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
      */
-    $getAgent: function() { return user.getAgent(this.$getAgentUrl()); }
+    $getAgent: function() { return user.getAgent(this.$getAgentUrl()); },
+
+    /**
+     * @ngdoc function
+     * @name discussions.types:constructor.Discussion#$save
+     * @methodOf discussions.types:constructor.Discussion
+     * @function
+     * @description
+     * Create a new discussion (if this discussion does not have an id) or update the existing discussion
+     *
+     * {@link http://jsfiddle.net/DallanQ/t6Yh2/ editable example}
+     *
+     * @param {boolean=} refresh true to read the discussion after updating
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise of a {@link discussions.types:constructor.DiscussionRef DiscussionRef},
+     * which is fulfilled after the discussion has been updated,
+     * and if refresh is true, after the discussion has been read.
+     * The DiscussionRef contains a resourceId (discussion id) and discussion URL, but not a $personId.
+     */
+    $save: function(refresh, opts) {
+      var self = this;
+      var promise = helpers.chainHttpPromises(
+        self.id ? plumbing.getUrl('discussion-template', null, {did: self.id}) : plumbing.getUrl('discussions'),
+        function(url) {
+          return plumbing.post(url, { discussions: [ self ] }, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
+            return new DiscussionRef({
+              resourceId: promise.getResponseHeader('X-ENTITY-ID'),
+              discussionUrl: helpers.removeAccessToken(promise.getResponseHeader('Location'))
+            });
+          });
+        });
+      var returnedPromise = promise.then(function(discussionRef) {
+        var id = self.id ? self.id : discussionRef.resourceId;
+        helpers.extendHttpPromise(returnedPromise, promise); // extend the first promise into the returned promise
+        if (refresh) {
+          // re-read the person and set this object's properties from response
+          return exports.getDiscussion(id, {}, opts).then(function(response) {
+            helpers.deleteProperties(self);
+            helpers.extend(self, response.getDiscussion());
+            return discussionRef;
+          });
+        }
+        else {
+          return discussionRef;
+        }
+      });
+      return returnedPromise;
+    },
+
+    /**
+     * @ngdoc function
+     * @name discussions.types:constructor.Discussion#$delete
+     * @methodOf discussions.types:constructor.Discussion
+     * @function
+     * @description delete this discussion
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise for the discussion id
+     */
+    $delete: function(opts) {
+      // TODO use self link when it is added
+      return exports.deleteDiscussion(this.id, opts);
+    }
+
   };
 
   /**********************************/
@@ -2900,16 +2966,32 @@ define('discussions',[
    * @name discussions.types:constructor.DiscussionRef
    * @description
    *
-   * Reference to a discussion on a person
+   * Reference to a discussion on a person.
+   * To create a new discussion reference, you must set $personId and either discussionUrl or resourceId.
+   *
+   * @param {Object=} data an object with optional attributes {$personId, discussionUrl, resourceId}
    **********************************/
 
-  var DiscussionRef = exports.DiscussionRef = function() {
-
+  var DiscussionRef = exports.DiscussionRef = function(data) {
+    if (data) {
+      this.$personId = data.$personId;
+      this.resourceId = data.resourceId;
+      if (data.discussionUrl) {
+        //noinspection JSUnresolvedFunction
+        this.$setDiscussionUrl(data.discussionUrl);
+      }
+    }
   };
 
   exports.DiscussionRef.prototype = {
     constructor: DiscussionRef,
-    // TODO look for resourceId property if it becomes available - this is the discussion id
+
+    /**
+     * @ngdoc property
+     * @name discussions.types:constructor.DiscussionRef#resourceId
+     * @propertyOf discussions.types:constructor.DiscussionRef
+     * @return {String} Discussion Id
+     */
 
     /**
      * @ngdoc property
@@ -2938,7 +3020,71 @@ define('discussions',[
      */
     $getDiscussion: function() {
       return exports.getDiscussion(this.$getDiscussionUrl());
+    },
+
+    /**
+     * @ngdoc function
+     * @name discussions.types:constructor.DiscussionRef#$setDiscussionUrl
+     * @methodOf discussions.types:constructor.DiscussionRef
+     * @function
+     * @param {String} url URL of the discussion
+     * @return {Name} this discussion
+     */
+    $setDiscussionUrl: function(url) {
+      this.resource = url;
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name discussions.types:constructor.DiscussionRef#$save
+     * @methodOf discussions.types:constructor.DiscussionRef
+     * @function
+     * @description
+     * Create a new discussion reference
+     *
+     * NOTE: there's no _refresh_ parameter because it's not possible to read individual discussion references
+     *
+     * {@link http://jsfiddle.net/DallanQ/UarXL/ editable example}
+     *
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise of a url of the discussion reference
+     * (note however that individual discussion references cannot be read).
+     */
+    $save: function(opts) {
+      var self = this;
+      return helpers.chainHttpPromises(
+        plumbing.getUrl('person-discussion-references-template', null, {pid: self.$personId}),
+        function(url) {
+          if (!self.resource && self.resourceId) {
+            // the discovery resource is guaranteed to be set due to the getUrl statement
+            self.resource = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'discussion-template', {did: self.resourceId});
+          }
+          var payload = {
+            persons: [{
+              id: self.$personId,
+              'discussion-references' : [ self.resource ]
+            }]
+          };
+          return plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, helpers.getResponseLocation);
+        });
+    },
+
+    /**
+     * @ngdoc function
+     * @name discussions.types:constructor.DiscussionRef#$delete
+     * @methodOf discussions.types:constructor.DiscussionRef
+     * @function
+     * @description delete this discussion reference
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise for the discussion reference url
+     */
+    $delete: function(opts) {
+      var selfLink = helpers.removeAccessToken(helpers.find(this.links, {title: 'Discussion Reference'}).href);
+      return exports.deleteDiscussionRef(selfLink, null, opts);
     }
+
   };
 
   /**********************************/
@@ -2948,10 +3094,17 @@ define('discussions',[
    * @description
    *
    * Comment on a discussion
+   * To create a new comment, you must set text and either $discussionId or $memoryId.
+   *
+   * @param {Object=} data an object with optional attributes {text, $discussionId, $memoryId}
    **********************************/
 
-  var Comment = exports.Comment = function() {
-
+  var Comment = exports.Comment = function(data) {
+    if (data) {
+      this.text = data.text;
+      this.$discussionId = data.$discussionId;
+      this.$memoryId = data.$memoryId;
+    }
   };
 
   exports.Comment.prototype = {
@@ -2977,8 +3130,6 @@ define('discussions',[
      * @return {Number} timestamp
      */
 
-    // TODO check for familysearch fixing the resource and resourceId fields to be the agent id, not the user id
-
     /**
      * @ngdoc property
      * @name discussions.types:constructor.Comment#$discussionId
@@ -2998,7 +3149,7 @@ define('discussions',[
      * @name discussions.types:constructor.Comment#$getAgentId
      * @methodOf discussions.types:constructor.Comment
      * @function
-     * @return {String}  __BROKEN__ id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
+     * @return {String} id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
      */
     $getAgentId: function() { return maybe(this.contributor).resourceId; },
 
@@ -3007,7 +3158,7 @@ define('discussions',[
      * @name discussions.types:constructor.Comment#$getAgentUrl
      * @methodOf discussions.types:constructor.Comment
      * @function
-     * @return {String} __BROKEN__ URL of the contributor - pass into {@link user.functions:getAgent getAgent} for details
+     * @return {String} URL of the contributor - pass into {@link user.functions:getAgent getAgent} for details
      */
     $getAgentUrl: function() { return helpers.removeAccessToken(maybe(this.contributor).resource); },
 
@@ -3016,9 +3167,59 @@ define('discussions',[
      * @name discussions.types:constructor.Comment#$getAgent
      * @methodOf discussions.types:constructor.Comment
      * @function
-     * @return {Object} __BROKEN__ promise for the {@link user.functions:getAgent getAgent} response
+     * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
      */
-    $getAgent: function() { return user.getAgent(this.$getAgentUrl()); }
+    $getAgent: function() { return user.getAgent(this.$getAgentUrl()); },
+
+    /**
+     * @ngdoc function
+     * @name discussions.types:constructor.Comment#$save
+     * @methodOf discussions.types:constructor.Comment
+     * @function
+     * @description
+     * Create a new comment
+     *
+     * NOTE: there's no _refresh_ parameter because it's not possible to read individual comments
+     *
+     * {@link http://jsfiddle.net/DallanQ/9YHfX/ editable example}
+     *
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise of the comment id __BROKEN__ currently promise result is empty
+     */
+    $save: function(opts) {
+      var self = this;
+      var template;
+      if (this.$memoryId) {
+        template = self.id ? 'memory-comment-template' : 'memory-comments-template';
+      }
+      else {
+        template = self.id ? 'discussion-comment-template' : 'discussion-comments-template';
+      }
+      return helpers.chainHttpPromises(
+        plumbing.getUrl(template, null, {did: self.$discussionId, mid: self.$memoryId, cmid: self.id}),
+        function(url) {
+          var payload = {discussions: [{ comments: [ self ] }] };
+          return plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
+            self.id = self.id || promise.getResponseHeader('X-ENTITY-ID');
+            return self.id;
+          });
+        });
+    },
+
+    /**
+     * @ngdoc function
+     * @name discussions.types:constructor.Comment#$delete
+     * @methodOf discussions.types:constructor.Comment
+     * @function
+     * @description delete this comment
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise for the comment url
+     */
+    $delete: function(opts) {
+      // since we're passing in the full url we can delete memory comments with this function as well
+      return exports.deleteDiscussionComment(maybe(maybe(this.links).comment).href, null, opts);
+    }
+
   };
 
   /**
@@ -3159,6 +3360,7 @@ define('discussions',[
       plumbing.getUrl('discussion-comments-template', did, {did: did}),
       function(url) {
         return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
+          // TODO - combine with memories getComments response mapper
           helpers.compose(
             helpers.objectExtender({getComments: function() {
               return maybe(maybe(maybe(this).discussions)[0]).comments || [];
@@ -3173,6 +3375,91 @@ define('discussions',[
             })
           ));
       });
+  };
+
+  /**
+   * @ngdoc function
+   * @name discussions.functions:deleteDiscussion
+   * @function
+   *
+   * @description
+   * Delete the specified discussion
+   *
+   * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/LTm24/ editable example}
+   *
+   * @param {string} did id or full URL of the discussion
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the discussion id/URL
+   */
+  exports.deleteDiscussion = function(did, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('discussion-template', did, {did: did}),
+      function(url) {
+        return plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
+          return did;
+        });
+      }
+    );
+  };
+
+  // TODO is drid the id of the discussion?
+
+  /**
+   * @ngdoc function
+   * @name discussions.functions:deleteDiscussionRef
+   * @function
+   *
+   * @description
+   * Delete the specified discussion reference
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Discussion_Reference_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/UFn4T/ editable example}
+   *
+   * @param {string} pid person id or full URL of the discussion reference
+   * @param {string=} drid id of the discussion reference (must be set if pid is a person id and not the full URL)
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the pid
+   */
+  exports.deleteDiscussionRef = function(pid, drid, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('person-discussion-reference-template', pid, {pid: pid, drid: drid}),
+      function(url) {
+        return plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
+          return pid;
+        });
+      }
+    );
+  };
+
+  /**
+   * @ngdoc function
+   * @name discussions.functions:deleteDiscussionComment
+   * @function
+   *
+   * @description
+   * Delete the specified discussion comment
+   *
+   * {@link https://familysearch.org/developers/docs/api/discussions/Comment_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/D2r7h/ editable example}
+   *
+   * @param {string} did discussion id or full URL of the comment
+   * @param {string=} cmid id of the comment (must be set if did is a comment id and not the full URL)
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the did
+   */
+  exports.deleteDiscussionComment = function(did, cmid, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('discussion-comment-template', did, {did: did, cmid: cmid}),
+      function(url) {
+        return plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
+          return did;
+        });
+      }
+    );
   };
 
   return exports;
@@ -3278,35 +3565,35 @@ define('fact',[
    * @description
    *
    * Fact
-   * @param {Object=} value with optional attributes
+   * @param {Object=} data with optional attributes
    * {type, date, formalDate, place, normalizedPlace, changeMessage}
    **********************************/
 
-  var Fact = exports.Fact = function(value) {
-    if (value) {
-      if (value.type) {
+  var Fact = exports.Fact = function(data) {
+    if (data) {
+      if (data.type) {
         //noinspection JSUnresolvedFunction
-        this.$setType(value.type);
+        this.$setType(data.type);
       }
-      if (value.date) {
+      if (data.date) {
         //noinspection JSUnresolvedFunction
-        this.$setDate(value.date);
+        this.$setDate(data.date);
       }
-      if (value.formalDate) {
+      if (data.formalDate) {
         //noinspection JSUnresolvedFunction
-        this.$setFormalDate(value.formalDate);
+        this.$setFormalDate(data.formalDate);
       }
-      if (value.place) {
+      if (data.place) {
         //noinspection JSUnresolvedFunction
-        this.$setPlace(value.place);
+        this.$setPlace(data.place);
       }
-      if (value.normalizedPlace) {
+      if (data.normalizedPlace) {
         //noinspection JSUnresolvedFunction
-        this.$setNormalizedPlace(value.normalizedPlace);
+        this.$setNormalizedPlace(data.normalizedPlace);
       }
-      if (value.changeMessage) {
+      if (data.changeMessage) {
         //noinspection JSUnresolvedFunction
-        this.$setChangeMessage(value.changeMessage);
+        this.$setChangeMessage(data.changeMessage);
       }
     }
   };
@@ -3540,46 +3827,46 @@ define('name',[
    *
    * Name
    *
-   * @param {Object|String=} value either a fullText string or an object with optional attributes
+   * @param {Object|String=} data either a fullText string or an object with optional attributes
    * {type, givenName, surname, prefix, suffix, fullText, preferred, changeMessage}
    **********************************/
 
-  var Name = exports.Name = function(value) {
-    if (value) {
-      if (helpers.isString(value)) {
+  var Name = exports.Name = function(data) {
+    if (data) {
+      if (helpers.isString(data)) {
         //noinspection JSUnresolvedFunction
-        this.$setFullText(value);
+        this.$setFullText(data);
       }
       else {
-        if (value.type) {
+        if (data.type) {
           //noinspection JSUnresolvedFunction
-          this.$setType(value.type);
+          this.$setType(data.type);
         }
-        if (value.givenName) {
+        if (data.givenName) {
           //noinspection JSUnresolvedFunction
-          this.$setGivenName(value.givenName);
+          this.$setGivenName(data.givenName);
         }
-        if (value.surname) {
+        if (data.surname) {
           //noinspection JSUnresolvedFunction
-          this.$setSurname(value.surname);
+          this.$setSurname(data.surname);
         }
-        if (value.prefix) {
+        if (data.prefix) {
           //noinspection JSUnresolvedFunction
-          this.$setPrefix(value.prefix);
+          this.$setPrefix(data.prefix);
         }
-        if (value.suffix) {
+        if (data.suffix) {
           //noinspection JSUnresolvedFunction
-          this.$setSuffix(value.suffix);
+          this.$setSuffix(data.suffix);
         }
-        if (value.fullText) {
+        if (data.fullText) {
           //noinspection JSUnresolvedFunction
-          this.$setFullText(value.fullText);
+          this.$setFullText(data.fullText);
         }
         //noinspection JSUnresolvedFunction
-        this.$setPreferred(!!value.preferred);
-        if (value.changeMessage) {
+        this.$setPreferred(!!data.preferred);
+        if (data.changeMessage) {
           //noinspection JSUnresolvedFunction
-          this.$setChangeMessage(value.changeMessage);
+          this.$setChangeMessage(data.changeMessage);
         }
       }
     }
@@ -4636,6 +4923,8 @@ define('memories',[
       });
   };
 
+  // TODO write a short deleteMemoryComment function
+
   return exports;
 });
 
@@ -5660,6 +5949,8 @@ define('parentsAndChildren',[
   // helper functions - called with this set to the relationship
   // export so we can use them in spouses.js
 
+  // TODO allow setting either resource or resourceId here, and then set resource from resourceId on save, and remove warnings
+
   // person may be a Person, a URL, or an ID
   exports.setMember = function(role, person) {
     if (!this[role]) {
@@ -6049,6 +6340,7 @@ define('parentsAndChildren',[
           caprid ? plumbing.getUrl('child-and-parents-relationship-template', null, {caprid: caprid}) :
                    plumbing.getUrl('relationships'),
           function(url) {
+            // TODO this is where postData[father|mother|child].resource could be set from resourceId
             return plumbing.post(url,
               { childAndParentsRelationships: [ postData ] },
               {'Content-Type': 'application/x-fs-v1+json'},
@@ -8775,6 +9067,9 @@ define('FamilySearch',[
     getDiscussion: discussions.getDiscussion,
     getMultiDiscussion: discussions.getMultiDiscussion,
     getComments: discussions.getComments,
+    deleteDiscussion: discussions.deleteDiscussion,
+    deleteDiscussionRef: discussions.deleteDiscussionRef,
+    deleteDiscussionComment: discussions.deleteDiscussionComment,
 
     // fact
     Fact: fact.Fact,

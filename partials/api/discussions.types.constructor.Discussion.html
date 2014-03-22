@@ -7,19 +7,26 @@
 <div class="description"><div class="discussions-types-page discussions-types-constructor-discussion-page"><p>Discussion</p>
 </div></div>
 <h2 id="usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">Discussion();</pre>
-</div>
+<div class="usage"><pre class="prettyprint linenums">Discussion([data]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-page"><p>an object with optional attributes {title, details}</p>
+</div></td></tr></tbody></table></div>
 <div class="member method"><h2 id="methods">Methods</h2>
-<ul class="methods"><li><h3 id="methods_$getagent">$getAgent()</h3>
-<div class="$getagent"><h5 id="methods_$getagent_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-getagent-page"><p><strong>BROKEN</strong> promise for the <a href="#/api/user.functions:getAgent">getAgent</a> response</p>
+<ul class="methods"><li><h3 id="methods_$delete">$delete(opts)</h3>
+<div class="$delete"><div class="discussions-types-page discussions-types-constructor-discussion-delete-page"><p>delete this discussion</p>
+</div><h5 id="methods_$delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-delete-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-delete-page"><p>promise for the discussion id</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getagent">$getAgent()</h3>
+<div class="$getagent"><h5 id="methods_$getagent_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-getagent-page"><p>promise for the <a href="#/api/user.functions:getAgent">getAgent</a> response</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_$getagentid">$getAgentId()</h3>
-<div class="$getagentid"><h5 id="methods_$getagentid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-getagentid-page"><p><strong>BROKEN</strong> id of the contributor - pass into <a href="#/api/user.functions:getAgent">getAgent</a> for details</p>
+<div class="$getagentid"><h5 id="methods_$getagentid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-getagentid-page"><p>id of the contributor - pass into <a href="#/api/user.functions:getAgent">getAgent</a> for details</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_$getagenturl">$getAgentUrl()</h3>
-<div class="$getagenturl"><h5 id="methods_$getagenturl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-getagenturl-page"><p><strong>BROKEN</strong> URL of the contributor - pass into <a href="#/api/user.functions:getAgent">getAgent</a> for details</p>
+<div class="$getagenturl"><h5 id="methods_$getagenturl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-getagenturl-page"><p>URL of the contributor - pass into <a href="#/api/user.functions:getAgent">getAgent</a> for details</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_$getcomments">$getComments()</h3>
@@ -30,11 +37,22 @@
 <div class="$getcommentsurl"><h5 id="methods_$getcommentsurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-getcommentsurl-page"><p>URL of the comments endpoint - pass into <a href="#/api/discussions.functions:getComments">getComments</a> for details</p>
 </div></td></tr></table></div>
 </li>
+<li><h3 id="methods_$save">$save(refresh, opts)</h3>
+<div class="$save"><div class="discussions-types-page discussions-types-constructor-discussion-save-page"><p>Create a new discussion (if this discussion does not have an id) or update the existing discussion</p>
+<p><a href="http://jsfiddle.net/DallanQ/t6Yh2/">editable example</a></p>
+</div><h5 id="methods_$save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>refresh <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-save-page"><p>true to read the discussion after updating</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-save-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-save-page"><p>promise of a <a href="#/api/discussions.types:constructor.DiscussionRef">DiscussionRef</a>,
+which is fulfilled after the discussion has been updated,
+and if refresh is true, after the discussion has been read.
+The DiscussionRef contains a resourceId (discussion id) and discussion URL, but not a $personId.</p>
+</div></td></tr></table></div>
+</li>
 </ul>
 </div>
 <div class="member property"><h2 id="properties">Properties</h2>
 <ul class="properties"><li><h3 id="properties_created">created</h3>
-<div class="created"><h5 id="properties_created_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-created-page"><p>timestamp</p>
+<div class="created"><h5 id="properties_created_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-created-page"><p>timestamp in millis</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="properties_details">details</h3>
@@ -46,7 +64,7 @@
 </div></td></tr></table></div>
 </li>
 <li><h3 id="properties_modified">modified</h3>
-<div class="modified"><h5 id="properties_modified_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-modified-page"><p>timestamp</p>
+<div class="modified"><h5 id="properties_modified_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-modified-page"><p>timestamp in millis</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="properties_numberofcomments">numberOfComments</h3>
