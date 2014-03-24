@@ -698,6 +698,7 @@ define([
       function(url) {
         return plumbing.post(helpers.appendQueryParameters(url, params),
           data, { 'Content-Type': helpers.isString(data) ? 'text/plain' : 'multipart/form-data' }, opts,
+          // TODO is location set on update?
           helpers.getResponseLocation);
       });
   };
@@ -767,6 +768,7 @@ define([
       plumbing.getUrl('person-memory-persona-references-template', pid, {pid: pid}),
       function(url) {
         return plumbing.post(url, data, {}, opts,
+          // TODO is location set on update?
           helpers.getResponseLocation);
       });
   };

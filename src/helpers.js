@@ -602,16 +602,6 @@ define([
   };
 
   /**
-   * Response mapper that returns the last segment of the location header
-   * @param data ignored
-   * @param promise http promise
-   * @returns {string} last segment of the location response header
-   */
-  exports.getLastResponseLocationSegment = function(data, promise) {
-    return exports.getLastUrlSegment(promise.getResponseHeader('Location'));
-  };
-
-  /**
    * Sometimes FamilySearch returns a 303, which the browser follows automatically.
    * Unfortunately, chrome doesn't include the Accept header on the redirect request
    * (the spec doesn't address the point of whether the browser should include headers on redirects)

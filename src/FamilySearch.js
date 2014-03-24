@@ -88,6 +88,9 @@ define([
     getChildAndParentsNoteRefs: notes.getChildAndParentsNoteRefs,
     getChildAndParentsNote: notes.getChildAndParentsNote,
     getMultiChildAndParentsNote: notes.getMultiChildAndParentsNote,
+    deletePersonNote: notes.deletePersonNote,
+    deleteCoupleNote: notes.deleteCoupleNote,
+    deleteChildAndParentsNote: notes.deleteChildAndParentsNote,
 
     // TODO ordinances
 

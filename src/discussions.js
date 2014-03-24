@@ -147,18 +147,20 @@ define([
         self.id ? plumbing.getUrl('discussion-template', null, {did: self.id}) : plumbing.getUrl('discussions'),
         function(url) {
           return plumbing.post(url, { discussions: [ self ] }, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
+            // x-entity-id and location headers are not set on update, only on create
             return new DiscussionRef({
-              resourceId: promise.getResponseHeader('X-ENTITY-ID'),
-              discussionUrl: helpers.removeAccessToken(promise.getResponseHeader('Location'))
+              resourceId: self.id || promise.getResponseHeader('X-ENTITY-ID'),
+              // TODO remove url when discussion links.discussion.href exists
+              discussionUrl: helpers.removeAccessToken(maybe(maybe(self.links).discussion).href ||
+                                                       promise.getResponseHeader('Location') || url)
             });
           });
         });
       var returnedPromise = promise.then(function(discussionRef) {
-        var id = self.id ? self.id : discussionRef.resourceId;
         helpers.extendHttpPromise(returnedPromise, promise); // extend the first promise into the returned promise
         if (refresh) {
           // re-read the person and set this object's properties from response
-          return exports.getDiscussion(id, {}, opts).then(function(response) {
+          return exports.getDiscussion(discussionRef.resourceId, {}, opts).then(function(response) {
             helpers.deleteProperties(self);
             helpers.extend(self, response.getDiscussion());
             return discussionRef;
@@ -404,9 +406,10 @@ define([
      * @methodOf discussions.types:constructor.Comment
      * @function
      * @description
-     * Create a new comment
+     * Create a new comment or update an existing comment
      *
-     * NOTE: there's no _refresh_ parameter because it's not possible to read individual comments
+     * NOTE: there's no _refresh_ parameter because it's not possible to read individual comments;
+     * however, the comment's id is set when creating an new comment
      *
      * {@link http://jsfiddle.net/DallanQ/9YHfX/ editable example}
      *
@@ -444,7 +447,7 @@ define([
      */
     $delete: function(opts) {
       // since we're passing in the full url we can delete memory comments with this function as well
-      return exports.deleteDiscussionComment(maybe(maybe(this.links).comment).href, null, opts);
+      return exports.deleteDiscussionComment(helpers.removeAccessToken(maybe(maybe(this.links).comment).href), null, opts);
     }
 
   };
