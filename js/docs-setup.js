@@ -253,7 +253,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Comment on a discussion",
-      "keywords": "$delete $discussionid $getagent $getagentid $getagenturl $memoryid $save __broken__ _refresh_ api attributes comment comments contributor create created currently data delete details discussion discussions editable empty example function functions getagent http individual init memory net note object optional options opts parameter pass promise property read response result set text timestamp types url user"
+      "keywords": "$delete $discussionid $getagent $getagentid $getagenturl $memoryid $save __broken__ _refresh_ api attributes comment comments contributor create created creating currently data delete details discussion discussions editable empty example existing function functions getagent http individual init memory net note object optional options opts parameter pass promise property read response result set text timestamp types update url user"
     },
     {
       "section": "api",
@@ -473,6 +473,33 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "notes.functions:deleteChildAndParentsNote",
+      "shortName": "deleteChildAndParentsNote",
+      "type": "function",
+      "moduleName": "notes",
+      "shortDescription": "Delete the specified child-and-parents note",
+      "keywords": "api caprid child-and-parents delete docs familysearch full function functions http https init nid note notes options opts org pass pid promise relationship set url"
+    },
+    {
+      "section": "api",
+      "id": "notes.functions:deleteCoupleNote",
+      "shortName": "deleteCoupleNote",
+      "type": "function",
+      "moduleName": "notes",
+      "shortDescription": "Delete the specified couple note",
+      "keywords": "api couple crid delete docs familysearch full function functions http https init nid note notes options opts org pass promise relationship set url"
+    },
+    {
+      "section": "api",
+      "id": "notes.functions:deletePersonNote",
+      "shortName": "deletePersonNote",
+      "type": "function",
+      "moduleName": "notes",
+      "shortDescription": "Delete the specified person note",
+      "keywords": "api delete docs editable example familysearch full function functions http https init net nid note notes options opts org pass person pid promise set url"
+    },
+    {
+      "section": "api",
       "id": "notes.functions:getChildAndParentsNote",
       "shortName": "getChildAndParentsNote",
       "type": "function",
@@ -559,7 +586,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Note",
-      "keywords": "api attribution function note notes object property subject text title types"
+      "keywords": "$childandparentsid $coupleid $delete $personid $save api attached attributes attribution child corresponding couple create data delete editable example existing fulfilled function http init net note noteref notes object optional options opts parents pass person promise property read refresh relationship set subject text title true types update updated updating url"
     },
     {
       "section": "api",
@@ -567,8 +594,8 @@ NG_DOCS={
       "shortName": "constructor.NoteRef",
       "type": "function",
       "moduleName": "notes",
-      "shortDescription": "Reference to a note on a person",
-      "keywords": "$childandparentsid $coupleid $getnote $getnoteurl $personid api attached child couple details function functions getchildandparentsnote getcouplenote getpersonnote note noteref notes parents pass person promise property reference relationship response sources subject types url"
+      "shortDescription": "Reference to a note on a person.",
+      "keywords": "$childandparentsid $coupleid $delete $getnote $getnoteurl $personid _getchildandparentsnoterefs_ _getcouplenoterefs_ _getpersonnoterefs_ api attached attribution call child corresponding couple create delete details function functions getchildandparentsnote getcouplenote getpersonnote http init note noteref noterefs notes options opts parents pass person promise property read reference relationship response returned sources subject text types url"
     },
     {
       "section": "api",

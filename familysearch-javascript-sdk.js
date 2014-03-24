@@ -682,16 +682,6 @@ define('helpers',[
   };
 
   /**
-   * Response mapper that returns the last segment of the location header
-   * @param data ignored
-   * @param promise http promise
-   * @returns {string} last segment of the location response header
-   */
-  exports.getLastResponseLocationSegment = function(data, promise) {
-    return exports.getLastUrlSegment(promise.getResponseHeader('Location'));
-  };
-
-  /**
    * Sometimes FamilySearch returns a 303, which the browser follows automatically.
    * Unfortunately, chrome doesn't include the Accept header on the redirect request
    * (the spec doesn't address the point of whether the browser should include headers on redirects)
@@ -2920,18 +2910,20 @@ define('discussions',[
         self.id ? plumbing.getUrl('discussion-template', null, {did: self.id}) : plumbing.getUrl('discussions'),
         function(url) {
           return plumbing.post(url, { discussions: [ self ] }, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
+            // x-entity-id and location headers are not set on update, only on create
             return new DiscussionRef({
-              resourceId: promise.getResponseHeader('X-ENTITY-ID'),
-              discussionUrl: helpers.removeAccessToken(promise.getResponseHeader('Location'))
+              resourceId: self.id || promise.getResponseHeader('X-ENTITY-ID'),
+              // TODO remove url when discussion links.discussion.href exists
+              discussionUrl: helpers.removeAccessToken(maybe(maybe(self.links).discussion).href ||
+                                                       promise.getResponseHeader('Location') || url)
             });
           });
         });
       var returnedPromise = promise.then(function(discussionRef) {
-        var id = self.id ? self.id : discussionRef.resourceId;
         helpers.extendHttpPromise(returnedPromise, promise); // extend the first promise into the returned promise
         if (refresh) {
           // re-read the person and set this object's properties from response
-          return exports.getDiscussion(id, {}, opts).then(function(response) {
+          return exports.getDiscussion(discussionRef.resourceId, {}, opts).then(function(response) {
             helpers.deleteProperties(self);
             helpers.extend(self, response.getDiscussion());
             return discussionRef;
@@ -3177,9 +3169,10 @@ define('discussions',[
      * @methodOf discussions.types:constructor.Comment
      * @function
      * @description
-     * Create a new comment
+     * Create a new comment or update an existing comment
      *
-     * NOTE: there's no _refresh_ parameter because it's not possible to read individual comments
+     * NOTE: there's no _refresh_ parameter because it's not possible to read individual comments;
+     * however, the comment's id is set when creating an new comment
      *
      * {@link http://jsfiddle.net/DallanQ/9YHfX/ editable example}
      *
@@ -3217,7 +3210,7 @@ define('discussions',[
      */
     $delete: function(opts) {
       // since we're passing in the full url we can delete memory comments with this function as well
-      return exports.deleteDiscussionComment(maybe(maybe(this.links).comment).href, null, opts);
+      return exports.deleteDiscussionComment(helpers.removeAccessToken(maybe(maybe(this.links).comment).href), null, opts);
     }
 
   };
@@ -4850,6 +4843,7 @@ define('memories',[
       function(url) {
         return plumbing.post(helpers.appendQueryParameters(url, params),
           data, { 'Content-Type': helpers.isString(data) ? 'text/plain' : 'multipart/form-data' }, opts,
+          // TODO is location set on update?
           helpers.getResponseLocation);
       });
   };
@@ -4919,6 +4913,7 @@ define('memories',[
       plumbing.getUrl('person-memory-persona-references-template', pid, {pid: pid}),
       function(url) {
         return plumbing.post(url, data, {}, opts,
+          // TODO is location set on update?
           helpers.getResponseLocation);
       });
   };
@@ -4953,14 +4948,23 @@ define('notes',[
    * @description
    *
    * Note
+   * To create a new note, you must set subject, text, and either $personId, $childAndParentsId, or $coupleId.
+   *
+   * @param {Object=} data an object with optional attributes {subject, text, $personId, $childAndParentsId, $coupleId}
    **********************************/
 
-  var Note = exports.Note = function() {
-
+  var Note = exports.Note = function(data) {
+    if (data) {
+      this.subject = data.subject;
+      this.text = data.text;
+      this.$personId = data.$personId;
+      this.$childAndParentsId = data.$childAndParentsId;
+      this.$coupleId = data.$coupleId;
+    }
   };
 
   exports.Note.prototype = {
-    constructor: Note
+    constructor: Note,
     /**
      * @ngdoc property
      * @name notes.types:constructor.Note#id
@@ -4988,6 +4992,106 @@ define('notes',[
      * @propertyOf notes.types:constructor.Note
      * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
      */
+
+    /**
+     * @ngdoc property
+     * @name notes.types:constructor.Note#$personId
+     * @propertyOf notes.types:constructor.Note
+     * @return {String} Id of the person to which this note is attached if it is a person note
+     */
+
+    /**
+     * @ngdoc property
+     * @name notes.types:constructor.Note#$childAndParentsId
+     * @propertyOf notes.types:constructor.Note
+     * @return {String} Id of the child and parents relationship to which this note is attached if it is a child and parents note
+     */
+
+    /**
+     * @ngdoc property
+     * @name notes.types:constructor.Note#$coupleId
+     * @propertyOf notes.types:constructor.Note
+     * @return {String} Id of the couple relationship to which this note is attached if it is a couple note
+     */
+
+    /**
+     * @ngdoc function
+     * @name notes.types:constructor.Note#$save
+     * @methodOf notes.types:constructor.Note
+     * @function
+     * @description
+     * Create a new note (if this note does not have an id) or update the existing note
+     *
+     * {@link http://jsfiddle.net/DallanQ/6fVkh/ editable example}
+     *
+     * @param {boolean=} refresh true to read the note after updating
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise of the note id, which is fulfilled after the note has been updated,
+     * and if refresh is true, after the note has been read.
+     */
+    $save: function(refresh, opts) {
+      var self = this;
+      var template, label;
+      var headers = {};
+      if (self.$personId) {
+        template = self.id ? 'person-note-template' : 'person-notes-template';
+        label = 'persons';
+      }
+      else if (self.$coupleId) {
+        template = self.id ? 'couple-relationship-note-template' : 'couple-relationship-notes-template';
+        label = 'relationships';
+      }
+      else if (self.$childAndParentsId) {
+        template = self.id ? 'child-and-parents-relationship-note-template' : 'child-and-parents-relationship-notes-template';
+        label = 'childAndParentsRelationships';
+        headers['Content-Type'] = 'application/x-fs-v1+json';
+      }
+      var promise = helpers.chainHttpPromises(
+        plumbing.getUrl(template, null, {pid: self.$personId, crid: self.$coupleId, caprid: self.$childAndParentsId, nid: self.id}),
+        function(url) {
+          var payload = {};
+          payload[label] = [ { notes: [ self ] } ];
+          return plumbing.post(url, payload, headers, opts, function(data, promise) {
+            // x-entity-id and location headers are not set on update, only on create
+            return {
+              id: self.id || promise.getResponseHeader('X-ENTITY-ID'),
+              location: helpers.removeAccessToken(maybe(maybe(self.links).note).href || promise.getResponseHeader('Location'))
+            };
+          });
+        });
+      var returnedPromise = promise.then(function(idLocation) {
+        helpers.extendHttpPromise(returnedPromise, promise); // extend the first promise into the returned promise
+        if (refresh) {
+          // re-read the note and set this object's properties from response
+          // we use getPersonNote here to read couple and child-and-parents notes also
+          // it's ok to do this since we pass in the full url
+          return exports.getPersonNote(idLocation.location, null, {}, opts).then(function(response) {
+            helpers.deleteProperties(self);
+            helpers.extend(self, response.getNote());
+            return idLocation.id;
+          });
+        }
+        else {
+          return idLocation.id;
+        }
+      });
+      return returnedPromise;
+    },
+
+    /**
+     * @ngdoc function
+     * @name notes.types:constructor.Note#$delete
+     * @methodOf notes.types:constructor.Note
+     * @function
+     * @description delete this note (and corresponding NoteRef)
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise for the note URL
+     */
+    $delete: function(opts) {
+      // since we're passing in the full url we can delete couple and child-and-parents notes with this function as well
+      return exports.deletePersonNote(helpers.removeAccessToken(maybe(maybe(this.links).note).href), null, opts);
+    }
+
   };
 
   /**********************************/
@@ -4996,7 +5100,12 @@ define('notes',[
    * @name notes.types:constructor.NoteRef
    * @description
    *
-   * Reference to a note on a person
+   * Reference to a note on a person.
+   * NoteRef's are returned by _getPersonNoteRefs_, _getCoupleNoteRefs_, and _getChildAndParentsNoteRefs_.
+   * You should not call this constructor yourself. You should create Notes, not NoteRefs.
+   *
+   * NoteRef contains just the subject of the note. You need to read the corresponding
+   * {@link notes.types:constructor.Note Note} to get the note text and attribution.
    **********************************/
 
   var NoteRef = exports.NoteRef = function() {
@@ -5052,12 +5161,7 @@ define('notes',[
      * {@link notes.functions:getChildAndParentsNote getChildAndParentsNote} for details
      */
     $getNoteUrl: function() {
-      var url = helpers.removeAccessToken(this.links.note.href);
-      // TODO remove this when person note.href contains note id like it should
-      if (url.indexOf(this.id) === -1) {
-        url += '/' + this.id;
-      }
-      return url;
+      return helpers.removeAccessToken(maybe(maybe(this.links).note).href);
     },
 
     /**
@@ -5071,131 +5175,22 @@ define('notes',[
      */
     $getNote: function() {
       return getNote(this.$getNoteUrl());
+    },
+
+    /**
+     * @ngdoc function
+     * @name notes.types:constructor.NoteRef#$delete
+     * @methodOf notes.types:constructor.NoteRef
+     * @function
+     * @description delete this NoteRef (and corresponding Note)
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise for the note URL
+     */
+    $delete: function(opts) {
+      // since we're passing in the full url we can delete couple and child-and-parents notes with this function as well
+      return exports.deletePersonNote(helpers.removeAccessToken(maybe(maybe(this.links).note).href), null, opts);
     }
-  };
 
-  /**
-   * @ngdoc function
-   * @name notes.functions:getPersonNoteRefs
-   * @function
-   *
-   * @description
-   * Get note references for a person
-   * The response includes the following convenience function
-   *
-   * - `getNoteRefs()` - get an array of {@link notes.types:constructor.NoteRef NoteRefs} from the response
-   *
-   * {@link https://familysearch.org/developers/docs/api/tree/Person_Notes_resource FamilySearch API Docs}
-   *
-   * {@link http://jsfiddle.net/DallanQ/3enGw/ editable example}
-   *
-   * @param {String} pid id of the person or full URL of the person-notes endpoint
-   * @param {Object=} params currently unused
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the response
-   */
-  exports.getPersonNoteRefs = function(pid, params, opts) {
-    return helpers.chainHttpPromises(
-      plumbing.getUrl('person-notes-template', pid, {pid: pid}),
-      function(url) {
-        return plumbing.get(url, params, {}, opts,
-          helpers.compose(
-            helpers.objectExtender({getNoteRefs: function() {
-              return maybe(maybe(maybe(this).persons)[0]).notes || [];
-            }}),
-            helpers.constructorSetter(NoteRef, 'notes', function(response) {
-              return maybe(maybe(response).persons)[0];
-            }),
-            helpers.objectExtender(function(response) {
-              return { $personId: maybe(maybe(maybe(response).persons)[0]).id };
-            }, function(response) {
-              return maybe(maybe(maybe(response).persons)[0]).notes;
-            })
-          ));
-      });
-  };
-
-  /**
-   * @ngdoc function
-   * @name notes.functions:getCoupleNoteRefs
-   * @function
-   *
-   * @description
-   * Get the note references for a couple relationship
-   * The response includes the following convenience function
-   *
-   * - `getNoteRefs()` - get an array of {@link notes.types:constructor.NoteRef NoteRefs} from the response
-   *
-   * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Notes_resource FamilySearch API Docs}
-   *
-   * {@link http://jsfiddle.net/DallanQ/qe2dc/ editable example}
-   *
-   * @param {String} crid id of the couple relationship or full URL of the couple-relationship-notes endpoint
-   * @param {Object=} params currently unused
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the response
-   */
-  exports.getCoupleNoteRefs = function(crid, params, opts) {
-    return helpers.chainHttpPromises(
-      plumbing.getUrl('couple-relationship-notes-template', crid, {crid: crid}),
-      function(url) {
-        return plumbing.get(url, params, {}, opts,
-          helpers.compose(
-            helpers.objectExtender({getNoteRefs: function() {
-              return maybe(maybe(this.relationships)[0]).notes || [];
-            }}),
-            helpers.constructorSetter(NoteRef, 'notes', function(response) {
-              return maybe(maybe(response).relationships)[0];
-            }),
-            helpers.objectExtender(function(response) {
-              return { $coupleId: maybe(maybe(maybe(response).relationships)[0]).id };
-            }, function(response) {
-              return maybe(maybe(maybe(response).relationships)[0]).notes;
-            })
-          ));
-      });
-  };
-
-  /**
-   * @ngdoc function
-   * @name notes.functions:getChildAndParentsNoteRefs
-   * @function
-   *
-   * @description
-   * Get the note references for a child and parents relationship
-   * The response includes the following convenience function
-   *
-   * - `getNoteRefs()` - get an array of {@link notes.types:constructor.NoteRef NoteRefs} from the response
-   *
-   * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Notes_resource FamilySearch API Docs}
-   *
-   * {@link http://jsfiddle.net/DallanQ/SV8Hs/ editable example}
-   *
-   * @param {String} caprid id of the child and parents relationship or full URL of the child-and-parents-relationship-notes endpoint
-   * @param {Object=} params currently unused
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the response
-   */
-  exports.getChildAndParentsNoteRefs = function(caprid, params, opts) {
-    return helpers.chainHttpPromises(
-      plumbing.getUrl('child-and-parents-relationship-notes-template', caprid, {caprid: caprid}),
-      function(url) {
-        return plumbing.get(url, params,
-          {'Accept': 'application/x-fs-v1+json'}, opts,
-          helpers.compose(
-            helpers.objectExtender({getNoteRefs: function() {
-              return maybe(maybe(this.childAndParentsRelationships)[0]).notes || [];
-            }}),
-            helpers.constructorSetter(NoteRef, 'notes', function(response) {
-              return maybe(maybe(response).childAndParentsRelationships)[0];
-            }),
-            helpers.objectExtender(function(response) {
-              return { $childAndParentsId: maybe(maybe(maybe(response).childAndParentsRelationships)[0]).id };
-            }, function(response) {
-              return maybe(maybe(maybe(response).childAndParentsRelationships)[0]).notes;
-            })
-          ));
-      });
   };
 
   function getRoot(obj) {
@@ -5223,6 +5218,14 @@ define('notes',[
           return getRoot(response)[0];
         }),
         helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+          return maybe(getRoot(response)[0]).notes;
+        }),
+        helpers.objectExtender(function(response) {
+          var label = response.persons ? '$personId' : (response.childAndParentsRelationships ? '$childAndParentsId' : '$coupleId');
+          var result = {};
+          result[label] = maybe(getRoot(response)[0]).id;
+          return result;
+        }, function(response) {
           return maybe(getRoot(response)[0]).notes;
         })
       ));
@@ -5274,6 +5277,7 @@ define('notes',[
    * @return {Object} promise for the response
    */
   exports.getPersonNote = function(pid, nid, params, opts) {
+    // NOTE: this function is called in note.$save() to read couple and child-and-parents notes also by passing in the full note URL
     if (pid instanceof NoteRef) {
       //noinspection JSUnresolvedFunction
       pid = pid.$getNoteUrl();
@@ -5421,6 +5425,212 @@ define('notes',[
   exports.getMultiChildAndParentsNote = function(caprid, nids, params, opts) {
     var promises = getMultiNote(caprid, nids, params, opts, exports.getChildAndParentsNote);
     return helpers.promiseAll(promises);
+  };
+
+  /**
+   * @ngdoc function
+   * @name notes.functions:getPersonNoteRefs
+   * @function
+   *
+   * @description
+   * Get note references for a person
+   * The response includes the following convenience function
+   *
+   * - `getNoteRefs()` - get an array of {@link notes.types:constructor.NoteRef NoteRefs} from the response
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Notes_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/3enGw/ editable example}
+   *
+   * @param {String} pid id of the person or full URL of the person-notes endpoint
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getPersonNoteRefs = function(pid, params, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('person-notes-template', pid, {pid: pid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts,
+          helpers.compose(
+            helpers.objectExtender({getNoteRefs: function() {
+              return maybe(maybe(maybe(this).persons)[0]).notes || [];
+            }}),
+            helpers.constructorSetter(NoteRef, 'notes', function(response) {
+              return maybe(maybe(response).persons)[0];
+            }),
+            helpers.objectExtender(function(response) {
+              return { $personId: maybe(maybe(maybe(response).persons)[0]).id };
+            }, function(response) {
+              return maybe(maybe(maybe(response).persons)[0]).notes;
+            })
+          ));
+      });
+  };
+
+  /**
+   * @ngdoc function
+   * @name notes.functions:getCoupleNoteRefs
+   * @function
+   *
+   * @description
+   * Get the note references for a couple relationship
+   * The response includes the following convenience function
+   *
+   * - `getNoteRefs()` - get an array of {@link notes.types:constructor.NoteRef NoteRefs} from the response
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Notes_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/qe2dc/ editable example}
+   *
+   * @param {String} crid id of the couple relationship or full URL of the couple-relationship-notes endpoint
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getCoupleNoteRefs = function(crid, params, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('couple-relationship-notes-template', crid, {crid: crid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts,
+          helpers.compose(
+            helpers.objectExtender({getNoteRefs: function() {
+              return maybe(maybe(this.relationships)[0]).notes || [];
+            }}),
+            helpers.constructorSetter(NoteRef, 'notes', function(response) {
+              return maybe(maybe(response).relationships)[0];
+            }),
+            helpers.objectExtender(function(response) {
+              return { $coupleId: maybe(maybe(maybe(response).relationships)[0]).id };
+            }, function(response) {
+              return maybe(maybe(maybe(response).relationships)[0]).notes;
+            })
+          ));
+      });
+  };
+
+  /**
+   * @ngdoc function
+   * @name notes.functions:getChildAndParentsNoteRefs
+   * @function
+   *
+   * @description
+   * Get the note references for a child and parents relationship
+   * The response includes the following convenience function
+   *
+   * - `getNoteRefs()` - get an array of {@link notes.types:constructor.NoteRef NoteRefs} from the response
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Notes_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/SV8Hs/ editable example}
+   *
+   * @param {String} caprid id of the child and parents relationship or full URL of the child-and-parents-relationship-notes endpoint
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getChildAndParentsNoteRefs = function(caprid, params, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('child-and-parents-relationship-notes-template', caprid, {caprid: caprid}),
+      function(url) {
+        return plumbing.get(url, params,
+          {'Accept': 'application/x-fs-v1+json'}, opts,
+          helpers.compose(
+            helpers.objectExtender({getNoteRefs: function() {
+              return maybe(maybe(this.childAndParentsRelationships)[0]).notes || [];
+            }}),
+            helpers.constructorSetter(NoteRef, 'notes', function(response) {
+              return maybe(maybe(response).childAndParentsRelationships)[0];
+            }),
+            helpers.objectExtender(function(response) {
+              return { $childAndParentsId: maybe(maybe(maybe(response).childAndParentsRelationships)[0]).id };
+            }, function(response) {
+              return maybe(maybe(maybe(response).childAndParentsRelationships)[0]).notes;
+            })
+          ));
+      });
+  };
+
+  /**
+   * @ngdoc function
+   * @name notes.functions:deletePersonNote
+   * @function
+   *
+   * @description
+   * Delete the specified person note
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Note_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/wMmn7/ editable example}
+   *
+   * @param {string} pid person id or full URL of the note
+   * @param {string=} nid id of the note (must be set if pid is an id and not the full URL of the note)
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the pid
+   */
+  exports.deletePersonNote = function(pid, nid, opts) {
+    // this function is called from note.$delete() also to delete couple notes and child-and-parents notes by passing in the full URL
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('person-note-template', pid, {pid: pid, nid: nid}),
+      function(url) {
+        // need to use x-fs-v1+json, required for child-and-parents notes
+        return plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
+          return pid;
+        });
+      }
+    );
+  };
+
+  /**
+   * @ngdoc function
+   * @name notes.functions:deleteCoupleNote
+   * @function
+   *
+   * @description
+   * Delete the specified couple note
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource FamilySearch API Docs}
+   *
+   * @param {string} crid couple relationship id or full URL of the note
+   * @param {string=} nid id of the note (must be set if crid is an id and not the full URL of the note)
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the crid
+   */
+  exports.deleteCoupleNote = function(crid, nid, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('couple-relationship-note-template', crid, {crid: crid, nid: nid}),
+      function(url) {
+        return plumbing.del(url, {}, opts, function() {
+          return crid;
+        });
+      }
+    );
+  };
+
+  /**
+   * @ngdoc function
+   * @name notes.functions:deleteChildAndParentsNote
+   * @function
+   *
+   * @description
+   * Delete the specified child-and-parents note
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource FamilySearch API Docs}
+   *
+   * @param {string} caprid child-and-parents relationship id or full URL of the note
+   * @param {string=} nid id of the note (must be set if caprid is an id and not the full URL of the note)
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the pid
+   */
+  exports.deleteChildAndParentsNote = function(caprid, nid, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('child-and-parents-relationship-note-template', caprid, {caprid: caprid, nid: nid}),
+      function(url) {
+        return plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
+          return caprid;
+        });
+      }
+    );
   };
 
   return exports;
@@ -9104,6 +9314,9 @@ define('FamilySearch',[
     getChildAndParentsNoteRefs: notes.getChildAndParentsNoteRefs,
     getChildAndParentsNote: notes.getChildAndParentsNote,
     getMultiChildAndParentsNote: notes.getMultiChildAndParentsNote,
+    deletePersonNote: notes.deletePersonNote,
+    deleteCoupleNote: notes.deleteCoupleNote,
+    deleteChildAndParentsNote: notes.deleteChildAndParentsNote,
 
     // TODO ordinances
 
