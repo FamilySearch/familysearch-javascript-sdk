@@ -136,10 +136,8 @@ define([
      *
      * @param {boolean=} refresh true to read the discussion after updating
      * @param {Object=} opts options to pass to the http function specified during init
-     * @return {Object} promise of a {@link discussions.types:constructor.DiscussionRef DiscussionRef},
-     * which is fulfilled after the discussion has been updated,
+     * @return {Object} promise of the discussion id, which is fulfilled after the discussion has been updated,
      * and if refresh is true, after the discussion has been read.
-     * The DiscussionRef contains a resourceId (discussion id) and discussion URL, but not a $personId.
      */
     $save: function(refresh, opts) {
       var self = this;
@@ -148,26 +146,21 @@ define([
         function(url) {
           return plumbing.post(url, { discussions: [ self ] }, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
             // x-entity-id and location headers are not set on update, only on create
-            return new DiscussionRef({
-              resourceId: self.id || promise.getResponseHeader('X-ENTITY-ID'),
-              // TODO remove url when discussion links.discussion.href exists
-              discussionUrl: helpers.removeAccessToken(maybe(maybe(self.links).discussion).href ||
-                                                       promise.getResponseHeader('Location') || url)
-            });
+            return self.id || promise.getResponseHeader('X-ENTITY-ID');
           });
         });
-      var returnedPromise = promise.then(function(discussionRef) {
+      var returnedPromise = promise.then(function(did) {
         helpers.extendHttpPromise(returnedPromise, promise); // extend the first promise into the returned promise
         if (refresh) {
-          // re-read the person and set this object's properties from response
-          return exports.getDiscussion(discussionRef.resourceId, {}, opts).then(function(response) {
+          // re-read the discussion and set this object's properties from response
+          return exports.getDiscussion(did, {}, opts).then(function(response) {
             helpers.deleteProperties(self);
             helpers.extend(self, response.getDiscussion());
-            return discussionRef;
+            return did;
           });
         }
         else {
-          return discussionRef;
+          return did;
         }
       });
       return returnedPromise;
@@ -197,8 +190,10 @@ define([
    *
    * Reference to a discussion on a person.
    * To create a new discussion reference, you must set $personId and either discussionUrl or resourceId.
+   * _NOTE_: discussion references cannot be updated. They can only be created or deleted.
    *
    * @param {Object=} data an object with optional attributes {$personId, discussionUrl, resourceId}
+   * _resourceId_ is the discussion id
    **********************************/
 
   var DiscussionRef = exports.DiscussionRef = function(data) {
@@ -257,7 +252,7 @@ define([
      * @methodOf discussions.types:constructor.DiscussionRef
      * @function
      * @param {String} url URL of the discussion
-     * @return {Name} this discussion
+     * @return {Discussion} this discussion
      */
     $setDiscussionUrl: function(url) {
       this.resource = url;
@@ -278,7 +273,7 @@ define([
      * {@link http://jsfiddle.net/DallanQ/UarXL/ editable example}
      *
      * @param {Object=} opts options to pass to the http function specified during init
-     * @return {Object} promise of a url of the discussion reference
+     * @return {Object} promise of the discussion reference url
      * (note however that individual discussion references cannot be read).
      */
     $save: function(opts) {
@@ -400,6 +395,8 @@ define([
      */
     $getAgent: function() { return user.getAgent(this.$getAgentUrl()); },
 
+    // TODO check whether it's possible to update memory comments now and remove the note
+
     /**
      * @ngdoc function
      * @name discussions.types:constructor.Comment#$save
@@ -409,7 +406,9 @@ define([
      * Create a new comment or update an existing comment
      *
      * NOTE: there's no _refresh_ parameter because it's not possible to read individual comments;
-     * however, the comment's id is set when creating an new comment
+     * however, the comment's id is set when creating a new comment
+     *
+     * NOTE: it is not currently possible to update memory comments.
      *
      * {@link http://jsfiddle.net/DallanQ/9YHfX/ editable example}
      *
@@ -418,15 +417,9 @@ define([
      */
     $save: function(opts) {
       var self = this;
-      var template;
-      if (this.$memoryId) {
-        template = self.id ? 'memory-comment-template' : 'memory-comments-template';
-      }
-      else {
-        template = self.id ? 'discussion-comment-template' : 'discussion-comments-template';
-      }
+      var template = this.$memoryId ? 'memory-comments-template' : 'discussion-comments-template';
       return helpers.chainHttpPromises(
-        plumbing.getUrl(template, null, {did: self.$discussionId, mid: self.$memoryId, cmid: self.id}),
+        plumbing.getUrl(template, null, {did: self.$discussionId, mid: self.$memoryId}),
         function(url) {
           var payload = {discussions: [{ comments: [ self ] }] };
           return plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {

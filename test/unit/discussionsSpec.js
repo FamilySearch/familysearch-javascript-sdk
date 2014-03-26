@@ -67,9 +67,7 @@ define(['FamilySearch'], function(FamilySearch) {
           } ]
         });
         expect(promise.getStatusCode()).toBe(201);
-        expect(response instanceof FamilySearch.DiscussionRef).toBeTruthy();
-        expect(response.resourceId).toBe('dis-MMMM-MMM');
-        expect(response.$getDiscussionUrl()).toBe('https://sandbox.familysearch.org/platform/discussions/discussions/dis-MMMM-MMM');
+        expect(response).toBe('dis-MMMM-MMM');
         // discussion has been refreshed from database
         expect(disc.details).toBe('Ethel Hollivet (line 75) with husband Albert Hollivet (line 74); also in the dwelling: step-father Joseph E Watkins (line 72), mother Lina Watkins (line 73), and grandmother -- Lina\'s mother -- Mary Sasnett (line 76).  ');
       });
@@ -90,7 +88,7 @@ define(['FamilySearch'], function(FamilySearch) {
           } ]
         });
         expect(promise.getStatusCode()).toBe(201);
-        expect(response instanceof FamilySearch.DiscussionRef).toBeTruthy();
+        expect(response).toBe('dis-MMMM-MMM');
       });
     });
 
@@ -144,6 +142,26 @@ define(['FamilySearch'], function(FamilySearch) {
         });
         expect(promise.getStatusCode()).toBe(201);
         expect(response).toBe('cmt-id');
+      });
+    });
+
+    it('comment is updated', function() {
+      var cmt = new FamilySearch.Comment({text: 'Just a comment.', $discussionId: 'dis-MMMM-MMU'});
+      cmt.id = 'CMMM-MMM';
+      var promise = cmt.$save();
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualJson({
+          'discussions' : [ {
+            'comments' : [ {
+              'id' : 'CMMM-MMM',
+              'text' : 'Just a comment.'
+            } ]
+          } ]
+        });
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('CMMM-MMM');
       });
     });
 

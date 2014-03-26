@@ -1,9 +1,9 @@
 {
   "persons" : [ {
-    "id" : "123",
+    "id" : "PXX-1234",
     "links" : {
       "persona" : {
-        "href" : "https://familysearch.org/platform/memories/memories/AR-1234/personas/123",
+        "href" : "https://familysearch.org/platform/memories/memories/AR-1234/personas/PXX-1234",
         "title" : "Memory Persona"
       }
     },
@@ -12,7 +12,7 @@
       "id" : "T123",
       "links" : {
         "media-reference" : {
-          "href" : "https://familysearch.org/platform/memories/memories/AR-1234/personas/123/artifact-references/T123",
+          "href" : "https://familysearch.org/platform/memories/memories/AR-1234/personas/PXX-1234/artifact-references/T123",
           "title" : "Memory Artifact Reference"
         }
       },
@@ -26,10 +26,7 @@
       "nameForms" : [ {
         "fullText" : "Anastasia Aleksandrova"
       } ]
-    } ],
-    "display" : {
-      "name" : "Anastasia Aleksandrova"
-    }
+    } ]
   } ],
   "sourceDescriptions" : [ {
     "id" : "AR-1234",

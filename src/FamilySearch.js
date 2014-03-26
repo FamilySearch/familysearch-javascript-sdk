@@ -66,12 +66,16 @@ define([
     getMemory: memories.getMemory,
     getMemoryComments: memories.getMemoryComments,
     getMemoryPersonas: memories.getMemoryPersonas,
+    getMemoryPersona: memories.getMemoryPersona,
     getPersonPortraitUrl: memories.getPersonPortraitUrl,
     getPersonMemoriesQuery: memories.getPersonMemoriesQuery,
     getUserMemoriesQuery: memories.getUserMemoriesQuery,
-    createMemory: memories.createMemory,
     addMemoryPersona: memories.addMemoryPersona,
     addMemoryPersonaRef: memories.addMemoryPersonaRef,
+    deleteMemory: memories.deleteMemory,
+    deleteMemoryPersona: memories.deleteMemoryPersona,
+    deleteMemoryPersonaRef: memories.deleteMemoryPersonaRef,
+    deleteMemoryComment: memories.deleteMemoryComment,
 
     // name
     Name: name.Name,

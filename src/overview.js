@@ -187,7 +187,7 @@
  * For example, suppose you wanted to display someone's name followed by their id. You could write
  * <pre>
  *   FamilySearch.Person.prototype._getNameAndId = function() {
- *     return this.getName() + ' (' + this.id + ')';
+ *     return this.$getDisplayName() + ' (' + this.id + ')';
  *   }
  * </pre>
  *
@@ -203,7 +203,19 @@
  * To avoid name conflicts with FamilySearch property names and SDK convenience functions, we recommend that you begin
  * your convenience functions with a `_`, though you are free to begin your convenience functions however you want.
  *
- * Object properties beginning with `$` or `_` are removed before posting data to FamilySearch.
+ * Also, object properties beginning with `$` or `_` are removed before posting data to FamilySearch.
+ *
+ * ## Updates
+ *
+ * All updateable objects have a constructor that takes a parameters object for initialization,
+ * one or more *$set...()* functions, *$save()*, and *$delete()* functions.
+ * To create a new object, call the constructor to create a new object and call *$save()*.
+ * To update an object, call the *$set...()* functions and call *$save()*.
+ * To delete an object, call *$delete()*.
+ *
+ * Most *$save()* functions take a *refresh* parameter that causes the object to be re-read from the server after it is saved.
+ * This is useful when the server adds new fields to the object or modifies fields when saving it.
+ * Many *$save()* and *$delete()* functions also take a *changeMessage* parameter to record the reason for the change.
  *
  * ## Using the SDK with module loaders
  *

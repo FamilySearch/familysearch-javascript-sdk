@@ -1,0 +1,7 @@
+{
+  "status": 201,
+  "headers": {
+    "X-ENTITY-ID" : "CM-1234",
+    "Location": "https://sandbox.familysearch.org/platform/memories/memories/AR-1234/comments/CM-1234"
+  }
+}

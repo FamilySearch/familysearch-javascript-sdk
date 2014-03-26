@@ -7,7 +7,7 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(personaRefs[0].resource).toBe('https://familysearch.org/platform/memories/memories/ARXX-MMM/personas/1083');
         expect(personaRefs[0].resourceId).toBe('1083');
         expect(personaRefs[0].$personId).toBe('PPPP-PPP');
-        expect(personaRefs[0].$getMemoryId()).toBe('ARXX-MMM');
+        expect(personaRefs[0].$getMemoryUrl()).toBe('https://familysearch.org/platform/memories/memories/ARXX-MMM');
         personaRefs[0].$getMemory().then(function(response) {
           var memory = response.getMemory();
           expect(memory.id).toBe('ARXX-MMM');
@@ -46,9 +46,19 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(personas[0].extracted).toBeTruthy();
         expect(personas[0].$memoryId).toBe('AR-1234');
         expect(personas[0].$getDisplayName()).toBe('Anastasia Aleksandrova');
-        expect(personas[0].$getPreferredName().$getFullText()).toBe('Anastasia Aleksandrova');
-        expect(personas[0].$getNames().length).toBe(1);
-        expect(personas[0].$getMemoryArtifactRef().$getMemoryArtifactUrl()).toBe('https://familysearch.org/platform/memories/artifacts/132692/description?access_token=mock');
+        expect(personas[0].$getName().$getFullText()).toBe('Anastasia Aleksandrova');
+        expect(personas[0].$getMemoryArtifactRef().description).toBe('https://familysearch.org/platform/memories/artifacts/132692/description');
+      });
+    });
+
+    it('persona is returned from getMemoryPersona', function() {
+      FamilySearch.getMemoryPersona('AR-1234', 'PXX-1234').then(function(response) {
+        var persona = response.getMemoryPersona();
+        expect(persona.id).toBe('PXX-1234');
+        expect(persona.$memoryId).toBe('AR-1234');
+        expect(persona.$getDisplayName()).toBeUndefined(); // bad example data
+        expect(persona.$getName().$getFullText()).toBe('Anastasia Aleksandrova');
+        expect(persona.$getMemoryArtifactRef().description).toBe('https://familysearch.org/platform/memories/artifacts/132692/description');
       });
     });
 
@@ -81,26 +91,55 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('is created', function() {
-      var promise = FamilySearch.createMemory('Test', {title: 'Grandfather\'s Horse'});
+      var promise = new FamilySearch.Memory({title: 'Grandfather\'s Horse', $data: 'Test'})
+        .$save();
       promise.then(function(response) {
         var request = promise.getRequest();
         expect(request.headers['Content-Type']).toBe('text/plain');
         expect(request.data).toBe('Test');
         expect(promise.getStatusCode()).toBe(201);
-        expect(response).toBe('https://familysearch.org/platform/memories/memories/12345');
+        expect(response).toBe('12345');
+      });
+    });
+
+    it('is updated', function() {
+      var memory = new FamilySearch.Memory({title: 'Birth Certificate of Ethel Hollivet', description: 'Shows Ethel Hollivet was born 3 Aug 1899'});
+      memory.id = 'ARXX-MMM';
+      var promise = memory.$save(true);
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualJson({
+          sourceDescriptions: [{
+            id: 'ARXX-MMM',
+            titles: [ { value: 'Birth Certificate of Ethel Hollivet' }],
+            description: [ { value: 'Shows Ethel Hollivet was born 3 Aug 1899' }]
+          }]
+        });
+        expect(promise.getStatusCode()).toBe(204);
+        expect(memory.mediaType).toBe('image/jpeg'); // refreshed
+        expect(response).toBe('ARXX-MMM');
+      });
+    });
+
+    it('is deleted', function() {
+      var promise = FamilySearch.deleteMemory('ARXX-MMM');
+      promise.then(function(response) {
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('ARXX-MMM');
       });
     });
 
     it('persona is created', function() {
-      var persona = new FamilySearch.MemoryPersona('Anastasia Aleksandrova', 'https://familysearch.org/platform/memories/artifacts/AR-1234/description');
-      var promise = FamilySearch.addMemoryPersona('AR-1234', persona);
+      var promise = new FamilySearch.MemoryPersona({$memoryId: 'AR-1234', name: 'Anastasia Aleksandrova'})
+        .$save();
       promise.then(function(response) {
         var request = promise.getRequest();
         //noinspection JSUnresolvedFunction
         expect(request.data).toEqualJson({
           persons: [{
             media : [ {
-              description : 'https://familysearch.org/platform/memories/artifacts/AR-1234/description'
+              description : 'https://sandbox.familysearch.org/platform/memories/memories/AR-1234'
             } ],
             names: [{
               nameForms: [{
@@ -110,26 +149,49 @@ define(['FamilySearch'], function(FamilySearch) {
           }]
         });
         expect(promise.getStatusCode()).toBe(201);
-        expect(response instanceof FamilySearch.MemoryPersonaRef).toBeTruthy();
-        expect(response.$getMemoryId()).toBe('AR-1234');
-        expect(response.resource).toBe('https://familysearch.org/platform/memories/memories/AR-1234/personas/PXX-1234');
+        expect(response).toBe('https://sandbox.familysearch.org/platform/memories/memories/AR-1234/personas/PXX-1234');
       });
     });
 
-    it('ref is added to a person', function() {
-      var memoryPersonaRef = new FamilySearch.MemoryPersonaRef('https://familysearch.org/platform/memories/memories/3649/personas/1083');
-      var promise = FamilySearch.addMemoryPersonaRef('PPPP-PPP', memoryPersonaRef, {changeMessage:'...change message...'});
+    it('persona is updated', function() {
+      var persona = new FamilySearch.MemoryPersona({$memoryId: 'AR-1234', name: 'Anastasia Alexsandrova'});
+      persona.id = 'PXX-1234';
+      persona.links = { persona: { href: 'https://sandbox.familysearch.org/platform/memories/memories/AR-1234/personas/PXX-1234' } };
+      var promise = persona.$save();
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualJson({
+          persons: [{
+            names: [ { nameForms: [ { fullText: 'Anastasia Alexsandrova' } ] } ],
+            id: 'PXX-1234',
+            links: { persona: { href: 'https://sandbox.familysearch.org/platform/memories/memories/AR-1234/personas/PXX-1234' } },
+            media: [ { description: 'https://sandbox.familysearch.org/platform/memories/memories/AR-1234' } ]
+          }]
+        });
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('https://sandbox.familysearch.org/platform/memories/memories/AR-1234/personas/PXX-1234');
+      });
+    });
+
+    it('persona is deleted', function() {
+      var promise = FamilySearch.deleteMemoryPersona('ARXX-MMM', 'PXX-1234');
+      promise.then(function(response) {
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('ARXX-MMM');
+      });
+    });
+
+    it('persona ref is created', function() {
+      var promise = new FamilySearch.MemoryPersonaRef({$personId: 'PPPP-PPP', resource: 'https://familysearch.org/platform/memories/memories/3649/personas/1083'})
+        .$save();
       promise.then(function(response) {
         var request = promise.getRequest();
         //noinspection JSUnresolvedFunction
         expect(request.data).toEqualJson({
           'persons' : [ {
-            'attribution' : {
-              'changeMessage' : '...change message...'
-            },
             'evidence' : [ {
-              'resource' : 'https://familysearch.org/platform/memories/memories/3649/personas/1083',
-              'resourceId' : '1083'
+              'resource' : 'https://familysearch.org/platform/memories/memories/3649/personas/1083'
             } ]
           } ]
         });
@@ -137,5 +199,41 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response).toBe('https://familysearch.org/platform/tree/persons/PPPP-PPP/memory-references/1083');
       });
     });
+
+    it('persona ref is deleted', function() {
+      var promise = FamilySearch.deleteMemoryPersonaRef('PPPP-PPP', '1083');
+      promise.then(function(response) {
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('PPPP-PPP');
+      });
+    });
+
+    it('comment is created', function() {
+      var comment = new FamilySearch.Comment({text: 'Just a comment.', $memoryId: 'AR-1234'});
+      var promise = comment.$save();
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualJson({
+          'discussions' : [ {
+            'comments' : [ {
+              'text' : 'Just a comment.'
+            } ]
+          } ]
+        });
+        expect(promise.getStatusCode()).toBe(201);
+        expect(comment.id).toBe('CM-1234');
+        expect(response).toBe('CM-1234');
+      });
+    });
+
+    it('comment is deleted', function() {
+      var promise = FamilySearch.deleteMemoryComment('AR-1234', 'COM-1234');
+      promise.then(function(response) {
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('AR-1234');
+      });
+    });
+
   });
 });

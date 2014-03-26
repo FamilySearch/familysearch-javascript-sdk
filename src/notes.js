@@ -91,6 +91,15 @@ define([
 
     /**
      * @ngdoc function
+     * @name notes.types:constructor.Note#$getNoteUrl
+     * @methodOf notes.types:constructor.Note
+     * @function
+     * @return {String} note URL (without the access token)
+     */
+    $getNoteUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).note).href); },
+
+    /**
+     * @ngdoc function
      * @name notes.types:constructor.Note#$save
      * @methodOf notes.types:constructor.Note
      * @function
@@ -130,7 +139,7 @@ define([
             // x-entity-id and location headers are not set on update, only on create
             return {
               id: self.id || promise.getResponseHeader('X-ENTITY-ID'),
-              location: helpers.removeAccessToken(maybe(maybe(self.links).note).href || promise.getResponseHeader('Location'))
+              location: self.$getNoteUrl() || helpers.removeAccessToken(promise.getResponseHeader('Location'))
             };
           });
         });
