@@ -60,8 +60,9 @@ define([
 
     // memories
     Memory: memories.Memory,
-    MemoryPersonaRef: memories.MemoryPersonaRef,
     MemoryPersona: memories.MemoryPersona,
+    MemoryPersonaRef: memories.MemoryPersonaRef,
+    MemoryArtifactRef: memories.MemoryArtifactRef,
     getMemoryPersonaRefs: memories.getMemoryPersonaRefs,
     getMemory: memories.getMemory,
     getMemoryComments: memories.getMemoryComments,
@@ -70,8 +71,6 @@ define([
     getPersonPortraitUrl: memories.getPersonPortraitUrl,
     getPersonMemoriesQuery: memories.getPersonMemoriesQuery,
     getUserMemoriesQuery: memories.getUserMemoriesQuery,
-    addMemoryPersona: memories.addMemoryPersona,
-    addMemoryPersonaRef: memories.addMemoryPersonaRef,
     deleteMemory: memories.deleteMemory,
     deleteMemoryPersona: memories.deleteMemoryPersona,
     deleteMemoryPersonaRef: memories.deleteMemoryPersonaRef,

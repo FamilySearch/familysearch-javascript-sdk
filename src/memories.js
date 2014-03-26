@@ -273,7 +273,7 @@ define([
      * @name memories.types:constructor.Memory#$delete
      * @methodOf memories.types:constructor.Memory
      * @function
-     * @description delete this memory
+     * @description delete this memory - see {@link memories.functions:deleteMemory deleteMemory}
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the memory URL
      */
@@ -464,7 +464,7 @@ define([
      * @name memories.types:constructor.MemoryPersona#$delete
      * @methodOf memories.types:constructor.MemoryPersona
      * @function
-     * @description delete this memory persona
+     * @description delete this memory persona - see {@link memories.functions:deleteMemoryPersona deleteMemoryPersona}
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the memory persona URL
      */
@@ -619,7 +619,7 @@ define([
      * @name memories.types:constructor.MemoryPersonaRef#$delete
      * @methodOf memories.types:constructor.MemoryPersonaRef
      * @function
-     * @description delete this memory persona reference
+     * @description delete this memory persona reference - see {@link memories.functions:deleteMemoryPersonaRef deleteMemoryPersonaRef}
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the memory persona ref URL
      */

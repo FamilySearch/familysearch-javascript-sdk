@@ -213,6 +213,10 @@ define([
    */
   function transformData(data, contentType) {
     if (data && helpers.isObject(data) && String(data) !== '[object FormData]') {
+      // remove $... and _... attrs from data
+      data = helpers.clonePartial(data, function(key) {
+        return (!(helpers.isString(key) && (key.charAt(0) === '$' || key.charAt(0) === '_')));
+      });
       if (contentType === 'application/x-www-form-urlencoded') {
         return formEncode(data);
       }
@@ -271,13 +275,6 @@ define([
       // default retries
       if (retries == null) { // also catches undefined
         retries = globals.maxHttpRequestRetries;
-      }
-
-      // remove $... and _... attrs from data
-      if (data) {
-        data = helpers.clonePartial(data, function(key) {
-          return (!(helpers.isString(key) && (key.charAt(0) === '$' || key.charAt(0) === '_')));
-        });
       }
 
       // call the http wrapper

@@ -496,7 +496,7 @@ define([
      * @name parentsAndChildren.types:constructor.ChildAndParents#$delete
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
-     * @description delete this relationship
+     * @description delete this relationship - see {@link parentsAndChildren.functions:deleteChildAndParents deleteChildAndPArents}
      * @param {string} changeMessage change message
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the relationship URL

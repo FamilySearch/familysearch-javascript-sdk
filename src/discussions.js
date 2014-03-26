@@ -171,7 +171,7 @@ define([
      * @name discussions.types:constructor.Discussion#$delete
      * @methodOf discussions.types:constructor.Discussion
      * @function
-     * @description delete this discussion
+     * @description delete this discussion - see {@link discussions.functions:deleteDiscussion deleteDiscussion}
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the discussion id
      */
@@ -300,7 +300,7 @@ define([
      * @name discussions.types:constructor.DiscussionRef#$delete
      * @methodOf discussions.types:constructor.DiscussionRef
      * @function
-     * @description delete this discussion reference
+     * @description delete this discussion reference - see {@link discussions.functions:deleteDiscussionRef deleteDiscussionRef}
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the discussion reference url
      */
@@ -435,6 +435,8 @@ define([
      * @methodOf discussions.types:constructor.Comment
      * @function
      * @description delete this comment
+     * @description delete this comment - see {@link discussions.functions:deleteDiscussionComment deleteDiscussionComment}
+     * or {@link memories.functions:deleteMemoryComment deleteMemoryComment}
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the comment url
      */

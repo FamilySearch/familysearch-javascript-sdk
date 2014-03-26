@@ -739,7 +739,7 @@ define([
      * @name person.types:constructor.Person#$delete
      * @methodOf person.types:constructor.Person
      * @function
-     * @description delete this person
+     * @description delete this person - see {@link person.functions:deletePerson deletePerson}
      * @param {string} changeMessage change message
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the person URL

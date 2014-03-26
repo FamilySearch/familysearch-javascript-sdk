@@ -299,7 +299,7 @@ define([
      * @name spouses.types:constructor.Couple#$delete
      * @methodOf spouses.types:constructor.Couple
      * @function
-     * @description delete this relationship
+     * @description delete this relationship - see {@link spouses.functions:deleteCouple deleteCouple}
      * @param {string} changeMessage change message
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the relationship URL

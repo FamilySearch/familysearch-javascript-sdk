@@ -167,7 +167,9 @@ define([
      * @name notes.types:constructor.Note#$delete
      * @methodOf notes.types:constructor.Note
      * @function
-     * @description delete this note (and corresponding NoteRef)
+     * @description delete this note (and corresponding NoteRef) - see {@link notes.functions:deletePersonNote deletePersonNote}
+     * or {@link notes.functions:deleteCoupleNote deleteCoupleNote}
+     * or {@link notes.functions:deleteChildAndParentsNote deleteChildAndParentsNote}
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the note URL
      */
@@ -266,7 +268,9 @@ define([
      * @name notes.types:constructor.NoteRef#$delete
      * @methodOf notes.types:constructor.NoteRef
      * @function
-     * @description delete this NoteRef (and corresponding Note)
+     * @description delete this note ref (and corresponding Note) - see {@link notes.functions:deletePersonNote deletePersonNote}
+     * or {@link notes.functions:deleteCoupleNote deleteCoupleNote}
+     * or {@link notes.functions:deleteChildAndParentsNote deleteChildAndParentsNote}
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the note URL
      */
