@@ -10,7 +10,7 @@ NG_DOCS={
       "type": "overview",
       "moduleName": "index",
       "shortDescription": "Overview",
-      "keywords": "$getgivenname $getsurname $http $q _getnameandid _low_level_commands_plumbing access actual add addition additional adds agent ajax amd angularjs anticipated api app_key approach array arrays asynchronous attribution auth_callback authentication automatically avoid branch browser bugs build builds built call callback called calling calls case catch change changehistory changes childandparents code combine combined comment comments commonjs config conflicts console constructors consume contactname contributing convenience cookie copying correct corresponding couple created custom data defer deferred deferred_function dependencies described description_the-promise-api desired developers directory discussion discussionref discussions display docs documentation documented easier element elements endpoint endpoints environment error errors errorthrown example examples exist existing expectations expired exposed extended extracting fact facts fail fairly familysearch features file files format frag free front fulfilled fully function functionality functions generate generated getaccesstoken getallresponseheaders getcurrentuser getname getperson getrequest getresponseheader getstatuscode getuser gh-pages git github global goal google great grunt handle handled handling header headers hello higher-level host html http http_function https illustrated implemented includes init javascript jquery js jsdoc jshint jshintrc json kernel keywords loader loaders located log low-level manage mapped match memories memory memoryartifactref memorypersona memorypersonaref method methods minified minify mock model module my_access_key nameforms names navigate navigating node note noteref notes object objects occur ojects option optional options org original overview parameter parentsandchildren parts pass passed pasting people performed person plumbing port posting potential prepending project promise promises properties property prototype prototypes provided publish pull purpose push read recommend redirect_goes_here redirects referring registered rejected relationships removed request requests required requires response responses rest retried return returned returning returns running sample sandbox saved script sdk search searchandmatch searchresult serve server set simple single source sourcedescription sourceref sources spouses src started starts status strict submitting success suppose surname targets test tests textstatus throttling token tool top transient travis-ci type types typically unit uri url user users var wanted watches website window work works wraps write written your_access_key_goes_here"
+      "keywords": "$getdisplayname $getgivenname $getsurname $http $q _getnameandid _low_level_commands_plumbing access actual add addition additional adds agent ajax amd angularjs anticipated api app_key approach array arrays asynchronous attribution auth_callback authentication automatically avoid branch browser bugs build builds built call callback called calling calls case catch change changehistory changes childandparents code combine combined comment comments commonjs config conflicts console constructors consume contactname contributing convenience cookie copying correct corresponding couple create created custom data defer deferred deferred_function delete dependencies described description_the-promise-api desired developers directory discussion discussionref discussions display docs documentation documented easier element elements endpoint endpoints environment error errors errorthrown example examples exist existing expectations expired exposed extended extracting fact facts fail fairly familysearch features fields file files format frag free front fulfilled fully function functionality functions generate generated getaccesstoken getallresponseheaders getcurrentuser getperson getrequest getresponseheader getstatuscode getuser gh-pages git github global goal google great grunt handle handled handling header headers hello higher-level host html http http_function https illustrated implemented includes init initialization javascript jquery js jsdoc jshint jshintrc json kernel keywords loader loaders located log low-level manage mapped match memories memory memoryartifactref memorypersona memorypersonaref method methods minified minify mock model modifies module my_access_key nameforms names navigate navigating node note noteref notes object objects occur ojects option optional options org original overview parameter parameters parentsandchildren parts pass passed pasting people performed person plumbing port posting potential prepending project promise promises properties property prototype prototypes provided publish pull purpose push re-read read reason recommend record redirect_goes_here redirects referring registered rejected relationships removed request requests required requires response responses rest retried return returned returning returns running sample sandbox saved saving script sdk search searchandmatch searchresult serve server set simple single source sourcedescription sourceref sources spouses src started starts status strict submitting success suppose surname takes targets test tests textstatus throttling token tool top transient travis-ci type types typically unit update updateable updates uri url user users var wanted watches website window work works wraps write written your_access_key_goes_here"
     },
     {
       "section": "api",
@@ -262,7 +262,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Discussion",
-      "keywords": "$delete $getagent $getagentid $getagenturl $getcomments $getcommentsurl $personid $save api attributes comments contributor create created data delete description details discussion discussionref discussions editable endpoint example existing fulfilled function functions getagent getcomments http init millis modified net number numberofcomments object optional options opts pass promise property read refresh resourceid response text timestamp title true types update updated updating url user"
+      "keywords": "$delete $getagent $getagentid $getagenturl $getcomments $getcommentsurl $save api attributes comments contributor create created data delete description details discussion discussions editable endpoint example existing fulfilled function functions getagent getcomments http init millis modified net number numberofcomments object optional options opts pass promise property read refresh response text timestamp title true types update updated updating url user"
     },
     {
       "section": "api",
@@ -271,7 +271,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Reference to a discussion on a person.",
-      "keywords": "$delete $getdiscussion $getdiscussionurl $personid $save $setdiscussionurl _refresh_ api attached attributes create data delete details discussion discussionref discussions discussionurl editable example function functions getdiscussion http individual init net note object optional options opts parameter pass person promise property read reference references resourceid response set types url"
+      "keywords": "$delete $getdiscussion $getdiscussionurl $personid $save $setdiscussionurl _note_ _refresh_ _resourceid_ api attached attributes create created data delete deleted details discussion discussionref discussions discussionurl editable example function functions getdiscussion http individual init net note object optional options opts parameter pass person promise property read reference references resourceid response set types updated url"
     },
     {
       "section": "api",
@@ -320,30 +320,39 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "memories.functions:addMemoryPersona",
-      "shortName": "addMemoryPersona",
+      "id": "memories.functions:deleteMemory",
+      "shortName": "deleteMemory",
       "type": "function",
       "moduleName": "memories",
-      "shortDescription": "Create a memory (story or photo)",
-      "keywords": "api attached create currently docs editable example familysearch full function functions http https init memories memory memorypersona memorypersonaref memorypersonas mid net options opts org params pass people photo promise types unused url"
+      "shortDescription": "Delete the specified memory",
+      "keywords": "api delete docs editable example familysearch full function functions http https init memories memory mid net options opts org pass promise url"
     },
     {
       "section": "api",
-      "id": "memories.functions:addMemoryPersonaRef",
-      "shortName": "addMemoryPersonaRef",
+      "id": "memories.functions:deleteMemoryComment",
+      "shortName": "deleteMemoryComment",
       "type": "function",
       "moduleName": "memories",
-      "shortDescription": "Create a memory (story or photo)",
-      "keywords": "api change changemessage create docs editable example familysearch function functions http https init memories memory memorypersonaref message net options opts org params pass person persona photo pid promise types url"
+      "shortDescription": "Delete the specified memory comment",
+      "keywords": "api cmid comment delete docs editable example familysearch full function functions http https init memories memory mid net options opts org pass promise set url"
     },
     {
       "section": "api",
-      "id": "memories.functions:createMemory",
-      "shortName": "createMemory",
+      "id": "memories.functions:deleteMemoryPersona",
+      "shortName": "deleteMemoryPersona",
       "type": "function",
       "moduleName": "memories",
-      "shortDescription": "Create a memory (story or photo)",
-      "keywords": "_must_ api artifact create data description docs document editable example familysearch field file filename formdata function functions http https image init memories memory net object options opts org params pass photo promise story string title type url"
+      "shortDescription": "Delete the specified memory persona",
+      "keywords": "api delete docs editable example familysearch full function functions http https init memories memory mid mpid net options opts org pass persona promise set url"
+    },
+    {
+      "section": "api",
+      "id": "memories.functions:deleteMemoryPersonaRef",
+      "shortName": "deleteMemoryPersonaRef",
+      "type": "function",
+      "moduleName": "memories",
+      "shortDescription": "Delete the specified memory persona ref",
+      "keywords": "api delete docs editable example familysearch full function functions http https init memories memory mprid net options opts org pass person persona pid promise reference set url"
     },
     {
       "section": "api",
@@ -362,6 +371,15 @@ NG_DOCS={
       "moduleName": "memories",
       "shortDescription": "Get comments for a memory",
       "keywords": "api array comment comments convenience currently discussions docs editable endpoint example familysearch full function functions getcomments http https includes init memories memory memory-comments mid net options opts org params pass promise response types unused url"
+    },
+    {
+      "section": "api",
+      "id": "memories.functions:getMemoryPersona",
+      "shortName": "getMemoryPersona",
+      "type": "function",
+      "moduleName": "memories",
+      "shortDescription": "Get a single memory persona",
+      "keywords": "api convenience currently docs editable example familysearch full function functions getmemorypersona http https includes init memories memory memorypersona mid mpid net options opts org params pass persona promise response set single types unused url"
     },
     {
       "section": "api",
@@ -406,7 +424,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Get a paged list of memories for a user",
-      "keywords": "_agent_ _user_ api array convenience count defaults docs editable example familysearch full function functions getmemories http https includes init list maximum memories memory net note number options opts org paged params pass promise response return start types uid url user"
+      "keywords": "_agent_ _user_ api array convenience count defaults docs editable endpoint example familysearch full function functions getmemories http https includes init list maximum memories memory net note number options opts org paged params pass promise response return start types uid url user user-memories-query"
     },
     {
       "section": "api",
@@ -415,7 +433,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Memory",
-      "keywords": "$addmemorypersona $getdescription $geticonurl $getimageurl $getthumbnailurl $gettitle access api array artifact artifactmetadata artifacttype attached attribution currently description filename full function http icon image init media mediatype memories memory memorypersona memorypersonaref memorypersonas object options opts org params pass people promise property resource resourcetype thumbnail title token type types unused url"
+      "keywords": "$data $delete $getdescription $getfilename $geticonurl $getimageurl $getmemoryurl $getthumbnailurl $gettitle $save $setdescription $setfilename $settitle _description_ _must_ access api apply array artifact artifactmetadata artifacttype attributes attribution create data default delete description discussion docs document documents doesn editable example existing familysearch field file filename formdata fulfilled full function http https icon ignored image images init media mediatype memories memory net object optional options opts org pass promise property read refresh resource resourcetype stories story string thumbnail title token true type types update updated updating upload uploaded url user"
     },
     {
       "section": "api",
@@ -424,7 +442,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Memory Artifact Reference",
-      "keywords": "$getmemoryartifacturl $setmemoryartifacturl access api array artifact attributes comma-separated function identifying image lists memories memory memoryartifactref numbers objects property qualifiers rectangle reference token types url"
+      "keywords": "$getqualifiername $getqualifiervalue $setqualifiername $setqualifiervalue _description_ _qualifiername_ _qualifiervalue_ api artifact attributes bottom-right comma-separated corresponding data description function http memories memory memoryartifactref number numbers object optional org property qualifier qualifiername qualifiervalue ranges reference required set string top-left types url x-end x-start y-end y-start"
     },
     {
       "section": "api",
@@ -433,7 +451,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Memory Persona (not a true persona; can only contain a name and a media artifact reference)",
-      "keywords": "$addmemoryartifactref $addname $getdisplayname $getgivenname $getmemoryartifactref $getnames $getpreferredname $getsurname $memoryid add api array artifact attached display extracted function mar media memories memory memoryartifactref memorypersona names persona preferred property reference surname true types url"
+      "keywords": "$delete $getdisplayname $getmemory $getmemoryartifactref $getmemorypersonaurl $getnames $memoryid $save $setmemoryartifactref $setname _name_ _note_ api artifact attached attributes create data delete display docs don editable example existing extracted familysearch fulfilled fulltext function functions getmemory http https init media memories memory memoryartifactref memorypersona names net object optional options opts org parts pass persona promise property read reference refresh response set string surname true types update updated updating url"
     },
     {
       "section": "api",
@@ -441,8 +459,8 @@ NG_DOCS={
       "shortName": "constructor.MemoryPersonaRef",
       "type": "function",
       "moduleName": "memories",
-      "shortDescription": "A reference to a MemoryPersona and a",
-      "keywords": "$getmemory $getmemoryid $getmemoryurl $personid api attached details function functions getmemory memories memory memorypersona memorypersonaref pass person persona promise property reference resource resourceid response types url"
+      "shortDescription": "Reference from a person to a memory persona",
+      "keywords": "$delete $getmemory $getmemorypersona $getmemoryurl $getresource $personid $save $setresource _note_ _refresh_ _resource_ access api attached attributes create created data delete deleted details docs editable example familysearch fulfilled function functions getmemory getmemorypersona http https individual init memories memory memorypersonaref net note object optional options opts org parameter pass person persona promise property read reference references resource resourceid response set token types updated url"
     },
     {
       "section": "api",
@@ -586,7 +604,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Note",
-      "keywords": "$childandparentsid $coupleid $delete $personid $save api attached attributes attribution child corresponding couple create data delete editable example existing fulfilled function http init net note noteref notes object optional options opts parents pass person promise property read refresh relationship set subject text title true types update updated updating url"
+      "keywords": "$childandparentsid $coupleid $delete $getnoteurl $personid $save access api attached attributes attribution child corresponding couple create data delete editable example existing fulfilled function http init net note noteref notes object optional options opts parents pass person promise property read refresh relationship set subject text title token true types update updated updating url"
     },
     {
       "section": "api",

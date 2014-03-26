@@ -5,11 +5,13 @@
 </h1>
 <div><h2 id="description">Description</h2>
 <div class="description"><div class="discussions-types-page discussions-types-constructor-discussionref-page"><p>Reference to a discussion on a person.
-To create a new discussion reference, you must set $personId and either discussionUrl or resourceId.</p>
+To create a new discussion reference, you must set $personId and either discussionUrl or resourceId.
+<em>NOTE</em>: discussion references cannot be updated. They can only be created or deleted.</p>
 </div></div>
 <h2 id="usage">Usage</h2>
 <div class="usage"><pre class="prettyprint linenums">DiscussionRef([data]);</pre>
-<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-discussionref-page"><p>an object with optional attributes {$personId, discussionUrl, resourceId}</p>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-discussionref-page"><p>an object with optional attributes {$personId, discussionUrl, resourceId}
+<em>resourceId</em> is the discussion id</p>
 </div></td></tr></tbody></table></div>
 <div class="member method"><h2 id="methods">Methods</h2>
 <ul class="methods"><li><h3 id="methods_$delete">$delete(opts)</h3>
@@ -31,13 +33,13 @@ To create a new discussion reference, you must set $personId and either discussi
 <p>NOTE: there&#39;s no <em>refresh</em> parameter because it&#39;s not possible to read individual discussion references</p>
 <p><a href="http://jsfiddle.net/DallanQ/UarXL/">editable example</a></p>
 </div><h5 id="methods_$save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-discussionref-save-page"><p>options to pass to the http function specified during init</p>
-</div></td></tr></tbody></table><h5 id="methods_$save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-discussionref-save-page"><p>promise of a url of the discussion reference
+</div></td></tr></tbody></table><h5 id="methods_$save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-discussionref-save-page"><p>promise of the discussion reference url
 (note however that individual discussion references cannot be read).</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_$setdiscussionurl">$setDiscussionUrl(url)</h3>
 <div class="$setdiscussionurl"><h5 id="methods_$setdiscussionurl_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>url</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-discussionref-setdiscussionurl-page"><p>URL of the discussion</p>
-</div></td></tr></tbody></table><h5 id="methods_$setdiscussionurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-name">Name</a></td><td><div class="discussions-types-page discussions-types-constructor-discussionref-setdiscussionurl-page"><p>this discussion</p>
+</div></td></tr></tbody></table><h5 id="methods_$setdiscussionurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-discussion">Discussion</a></td><td><div class="discussions-types-page discussions-types-constructor-discussionref-setdiscussionurl-page"><p>this discussion</p>
 </div></td></tr></table></div>
 </li>
 </ul>

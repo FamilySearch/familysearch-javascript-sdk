@@ -168,7 +168,7 @@ The object properties and convenience functions are fully described in the docs.
 For example, suppose you wanted to display someone&#39;s name followed by their id. You could write
 <pre class="prettyprint linenums">
   FamilySearch.Person.prototype._getNameAndId = function() {
-    return this.getName() + ' (' + this.id + ')';
+    return this.$getDisplayName() + ' (' + this.id + ')';
   }
 </pre>
 <p>and from then on you could call <code>person._getNameAndId()</code> on any <a href="#/api/person.types:constructor.Person">Person</a> object.</p>
@@ -180,7 +180,16 @@ FamilySearch.getPerson('ID').then(function(response) {
 </pre>
 <p>To avoid name conflicts with FamilySearch property names and SDK convenience functions, we recommend that you begin
 your convenience functions with a <code>_</code>, though you are free to begin your convenience functions however you want.</p>
-<p>Object properties beginning with <code>$</code> or <code>_</code> are removed before posting data to FamilySearch.</p>
+<p>Also, object properties beginning with <code>$</code> or <code>_</code> are removed before posting data to FamilySearch.</p>
+<h3 id="updates">Updates</h3>
+<p>All updateable objects have a constructor that takes a parameters object for initialization,
+one or more <em>$set...()</em> functions, <em>$save()</em>, and <em>$delete()</em> functions.
+To create a new object, call the constructor to create a new object and call <em>$save()</em>.
+To update an object, call the <em>$set...()</em> functions and call <em>$save()</em>.
+To delete an object, call <em>$delete()</em>.</p>
+<p>Most <em>$save()</em> functions take a <em>refresh</em> parameter that causes the object to be re-read from the server after it is saved.
+This is useful when the server adds new fields to the object or modifies fields when saving it.
+Many <em>$save()</em> and <em>$delete()</em> functions also take a <em>changeMessage</em> parameter to record the reason for the change.</p>
 <h3 id="using-the-sdk-with-module-loaders">Using the SDK with module loaders</h3>
 <p>The SDK can be used</p>
 <ul>

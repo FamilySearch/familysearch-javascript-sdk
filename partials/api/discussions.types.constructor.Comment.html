@@ -33,7 +33,8 @@ To create a new comment, you must set text and either $discussionId or $memoryId
 <li><h3 id="methods_$save">$save(opts)</h3>
 <div class="$save"><div class="discussions-types-page discussions-types-constructor-comment-save-page"><p>Create a new comment or update an existing comment</p>
 <p>NOTE: there&#39;s no <em>refresh</em> parameter because it&#39;s not possible to read individual comments;
-however, the comment&#39;s id is set when creating an new comment</p>
+however, the comment&#39;s id is set when creating a new comment</p>
+<p>NOTE: it is not currently possible to update memory comments.</p>
 <p><a href="http://jsfiddle.net/DallanQ/9YHfX/">editable example</a></p>
 </div><h5 id="methods_$save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-save-page"><p>options to pass to the http function specified during init</p>
 </div></td></tr></tbody></table><h5 id="methods_$save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-save-page"><p>promise of the comment id <strong>BROKEN</strong> currently promise result is empty</p>
