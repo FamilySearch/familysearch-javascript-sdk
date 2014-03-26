@@ -1522,6 +1522,10 @@ define('plumbing',[
    */
   function transformData(data, contentType) {
     if (data && helpers.isObject(data) && String(data) !== '[object FormData]') {
+      // remove $... and _... attrs from data
+      data = helpers.clonePartial(data, function(key) {
+        return (!(helpers.isString(key) && (key.charAt(0) === '$' || key.charAt(0) === '_')));
+      });
       if (contentType === 'application/x-www-form-urlencoded') {
         return formEncode(data);
       }
@@ -1580,13 +1584,6 @@ define('plumbing',[
       // default retries
       if (retries == null) { // also catches undefined
         retries = globals.maxHttpRequestRetries;
-      }
-
-      // remove $... and _... attrs from data
-      if (data) {
-        data = helpers.clonePartial(data, function(key) {
-          return (!(helpers.isString(key) && (key.charAt(0) === '$' || key.charAt(0) === '_')));
-        });
       }
 
       // call the http wrapper
@@ -2934,7 +2931,7 @@ define('discussions',[
      * @name discussions.types:constructor.Discussion#$delete
      * @methodOf discussions.types:constructor.Discussion
      * @function
-     * @description delete this discussion
+     * @description delete this discussion - see {@link discussions.functions:deleteDiscussion deleteDiscussion}
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the discussion id
      */
@@ -3063,7 +3060,7 @@ define('discussions',[
      * @name discussions.types:constructor.DiscussionRef#$delete
      * @methodOf discussions.types:constructor.DiscussionRef
      * @function
-     * @description delete this discussion reference
+     * @description delete this discussion reference - see {@link discussions.functions:deleteDiscussionRef deleteDiscussionRef}
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the discussion reference url
      */
@@ -3198,6 +3195,8 @@ define('discussions',[
      * @methodOf discussions.types:constructor.Comment
      * @function
      * @description delete this comment
+     * @description delete this comment - see {@link discussions.functions:deleteDiscussionComment deleteDiscussionComment}
+     * or {@link memories.functions:deleteMemoryComment deleteMemoryComment}
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the comment url
      */
@@ -4411,7 +4410,7 @@ define('memories',[
      * @name memories.types:constructor.Memory#$delete
      * @methodOf memories.types:constructor.Memory
      * @function
-     * @description delete this memory
+     * @description delete this memory - see {@link memories.functions:deleteMemory deleteMemory}
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the memory URL
      */
@@ -4602,7 +4601,7 @@ define('memories',[
      * @name memories.types:constructor.MemoryPersona#$delete
      * @methodOf memories.types:constructor.MemoryPersona
      * @function
-     * @description delete this memory persona
+     * @description delete this memory persona - see {@link memories.functions:deleteMemoryPersona deleteMemoryPersona}
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the memory persona URL
      */
@@ -4757,7 +4756,7 @@ define('memories',[
      * @name memories.types:constructor.MemoryPersonaRef#$delete
      * @methodOf memories.types:constructor.MemoryPersonaRef
      * @function
-     * @description delete this memory persona reference
+     * @description delete this memory persona reference - see {@link memories.functions:deleteMemoryPersonaRef deleteMemoryPersonaRef}
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the memory persona ref URL
      */
@@ -5452,7 +5451,9 @@ define('notes',[
      * @name notes.types:constructor.Note#$delete
      * @methodOf notes.types:constructor.Note
      * @function
-     * @description delete this note (and corresponding NoteRef)
+     * @description delete this note (and corresponding NoteRef) - see {@link notes.functions:deletePersonNote deletePersonNote}
+     * or {@link notes.functions:deleteCoupleNote deleteCoupleNote}
+     * or {@link notes.functions:deleteChildAndParentsNote deleteChildAndParentsNote}
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the note URL
      */
@@ -5551,7 +5552,9 @@ define('notes',[
      * @name notes.types:constructor.NoteRef#$delete
      * @methodOf notes.types:constructor.NoteRef
      * @function
-     * @description delete this NoteRef (and corresponding Note)
+     * @description delete this note ref (and corresponding Note) - see {@link notes.functions:deletePersonNote deletePersonNote}
+     * or {@link notes.functions:deleteCoupleNote deleteCoupleNote}
+     * or {@link notes.functions:deleteChildAndParentsNote deleteChildAndParentsNote}
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the note URL
      */
@@ -6983,7 +6986,7 @@ define('parentsAndChildren',[
      * @name parentsAndChildren.types:constructor.ChildAndParents#$delete
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
-     * @description delete this relationship
+     * @description delete this relationship - see {@link parentsAndChildren.functions:deleteChildAndParents deleteChildAndPArents}
      * @param {string} changeMessage change message
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the relationship URL
@@ -7507,7 +7510,7 @@ define('spouses',[
      * @name spouses.types:constructor.Couple#$delete
      * @methodOf spouses.types:constructor.Couple
      * @function
-     * @description delete this relationship
+     * @description delete this relationship - see {@link spouses.functions:deleteCouple deleteCouple}
      * @param {string} changeMessage change message
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the relationship URL
@@ -8338,7 +8341,7 @@ define('person',[
      * @name person.types:constructor.Person#$delete
      * @methodOf person.types:constructor.Person
      * @function
-     * @description delete this person
+     * @description delete this person - see {@link person.functions:deletePerson deletePerson}
      * @param {string} changeMessage change message
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the person URL
@@ -9655,8 +9658,9 @@ define('FamilySearch',[
 
     // memories
     Memory: memories.Memory,
-    MemoryPersonaRef: memories.MemoryPersonaRef,
     MemoryPersona: memories.MemoryPersona,
+    MemoryPersonaRef: memories.MemoryPersonaRef,
+    MemoryArtifactRef: memories.MemoryArtifactRef,
     getMemoryPersonaRefs: memories.getMemoryPersonaRefs,
     getMemory: memories.getMemory,
     getMemoryComments: memories.getMemoryComments,
@@ -9665,8 +9669,6 @@ define('FamilySearch',[
     getPersonPortraitUrl: memories.getPersonPortraitUrl,
     getPersonMemoriesQuery: memories.getPersonMemoriesQuery,
     getUserMemoriesQuery: memories.getUserMemoriesQuery,
-    addMemoryPersona: memories.addMemoryPersona,
-    addMemoryPersonaRef: memories.addMemoryPersonaRef,
     deleteMemory: memories.deleteMemory,
     deleteMemoryPersona: memories.deleteMemoryPersona,
     deleteMemoryPersonaRef: memories.deleteMemoryPersonaRef,
