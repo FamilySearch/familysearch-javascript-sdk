@@ -1,4 +1,13 @@
 {
+  "sourceDescriptions" : [ {
+    "id" : "AR-1234",
+    "links" : {
+      "memory" : {
+        "href" : "https://familysearch.org/platform/memories/memories/AR-1234",
+        "title" : "Source Description"
+      }
+    }
+  } ],
   "discussions" : [ {
   "id" : "dis-MMMM-MMM",
   "numberOfComments" : 1,

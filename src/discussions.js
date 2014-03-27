@@ -17,6 +17,8 @@ define([
 
   var exports = {};
 
+  // TODO consider disallowing $save()'ing or $delete()'ing discussions
+
   /**********************************/
   /**
    * @ngdoc function
@@ -79,12 +81,14 @@ define([
      * @return {Number} number of comments
      */
 
+    // TODO add $getDiscussionUrl when that's available
+
     /**
      * @ngdoc function
      * @name discussions.types:constructor.Discussion#$getCommentsUrl
      * @methodOf discussions.types:constructor.Discussion
      * @function
-     * @return {String} URL of the comments endpoint - pass into {@link discussions.functions:getComments getComments} for details
+     * @return {String} URL of the comments endpoint - pass into {@link discussions.functions:getDiscussionComments getDiscussionComments} for details
      */
     $getCommentsUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).comments).href); },
 
@@ -93,9 +97,9 @@ define([
      * @name discussions.types:constructor.Discussion#$getComments
      * @methodOf discussions.types:constructor.Discussion
      * @function
-     * @return {Object} promise for the {@link discussions.functions:getComments getComments} response
+     * @return {Object} promise for the {@link discussions.functions:getDiscussionComments getDiscussionComments} response
      */
-    $getComments: function() { return exports.getComments(this.$getCommentsUrl()); },
+    $getComments: function() { return exports.getDiscussionComments(this.$getCommentsUrl()); },
 
     /**
      * @ngdoc function
@@ -172,11 +176,17 @@ define([
      * @methodOf discussions.types:constructor.Discussion
      * @function
      * @description delete this discussion - see {@link discussions.functions:deleteDiscussion deleteDiscussion}
+     *
+     * __NOTE__ if you delete a discussion, it's up to you to delete the corresponding Discussion Refs
+     * Since there is no way to tell which people a discussion has been linked to, your best best is to
+     * attach a discussion to a single person and to delete the discussion when you delete the discussion-reference
+     * FamilySearch is aware of this issue but hasn't committed to a fix.
+     *
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the discussion id
      */
     $delete: function(opts) {
-      // TODO use self link when it is added
+      // TODO use the discussion URL when that is available
       return exports.deleteDiscussion(this.id, opts);
     }
 
@@ -189,20 +199,19 @@ define([
    * @description
    *
    * Reference to a discussion on a person.
-   * To create a new discussion reference, you must set $personId and either discussionUrl or resourceId.
+   * To create a new discussion reference, you must set $personId and discussion.
    * _NOTE_: discussion references cannot be updated. They can only be created or deleted.
    *
-   * @param {Object=} data an object with optional attributes {$personId, discussionUrl, resourceId}
-   * _resourceId_ is the discussion id
+   * @param {Object=} data an object with optional attributes {$personId, discussion}
+   * _discussion_ can be a {@link discussions.types:constructor.Discussion Discussion} or a discussion URL or a discussion id
    **********************************/
 
   var DiscussionRef = exports.DiscussionRef = function(data) {
     if (data) {
       this.$personId = data.$personId;
-      this.resourceId = data.resourceId;
-      if (data.discussionUrl) {
+      if (data.discussion) {
         //noinspection JSUnresolvedFunction
-        this.$setDiscussionUrl(data.discussionUrl);
+        this.$setDiscussion(data.discussion);
       }
     }
   };
@@ -219,6 +228,13 @@ define([
 
     /**
      * @ngdoc property
+     * @name discussions.types:constructor.DiscussionRef#resource
+     * @propertyOf discussions.types:constructor.DiscussionRef
+     * @return {String} Discussion URL
+     */
+
+    /**
+     * @ngdoc property
      * @name discussions.types:constructor.DiscussionRef#$personId
      * @propertyOf discussions.types:constructor.DiscussionRef
      * @return {String} Id of the person to whom this discussion is attached
@@ -226,16 +242,29 @@ define([
 
     /**
      * @ngdoc function
+     * @name discussions.types:constructor.DiscussionRef#$getDiscussionRefUrl
+     * @methodOf discussions.types:constructor.DiscussionRef
+     * @function
+     * @return {String} URL of this discussion reference; _NOTE_ however, that individual discussion references cannot be read
+     */
+    $getDiscussionRefUrl: function() {
+      // TODO change this once links is an associative array
+      return helpers.removeAccessToken(maybe(helpers.find(this.links, {title: 'Discussion Reference'})).href);
+    },
+
+    /**
+     * @ngdoc function
      * @name discussions.types:constructor.DiscussionRef#$getDiscussionUrl
      * @methodOf discussions.types:constructor.DiscussionRef
      * @function
-     * @return {string} URL of the discussion - pass into {@link discussions.functions:getDiscussion getDiscussion} for details
+     * @return {string} URL of the discussion (without the access token) -
+     * pass into {@link discussions.functions:getDiscussion getDiscussion} for details
      */
     $getDiscussionUrl: function() {
       return helpers.removeAccessToken(this.resource);
     },
 
-    /**
+  /**
      * @ngdoc function
      * @name discussions.types:constructor.DiscussionRef#$getDiscussion
      * @methodOf discussions.types:constructor.DiscussionRef
@@ -251,11 +280,21 @@ define([
      * @name discussions.types:constructor.DiscussionRef#$setDiscussionUrl
      * @methodOf discussions.types:constructor.DiscussionRef
      * @function
-     * @param {String} url URL of the discussion
-     * @return {Discussion} this discussion
+     * @param {Discussion|string} discussion Discussion object or discussion url or discussion id
+     * @return {DiscussionRef} this discussion ref
      */
-    $setDiscussionUrl: function(url) {
-      this.resource = url;
+    $setDiscussion: function(discussion) {
+      if (discussion instanceof Discussion) {
+        // TODO set resource to discussion url when discussions have a "self" link
+        this.resourceId = discussion.id;
+      }
+      else if (helpers.isAbsoluteUrl(discussion)) {
+        this.resource = helpers.removeAccessToken(discussion);
+      }
+      else {
+        // TODO if resourceId is a discussion ref id instead of a discussion id, we'll need to set a $discussionId variable
+        this.resourceId = discussion;
+      }
       //noinspection JSValidateTypes
       return this;
     },
@@ -269,6 +308,7 @@ define([
      * Create a new discussion reference
      *
      * NOTE: there's no _refresh_ parameter because it's not possible to read individual discussion references
+     * however, the discussion reference's URL is set when creating a new comment
      *
      * {@link http://jsfiddle.net/DallanQ/UarXL/ editable example}
      *
@@ -281,17 +321,29 @@ define([
       return helpers.chainHttpPromises(
         plumbing.getUrl('person-discussion-references-template', null, {pid: self.$personId}),
         function(url) {
+          // TODO if resourceId is a discussion ref id instead of a discussion id, we need to use $discussionId
           if (!self.resource && self.resourceId) {
             // the discovery resource is guaranteed to be set due to the getUrl statement
             self.resource = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'discussion-template', {did: self.resourceId});
           }
+          // TODO save discussion references in new json serialization format when that works
           var payload = {
             persons: [{
               id: self.$personId,
               'discussion-references' : [ self.resource ]
             }]
           };
-          return plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, helpers.getResponseLocation);
+          return plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
+            if (!self.$getDiscussionRefUrl()) {
+              // TODO change this once links is an associative array
+              // TODO also set id when that field has been added
+              self.links = [{
+                href: promise.getResponseHeader('Location'),
+                title: 'Discussion Reference'
+              }];
+            }
+            return self.$getDiscussionRefUrl();
+          });
         });
     },
 
@@ -305,8 +357,7 @@ define([
      * @return {Object} promise for the discussion reference url
      */
     $delete: function(opts) {
-      var selfLink = helpers.removeAccessToken(helpers.find(this.links, {title: 'Discussion Reference'}).href);
-      return exports.deleteDiscussionRef(selfLink, null, opts);
+      return exports.deleteDiscussionRef(this.$getDiscussionRefUrl(), null, opts);
     }
 
   };
@@ -370,6 +421,15 @@ define([
 
     /**
      * @ngdoc function
+     * @name discussions.types:constructor.Comment#$getCommentUrl
+     * @methodOf discussions.types:constructor.Comment
+     * @function
+     * @return {String} URL of this comment; _NOTE_ however, that individual comments cannot be read
+     */
+    $getCommentUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).comment).href); },
+
+    /**
+     * @ngdoc function
      * @name discussions.types:constructor.Comment#$getAgentId
      * @methodOf discussions.types:constructor.Comment
      * @function
@@ -405,15 +465,15 @@ define([
      * @description
      * Create a new comment or update an existing comment
      *
-     * NOTE: there's no _refresh_ parameter because it's not possible to read individual comments;
-     * however, the comment's id is set when creating a new comment
+     * _NOTE_: there's no _refresh_ parameter because it's not possible to read individual comments;
+     * however, the comment's id and URL is set when creating a new comment
      *
-     * NOTE: it is not currently possible to update memory comments.
+     * __NOTE__: it is not currently possible to update memory comments.
      *
      * {@link http://jsfiddle.net/DallanQ/9YHfX/ editable example}
      *
      * @param {Object=} opts options to pass to the http function specified during init
-     * @return {Object} promise of the comment id __BROKEN__ currently promise result is empty
+     * @return {Object} promise of the comment id
      */
     $save: function(opts) {
       var self = this;
@@ -423,7 +483,13 @@ define([
         function(url) {
           var payload = {discussions: [{ comments: [ self ] }] };
           return plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
-            self.id = self.id || promise.getResponseHeader('X-ENTITY-ID');
+            // TODO currently when creating discussion comments, X-ENTITY-ID and Location headers aren't returned
+            if (!self.id) {
+              self.id = promise.getResponseHeader('X-ENTITY-ID');
+            }
+            if (!self.$getCommentUrl()) {
+              self.links = { comment: { href: promise.getResponseHeader('Location') } };
+            }
             return self.id;
           });
         });
@@ -442,7 +508,7 @@ define([
      */
     $delete: function(opts) {
       // since we're passing in the full url we can delete memory comments with this function as well
-      return exports.deleteDiscussionComment(helpers.removeAccessToken(maybe(maybe(this.links).comment).href), null, opts);
+      return exports.deleteDiscussionComment(this.$getCommentUrl(), null, opts);
     }
 
   };
@@ -505,7 +571,7 @@ define([
       var key, url;
       if (did instanceof DiscussionRef) {
         url = did.$getDiscussionUrl();
-        // TODO use resourceId when it becomes available
+        // TODO use resourceId when we know whether it's a discussion id or a discussion reference id
         key = url;
       }
       else {
@@ -560,9 +626,18 @@ define([
       });
   };
 
+  exports.commentsResponseMapper = helpers.compose(
+    helpers.objectExtender({getComments: function() {
+      return maybe(maybe(maybe(this).discussions)[0]).comments || [];
+    }}),
+    helpers.constructorSetter(Comment, 'comments', function(response) {
+      return maybe(maybe(response).discussions)[0];
+    })
+  );
+
   /**
    * @ngdoc function
-   * @name discussions.functions:getComments
+   * @name discussions.functions:getDiscussionComments
    * @function
    *
    * @description
@@ -580,19 +655,13 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getComments = function(did, params, opts) {
+  exports.getDiscussionComments = function(did, params, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('discussion-comments-template', did, {did: did}),
       function(url) {
         return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-          // TODO - combine with memories getComments response mapper
           helpers.compose(
-            helpers.objectExtender({getComments: function() {
-              return maybe(maybe(maybe(this).discussions)[0]).comments || [];
-            }}),
-            helpers.constructorSetter(Comment, 'comments', function(response) {
-              return maybe(maybe(response).discussions)[0];
-            }),
+            exports.commentsResponseMapper,
             helpers.objectExtender(function(response) {
               return { $discussionId: maybe(maybe(maybe(response).discussions)[0]).id };
             }, function(response) {
@@ -609,6 +678,11 @@ define([
    *
    * @description
    * Delete the specified discussion
+   *
+   * __NOTE__ if you delete a discussion, it's up to you to delete the corresponding Discussion Refs
+   * Since there is no way to tell which people a discussion has been linked to, your best best is to
+   * attach a discussion to a single person and to delete the discussion when you delete the discussion-reference.
+   * FamilySearch is aware of this issue but hasn't committed to a fix.
    *
    * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
    *
@@ -628,8 +702,6 @@ define([
       }
     );
   };
-
-  // TODO is drid the id of the discussion?
 
   /**
    * @ngdoc function

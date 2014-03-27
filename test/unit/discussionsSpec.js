@@ -42,8 +42,8 @@ define(['FamilySearch'], function(FamilySearch) {
       });
     });
 
-    it('comments are returned from getComments', function() {
-      FamilySearch.getComments('dis-MMMM-MMM').then(function(response) {
+    it('comments are returned from getDiscussionComments', function() {
+      FamilySearch.getDiscussionComments('dis-MMMM-MMM').then(function(response) {
         var comments = response.getComments();
         expect(comments.length).toBe(1);
         expect(comments[0].id).toBe('CMMM-MMM');
@@ -103,7 +103,7 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('reference is created', function() {
-      var discRef = new FamilySearch.DiscussionRef({$personId: '12345', resourceId: 'dis-1'});
+      var discRef = new FamilySearch.DiscussionRef({$personId: '12345', discussion: 'dis-1'});
       var promise = discRef.$save();
       promise.then(function(response) {
         var request = promise.getRequest();

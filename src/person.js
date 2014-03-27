@@ -746,20 +746,6 @@ define([
      */
     $delete: function(changeMessage, opts) {
       return exports.deletePerson(helpers.removeAccessToken(maybe(maybe(this.links).person).href) || this.id, changeMessage, opts);
-    },
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.Person#$addMemoryPersonaRef
-     * @methodOf person.types:constructor.Person
-     * @function
-     * @param {MemoryPersonaRef} memoryPersonaRef reference to the memory persona
-     * @param {Object=} params `changeMessage` change message
-     * @param {Object=} opts options to pass to the http function specified during init
-     * @return {Object} promise for the persona URL
-     */
-    $addMemoryPersonaRef: function(memoryPersonaRef, params, opts) {
-      return memories.addMemoryPersonaRef(this.id, memoryPersonaRef, params, opts);
     }
   };
 

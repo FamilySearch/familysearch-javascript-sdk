@@ -23,6 +23,11 @@ define([
    * @description
    *
    * Description of a source
+   *
+   * {@link https://familysearch.org/developers/docs/api/sources/Source_Descriptions_resource FamilySearch API Docs}
+   *
+   * @param {Object=} data an object with optional attributes {about, citation, title, text}.
+   * _about_ is a URL
    **********************************/
 
   var SourceDescription = exports.SourceDescription = function() {
@@ -154,8 +159,6 @@ define([
     $getSourceDescriptionUrl: function() {
       return helpers.removeAccessToken(this.description);
     },
-
-    // TODO check for source description id
 
     /**
      * @ngdoc function
@@ -411,68 +414,72 @@ define([
    * @return {Object} promise for the response
    */
   exports.getSourceRefsQuery = function(sdid, params, opts) {
-    // TODO add discovery resource lookup when it's working - and be careful how to substitute sdid in the query parameters part
-    var url = helpers.isAbsoluteUrl(sdid) ? sdid : helpers.appendQueryParameters('/platform/tree/source-references', {source: sdid});
-    return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-      helpers.compose(
-        helpers.objectExtender({getPersonSourceRefs: function() {
-          return helpers.flatMap(maybe(this.persons), function(person) {
-            return person.sources;
-          });
-        }}),
-        helpers.objectExtender({getCoupleSourceRefs: function() {
-          return helpers.flatMap(maybe(this.relationships), function(couple) {
-            return couple.sources;
-          });
-        }}),
-        helpers.objectExtender({getChildAndParentsSourceRefs: function() {
-          return helpers.flatMap(maybe(this.childAndParentsRelationships), function(childAndParents) {
-            return childAndParents.sources;
-          });
-        }}),
-        helpers.constructorSetter(SourceRef, 'sources', function(response) {
-          return helpers.union(maybe(response).persons, maybe(response).relationships, maybe(response).childAndParentsRelationships);
-        }),
-        helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
-          var personsRelationships = helpers.union(maybe(response).persons, maybe(response).relationships, maybe(response).childAndParentsRelationships);
-          return helpers.flatMap(personsRelationships, function(personRelationship) {
-            return personRelationship.sources;
-          });
-        }),
-        helpers.objectExtender(function(response, sourceRef) {
-          // get the person that contains this source ref
-          var person = helpers.find(maybe(response).persons, function(person) {
-            return !!helpers.find(maybe(person).sources, {id: sourceRef.id});
-          });
-          return { $personId: person.id };
-        }, function(response) {
-          return helpers.flatMap(maybe(response).persons, function(person) {
-            return person.sources;
-          });
-        }),
-        helpers.objectExtender(function(response, sourceRef) {
-          // get the couple that contains this source ref
-          var couple = helpers.find(maybe(response).relationships, function(couple) {
-            return !!helpers.find(maybe(couple).sources, {id: sourceRef.id});
-          });
-          return { $coupleId: couple.id };
-        }, function(response) {
-          return helpers.flatMap(maybe(response).relationships, function(couple) {
-            return couple.sources;
-          });
-        }),
-        helpers.objectExtender(function(response, sourceRef) {
-          // get the child-and-parents that contains this source ref
-          var childAndParents = helpers.find(maybe(response).childAndParentsRelationships, function(childAndParents) {
-            return !!helpers.find(maybe(childAndParents).sources, {id: sourceRef.id});
-          });
-          return { $childAndParentsId: childAndParents.id };
-        }, function(response) {
-          return helpers.flatMap(maybe(response).childAndParentsRelationships, function(childAndParents) {
-            return childAndParents.sources;
-          });
-        })
-      ));
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('source-references-query'),
+      function(url) {
+        url = helpers.isAbsoluteUrl(sdid) ? sdid : helpers.appendQueryParameters(url, {source: sdid});
+        return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
+          helpers.compose(
+            helpers.objectExtender({getPersonSourceRefs: function() {
+              return helpers.flatMap(maybe(this.persons), function(person) {
+                return person.sources;
+              });
+            }}),
+            helpers.objectExtender({getCoupleSourceRefs: function() {
+              return helpers.flatMap(maybe(this.relationships), function(couple) {
+                return couple.sources;
+              });
+            }}),
+            helpers.objectExtender({getChildAndParentsSourceRefs: function() {
+              return helpers.flatMap(maybe(this.childAndParentsRelationships), function(childAndParents) {
+                return childAndParents.sources;
+              });
+            }}),
+            helpers.constructorSetter(SourceRef, 'sources', function(response) {
+              return helpers.union(maybe(response).persons, maybe(response).relationships, maybe(response).childAndParentsRelationships);
+            }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              var personsRelationships = helpers.union(maybe(response).persons, maybe(response).relationships, maybe(response).childAndParentsRelationships);
+              return helpers.flatMap(personsRelationships, function(personRelationship) {
+                return personRelationship.sources;
+              });
+            }),
+            helpers.objectExtender(function(response, sourceRef) {
+              // get the person that contains this source ref
+              var person = helpers.find(maybe(response).persons, function(person) {
+                return !!helpers.find(maybe(person).sources, {id: sourceRef.id});
+              });
+              return { $personId: person.id };
+            }, function(response) {
+              return helpers.flatMap(maybe(response).persons, function(person) {
+                return person.sources;
+              });
+            }),
+            helpers.objectExtender(function(response, sourceRef) {
+              // get the couple that contains this source ref
+              var couple = helpers.find(maybe(response).relationships, function(couple) {
+                return !!helpers.find(maybe(couple).sources, {id: sourceRef.id});
+              });
+              return { $coupleId: couple.id };
+            }, function(response) {
+              return helpers.flatMap(maybe(response).relationships, function(couple) {
+                return couple.sources;
+              });
+            }),
+            helpers.objectExtender(function(response, sourceRef) {
+              // get the child-and-parents that contains this source ref
+              var childAndParents = helpers.find(maybe(response).childAndParentsRelationships, function(childAndParents) {
+                return !!helpers.find(maybe(childAndParents).sources, {id: sourceRef.id});
+              });
+              return { $childAndParentsId: childAndParents.id };
+            }, function(response) {
+              return helpers.flatMap(maybe(response).childAndParentsRelationships, function(childAndParents) {
+                return childAndParents.sources;
+              });
+            })
+          ));
+      }
+    );
   };
 
   return exports;

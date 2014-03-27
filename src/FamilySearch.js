@@ -50,7 +50,7 @@ define([
     getPersonDiscussionRefs: discussions.getPersonDiscussionRefs,
     getDiscussion: discussions.getDiscussion,
     getMultiDiscussion: discussions.getMultiDiscussion,
-    getComments: discussions.getComments,
+    getDiscussionComments: discussions.getDiscussionComments,
     deleteDiscussion: discussions.deleteDiscussion,
     deleteDiscussionRef: discussions.deleteDiscussionRef,
     deleteDiscussionComment: discussions.deleteDiscussionComment,

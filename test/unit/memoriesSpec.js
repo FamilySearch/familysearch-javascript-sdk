@@ -183,7 +183,9 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('persona ref is created', function() {
-      var promise = new FamilySearch.MemoryPersonaRef({$personId: 'PPPP-PPP', resource: 'https://familysearch.org/platform/memories/memories/3649/personas/1083'})
+      var memoryPersona = new FamilySearch.MemoryPersona();
+      memoryPersona.links = { persona: { href: 'https://familysearch.org/platform/memories/memories/3649/personas/1083' } };
+      var promise = new FamilySearch.MemoryPersonaRef({$personId: 'PPPP-PPP', memoryPersona: memoryPersona})
         .$save();
       promise.then(function(response) {
         var request = promise.getRequest();
