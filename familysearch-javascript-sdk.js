@@ -2777,6 +2777,8 @@ define('discussions',[
 
   var exports = {};
 
+  // TODO consider disallowing $save()'ing or $delete()'ing discussions
+
   /**********************************/
   /**
    * @ngdoc function
@@ -2839,12 +2841,14 @@ define('discussions',[
      * @return {Number} number of comments
      */
 
+    // TODO add $getDiscussionUrl when that's available
+
     /**
      * @ngdoc function
      * @name discussions.types:constructor.Discussion#$getCommentsUrl
      * @methodOf discussions.types:constructor.Discussion
      * @function
-     * @return {String} URL of the comments endpoint - pass into {@link discussions.functions:getComments getComments} for details
+     * @return {String} URL of the comments endpoint - pass into {@link discussions.functions:getDiscussionComments getDiscussionComments} for details
      */
     $getCommentsUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).comments).href); },
 
@@ -2853,9 +2857,9 @@ define('discussions',[
      * @name discussions.types:constructor.Discussion#$getComments
      * @methodOf discussions.types:constructor.Discussion
      * @function
-     * @return {Object} promise for the {@link discussions.functions:getComments getComments} response
+     * @return {Object} promise for the {@link discussions.functions:getDiscussionComments getDiscussionComments} response
      */
-    $getComments: function() { return exports.getComments(this.$getCommentsUrl()); },
+    $getComments: function() { return exports.getDiscussionComments(this.$getCommentsUrl()); },
 
     /**
      * @ngdoc function
@@ -2932,11 +2936,17 @@ define('discussions',[
      * @methodOf discussions.types:constructor.Discussion
      * @function
      * @description delete this discussion - see {@link discussions.functions:deleteDiscussion deleteDiscussion}
+     *
+     * __NOTE__ if you delete a discussion, it's up to you to delete the corresponding Discussion Refs
+     * Since there is no way to tell which people a discussion has been linked to, your best best is to
+     * attach a discussion to a single person and to delete the discussion when you delete the discussion-reference
+     * FamilySearch is aware of this issue but hasn't committed to a fix.
+     *
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the discussion id
      */
     $delete: function(opts) {
-      // TODO use self link when it is added
+      // TODO use the discussion URL when that is available
       return exports.deleteDiscussion(this.id, opts);
     }
 
@@ -2949,20 +2959,19 @@ define('discussions',[
    * @description
    *
    * Reference to a discussion on a person.
-   * To create a new discussion reference, you must set $personId and either discussionUrl or resourceId.
+   * To create a new discussion reference, you must set $personId and discussion.
    * _NOTE_: discussion references cannot be updated. They can only be created or deleted.
    *
-   * @param {Object=} data an object with optional attributes {$personId, discussionUrl, resourceId}
-   * _resourceId_ is the discussion id
+   * @param {Object=} data an object with optional attributes {$personId, discussion}
+   * _discussion_ can be a {@link discussions.types:constructor.Discussion Discussion} or a discussion URL or a discussion id
    **********************************/
 
   var DiscussionRef = exports.DiscussionRef = function(data) {
     if (data) {
       this.$personId = data.$personId;
-      this.resourceId = data.resourceId;
-      if (data.discussionUrl) {
+      if (data.discussion) {
         //noinspection JSUnresolvedFunction
-        this.$setDiscussionUrl(data.discussionUrl);
+        this.$setDiscussion(data.discussion);
       }
     }
   };
@@ -2979,6 +2988,13 @@ define('discussions',[
 
     /**
      * @ngdoc property
+     * @name discussions.types:constructor.DiscussionRef#resource
+     * @propertyOf discussions.types:constructor.DiscussionRef
+     * @return {String} Discussion URL
+     */
+
+    /**
+     * @ngdoc property
      * @name discussions.types:constructor.DiscussionRef#$personId
      * @propertyOf discussions.types:constructor.DiscussionRef
      * @return {String} Id of the person to whom this discussion is attached
@@ -2986,16 +3002,29 @@ define('discussions',[
 
     /**
      * @ngdoc function
+     * @name discussions.types:constructor.DiscussionRef#$getDiscussionRefUrl
+     * @methodOf discussions.types:constructor.DiscussionRef
+     * @function
+     * @return {String} URL of this discussion reference; _NOTE_ however, that individual discussion references cannot be read
+     */
+    $getDiscussionRefUrl: function() {
+      // TODO change this once links is an associative array
+      return helpers.removeAccessToken(maybe(helpers.find(this.links, {title: 'Discussion Reference'})).href);
+    },
+
+    /**
+     * @ngdoc function
      * @name discussions.types:constructor.DiscussionRef#$getDiscussionUrl
      * @methodOf discussions.types:constructor.DiscussionRef
      * @function
-     * @return {string} URL of the discussion - pass into {@link discussions.functions:getDiscussion getDiscussion} for details
+     * @return {string} URL of the discussion (without the access token) -
+     * pass into {@link discussions.functions:getDiscussion getDiscussion} for details
      */
     $getDiscussionUrl: function() {
       return helpers.removeAccessToken(this.resource);
     },
 
-    /**
+  /**
      * @ngdoc function
      * @name discussions.types:constructor.DiscussionRef#$getDiscussion
      * @methodOf discussions.types:constructor.DiscussionRef
@@ -3011,11 +3040,21 @@ define('discussions',[
      * @name discussions.types:constructor.DiscussionRef#$setDiscussionUrl
      * @methodOf discussions.types:constructor.DiscussionRef
      * @function
-     * @param {String} url URL of the discussion
-     * @return {Discussion} this discussion
+     * @param {Discussion|string} discussion Discussion object or discussion url or discussion id
+     * @return {DiscussionRef} this discussion ref
      */
-    $setDiscussionUrl: function(url) {
-      this.resource = url;
+    $setDiscussion: function(discussion) {
+      if (discussion instanceof Discussion) {
+        // TODO set resource to discussion url when discussions have a "self" link
+        this.resourceId = discussion.id;
+      }
+      else if (helpers.isAbsoluteUrl(discussion)) {
+        this.resource = helpers.removeAccessToken(discussion);
+      }
+      else {
+        // TODO if resourceId is a discussion ref id instead of a discussion id, we'll need to set a $discussionId variable
+        this.resourceId = discussion;
+      }
       //noinspection JSValidateTypes
       return this;
     },
@@ -3029,6 +3068,7 @@ define('discussions',[
      * Create a new discussion reference
      *
      * NOTE: there's no _refresh_ parameter because it's not possible to read individual discussion references
+     * however, the discussion reference's URL is set when creating a new comment
      *
      * {@link http://jsfiddle.net/DallanQ/UarXL/ editable example}
      *
@@ -3041,17 +3081,29 @@ define('discussions',[
       return helpers.chainHttpPromises(
         plumbing.getUrl('person-discussion-references-template', null, {pid: self.$personId}),
         function(url) {
+          // TODO if resourceId is a discussion ref id instead of a discussion id, we need to use $discussionId
           if (!self.resource && self.resourceId) {
             // the discovery resource is guaranteed to be set due to the getUrl statement
             self.resource = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'discussion-template', {did: self.resourceId});
           }
+          // TODO save discussion references in new json serialization format when that works
           var payload = {
             persons: [{
               id: self.$personId,
               'discussion-references' : [ self.resource ]
             }]
           };
-          return plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, helpers.getResponseLocation);
+          return plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
+            if (!self.$getDiscussionRefUrl()) {
+              // TODO change this once links is an associative array
+              // TODO also set id when that field has been added
+              self.links = [{
+                href: promise.getResponseHeader('Location'),
+                title: 'Discussion Reference'
+              }];
+            }
+            return self.$getDiscussionRefUrl();
+          });
         });
     },
 
@@ -3065,8 +3117,7 @@ define('discussions',[
      * @return {Object} promise for the discussion reference url
      */
     $delete: function(opts) {
-      var selfLink = helpers.removeAccessToken(helpers.find(this.links, {title: 'Discussion Reference'}).href);
-      return exports.deleteDiscussionRef(selfLink, null, opts);
+      return exports.deleteDiscussionRef(this.$getDiscussionRefUrl(), null, opts);
     }
 
   };
@@ -3130,6 +3181,15 @@ define('discussions',[
 
     /**
      * @ngdoc function
+     * @name discussions.types:constructor.Comment#$getCommentUrl
+     * @methodOf discussions.types:constructor.Comment
+     * @function
+     * @return {String} URL of this comment; _NOTE_ however, that individual comments cannot be read
+     */
+    $getCommentUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).comment).href); },
+
+    /**
+     * @ngdoc function
      * @name discussions.types:constructor.Comment#$getAgentId
      * @methodOf discussions.types:constructor.Comment
      * @function
@@ -3165,15 +3225,15 @@ define('discussions',[
      * @description
      * Create a new comment or update an existing comment
      *
-     * NOTE: there's no _refresh_ parameter because it's not possible to read individual comments;
-     * however, the comment's id is set when creating a new comment
+     * _NOTE_: there's no _refresh_ parameter because it's not possible to read individual comments;
+     * however, the comment's id and URL is set when creating a new comment
      *
-     * NOTE: it is not currently possible to update memory comments.
+     * __NOTE__: it is not currently possible to update memory comments.
      *
      * {@link http://jsfiddle.net/DallanQ/9YHfX/ editable example}
      *
      * @param {Object=} opts options to pass to the http function specified during init
-     * @return {Object} promise of the comment id __BROKEN__ currently promise result is empty
+     * @return {Object} promise of the comment id
      */
     $save: function(opts) {
       var self = this;
@@ -3183,7 +3243,13 @@ define('discussions',[
         function(url) {
           var payload = {discussions: [{ comments: [ self ] }] };
           return plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
-            self.id = self.id || promise.getResponseHeader('X-ENTITY-ID');
+            // TODO currently when creating discussion comments, X-ENTITY-ID and Location headers aren't returned
+            if (!self.id) {
+              self.id = promise.getResponseHeader('X-ENTITY-ID');
+            }
+            if (!self.$getCommentUrl()) {
+              self.links = { comment: { href: promise.getResponseHeader('Location') } };
+            }
             return self.id;
           });
         });
@@ -3202,7 +3268,7 @@ define('discussions',[
      */
     $delete: function(opts) {
       // since we're passing in the full url we can delete memory comments with this function as well
-      return exports.deleteDiscussionComment(helpers.removeAccessToken(maybe(maybe(this.links).comment).href), null, opts);
+      return exports.deleteDiscussionComment(this.$getCommentUrl(), null, opts);
     }
 
   };
@@ -3265,7 +3331,7 @@ define('discussions',[
       var key, url;
       if (did instanceof DiscussionRef) {
         url = did.$getDiscussionUrl();
-        // TODO use resourceId when it becomes available
+        // TODO use resourceId when we know whether it's a discussion id or a discussion reference id
         key = url;
       }
       else {
@@ -3320,9 +3386,18 @@ define('discussions',[
       });
   };
 
+  exports.commentsResponseMapper = helpers.compose(
+    helpers.objectExtender({getComments: function() {
+      return maybe(maybe(maybe(this).discussions)[0]).comments || [];
+    }}),
+    helpers.constructorSetter(Comment, 'comments', function(response) {
+      return maybe(maybe(response).discussions)[0];
+    })
+  );
+
   /**
    * @ngdoc function
-   * @name discussions.functions:getComments
+   * @name discussions.functions:getDiscussionComments
    * @function
    *
    * @description
@@ -3340,19 +3415,13 @@ define('discussions',[
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getComments = function(did, params, opts) {
+  exports.getDiscussionComments = function(did, params, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('discussion-comments-template', did, {did: did}),
       function(url) {
         return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-          // TODO - combine with memories getComments response mapper
           helpers.compose(
-            helpers.objectExtender({getComments: function() {
-              return maybe(maybe(maybe(this).discussions)[0]).comments || [];
-            }}),
-            helpers.constructorSetter(Comment, 'comments', function(response) {
-              return maybe(maybe(response).discussions)[0];
-            }),
+            exports.commentsResponseMapper,
             helpers.objectExtender(function(response) {
               return { $discussionId: maybe(maybe(maybe(response).discussions)[0]).id };
             }, function(response) {
@@ -3369,6 +3438,11 @@ define('discussions',[
    *
    * @description
    * Delete the specified discussion
+   *
+   * __NOTE__ if you delete a discussion, it's up to you to delete the corresponding Discussion Refs
+   * Since there is no way to tell which people a discussion has been linked to, your best best is to
+   * attach a discussion to a single person and to delete the discussion when you delete the discussion-reference.
+   * FamilySearch is aware of this issue but hasn't committed to a fix.
    *
    * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
    *
@@ -3388,8 +3462,6 @@ define('discussions',[
       }
     );
   };
-
-  // TODO is drid the id of the discussion?
 
   /**
    * @ngdoc function
@@ -4156,6 +4228,9 @@ define('memories',[
 
   var exports = {};
 
+  // TODO check whether it's possible to update story contents (and how to do it)
+  // TODO add functions to attach & detach photos to a story when the API exists
+
   /******************************************/
   /**
    * @ngdoc function
@@ -4170,7 +4245,9 @@ define('memories',[
    * _$data_ is a string for Stories, or a FormData for Images or Documents
    * - if FormData, the field name of the file to upload _must_ be `artifact`.
    * _$data_ is ignored when updating a memory.
-   * _description_ doesn't apply to stories.
+   * _description_ doesn't appear to apply to stories.
+   *
+   * __NOTE__ it is not currently possible to update memory contents - not even for stories
    ******************************************/
 
   var Memory = exports.Memory = function(data) {
@@ -4220,7 +4297,7 @@ define('memories',[
      * @ngdoc property
      * @name memories.types:constructor.Memory#about
      * @propertyOf memories.types:constructor.Memory
-     * @return {String} memory artifact URL (same as image URL?)
+     * @return {String} memory artifact URL
      */
 
     /**
@@ -4278,9 +4355,21 @@ define('memories',[
      * @name memories.types:constructor.Memory#$getImageUrl
      * @methodOf memories.types:constructor.Memory
      * @function
-     * @return {String} URL of the full image or document or story with access token
+     * @return {String} URL of the full image with access token
      */
     $getImageUrl: function() { return helpers.appendAccessToken(maybe(maybe(this.links)['image']).href); },
+
+    /**
+     * @ngdoc function
+     * @name memories.types:constructor.Memory#$getMemoryArtifactUrl
+     * @methodOf memories.types:constructor.Memory
+     * @function
+     * @return {String} URL of the memory artifact (image, story, or document) with access token
+     */
+    $getMemoryArtifactUrl: function() {
+      // remove old access token and append a new one in case they are different
+      return helpers.appendAccessToken(helpers.removeAccessToken(this.about));
+    },
 
     /**
      * @ngdoc function
@@ -4439,14 +4528,16 @@ define('memories',[
    *********************************/
 
   var MemoryPersona = exports.MemoryPersona = function(data) {
-    this.$memoryId = data.$memoryId;
-    if (data.name) {
-      //noinspection JSUnresolvedFunction
-      this.$setName(data.name);
-    }
-    if (data.memoryArtifactRef) {
-      //noinspection JSUnresolvedFunction
-      this.$setMemoryArtifactRef(data.memoryArtifactRef);
+    if (data) {
+      this.$memoryId = data.$memoryId;
+      if (data.name) {
+        //noinspection JSUnresolvedFunction
+        this.$setName(data.name);
+      }
+      if (data.memoryArtifactRef) {
+        //noinspection JSUnresolvedFunction
+        this.$setMemoryArtifactRef(data.memoryArtifactRef);
+      }
     }
   };
 
@@ -4509,13 +4600,22 @@ define('memories',[
 
     /**
      * @ngdoc function
+     * @name memories.types:constructor.MemoryPersona#$getMemoryUrl
+     * @methodOf memories.types:constructor.MemoryPersona
+     * @function
+     * @return {string} url of the memory
+     */
+    $getMemoryUrl: function() { return helpers.removeAccessToken(maybe(this.$getMemoryArtifactRef()).description); },
+
+    /**
+     * @ngdoc function
      * @name memories.types:constructor.MemoryPersona#$getMemory
      * @methodOf memories.types:constructor.MemoryPersona
      * @function
      * @return {Object} promise for the {@link memories.functions:getMemory getMemory} response
      */
     $getMemory:  function() {
-      return exports.getMemory(this.$memoryId);
+      return exports.getMemory(this.$getMemoryUrl());
     },
 
     /**
@@ -4611,6 +4711,8 @@ define('memories',[
 
   };
 
+  // TODO check whether person memory references can be updated
+
   /**********************************/
   /**
    * @ngdoc function
@@ -4618,21 +4720,23 @@ define('memories',[
    * @description
    *
    * Reference from a person to a memory persona
-   * To create a new memory persona reference, you must set both $personId and resource.
+   * To create a new memory persona reference, you must set both $personId and memoryPersona
+   *
    * _NOTE_: memory persona references cannot be updated. They can only be created or deleted.
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_References_resource FamilySearch API Docs}
    *
-   * @param {Object=} data an object with optional attributes {$personId, resource}.
-   * _resource_ is the memory persona URL.
+   * @param {Object=} data an object with optional attributes {$personId, memoryPersona}.
+   * _memoryPersona_ can be a {@link memories.types:constructor.MemoryPersona MemoryPersona} or a memory persona url
    *********************************/
 
   var MemoryPersonaRef = exports.MemoryPersonaRef = function(data) {
-    this.$personId = data.$personId;
-    this.resource = data.resource;
-    if (data.resource) {
-      //noinspection JSUnresolvedFunction
-      this.$setResource(data.resource);
+    if (data) {
+      this.$personId = data.$personId;
+      if (data.memoryPersona) {
+        //noinspection JSUnresolvedFunction
+        this.$setMemoryPersona(data.memoryPersona);
+      }
     }
   };
 
@@ -4668,13 +4772,22 @@ define('memories',[
 
     /**
      * @ngdoc function
-     * @name memories.types:constructor.MemoryPersonaRef#$getResource
+     * @name memories.types:constructor.MemoryPersonaRef#$getMemoryPersonaRefUrl
+     * @methodOf memories.types:constructor.MemoryPersonaRef
+     * @function
+     * @return {String} URL of this memory persona reference; _NOTE_ however, that individual memory persona references cannot be read
+     */
+    $getMemoryPersonaRefUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links)['evidence-reference']).href); },
+
+    /**
+     * @ngdoc function
+     * @name memories.types:constructor.MemoryPersonaRef#$getMemoryPersonaUrl
      * @methodOf memories.types:constructor.MemoryPersonaRef
      * @function
      * @return {String} URL of the memory persona (without the access token);
      * pass into {@link memories.functions:getMemoryPersona getMemoryPersona} for details
      */
-    $getResource: function() { return helpers.removeAccessToken(this.resource); },
+    $getMemoryPersonaUrl: function() { return helpers.removeAccessToken(this.resource); },
 
     /**
      * @ngdoc function
@@ -4684,10 +4797,10 @@ define('memories',[
      * @return {Object} promise for the {@link memories.functions:getMemoryPersona getMemoryPersona} response
      */
     $getMemoryPersona:  function() {
-      return exports.getMemoryPersona(this.$getResource());
+      return exports.getMemoryPersona(this.$getMemoryPersonaUrl());
     },
 
-    // TODO stop hacking into the resource when we have a separate link to the memory that works
+    // TODO stop hacking into the resource when links.memory.href works
     /**
      * @ngdoc function
      * @name memories.types:constructor.MemoryPersonaRef#$getMemoryUrl
@@ -4712,16 +4825,20 @@ define('memories',[
 
     /**
      * @ngdoc function
-     * @name memories.types:constructor.MemoryPersonaRef#$setResource
+     * @name memories.types:constructor.MemoryPersonaRef#$setMemoryPersona
      * @methodOf memories.types:constructor.MemoryPersonaRef
      * @function
      * @function
-     * @param {string} url memory persona URL
-     * @return {MemoryPersona} this memory persona ref
+     * @param {MemoryPersona|string} memoryPersona MemoryPersona object or memory persona URL
+     * @return {MemoryPersonaRef} this memory persona ref
      */
-    $setResource: function(url) {
+    $setMemoryPersona: function(memoryPersona) {
+      if (memoryPersona instanceof MemoryPersona) {
+        //noinspection JSUnresolvedFunction
+        memoryPersona = memoryPersona.$getMemoryPersonaUrl();
+      }
       // we must remove the access token in order to pass this into addMemoryPersonaRef
-      this.resource = helpers.removeAccessToken(url);
+      this.resource = helpers.removeAccessToken(memoryPersona);
       //noinspection JSValidateTypes
       return this;
     },
@@ -4734,7 +4851,8 @@ define('memories',[
      * @description
      * Create a new memory persona ref
      *
-     * NOTE: there's no _refresh_ parameter because it's not possible to read individual memory persona references
+     * NOTE: there's no _refresh_ parameter because it's not possible to read individual memory persona references;
+     * however, the memory persona ref's id and URL is set when creating a new memory persona ref
      *
      * {@link http://jsfiddle.net/DallanQ/wrNj2/ editable example}
      *
@@ -4747,7 +4865,15 @@ define('memories',[
       return helpers.chainHttpPromises(
         plumbing.getUrl('person-memory-persona-references-template', null, {pid: self.$personId}),
         function(url) {
-          return plumbing.post(url, { persons: [{ evidence: [ self ] }] }, {}, opts, helpers.getResponseLocation);
+          return plumbing.post(url, { persons: [{ evidence: [ self ] }] }, {}, opts, function(data, promise) {
+            if (!self.id) {
+              self.id = promise.getResponseHeader('X-ENTITY-ID');
+            }
+            if (!self.$getMemoryPersonaRefUrl()) {
+              self.links = { 'evidence-reference' : { href: promise.getResponseHeader('Location') } };
+            }
+            return self.$getMemoryPersonaRefUrl();
+          });
         });
     },
 
@@ -4761,7 +4887,7 @@ define('memories',[
      * @return {Object} promise for the memory persona ref URL
      */
     $delete: function(opts) {
-      return exports.deleteMemoryPersonaRef(helpers.removeAccessToken(maybe(maybe(this.links)['evidence-reference']).href), null, opts);
+      return exports.deleteMemoryPersonaRef(this.$getMemoryPersonaRefUrl(), null, opts);
     }
 
   };
@@ -4782,14 +4908,16 @@ define('memories',[
    *********************************/
 
   var MemoryArtifactRef = exports.MemoryArtifactRef = function(data) {
-    this.description = data.description;
-    if (data.qualifierName) {
-      //noinspection JSUnresolvedFunction
-      this.$setQualifierName(data.qualifierName);
-    }
-    if (data.qualifierValue) {
-      //noinspection JSUnresolvedFunction
-      this.$setQualifierValue(data.qualifierValue);
+    if (data) {
+      this.description = data.description;
+      if (data.qualifierName) {
+        //noinspection JSUnresolvedFunction
+        this.$setQualifierName(data.qualifierName);
+      }
+      if (data.qualifierValue) {
+        //noinspection JSUnresolvedFunction
+        this.$setQualifierValue(data.qualifierValue);
+      }
     }
   };
 
@@ -4995,15 +5123,9 @@ define('memories',[
       function(url) {
         return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
           helpers.compose(
-            helpers.objectExtender({getComments: function() {
-              return maybe(maybe(this.discussions)[0]).comments || [];
-            }}),
-            helpers.constructorSetter(discussions.Comment, 'comments', function(response) {
-              return maybe(maybe(response).discussions)[0];
-            }),
-            helpers.objectExtender(function(response, comment) {
-              var href = maybe(maybe(maybe(comment).links).comment).href;
-              return { $memoryId: href ? helpers.removeAccessToken(href.replace(/^.*\/memories\/([^\/]*)\/comments\/.*$/, '$1')) : href };
+            discussions.commentsResponseMapper,
+            helpers.objectExtender(function(response) {
+              return { $memoryId: maybe(maybe(maybe(response).sourceDescriptions)[0]).id };
             }, function(response) {
               return maybe(maybe(maybe(response).discussions)[0])['comments'];
             })
@@ -5093,6 +5215,8 @@ define('memories',[
       });
   };
 
+  // TODO check whether all memory personas are still included in the results
+
   /**
    * @ngdoc function
    * @name memories.functions:getMemoryPersonaRefs
@@ -5104,6 +5228,9 @@ define('memories',[
    *
    * - `getMemoryPersonaRefs()` - get an array of {@link memories.types:constructor.MemoryPersonaRef MemoryPersonaRefs} from the response
    *
+   * __NOTE__ currently, if a memory has multiple personas and one of them it attached to a person, _all_ of the personas
+   * for the memory will appear in the results for the person.
+   *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_References_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/vt79D/ editable example}
@@ -5114,22 +5241,25 @@ define('memories',[
    * @return {Object} promise for the response
    */
   exports.getMemoryPersonaRefs = function(pid, params, opts) {
-    // TODO check if memory-references endpoint template has been added to the discovery resource
-    var url = helpers.isAbsoluteUrl(pid) ? pid : '/platform/tree/persons/'+encodeURI(pid)+'/memory-references';
-    return plumbing.get(url, params, {}, opts,
-      helpers.compose(
-        helpers.objectExtender({getMemoryPersonaRefs: function() {
-          return maybe(maybe(this.persons)[0]).evidence || [];
-        }}),
-        helpers.constructorSetter(MemoryPersonaRef, 'evidence', function(response) {
-          return maybe(maybe(response).persons)[0];
-        }),
-        helpers.objectExtender(function(response) {
-          return { $personId: maybe(maybe(maybe(response).persons)[0]).id };
-        }, function(response) {
-          return maybe(maybe(maybe(response).persons)[0]).evidence;
-        })
-      ));
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('person-memory-persona-references-template', pid, {pid: pid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts,
+          helpers.compose(
+            helpers.objectExtender({getMemoryPersonaRefs: function() {
+              return maybe(maybe(this.persons)[0]).evidence || [];
+            }}),
+            helpers.constructorSetter(MemoryPersonaRef, 'evidence', function(response) {
+              return maybe(maybe(response).persons)[0];
+            }),
+            helpers.objectExtender(function(response) {
+              return { $personId: maybe(maybe(maybe(response).persons)[0]).id };
+            }, function(response) {
+              return maybe(maybe(maybe(response).persons)[0]).evidence;
+            })
+          ));
+      }
+    );
   };
 
   /**
@@ -6033,6 +6163,11 @@ define('sources',[
    * @description
    *
    * Description of a source
+   *
+   * {@link https://familysearch.org/developers/docs/api/sources/Source_Descriptions_resource FamilySearch API Docs}
+   *
+   * @param {Object=} data an object with optional attributes {about, citation, title, text}.
+   * _about_ is a URL
    **********************************/
 
   var SourceDescription = exports.SourceDescription = function() {
@@ -6164,8 +6299,6 @@ define('sources',[
     $getSourceDescriptionUrl: function() {
       return helpers.removeAccessToken(this.description);
     },
-
-    // TODO check for source description id
 
     /**
      * @ngdoc function
@@ -6421,68 +6554,72 @@ define('sources',[
    * @return {Object} promise for the response
    */
   exports.getSourceRefsQuery = function(sdid, params, opts) {
-    // TODO add discovery resource lookup when it's working - and be careful how to substitute sdid in the query parameters part
-    var url = helpers.isAbsoluteUrl(sdid) ? sdid : helpers.appendQueryParameters('/platform/tree/source-references', {source: sdid});
-    return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-      helpers.compose(
-        helpers.objectExtender({getPersonSourceRefs: function() {
-          return helpers.flatMap(maybe(this.persons), function(person) {
-            return person.sources;
-          });
-        }}),
-        helpers.objectExtender({getCoupleSourceRefs: function() {
-          return helpers.flatMap(maybe(this.relationships), function(couple) {
-            return couple.sources;
-          });
-        }}),
-        helpers.objectExtender({getChildAndParentsSourceRefs: function() {
-          return helpers.flatMap(maybe(this.childAndParentsRelationships), function(childAndParents) {
-            return childAndParents.sources;
-          });
-        }}),
-        helpers.constructorSetter(SourceRef, 'sources', function(response) {
-          return helpers.union(maybe(response).persons, maybe(response).relationships, maybe(response).childAndParentsRelationships);
-        }),
-        helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
-          var personsRelationships = helpers.union(maybe(response).persons, maybe(response).relationships, maybe(response).childAndParentsRelationships);
-          return helpers.flatMap(personsRelationships, function(personRelationship) {
-            return personRelationship.sources;
-          });
-        }),
-        helpers.objectExtender(function(response, sourceRef) {
-          // get the person that contains this source ref
-          var person = helpers.find(maybe(response).persons, function(person) {
-            return !!helpers.find(maybe(person).sources, {id: sourceRef.id});
-          });
-          return { $personId: person.id };
-        }, function(response) {
-          return helpers.flatMap(maybe(response).persons, function(person) {
-            return person.sources;
-          });
-        }),
-        helpers.objectExtender(function(response, sourceRef) {
-          // get the couple that contains this source ref
-          var couple = helpers.find(maybe(response).relationships, function(couple) {
-            return !!helpers.find(maybe(couple).sources, {id: sourceRef.id});
-          });
-          return { $coupleId: couple.id };
-        }, function(response) {
-          return helpers.flatMap(maybe(response).relationships, function(couple) {
-            return couple.sources;
-          });
-        }),
-        helpers.objectExtender(function(response, sourceRef) {
-          // get the child-and-parents that contains this source ref
-          var childAndParents = helpers.find(maybe(response).childAndParentsRelationships, function(childAndParents) {
-            return !!helpers.find(maybe(childAndParents).sources, {id: sourceRef.id});
-          });
-          return { $childAndParentsId: childAndParents.id };
-        }, function(response) {
-          return helpers.flatMap(maybe(response).childAndParentsRelationships, function(childAndParents) {
-            return childAndParents.sources;
-          });
-        })
-      ));
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('source-references-query'),
+      function(url) {
+        url = helpers.isAbsoluteUrl(sdid) ? sdid : helpers.appendQueryParameters(url, {source: sdid});
+        return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
+          helpers.compose(
+            helpers.objectExtender({getPersonSourceRefs: function() {
+              return helpers.flatMap(maybe(this.persons), function(person) {
+                return person.sources;
+              });
+            }}),
+            helpers.objectExtender({getCoupleSourceRefs: function() {
+              return helpers.flatMap(maybe(this.relationships), function(couple) {
+                return couple.sources;
+              });
+            }}),
+            helpers.objectExtender({getChildAndParentsSourceRefs: function() {
+              return helpers.flatMap(maybe(this.childAndParentsRelationships), function(childAndParents) {
+                return childAndParents.sources;
+              });
+            }}),
+            helpers.constructorSetter(SourceRef, 'sources', function(response) {
+              return helpers.union(maybe(response).persons, maybe(response).relationships, maybe(response).childAndParentsRelationships);
+            }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              var personsRelationships = helpers.union(maybe(response).persons, maybe(response).relationships, maybe(response).childAndParentsRelationships);
+              return helpers.flatMap(personsRelationships, function(personRelationship) {
+                return personRelationship.sources;
+              });
+            }),
+            helpers.objectExtender(function(response, sourceRef) {
+              // get the person that contains this source ref
+              var person = helpers.find(maybe(response).persons, function(person) {
+                return !!helpers.find(maybe(person).sources, {id: sourceRef.id});
+              });
+              return { $personId: person.id };
+            }, function(response) {
+              return helpers.flatMap(maybe(response).persons, function(person) {
+                return person.sources;
+              });
+            }),
+            helpers.objectExtender(function(response, sourceRef) {
+              // get the couple that contains this source ref
+              var couple = helpers.find(maybe(response).relationships, function(couple) {
+                return !!helpers.find(maybe(couple).sources, {id: sourceRef.id});
+              });
+              return { $coupleId: couple.id };
+            }, function(response) {
+              return helpers.flatMap(maybe(response).relationships, function(couple) {
+                return couple.sources;
+              });
+            }),
+            helpers.objectExtender(function(response, sourceRef) {
+              // get the child-and-parents that contains this source ref
+              var childAndParents = helpers.find(maybe(response).childAndParentsRelationships, function(childAndParents) {
+                return !!helpers.find(maybe(childAndParents).sources, {id: sourceRef.id});
+              });
+              return { $childAndParentsId: childAndParents.id };
+            }, function(response) {
+              return helpers.flatMap(maybe(response).childAndParentsRelationships, function(childAndParents) {
+                return childAndParents.sources;
+              });
+            })
+          ));
+      }
+    );
   };
 
   return exports;
@@ -8348,20 +8485,6 @@ define('person',[
      */
     $delete: function(changeMessage, opts) {
       return exports.deletePerson(helpers.removeAccessToken(maybe(maybe(this.links).person).href) || this.id, changeMessage, opts);
-    },
-
-    /**
-     * @ngdoc function
-     * @name person.types:constructor.Person#$addMemoryPersonaRef
-     * @methodOf person.types:constructor.Person
-     * @function
-     * @param {MemoryPersonaRef} memoryPersonaRef reference to the memory persona
-     * @param {Object=} params `changeMessage` change message
-     * @param {Object=} opts options to pass to the http function specified during init
-     * @return {Object} promise for the persona URL
-     */
-    $addMemoryPersonaRef: function(memoryPersonaRef, params, opts) {
-      return memories.addMemoryPersonaRef(this.id, memoryPersonaRef, params, opts);
     }
   };
 
@@ -9648,7 +9771,7 @@ define('FamilySearch',[
     getPersonDiscussionRefs: discussions.getPersonDiscussionRefs,
     getDiscussion: discussions.getDiscussion,
     getMultiDiscussion: discussions.getMultiDiscussion,
-    getComments: discussions.getComments,
+    getDiscussionComments: discussions.getDiscussionComments,
     deleteDiscussion: discussions.deleteDiscussion,
     deleteDiscussionRef: discussions.deleteDiscussionRef,
     deleteDiscussionComment: discussions.deleteDiscussionComment,

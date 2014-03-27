@@ -190,7 +190,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Delete the specified discussion",
-      "keywords": "api delete discussion discussions docs editable example familysearch full function functions http https init net options opts org pass promise url"
+      "keywords": "__note__ api attach aware best committed corresponding delete discussion discussion-reference discussions docs editable example familysearch full function functions hasn http https init issue linked net options opts org pass people person promise single url"
     },
     {
       "section": "api",
@@ -212,21 +212,21 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "discussions.functions:getComments",
-      "shortName": "getComments",
-      "type": "function",
-      "moduleName": "discussions",
-      "shortDescription": "Get comments for a discussion",
-      "keywords": "api array comment comments convenience currently discussion discussion-comments discussions docs editable endpoint example familysearch full function functions getcomments http https includes init net options opts org params pass promise response types unused url"
-    },
-    {
-      "section": "api",
       "id": "discussions.functions:getDiscussion",
       "shortName": "getDiscussion",
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Get information about a discussion",
       "keywords": "api convenience currently discussion discussions docs editable example familysearch full function functions getdiscussion http https includes init net options opts org params pass promise read response types unused url"
+    },
+    {
+      "section": "api",
+      "id": "discussions.functions:getDiscussionComments",
+      "shortName": "getDiscussionComments",
+      "type": "function",
+      "moduleName": "discussions",
+      "shortDescription": "Get comments for a discussion",
+      "keywords": "api array comment comments convenience currently discussion discussion-comments discussions docs editable endpoint example familysearch full function functions getcomments http https includes init net options opts org params pass promise response types unused url"
     },
     {
       "section": "api",
@@ -253,7 +253,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Comment on a discussion",
-      "keywords": "$delete $discussionid $getagent $getagentid $getagenturl $memoryid $save __broken__ _refresh_ api attributes comment comments contributor create created creating currently data delete deletediscussioncomment deletememorycomment details discussion discussions editable empty example existing function functions getagent http individual init memories memory net note object optional options opts parameter pass promise property read response result set text timestamp types update url user"
+      "keywords": "$delete $discussionid $getagent $getagentid $getagenturl $getcommenturl $memoryid $save __note__ _note_ _refresh_ api attributes comment comments contributor create created creating currently data delete deletediscussioncomment deletememorycomment details discussion discussions editable example existing function functions getagent http individual init memories memory net object optional options opts parameter pass promise property read response set text timestamp types update url user"
     },
     {
       "section": "api",
@@ -262,7 +262,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Discussion",
-      "keywords": "$delete $getagent $getagentid $getagenturl $getcomments $getcommentsurl $save api attributes comments contributor create created data delete deletediscussion description details discussion discussions editable endpoint example existing fulfilled function functions getagent getcomments http init millis modified net number numberofcomments object optional options opts pass promise property read refresh response text timestamp title true types update updated updating url user"
+      "keywords": "$delete $getagent $getagentid $getagenturl $getcomments $getcommentsurl $save __note__ api attach attributes aware best comments committed contributor corresponding create created data delete deletediscussion description details discussion discussion-reference discussions editable endpoint example existing familysearch fulfilled function functions getagent getdiscussioncomments hasn http init issue linked millis modified net number numberofcomments object optional options opts pass people person promise property read refresh response single text timestamp title true types update updated updating url user"
     },
     {
       "section": "api",
@@ -271,7 +271,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Reference to a discussion on a person.",
-      "keywords": "$delete $getdiscussion $getdiscussionurl $personid $save $setdiscussionurl _note_ _refresh_ _resourceid_ api attached attributes create created data delete deleted deletediscussionref details discussion discussionref discussions discussionurl editable example function functions getdiscussion http individual init net note object optional options opts parameter pass person promise property read reference references resourceid response set types updated url"
+      "keywords": "$delete $getdiscussion $getdiscussionrefurl $getdiscussionurl $personid $save $setdiscussionurl _discussion_ _note_ _refresh_ access api attached attributes comment create created creating data delete deleted deletediscussionref details discussion discussionref discussions editable example function functions getdiscussion http individual init net note object optional options opts parameter pass person promise property read reference references resource resourceid response set token types updated url"
     },
     {
       "section": "api",
@@ -388,7 +388,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Get references to memories for a person",
-      "keywords": "api array convenience currently docs editable endpoint example familysearch full function functions getmemorypersonarefs http https includes init memories memorypersonaref memorypersonarefs net options opts org params pass person person-memory-references pid promise references response types unused url"
+      "keywords": "__note__ _all_ api appear array attached convenience currently docs editable endpoint example familysearch full function functions getmemorypersonarefs http https includes init memories memory memorypersonaref memorypersonarefs multiple net options opts org params pass person person-memory-references personas pid promise references response types unused url"
     },
     {
       "section": "api",
@@ -433,7 +433,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Memory",
-      "keywords": "$data $delete $getdescription $getfilename $geticonurl $getimageurl $getmemoryurl $getthumbnailurl $gettitle $save $setdescription $setfilename $settitle _description_ _must_ access api apply array artifact artifactmetadata artifacttype attributes attribution create data default delete deletememory description discussion docs document documents doesn editable example existing familysearch field file filename formdata fulfilled full function functions http https icon ignored image images init media mediatype memories memory net object optional options opts org pass promise property read refresh resource resourcetype stories story string thumbnail title token true type types update updated updating upload uploaded url user"
+      "keywords": "$data $delete $getdescription $getfilename $geticonurl $getimageurl $getmemoryartifacturl $getmemoryurl $getthumbnailurl $gettitle $save $setdescription $setfilename $settitle __note__ _description_ _must_ access api appear apply array artifact artifactmetadata artifacttype attributes attribution contents create currently data default delete deletememory description discussion docs document documents doesn editable example existing familysearch field file filename formdata fulfilled full function functions http https icon ignored image images init media mediatype memories memory net object optional options opts org pass promise property read refresh resource resourcetype stories story string thumbnail title token true type types update updated updating upload uploaded url user"
     },
     {
       "section": "api",
@@ -451,7 +451,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Memory Persona (not a true persona; can only contain a name and a media artifact reference)",
-      "keywords": "$delete $getdisplayname $getmemory $getmemoryartifactref $getmemorypersonaurl $getnames $memoryid $save $setmemoryartifactref $setname _name_ _note_ api artifact attached attributes create data delete deletememorypersona display docs don editable example existing extracted familysearch fulfilled fulltext function functions getmemory http https init media memories memory memoryartifactref memorypersona names net object optional options opts org parts pass persona promise property read reference refresh response set string surname true types update updated updating url"
+      "keywords": "$delete $getdisplayname $getmemory $getmemoryartifactref $getmemorypersonaurl $getmemoryurl $getnames $memoryid $save $setmemoryartifactref $setname _name_ _note_ api artifact attached attributes create data delete deletememorypersona display docs don editable example existing extracted familysearch fulfilled fulltext function functions getmemory http https init media memories memory memoryartifactref memorypersona names net object optional options opts org parts pass persona promise property read reference refresh response set string surname true types update updated updating url"
     },
     {
       "section": "api",
@@ -460,7 +460,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Reference from a person to a memory persona",
-      "keywords": "$delete $getmemory $getmemorypersona $getmemoryurl $getresource $personid $save $setresource _note_ _refresh_ _resource_ access api attached attributes create created data delete deleted deletememorypersonaref details docs editable example familysearch fulfilled function functions getmemory getmemorypersona http https individual init memories memory memorypersonaref net note object optional options opts org parameter pass person persona promise property read reference references resource resourceid response set token types updated url"
+      "keywords": "$delete $getmemory $getmemorypersona $getmemorypersonarefurl $getmemorypersonaurl $getmemoryurl $personid $save $setmemorypersona _memorypersona_ _note_ _refresh_ access api attached attributes create created creating data delete deleted deletememorypersonaref details docs editable example familysearch fulfilled function functions getmemory getmemorypersona http https individual init memories memory memorypersona memorypersonaref net note object optional options opts org parameter pass person persona promise property read reference references resource resourceid response set token types updated url"
     },
     {
       "section": "api",
@@ -820,7 +820,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Person",
-      "keywords": "$addfact $addmemorypersonaref $addname $delete $deletefact $deletename $getbirth $getbirthdate $getbirthplace $getburial $getburialdate $getburialplace $getchanges $getchildren $getchristening $getchristeningdate $getchristeningplace $getdeath $getdeathdate $getdeathplace $getdiscussionrefs $getdisplaybirthdate $getdisplaybirthplace $getdisplaydeathdate $getdisplaydeathplace $getdisplaygender $getdisplaylifespan $getdisplayname $getfact $getfacts $getgivenname $getmemorypersonarefs $getnames $getnoterefs $getparents $getpersistentidentifier $getpreferredname $getsourcerefs $getspouses $getsurname $geturl $save $setgender add api array arrays attributes attribution birth birthdate birthplace burial change changehistory changemessage changes christening christning conclusion count create death deathdate deathplace default delete deleteperson discussions display docs editable entries example existing fact facts false familysearch female fulfilled function functions gender getchildren getmemorypersonarefs getparents getpersonchanges getpersondiscussionrefs getpersonnoterefs getpersonsourcerefs getspouses http https identifers identifier includes init lifespan living male map memories memory memorypersonaref message methods names net note notes number object options opts org params pass passed persistent persists person persona place preferred promise property read reference refresh remove removes response return sources surname true type types update updated updating url values year"
+      "keywords": "$addfact $addname $delete $deletefact $deletename $getbirth $getbirthdate $getbirthplace $getburial $getburialdate $getburialplace $getchanges $getchildren $getchristening $getchristeningdate $getchristeningplace $getdeath $getdeathdate $getdeathplace $getdiscussionrefs $getdisplaybirthdate $getdisplaybirthplace $getdisplaydeathdate $getdisplaydeathplace $getdisplaygender $getdisplaylifespan $getdisplayname $getfact $getfacts $getgivenname $getmemorypersonarefs $getnames $getnoterefs $getparents $getpersistentidentifier $getpreferredname $getsourcerefs $getspouses $getsurname $geturl $save $setgender add api array arrays attributes attribution birth birthdate birthplace burial change changehistory changemessage changes christening christning conclusion count create death deathdate deathplace default delete deleteperson discussions display docs editable entries example existing fact facts false familysearch female fulfilled function functions gender getchildren getmemorypersonarefs getparents getpersonchanges getpersondiscussionrefs getpersonnoterefs getpersonsourcerefs getspouses http https identifers identifier includes init lifespan living male map memories message methods names net note notes number object options opts org params pass passed persistent persists person place preferred promise property read refresh remove removes response return sources surname true type types update updated updating url values year"
     },
     {
       "section": "api",
@@ -1072,7 +1072,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Description of a source",
-      "keywords": "$getcitation $getsourcerefsquery $gettext $gettitle api attribution citation description function functions getsourcerefsquery object promise property record response source sourcedescription sources text title types url"
+      "keywords": "$getcitation $getsourcerefsquery $gettext $gettitle _about_ api attributes attribution citation data description docs familysearch function functions getsourcerefsquery https object optional org promise property record response source sourcedescription sources text title types url"
     },
     {
       "section": "api",

@@ -13,7 +13,8 @@
 <em>$data</em> is a string for Stories, or a FormData for Images or Documents
 - if FormData, the field name of the file to upload <em>must</em> be <code>artifact</code>.
 <em>$data</em> is ignored when updating a memory.
-<em>description</em> doesn&#39;t apply to stories.</p>
+<em>description</em> doesn&#39;t appear to apply to stories.</p>
+<p><strong>NOTE</strong> it is not currently possible to update memory contents - not even for stories</p>
 </div></td></tr></tbody></table></div>
 <div class="member method"><h2 id="methods">Methods</h2>
 <ul class="methods"><li><h3 id="methods_$delete">$delete(opts)</h3>
@@ -35,7 +36,11 @@
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_$getimageurl">$getImageUrl()</h3>
-<div class="$getimageurl"><h5 id="methods_$getimageurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getimageurl-page"><p>URL of the full image or document or story with access token</p>
+<div class="$getimageurl"><h5 id="methods_$getimageurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getimageurl-page"><p>URL of the full image with access token</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getmemoryartifacturl">$getMemoryArtifactUrl()</h3>
+<div class="$getmemoryartifacturl"><h5 id="methods_$getmemoryartifacturl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getmemoryartifacturl-page"><p>URL of the memory artifact (image, story, or document) with access token</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_$getmemoryurl">$getMemoryUrl()</h3>
@@ -78,7 +83,7 @@ and if refresh is true, after the memory has been read.</p>
 </div>
 <div class="member property"><h2 id="properties">Properties</h2>
 <ul class="properties"><li><h3 id="properties_about">about</h3>
-<div class="about"><h5 id="properties_about_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-about-page"><p>memory artifact URL (same as image URL?)</p>
+<div class="about"><h5 id="properties_about_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-about-page"><p>memory artifact URL</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="properties_artifactmetadata">artifactMetadata</h3>
