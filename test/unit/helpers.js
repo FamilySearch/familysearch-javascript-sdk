@@ -119,6 +119,14 @@ define(['FamilySearch', '_', 'jasmine-jquery'], function(FamilySearch, _) {
     return filename.replace(/[^A-Za-z0-9_-]/g, '_') + '.json'; // convert special characters to _'s
   }
 
+  // Track requests that have been made
+
+  var requests = [];
+
+  FamilySearch.getHttpRequests = function() {
+    return requests;
+  };
+
   /**
    * Mock an http call, fetching the json from a file in test/mock
    *
@@ -126,6 +134,7 @@ define(['FamilySearch', '_', 'jasmine-jquery'], function(FamilySearch, _) {
    * @returns {Object} promise
    */
   function httpMock(opts) {
+    requests.push(opts);
     //console.log('httpMock options', opts);
     var filename = getFilename(opts);
     var data = getJSONFixture(filename);
@@ -193,5 +202,8 @@ define(['FamilySearch', '_', 'jasmine-jquery'], function(FamilySearch, _) {
       'deferred_function': deferredMock,
       'access_token': 'mock'
     });
+
+    requests = []; // reset requests
+
   });
 });

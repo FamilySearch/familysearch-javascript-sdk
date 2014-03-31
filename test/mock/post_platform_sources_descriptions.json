@@ -1,0 +1,7 @@
+{
+  "status": 201,
+  "headers": {
+    "Location": "https://familysearch.org/platform/sources/descriptions/MMMM-MMM",
+    "X-ENTITY-ID" : "MMMM-MMM"
+  }
+}

@@ -1,12 +1,12 @@
-define(['FamilySearch'], function(FamilySearch) {
+define(['FamilySearch', 'helpers'], function(FamilySearch, helpers) {
   describe('Source', function() {
     it('references are returned from getPersonSourceReferences', function() {
       FamilySearch.getPersonSourceRefs('PPPP-PPP').then(function(response) {
         var sourceRefs = response.getSourceRefs();
-        expect(sourceRefs[0].$getTagNames()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
+        expect(sourceRefs[0].$getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
         expect(sourceRefs[0].$personId).toBe('PPPP-PPP');
         expect(sourceRefs[1].$getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/BBBB-BBB');
-        expect(sourceRefs[1].$getTagNames().length).toBe(0);
+        expect(sourceRefs[1].$getTags().length).toBe(0);
         expect(sourceRefs[1].attribution.$getAgentId()).toBe('UUUU-UUU');
         expect(sourceRefs[1].attribution.modified).toBe(987654321);
         expect(sourceRefs[1].attribution.changeMessage).toBe('Dates and location match with other sources.');
@@ -36,10 +36,10 @@ define(['FamilySearch'], function(FamilySearch) {
     it('references are returned from getCoupleSourceRefs', function() {
       FamilySearch.getCoupleSourceRefs('12345').then(function(response) {
         var sourceRefs = response.getSourceRefs();
-        expect(sourceRefs[0].$getTagNames()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
+        expect(sourceRefs[0].$getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
         expect(sourceRefs[0].$coupleId).toBe('12345');
         expect(sourceRefs[1].$getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/BBBB-BBB');
-        expect(sourceRefs[1].$getTagNames().length).toBe(0);
+        expect(sourceRefs[1].$getTags().length).toBe(0);
         expect(sourceRefs[1].attribution.$getAgentId()).toBe('UUUU-UUU');
         expect(sourceRefs[1].attribution.modified).toBe(987654321);
         expect(sourceRefs[1].attribution.changeMessage).toBe('Dates and location match with other sources.');
@@ -49,11 +49,11 @@ define(['FamilySearch'], function(FamilySearch) {
     it('references are returned from getChildAndParentsSourceRefs', function() {
       FamilySearch.getChildAndParentsSourceRefs('PPPX-PP0').then(function(response) {
         var sourceRefs = response.getSourceRefs();
-        expect(sourceRefs[0].$getTagNames()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
+        expect(sourceRefs[0].$getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
         expect(sourceRefs[0].attribution.modified).toBe(123456789);
         expect(sourceRefs[0].$childAndParentsId).toBe('PPPX-PP0');
         expect(sourceRefs[1].$getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/BBBB-BBB');
-        expect(sourceRefs[1].$getTagNames().length).toBe(0);
+        expect(sourceRefs[1].$getTags().length).toBe(0);
         expect(sourceRefs[1].attribution.$getAgentId()).toBe('UUUU-UUU');
         expect(sourceRefs[1].attribution.modified).toBe(987654321);
         expect(sourceRefs[1].attribution.changeMessage).toBe('Dates and location match with other sources.');
@@ -81,5 +81,182 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(childAndParentsSourceRef.$childAndParentsId).toBe('MMMP-KN5');
       });
     });
+
+    it('description is created', function() {
+      var srcDesc = new FamilySearch.SourceDescription({
+        about: 'https://familysearch.org/pal:/MM9.1.1/M9PJ-2JJ',
+        citation: '"United States Census, 1900." database and digital images, FamilySearch (https://familysearch.org/)',
+        title: '1900 US Census, Ethel Hollivet',
+        text: 'Ethel Hollivet (line 75) with husband Albert Hollivet (line 74)'
+      });
+      var promise = srcDesc.$save('This is the change message', true);
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualJson({
+          sourceDescriptions: [{
+            citations : [ {
+              value : '"United States Census, 1900." database and digital images, FamilySearch (https://familysearch.org/)'
+            } ],
+            about: 'https://familysearch.org/pal:/MM9.1.1/M9PJ-2JJ',
+            titles: [{
+              value: '1900 US Census, Ethel Hollivet'
+            }],
+            notes: [{
+              text: 'Ethel Hollivet (line 75) with husband Albert Hollivet (line 74)'
+            }],
+            attribution: {
+              changeMessage: 'This is the change message'
+            }
+          }]
+        });
+        expect(promise.getStatusCode()).toBe(201);
+        expect(response).toBe('MMMM-MMM');
+        expect(srcDesc.id).toBe('MMMM-MMM');  // re-read from database
+      });
+    });
+
+    it('description is updated', function() {
+      var srcDesc = new FamilySearch.SourceDescription({
+        about: 'https://familysearch.org/pal:/MM9.1.1/M9PJ-2JJ',
+        citation: '"United States Census, 1900." database and digital images, FamilySearch (https://familysearch.org/)',
+        title: '1900 US Census, Ethel Hollivet',
+        text: 'Ethel Hollivet (line 75) with husband Albert Hollivet (line 74)'
+      });
+      srcDesc.id = 'MMMM-MMM';
+      var promise = srcDesc.$save('This is the change message');
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualJson({
+          sourceDescriptions: [{
+            id: 'MMMM-MMM',
+            citations : [ {
+              value : '"United States Census, 1900." database and digital images, FamilySearch (https://familysearch.org/)'
+            } ],
+            about: 'https://familysearch.org/pal:/MM9.1.1/M9PJ-2JJ',
+            titles: [{
+              value: '1900 US Census, Ethel Hollivet'
+            }],
+            notes: [{
+              text: 'Ethel Hollivet (line 75) with husband Albert Hollivet (line 74)'
+            }],
+            attribution: {
+              changeMessage: 'This is the change message'
+            }
+          }]
+        });
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('MMMM-MMM');
+      });
+    });
+
+    it('description is deleted', function() {
+      var promise = FamilySearch.deleteSourceDescription('MM93-JFK');
+      promise.then(function(response) {
+        var requests = FamilySearch.getHttpRequests();
+        expect(helpers.find(requests, {
+          type: 'DELETE',
+          url:'https://sandbox.familysearch.org/platform/tree/persons/KW7V-Y32/source-references/MMM9-NNG?access_token=mock'})
+        ).toBeTruthy();
+        expect(helpers.find(requests, {
+          type: 'DELETE',
+          url:'https://sandbox.familysearch.org/platform/tree/couple-relationships/MMM7-12S/source-references/MMMM-S3D?access_token=mock'})
+        ).toBeTruthy();
+        expect(helpers.find(requests, {
+          type: 'DELETE',
+          url:'https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MMMP-KN5/source-references/MMMM-S36?access_token=mock'})
+        ).toBeTruthy();
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('MM93-JFK');
+      });
+    });
+
+    it('reference is created', function() {
+      var srcRef = new FamilySearch.SourceRef({
+        $personId: 'PPPP-PPP',
+        sourceDescription: 'MMMM-MMM',
+        tags: ['http://gedcomx.org/Name']
+      });
+      var promise = srcRef.$save('This is the change message');
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualJson({
+          persons: [{
+            sources: [{
+              tags: [{
+                resource: 'http://gedcomx.org/Name'
+              }],
+              attribution: {
+                changeMessage: 'This is the change message'
+              },
+              description: 'https://sandbox.familysearch.org/platform/sources/descriptions/MMMM-MMM'
+            }]
+          }]
+        });
+        expect(promise.getStatusCode()).toBe(201);
+        expect(response).toBe('SRSR-R01');
+        expect(srcRef.id).toBe('SRSR-R01');  // updated
+      });
+    });
+
+    it('reference is updated', function() {
+      var srcRef = new FamilySearch.SourceRef({
+        $personId: 'PPPP-PPX',
+        sourceDescription: 'MMMM-MMM',
+        tags: ['http://gedcomx.org/Name']
+      });
+      srcRef.id = 'SRSR-R01';
+      var promise = srcRef.$save('This is the change message');
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualJson({
+          persons: [{
+            sources: [{
+              id: 'SRSR-R01',
+              tags: [{
+                resource: 'http://gedcomx.org/Name'
+              }],
+              attribution: {
+                changeMessage: 'This is the change message'
+              },
+              description: 'https://sandbox.familysearch.org/platform/sources/descriptions/MMMM-MMM'
+            }]
+          }]
+        });
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('SRSR-R01');
+      });
+    });
+
+    it('reference is deleted from a person', function() {
+      var promise = FamilySearch.deletePersonSourceRef('PPPP-PPP', 'SRSR-R01', 'testDelete use case 1 reason');
+      promise.then(function(response) {
+        expect(promise.getStatusCode()).toBe(204);
+        expect(promise.getRequest().headers['X-Reason']).toBe('testDelete use case 1 reason');
+        expect(response).toBe('PPPP-PPP');
+      });
+    });
+
+    it('reference is deleted from a couple', function() {
+      var promise = FamilySearch.deleteCoupleSourceRef('RRRR-RRR', 'SRSR-R01', 'testDelete use case 1 reason');
+      promise.then(function(response) {
+        expect(promise.getStatusCode()).toBe(204);
+        expect(promise.getRequest().headers['X-Reason']).toBe('testDelete use case 1 reason');
+        expect(response).toBe('RRRR-RRR');
+      });
+    });
+
+    it('reference is deleted from a child-and-parents', function() {
+      var promise = FamilySearch.deleteChildAndParentsSourceRef('RRRR-RRX', 'SRSR-R01', 'testDelete use case 1 reason');
+      promise.then(function(response) {
+        expect(promise.getStatusCode()).toBe(204);
+        expect(promise.getRequest().headers['X-Reason']).toBe('testDelete use case 1 reason');
+        expect(response).toBe('RRRR-RRX');
+      });
+    });
+
   });
 });

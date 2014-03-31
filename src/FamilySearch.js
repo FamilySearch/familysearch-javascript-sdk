@@ -145,6 +145,10 @@ define([
     getCoupleSourceRefs: sources.getCoupleSourceRefs,
     getChildAndParentsSourceRefs: sources.getChildAndParentsSourceRefs,
     getSourceRefsQuery: sources.getSourceRefsQuery,
+    deleteSourceDescription: sources.deleteSourceDescription,
+    deletePersonSourceRef: sources.deletePersonSourceRef,
+    deleteCoupleSourceRef: sources.deleteCoupleSourceRef,
+    deleteChildAndParentsSourceRef: sources.deleteChildAndParentsSourceRef,
 
     // spouses
     Couple: spouses.Couple,

@@ -307,8 +307,8 @@ define([
      * @description
      * Create a new discussion reference
      *
-     * NOTE: there's no _refresh_ parameter because it's not possible to read individual discussion references
-     * however, the discussion reference's URL is set when creating a new comment
+     * NOTE: there's no _refresh_ parameter because it's not possible to read individual discussion references;
+     * however, the discussion reference's URL is set when creating a new discussion reference
      *
      * {@link http://jsfiddle.net/DallanQ/UarXL/ editable example}
      *
