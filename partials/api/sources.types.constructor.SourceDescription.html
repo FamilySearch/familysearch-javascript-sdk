@@ -10,10 +10,18 @@
 <h2 id="usage">Usage</h2>
 <div class="usage"><pre class="prettyprint linenums">SourceDescription([data]);</pre>
 <h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-page"><p>an object with optional attributes {about, citation, title, text}.
-<em>about</em> is a URL</p>
+<em>about</em> is a URL - link to the record</p>
 </div></td></tr></tbody></table></div>
 <div class="member method"><h2 id="methods">Methods</h2>
-<ul class="methods"><li><h3 id="methods_$getcitation">$getCitation()</h3>
+<ul class="methods"><li><h3 id="methods_$delete">$delete(changeMessage, opts)</h3>
+<div class="$delete"><div class="sources-types-page sources-types-constructor-sourcedescription-delete-page"><p>delete this source description as well as all source references that refer to this source description
+- see <a href="#/api/sources.functions:deleteSourceDescription">deleteSourceDescription</a></p>
+</div><h5 id="methods_$delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-delete-page"><p>reason for the deletion</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-delete-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-delete-page"><p>promise for the source description id</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getcitation">$getCitation()</h3>
 <div class="$getcitation"><h5 id="methods_$getcitation_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-getcitation-page"><p>source citation</p>
 </div></td></tr></table></div>
 </li>
@@ -27,6 +35,31 @@
 </li>
 <li><h3 id="methods_$gettitle">$getTitle()</h3>
 <div class="$gettitle"><h5 id="methods_$gettitle_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-gettitle-page"><p>title of the source description</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$save">$save(changeMessage, refresh, opts)</h3>
+<div class="$save"><div class="sources-types-page sources-types-constructor-sourcedescription-save-page"><p>Create a new source description (if this source description does not have an id) or update the existing source description</p>
+<p><a href="http://jsfiddle.net/DallanQ/b95Hs/">editable example</a></p>
+</div><h5 id="methods_$save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-save-page"><p>change message</p>
+</div></td></tr><tr><td>refresh <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-save-page"><p>true to read the source description after updating</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-save-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-save-page"><p>promise of the source description id, which is fulfilled after the source description has been updated,
+and if refresh is true, after the source description has been read.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setcitation">$setCitation(citation)</h3>
+<div class="$setcitation"><h5 id="methods_$setcitation_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>citation</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-setcitation-page"><p>source description citation</p>
+</div></td></tr></tbody></table><h5 id="methods_$setcitation_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-sourcedescription">SourceDescription</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-setcitation-page"><p>this source description</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$settext">$setText(text)</h3>
+<div class="$settext"><h5 id="methods_$settext_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>text</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-settext-page"><p>source description text</p>
+</div></td></tr></tbody></table><h5 id="methods_$settext_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-sourcedescription">SourceDescription</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-settext-page"><p>this source description</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$settitle">$setTitle(title)</h3>
+<div class="$settitle"><h5 id="methods_$settitle_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>title</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-settitle-page"><p>source description title</p>
+</div></td></tr></tbody></table><h5 id="methods_$settitle_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-sourcedescription">SourceDescription</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-settitle-page"><p>this source description</p>
 </div></td></tr></table></div>
 </li>
 </ul>

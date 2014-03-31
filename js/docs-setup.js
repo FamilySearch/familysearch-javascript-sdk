@@ -271,7 +271,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Reference to a discussion on a person.",
-      "keywords": "$delete $getdiscussion $getdiscussionrefurl $getdiscussionurl $personid $save $setdiscussionurl _discussion_ _note_ _refresh_ access api attached attributes comment create created creating data delete deleted deletediscussionref details discussion discussionref discussions editable example function functions getdiscussion http individual init net note object optional options opts parameter pass person promise property read reference references resource resourceid response set token types updated url"
+      "keywords": "$delete $getdiscussion $getdiscussionrefurl $getdiscussionurl $personid $save $setdiscussionurl _discussion_ _note_ _refresh_ access api attached attributes create created creating data delete deleted deletediscussionref details discussion discussionref discussions editable example function functions getdiscussion http individual init net note object optional options opts parameter pass person promise property read reference references resource resourceid response set token types updated url"
     },
     {
       "section": "api",
@@ -1013,6 +1013,42 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "sources.functions:deleteChildAndParentsSourceRef",
+      "shortName": "deleteChildAndParentsSourceRef",
+      "type": "function",
+      "moduleName": "sources",
+      "shortDescription": "Delete the specified child-and-parents source reference",
+      "keywords": "api caprid changemessage child-and-parents delete deletion docs editable example familysearch full function functions http https init net options opts org pass promise reason reference relationship set source sources srid url"
+    },
+    {
+      "section": "api",
+      "id": "sources.functions:deleteCoupleSourceRef",
+      "shortName": "deleteCoupleSourceRef",
+      "type": "function",
+      "moduleName": "sources",
+      "shortDescription": "Delete the specified couple source reference",
+      "keywords": "api changemessage couple crid delete deletion docs editable example familysearch full function functions http https init net options opts org pass promise reason reference relationship set source sources srid url"
+    },
+    {
+      "section": "api",
+      "id": "sources.functions:deletePersonSourceRef",
+      "shortName": "deletePersonSourceRef",
+      "type": "function",
+      "moduleName": "sources",
+      "shortDescription": "Delete the specified person source reference",
+      "keywords": "api changemessage delete deletion docs editable example familysearch full function functions http https init net options opts org pass person pid promise reason reference set source sources srid url"
+    },
+    {
+      "section": "api",
+      "id": "sources.functions:deleteSourceDescription",
+      "shortName": "deleteSourceDescription",
+      "type": "function",
+      "moduleName": "sources",
+      "shortDescription": "Delete the specified source description as well as all source references that refer to it",
+      "keywords": "__note__ api automatically aware changemessage committed delete deletes deleting deletion description docs editable example familysearch function functions hasn http https init issue net options opts org pass promise reads reason refer references sdid source sources url"
+    },
+    {
+      "section": "api",
       "id": "sources.functions:getChildAndParentsSourceRefs",
       "shortName": "getChildAndParentsSourceRefs",
       "type": "function",
@@ -1072,7 +1108,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Description of a source",
-      "keywords": "$getcitation $getsourcerefsquery $gettext $gettitle _about_ api attributes attribution citation data description docs familysearch function functions getsourcerefsquery https object optional org promise property record response source sourcedescription sources text title types url"
+      "keywords": "$delete $getcitation $getsourcerefsquery $gettext $gettitle $save $setcitation $settext $settitle _about_ api attributes attribution change changemessage citation create data delete deletesourcedescription deletion description docs editable example existing familysearch fulfilled function functions getsourcerefsquery http https init link message net object optional options opts org pass promise property read reason record refer references refresh response source sourcedescription sources text title true types update updated updating url"
     },
     {
       "section": "api",
@@ -1080,8 +1116,8 @@ NG_DOCS={
       "shortName": "constructor.SourceRef",
       "type": "function",
       "moduleName": "sources",
-      "shortDescription": "Reference from a person or relationship to a source",
-      "keywords": "$childandparentsid $coupleid $getsourcedescription $getsourcedescriptionurl $gettagnames $personid api array attached attribution child couple description details function functions getsourcedescription http names object org parents pass person promise property reference relationship response source sourceref sources tag types url"
+      "shortDescription": "Reference from a person or relationship to a source.",
+      "keywords": "$addtag $childandparentsid $coupleid $delete $getsourcedescription $getsourcedescriptionurl $getsourcerefurl $gettags $personid $removetag $save $setsourcedescription $settags _note_ _refresh_ _sourcedescription_ _tags_ add api array attached attributes attribution change changemessage child childandparents couple create creating data delete deletechildandparentssourceref deletecouplesourceref deletepersonsourceref deletion description details discussion docs editable example existing familysearch fulfilled function functions getsourcedescription http https individual init message names net object optional options opts org parameter parents pass person promise property read reason reference references relationship remove response set source sourcedescription sourceref sources srcdesc tag tags types update updateable updated url"
     },
     {
       "section": "api",
