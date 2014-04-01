@@ -959,6 +959,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "sourceBox.functions:deleteCollection",
+      "shortName": "deleteCollection",
+      "type": "function",
+      "moduleName": "sourceBox",
+      "shortDescription": "Delete the specified collection",
+      "keywords": "api collection delete docs editable example familysearch full function functions http https init net options opts org pass promise sourcebox udcid url"
+    },
+    {
+      "section": "api",
       "id": "sourceBox.functions:getCollection",
       "shortName": "getCollection",
       "type": "function",
@@ -995,12 +1004,30 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "sourceBox.functions:moveSourceDescriptionsToCollection",
+      "shortName": "moveSourceDescriptionsToCollection",
+      "type": "function",
+      "moduleName": "sourceBox",
+      "shortDescription": "Move the specified source descriptions to the specified collection",
+      "keywords": "api array collection descriptions docs editable endpoint example familysearch full function functions http https init move net objects options opts org pass promise source sourcebox srcdescs udcid url"
+    },
+    {
+      "section": "api",
+      "id": "sourceBox.functions:removeSourceDescriptionsFromCollections",
+      "shortName": "removeSourceDescriptionsFromCollections",
+      "type": "function",
+      "moduleName": "sourceBox",
+      "shortDescription": "Remove the specified source descriptions from all collections",
+      "keywords": "api array collections descriptions docs editable example familysearch function functions http https init net objects options opts org pass promise remove source sourcebox srcdescs"
+    },
+    {
+      "section": "api",
       "id": "sourceBox.types:constructor.Collection",
       "shortName": "constructor.Collection",
       "type": "function",
       "moduleName": "sourceBox",
       "shortDescription": "Collection",
-      "keywords": "$getsourcedescriptions api attribution collection count folder function functions getcollectionsourcedescriptions maximum number object params promise property response return size source sourcebox sources start title types zero-based"
+      "keywords": "$delete $getsourcedescriptions $save api attributes attribution collection count create data delete deletecollection descriptions docs editable empty example familysearch fulfilled function functions getcollectionsourcedescriptions http https init maximum net number object optional options opts org params pass promise property read refresh response return size source sourcebox sources start title true types updated updating user-defined zero-based"
     },
     {
       "section": "api",

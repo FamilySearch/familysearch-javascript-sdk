@@ -5,14 +5,32 @@
 </h1>
 <div><h2 id="description">Description</h2>
 <div class="description"><div class="sourcebox-types-page sourcebox-types-constructor-collection-page"><p>Collection</p>
+<p><a href="https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_resource">FamilySearch API Docs</a></p>
 </div></div>
 <h2 id="usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">Collection();</pre>
-</div>
+<div class="usage"><pre class="prettyprint linenums">Collection([data]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sourcebox-types-page sourcebox-types-constructor-collection-page"><p>an object with optional attributes {title}.</p>
+</div></td></tr></tbody></table></div>
 <div class="member method"><h2 id="methods">Methods</h2>
-<ul class="methods"><li><h3 id="methods_$getsourcedescriptions">$getSourceDescriptions(params)</h3>
+<ul class="methods"><li><h3 id="methods_$delete">$delete(opts)</h3>
+<div class="$delete"><div class="sourcebox-types-page sourcebox-types-constructor-collection-delete-page"><p>delete this collection (must be empty)
+- see <a href="#/api/sources.functions:deleteCollection">deleteCollection</a></p>
+</div><h5 id="methods_$delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sourcebox-types-page sourcebox-types-constructor-collection-delete-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sourcebox-types-page sourcebox-types-constructor-collection-delete-page"><p>promise for the collection id</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getsourcedescriptions">$getSourceDescriptions(params)</h3>
 <div class="$getsourcedescriptions"><h5 id="methods_$getsourcedescriptions_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sourcebox-types-page sourcebox-types-constructor-collection-getsourcedescriptions-page"><p><code>count</code> maximum to return (defaults to 25), <code>start</code> zero-based index of first source to return</p>
 </div></td></tr></tbody></table><h5 id="methods_$getsourcedescriptions_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sourcebox-types-page sourcebox-types-constructor-collection-getsourcedescriptions-page"><p>promise for the <a href="#/api/sourceBox.functions:getCollectionSourceDescriptions">getCollectionSourceDescriptions</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$save">$save(refresh, opts)</h3>
+<div class="$save"><div class="sourcebox-types-page sourcebox-types-constructor-collection-save-page"><p>Create a new user-defined collection (folder)</p>
+<p><a href="http://jsfiddle.net/DallanQ/2VgxM/">editable example</a></p>
+</div><h5 id="methods_$save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>refresh <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="sourcebox-types-page sourcebox-types-constructor-collection-save-page"><p>true to read the collection after updating</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sourcebox-types-page sourcebox-types-constructor-collection-save-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sourcebox-types-page sourcebox-types-constructor-collection-save-page"><p>promise of the collection id, which is fulfilled after the collection has been updated,
+and if refresh is true, after the collection has been read.</p>
 </div></td></tr></table></div>
 </li>
 </ul>
@@ -27,11 +45,11 @@
 </div></td></tr></table></div>
 </li>
 <li><h3 id="properties_size">size</h3>
-<div class="size"><h5 id="properties_size_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="sourcebox-types-page sourcebox-types-constructor-collection-size-page"><p>number of sources in the collection</p>
+<div class="size"><h5 id="properties_size_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="sourcebox-types-page sourcebox-types-constructor-collection-size-page"><p>number of source descriptions in the collection</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="properties_title">title</h3>
-<div class="title"><h5 id="properties_title_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sourcebox-types-page sourcebox-types-constructor-collection-title-page"><p>title of the collection folder</p>
+<div class="title"><h5 id="properties_title_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sourcebox-types-page sourcebox-types-constructor-collection-title-page"><p>title of the collection</p>
 </div></td></tr></table></div>
 </li>
 </ul>
