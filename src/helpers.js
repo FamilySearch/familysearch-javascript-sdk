@@ -694,9 +694,19 @@ define([
   exports.encodeQueryString = function(params) {
     var arr = [];
     forEach(params, function(value, key) {
-      var param = encodeURIComponent(key);
-      if (value != null) { // catches null and undefined
-        param += '=' + encodeURIComponent(value);
+      key = encodeURIComponent(key);
+      var param;
+      if (exports.isArray(value)) {
+        param = exports.map(value, function(elm) {
+          //noinspection JSValidateTypes
+          return key + '=' + encodeURIComponent(elm);
+        }).join('&');
+      }
+      else if (value != null) { // catches null and undefined
+        param = key + '=' + encodeURIComponent(value);
+      }
+      else {
+        param = key;
       }
       arr.push(param);
     });
@@ -731,7 +741,17 @@ define([
         forEach(segments, function(segment) {
           var kv = segment.split('=', 2);
           if (kv && kv[0]) {
-            obj[decodeURIComponent(kv[0])] = (kv[1] != null ? decodeURIComponent(kv[1]) : kv[1]); // catches null and undefined
+            var key = decodeURIComponent(kv[0]);
+            var value = (kv[1] != null ? decodeURIComponent(kv[1]) : kv[1]); // catches null and undefined
+            if (obj[key] != null && !exports.isArray(obj[key])) {
+              obj[key] = [ obj[key] ];
+            }
+            if (obj[key] != null) {
+              obj[key].push(value);
+            }
+            else {
+              obj[key] = value;
+            }
           }
         });
       }

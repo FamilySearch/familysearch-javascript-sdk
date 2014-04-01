@@ -1,0 +1,7 @@
+{
+  "status": 201,
+  "headers": {
+    "Location": "https://familysearch.org/platform/sources/collections/sf-MMMM-MMM",
+    "X-ENTITY-ID" : "sf-MMMM-MMM"
+  }
+}

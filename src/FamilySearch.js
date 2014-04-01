@@ -135,6 +135,9 @@ define([
     getCollection: sourceBox.getCollection,
     getCollectionSourceDescriptions: sourceBox.getCollectionSourceDescriptions,
     getCollectionSourceDescriptionsForUser: sourceBox.getCollectionSourceDescriptionsForUser,
+    moveSourceDescriptionsToCollection: sourceBox.moveSourceDescriptionsToCollection,
+    removeSourceDescriptionsFromCollections: sourceBox.removeSourceDescriptionsFromCollections,
+    deleteCollection: sourceBox.deleteCollection,
 
     // sources
     SourceDescription: sources.SourceDescription,

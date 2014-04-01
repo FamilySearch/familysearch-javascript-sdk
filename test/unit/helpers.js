@@ -74,6 +74,7 @@ define(['FamilySearch', '_', 'jasmine-jquery'], function(FamilySearch, _) {
     };
   }
 
+  // not the same as src/helpers/decodeQueryString
   function decodeQueryString(qs) {
     var obj = {};
     var queryPos = qs.indexOf('?');
@@ -82,7 +83,9 @@ define(['FamilySearch', '_', 'jasmine-jquery'], function(FamilySearch, _) {
       for (var i = 0, len = segments.length; i < len; i++) {
         var kv = segments[i].split('=', 2);
         if (kv && kv[0]) {
-          obj[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1]);
+          var key = decodeURIComponent(kv[0]);
+          var value = decodeURIComponent(kv[1]);
+          obj[key] = obj[key] ? obj[key] + '_' + value : value; // quick hack to encode multiple values into a unique string
         }
       }
     }

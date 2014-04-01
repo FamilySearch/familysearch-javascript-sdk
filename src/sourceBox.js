@@ -2,8 +2,9 @@ define([
   'attribution',
   'helpers',
   'plumbing',
-  'sources'
-], function(attribution, helpers, plumbing, sources) {
+  'sources',
+  'user'
+], function(attribution, helpers, plumbing, sources, user) {
   /**
    * @ngdoc overview
    * @name sourceBox
@@ -23,9 +24,15 @@ define([
    * @description
    *
    * Collection
+   *
+   * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_resource FamilySearch API Docs}
+   *
+   * @param {Object=} data an object with optional attributes {title}.
    */
-  var Collection = exports.Collection = function() {
-
+  var Collection = exports.Collection = function(data) {
+    if (data) {
+      this.title = data.title;
+    }
   };
 
   exports.Collection.prototype = {
@@ -41,14 +48,14 @@ define([
      * @ngdoc property
      * @name sourceBox.types:constructor.Collection#title
      * @propertyOf sourceBox.types:constructor.Collection
-     * @return {String} title of the collection folder
+     * @return {String} title of the collection
      */
 
     /**
      * @ngdoc property
      * @name sourceBox.types:constructor.Collection#size
      * @propertyOf sourceBox.types:constructor.Collection
-     * @return {Number} number of sources in the collection
+     * @return {Number} number of source descriptions in the collection
      */
 
     /**
@@ -68,7 +75,65 @@ define([
      */
     $getSourceDescriptions: function(params) {
       return exports.getCollectionSourceDescriptions(helpers.removeAccessToken(this.links['source-descriptions'].href), params);
+    },
+
+    /**
+     * @ngdoc function
+     * @name sourceBox.types:constructor.Collection#$save
+     * @methodOf sourceBox.types:constructor.Collection
+     * @function
+     * @description
+     * Create a new user-defined collection (folder)
+     *
+     * {@link http://jsfiddle.net/DallanQ/2VgxM/ editable example}
+     *
+     * @param {boolean=} refresh true to read the collection after updating
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise of the collection id, which is fulfilled after the collection has been updated,
+     * and if refresh is true, after the collection has been read.
+     */
+    $save: function(refresh, opts) {
+      var self = this;
+      var promise = helpers.chainHttpPromises(
+        self.id ? plumbing.getUrl('user-collection-template', null, {udcid: self.id}) : plumbing.getUrl('user-collections'),
+        function(url) {
+          return plumbing.post(url, { collections: [ self ] }, {}, opts, function(data, promise) {
+            // x-entity-id and location headers are not set on update, only on create
+            return self.id || promise.getResponseHeader('X-ENTITY-ID');
+          });
+        });
+      var returnedPromise = promise.then(function(udcid) {
+        helpers.extendHttpPromise(returnedPromise, promise); // extend the first promise into the returned promise
+        if (refresh) {
+          // re-read the collection and set this object's properties from response
+          return exports.getCollection(udcid, {}, opts).then(function(response) {
+            helpers.deleteProperties(self);
+            helpers.extend(self, response.getCollection());
+            return udcid;
+          });
+        }
+        else {
+          return udcid;
+        }
+      });
+      return returnedPromise;
+    },
+
+    /**
+     * @ngdoc function
+     * @name sourceBox.types:constructor.Collection#$delete
+     * @methodOf sourceBox.types:constructor.Collection
+     * @function
+     * @description delete this collection (must be empty)
+     * - see {@link sources.functions:deleteCollection deleteCollection}
+     *
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise for the collection id
+     */
+    $delete: function(opts) {
+      return exports.deleteCollection(this.id, opts);
     }
+
   };
 
   /**
@@ -209,6 +274,98 @@ define([
             })
           ));
       });
+  };
+
+  /**
+   * @ngdoc function
+   * @name sourceBox.functions:moveSourceDescriptionsToCollection
+   * @function
+   *
+   * @description
+   * Move the specified source descriptions to the specified collection
+   *
+   * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_Source_Descriptions_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/HhYy2/ editable example}
+   *
+   * @param {string} udcid id of the collection or full URL of the collection descriptions endpoint
+   * @param {SourceDescription[]|string[]} srcDescs array of source descriptions - may be objects or id's
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the udcid
+   */
+  exports.moveSourceDescriptionsToCollection = function(udcid, srcDescs, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('user-collection-source-descriptions-template', udcid, {udcid: udcid}),
+      function(url) {
+        var srcDescIds = helpers.map(srcDescs, function(srcDesc) {
+          return { id: (srcDesc instanceof sources.SourceDescription) ? srcDesc.id : srcDesc };
+        });
+        return plumbing.post(url, { sourceDescriptions: srcDescIds }, {}, opts, function() {
+          return udcid;
+        });
+      }
+    );
+  };
+
+  /**
+   * @ngdoc function
+   * @name sourceBox.functions:removeSourceDescriptionsFromCollections
+   * @function
+   *
+   * @description
+   * Remove the specified source descriptions from all collections
+   *
+   * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_Source_Descriptions_for_a_User_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/bDWxw/ editable example}
+   *
+   * @param {SourceDescription[]|string[]} srcDescs array of source descriptions - may be objects or id's
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the srcDescs
+   */
+  exports.removeSourceDescriptionsFromCollections = function(srcDescs, opts) {
+    return helpers.chainHttpPromises(
+      user.getCurrentUser(),
+      function(response) {
+        var uid = response.getUser().treeUserId;
+        return plumbing.getUrl('user-collections-source-descriptions-for-user-template', null, {uid: uid});
+      },
+      function(url) {
+        var sdids = helpers.map(srcDescs, function(srcDesc) {
+          return (srcDesc instanceof sources.SourceDescription) ? srcDesc.id : srcDesc;
+        });
+        return plumbing.del(helpers.appendQueryParameters(url, {id: sdids}), {}, opts, function() {
+          return srcDescs;
+        });
+      }
+    );
+  };
+
+  /**
+   * @ngdoc function
+   * @name sourceBox.functions:deleteCollection
+   * @function
+   *
+   * @description
+   * Delete the specified collection
+   *
+   * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/aYpkq/ editable example}
+   *
+   * @param {string} udcid id or full URL of the collection
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the udcid
+   */
+  exports.deleteCollection = function(udcid, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('user-collection-template', udcid, {udcid: udcid}),
+      function(url) {
+        return plumbing.del(url, {}, opts, function() {
+          return udcid;
+        });
+      }
+    );
   };
 
   return exports;

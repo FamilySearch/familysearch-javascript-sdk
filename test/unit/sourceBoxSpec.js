@@ -1,4 +1,4 @@
-define(['FamilySearch'], function(FamilySearch) {
+define(['FamilySearch', 'helpers'], function(FamilySearch, helpers) {
   describe('Source Box', function() {
     it('user collections are returned from getCollectionsForUser', function() {
       FamilySearch.getCollectionsForUser('UID').then(function(response) {
@@ -49,5 +49,78 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(sourceDescriptions[0].attribution).toBeUndefined(); // bad example data
       });
     });
+
+    it('collection is created', function() {
+      var coll = new FamilySearch.Collection({title: 'Title'});
+      var promise = coll.$save(true);
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualJson({
+          collections: [{
+            title : 'Title'
+          }]
+        });
+        expect(promise.getStatusCode()).toBe(201);
+        expect(response).toBe('sf-MMMM-MMM');
+        expect(coll.id).toBe('sf-MMMM-MMM');  // re-read from database
+      });
+    });
+
+    it('collection is updated', function() {
+      var coll = new FamilySearch.Collection({title: 'Title'});
+      coll.id = 'sf-MMMM-MMM';
+      var promise = coll.$save();
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualJson({
+          collections: [{
+            id : 'sf-MMMM-MMM',
+            title : 'Title'
+          }]
+        });
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('sf-MMMM-MMM');
+      });
+    });
+
+    it('collection is deleted', function() {
+      var promise = FamilySearch.deleteCollection('sf-MMMM-MMM');
+      promise.then(function(response) {
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('sf-MMMM-MMM');
+      });
+    });
+
+    it('source descriptions are moved', function() {
+      var promise = FamilySearch.moveSourceDescriptionsToCollection('sf-MMMM-123', ['MMMM-MMM', 'MMMM-MMX']);
+      promise.then(function(response) {
+        var request = promise.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.data).toEqualJson({
+          sourceDescriptions: [{
+            id: 'MMMM-MMM'
+          }, {
+            id: 'MMMM-MMX'
+          }]
+        });
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('sf-MMMM-123');
+      });
+    });
+
+    it ('source descriptions are removed', function() {
+      var promise = FamilySearch.removeSourceDescriptionsFromCollections(['MMMM-MMM', 'MMMM-MMX']);
+      promise.then(function() {
+        var requests = FamilySearch.getHttpRequests();
+        expect(helpers.find(requests, {
+          type: 'DELETE',
+          url:'https://sandbox.familysearch.org/platform/sources/PXRQ-FMXT/collections/descriptions?id=MMMM-MMM&id=MMMM-MMX&access_token=mock'})
+        ).toBeTruthy();
+        expect(promise.getStatusCode()).toBe(204);
+      });
+    });
+
   });
 });
