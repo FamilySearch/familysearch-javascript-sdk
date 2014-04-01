@@ -6405,7 +6405,7 @@ define('sources',[
     if (data) {
       this.$personId = data.$personId;
       this.$coupleId = data.$coupleId;
-      this.$childAndPArentsId = data.$childAndParentsId;
+      this.$childAndParentsId = data.$childAndParentsId;
       if (data.sourceDescription) {
         //noinspection JSUnresolvedFunction
         this.$setSourceDescription(data.sourceDescription);
@@ -6618,6 +6618,7 @@ define('sources',[
         label = 'relationships';
       }
       else if (self.$childAndParentsId) {
+        template = 'child-and-parents-relationship-source-references-template';
         template = 'child-and-parents-relationship-source-references-template';
         label = 'childAndParentsRelationships';
         headers['Content-Type'] = 'application/x-fs-v1+json';
