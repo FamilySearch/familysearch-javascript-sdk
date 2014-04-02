@@ -185,7 +185,7 @@ your convenience functions with a <code>_</code>, though you are free to begin y
 <p>All updateable objects have a constructor that takes a parameters object for initialization,
 one or more <em>$set...()</em> functions, <em>$save()</em>, and <em>$delete()</em> functions.
 To create a new object, call the constructor to create a new object and call <em>$save()</em>.
-To update an object, call the <em>$set...()</em> functions and call <em>$save()</em>.
+To update an object, call the <em>$set...()</em> functions or update properties and call <em>$save()</em>.
 To delete an object, call <em>$delete()</em>.</p>
 <p>Most <em>$save()</em> functions take a <em>refresh</em> parameter that causes the object to be re-read from the server after it is saved.
 This is useful when the server adds new fields to the object or modifies fields when saving it.
@@ -221,7 +221,7 @@ Please use grunt to run jshint over your files before submitting pull requests.<
 <p><strong>Unit tests</strong> are created by copying and pasting the sample json responses provided on the FamilySearch
 developers website into files in the test/mock directory, then calling the corresponding function and running various
 expectations over the results.
-A test mock redirects the function call to read the response from the corresponding json file instead of calling the
+A test mock directs the function call to read the response from the corresponding json file instead of calling the
 actual FamilySearch REST API.
 Your pull requests should contain unit tests for new functionality and make sure that existing unit tests all pass.</p>
 <p><strong>Documentation</strong> is generated from JSDoc comments that have been extended with some <em>ngdoc</em> keywords.
