@@ -210,7 +210,7 @@
  * All updateable objects have a constructor that takes a parameters object for initialization,
  * one or more *$set...()* functions, *$save()*, and *$delete()* functions.
  * To create a new object, call the constructor to create a new object and call *$save()*.
- * To update an object, call the *$set...()* functions and call *$save()*.
+ * To update an object, call the *$set...()* functions or update properties and call *$save()*.
  * To delete an object, call *$delete()*.
  *
  * Most *$save()* functions take a *refresh* parameter that causes the object to be re-read from the server after it is saved.
@@ -256,7 +256,7 @@
  * **Unit tests** are created by copying and pasting the sample json responses provided on the FamilySearch
  * developers website into files in the test/mock directory, then calling the corresponding function and running various
  * expectations over the results.
- * A test mock redirects the function call to read the response from the corresponding json file instead of calling the
+ * A test mock directs the function call to read the response from the corresponding json file instead of calling the
  * actual FamilySearch REST API.
  * Your pull requests should contain unit tests for new functionality and make sure that existing unit tests all pass.
  *
