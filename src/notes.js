@@ -174,8 +174,15 @@ define([
      * @return {Object} promise for the note URL
      */
     $delete: function(opts) {
-      // since we're passing in the full url we can delete couple and child-and-parents notes with this function as well
-      return exports.deletePersonNote(this.$getNoteUrl(), null, opts);
+      if (this.$personId) {
+        return exports.deletePersonNote(this.$getNoteUrl() || this.$personId, this.id, opts);
+      }
+      else if (this.$coupleId) {
+        return exports.deleteCoupleNote(this.$getNoteUrl() || this.$coupleId, this.id, opts);
+      }
+      else {
+        return exports.deleteChildAndParentsNote(this.$getNoteUrl() || this.$childAndParentsId, this.id, opts);
+      }
     }
 
   };
@@ -204,9 +211,10 @@ define([
      * @ngdoc property
      * @name notes.types:constructor.NoteRef#id
      * @propertyOf notes.types:constructor.NoteRef
-     * @return {String} Id of the note - pass into {@link notes.functions:getPersonNote getPersonNote},
-     * {@link notes.functions:getCoupleNote getCoupleNote}, or {@link notes.functions:getChildAndParentsNote getChildAndParentsNote}
-     * for details
+     * @return {String} Id of the note
+     * - pass into {@link notes.functions:getPersonNote getPersonNote},
+     * {@link notes.functions:getCoupleNote getCoupleNote}, or
+     * {@link notes.functions:getChildAndParentsNote getChildAndParentsNote} for details
      */
 
     /**
@@ -260,7 +268,15 @@ define([
      * {@link sources.functions:getChildAndParentsNote getChildAndParentsNote} response
      */
     $getNote: function() {
-      return getNote(this.$getNoteUrl());
+      if (this.$personId) {
+        return exports.getPersonNote(this.$getNoteUrl() || this.$personId, this.id);
+      }
+      else if (this.$coupleId) {
+        return exports.getCoupleNote(this.$getNoteUrl() || this.$coupleId, this.id);
+      }
+      else {
+        return exports.getChildAndParentsNote(this.$getNoteUrl() || this.$childAndParentsId, this.id);
+      }
     },
 
     /**
@@ -275,8 +291,15 @@ define([
      * @return {Object} promise for the note URL
      */
     $delete: function(opts) {
-      // since we're passing in the full url we can delete couple and child-and-parents notes with this function as well
-      return exports.deletePersonNote(helpers.removeAccessToken(maybe(maybe(this.links).note).href), null, opts);
+      if (this.$personId) {
+        return exports.deletePersonNote(this.$getNoteUrl() || this.$personId, this.id, opts);
+      }
+      else if (this.$coupleId) {
+        return exports.deleteCoupleNote(this.$getNoteUrl() || this.$coupleId, this.id, opts);
+      }
+      else {
+        return exports.deleteChildAndParentsNote(this.$getNoteUrl() || this.$childAndParentsId, this.id, opts);
+      }
     }
 
   };

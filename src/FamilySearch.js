@@ -55,6 +55,7 @@ define([
     deleteDiscussion: discussions.deleteDiscussion,
     deleteDiscussionRef: discussions.deleteDiscussionRef,
     deleteDiscussionComment: discussions.deleteDiscussionComment,
+    deleteMemoryComment: discussions.deleteMemoryComment,
 
     // fact
     Fact: fact.Fact,
@@ -75,7 +76,6 @@ define([
     deleteMemory: memories.deleteMemory,
     deleteMemoryPersona: memories.deleteMemoryPersona,
     deleteMemoryPersonaRef: memories.deleteMemoryPersonaRef,
-    deleteMemoryComment: memories.deleteMemoryComment,
 
     // name
     Name: name.Name,
@@ -123,6 +123,8 @@ define([
     getPreferredParents: person.getPreferredParents,
     setPreferredParents: person.setPreferredParents,
     deletePreferredParents: person.deletePreferredParents,
+
+    // TODO places
 
     // plumbing
     get: plumbing.get,

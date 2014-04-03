@@ -837,7 +837,7 @@ define([
      * @return {Object} promise for the person URL
      */
     $delete: function(changeMessage, opts) {
-      return exports.deletePerson(helpers.removeAccessToken(maybe(maybe(this.links).person).href) || this.id, changeMessage, opts);
+      return exports.deletePerson(this.$getPersonUrl() || this.id, changeMessage, opts);
     }
   };
 
@@ -1476,8 +1476,9 @@ define([
     );
   };
 
-  // TODO getPersonMerge
-  // TODO getPersonNotAMatch
+  // TODO person merge
+  // TODO person not a match
+  // TODO restore person
 
   return exports;
 });

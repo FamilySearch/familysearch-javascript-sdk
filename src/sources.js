@@ -499,9 +499,15 @@ define([
      * @return {Object} promise for the source reference URL
      */
     $delete: function(changeMessage, opts) {
-      var fn = this.$personId ? exports.deletePersonSourceRef :
-        (this.$coupleId ? exports.deleteCoupleSourceRef : exports.deleteChildAndParentsSourceRef);
-      return fn(this.$getSourceRefUrl(), null, changeMessage, opts);
+      if (this.$personId) {
+        return exports.deletePersonSourceRef(this.$getSourceRefUrl() || this.$personID, this.id, changeMessage, opts);
+      }
+      else if (this.$coupleId) {
+        return exports.deleteCoupleSourceRef(this.$getSourceRefUrl() || this.$coupleId, this.id, changeMessage, opts);
+      }
+      else {
+        return exports.deleteChildAndParentsSourceRef(this.$getSourceRefUrl() || this.$childAndParentsId, this.id, changeMessage, opts);
+      }
     }
 
   };

@@ -311,5 +311,9 @@ define([
       ));
   };
 
+  // TODO authorities properties
+  // TODO name authority
+  // TODO culture authority
+
   return exports;
 });

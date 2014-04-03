@@ -65,6 +65,15 @@ define([
 
     /**
      * @ngdoc function
+     * @name spouses.types:constructor.Couple#$getCoupleUrl
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @return {String} Url of this couple relationship
+     */
+    $getCoupleUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).relationship).href); },
+
+    /**
+     * @ngdoc function
      * @name spouses.types:constructor.Couple#$getFacts
      * @methodOf spouses.types:constructor.Couple
      * @return {Fact[]} array of {@link fact.types:constructor.Fact Facts}; e.g., marriage
@@ -104,7 +113,7 @@ define([
      * @function
      * @return {Object} promise for the {@link exports.functions:getPerson getPerson} response
      */
-    $getHusband: function() { return globals.getPerson(this.$getHusbandUrl()); },
+    $getHusband: function() { return globals.getPerson(this.$getHusbandUrl() || this.$getHusbandId()); },
 
     /**
      * @ngdoc function
@@ -131,7 +140,7 @@ define([
      * @function
      * @return {Object} promise for the {@link exports.functions:getPerson getPerson} response
      */
-    $getWife: function() { return globals.getPerson(this.$getWifeUrl()); },
+    $getWife: function() { return globals.getPerson(this.$getWifeUrl() || this.$getWifeId()); },
 
     /**
      * @ngdoc function
@@ -342,7 +351,7 @@ define([
      * @return {Object} promise for the relationship URL
      */
     $delete: function(changeMessage, opts) {
-      return exports.deleteCouple(helpers.removeAccessToken(maybe(maybe(this.links).relationship).href) || this.id, changeMessage, opts);
+      return exports.deleteCouple(this.$getCoupleUrl() || this.id, changeMessage, opts);
     }
   };
 

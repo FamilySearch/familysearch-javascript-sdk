@@ -224,7 +224,7 @@ define([
      * @function
      * @return {Object} promise for the {@link memories.functions:getMemoryComments getMemoryComments} response
      */
-    $getComments: function() { return exports.getMemoryComments(this.$getCommentsUrl()); },
+    $getComments: function() { return exports.getMemoryComments(this.$getCommentsUrl() || this.id); },
 
     /**
      * @ngdoc function
@@ -341,7 +341,7 @@ define([
      * @return {Object} promise for the memory URL
      */
     $delete: function(opts) {
-      return exports.deleteMemory(this.$getMemoryUrl(), opts);
+      return exports.deleteMemory(this.$getMemoryUrl() || this.id, opts);
     }
 
   };
@@ -450,7 +450,7 @@ define([
      * @return {Object} promise for the {@link memories.functions:getMemory getMemory} response
      */
     $getMemory:  function() {
-      return exports.getMemory(this.$getMemoryUrl());
+      return exports.getMemory(this.$getMemoryUrl() || this.$memoryId);
     },
 
     /**
@@ -542,7 +542,7 @@ define([
      * @return {Object} promise for the memory persona URL
      */
     $delete: function(opts) {
-      return exports.deleteMemoryPersona(this.$getMemoryPersonaUrl(), null, opts);
+      return exports.deleteMemoryPersona(this.$getMemoryPersonaUrl() || this.$memoryId, this.id, opts);
     }
 
   };
@@ -633,6 +633,7 @@ define([
      * @return {Object} promise for the {@link memories.functions:getMemoryPersona getMemoryPersona} response
      */
     $getMemoryPersona:  function() {
+      // TODO add alternative (mid, mpid) if we get mid
       return exports.getMemoryPersona(this.$getMemoryPersonaUrl());
     },
 
@@ -656,6 +657,7 @@ define([
      * @return {Object} promise for the {@link memories.functions:getMemory getMemory} response
      */
     $getMemory:  function() {
+      // TODO add alternative mid if we get mid
       return exports.getMemory(this.$getMemoryUrl());
     },
 
@@ -723,7 +725,7 @@ define([
      * @return {Object} promise for the memory persona ref URL
      */
     $delete: function(opts) {
-      return exports.deleteMemoryPersonaRef(this.$getMemoryPersonaRefUrl(), null, opts);
+      return exports.deleteMemoryPersonaRef(this.$getMemoryPersonaRefUrl() || this.$personId, this.id, opts);
     }
 
   };
@@ -1213,34 +1215,6 @@ define([
       function(url) {
         return plumbing.del(url, {}, opts, function() {
           return pid;
-        });
-      }
-    );
-  };
-
-  /**
-   * @ngdoc function
-   * @name memories.functions:deleteMemoryComment
-   * @function
-   *
-   * @description
-   * Delete the specified memory comment
-   *
-   * {@link https://familysearch.org/developers/docs/api/memories/Memory_Comment_resource FamilySearch API Docs}
-   *
-   * {@link http://jsfiddle.net/DallanQ/5bbuQ/ editable example}
-   *
-   * @param {string} mid memory id or full URL of the comment
-   * @param {string=} cmid id of the comment (must be set if mid is a memory id and not the full URL)
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the mid
-   */
-  exports.deleteMemoryComment = function(mid, cmid, opts) {
-    return helpers.chainHttpPromises(
-      plumbing.getUrl('memory-comment-template', mid, {mid: mid, cmid: cmid}),
-      function(url) {
-        return plumbing.del(url, {}, opts, function() {
-          return mid;
         });
       }
     );

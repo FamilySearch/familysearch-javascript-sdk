@@ -65,6 +65,8 @@ define([
      * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
      */
 
+    // TODO add $getCollectionUrl when "self" link is available
+
     /**
      * @ngdoc function
      * @name sourceBox.types:constructor.Collection#$getSourceDescriptions
@@ -131,6 +133,7 @@ define([
      * @return {Object} promise for the collection id
      */
     $delete: function(opts) {
+      // TODO use $getCollectionUrl() as alternative when it is available
       return exports.deleteCollection(this.id, opts);
     }
 

@@ -72,7 +72,7 @@ define([
       this[role] = {};
     }
     if (person instanceof globals.Person) {
-      this[role].resource = person.$getUrl();
+      this[role].resource = person.$getPersonUrl();
       delete this[role].resourceId;
     }
     else if (helpers.isAbsoluteUrl(person)) {
@@ -145,6 +145,15 @@ define([
 
     /**
      * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$getChildAndParentsUrl
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @return {String} Url of this child-and-parents relationship
+     */
+    $getChildAndParentsUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).relationship).href); },
+
+    /**
+     * @ngdoc function
      * @name parentsAndChildren.types:constructor.ChildAndParents#$getFatherFacts
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @return {Fact[]} array of {@link fact.types:constructor.Fact Facts}; e.g., parent-relationship type
@@ -184,7 +193,7 @@ define([
      * @function
      * @return {Object} promise for the {@link person.functions:getPerson getPerson} response
      */
-    $getFather: function() { return globals.getPerson(this.$getFatherUrl()); },
+    $getFather: function() { return globals.getPerson(this.$getFatherUrl() || this.$getFatherId()); },
 
     /**
      * @ngdoc function
@@ -211,7 +220,7 @@ define([
      * @function
      * @return {Object} promise for the {@link person.functions:getPerson getPerson} response
      */
-    $getMother: function() { return globals.getPerson(this.$getMotherUrl()); },
+    $getMother: function() { return globals.getPerson(this.$getMotherUrl() || this.$getMotherId()); },
 
     /**
      * @ngdoc function
@@ -238,7 +247,7 @@ define([
      * @function
      * @return {Object} promise for the {@link person.functions:getPerson getPerson} response
      */
-    $getChild: function() { return globals.getPerson(this.$getChildUrl()); },
+    $getChild: function() { return globals.getPerson(this.$getChildUrl() || this.$getChildId()); },
 
     /**
      * @ngdoc function
@@ -573,7 +582,7 @@ define([
      * @return {Object} promise for the relationship URL
      */
     $delete: function(changeMessage, opts) {
-      return exports.deleteChildAndParents(helpers.removeAccessToken(maybe(maybe(this.links).relationship).href) || this.id, changeMessage, opts);
+      return exports.deleteChildAndParents(this.$getChildAndParentsUrl() || this.id, changeMessage, opts);
     }
   };
 

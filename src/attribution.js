@@ -69,7 +69,7 @@ define([
      * @function
      * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
      */
-    $getAgent: function() { return user.getAgent(this.$getAgentUrl()); }
+    $getAgent: function() { return user.getAgent(this.$getAgentUrl() || this.$getAgentId()); }
   };
 
   return exports;

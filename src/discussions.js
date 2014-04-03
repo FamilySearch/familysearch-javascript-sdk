@@ -127,7 +127,7 @@ define([
      * @function
      * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
      */
-    $getAgent: function() { return user.getAgent(this.$getAgentUrl()); },
+    $getAgent: function() { return user.getAgent(this.$getAgentUrl() || this.$getAgentId()); },
 
     /**
      * @ngdoc function
@@ -187,7 +187,7 @@ define([
      * @return {Object} promise for the discussion id
      */
     $delete: function(opts) {
-      // TODO use the discussion URL when that is available
+      // TODO use the discussion URL as an alternative when that is available
       return exports.deleteDiscussion(this.id, opts);
     }
 
@@ -275,7 +275,8 @@ define([
      * @return {Object} promise for the {@link discussions.functions:getDiscussion getDiscussion} response
      */
     $getDiscussion: function() {
-      return exports.getDiscussion(this.$getDiscussionUrl());
+      // TODO remove this.resourceId if resourceId ends up being discussion reference id
+      return exports.getDiscussion(this.$getDiscussionUrl() || this.resourceId);
     },
 
     /**
@@ -366,6 +367,7 @@ define([
      * @return {Object} promise for the discussion reference url
      */
     $delete: function(changeMessage, opts) {
+      // TODO pass in alternative $personId and drid when drid is available
       return exports.deleteDiscussionRef(this.$getDiscussionRefUrl(), null, changeMessage, opts);
     }
 
@@ -462,7 +464,7 @@ define([
      * @function
      * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
      */
-    $getAgent: function() { return user.getAgent(this.$getAgentUrl()); },
+    $getAgent: function() { return user.getAgent(this.$getAgentUrl() || this.$getAgentId()); },
 
     // TODO check whether it's possible to update memory comments now and remove the note
 
@@ -516,8 +518,12 @@ define([
      * @return {Object} promise for the comment url
      */
     $delete: function(opts) {
-      // since we're passing in the full url we can delete memory comments with this function as well
-      return exports.deleteDiscussionComment(this.$getCommentUrl(), null, opts);
+      if (this.$discussionId) {
+        return exports.deleteDiscussionComment(this.$getCommentUrl() || this.$discussionId, this.id, opts);
+      }
+      else {
+        return exports.deleteMemoryComment(this.$getCommentUrl() || this.$memoryId, this.id, opts);
+      }
     }
 
   };
@@ -768,6 +774,34 @@ define([
       function(url) {
         return plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
           return did;
+        });
+      }
+    );
+  };
+
+  /**
+   * @ngdoc function
+   * @name discussions.functions:deleteMemoryComment
+   * @function
+   *
+   * @description
+   * Delete the specified memory comment
+   *
+   * {@link https://familysearch.org/developers/docs/api/memories/Memory_Comment_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/5bbuQ/ editable example}
+   *
+   * @param {string} mid memory id or full URL of the comment
+   * @param {string=} cmid id of the comment (must be set if mid is a memory id and not the full URL)
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the mid
+   */
+  exports.deleteMemoryComment = function(mid, cmid, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('memory-comment-template', mid, {mid: mid, cmid: cmid}),
+      function(url) {
+        return plumbing.del(url, {}, opts, function() {
+          return mid;
         });
       }
     );
