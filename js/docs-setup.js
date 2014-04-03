@@ -208,7 +208,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Delete the specified discussion reference",
-      "keywords": "api delete discussion discussions docs drid editable example familysearch full function functions http https init net options opts org pass person pid promise reference set url"
+      "keywords": "api change changemessage delete discussion discussions docs drid editable example familysearch full function functions http https init message net options opts org pass person pid promise reference set url"
     },
     {
       "section": "api",
@@ -271,7 +271,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Reference to a discussion on a person.",
-      "keywords": "$delete $getdiscussion $getdiscussionrefurl $getdiscussionurl $personid $save $setdiscussionurl _discussion_ _note_ _refresh_ access api attached attributes create created creating data delete deleted deletediscussionref details discussion discussionref discussions editable example function functions getdiscussion http individual init net note object optional options opts parameter pass person promise property read reference references resource resourceid response set token types updated url"
+      "keywords": "$delete $getdiscussion $getdiscussionrefurl $getdiscussionurl $personid $save $setdiscussionurl _discussion_ _note_ _refresh_ access api attached attributes change changemessage create created creating data delete deleted deletediscussionref details discussion discussionref discussions editable example function functions getdiscussion http individual init message net note object optional options opts parameter pass person promise property read reference references resource resourceid response set token types updated url"
     },
     {
       "section": "api",
@@ -433,7 +433,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Memory",
-      "keywords": "$data $delete $getdescription $getfilename $geticonurl $getimageurl $getmemoryartifacturl $getmemoryurl $getthumbnailurl $gettitle $save $setdescription $setfilename $settitle __note__ _description_ _must_ access api appear apply array artifact artifactmetadata artifacttype attributes attribution contents create currently data default delete deletememory description discussion docs document documents doesn editable example existing familysearch field file filename formdata fulfilled full function functions http https icon ignored image images init media mediatype memories memory net object optional options opts org pass promise property read refresh resource resourcetype stories story string thumbnail title token true type types update updated updating upload uploaded url user"
+      "keywords": "$data $delete $getartifactfilename $getartifactheight $getartifacttype $getartifactwidth $getcomments $getcommentsurl $getdescription $geticonurl $getimageurl $getmemoryartifacturl $getmemoryurl $getthumbnailurl $gettitle $save $setartifactfilename $setdescription $settitle __note__ _description_ _must_ access api appear apply array artifact artifactfilename artifactmetadata artifacttype attributes attribution comments contents create currently data default delete deletememory description details discussion docs document documents doesn editable endpoint example existing familysearch field file filename formdata fulfilled full function functions getmemorycomments height http https icon ignored image images init media mediatype memories memory net object optional options opts org pass promise property read refresh resource resourcetype response stories story string thumbnail title token true type types update updated updating upload uploaded url user width"
     },
     {
       "section": "api",
@@ -649,7 +649,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "parentsAndChildren",
       "shortDescription": "Child and parents relationship",
-      "keywords": "$addfatherfact $addmotherfact $delete $deletefather $deletefatherfact $deletemother $deletemotherfact $getchanges $getchild $getchildid $getchildurl $getfather $getfatherfacts $getfatherid $getfatherurl $getmother $getmotherfacts $getmotherid $getmotherurl $getnoterefs $getsourcerefs $save $setchild $setfather $setmother __broken__ add api array biologicalparent call change changed changemessage changes child childandparents create dates default delete deletechildandparents docs editable example existing fact facts familysearch father fulfilled function functions getchildandparentschanges getchildandparentsnoterefs getchildandparentssourcerefs getperson http https init initializing longer message methods mother net note notes options opts org parent-relationship parents parentsandchildren pass passed persists person places plan promise property read refresh relationship remove removes response saved sdk seconds sources supported true type types update updated updating url"
+      "keywords": "$addfatherfact $addmotherfact $delete $deletefather $deletefatherfact $deletemother $deletemotherfact $getchanges $getchild $getchildid $getchildurl $getfather $getfatherfacts $getfatherid $getfatherurl $getmother $getmotherfacts $getmotherid $getmotherurl $getnoterefs $getsourcerefs $save $setchild $setfather $setfatherfacts $setmother $setmotherfacts __broken__ _child_ _father_ _fatherfacts_ _mother_ _motherfacts_ add api array arrays attributes biologicalparent change changed changemessage changes child childandparents create data dates default delete deletechildandparents deleted docs editable element example existing fact facts familysearch father fatherfacts fulfilled function functions getchildandparentschanges getchildandparentsnoterefs getchildandparentssourcerefs getperson http https ids init longer message methods mother motherfacts net note notes object objects optional options opts org parent-relationship parents parentsandchildren pass passed persists person places promise property read refresh relationship remove removes response saved set sources supported true type types update updated updating url urls"
     },
     {
       "section": "api",
@@ -667,7 +667,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "pedigree",
       "shortDescription": "Get the ancestors of a specified person and optionally a specified spouse with the following convenience functions",
-      "keywords": "additional ancestor ancestors ancestry api array ascendancy convenience docs editable example exists familysearch full function functions generations getascendancynumber getperson getpersons http https includes init max net notes number object objects optionally options opts org params pass pedigree person persondetails persons pid promise retrieve return returns set spouse true types"
+      "keywords": "$getascendancynumber additional ancestor ancestors ancestry api array ascendancy convenience display docs editable example exists familysearch full function functions generations getperson getpersons http https includes init marriagedate marriagedetails marriageplace max net notes number object objects optionally options opts org params pass pedigree person persondetails persons pid promise retrieve return returns set spouse true types"
     },
     {
       "section": "api",
@@ -676,7 +676,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "pedigree",
       "shortDescription": "Get the descendants of a specified person and optionally a specified spouse with the following convenience functions",
-      "keywords": "additional api array ascendancy convenience descendancy descendants descendency docs editable example exists familysearch function functions generations getancestry getdescendancynumber getperson getpersons http https includes init max net notes number object objects optionally options opts org params parts pass pedigree person persons pid promise retrieve return returns separate spouse surname true types unavailable"
+      "keywords": "$getdescendancynumber additional api array ascendancy convenience descendancy descendants descendency details display docs editable example exists familysearch function functions generations getancestry getperson getpersons http https includes init marriage marriagedate marriagedetails marriageplace max net notes number object objects optionally options opts org params pass pedigree person persondetails persons pid promise provide retrieve return returns set spouse true types"
     },
     {
       "section": "api",
@@ -820,7 +820,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Person",
-      "keywords": "$addfact $addname $delete $deletefact $deletename $getbirth $getbirthdate $getbirthplace $getburial $getburialdate $getburialplace $getchanges $getchildren $getchristening $getchristeningdate $getchristeningplace $getdeath $getdeathdate $getdeathplace $getdiscussionrefs $getdisplaybirthdate $getdisplaybirthplace $getdisplaydeathdate $getdisplaydeathplace $getdisplaygender $getdisplaylifespan $getdisplayname $getfact $getfacts $getgivenname $getmemorypersonarefs $getnames $getnoterefs $getparents $getpersistentidentifier $getpreferredname $getsourcerefs $getspouses $getsurname $geturl $save $setgender add api array arrays attributes attribution birth birthdate birthplace burial change changehistory changemessage changes christening christning conclusion count create death deathdate deathplace default delete deleteperson discussions display docs editable entries example existing fact facts false familysearch female fulfilled function functions gender getchildren getmemorypersonarefs getparents getpersonchanges getpersondiscussionrefs getpersonnoterefs getpersonsourcerefs getspouses http https identifers identifier includes init lifespan living male map memories message methods names net note notes number object options opts org params pass passed persistent persists person place preferred promise property read refresh remove removes response return sources surname true type types update updated updating url values year"
+      "keywords": "$addfact $addname $delete $deletefact $deletename $getancestry $getbirth $getbirthdate $getbirthplace $getburial $getburialdate $getburialplace $getchanges $getchildren $getchristening $getchristeningdate $getchristeningplace $getdeath $getdeathdate $getdeathplace $getdescendancy $getdiscussionrefs $getdisplaybirthdate $getdisplaybirthplace $getdisplaydeathdate $getdisplaydeathplace $getdisplaygender $getdisplaylifespan $getdisplayname $getfact $getfacts $getgivenname $getmemorypersonarefs $getnames $getnoterefs $getparents $getpersistentidentifier $getpersonportraiturl $getpersonurl $getpreferredname $getsourcerefs $getspouses $getsurname $save $setfacts $setgender $setnames _facts_ _gender_ _names_ add ancestor ancestry api array arrays attributes attribution birth birthdate birthplace burial change changehistory changemessage changes christening christning conclusion count create data death deathdate deathplace default delete deleted deleteperson descendency discussions display docs doesn editable element entries example exist existing fact facts false familysearch female final follow followredirect fulfilled full function functions gender generations getancestry getchildren getdescendancy getmemorypersonarefs getparents getpersonchanges getpersondiscussionrefs getpersonnoterefs getpersonportraiturl getpersonsourcerefs getspouses http https identifers identifier includes init lifespan living male map max memories message methods names net note notes number object objects optional options opts org params pass passed pedigree persistent persists person persondetails place portrait preferred promise property read redirect refresh remove removes response retrieve return set sources spouse string strings surname true type types update updated updating url values year"
     },
     {
       "section": "api",
@@ -928,7 +928,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "searchAndMatch",
       "shortDescription": "Get matches for someone not in the tree",
-      "keywords": "api array candidateid context convenience described docs editable example exception familysearch function functions getindex getpersonsearch getresultscount getsearchresults http https includes init match matches net number options opts org parameter parameters params pass person promise response restricts search searchandmatch searchresult searchresults starting total tree types valid"
+      "keywords": "api array assist candidateid context convenience described differences docs editable example familysearch fatherid finding function functions generally getindex getpersonsearch getresultscount getsearchresults http https includes init match matched matches motherid net number options opts org parameter parameters params pass people person promise relatives response restricts search searchandmatch searchresult searchresults spouseid starting total tree types valid"
     },
     {
       "section": "api",
@@ -1135,7 +1135,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Description of a source",
-      "keywords": "$delete $getcitation $getsourcerefsquery $gettext $gettitle $save $setcitation $settext $settitle _about_ api attributes attribution change changemessage citation create data delete deletesourcedescription deletion description docs editable example existing familysearch fulfilled function functions getsourcerefsquery http https init link message net object optional options opts org pass promise property read reason record refer references refresh response source sourcedescription sources text title true types update updated updating url"
+      "keywords": "$delete $getcitation $gettext $gettitle $save $setcitation $settext $settitle _about_ api attributes attribution change changemessage citation create data delete deletesourcedescription deletion description docs editable example existing familysearch fulfilled function functions http https init memory message net object optional options opts org pass promise property read reason record refer references refresh source sourcedescription sources text title true types update updated updating url"
     },
     {
       "section": "api",
@@ -1180,7 +1180,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "spouses",
       "shortDescription": "Couple relationship",
-      "keywords": "$addfact $delete $deletefact $getchanges $getfacts $gethusband $gethusbandid $gethusbandurl $getmarriagefact $getnoterefs $getsourcerefs $getwife $getwifeid $getwifeurl $save $sethusband $setwife add api array call change changemessage changes couple create default delete deletecouple editable example existing exports fact facts fulfilled function functions getcouplechanges getcouplenoterefs getcouplesourcerefs getperson http husband init initializing marriage message methods multiple net note notes options opts org pass passed persists person plan promise property read refresh relationship remove removes response sdk seconds sources spouses true type types update updated updating url wife"
+      "keywords": "$addfact $delete $deletefact $getchanges $getfacts $gethusband $gethusbandid $gethusbandurl $getmarriagefact $getnoterefs $getsourcerefs $getwife $getwifeid $getwifeurl $save $setfacts $sethusband $setwife _facts_ _husband_ _wife_ add api array attributes call change changemessage changes couple create data default delete deletecouple deleted editable elements example existing exports fact facts fulfilled function functions getcouplechanges getcouplenoterefs getcouplesourcerefs getperson http husband ids init initializing marriage message methods multiple net note notes object objects optional options opts org pass passed persists person plan promise property read refresh relationship remove removes response sdk seconds set sources spouses true type types update updated updating url urls wife"
     },
     {
       "section": "api",
@@ -1244,6 +1244,24 @@ NG_DOCS={
       "moduleName": "user",
       "shortDescription": "User - a user is returned from getCurrentUser;",
       "keywords": "agent api contact contactname contributor email full fullname function functions getcurrentuser ids property returned treeuserid types user"
+    },
+    {
+      "section": "api",
+      "id": "utilities",
+      "shortName": "utilities",
+      "type": "overview",
+      "moduleName": "utilities",
+      "shortDescription": "Utility functions",
+      "keywords": "api docs familysearch functions https org overview utilities utility"
+    },
+    {
+      "section": "api",
+      "id": "utilities.functions:getRedirectUrl",
+      "shortName": "getRedirectUrl",
+      "type": "function",
+      "moduleName": "utilities",
+      "shortDescription": "FamilySearch API Docs",
+      "keywords": "access api changes context docs familysearch function functions https location memories ordinances org params person precedence redirect token uri url user utilities"
     }
   ],
   "apis": {

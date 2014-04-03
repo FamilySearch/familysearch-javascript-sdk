@@ -11,8 +11,11 @@
 <em>$delete</em> removes the relationship.</p>
 </div></div>
 <h2 id="usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">ChildAndParents();</pre>
-</div>
+<div class="usage"><pre class="prettyprint linenums">ChildAndParents([data]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-page"><p>an object with optional attributes {father, mother, child, fatherFacts, motherFacts}.
+<em>father</em>, <em>mother</em>, and <em>child</em> are Person objects, URLs, or ids.
+<em>fatherFacts</em> and <em>motherFacts</em> are arrays of Facts or objects to be passed into the Fact constructor.</p>
+</div></td></tr></tbody></table></div>
 <div class="member method"><h2 id="methods">Methods</h2>
 <ul class="methods"><li><h3 id="methods_$addfatherfact">$addFatherFact(value)</h3>
 <div class="$addfatherfact"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-addfatherfact-page"><p>NOTE: dates are not supported for BiologicalParent, and places are not supported at all</p>
@@ -124,22 +127,33 @@ and if refresh is true, after the relationship has been read</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_$setchild">$setChild(child)</h3>
-<div class="$setchild"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setchild-page"><p>NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id
-Also note: Once the relationship has been saved, the child can no longer be changed</p>
+<div class="$setchild"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setchild-page"><p>NOTE: Once the relationship has been saved, the child can no longer be changed</p>
 </div><h5 id="methods_$setchild_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>child</td><td><a href="" class="label type-hint type-hint-person">Person</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setchild-page"><p>person or URL or id</p>
 </div></td></tr></tbody></table><h5 id="methods_$setchild_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-childandparents">ChildAndParents</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setchild-page"><p>this relationship</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_$setfather">$setFather(father)</h3>
-<div class="$setfather"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setfather-page"><p>NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id</p>
-</div><h5 id="methods_$setfather_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>father</td><td><a href="" class="label type-hint type-hint-person">Person</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setfather-page"><p>person or URL or id</p>
+<div class="$setfather"><h5 id="methods_$setfather_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>father</td><td><a href="" class="label type-hint type-hint-person">Person</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setfather-page"><p>person or URL or id</p>
 </div></td></tr></tbody></table><h5 id="methods_$setfather_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-childandparents">ChildAndParents</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setfather-page"><p>this relationship</p>
 </div></td></tr></table></div>
 </li>
+<li><h3 id="methods_$setfatherfacts">$setFatherFacts(facts, changeMessage)</h3>
+<div class="$setfatherfacts"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setfatherfacts-page"><p>NOTE: dates are not supported for BiologicalParent, and places are not supported at all</p>
+</div><h5 id="methods_$setfatherfacts_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>facts</td><td><a href="" class="label type-hint type-hint-fact">Fact[]</a><a href="" class="label type-hint type-hint-object">Object[]</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setfatherfacts-page"><p>facts to set; if an array element is not a Fact, it is passed into the Fact constructor</p>
+</div></td></tr><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setfatherfacts-page"><p>change message to use for deleted facts if any</p>
+</div></td></tr></tbody></table><h5 id="methods_$setfatherfacts_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-childandparents">ChildAndParents</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setfatherfacts-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
 <li><h3 id="methods_$setmother">$setMother(mother)</h3>
-<div class="$setmother"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setmother-page"><p>NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id</p>
-</div><h5 id="methods_$setmother_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>mother</td><td><a href="" class="label type-hint type-hint-person">Person</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setmother-page"><p>person or URL or id</p>
+<div class="$setmother"><h5 id="methods_$setmother_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>mother</td><td><a href="" class="label type-hint type-hint-person">Person</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setmother-page"><p>person or URL or id</p>
 </div></td></tr></tbody></table><h5 id="methods_$setmother_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-childandparents">ChildAndParents</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setmother-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setmotherfacts">$setMotherFacts(facts, changeMessage)</h3>
+<div class="$setmotherfacts"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setmotherfacts-page"><p>NOTE: dates are not supported for BiologicalParent, and places are not supported at all</p>
+</div><h5 id="methods_$setmotherfacts_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>facts</td><td><a href="" class="label type-hint type-hint-fact">Fact[]</a><a href="" class="label type-hint type-hint-object">Object[]</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setmotherfacts-page"><p>facts to set; if an array element is not a Fact, it is passed into the Fact constructor</p>
+</div></td></tr><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setmotherfacts-page"><p>change message to use for deleted facts if any</p>
+</div></td></tr></tbody></table><h5 id="methods_$setmotherfacts_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-childandparents">ChildAndParents</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setmotherfacts-page"><p>this relationship</p>
 </div></td></tr></table></div>
 </li>
 </ul>

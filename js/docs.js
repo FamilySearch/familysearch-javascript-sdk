@@ -4,6 +4,7 @@ var docsApp = {
   serviceFactory: {}
 };
 
+
 docsApp.directive.ngHtmlWrapLoaded = function(reindentCode, templateMerge, loadedUrls) {
   function escape(text) {
     return text.
@@ -56,10 +57,10 @@ docsApp.directive.ngHtmlWrapLoaded = function(reindentCode, templateMerge, loade
 docsApp.directive.focused = function($timeout) {
   return function(scope, element, attrs) {
     element[0].focus();
-    element.bind('focus', function() {
+    element.on('focus', function() {
       scope.$apply(attrs.focused + '=true');
     });
-    element.bind('blur', function() {
+    element.on('blur', function() {
       // have to use $timeout, so that we close the drop-down after the user clicks,
       // otherwise when the user clicks we process the closing before we process the click.
       $timeout(function() {
@@ -550,7 +551,7 @@ docsApp.controller.DocsController = function($scope, $location, $window, section
   }
 };
 
-angular.module('docsApp', ['bootstrap', 'bootstrapPrettify']).
+angular.module('docsApp', ['ngAnimate', 'bootstrap', 'bootstrapPrettify']).
   config(function($locationProvider) {
     if (NG_DOCS.html5Mode) {
       $locationProvider.html5Mode(true).hashPrefix('!');

@@ -2662,7 +2662,7 @@ define('changeHistory',[
      */
     $getChangeReason: function() { return maybe(maybe(this.changeInfo)[0]).reason; },
 
-    // TODO check for agent id
+    // TODO check for agent id (last checked 4/2/14)
 
     /**
      * @ngdoc function
@@ -2778,12 +2778,90 @@ define('changeHistory',[
   return exports;
 });
 
+define('attribution',[
+  'helpers',
+  'plumbing',
+  'user'
+], function(helpers, plumbing, user) {
+  /**
+   * @ngdoc overview
+   * @name attribution
+   * @description
+   * Functions related to an attribution object
+   */
+
+  var maybe = helpers.maybe; // shorthand
+
+  var exports = {};
+
+  /**
+   * @ngdoc function
+   * @name attribution.types:constructor.Attribution
+   * @description
+   *
+   * Attribution
+   * @param {String=} changeMessage change message
+   */
+  var Attribution = exports.Attribution = function(changeMessage) {
+    if (changeMessage) {
+      this.changeMessage = changeMessage;
+    }
+  };
+
+  exports.Attribution.prototype = {
+    constructor: Attribution,
+    /**
+     * @ngdoc property
+     * @name attribution.types:constructor.Attribution#modified
+     * @propertyOf attribution.types:constructor.Attribution
+     * @return {number} timestamp
+     */
+
+    /**
+     * @ngdoc property
+     * @name attribution.types:constructor.Attribution#changeMessage
+     * @propertyOf attribution.types:constructor.Attribution
+     * @return {string} change message
+     */
+
+    /**
+     * @ngdoc function
+     * @name attribution.types:constructor.Attribution#$getAgentId
+     * @methodOf attribution.types:constructor.Attribution
+     * @function
+     * @return {String} id of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
+     */
+    $getAgentId: function() { return maybe(this.contributor).resourceId; },
+
+    /**
+     * @ngdoc function
+     * @name attribution.types:constructor.Attribution#$getAgentUrl
+     * @methodOf attribution.types:constructor.Attribution
+     * @function
+     * @return {String} URL of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
+     */
+    $getAgentUrl: function() { return helpers.removeAccessToken(maybe(this.contributor).resource); },
+
+    /**
+     * @ngdoc function
+     * @name attribution.types:constructor.Attribution#$getAgent
+     * @methodOf attribution.types:constructor.Attribution
+     * @function
+     * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
+     */
+    $getAgent: function() { return user.getAgent(this.$getAgentUrl()); }
+  };
+
+  return exports;
+});
+
 define('discussions',[
+  'attribution',
   'globals',
   'helpers',
   'plumbing',
   'user'
-], function(globals, helpers, plumbing, user) {
+], function(attribution, globals, helpers, plumbing, user) {
   /**
    * @ngdoc overview
    * @name discussions
@@ -2861,7 +2939,7 @@ define('discussions',[
      * @return {Number} number of comments
      */
 
-    // TODO add $getDiscussionUrl when that's available
+    // TODO add $getDiscussionUrl when that's available (last checked 4/2/14)
 
     /**
      * @ngdoc function
@@ -3028,9 +3106,11 @@ define('discussions',[
      * @return {String} URL of this discussion reference; _NOTE_ however, that individual discussion references cannot be read
      */
     $getDiscussionRefUrl: function() {
-      // TODO change this once links is an associative array
+      // TODO change this once links is an associative array (last checked 4/2/14)
       return helpers.removeAccessToken(maybe(helpers.find(this.links, {title: 'Discussion Reference'})).href);
     },
+
+    // TODO add attribution when that is available (last checked 4/2/14)
 
     /**
      * @ngdoc function
@@ -3092,11 +3172,12 @@ define('discussions',[
      *
      * {@link http://jsfiddle.net/DallanQ/UarXL/ editable example}
      *
+     * @param {string} changeMessage change message
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise of the discussion reference url
      * (note however that individual discussion references cannot be read).
      */
-    $save: function(opts) {
+    $save: function(changeMessage, opts) {
       var self = this;
       return helpers.chainHttpPromises(
         plumbing.getUrl('person-discussion-references-template', null, {pid: self.$personId}),
@@ -3113,7 +3194,11 @@ define('discussions',[
               'discussion-references' : [ self.resource ]
             }]
           };
-          return plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
+          if (changeMessage) {
+            payload.persons[0].attribution = new attribution.Attribution(changeMessage);
+          }
+          var headers = {'Content-Type': 'application/x-fs-v1+json', 'X-FS-Feature-Tag': 'discussion-reference-json-fix'};
+          return plumbing.post(url, payload, headers, opts, function(data, promise) {
             if (!self.$getDiscussionRefUrl()) {
               // TODO change this once links is an associative array
               // TODO also set id when that field has been added
@@ -3133,11 +3218,12 @@ define('discussions',[
      * @methodOf discussions.types:constructor.DiscussionRef
      * @function
      * @description delete this discussion reference - see {@link discussions.functions:deleteDiscussionRef deleteDiscussionRef}
+     * @param {string=} changeMessage change message
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the discussion reference url
      */
-    $delete: function(opts) {
-      return exports.deleteDiscussionRef(this.$getDiscussionRefUrl(), null, opts);
+    $delete: function(changeMessage, opts) {
+      return exports.deleteDiscussionRef(this.$getDiscussionRefUrl(), null, changeMessage, opts);
     }
 
   };
@@ -3263,7 +3349,7 @@ define('discussions',[
         function(url) {
           var payload = {discussions: [{ comments: [ self ] }] };
           return plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
-            // TODO currently when creating discussion comments, X-ENTITY-ID and Location headers aren't returned
+            // TODO currently when creating discussion comments, X-ENTITY-ID and Location headers aren't returned (last checked 4/2/14)
             if (!self.id) {
               self.id = promise.getResponseHeader('X-ENTITY-ID');
             }
@@ -3497,14 +3583,19 @@ define('discussions',[
    *
    * @param {string} pid person id or full URL of the discussion reference
    * @param {string=} drid id of the discussion reference (must be set if pid is a person id and not the full URL)
+   * @param {string=} changeMessage change message
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the pid
    */
-  exports.deleteDiscussionRef = function(pid, drid, opts) {
+  exports.deleteDiscussionRef = function(pid, drid, changeMessage, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-discussion-reference-template', pid, {pid: pid, drid: drid}),
       function(url) {
-        return plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
+        var headers = {'Content-Type': 'application/x-fs-v1+json'};
+        if (changeMessage) {
+          headers['X-Reason'] = changeMessage;
+        }
+        return plumbing.del(url, headers, opts, function() {
           return pid;
         });
       }
@@ -3537,83 +3628,6 @@ define('discussions',[
         });
       }
     );
-  };
-
-  return exports;
-});
-
-define('attribution',[
-  'helpers',
-  'plumbing',
-  'user'
-], function(helpers, plumbing, user) {
-  /**
-   * @ngdoc overview
-   * @name attribution
-   * @description
-   * Functions related to an attribution object
-   */
-
-  var maybe = helpers.maybe; // shorthand
-
-  var exports = {};
-
-  /**
-   * @ngdoc function
-   * @name attribution.types:constructor.Attribution
-   * @description
-   *
-   * Attribution
-   * @param {String=} changeMessage change message
-   */
-  var Attribution = exports.Attribution = function(changeMessage) {
-    if (changeMessage) {
-      this.changeMessage = changeMessage;
-    }
-  };
-
-  exports.Attribution.prototype = {
-    constructor: Attribution,
-    /**
-     * @ngdoc property
-     * @name attribution.types:constructor.Attribution#modified
-     * @propertyOf attribution.types:constructor.Attribution
-     * @return {number} timestamp
-     */
-
-    /**
-     * @ngdoc property
-     * @name attribution.types:constructor.Attribution#changeMessage
-     * @propertyOf attribution.types:constructor.Attribution
-     * @return {string} change message
-     */
-
-    /**
-     * @ngdoc function
-     * @name attribution.types:constructor.Attribution#$getAgentId
-     * @methodOf attribution.types:constructor.Attribution
-     * @function
-     * @return {String} id of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
-     */
-    $getAgentId: function() { return maybe(this.contributor).resourceId; },
-
-    /**
-     * @ngdoc function
-     * @name attribution.types:constructor.Attribution#$getAgentUrl
-     * @methodOf attribution.types:constructor.Attribution
-     * @function
-     * @return {String} URL of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
-     */
-    $getAgentUrl: function() { return helpers.removeAccessToken(maybe(this.contributor).resource); },
-
-    /**
-     * @ngdoc function
-     * @name attribution.types:constructor.Attribution#$getAgent
-     * @methodOf attribution.types:constructor.Attribution
-     * @function
-     * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
-     */
-    $getAgent: function() { return user.getAgent(this.$getAgentUrl()); }
   };
 
   return exports;
@@ -4248,7 +4262,7 @@ define('memories',[
 
   var exports = {};
 
-  // TODO check whether it's possible to update story contents (and how to do it)
+  // TODO check whether it's possible now to update story contents (and how to do it)
   // TODO add functions to attach & detach photos to a story when the API exists
 
   /******************************************/
@@ -4261,7 +4275,7 @@ define('memories',[
    *
    * {@link https://familysearch.org/developers/docs/api/memories/Memory_resource FamilySearch API Docs}
    *
-   * @param {Object=} data an object with optional attributes {title, description, filename, $data}.
+   * @param {Object=} data an object with optional attributes {title, description, artifactFilename, $data}.
    * _$data_ is a string for Stories, or a FormData for Images or Documents
    * - if FormData, the field name of the file to upload _must_ be `artifact`.
    * _$data_ is ignored when updating a memory.
@@ -4282,7 +4296,7 @@ define('memories',[
       }
       if (data.filename) {
         //noinspection JSUnresolvedFunction
-        this.$setFilename(data.filename);
+        this.$setArtifactFilename(data.filename);
       }
       if (data.$data) {
         this.$data = data.$data;
@@ -4402,12 +4416,58 @@ define('memories',[
 
     /**
      * @ngdoc function
-     * @name memories.types:constructor.Memory#$getFilename
+     * @name memories.types:constructor.Memory#$getArtifactFilename
      * @methodOf memories.types:constructor.Memory
      * @function
      * @return {String} filename (provided by the user or a default name)
      */
-    $getFilename: function() { return maybe(maybe(this.artifactMetadata)[0]).filename; },
+    $getArtifactFilename: function() { return maybe(maybe(this.artifactMetadata)[0]).filename; },
+
+    /**
+     * @ngdoc function
+     * @name memories.types:constructor.Memory#$getArtifactType
+     * @methodOf memories.types:constructor.Memory
+     * @function
+     * @return {String} type; e.g., http://familysearch.org/v1/Image
+     */
+    $getArtifactType: function() { return maybe(maybe(this.artifactMetadata)[0]).artifactType; },
+
+    /**
+     * @ngdoc function
+     * @name memories.types:constructor.Memory#$getArtifactHeight
+     * @methodOf memories.types:constructor.Memory
+     * @function
+     * @return {number} image height
+     */
+    $getArtifactHeight: function() { return maybe(maybe(this.artifactMetadata)[0]).height; },
+
+    /**
+     * @ngdoc function
+     * @name memories.types:constructor.Memory#$getArtifactWidth
+     * @methodOf memories.types:constructor.Memory
+     * @function
+     * @return {number} image width
+     */
+    $getArtifactWidth: function() { return maybe(maybe(this.artifactMetadata)[0]).width; },
+
+    /**
+     * @ngdoc function
+     * @name memories.types:constructor.Memory#$getCommentsUrl
+     * @methodOf memories.types:constructor.Memory
+     * @function
+     * @return {String} URL of the comments endpoint
+     * - pass into {@link memories.functions:getMemoryComments getMemoryComments} for details
+     */
+    $getCommentsUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).comments).href); },
+
+    /**
+     * @ngdoc function
+     * @name memories.types:constructor.Memory#$getComments
+     * @methodOf memories.types:constructor.Memory
+     * @function
+     * @return {Object} promise for the {@link memories.functions:getMemoryComments getMemoryComments} response
+     */
+    $getComments: function() { return exports.getMemoryComments(this.$getCommentsUrl()); },
 
     /**
      * @ngdoc function
@@ -4439,13 +4499,13 @@ define('memories',[
 
     /**
      * @ngdoc function
-     * @name memories.types:constructor.Memory#$setFilename
+     * @name memories.types:constructor.Memory#$setArtifactFilename
      * @methodOf memories.types:constructor.Memory
      * @function
      * @param {String} filename uploaded file
      * @return {Memory} this memory
      */
-    $setFilename: function(filename) {
+    $setArtifactFilename: function(filename) {
       if (!helpers.isArray(this.artifactMetadata) || !this.artifactMetadata.length) {
         this.artifactMetadata = [ {} ];
       }
@@ -4489,8 +4549,8 @@ define('memories',[
             if (self.$getDescription()) {
               params.description = self.$getDescription();
             }
-            if (self.$getFilename()) {
-              params.filename = self.$getFilename();
+            if (self.$getArtifactFilename()) {
+              params.filename = self.$getArtifactFilename();
             }
             return plumbing.post(helpers.appendQueryParameters(url, params),
               self.$data, { 'Content-Type': helpers.isString(self.$data) ? 'text/plain' : 'multipart/form-data' }, opts,
@@ -4526,8 +4586,6 @@ define('memories',[
     $delete: function(opts) {
       return exports.deleteMemory(this.$getMemoryUrl(), opts);
     }
-
-    // TODO add a link to read comments when memories read from any endpoint include comments links
 
   };
 
@@ -4675,7 +4733,8 @@ define('memories',[
      * @methodOf memories.types:constructor.MemoryPersona
      * @function
      * @description
-     * Create a new memory persona (if this memory persona does not have an id) or update the existing memory persona
+     * Create a new memory persona (if this memory persona does not have an id) or update the existing memory persona.
+     * Only the name can be updated, not the memory id or the memory artifact reference.
      *
      * {@link http://jsfiddle.net/DallanQ/dLfA8/ editable example}
      *
@@ -4820,7 +4879,7 @@ define('memories',[
       return exports.getMemoryPersona(this.$getMemoryPersonaUrl());
     },
 
-    // TODO stop hacking into the resource when links.memory.href works
+    // TODO stop hacking into the resource when links.memory.href works (last checked 4/2/14)
     /**
      * @ngdoc function
      * @name memories.types:constructor.MemoryPersonaRef#$getMemoryUrl
@@ -5038,6 +5097,7 @@ define('memories',[
       function(url) {
         return plumbing.get(url, params, {}, opts,
           helpers.compose(
+            // TODO when the response contains personas, add a function to return them (last checked 4/2/14)
             helpers.objectExtender({getMemories: function() { return this.sourceDescriptions || []; }}),
             helpers.constructorSetter(Memory, 'sourceDescriptions'),
             helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
@@ -5609,7 +5669,7 @@ define('notes',[
      */
     $delete: function(opts) {
       // since we're passing in the full url we can delete couple and child-and-parents notes with this function as well
-      return exports.deletePersonNote(helpers.removeAccessToken(maybe(maybe(this.links).note).href), null, opts);
+      return exports.deletePersonNote(this.$getNoteUrl(), null, opts);
     }
 
   };
@@ -6188,7 +6248,7 @@ define('sources',[
    * {@link https://familysearch.org/developers/docs/api/sources/Source_Descriptions_resource FamilySearch API Docs}
    *
    * @param {Object=} data an object with optional attributes {about, citation, title, text}.
-   * _about_ is a URL - link to the record
+   * _about_ is a URL (link to the record) it can be a memory URL.
    **********************************/
 
   var SourceDescription = exports.SourceDescription = function(data) {
@@ -6232,8 +6292,6 @@ define('sources',[
      * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
      */
 
-    // TODO check for collection id and url
-
     /**
      * @ngdoc function
      * @name sources.types:constructor.SourceDescription#$getCitation
@@ -6261,19 +6319,19 @@ define('sources',[
      */
     $getText: function() { return maybe(maybe(this.notes)[0]).text; },
 
-    // TODO add $getSourceDescriptionUrl when that's available
+    // TODO add $getSourceDescriptionUrl when that's available (last checked 4/2/14)
 
-    /**
-     * @ngdoc function
-     * @name sources.types:constructor.SourceDescription#$getSourceRefsQuery
-     * @methodOf sources.types:constructor.SourceDescription
-     * @function
-     * @return {Object} promise for the {@link sources.functions:getSourceRefsQuery getSourceRefsQuery} response
-     */
-    // TODO verify this is available also from getCollectionSourceDescriptions(forUser)
-    $getSourceRefsQuery: function() {
-      return exports.getSourceRefsQuery(helpers.removeAccessToken(this.links['source-references-query'].href));
-    },
+    // TODO uncomment when this is available also from getCollectionSourceDescriptions(+ForUser) (last checked 4/2/14)
+//    /**
+//     * @ngdoc function
+//     * @name sources.types:constructor.SourceDescription#$getSourceRefsQuery
+//     * @methodOf sources.types:constructor.SourceDescription
+//     * @function
+//     * @return {Object} promise for the {@link sources.functions:getSourceRefsQuery getSourceRefsQuery} response
+//     */
+//    $getSourceRefsQuery: function() {
+//      return exports.getSourceRefsQuery(helpers.removeAccessToken(this.links['source-references-query'].href));
+//    },
 
     /**
      * @ngdoc function
@@ -6336,7 +6394,7 @@ define('sources',[
     $save: function(changeMessage, refresh, opts) {
       var self = this;
       if (changeMessage) {
-        self.attribution = {changeMessage: changeMessage};
+        self.attribution = new attribution.Attribution(changeMessage);
       }
       var promise = helpers.chainHttpPromises(
         self.id ? plumbing.getUrl('source-description-template', null, {sdid: self.id}) : plumbing.getUrl('source-descriptions'),
@@ -6605,7 +6663,7 @@ define('sources',[
     $save: function(changeMessage, opts) {
       var self = this;
       if (changeMessage) {
-        self.attribution = {changeMessage: changeMessage};
+        self.attribution = new attribution.Attribution(changeMessage);
       }
       var template, label;
       var headers = {};
@@ -7147,15 +7205,38 @@ define('parentsAndChildren',[
    * Two methods to note below are _$save_ and _$delete_.
    * _$save_ persists the changes made to father, mother, child, and facts;
    * _$delete_ removes the relationship.
+   *
+   * @param {Object=} data an object with optional attributes {father, mother, child, fatherFacts, motherFacts}.
+   * _father_, _mother_, and _child_ are Person objects, URLs, or ids.
+   * _fatherFacts_ and _motherFacts_ are arrays of Facts or objects to be passed into the Fact constructor.
    */
-  var ChildAndParents = exports.ChildAndParents = function() {
-
+  var ChildAndParents = exports.ChildAndParents = function(data) {
+    if (data) {
+      if (data.father) {
+        //noinspection JSUnresolvedFunction
+        this.$setFather(data.father);
+      }
+      if (data.mother) {
+        //noinspection JSUnresolvedFunction
+        this.$setMother(data.mother);
+      }
+      if (data.child) {
+        //noinspection JSUnresolvedFunction
+        this.$setChild(data.child);
+      }
+      if (data.fatherFacts) {
+        //noinspection JSUnresolvedFunction
+        this.$setFatherFacts(data.fatherFacts);
+      }
+      if (data.motherFacts) {
+        //noinspection JSUnresolvedFunction
+        this.$setMotherFacts(data.motherFacts);
+      }
+    }
   };
 
   // helper functions - called with this set to the relationship
   // export so we can use them in spouses.js
-
-  // TODO allow setting either resource or resourceId here, and then set resource from resourceId on save, and remove warnings
 
   // person may be a Person, a URL, or an ID
   exports.setMember = function(role, person) {
@@ -7164,14 +7245,16 @@ define('parentsAndChildren',[
     }
     if (person instanceof globals.Person) {
       this[role].resource = person.$getUrl();
+      delete this[role].resourceId;
     }
     else if (helpers.isAbsoluteUrl(person)) {
       this[role].resource = person;
+      delete this[role].resourceId;
     }
     else {
-      this[role].resource = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'person-template', {pid: person});
+      this[role].resourceId = person;
+      delete this[role].resource;
     }
-    delete this[role].resourceId;
   };
 
   exports.deleteMember = function(role, changeMessage) {
@@ -7180,6 +7263,18 @@ define('parentsAndChildren',[
     }
     this.$deletedMembers[role] = changeMessage;
     delete this[role];
+  };
+
+  exports.setFacts = function(prop, values, changeMessage) {
+    if (helpers.isArray(this[prop])) {
+      helpers.forEach(this[prop], function(fact) {
+        exports.deleteFact.call(this, prop, fact, changeMessage);
+      }, this);
+    }
+    this[prop] = [];
+    helpers.forEach(values, function(value) {
+      exports.addFact.call(this, prop, value);
+    }, this);
   };
 
   exports.addFact = function(prop, value) {
@@ -7349,7 +7444,6 @@ define('parentsAndChildren',[
      * @name parentsAndChildren.types:constructor.ChildAndParents#$setFather
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
-     * @description NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id
      * @param {Person|string} father person or URL or id
      * @return {ChildAndParents} this relationship
      */
@@ -7365,7 +7459,6 @@ define('parentsAndChildren',[
      * @name parentsAndChildren.types:constructor.ChildAndParents#$setMother
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
-     * @description NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id
      * @param {Person|string} mother person or URL or id
      * @return {ChildAndParents} this relationship
      */
@@ -7381,8 +7474,7 @@ define('parentsAndChildren',[
      * @name parentsAndChildren.types:constructor.ChildAndParents#$setChild
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
-     * @description NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id
-     * Also note: Once the relationship has been saved, the child can no longer be changed
+     * @description NOTE: Once the relationship has been saved, the child can no longer be changed
      * @param {Person|string} child person or URL or id
      * @return {ChildAndParents} this relationship
      */
@@ -7424,6 +7516,22 @@ define('parentsAndChildren',[
 
     /**
      * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$setFatherFacts
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @description NOTE: dates are not supported for BiologicalParent, and places are not supported at all
+     * @param {Fact[]|Object[]} facts facts to set; if an array element is not a Fact, it is passed into the Fact constructor
+     * @param {string=} changeMessage change message to use for deleted facts if any
+     * @return {ChildAndParents} this relationship
+     */
+    $setFatherFacts: function(facts, changeMessage) {
+      exports.setFacts.call(this, 'fatherFacts', facts, changeMessage);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
      * @name parentsAndChildren.types:constructor.ChildAndParents#$addFatherFact
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
@@ -7439,21 +7547,6 @@ define('parentsAndChildren',[
 
     /**
      * @ngdoc function
-     * @name parentsAndChildren.types:constructor.ChildAndParents#$addMotherFact
-     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-     * @function
-     * @description NOTE: dates are not supported for BiologicalParent, and places are not supported at all
-     * @param {Fact|Object} value fact to add; if value is not a Fact, it is passed into the Fact constructor
-     * @return {ChildAndParents} this relationship
-     */
-    $addMotherFact: function(value) {
-      exports.addFact.call(this, 'motherFacts', value);
-      //noinspection JSValidateTypes
-      return this;
-    },
-
-    /**
-     * @ngdoc function
      * @name parentsAndChildren.types:constructor.ChildAndParents#$deleteFatherFact
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
@@ -7463,6 +7556,37 @@ define('parentsAndChildren',[
      */
     $deleteFatherFact: function(value, changeMessage) {
       exports.deleteFact.call(this, 'fatherFacts', value, changeMessage);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$setMotherFacts
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @description NOTE: dates are not supported for BiologicalParent, and places are not supported at all
+     * @param {Fact[]|Object[]} facts facts to set; if an array element is not a Fact, it is passed into the Fact constructor
+     * @param {string=} changeMessage change message to use for deleted facts if any
+     * @return {ChildAndParents} this relationship
+     */
+    $setMotherFacts: function(facts, changeMessage) {
+      exports.setFacts.call(this, 'motherFacts', facts, changeMessage);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$addMotherFact
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @description NOTE: dates are not supported for BiologicalParent, and places are not supported at all
+     * @param {Fact|Object} value fact to add; if value is not a Fact, it is passed into the Fact constructor
+     * @return {ChildAndParents} this relationship
+     */
+    $addMotherFact: function(value) {
+      exports.addFact.call(this, 'motherFacts', value);
       //noinspection JSValidateTypes
       return this;
     },
@@ -7503,9 +7627,6 @@ define('parentsAndChildren',[
       var isChanged = false;
       var caprid = this.id;
 
-      // TODO don't "push down" attribution to individual conclusions once the global attribution bug has been fixed
-      // support attribution at the top-level
-
       // send father if new or changed
       if (!this.id || this.$fatherChanged) {
         postData.father = this.father;
@@ -7524,14 +7645,16 @@ define('parentsAndChildren',[
         isChanged = true;
       }
 
+      // set global changeMessage
+      // TODO as far as I can tell, the change message isn't stored (last checked 4/2/14)
+      if (changeMessage) {
+        postData.attribution = new attribution.Attribution(changeMessage);
+      }
+
       // send facts if new or changed
       helpers.forEach(['fatherFacts', 'motherFacts'], function(prop) {
         helpers.forEach(this[prop], function(fact) {
           if (!caprid || !fact.id || fact.$changed) {
-            // set change message if none set
-            if (changeMessage && helpers.attributionNeeded(fact)) {
-              fact.$setChangeMessage(changeMessage);
-            }
             exports.addFact.call(postData, prop, fact);
             isChanged = true;
           }
@@ -7546,7 +7669,13 @@ define('parentsAndChildren',[
           caprid ? plumbing.getUrl('child-and-parents-relationship-template', null, {caprid: caprid}) :
                    plumbing.getUrl('relationships'),
           function(url) {
-            // TODO this is where postData[father|mother|child].resource could be set from resourceId
+            // set url from id now that discovery resource is guaranteed to be loaded
+            helpers.forEach(['father', 'mother', 'child'], function(role) {
+              if (postData[role] && !postData[role].resource && postData[role].resourceId) {
+                postData[role].resource =
+                  helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'person-template', {pid: postData[role].resourceId});
+              }
+            });
             return plumbing.post(url,
               { childAndParentsRelationships: [ postData ] },
               {'Content-Type': 'application/x-fs-v1+json'},
@@ -7759,8 +7888,9 @@ define('pedigree',[
    *
    * ### Notes
    *
-   * * Each Person object has an additional `getAscendancyNumber()` function that returns the person's ascendancy number.
+   * * Each Person object has an additional `$getAscendancyNumber()` function that returns the person's ascendancy number.
    * * Some information on the Person objects is available only if `params` includes `personDetails`
+   * * If `params` includes `marriageDetails`, then `person.display` includes `marriageDate` and `marriagePlace`.
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Ancestry_resource FamilySearch API Docs}
    *
@@ -7780,14 +7910,12 @@ define('pedigree',[
           helpers.compose(
             helpers.objectExtender(pedigreeConvenienceFunctionGenerator('ascendancyNumber')),
             globals.personMapper(),
-            helpers.objectExtender({getAscendancyNumber: function() { return this.display.ascendancyNumber; }}, function(response) {
+            helpers.objectExtender({$getAscendancyNumber: function() { return this.display.ascendancyNumber; }}, function(response) {
               return maybe(response).persons;
             })
           ));
       });
   };
-
-  // TODO add marriageDetails query parameter and convenience functions
 
   /**
    * @ngdoc function
@@ -7804,15 +7932,20 @@ define('pedigree',[
    *
    * ### Notes
    *
-   * * Each Person object has an additional `getDescendancyNumber()` function that returns the person's descendancy number.
-   * * Some information on the Person objects is unavailable; e.g., separate given name and surname name parts.
+   * * Each Person object has an additional `$getDescendancyNumber()` function that returns the person's descendancy number.
+   * * Some information on the Person objects is available only if `params` includes `personDetails`
+   * * If `params` includes `marriageDetails`, then `person.display` includes `marriageDate` and `marriagePlace`.
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Descendancy_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/eBNGk/ editable example}
    *
    * @param {string} pid id of the person
-   * @param {Object=} params includes `generations` to retrieve max 2, `spouse` id to get descendency of person and spouse
+   * @param {Object=} params includes
+   * `generations` to retrieve max 2,
+   * `spouse` id to get descendency of person and spouse,
+   * `marriageDetails` set to true to provide marriage details, and
+   * `personDetails` set to true to provide person details.
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the descendancy
    */
@@ -7824,7 +7957,7 @@ define('pedigree',[
           helpers.compose(
             helpers.objectExtender(pedigreeConvenienceFunctionGenerator('descendancyNumber')),
             globals.personMapper(),
-            helpers.objectExtender({getDescendancyNumber: function() { return this.display.descendancyNumber; }}, function(response) {
+            helpers.objectExtender({$getDescendancyNumber: function() { return this.display.descendancyNumber; }}, function(response) {
               return maybe(response).persons;
             })
           ));
@@ -7867,9 +8000,26 @@ define('spouses',[
    * Two methods to note below are _$save_ and _$delete_.
    * _$save_ persists the changes made to husband, wife, and facts;
    * _$delete_ removes the relationship.
+   *
+   * @param {Object=} data an object with optional attributes {husband, wife, facts}.
+   * _husband_ and _wife_ are Person objects, URLs, or ids.
+   * _facts_ is an array of Facts or objects to be passed into the Fact constructor.
    */
-  var Couple = exports.Couple = function() {
-
+  var Couple = exports.Couple = function(data) {
+    if (data) {
+      if (data.husband) {
+        //noinspection JSUnresolvedFunction
+        this.$setHusband(data.husband);
+      }
+      if (data.wife) {
+        //noinspection JSUnresolvedFunction
+        this.$setWife(data.wife);
+      }
+      if (data.facts) {
+        //noinspection JSUnresolvedFunction
+        this.$setFacts(data.facts);
+      }
+    }
   };
 
   exports.Couple.prototype = {
@@ -8012,6 +8162,21 @@ define('spouses',[
 
     /**
      * @ngdoc function
+     * @name spouses.types:constructor.Couple#$setFacts
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @param {Fact[]|Object[]} facts facts to set; if array elements are not Facts, they are passed into the Fact constructor
+     * @param {string=} changeMessage change message to use for deleted facts if any
+     * @return {Couple} this relationship
+     */
+    $setFacts: function(facts, changeMessage) {
+      parentsAndChildren.setFacts.call(this, 'facts', facts, changeMessage);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
      * @name spouses.types:constructor.Couple#$addFact
      * @methodOf spouses.types:constructor.Couple
      * @function
@@ -8060,9 +8225,6 @@ define('spouses',[
       var isChanged = false;
       var crid = this.id;
 
-      // TODO don't "push down" attribution to individual conclusions once the global attribution bug has been fixed
-      // support attribution at the top-level
-
       // send husband and wife if new or either has changed
       if (!this.id || this.$husbandChanged || this.$wifeChanged) {
         postData.person1 = this.person1;
@@ -8070,12 +8232,13 @@ define('spouses',[
         isChanged = true;
       }
 
+      // set global changeMessage
+      if (changeMessage) {
+        postData.attribution = new attribution.Attribution(changeMessage);
+      }
+
       helpers.forEach(this.facts, function(fact) {
         if (!crid || !fact.id || fact.$changed) {
-          // set change message if none set
-          if (changeMessage && helpers.attributionNeeded(fact)) {
-            fact.$setChangeMessage(changeMessage);
-          }
           parentsAndChildren.addFact.call(postData, 'facts', fact);
           isChanged = true;
         }
@@ -8092,6 +8255,13 @@ define('spouses',[
           crid ? plumbing.getUrl('couple-relationship-template', null, {crid: crid}) :
             plumbing.getUrl('relationships'),
           function(url) {
+            // set url from id now that discovery resource is guaranteed to be loaded
+            helpers.forEach(['person1', 'person2'], function(role) {
+              if (postData[role] && !postData[role].resource && postData[role].resourceId) {
+                postData[role].resource =
+                  helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'person-template', {pid: postData[role].resourceId});
+              }
+            });
             return plumbing.post(url,
               { relationships: [ postData ] },
               {},
@@ -8235,11 +8405,13 @@ define('person',[
   'name',
   'notes',
   'parentsAndChildren',
+  'pedigree',
   'plumbing',
   'sources',
   'spouses',
   'user'
-], function(attribution, changeHistory, discussions, fact, globals, helpers, memories, name, notes, parentsAndChildren, plumbing, sources, spouses, user) {
+], function(attribution, changeHistory, discussions, fact, globals, helpers, memories, name, notes, parentsAndChildren,
+            pedigree, plumbing, sources, spouses, user) {
   /**
    * @ngdoc overview
    * @name person
@@ -8258,7 +8430,7 @@ define('person',[
 
   var exports = {};
 
-  // TODO see if upgrading to grunt-ngdocs 0.2.1 will allow links to _methods_ like $save and $delete
+  // TODO see if moving to the new https://github.com/angular/dgeni will allow links to _methods_ like $save and $delete
 
   /**********************************/
   /**
@@ -8273,9 +8445,28 @@ define('person',[
    * Two methods to note below are _$save_ and _$delete_.
    * _$save_ persists the changes made to names, facts, and gender;
    * _$delete_ removes the person.
+   *
+   * @param {Object=} data an object with optional attributes {gender, names, facts}.
+   * _gender_ is a string.
+   * _names_ is an array of Name's, or Objects or strings to pass into the Name constructor.
+   * _facts_ is an array of Fact's or Objects to pass into the Fact constructor.
    **********************************/
 
-  var Person = globals.Person = exports.Person = function() {
+  var Person = globals.Person = exports.Person = function(data) {
+    if (data) {
+      if (data.gender) {
+        //noinspection JSUnresolvedFunction
+        this.$setGender(data.gender);
+      }
+      if (data.names) {
+        //noinspection JSUnresolvedFunction
+        this.$setNames(data.names);
+      }
+      if (data.facts) {
+        //noinspection JSUnresolvedFunction
+        this.$setFacts(data.facts);
+      }
+    }
   };
 
   function spacePrefix(namePiece) {
@@ -8604,8 +8795,6 @@ define('person',[
       return name;
     },
 
-    // TODO add unit tests for the following functions
-
     /**
      * @ngdoc function
      * @name person.types:constructor.Person#$getPersistentIdentifier
@@ -8617,12 +8806,12 @@ define('person',[
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#$getUrl
+     * @name person.types:constructor.Person#$getPersonUrl
      * @methodOf person.types:constructor.Person
      * @function
      * @return {String} Url of the person
      */
-    $getUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).person).href); },
+    $getPersonUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).person).href); },
 
     /**
      * @ngdoc function
@@ -8713,7 +8902,66 @@ define('person',[
       return exports.getChildren(this.id);
     },
 
-    // TODO add links to ancestry, descendancy, person-with-relationships, matches, portrait
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getAncestry
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {Object=} params includes `generations` to retrieve max 8, `spouse` id to get ancestry of person and spouse,
+     * `personDetails` set to true to retrieve full person objects for each ancestor
+     * @return {Object} promise for the {@link pedigree.functions:getAncestry getAncestry} response
+     */
+    $getAncestry: function(params) {
+      return pedigree.getAncestry(this.id, params);
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getDescendancy
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {Object=} params includes `generations` to retrieve max 2, `spouse` id to get descendency of person and spouse
+     * @return {Object} promise for the {@link pedigree.functions:getDescendancy getDescendancy} response
+     */
+    $getDescendancy: function(params) {
+      return pedigree.getDescendancy(this.id, params);
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getPersonPortraitUrl
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {Object=} params `default` URL to redirect to if portrait doesn't exist;
+     * `followRedirect` if true, follow the redirect and return the final URL
+     * @return {Object} promise for the {@link memories.functions:getPersonPortraitUrl getPersonPortraitUrl} response
+     */
+    $getPersonPortraitUrl: function(params) {
+      return memories.getPersonPortraitUrl(this.id, params);
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$setNames
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {Name[]|Object[]|string[]} values names to set; if an array element is not a Name, it is passed into the Name constructor
+     * @param {string=} changeMessage change message to use for deleted names if any
+     * @return {Person} this person
+     */
+    $setNames: function(values, changeMessage) {
+      if (helpers.isArray(this.names)) {
+        helpers.forEach(this.names, function(name) {
+          this.$deleteName(name, changeMessage);
+        }, this);
+      }
+      this.names = [];
+      helpers.forEach(values, function(value) {
+        this.$addName(value);
+      }, this);
+      //noinspection JSValidateTypes
+      return this;
+    },
 
     /**
      * @ngdoc function
@@ -8758,6 +9006,29 @@ define('person',[
         // remove name from array
         this.names.splice(pos,1);
       }
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$setFacts
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {Fact[]|Object[]} values facts to set; if an array element is not a Fact, it is passed into the Fact constructor
+     * @param {string=} changeMessage change message to use for deleted facts if any
+     * @return {Person} this person
+     */
+    $setFacts: function(values, changeMessage) {
+      if (helpers.isArray(this.facts)) {
+        helpers.forEach(this.facts, function(fact) {
+          this.$deleteFact(fact, changeMessage);
+        }, this);
+      }
+      this.facts = [];
+      helpers.forEach(values, function(value) {
+        this.$addFact(value);
+      }, this);
       //noinspection JSValidateTypes
       return this;
     },
@@ -8854,8 +9125,6 @@ define('person',[
         postData.id = this.id; // updating existing person
       }
 
-      // TODO don't "push down" attribution to individual conclusions once the global attribution bug has been fixed
-
       // if person is new, default a few things
       if (!this.id) {
         // default gender to unknown
@@ -8876,12 +9145,13 @@ define('person',[
         }
       }
 
+      // set global changeMessage
+      if (changeMessage) {
+        postData.attribution = new attribution.Attribution(changeMessage);
+      }
+
       // send gender if gender is new or changed
       if (this.gender && (!this.gender.id || this.gender.$changed)) {
-        // set change message if none set
-        if (changeMessage && helpers.attributionNeeded(this.gender)) {
-          this.gender.attribution = new attribution.Attribution(changeMessage);
-        }
         postData.gender = this.gender;
         isChanged = true;
       }
@@ -8894,10 +9164,6 @@ define('person',[
             name.$setFullText((spacePrefix(name.$getPrefix()) + spacePrefix(name.$getGivenName()) +
                                spacePrefix(name.$getSurname()) + spacePrefix(name.$getSuffix())).trim());
           }
-          // set change message if none set
-          if (changeMessage && helpers.attributionNeeded(name)) {
-            name.$setChangeMessage(changeMessage);
-          }
           postData.$addName(name);
           isChanged = true;
         }
@@ -8906,10 +9172,6 @@ define('person',[
       // send facts that are new or updated
       helpers.forEach(this.facts, function(fact) {
         if (!fact.id || fact.$changed) {
-          // set change message if none set
-          if (changeMessage && helpers.attributionNeeded(fact)) {
-            fact.$setChangeMessage(changeMessage);
-          }
           postData.$addFact(fact);
           isChanged = true;
         }
@@ -9244,7 +9506,7 @@ define('person',[
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  // TODO check if this has been fixed, and check if the entries really contain changeInfo and contributors attributes
+  // TODO check if this has been fixed, and check if the entries really contain changeInfo and contributors attributes (last checked 4/2/14)
   exports.getPersonChangeSummary = function(pid, params, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-change-summary-template', pid, {pid: pid}),
@@ -9531,7 +9793,7 @@ define('person',[
         return plumbing.getUrl('preferred-parent-relationship-template', null, {uid: uid, pid: pid});
       },
       function(url) {
-        // TODO remove accept header when FS bug is fixed
+        // TODO remove accept header when FS bug is fixed (last checked 4/2/14)
         var promise = plumbing.get(url, params, {Accept: 'application/x-fs-v1+json'}, opts);
         // FamilySearch returns a 303 function to redirect to the preferred relationship, but the response may come back as XML in chrome.
         // So just get the relationship id from the content-location header
@@ -9969,8 +10231,11 @@ define('searchAndMatch',[
    *
    * {@link http://jsfiddle.net/DallanQ/hhcLP/ editable example}
    *
-   * @param {Object} params same parameters as described for {@link searchAndMatch.functions:getPersonSearch getPersonSearch},
-   * with the exception that `context` is not a valid parameter for match, and `candidateId` restricts matches to the person with that Id
+   * @param {Object} params generally the same parameters as described for
+   * {@link searchAndMatch.functions:getPersonSearch getPersonSearch}, with the the following differences:
+   * `context` is not a valid parameter for match,
+   * `fatherId`, `motherId`, and `spouseId` assist in finding matches for people whose relatives have already been matched, and
+   * `candidateId` restricts matches to the person with that Id (what does this mean?)
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
@@ -10363,6 +10628,40 @@ define('sourceBox',[
   return exports;
 });
 
+define('utilities',[
+  'globals',
+  'helpers'
+], function(globals, helpers) {
+  /**
+   * @ngdoc overview
+   * @name utilities
+   * @description
+   * Utility functions
+   *
+   * {@link https://familysearch.org/developers/docs/api/resources#utilities FamilySearch API Docs}
+   */
+
+  var exports = {};
+
+  /**
+   * @ngdoc function
+   * @name utilities.functions:getRedirectUrl
+   * @function
+   *
+   * @description
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Redirect_resource FamilySearch API Docs}
+   *
+   * @param {Object=} params context (details, memories, ordinances, or changes), or person (id), or uri (takes precedence)
+   * @return {string} URL with access token that will redirect the user to the specified location
+   */
+  exports.getRedirectUrl = function(params) {
+    return helpers.appendAccessToken(helpers.appendQueryParameters(helpers.getAPIServerUrl('/platform/redirect'), params));
+  };
+
+  return exports;
+});
+
 define('FamilySearch',[
   'init',
   'authentication',
@@ -10376,14 +10675,15 @@ define('FamilySearch',[
   'parentsAndChildren',
   'pedigree',
   'person',
+  'plumbing',
   'searchAndMatch',
   'sourceBox',
   'sources',
   'spouses',
   'user',
-  'plumbing'
-], function(init, authentication, authorities, changeHistory, discussions, fact, memories, name, notes, parentsAndChildren, pedigree, person,
-            searchAndMatch, sourceBox, sources, spouses, user, plumbing) {
+  'utilities'
+], function(init, authentication, authorities, changeHistory, discussions, fact, memories, name, notes, parentsAndChildren,
+            pedigree, person, plumbing, searchAndMatch, sourceBox, sources, spouses, user, utilities) {
   return {
     init: init.init,
 
@@ -10488,6 +10788,15 @@ define('FamilySearch',[
     setPreferredParents: person.setPreferredParents,
     deletePreferredParents: person.deletePreferredParents,
 
+    // plumbing
+    get: plumbing.get,
+    post: plumbing.post,
+    put: plumbing.put,
+    del: plumbing.del,
+    http: plumbing.http,
+    getTotalProcessingTime: plumbing.getTotalProcessingTime,
+    setTotalProcessingTime: plumbing.setTotalProcessingTime,
+
     // search and match
     SearchResult: searchAndMatch.SearchResult,
     getPersonSearch: searchAndMatch.getPersonSearch,
@@ -10531,14 +10840,8 @@ define('FamilySearch',[
     getAgent: user.getAgent,
     getMultiAgent: user.getMultiAgent,
 
-    // plumbing
-    get: plumbing.get,
-    post: plumbing.post,
-    put: plumbing.put,
-    del: plumbing.del,
-    http: plumbing.http,
-    getTotalProcessingTime: plumbing.getTotalProcessingTime,
-    setTotalProcessingTime: plumbing.setTotalProcessingTime
+    // utilities
+    getRedirectUrl: utilities.getRedirectUrl
   };
 });
   // Ask almond to synchronously require the

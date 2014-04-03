@@ -9,7 +9,7 @@
 </div></div>
 <h2 id="usage">Usage</h2>
 <div class="usage"><pre class="prettyprint linenums">Memory([data]);</pre>
-<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memory-page"><p>an object with optional attributes {title, description, filename, $data}.
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memory-page"><p>an object with optional attributes {title, description, artifactFilename, $data}.
 <em>$data</em> is a string for Stories, or a FormData for Images or Documents
 - if FormData, the field name of the file to upload <em>must</em> be <code>artifact</code>.
 <em>$data</em> is ignored when updating a memory.
@@ -23,12 +23,33 @@
 </div></td></tr></tbody></table><h5 id="methods_$delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memory-delete-page"><p>promise for the memory URL</p>
 </div></td></tr></table></div>
 </li>
-<li><h3 id="methods_$getdescription">$getDescription()</h3>
-<div class="$getdescription"><h5 id="methods_$getdescription_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getdescription-page"><p>description (may not apply to story memories)</p>
+<li><h3 id="methods_$getartifactfilename">$getArtifactFilename()</h3>
+<div class="$getartifactfilename"><h5 id="methods_$getartifactfilename_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getartifactfilename-page"><p>filename (provided by the user or a default name)</p>
 </div></td></tr></table></div>
 </li>
-<li><h3 id="methods_$getfilename">$getFilename()</h3>
-<div class="$getfilename"><h5 id="methods_$getfilename_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getfilename-page"><p>filename (provided by the user or a default name)</p>
+<li><h3 id="methods_$getartifactheight">$getArtifactHeight()</h3>
+<div class="$getartifactheight"><h5 id="methods_$getartifactheight_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="memories-types-page memories-types-constructor-memory-getartifactheight-page"><p>image height</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getartifacttype">$getArtifactType()</h3>
+<div class="$getartifacttype"><h5 id="methods_$getartifacttype_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getartifacttype-page"><p>type; e.g., <a href="http://familysearch.org/v1/Image">http://familysearch.org/v1/Image</a></p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getartifactwidth">$getArtifactWidth()</h3>
+<div class="$getartifactwidth"><h5 id="methods_$getartifactwidth_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="memories-types-page memories-types-constructor-memory-getartifactwidth-page"><p>image width</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getcomments">$getComments()</h3>
+<div class="$getcomments"><h5 id="methods_$getcomments_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memory-getcomments-page"><p>promise for the <a href="#/api/memories.functions:getMemoryComments">getMemoryComments</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getcommentsurl">$getCommentsUrl()</h3>
+<div class="$getcommentsurl"><h5 id="methods_$getcommentsurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getcommentsurl-page"><p>URL of the comments endpoint
+- pass into <a href="#/api/memories.functions:getMemoryComments">getMemoryComments</a> for details</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getdescription">$getDescription()</h3>
+<div class="$getdescription"><h5 id="methods_$getdescription_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getdescription-page"><p>description (may not apply to story memories)</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_$geticonurl">$getIconUrl()</h3>
@@ -64,14 +85,14 @@
 and if refresh is true, after the memory has been read.</p>
 </div></td></tr></table></div>
 </li>
+<li><h3 id="methods_$setartifactfilename">$setArtifactFilename(filename)</h3>
+<div class="$setartifactfilename"><h5 id="methods_$setartifactfilename_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>filename</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-setartifactfilename-page"><p>uploaded file</p>
+</div></td></tr></tbody></table><h5 id="methods_$setartifactfilename_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-memory">Memory</a></td><td><div class="memories-types-page memories-types-constructor-memory-setartifactfilename-page"><p>this memory</p>
+</div></td></tr></table></div>
+</li>
 <li><h3 id="methods_$setdescription">$setDescription(description)</h3>
 <div class="$setdescription"><h5 id="methods_$setdescription_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>description</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-setdescription-page"><p>memory description (may not apply to story memories)</p>
 </div></td></tr></tbody></table><h5 id="methods_$setdescription_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-memory">Memory</a></td><td><div class="memories-types-page memories-types-constructor-memory-setdescription-page"><p>this memory</p>
-</div></td></tr></table></div>
-</li>
-<li><h3 id="methods_$setfilename">$setFilename(filename)</h3>
-<div class="$setfilename"><h5 id="methods_$setfilename_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>filename</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-setfilename-page"><p>uploaded file</p>
-</div></td></tr></tbody></table><h5 id="methods_$setfilename_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-memory">Memory</a></td><td><div class="memories-types-page memories-types-constructor-memory-setfilename-page"><p>this memory</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_$settitle">$setTitle(title)</h3>
