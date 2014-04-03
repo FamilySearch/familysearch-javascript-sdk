@@ -50,8 +50,9 @@ define([
    *
    * ### Notes
    *
-   * * Each Person object has an additional `getAscendancyNumber()` function that returns the person's ascendancy number.
+   * * Each Person object has an additional `$getAscendancyNumber()` function that returns the person's ascendancy number.
    * * Some information on the Person objects is available only if `params` includes `personDetails`
+   * * If `params` includes `marriageDetails`, then `person.display` includes `marriageDate` and `marriagePlace`.
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Ancestry_resource FamilySearch API Docs}
    *
@@ -71,14 +72,12 @@ define([
           helpers.compose(
             helpers.objectExtender(pedigreeConvenienceFunctionGenerator('ascendancyNumber')),
             globals.personMapper(),
-            helpers.objectExtender({getAscendancyNumber: function() { return this.display.ascendancyNumber; }}, function(response) {
+            helpers.objectExtender({$getAscendancyNumber: function() { return this.display.ascendancyNumber; }}, function(response) {
               return maybe(response).persons;
             })
           ));
       });
   };
-
-  // TODO add marriageDetails query parameter and convenience functions
 
   /**
    * @ngdoc function
@@ -95,15 +94,20 @@ define([
    *
    * ### Notes
    *
-   * * Each Person object has an additional `getDescendancyNumber()` function that returns the person's descendancy number.
-   * * Some information on the Person objects is unavailable; e.g., separate given name and surname name parts.
+   * * Each Person object has an additional `$getDescendancyNumber()` function that returns the person's descendancy number.
+   * * Some information on the Person objects is available only if `params` includes `personDetails`
+   * * If `params` includes `marriageDetails`, then `person.display` includes `marriageDate` and `marriagePlace`.
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Descendancy_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/eBNGk/ editable example}
    *
    * @param {string} pid id of the person
-   * @param {Object=} params includes `generations` to retrieve max 2, `spouse` id to get descendency of person and spouse
+   * @param {Object=} params includes
+   * `generations` to retrieve max 2,
+   * `spouse` id to get descendency of person and spouse,
+   * `marriageDetails` set to true to provide marriage details, and
+   * `personDetails` set to true to provide person details.
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the descendancy
    */
@@ -115,7 +119,7 @@ define([
           helpers.compose(
             helpers.objectExtender(pedigreeConvenienceFunctionGenerator('descendancyNumber')),
             globals.personMapper(),
-            helpers.objectExtender({getDescendancyNumber: function() { return this.display.descendancyNumber; }}, function(response) {
+            helpers.objectExtender({$getDescendancyNumber: function() { return this.display.descendancyNumber; }}, function(response) {
               return maybe(response).persons;
             })
           ));

@@ -28,7 +28,7 @@ define([
    * {@link https://familysearch.org/developers/docs/api/sources/Source_Descriptions_resource FamilySearch API Docs}
    *
    * @param {Object=} data an object with optional attributes {about, citation, title, text}.
-   * _about_ is a URL - link to the record
+   * _about_ is a URL (link to the record) it can be a memory URL.
    **********************************/
 
   var SourceDescription = exports.SourceDescription = function(data) {
@@ -72,8 +72,6 @@ define([
      * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
      */
 
-    // TODO check for collection id and url
-
     /**
      * @ngdoc function
      * @name sources.types:constructor.SourceDescription#$getCitation
@@ -101,19 +99,19 @@ define([
      */
     $getText: function() { return maybe(maybe(this.notes)[0]).text; },
 
-    // TODO add $getSourceDescriptionUrl when that's available
+    // TODO add $getSourceDescriptionUrl when that's available (last checked 4/2/14)
 
-    /**
-     * @ngdoc function
-     * @name sources.types:constructor.SourceDescription#$getSourceRefsQuery
-     * @methodOf sources.types:constructor.SourceDescription
-     * @function
-     * @return {Object} promise for the {@link sources.functions:getSourceRefsQuery getSourceRefsQuery} response
-     */
-    // TODO verify this is available also from getCollectionSourceDescriptions(forUser)
-    $getSourceRefsQuery: function() {
-      return exports.getSourceRefsQuery(helpers.removeAccessToken(this.links['source-references-query'].href));
-    },
+    // TODO uncomment when this is available also from getCollectionSourceDescriptions(+ForUser) (last checked 4/2/14)
+//    /**
+//     * @ngdoc function
+//     * @name sources.types:constructor.SourceDescription#$getSourceRefsQuery
+//     * @methodOf sources.types:constructor.SourceDescription
+//     * @function
+//     * @return {Object} promise for the {@link sources.functions:getSourceRefsQuery getSourceRefsQuery} response
+//     */
+//    $getSourceRefsQuery: function() {
+//      return exports.getSourceRefsQuery(helpers.removeAccessToken(this.links['source-references-query'].href));
+//    },
 
     /**
      * @ngdoc function
@@ -176,7 +174,7 @@ define([
     $save: function(changeMessage, refresh, opts) {
       var self = this;
       if (changeMessage) {
-        self.attribution = {changeMessage: changeMessage};
+        self.attribution = new attribution.Attribution(changeMessage);
       }
       var promise = helpers.chainHttpPromises(
         self.id ? plumbing.getUrl('source-description-template', null, {sdid: self.id}) : plumbing.getUrl('source-descriptions'),
@@ -445,7 +443,7 @@ define([
     $save: function(changeMessage, opts) {
       var self = this;
       if (changeMessage) {
-        self.attribution = {changeMessage: changeMessage};
+        self.attribution = new attribution.Attribution(changeMessage);
       }
       var template, label;
       var headers = {};

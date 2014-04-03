@@ -32,9 +32,26 @@ define([
    * Two methods to note below are _$save_ and _$delete_.
    * _$save_ persists the changes made to husband, wife, and facts;
    * _$delete_ removes the relationship.
+   *
+   * @param {Object=} data an object with optional attributes {husband, wife, facts}.
+   * _husband_ and _wife_ are Person objects, URLs, or ids.
+   * _facts_ is an array of Facts or objects to be passed into the Fact constructor.
    */
-  var Couple = exports.Couple = function() {
-
+  var Couple = exports.Couple = function(data) {
+    if (data) {
+      if (data.husband) {
+        //noinspection JSUnresolvedFunction
+        this.$setHusband(data.husband);
+      }
+      if (data.wife) {
+        //noinspection JSUnresolvedFunction
+        this.$setWife(data.wife);
+      }
+      if (data.facts) {
+        //noinspection JSUnresolvedFunction
+        this.$setFacts(data.facts);
+      }
+    }
   };
 
   exports.Couple.prototype = {
@@ -177,6 +194,21 @@ define([
 
     /**
      * @ngdoc function
+     * @name spouses.types:constructor.Couple#$setFacts
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @param {Fact[]|Object[]} facts facts to set; if array elements are not Facts, they are passed into the Fact constructor
+     * @param {string=} changeMessage change message to use for deleted facts if any
+     * @return {Couple} this relationship
+     */
+    $setFacts: function(facts, changeMessage) {
+      parentsAndChildren.setFacts.call(this, 'facts', facts, changeMessage);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
      * @name spouses.types:constructor.Couple#$addFact
      * @methodOf spouses.types:constructor.Couple
      * @function
@@ -225,9 +257,6 @@ define([
       var isChanged = false;
       var crid = this.id;
 
-      // TODO don't "push down" attribution to individual conclusions once the global attribution bug has been fixed
-      // support attribution at the top-level
-
       // send husband and wife if new or either has changed
       if (!this.id || this.$husbandChanged || this.$wifeChanged) {
         postData.person1 = this.person1;
@@ -235,12 +264,13 @@ define([
         isChanged = true;
       }
 
+      // set global changeMessage
+      if (changeMessage) {
+        postData.attribution = new attribution.Attribution(changeMessage);
+      }
+
       helpers.forEach(this.facts, function(fact) {
         if (!crid || !fact.id || fact.$changed) {
-          // set change message if none set
-          if (changeMessage && helpers.attributionNeeded(fact)) {
-            fact.$setChangeMessage(changeMessage);
-          }
           parentsAndChildren.addFact.call(postData, 'facts', fact);
           isChanged = true;
         }
@@ -257,6 +287,13 @@ define([
           crid ? plumbing.getUrl('couple-relationship-template', null, {crid: crid}) :
             plumbing.getUrl('relationships'),
           function(url) {
+            // set url from id now that discovery resource is guaranteed to be loaded
+            helpers.forEach(['person1', 'person2'], function(role) {
+              if (postData[role] && !postData[role].resource && postData[role].resourceId) {
+                postData[role].resource =
+                  helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'person-template', {pid: postData[role].resourceId});
+              }
+            });
             return plumbing.post(url,
               { relationships: [ postData ] },
               {},

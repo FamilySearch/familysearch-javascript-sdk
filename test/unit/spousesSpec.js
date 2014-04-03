@@ -40,20 +40,25 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('is created', function() {
-      var promise = new FamilySearch.Couple()
-        .$setHusband('FJP-M4RK')
-        .$setWife('JRW-NMSD')
-        .$addFact({type:'http://gedcomx.org/Marriage', date: 'June 1800', formalDate: '+1800-06', place: 'Provo, Utah, Utah, United States'})
-        .$save('...change message...');
+      var promise = new FamilySearch.Couple({
+        husband: 'FJP-M4RK',
+        wife: 'JRW-NMSD',
+        facts: [{type:'http://gedcomx.org/Marriage', date: 'June 1800', formalDate: '+1800-06', place: 'Provo, Utah, Utah, United States'}]
+      }).$save('...change message...');
       promise.then(function(response) {
         var request = promise.getRequest();
         //noinspection JSUnresolvedFunction
         expect(request.data).toEqualJson({
           'relationships' : [ {
+            'attribution' : {
+              'changeMessage' : '...change message...'
+            },
             'person1' : {
+              'resourceId' : 'FJP-M4RK',
               'resource' : 'https://sandbox.familysearch.org/platform/tree/persons/FJP-M4RK'
             },
             'person2' : {
+              'resourceId' : 'JRW-NMSD',
               'resource' : 'https://sandbox.familysearch.org/platform/tree/persons/JRW-NMSD'
             },
             'facts' : [ {
@@ -64,9 +69,6 @@ define(['FamilySearch'], function(FamilySearch) {
               },
               'place' : {
                 'original' : 'Provo, Utah, Utah, United States'
-              },
-              'attribution' : {
-                'changeMessage' : '...change message...'
               }
             } ],
             'type' : 'http://gedcomx.org/Couple'
@@ -132,10 +134,15 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(request.data).toEqualJson({
           'relationships' : [ {
             'person1' : {
+              'resourceId' : 'FJP-M4RK',
               'resource' : 'https://sandbox.familysearch.org/platform/tree/persons/FJP-M4RK'
             },
             'person2' : {
+              'resourceId' : 'wife',
               'resource' : 'https://sandbox.familysearch.org/platform/tree/persons/wife'
+            },
+            'attribution' : {
+              'changeMessage' : '...change message...'
             }
           } ]
         });
@@ -155,11 +162,11 @@ define(['FamilySearch'], function(FamilySearch) {
         //noinspection JSUnresolvedFunction
         expect(request.data).toEqualJson({
           'relationships' : [ {
+            'attribution' : {
+              'changeMessage' : '...change message...'
+            },
             'facts' : [ {
-              'type' : 'http://gedcomx.org/Divorce',
-              'attribution' : {
-                'changeMessage' : '...change message...'
-              }
+              'type' : 'http://gedcomx.org/Divorce'
             } ]
           } ]
         });

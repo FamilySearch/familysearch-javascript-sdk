@@ -19,7 +19,7 @@ define([
 
   var exports = {};
 
-  // TODO check whether it's possible to update story contents (and how to do it)
+  // TODO check whether it's possible now to update story contents (and how to do it)
   // TODO add functions to attach & detach photos to a story when the API exists
 
   /******************************************/
@@ -32,7 +32,7 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/memories/Memory_resource FamilySearch API Docs}
    *
-   * @param {Object=} data an object with optional attributes {title, description, filename, $data}.
+   * @param {Object=} data an object with optional attributes {title, description, artifactFilename, $data}.
    * _$data_ is a string for Stories, or a FormData for Images or Documents
    * - if FormData, the field name of the file to upload _must_ be `artifact`.
    * _$data_ is ignored when updating a memory.
@@ -53,7 +53,7 @@ define([
       }
       if (data.filename) {
         //noinspection JSUnresolvedFunction
-        this.$setFilename(data.filename);
+        this.$setArtifactFilename(data.filename);
       }
       if (data.$data) {
         this.$data = data.$data;
@@ -173,12 +173,58 @@ define([
 
     /**
      * @ngdoc function
-     * @name memories.types:constructor.Memory#$getFilename
+     * @name memories.types:constructor.Memory#$getArtifactFilename
      * @methodOf memories.types:constructor.Memory
      * @function
      * @return {String} filename (provided by the user or a default name)
      */
-    $getFilename: function() { return maybe(maybe(this.artifactMetadata)[0]).filename; },
+    $getArtifactFilename: function() { return maybe(maybe(this.artifactMetadata)[0]).filename; },
+
+    /**
+     * @ngdoc function
+     * @name memories.types:constructor.Memory#$getArtifactType
+     * @methodOf memories.types:constructor.Memory
+     * @function
+     * @return {String} type; e.g., http://familysearch.org/v1/Image
+     */
+    $getArtifactType: function() { return maybe(maybe(this.artifactMetadata)[0]).artifactType; },
+
+    /**
+     * @ngdoc function
+     * @name memories.types:constructor.Memory#$getArtifactHeight
+     * @methodOf memories.types:constructor.Memory
+     * @function
+     * @return {number} image height
+     */
+    $getArtifactHeight: function() { return maybe(maybe(this.artifactMetadata)[0]).height; },
+
+    /**
+     * @ngdoc function
+     * @name memories.types:constructor.Memory#$getArtifactWidth
+     * @methodOf memories.types:constructor.Memory
+     * @function
+     * @return {number} image width
+     */
+    $getArtifactWidth: function() { return maybe(maybe(this.artifactMetadata)[0]).width; },
+
+    /**
+     * @ngdoc function
+     * @name memories.types:constructor.Memory#$getCommentsUrl
+     * @methodOf memories.types:constructor.Memory
+     * @function
+     * @return {String} URL of the comments endpoint
+     * - pass into {@link memories.functions:getMemoryComments getMemoryComments} for details
+     */
+    $getCommentsUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).comments).href); },
+
+    /**
+     * @ngdoc function
+     * @name memories.types:constructor.Memory#$getComments
+     * @methodOf memories.types:constructor.Memory
+     * @function
+     * @return {Object} promise for the {@link memories.functions:getMemoryComments getMemoryComments} response
+     */
+    $getComments: function() { return exports.getMemoryComments(this.$getCommentsUrl()); },
 
     /**
      * @ngdoc function
@@ -210,13 +256,13 @@ define([
 
     /**
      * @ngdoc function
-     * @name memories.types:constructor.Memory#$setFilename
+     * @name memories.types:constructor.Memory#$setArtifactFilename
      * @methodOf memories.types:constructor.Memory
      * @function
      * @param {String} filename uploaded file
      * @return {Memory} this memory
      */
-    $setFilename: function(filename) {
+    $setArtifactFilename: function(filename) {
       if (!helpers.isArray(this.artifactMetadata) || !this.artifactMetadata.length) {
         this.artifactMetadata = [ {} ];
       }
@@ -260,8 +306,8 @@ define([
             if (self.$getDescription()) {
               params.description = self.$getDescription();
             }
-            if (self.$getFilename()) {
-              params.filename = self.$getFilename();
+            if (self.$getArtifactFilename()) {
+              params.filename = self.$getArtifactFilename();
             }
             return plumbing.post(helpers.appendQueryParameters(url, params),
               self.$data, { 'Content-Type': helpers.isString(self.$data) ? 'text/plain' : 'multipart/form-data' }, opts,
@@ -297,8 +343,6 @@ define([
     $delete: function(opts) {
       return exports.deleteMemory(this.$getMemoryUrl(), opts);
     }
-
-    // TODO add a link to read comments when memories read from any endpoint include comments links
 
   };
 
@@ -446,7 +490,8 @@ define([
      * @methodOf memories.types:constructor.MemoryPersona
      * @function
      * @description
-     * Create a new memory persona (if this memory persona does not have an id) or update the existing memory persona
+     * Create a new memory persona (if this memory persona does not have an id) or update the existing memory persona.
+     * Only the name can be updated, not the memory id or the memory artifact reference.
      *
      * {@link http://jsfiddle.net/DallanQ/dLfA8/ editable example}
      *
@@ -591,7 +636,7 @@ define([
       return exports.getMemoryPersona(this.$getMemoryPersonaUrl());
     },
 
-    // TODO stop hacking into the resource when links.memory.href works
+    // TODO stop hacking into the resource when links.memory.href works (last checked 4/2/14)
     /**
      * @ngdoc function
      * @name memories.types:constructor.MemoryPersonaRef#$getMemoryUrl
@@ -809,6 +854,7 @@ define([
       function(url) {
         return plumbing.get(url, params, {}, opts,
           helpers.compose(
+            // TODO when the response contains personas, add a function to return them (last checked 4/2/14)
             helpers.objectExtender({getMemories: function() { return this.sourceDescriptions || []; }}),
             helpers.constructorSetter(Memory, 'sourceDescriptions'),
             helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {

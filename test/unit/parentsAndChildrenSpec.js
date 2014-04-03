@@ -31,48 +31,47 @@ define(['FamilySearch'], function(FamilySearch) {
           expect(noteRefs.length).toBe(2);
           expect(noteRefs[0].id).toBe('1804317705');
         });
-        // TODO check if change-history link is in the right place, fix mock data, and test
-//        rel.$getChanges().then(function(response) {
-//          var changes = response.getChanges();
-//          expect(changes.length).toBe(3);
-//          expect(changes[0].id).toBe('1386863479538');
-//        });
+        rel.$getChanges().then(function(response) {
+          var changes = response.getChanges();
+          expect(changes.length).toBe(3);
+          expect(changes[0].id).toBe('1386863479538');
+        });
       });
     });
 
     it('is created', function() {
-      var promise = new FamilySearch.ChildAndParents()
-        .$setFather('PPPX-MP1')
-        .$setMother('PPPX-FP2')
-        .$setChild('PPPX-PP3')
-        .$addFatherFact({type:'http://gedcomx.org/AdoptiveParent'})
-        .$addMotherFact({type:'http://gedcomx.org/BiologicalParent'})
-        .$save('...change message...');
+      var promise = new FamilySearch.ChildAndParents({
+        father: 'PPPX-MP1',
+        mother: 'PPPX-FP2',
+        child: 'PPPX-PP3',
+        fatherFacts: [{type:'http://gedcomx.org/AdoptiveParent'}],
+        motherFacts: [{type:'http://gedcomx.org/BiologicalParent'}]
+      }).$save('...change message...');
       promise.then(function(response) {
         var request = promise.getRequest();
         //noinspection JSUnresolvedFunction
         expect(request.data).toEqualJson({
           'childAndParentsRelationships' : [ {
+            'attribution' : {
+              'changeMessage' : '...change message...'
+            },
             'father' : {
+              'resourceId' : 'PPPX-MP1',
               'resource' : 'https://sandbox.familysearch.org/platform/tree/persons/PPPX-MP1'
             },
             'mother' : {
+              'resourceId' : 'PPPX-FP2',
               'resource' : 'https://sandbox.familysearch.org/platform/tree/persons/PPPX-FP2'
             },
             'child' : {
+              'resourceId' : 'PPPX-PP3',
               'resource' : 'https://sandbox.familysearch.org/platform/tree/persons/PPPX-PP3'
             },
             'fatherFacts' : [ {
-              'type' : 'http://gedcomx.org/AdoptiveParent',
-              'attribution' : {
-                'changeMessage' : '...change message...'
-              }
+              'type' : 'http://gedcomx.org/AdoptiveParent'
             } ],
             'motherFacts' : [ {
-              'type' : 'http://gedcomx.org/BiologicalParent',
-              'attribution' : {
-                'changeMessage' : '...change message...'
-              }
+              'type' : 'http://gedcomx.org/BiologicalParent'
             } ]
           } ]
         });
@@ -134,7 +133,11 @@ define(['FamilySearch'], function(FamilySearch) {
         //noinspection JSUnresolvedFunction
         expect(request.data).toEqualJson({
           'childAndParentsRelationships' : [ {
+            'attribution' : {
+              'changeMessage' : '...change message...'
+            },
             'mother' : {
+              'resourceId' : 'PPPX-FP2',
               'resource' : 'https://sandbox.familysearch.org/platform/tree/persons/PPPX-FP2'
             },
             'motherFacts' : [ {
@@ -144,9 +147,6 @@ define(['FamilySearch'], function(FamilySearch) {
                 'conclusion' : {
                   'href' : 'https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/12345/mother/conclusions/C.1'
                 }
-              },
-              'attribution' : {
-                'changeMessage' : '...change message...'
               }
             } ]
           } ]

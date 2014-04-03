@@ -1,6 +1,9 @@
 {
   "persons" : [ {
     "id" : "PPPJ-MYZ",
+    "identifiers" : {
+      "http://gedcomx.org/Persistent" : ["https://sandbox.familysearch.org/ark:/12345/4:1:PPPJ-MYZ"]
+    },
     "links" : {
       "ancestry" : {
         "href" : "https://familysearch.org/platform/tree/ancestry?person=PPPJ-MYZ",

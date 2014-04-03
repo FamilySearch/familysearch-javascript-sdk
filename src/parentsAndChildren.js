@@ -33,15 +33,38 @@ define([
    * Two methods to note below are _$save_ and _$delete_.
    * _$save_ persists the changes made to father, mother, child, and facts;
    * _$delete_ removes the relationship.
+   *
+   * @param {Object=} data an object with optional attributes {father, mother, child, fatherFacts, motherFacts}.
+   * _father_, _mother_, and _child_ are Person objects, URLs, or ids.
+   * _fatherFacts_ and _motherFacts_ are arrays of Facts or objects to be passed into the Fact constructor.
    */
-  var ChildAndParents = exports.ChildAndParents = function() {
-
+  var ChildAndParents = exports.ChildAndParents = function(data) {
+    if (data) {
+      if (data.father) {
+        //noinspection JSUnresolvedFunction
+        this.$setFather(data.father);
+      }
+      if (data.mother) {
+        //noinspection JSUnresolvedFunction
+        this.$setMother(data.mother);
+      }
+      if (data.child) {
+        //noinspection JSUnresolvedFunction
+        this.$setChild(data.child);
+      }
+      if (data.fatherFacts) {
+        //noinspection JSUnresolvedFunction
+        this.$setFatherFacts(data.fatherFacts);
+      }
+      if (data.motherFacts) {
+        //noinspection JSUnresolvedFunction
+        this.$setMotherFacts(data.motherFacts);
+      }
+    }
   };
 
   // helper functions - called with this set to the relationship
   // export so we can use them in spouses.js
-
-  // TODO allow setting either resource or resourceId here, and then set resource from resourceId on save, and remove warnings
 
   // person may be a Person, a URL, or an ID
   exports.setMember = function(role, person) {
@@ -50,14 +73,16 @@ define([
     }
     if (person instanceof globals.Person) {
       this[role].resource = person.$getUrl();
+      delete this[role].resourceId;
     }
     else if (helpers.isAbsoluteUrl(person)) {
       this[role].resource = person;
+      delete this[role].resourceId;
     }
     else {
-      this[role].resource = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'person-template', {pid: person});
+      this[role].resourceId = person;
+      delete this[role].resource;
     }
-    delete this[role].resourceId;
   };
 
   exports.deleteMember = function(role, changeMessage) {
@@ -66,6 +91,18 @@ define([
     }
     this.$deletedMembers[role] = changeMessage;
     delete this[role];
+  };
+
+  exports.setFacts = function(prop, values, changeMessage) {
+    if (helpers.isArray(this[prop])) {
+      helpers.forEach(this[prop], function(fact) {
+        exports.deleteFact.call(this, prop, fact, changeMessage);
+      }, this);
+    }
+    this[prop] = [];
+    helpers.forEach(values, function(value) {
+      exports.addFact.call(this, prop, value);
+    }, this);
   };
 
   exports.addFact = function(prop, value) {
@@ -235,7 +272,6 @@ define([
      * @name parentsAndChildren.types:constructor.ChildAndParents#$setFather
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
-     * @description NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id
      * @param {Person|string} father person or URL or id
      * @return {ChildAndParents} this relationship
      */
@@ -251,7 +287,6 @@ define([
      * @name parentsAndChildren.types:constructor.ChildAndParents#$setMother
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
-     * @description NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id
      * @param {Person|string} mother person or URL or id
      * @return {ChildAndParents} this relationship
      */
@@ -267,8 +302,7 @@ define([
      * @name parentsAndChildren.types:constructor.ChildAndParents#$setChild
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
-     * @description NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id
-     * Also note: Once the relationship has been saved, the child can no longer be changed
+     * @description NOTE: Once the relationship has been saved, the child can no longer be changed
      * @param {Person|string} child person or URL or id
      * @return {ChildAndParents} this relationship
      */
@@ -310,6 +344,22 @@ define([
 
     /**
      * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$setFatherFacts
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @description NOTE: dates are not supported for BiologicalParent, and places are not supported at all
+     * @param {Fact[]|Object[]} facts facts to set; if an array element is not a Fact, it is passed into the Fact constructor
+     * @param {string=} changeMessage change message to use for deleted facts if any
+     * @return {ChildAndParents} this relationship
+     */
+    $setFatherFacts: function(facts, changeMessage) {
+      exports.setFacts.call(this, 'fatherFacts', facts, changeMessage);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
      * @name parentsAndChildren.types:constructor.ChildAndParents#$addFatherFact
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
@@ -325,21 +375,6 @@ define([
 
     /**
      * @ngdoc function
-     * @name parentsAndChildren.types:constructor.ChildAndParents#$addMotherFact
-     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-     * @function
-     * @description NOTE: dates are not supported for BiologicalParent, and places are not supported at all
-     * @param {Fact|Object} value fact to add; if value is not a Fact, it is passed into the Fact constructor
-     * @return {ChildAndParents} this relationship
-     */
-    $addMotherFact: function(value) {
-      exports.addFact.call(this, 'motherFacts', value);
-      //noinspection JSValidateTypes
-      return this;
-    },
-
-    /**
-     * @ngdoc function
      * @name parentsAndChildren.types:constructor.ChildAndParents#$deleteFatherFact
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
@@ -349,6 +384,37 @@ define([
      */
     $deleteFatherFact: function(value, changeMessage) {
       exports.deleteFact.call(this, 'fatherFacts', value, changeMessage);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$setMotherFacts
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @description NOTE: dates are not supported for BiologicalParent, and places are not supported at all
+     * @param {Fact[]|Object[]} facts facts to set; if an array element is not a Fact, it is passed into the Fact constructor
+     * @param {string=} changeMessage change message to use for deleted facts if any
+     * @return {ChildAndParents} this relationship
+     */
+    $setMotherFacts: function(facts, changeMessage) {
+      exports.setFacts.call(this, 'motherFacts', facts, changeMessage);
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$addMotherFact
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @description NOTE: dates are not supported for BiologicalParent, and places are not supported at all
+     * @param {Fact|Object} value fact to add; if value is not a Fact, it is passed into the Fact constructor
+     * @return {ChildAndParents} this relationship
+     */
+    $addMotherFact: function(value) {
+      exports.addFact.call(this, 'motherFacts', value);
       //noinspection JSValidateTypes
       return this;
     },
@@ -389,9 +455,6 @@ define([
       var isChanged = false;
       var caprid = this.id;
 
-      // TODO don't "push down" attribution to individual conclusions once the global attribution bug has been fixed
-      // support attribution at the top-level
-
       // send father if new or changed
       if (!this.id || this.$fatherChanged) {
         postData.father = this.father;
@@ -410,14 +473,16 @@ define([
         isChanged = true;
       }
 
+      // set global changeMessage
+      // TODO as far as I can tell, the change message isn't stored (last checked 4/2/14)
+      if (changeMessage) {
+        postData.attribution = new attribution.Attribution(changeMessage);
+      }
+
       // send facts if new or changed
       helpers.forEach(['fatherFacts', 'motherFacts'], function(prop) {
         helpers.forEach(this[prop], function(fact) {
           if (!caprid || !fact.id || fact.$changed) {
-            // set change message if none set
-            if (changeMessage && helpers.attributionNeeded(fact)) {
-              fact.$setChangeMessage(changeMessage);
-            }
             exports.addFact.call(postData, prop, fact);
             isChanged = true;
           }
@@ -432,7 +497,13 @@ define([
           caprid ? plumbing.getUrl('child-and-parents-relationship-template', null, {caprid: caprid}) :
                    plumbing.getUrl('relationships'),
           function(url) {
-            // TODO this is where postData[father|mother|child].resource could be set from resourceId
+            // set url from id now that discovery resource is guaranteed to be loaded
+            helpers.forEach(['father', 'mother', 'child'], function(role) {
+              if (postData[role] && !postData[role].resource && postData[role].resourceId) {
+                postData[role].resource =
+                  helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'person-template', {pid: postData[role].resourceId});
+              }
+            });
             return plumbing.post(url,
               { childAndParentsRelationships: [ postData ] },
               {'Content-Type': 'application/x-fs-v1+json'},

@@ -57,6 +57,8 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(person.living).toBe(true);
         expect(person.$getGivenName()).toBe('Alex');
         expect(person.$getSurname()).toBe('Aleksandrova');
+        expect(person.$getPersistentIdentifier()).toBe('https://sandbox.familysearch.org/ark:/12345/4:1:PPPJ-MYZ');
+        expect(person.$getPersonUrl()).toBe('https://familysearch.org/platform/tree/persons/PPPJ-MYZ');
         expect(person.$getNames().length).toBe(1);
         var name = person.$getNames()[0];
         expect(name.id).toBe('name-id');
@@ -214,9 +216,8 @@ define(['FamilySearch'], function(FamilySearch) {
     });
 
     it('is created', function() {
-      var promise = new FamilySearch.Person()
+      var promise = new FamilySearch.Person({names: [{givenName: 'Anastasia', surname: 'Aleksandrova'}]})
         .$setGender('http://gedcomx.org/Female', '...change message...')
-        .$addName({givenName: 'Anastasia', surname: 'Aleksandrova'})
         .$addFact({type: 'http://gedcomx.org/Birth', date: '3 Apr 1836', formalDate: '+1836-04-03', place: 'Moscow, Russia', changeMessage: '...change message...'})
         .$save('...default change message...');
       promise.then(function(response) {
@@ -224,6 +225,9 @@ define(['FamilySearch'], function(FamilySearch) {
         //noinspection JSUnresolvedFunction
         expect(request.data).toEqualJson({
           'persons' : [ {
+            'attribution' : {
+              'changeMessage' : '...default change message...'
+            },
             'gender' : {
               'type' : 'http://gedcomx.org/Female',
               'attribution' : {
@@ -242,9 +246,6 @@ define(['FamilySearch'], function(FamilySearch) {
                 'fullText' : 'Anastasia Aleksandrova'
               } ],
               'preferred' : true,
-              'attribution' : {
-                'changeMessage' : '...default change message...'
-              },
               'type' : 'http://gedcomx.org/BirthName'
             } ],
             'facts' : [ {

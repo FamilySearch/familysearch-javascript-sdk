@@ -8,6 +8,10 @@
   "childAndParentsRelationships" : [ {
     "id" : "PPPX-PP0",
     "links" : {
+      "change-history" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0/changes",
+        "title" : "Change History"
+      },
       "source-references" : {
         "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0/source-references",
         "title" : "Child-and-Parents Relationship Source References"

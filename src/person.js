@@ -9,11 +9,13 @@ define([
   'name',
   'notes',
   'parentsAndChildren',
+  'pedigree',
   'plumbing',
   'sources',
   'spouses',
   'user'
-], function(attribution, changeHistory, discussions, fact, globals, helpers, memories, name, notes, parentsAndChildren, plumbing, sources, spouses, user) {
+], function(attribution, changeHistory, discussions, fact, globals, helpers, memories, name, notes, parentsAndChildren,
+            pedigree, plumbing, sources, spouses, user) {
   /**
    * @ngdoc overview
    * @name person
@@ -32,7 +34,7 @@ define([
 
   var exports = {};
 
-  // TODO see if upgrading to grunt-ngdocs 0.2.1 will allow links to _methods_ like $save and $delete
+  // TODO see if moving to the new https://github.com/angular/dgeni will allow links to _methods_ like $save and $delete
 
   /**********************************/
   /**
@@ -47,9 +49,28 @@ define([
    * Two methods to note below are _$save_ and _$delete_.
    * _$save_ persists the changes made to names, facts, and gender;
    * _$delete_ removes the person.
+   *
+   * @param {Object=} data an object with optional attributes {gender, names, facts}.
+   * _gender_ is a string.
+   * _names_ is an array of Name's, or Objects or strings to pass into the Name constructor.
+   * _facts_ is an array of Fact's or Objects to pass into the Fact constructor.
    **********************************/
 
-  var Person = globals.Person = exports.Person = function() {
+  var Person = globals.Person = exports.Person = function(data) {
+    if (data) {
+      if (data.gender) {
+        //noinspection JSUnresolvedFunction
+        this.$setGender(data.gender);
+      }
+      if (data.names) {
+        //noinspection JSUnresolvedFunction
+        this.$setNames(data.names);
+      }
+      if (data.facts) {
+        //noinspection JSUnresolvedFunction
+        this.$setFacts(data.facts);
+      }
+    }
   };
 
   function spacePrefix(namePiece) {
@@ -378,8 +399,6 @@ define([
       return name;
     },
 
-    // TODO add unit tests for the following functions
-
     /**
      * @ngdoc function
      * @name person.types:constructor.Person#$getPersistentIdentifier
@@ -391,12 +410,12 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#$getUrl
+     * @name person.types:constructor.Person#$getPersonUrl
      * @methodOf person.types:constructor.Person
      * @function
      * @return {String} Url of the person
      */
-    $getUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).person).href); },
+    $getPersonUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).person).href); },
 
     /**
      * @ngdoc function
@@ -487,7 +506,66 @@ define([
       return exports.getChildren(this.id);
     },
 
-    // TODO add links to ancestry, descendancy, person-with-relationships, matches, portrait
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getAncestry
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {Object=} params includes `generations` to retrieve max 8, `spouse` id to get ancestry of person and spouse,
+     * `personDetails` set to true to retrieve full person objects for each ancestor
+     * @return {Object} promise for the {@link pedigree.functions:getAncestry getAncestry} response
+     */
+    $getAncestry: function(params) {
+      return pedigree.getAncestry(this.id, params);
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getDescendancy
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {Object=} params includes `generations` to retrieve max 2, `spouse` id to get descendency of person and spouse
+     * @return {Object} promise for the {@link pedigree.functions:getDescendancy getDescendancy} response
+     */
+    $getDescendancy: function(params) {
+      return pedigree.getDescendancy(this.id, params);
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getPersonPortraitUrl
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {Object=} params `default` URL to redirect to if portrait doesn't exist;
+     * `followRedirect` if true, follow the redirect and return the final URL
+     * @return {Object} promise for the {@link memories.functions:getPersonPortraitUrl getPersonPortraitUrl} response
+     */
+    $getPersonPortraitUrl: function(params) {
+      return memories.getPersonPortraitUrl(this.id, params);
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$setNames
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {Name[]|Object[]|string[]} values names to set; if an array element is not a Name, it is passed into the Name constructor
+     * @param {string=} changeMessage change message to use for deleted names if any
+     * @return {Person} this person
+     */
+    $setNames: function(values, changeMessage) {
+      if (helpers.isArray(this.names)) {
+        helpers.forEach(this.names, function(name) {
+          this.$deleteName(name, changeMessage);
+        }, this);
+      }
+      this.names = [];
+      helpers.forEach(values, function(value) {
+        this.$addName(value);
+      }, this);
+      //noinspection JSValidateTypes
+      return this;
+    },
 
     /**
      * @ngdoc function
@@ -532,6 +610,29 @@ define([
         // remove name from array
         this.names.splice(pos,1);
       }
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$setFacts
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @param {Fact[]|Object[]} values facts to set; if an array element is not a Fact, it is passed into the Fact constructor
+     * @param {string=} changeMessage change message to use for deleted facts if any
+     * @return {Person} this person
+     */
+    $setFacts: function(values, changeMessage) {
+      if (helpers.isArray(this.facts)) {
+        helpers.forEach(this.facts, function(fact) {
+          this.$deleteFact(fact, changeMessage);
+        }, this);
+      }
+      this.facts = [];
+      helpers.forEach(values, function(value) {
+        this.$addFact(value);
+      }, this);
       //noinspection JSValidateTypes
       return this;
     },
@@ -628,8 +729,6 @@ define([
         postData.id = this.id; // updating existing person
       }
 
-      // TODO don't "push down" attribution to individual conclusions once the global attribution bug has been fixed
-
       // if person is new, default a few things
       if (!this.id) {
         // default gender to unknown
@@ -650,12 +749,13 @@ define([
         }
       }
 
+      // set global changeMessage
+      if (changeMessage) {
+        postData.attribution = new attribution.Attribution(changeMessage);
+      }
+
       // send gender if gender is new or changed
       if (this.gender && (!this.gender.id || this.gender.$changed)) {
-        // set change message if none set
-        if (changeMessage && helpers.attributionNeeded(this.gender)) {
-          this.gender.attribution = new attribution.Attribution(changeMessage);
-        }
         postData.gender = this.gender;
         isChanged = true;
       }
@@ -668,10 +768,6 @@ define([
             name.$setFullText((spacePrefix(name.$getPrefix()) + spacePrefix(name.$getGivenName()) +
                                spacePrefix(name.$getSurname()) + spacePrefix(name.$getSuffix())).trim());
           }
-          // set change message if none set
-          if (changeMessage && helpers.attributionNeeded(name)) {
-            name.$setChangeMessage(changeMessage);
-          }
           postData.$addName(name);
           isChanged = true;
         }
@@ -680,10 +776,6 @@ define([
       // send facts that are new or updated
       helpers.forEach(this.facts, function(fact) {
         if (!fact.id || fact.$changed) {
-          // set change message if none set
-          if (changeMessage && helpers.attributionNeeded(fact)) {
-            fact.$setChangeMessage(changeMessage);
-          }
           postData.$addFact(fact);
           isChanged = true;
         }
@@ -1018,7 +1110,7 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  // TODO check if this has been fixed, and check if the entries really contain changeInfo and contributors attributes
+  // TODO check if this has been fixed, and check if the entries really contain changeInfo and contributors attributes (last checked 4/2/14)
   exports.getPersonChangeSummary = function(pid, params, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-change-summary-template', pid, {pid: pid}),
@@ -1305,7 +1397,7 @@ define([
         return plumbing.getUrl('preferred-parent-relationship-template', null, {uid: uid, pid: pid});
       },
       function(url) {
-        // TODO remove accept header when FS bug is fixed
+        // TODO remove accept header when FS bug is fixed (last checked 4/2/14)
         var promise = plumbing.get(url, params, {Accept: 'application/x-fs-v1+json'}, opts);
         // FamilySearch returns a 303 function to redirect to the preferred relationship, but the response may come back as XML in chrome.
         // So just get the relationship id from the content-location header

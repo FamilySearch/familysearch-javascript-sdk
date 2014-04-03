@@ -68,7 +68,7 @@ define([
      */
     $getChangeReason: function() { return maybe(maybe(this.changeInfo)[0]).reason; },
 
-    // TODO check for agent id
+    // TODO check for agent id (last checked 4/2/14)
 
     /**
      * @ngdoc function

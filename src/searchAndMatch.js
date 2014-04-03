@@ -351,8 +351,11 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/hhcLP/ editable example}
    *
-   * @param {Object} params same parameters as described for {@link searchAndMatch.functions:getPersonSearch getPersonSearch},
-   * with the exception that `context` is not a valid parameter for match, and `candidateId` restricts matches to the person with that Id
+   * @param {Object} params generally the same parameters as described for
+   * {@link searchAndMatch.functions:getPersonSearch getPersonSearch}, with the the following differences:
+   * `context` is not a valid parameter for match,
+   * `fatherId`, `motherId`, and `spouseId` assist in finding matches for people whose relatives have already been matched, and
+   * `candidateId` restricts matches to the person with that Id (what does this mean?)
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */

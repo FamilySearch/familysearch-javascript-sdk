@@ -175,7 +175,7 @@ define([
      */
     $delete: function(opts) {
       // since we're passing in the full url we can delete couple and child-and-parents notes with this function as well
-      return exports.deletePersonNote(helpers.removeAccessToken(maybe(maybe(this.links).note).href), null, opts);
+      return exports.deletePersonNote(this.$getNoteUrl(), null, opts);
     }
 
   };

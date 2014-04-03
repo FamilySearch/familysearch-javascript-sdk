@@ -104,14 +104,15 @@ define(['FamilySearch'], function(FamilySearch) {
 
     it('reference is created', function() {
       var discRef = new FamilySearch.DiscussionRef({$personId: '12345', discussion: 'dis-1'});
-      var promise = discRef.$save();
+      var promise = discRef.$save('change msg');
       promise.then(function(response) {
         var request = promise.getRequest();
         //noinspection JSUnresolvedFunction
         expect(request.data).toEqualJson({
           'persons' : [ {
             'id' : '12345',
-            'discussion-references' : [ 'https://sandbox.familysearch.org/platform/discussions/discussions/dis-1' ]
+            'discussion-references' : [ 'https://sandbox.familysearch.org/platform/discussions/discussions/dis-1' ],
+            'attribution' : { changeMessage: 'change msg' }
           } ]
         });
         expect(promise.getStatusCode()).toBe(201);

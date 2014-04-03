@@ -1,9 +1,10 @@
 define([
+  'attribution',
   'globals',
   'helpers',
   'plumbing',
   'user'
-], function(globals, helpers, plumbing, user) {
+], function(attribution, globals, helpers, plumbing, user) {
   /**
    * @ngdoc overview
    * @name discussions
@@ -81,7 +82,7 @@ define([
      * @return {Number} number of comments
      */
 
-    // TODO add $getDiscussionUrl when that's available
+    // TODO add $getDiscussionUrl when that's available (last checked 4/2/14)
 
     /**
      * @ngdoc function
@@ -248,9 +249,11 @@ define([
      * @return {String} URL of this discussion reference; _NOTE_ however, that individual discussion references cannot be read
      */
     $getDiscussionRefUrl: function() {
-      // TODO change this once links is an associative array
+      // TODO change this once links is an associative array (last checked 4/2/14)
       return helpers.removeAccessToken(maybe(helpers.find(this.links, {title: 'Discussion Reference'})).href);
     },
+
+    // TODO add attribution when that is available (last checked 4/2/14)
 
     /**
      * @ngdoc function
@@ -312,11 +315,12 @@ define([
      *
      * {@link http://jsfiddle.net/DallanQ/UarXL/ editable example}
      *
+     * @param {string} changeMessage change message
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise of the discussion reference url
      * (note however that individual discussion references cannot be read).
      */
-    $save: function(opts) {
+    $save: function(changeMessage, opts) {
       var self = this;
       return helpers.chainHttpPromises(
         plumbing.getUrl('person-discussion-references-template', null, {pid: self.$personId}),
@@ -333,7 +337,11 @@ define([
               'discussion-references' : [ self.resource ]
             }]
           };
-          return plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
+          if (changeMessage) {
+            payload.persons[0].attribution = new attribution.Attribution(changeMessage);
+          }
+          var headers = {'Content-Type': 'application/x-fs-v1+json', 'X-FS-Feature-Tag': 'discussion-reference-json-fix'};
+          return plumbing.post(url, payload, headers, opts, function(data, promise) {
             if (!self.$getDiscussionRefUrl()) {
               // TODO change this once links is an associative array
               // TODO also set id when that field has been added
@@ -353,11 +361,12 @@ define([
      * @methodOf discussions.types:constructor.DiscussionRef
      * @function
      * @description delete this discussion reference - see {@link discussions.functions:deleteDiscussionRef deleteDiscussionRef}
+     * @param {string=} changeMessage change message
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the discussion reference url
      */
-    $delete: function(opts) {
-      return exports.deleteDiscussionRef(this.$getDiscussionRefUrl(), null, opts);
+    $delete: function(changeMessage, opts) {
+      return exports.deleteDiscussionRef(this.$getDiscussionRefUrl(), null, changeMessage, opts);
     }
 
   };
@@ -483,7 +492,7 @@ define([
         function(url) {
           var payload = {discussions: [{ comments: [ self ] }] };
           return plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
-            // TODO currently when creating discussion comments, X-ENTITY-ID and Location headers aren't returned
+            // TODO currently when creating discussion comments, X-ENTITY-ID and Location headers aren't returned (last checked 4/2/14)
             if (!self.id) {
               self.id = promise.getResponseHeader('X-ENTITY-ID');
             }
@@ -717,14 +726,19 @@ define([
    *
    * @param {string} pid person id or full URL of the discussion reference
    * @param {string=} drid id of the discussion reference (must be set if pid is a person id and not the full URL)
+   * @param {string=} changeMessage change message
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the pid
    */
-  exports.deleteDiscussionRef = function(pid, drid, opts) {
+  exports.deleteDiscussionRef = function(pid, drid, changeMessage, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-discussion-reference-template', pid, {pid: pid, drid: drid}),
       function(url) {
-        return plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
+        var headers = {'Content-Type': 'application/x-fs-v1+json'};
+        if (changeMessage) {
+          headers['X-Reason'] = changeMessage;
+        }
+        return plumbing.del(url, headers, opts, function() {
           return pid;
         });
       }

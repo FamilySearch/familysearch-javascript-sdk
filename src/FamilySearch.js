@@ -11,14 +11,15 @@ define([
   'parentsAndChildren',
   'pedigree',
   'person',
+  'plumbing',
   'searchAndMatch',
   'sourceBox',
   'sources',
   'spouses',
   'user',
-  'plumbing'
-], function(init, authentication, authorities, changeHistory, discussions, fact, memories, name, notes, parentsAndChildren, pedigree, person,
-            searchAndMatch, sourceBox, sources, spouses, user, plumbing) {
+  'utilities'
+], function(init, authentication, authorities, changeHistory, discussions, fact, memories, name, notes, parentsAndChildren,
+            pedigree, person, plumbing, searchAndMatch, sourceBox, sources, spouses, user, utilities) {
   return {
     init: init.init,
 
@@ -123,6 +124,15 @@ define([
     setPreferredParents: person.setPreferredParents,
     deletePreferredParents: person.deletePreferredParents,
 
+    // plumbing
+    get: plumbing.get,
+    post: plumbing.post,
+    put: plumbing.put,
+    del: plumbing.del,
+    http: plumbing.http,
+    getTotalProcessingTime: plumbing.getTotalProcessingTime,
+    setTotalProcessingTime: plumbing.setTotalProcessingTime,
+
     // search and match
     SearchResult: searchAndMatch.SearchResult,
     getPersonSearch: searchAndMatch.getPersonSearch,
@@ -166,13 +176,7 @@ define([
     getAgent: user.getAgent,
     getMultiAgent: user.getMultiAgent,
 
-    // plumbing
-    get: plumbing.get,
-    post: plumbing.post,
-    put: plumbing.put,
-    del: plumbing.del,
-    http: plumbing.http,
-    getTotalProcessingTime: plumbing.getTotalProcessingTime,
-    setTotalProcessingTime: plumbing.setTotalProcessingTime
+    // utilities
+    getRedirectUrl: utilities.getRedirectUrl
   };
 });
