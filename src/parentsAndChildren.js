@@ -265,7 +265,7 @@ define([
      * @function
      * @return {Object} promise for the {@link sources.functions:getChildAndParentsSourceRefs getChildAndParentsSourceRefs} response
      */
-    $getSourceRefs: function() { return sources.getChildAndParentsSourceRefs(helpers.removeAccessToken(maybe(this.links['source-references']).href)); },
+    $getSourceRefs: function() { return sources.getChildAndParentsSourceRefs(this.id); },
 
     /**
      * @ngdoc function

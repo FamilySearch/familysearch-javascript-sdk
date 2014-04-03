@@ -158,7 +158,7 @@ define([
      * @function
      * @return {Object} promise for the {@link sources.functions:getCoupleSourceRefs getCoupleSourceRefs} response
      */
-    $getSourceRefs: function() { return sources.getCoupleSourceRefs(helpers.removeAccessToken(this.links['source-references'].href)); },
+    $getSourceRefs: function() { return sources.getCoupleSourceRefs(this.id); },
 
     /**
      * @ngdoc function

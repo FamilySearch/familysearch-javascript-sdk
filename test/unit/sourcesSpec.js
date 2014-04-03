@@ -1,18 +1,5 @@
 define(['FamilySearch', 'helpers'], function(FamilySearch, helpers) {
   describe('Source', function() {
-    it('references are returned from getPersonSourceReferences', function() {
-      FamilySearch.getPersonSourceRefs('PPPP-PPP').then(function(response) {
-        var sourceRefs = response.getSourceRefs();
-        expect(sourceRefs[0].$getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
-        expect(sourceRefs[0].$personId).toBe('PPPP-PPP');
-        expect(sourceRefs[1].$getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/BBBB-BBB');
-        expect(sourceRefs[1].$getTags().length).toBe(0);
-        expect(sourceRefs[1].attribution.$getAgentId()).toBe('UUUU-UUU');
-        expect(sourceRefs[1].attribution.modified).toBe(987654321);
-        expect(sourceRefs[1].attribution.changeMessage).toBe('Dates and location match with other sources.');
-      });
-    });
-
     it('description is returned from getSourceDescription', function() {
       FamilySearch.getSourceDescription('MMMM-MMM').then(function(response) {
         var sourceDesc = response.getSourceDescription();
@@ -33,30 +20,57 @@ define(['FamilySearch', 'helpers'], function(FamilySearch, helpers) {
       });
     });
 
+    it('references are returned from getPersonSourceReferences', function() {
+      FamilySearch.getPersonSourceRefs('PPPP-PPP').then(function(response) {
+        var sourceRefs = response.getSourceRefs();
+        expect(sourceRefs[0].$getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
+        expect(sourceRefs[0].$personId).toBe('PPPP-PPP');
+        expect(sourceRefs[0].$sourceDescriptionId).toBe('SSSS-SS1');
+        expect(sourceRefs[0].$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/SSSS-SS1');
+        expect(sourceRefs[1].attribution.$getAgentId()).toBe('UUUU-UUU');
+        expect(sourceRefs[1].attribution.modified).toBe(987654321);
+        expect(sourceRefs[1].attribution.changeMessage).toBe('Dates and location match with other sources.');
+        var sourceDesc = response.getSourceDescription(sourceRefs[0].$sourceDescriptionId);
+        expect(sourceDesc.id).toBe('SSSS-SS1');
+        expect(sourceDesc.attribution.$getAgentId()).toBe('123');
+        expect(sourceDesc.$getTitle()).toBe('1900 US Census, Ethel Hollivet');
+      });
+    });
+
     it('references are returned from getCoupleSourceRefs', function() {
       FamilySearch.getCoupleSourceRefs('12345').then(function(response) {
         var sourceRefs = response.getSourceRefs();
         expect(sourceRefs[0].$getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
         expect(sourceRefs[0].$coupleId).toBe('12345');
-        expect(sourceRefs[1].$getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/BBBB-BBB');
+        expect(sourceRefs[0].$sourceDescriptionId).toBe('SSSS-SS1');
+        expect(sourceRefs[0].$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/SSSS-SS1');
         expect(sourceRefs[1].$getTags().length).toBe(0);
         expect(sourceRefs[1].attribution.$getAgentId()).toBe('UUUU-UUU');
         expect(sourceRefs[1].attribution.modified).toBe(987654321);
         expect(sourceRefs[1].attribution.changeMessage).toBe('Dates and location match with other sources.');
+        var sourceDesc = response.getSourceDescription(sourceRefs[0].$sourceDescriptionId);
+        expect(sourceDesc.id).toBe('SSSS-SS1');
+        expect(sourceDesc.attribution.$getAgentId()).toBe('123');
+        expect(sourceDesc.$getTitle()).toBe('1900 US Census, Ethel Hollivet');
       });
     });
 
     it('references are returned from getChildAndParentsSourceRefs', function() {
       FamilySearch.getChildAndParentsSourceRefs('PPPX-PP0').then(function(response) {
         var sourceRefs = response.getSourceRefs();
-        expect(sourceRefs[0].$getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
-        expect(sourceRefs[0].attribution.modified).toBe(123456789);
+        expect(sourceRefs[0].$getTags().length).toBe(0);
+        expect(sourceRefs[0].attribution.modified).toBe(987654321);
         expect(sourceRefs[0].$childAndParentsId).toBe('PPPX-PP0');
-        expect(sourceRefs[1].$getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/BBBB-BBB');
-        expect(sourceRefs[1].$getTags().length).toBe(0);
+        expect(sourceRefs[0].$sourceDescriptionId).toBe('SSSS-SS2');
+        expect(sourceRefs[0].$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/SSSS-SS2');
+        expect(sourceRefs[0].attribution.changeMessage).toBe('Dates and location match with other sources.');
+        expect(sourceRefs[1].$getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
         expect(sourceRefs[1].attribution.$getAgentId()).toBe('UUUU-UUU');
-        expect(sourceRefs[1].attribution.modified).toBe(987654321);
-        expect(sourceRefs[1].attribution.changeMessage).toBe('Dates and location match with other sources.');
+        expect(sourceRefs[1].attribution.modified).toBe(123456789);
+        var sourceDesc = response.getSourceDescription(sourceRefs[0].$sourceDescriptionId);
+        expect(sourceDesc.id).toBe('SSSS-SS2');
+        expect(sourceDesc.attribution.$getAgentId()).toBe('123');
+        expect(sourceDesc.$getTitle()).toBe('1900 US Census, Ethel Hollivet');
       });
     });
 
@@ -67,18 +81,21 @@ define(['FamilySearch', 'helpers'], function(FamilySearch, helpers) {
         expect(personSourceRef.$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/MM93-JFK');
         expect(personSourceRef.attribution.$getAgentId()).toBe('MMD8-3NT');
         expect(personSourceRef.$personId).toBe('KW7V-Y32');
+        expect(personSourceRef.$sourceDescriptionId).toBe('MM93-JFK');
 
         var coupleSourceRef = response.getCoupleSourceRefs()[0];
         expect(coupleSourceRef.id).toBe('MMMM-S3D');
         expect(coupleSourceRef.$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/MM93-JFK');
         expect(coupleSourceRef.attribution.$getAgentId()).toBe('MMD8-3NT');
         expect(coupleSourceRef.$coupleId).toBe('MMM7-12S');
+        expect(coupleSourceRef.$sourceDescriptionId).toBe('MM93-JFK');
 
         var childAndParentsSourceRef = response.getChildAndParentsSourceRefs()[0];
         expect(childAndParentsSourceRef.id).toBe('MMMM-S36');
         expect(childAndParentsSourceRef.$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/MM93-JFK');
         expect(childAndParentsSourceRef.attribution.$getAgentId()).toBe('MMD8-3NT');
         expect(childAndParentsSourceRef.$childAndParentsId).toBe('MMMP-KN5');
+        expect(childAndParentsSourceRef.$sourceDescriptionId).toBe('MM93-JFK');
       });
     });
 

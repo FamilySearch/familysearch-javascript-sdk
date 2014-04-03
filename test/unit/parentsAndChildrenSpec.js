@@ -24,7 +24,7 @@ define(['FamilySearch'], function(FamilySearch) {
         rel.$getSourceRefs().then(function(response) {
           var sourceRefs = response.getSourceRefs();
           expect(sourceRefs.length).toBe(2);
-          expect(sourceRefs[0].attribution.modified).toBe(123456789);
+          expect(sourceRefs[0].attribution.modified).toBe(987654321);
         });
         rel.$getNoteRefs().then(function(response) {
           var noteRefs = response.getNoteRefs();

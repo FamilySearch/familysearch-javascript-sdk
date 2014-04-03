@@ -101,17 +101,16 @@ define([
 
     // TODO add $getSourceDescriptionUrl when that's available (last checked 4/2/14)
 
-    // TODO uncomment when this is available also from getCollectionSourceDescriptions(+ForUser) (last checked 4/2/14)
-//    /**
-//     * @ngdoc function
-//     * @name sources.types:constructor.SourceDescription#$getSourceRefsQuery
-//     * @methodOf sources.types:constructor.SourceDescription
-//     * @function
-//     * @return {Object} promise for the {@link sources.functions:getSourceRefsQuery getSourceRefsQuery} response
-//     */
-//    $getSourceRefsQuery: function() {
-//      return exports.getSourceRefsQuery(helpers.removeAccessToken(this.links['source-references-query'].href));
-//    },
+    /**
+     * @ngdoc function
+     * @name sources.types:constructor.SourceDescription#$getSourceRefsQuery
+     * @methodOf sources.types:constructor.SourceDescription
+     * @function
+     * @return {Object} promise for the {@link sources.functions:getSourceRefsQuery getSourceRefsQuery} response
+     */
+    $getSourceRefsQuery: function() {
+      return exports.getSourceRefsQuery(this.id);
+    },
 
     /**
      * @ngdoc function
@@ -266,13 +265,6 @@ define([
 
     /**
      * @ngdoc property
-     * @name sources.types:constructor.SourceRef#description
-     * @propertyOf sources.types:constructor.SourceRef
-     * @return {string} URL of the source description
-     */
-
-    /**
-     * @ngdoc property
      * @name sources.types:constructor.SourceRef#attribution
      * @propertyOf sources.types:constructor.SourceRef
      * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
@@ -300,6 +292,13 @@ define([
      */
 
     /**
+     * @ngdoc property
+     * @name sources.types:constructor.SourceRef#$sourceDescriptionId
+     * @propertyOf sources.types:constructor.SourceRef
+     * @return {string} Id of the source description
+     */
+
+    /**
      * @ngdoc function
      * @name sources.types:constructor.SourceRef#$getSourceRefUrl
      * @methodOf sources.types:constructor.SourceRef
@@ -318,7 +317,7 @@ define([
      * @return {string} URL of the source description - pass into {@link sources.functions:getSourceDescription getSourceDescription} for details
      */
     $getSourceDescriptionUrl: function() {
-      return helpers.removeAccessToken(this.description);
+      return helpers.removeAccessToken(this.$sourceDescriptionUrl);
     },
 
     /**
@@ -353,18 +352,18 @@ define([
      * @return {SourceRef} this source reference
      */
     $setSourceDescription: function(srcDesc) {
-      // $sourceDescriptionId is an undocumented variable that is set only when srcDesc is an id
       if (srcDesc instanceof SourceDescription) {
-        // TODO use source description URL when available
+        // TODO use source description URL when available and set both id and URL
         srcDesc = srcDesc.id;
       }
       if (helpers.isAbsoluteUrl(srcDesc)) {
         delete this.$sourceDescriptionId;
-        this.description = helpers.removeAccessToken(srcDesc);
+        this.$sourceDescriptionUrl = helpers.removeAccessToken(srcDesc);
+        this.description = this.$sourceDescriptionUrl;
       }
       else {
         this.$sourceDescriptionId = srcDesc;
-        delete this.description;
+        delete this.$sourceDescriptionUrl;
       }
       //noinspection JSValidateTypes
       return this;
@@ -428,7 +427,7 @@ define([
      * @description
      * Create a new source reference (if this source reference does not have an id) or update the existing source reference
      *
-     * _NOTE_: there's no _refresh_ parameter because it's not possible to read individual discussion references;
+     * _NOTE_: there's no _refresh_ parameter because it's not possible to read individual source references;
      * however, the source reference's id and URL are set when creating a new source reference.
      *
      * _NOTE_: the person/couple/childAndParents id and the source description are not updateable.
@@ -464,10 +463,13 @@ define([
       return helpers.chainHttpPromises(
         plumbing.getUrl(template, null, {pid: self.$personId, crid: self.$coupleId, caprid: self.$childAndParentsId, srid: self.id}),
         function(url) {
-          if (!self.description && self.$sourceDescriptionId) {
+          if (!self.$sourceDescriptionUrl && self.$sourceDescriptionId) {
             // the discovery resource is guaranteed to be set due to the getUrl statement
-            self.description = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'source-description-template',
-                                                                   {sdid: self.$sourceDescriptionId});
+            self.$sourceDescriptionUrl = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'source-description-template',
+                                                                             {sdid: self.$sourceDescriptionId});
+          }
+          if (self.$sourceDescriptionUrl) {
+            self.description = helpers.removeAccessToken(self.$sourceDescriptionUrl);
           }
           var payload = {};
           payload[label] = [ { sources: [ self ] } ];
@@ -604,7 +606,7 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/E866s/ editable example}
    *
-   * @param {String} sdid of the source description or full URL of the source-references-query endpoint
+   * @param {String} sdid id of the source description (cannot be the URL)
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
@@ -613,7 +615,7 @@ define([
     return helpers.chainHttpPromises(
       plumbing.getUrl('source-references-query'),
       function(url) {
-        url = helpers.isAbsoluteUrl(sdid) ? sdid : helpers.appendQueryParameters(url, {source: sdid});
+        url = helpers.appendQueryParameters(url, {source: sdid});
         return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
           helpers.compose(
             helpers.objectExtender({getPersonSourceRefs: function() {
@@ -645,7 +647,11 @@ define([
               var person = helpers.find(maybe(response).persons, function(person) {
                 return !!helpers.find(maybe(person).sources, {id: sourceRef.id});
               });
-              return { $personId: person.id };
+              return {
+                $personId: person.id,
+                $sourceDescriptionId: sdid,
+                $sourceDescriptionUrl: sourceRef.description
+              };
             }, function(response) {
               return helpers.flatMap(maybe(response).persons, function(person) {
                 return person.sources;
@@ -656,7 +662,11 @@ define([
               var couple = helpers.find(maybe(response).relationships, function(couple) {
                 return !!helpers.find(maybe(couple).sources, {id: sourceRef.id});
               });
-              return { $coupleId: couple.id };
+              return {
+                $coupleId: couple.id,
+                $sourceDescriptionId: sdid,
+                $sourceDescriptionUrl: sourceRef.description
+              };
             }, function(response) {
               return helpers.flatMap(maybe(response).relationships, function(couple) {
                 return couple.sources;
@@ -667,7 +677,11 @@ define([
               var childAndParents = helpers.find(maybe(response).childAndParentsRelationships, function(childAndParents) {
                 return !!helpers.find(maybe(childAndParents).sources, {id: sourceRef.id});
               });
-              return { $childAndParentsId: childAndParents.id };
+              return {
+                $childAndParentsId: childAndParents.id,
+                $sourceDescriptionId: sdid,
+                $sourceDescriptionUrl: sourceRef.description
+              };
             }, function(response) {
               return helpers.flatMap(maybe(response).childAndParentsRelationships, function(childAndParents) {
                 return childAndParents.sources;
@@ -678,6 +692,44 @@ define([
     );
   };
 
+  function getSourceRefsResponseMapper(root, label) {
+    return helpers.compose(
+      helpers.objectExtender({
+        getSourceRefs: function() {
+          return maybe(maybe(this[root])[0]).sources || [];
+        },
+        getSourceDescriptions: function() {
+          return this.sourceDescriptions || [];
+        },
+        getSourceDescription: function(id) {
+          return helpers.find(this.sourceDescriptions, {id: id});
+        }
+      }),
+      helpers.constructorSetter(SourceRef, 'sources', function(response) {
+        return maybe(maybe(response)[root])[0];
+      }),
+      helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+        return maybe(maybe(maybe(response)[root])[0]).sources;
+      }),
+      helpers.objectExtender(function(response, srcRef) {
+        var sdid = srcRef.description.substr(1); // #ID -> ID
+        // the discovery resource is guaranteed to be set due to the getUrl statement
+        var result = {
+          $sourceDescriptionId: sdid,
+          $sourceDescriptionUrl: helpers.getUrlFromDiscoveryResource(globals.discoveryResource,
+            'source-description-template', {sdid: sdid})
+        };
+        result[label] = maybe(maybe(maybe(response)[root])[0]).id;
+        return result;
+      }, function(response) {
+        return maybe(maybe(maybe(response)[root])[0]).sources;
+      }),
+      helpers.constructorSetter(SourceDescription, 'sourceDescriptions'),
+      helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+        return response.sourceDescriptions;
+      })
+    );
+  }
   /**
    * @ngdoc function
    * @name sources.functions:getPersonSourceRefs
@@ -685,40 +737,27 @@ define([
    *
    * @description
    * Get references to sources for a person
-   * The response includes the following convenience function
+   * The response includes the following convenience functions
    *
    * - `getSourceRefs()` - get an array of {@link sources.types:constructor.SourceRef SourceRefs} from the response
+   * - `getSourceDescriptions()` get an array of {@link sources.types:constructor.SourceDescription SourceDescriptions} from the response
+   * - `getSourceDescription(id)` get the {@link sources.types:constructor.SourceDescription SourceDescription}
+   * with the specified source description id from the response
    *
-   * {@link https://familysearch.org/developers/docs/api/tree/Person_Source_References_resource FamilySearch API Docs}
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Sources_Query_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/BkydV/ editable example}
    *
-   * @param {String} pid of the person or full URL of the person-source-references endpoint
+   * @param {String} pid person id or full URL of the person-sources-query endpoint
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   exports.getPersonSourceRefs = function(pid, params, opts) {
     return helpers.chainHttpPromises(
-      plumbing.getUrl('person-source-references-template', pid, {pid: pid}),
+      plumbing.getUrl('person-sources-query-template', pid, {pid: pid}),
       function(url) {
-        return plumbing.get(url, params, {}, opts,
-          helpers.compose(
-            helpers.objectExtender({getSourceRefs: function() {
-              return maybe(maybe(this.persons)[0]).sources || [];
-            }}),
-            helpers.constructorSetter(SourceRef, 'sources', function(response) {
-              return maybe(maybe(response).persons)[0];
-            }),
-            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
-              return maybe(maybe(maybe(response).persons)[0]).sources;
-            }),
-            helpers.objectExtender(function(response) {
-              return { $personId: maybe(maybe(maybe(response).persons)[0]).id };
-            }, function(response) {
-              return maybe(maybe(maybe(response).persons)[0]).sources;
-            })
-          ));
+        return plumbing.get(url, params, {}, opts, getSourceRefsResponseMapper('persons','$personId'));
       });
   };
 
@@ -737,32 +776,16 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/ahu29/ editable example}
    *
-   * @param {String} crid or full URL of the couple relationship
+   * @param {String} crid couple relationship id or full URL of the couple-relationship-sources-query endpoint
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   exports.getCoupleSourceRefs = function(crid, params, opts) {
     return helpers.chainHttpPromises(
-      plumbing.getUrl('couple-relationship-source-references-template', crid, {crid: crid}),
+      plumbing.getUrl('couple-relationship-sources-query-template', crid, {crid: crid}),
       function(url) {
-        return plumbing.get(url, params, {}, opts,
-          helpers.compose(
-            helpers.objectExtender({getSourceRefs: function() {
-              return maybe(maybe(this.relationships)[0]).sources || [];
-            }}),
-            helpers.constructorSetter(SourceRef, 'sources', function(response) {
-              return maybe(maybe(response).relationships)[0];
-            }),
-            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
-              return maybe(maybe(maybe(response).relationships)[0]).sources;
-            }),
-            helpers.objectExtender(function(response) {
-              return { $coupleId: maybe(maybe(maybe(response).relationships)[0]).id };
-            }, function(response) {
-              return maybe(maybe(maybe(response).relationships)[0]).sources;
-            })
-          ));
+        return plumbing.get(url, params, {}, opts, getSourceRefsResponseMapper('relationships', '$coupleId'));
       });
   };
 
@@ -781,33 +804,17 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/ZKLVT/ editable example}
    *
-   * @param {String} caprid id or full URL of the child and parents relationship
+   * @param {String} caprid child-and-parents relationship id or full URL of the child-and-parents-relationship-sources-query endpoint
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   exports.getChildAndParentsSourceRefs = function(caprid, params, opts) {
     return helpers.chainHttpPromises(
-      plumbing.getUrl('child-and-parents-relationship-source-references-template', caprid, {caprid: caprid}),
+      plumbing.getUrl('child-and-parents-relationship-sources-template', caprid, {caprid: caprid}),
       function(url) {
         return plumbing.get(url, params,
-          {'Accept': 'application/x-fs-v1+json'}, opts,
-          helpers.compose(
-            helpers.objectExtender({getSourceRefs: function() {
-              return maybe(maybe(this.childAndParentsRelationships)[0]).sources || [];
-            }}),
-            helpers.constructorSetter(SourceRef, 'sources', function(response) {
-              return maybe(maybe(response).childAndParentsRelationships)[0];
-            }),
-            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
-              return maybe(maybe(maybe(response).childAndParentsRelationships)[0]).sources;
-            }),
-            helpers.objectExtender(function(response) {
-              return { $childAndParentsId: maybe(maybe(maybe(response).childAndParentsRelationships)[0]).id };
-            }, function(response) {
-              return maybe(maybe(maybe(response).childAndParentsRelationships)[0]).sources;
-            })
-          ));
+          {'Accept': 'application/x-fs-v1+json'}, opts, getSourceRefsResponseMapper('childAndParentsRelationships', '$childAndParentsId'));
       });
   };
 

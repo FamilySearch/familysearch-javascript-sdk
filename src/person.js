@@ -469,8 +469,8 @@ define([
      * @function
      * @return {Object} promise for the {@link sources.functions:getPersonSourceRefs getPersonSourceRefs} response
      */
-    $getPersonSourceRefs: function() {
-      return sources.getPersonSourceRefs(helpers.removeAccessToken(this.links['source-references'].href));
+    $getSourceRefs: function() {
+      return sources.getPersonSourceRefs(this.id);
     },
 
     /**

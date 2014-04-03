@@ -57,7 +57,7 @@
       "title" : "Child-and-Parents Relationship"
     },
     "discussions" : {
-      "href" : "https://sandbox.familysearch.org/platform/discussions/discussions",
+      "href" : "https://sandbox.familysearch.org/platform/discussions/discussions?access_token=USYS782F667ECD554AFF21F723F2178F2487_idses-int01.a.fsglobal.net",
       "title" : "Discussions"
     },
     "child-and-parents-relationship-conclusion-template" : {
@@ -103,12 +103,26 @@
       "title" : "Person"
     },
     "user-collections" : {
-      "href" : "https://sandbox.familysearch.org/platform/sources/collections",
+      "href" : "https://sandbox.familysearch.org/platform/sources/collections?access_token=USYS782F667ECD554AFF21F723F2178F2487_idses-int01.a.fsglobal.net",
       "title" : "User-Defined Collections"
     },
     "current-user" : {
-      "href" : "https://sandbox.familysearch.org/platform/users/current",
+      "href" : "https://sandbox.familysearch.org/platform/users/current?access_token=USYS782F667ECD554AFF21F723F2178F2487_idses-int01.a.fsglobal.net",
       "title" : "Current User"
+    },
+    "couple-relationship-sources-query-template" : {
+      "template" : "https://sandbox.familysearch.org/platform/tree/couple-relationships/{crid}/sources{?access_token}",
+      "type" : "application/json,application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml,application/xml,text/html",
+      "accept" : "application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml",
+      "allow" : "GET",
+      "title" : "Sources Query"
+    },
+    "child-and-parents-relationship-sources-template" : {
+      "template" : "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/{caprid}/sources{?access_token}",
+      "type" : "application/json,application/x-fs-v1+json,application/x-fs-v1+xml,application/xml,text/html",
+      "accept" : "application/x-fs-v1+json,application/x-fs-v1+xml",
+      "allow" : "GET",
+      "title" : "Sources Query"
     },
     "discussion-template" : {
       "template" : "https://sandbox.familysearch.org/platform/discussions/discussions/{did}{?access_token}",
@@ -174,10 +188,10 @@
       "title" : "Child-and-Parents Source References"
     },
     "person-matches-template" : {
-      "template" : "https://sandbox.familysearch.org/platform/tree/persons/{pid}/matches{?access_token,collection,confidence,count,status}",
+      "template" : "https://sandbox.familysearch.org/platform/tree/persons/{pid}/matches{?access_token}",
       "type" : "application/atom+xml,application/json,application/x-gedcomx-atom+json,application/xml,text/html",
-      "accept" : "*/*",
-      "allow" : "GET",
+      "accept" : "application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml",
+      "allow" : "GET,POST",
       "title" : "Person Matches"
     },
     "person-matches-query" : {
@@ -202,7 +216,7 @@
       "title" : "Person Parents"
     },
     "child-and-parents-relationships" : {
-      "href" : "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships",
+      "href" : "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships?access_token=USYS782F667ECD554AFF21F723F2178F2487_idses-int01.a.fsglobal.net",
       "title" : "Child-and-Parents Relationships"
     },
     "person-template" : {
@@ -240,7 +254,7 @@
       "title" : "Change History"
     },
     "memories" : {
-      "href" : "https://sandbox.familysearch.org/platform/memories/memories",
+      "href" : "https://sandbox.familysearch.org/platform/memories/memories?access_token=USYS782F667ECD554AFF21F723F2178F2487_idses-int01.a.fsglobal.net",
       "title" : "Artifacts"
     },
     "user-collection-template" : {
@@ -303,7 +317,7 @@
       "title" : "FamilySearch Person Relationships"
     },
     "http://oauth.net/core/2.0/endpoint/token" : {
-      "href" : "https://sandbox.familysearch.org/cis-web/oauth2/v3/token",
+      "href" : "https://sandbox.familysearch.org/cis-web/oauth2/v3/token?access_token=USYS782F667ECD554AFF21F723F2178F2487_idses-int01.a.fsglobal.net",
       "title" : "Access Token"
     },
     "http://oauth.net/core/2.0/endpoint/authorize" : {
@@ -332,7 +346,7 @@
       "title" : "Comment"
     },
     "relationships" : {
-      "href" : "https://sandbox.familysearch.org/platform/tree/relationships",
+      "href" : "https://sandbox.familysearch.org/platform/tree/relationships?access_token=USYS782F667ECD554AFF21F723F2178F2487_idses-int01.a.fsglobal.net",
       "title" : "Relationships"
     },
     "preferred-portrait-template" : {
@@ -346,9 +360,9 @@
       "title" : "Person With Relationships"
     },
     "person-memories-query" : {
-      "template" : "https://sandbox.familysearch.org/platform/tree/persons/{pid}/memories{?access_token,count,start,type}",
+      "template" : "https://sandbox.familysearch.org/platform/tree/persons/{pid}/memories{?access_token,count,description,filename,start,title,type}",
       "type" : "application/json,application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml,application/xml,text/html",
-      "accept" : "application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml",
+      "accept" : "*/*",
       "allow" : "GET,POST",
       "title" : "Artifacts"
     },
@@ -405,11 +419,11 @@
       "href" : "https://sandbox.familysearch.org/cis-web/pages/registration/registration.html"
     },
     "pending-modifications" : {
-      "href" : "https://sandbox.familysearch.org/platform/pending-modifications",
+      "href" : "https://sandbox.familysearch.org/platform/pending-modifications?access_token=USYS782F667ECD554AFF21F723F2178F2487_idses-int01.a.fsglobal.net",
       "title" : "Pending Modifications"
     },
     "persons" : {
-      "href" : "https://sandbox.familysearch.org/platform/tree/persons",
+      "href" : "https://sandbox.familysearch.org/platform/tree/persons?access_token=USYS782F667ECD554AFF21F723F2178F2487_idses-int01.a.fsglobal.net",
       "title" : "Persons"
     },
     "person-search" : {
@@ -467,6 +481,13 @@
     "fs-identity-v2-logout" : {
       "href" : "https://sandbox.familysearch.org/identity/v2/logout"
     },
+    "person-sources-query-template" : {
+      "template" : "https://sandbox.familysearch.org/platform/tree/persons/{pid}/sources{?access_token}",
+      "type" : "application/json,application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml,application/xml,text/html",
+      "accept" : "application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml",
+      "allow" : "GET",
+      "title" : "Sources Query"
+    },
     "fs-child-relationships-template" : {
       "template" : "https://sandbox.familysearch.org/platform/tree/persons/{pid}/fs-child-relationships{?access_token,persons}",
       "type" : "application/json,application/x-fs-v1+json,application/x-fs-v1+xml,application/xml,text/html",
@@ -517,7 +538,7 @@
       "title" : "Persona Reference"
     },
     "couple-relationships" : {
-      "href" : "https://sandbox.familysearch.org/platform/tree/couple-relationships",
+      "href" : "https://sandbox.familysearch.org/platform/tree/couple-relationships?access_token=USYS782F667ECD554AFF21F723F2178F2487_idses-int01.a.fsglobal.net",
       "title" : "Relationships"
     },
     "user-collections-for-user-template" : {
@@ -528,7 +549,7 @@
       "title" : "User-Defined Collections for a User"
     },
     "source-descriptions" : {
-      "href" : "https://sandbox.familysearch.org/platform/sources/descriptions",
+      "href" : "https://sandbox.familysearch.org/platform/sources/descriptions?access_token=USYS782F667ECD554AFF21F723F2178F2487_idses-int01.a.fsglobal.net",
       "title" : "Source Descriptions"
     },
     "user-collection-source-descriptions-template" : {
@@ -539,7 +560,7 @@
       "title" : "User-Defined Collection Source Descriptions"
     },
     "current-user-person" : {
-      "href" : "https://sandbox.familysearch.org/platform/tree/current-person",
+      "href" : "https://sandbox.familysearch.org/platform/tree/current-person?access_token=USYS782F667ECD554AFF21F723F2178F2487_idses-int01.a.fsglobal.net",
       "title" : "Current User Person"
     },
     "fs-identity-v2-session" : {
