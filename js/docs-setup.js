@@ -212,6 +212,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "discussions.functions:deleteMemoryComment",
+      "shortName": "deleteMemoryComment",
+      "type": "function",
+      "moduleName": "discussions",
+      "shortDescription": "Delete the specified memory comment",
+      "keywords": "api cmid comment delete discussions docs editable example familysearch full function functions http https init memory mid net options opts org pass promise set url"
+    },
+    {
+      "section": "api",
       "id": "discussions.functions:getDiscussion",
       "shortName": "getDiscussion",
       "type": "function",
@@ -326,15 +335,6 @@ NG_DOCS={
       "moduleName": "memories",
       "shortDescription": "Delete the specified memory",
       "keywords": "api delete docs editable example familysearch full function functions http https init memories memory mid net options opts org pass promise url"
-    },
-    {
-      "section": "api",
-      "id": "memories.functions:deleteMemoryComment",
-      "shortName": "deleteMemoryComment",
-      "type": "function",
-      "moduleName": "memories",
-      "shortDescription": "Delete the specified memory comment",
-      "keywords": "api cmid comment delete docs editable example familysearch full function functions http https init memories memory mid net options opts org pass promise set url"
     },
     {
       "section": "api",
@@ -649,7 +649,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "parentsAndChildren",
       "shortDescription": "Child and parents relationship",
-      "keywords": "$addfatherfact $addmotherfact $delete $deletefather $deletefatherfact $deletemother $deletemotherfact $getchanges $getchild $getchildid $getchildurl $getfather $getfatherfacts $getfatherid $getfatherurl $getmother $getmotherfacts $getmotherid $getmotherurl $getnoterefs $getsourcerefs $save $setchild $setfather $setfatherfacts $setmother $setmotherfacts __broken__ _child_ _father_ _fatherfacts_ _mother_ _motherfacts_ add api array arrays attributes biologicalparent change changed changemessage changes child childandparents create data dates default delete deletechildandparents deleted docs editable element example existing fact facts familysearch father fatherfacts fulfilled function functions getchildandparentschanges getchildandparentsnoterefs getchildandparentssourcerefs getperson http https ids init longer message methods mother motherfacts net note notes object objects optional options opts org parent-relationship parents parentsandchildren pass passed persists person places promise property read refresh relationship remove removes response saved set sources supported true type types update updated updating url urls"
+      "keywords": "$addfatherfact $addmotherfact $delete $deletefather $deletefatherfact $deletemother $deletemotherfact $getchanges $getchild $getchildandparentsurl $getchildid $getchildurl $getfather $getfatherfacts $getfatherid $getfatherurl $getmother $getmotherfacts $getmotherid $getmotherurl $getnoterefs $getsourcerefs $save $setchild $setfather $setfatherfacts $setmother $setmotherfacts __broken__ _child_ _father_ _fatherfacts_ _mother_ _motherfacts_ add api array arrays attributes biologicalparent change changed changemessage changes child child-and-parents childandparents create data dates default delete deletechildandparents deleted docs editable element example existing fact facts familysearch father fatherfacts fulfilled function functions getchildandparentschanges getchildandparentsnoterefs getchildandparentssourcerefs getperson http https ids init longer message methods mother motherfacts net note notes object objects optional options opts org parent-relationship parents parentsandchildren pass passed persists person places promise property read refresh relationship remove removes response saved set sources supported true type types update updated updating url urls"
     },
     {
       "section": "api",
@@ -1081,7 +1081,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Get the source references for a child and parents relationship",
-      "keywords": "api array caprid child convenience currently docs editable example familysearch full function functions getsourcerefs http https includes init net options opts org params parents pass promise references relationship response source sourceref sourcerefs sources types unused url"
+      "keywords": "api array caprid child child-and-parents child-and-parents-relationship-sources-query convenience currently docs editable endpoint example familysearch full function functions getsourcerefs http https includes init net options opts org params parents pass promise references relationship response source sourceref sourcerefs sources types unused url"
     },
     {
       "section": "api",
@@ -1090,7 +1090,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Get the source references for a couple relationship",
-      "keywords": "api array convenience couple crid currently docs editable example familysearch full function functions getsourcerefs http https includes init net options opts org params pass promise references relationship response source sourceref sourcerefs sources types unused url"
+      "keywords": "api array convenience couple couple-relationship-sources-query crid currently docs editable endpoint example familysearch full function functions getsourcerefs http https includes init net options opts org params pass promise references relationship response source sourceref sourcerefs sources types unused url"
     },
     {
       "section": "api",
@@ -1108,7 +1108,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Get references to sources for a person",
-      "keywords": "api array convenience currently docs editable endpoint example familysearch full function functions getsourcerefs http https includes init net options opts org params pass person person-source-references pid promise references response sourceref sourcerefs sources types unused url"
+      "keywords": "api array convenience currently description docs editable endpoint example familysearch full function functions getsourcedescription getsourcedescriptions getsourcerefs http https includes init net options opts org params pass person person-sources-query pid promise references response source sourcedescription sourcedescriptions sourceref sourcerefs sources types unused url"
     },
     {
       "section": "api",
@@ -1126,7 +1126,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Get the people, couples, and child-and-parents relationships referencing a source",
-      "keywords": "api array child child-and-parents convenience couple couples currently description docs editable endpoint example familysearch full function functions getchildandparentssourcerefs getcouplesourcerefs getpersonsourcerefs http https includes init net options opts org params parent pass people person promise referencing relationship relationships response sdid source source-references-query sourceref sourcerefs sources types unused url"
+      "keywords": "api array child child-and-parents convenience couple couples currently description docs editable example familysearch function functions getchildandparentssourcerefs getcouplesourcerefs getpersonsourcerefs http https includes init net options opts org params parent pass people person promise referencing relationship relationships response sdid source sourceref sourcerefs sources types unused url"
     },
     {
       "section": "api",
@@ -1135,7 +1135,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Description of a source",
-      "keywords": "$delete $getcitation $gettext $gettitle $save $setcitation $settext $settitle _about_ api attributes attribution change changemessage citation create data delete deletesourcedescription deletion description docs editable example existing familysearch fulfilled function functions http https init memory message net object optional options opts org pass promise property read reason record refer references refresh source sourcedescription sources text title true types update updated updating url"
+      "keywords": "$delete $getcitation $getsourcerefsquery $gettext $gettitle $save $setcitation $settext $settitle _about_ api attributes attribution change changemessage citation create data delete deletesourcedescription deletion description docs editable example existing familysearch fulfilled function functions getsourcerefsquery http https init memory message net object optional options opts org pass promise property read reason record refer references refresh response source sourcedescription sources text title true types update updated updating url"
     },
     {
       "section": "api",
@@ -1144,7 +1144,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Reference from a person or relationship to a source.",
-      "keywords": "$addtag $childandparentsid $coupleid $delete $getsourcedescription $getsourcedescriptionurl $getsourcerefurl $gettags $personid $removetag $save $setsourcedescription $settags _note_ _refresh_ _sourcedescription_ _tags_ add api array attached attributes attribution change changemessage child childandparents couple create creating data delete deletechildandparentssourceref deletecouplesourceref deletepersonsourceref deletion description details discussion docs editable example existing familysearch fulfilled function functions getsourcedescription http https individual init message names net object optional options opts org parameter parents pass person promise property read reason reference references relationship remove response set source sourcedescription sourceref sources srcdesc tag tags types update updateable updated url"
+      "keywords": "$addtag $childandparentsid $coupleid $delete $getsourcedescription $getsourcedescriptionurl $getsourcerefurl $gettags $personid $removetag $save $setsourcedescription $settags $sourcedescriptionid _note_ _refresh_ _sourcedescription_ _tags_ add api array attached attributes attribution change changemessage child childandparents couple create creating data delete deletechildandparentssourceref deletecouplesourceref deletepersonsourceref deletion description details docs editable example existing familysearch fulfilled function functions getsourcedescription http https individual init message names net object optional options opts org parameter parents pass person promise property read reason reference references relationship remove response set source sourcedescription sourceref sources srcdesc tag tags types update updateable updated url"
     },
     {
       "section": "api",
@@ -1180,7 +1180,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "spouses",
       "shortDescription": "Couple relationship",
-      "keywords": "$addfact $delete $deletefact $getchanges $getfacts $gethusband $gethusbandid $gethusbandurl $getmarriagefact $getnoterefs $getsourcerefs $getwife $getwifeid $getwifeurl $save $setfacts $sethusband $setwife _facts_ _husband_ _wife_ add api array attributes call change changemessage changes couple create data default delete deletecouple deleted editable elements example existing exports fact facts fulfilled function functions getcouplechanges getcouplenoterefs getcouplesourcerefs getperson http husband ids init initializing marriage message methods multiple net note notes object objects optional options opts org pass passed persists person plan promise property read refresh relationship remove removes response sdk seconds set sources spouses true type types update updated updating url urls wife"
+      "keywords": "$addfact $delete $deletefact $getchanges $getcoupleurl $getfacts $gethusband $gethusbandid $gethusbandurl $getmarriagefact $getnoterefs $getsourcerefs $getwife $getwifeid $getwifeurl $save $setfacts $sethusband $setwife _facts_ _husband_ _wife_ add api array attributes call change changemessage changes couple create data default delete deletecouple deleted editable elements example existing exports fact facts fulfilled function functions getcouplechanges getcouplenoterefs getcouplesourcerefs getperson http husband ids init initializing marriage message methods multiple net note notes object objects optional options opts org pass passed persists person plan promise property read refresh relationship remove removes response sdk seconds set sources spouses true type types update updated updating url urls wife"
     },
     {
       "section": "api",

@@ -2352,6 +2352,10 @@ define('authorities',[
       ));
   };
 
+  // TODO authorities properties
+  // TODO name authority
+  // TODO culture authority
+
   return exports;
 });
 
@@ -2662,7 +2666,7 @@ define('changeHistory',[
      */
     $getChangeReason: function() { return maybe(maybe(this.changeInfo)[0]).reason; },
 
-    // TODO check for agent id (last checked 4/2/14)
+    // TODO check for agent id; also add $getAgentId as option in $getAgent (last checked 4/2/14)
 
     /**
      * @ngdoc function
@@ -2775,6 +2779,8 @@ define('changeHistory',[
       });
   };
 
+  // TODO restore change
+
   return exports;
 });
 
@@ -2849,7 +2855,7 @@ define('attribution',[
      * @function
      * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
      */
-    $getAgent: function() { return user.getAgent(this.$getAgentUrl()); }
+    $getAgent: function() { return user.getAgent(this.$getAgentUrl() || this.$getAgentId()); }
   };
 
   return exports;
@@ -2984,7 +2990,7 @@ define('discussions',[
      * @function
      * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
      */
-    $getAgent: function() { return user.getAgent(this.$getAgentUrl()); },
+    $getAgent: function() { return user.getAgent(this.$getAgentUrl() || this.$getAgentId()); },
 
     /**
      * @ngdoc function
@@ -3044,7 +3050,7 @@ define('discussions',[
      * @return {Object} promise for the discussion id
      */
     $delete: function(opts) {
-      // TODO use the discussion URL when that is available
+      // TODO use the discussion URL as an alternative when that is available
       return exports.deleteDiscussion(this.id, opts);
     }
 
@@ -3132,7 +3138,8 @@ define('discussions',[
      * @return {Object} promise for the {@link discussions.functions:getDiscussion getDiscussion} response
      */
     $getDiscussion: function() {
-      return exports.getDiscussion(this.$getDiscussionUrl());
+      // TODO remove this.resourceId if resourceId ends up being discussion reference id
+      return exports.getDiscussion(this.$getDiscussionUrl() || this.resourceId);
     },
 
     /**
@@ -3223,6 +3230,7 @@ define('discussions',[
      * @return {Object} promise for the discussion reference url
      */
     $delete: function(changeMessage, opts) {
+      // TODO pass in alternative $personId and drid when drid is available
       return exports.deleteDiscussionRef(this.$getDiscussionRefUrl(), null, changeMessage, opts);
     }
 
@@ -3319,7 +3327,7 @@ define('discussions',[
      * @function
      * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
      */
-    $getAgent: function() { return user.getAgent(this.$getAgentUrl()); },
+    $getAgent: function() { return user.getAgent(this.$getAgentUrl() || this.$getAgentId()); },
 
     // TODO check whether it's possible to update memory comments now and remove the note
 
@@ -3373,8 +3381,12 @@ define('discussions',[
      * @return {Object} promise for the comment url
      */
     $delete: function(opts) {
-      // since we're passing in the full url we can delete memory comments with this function as well
-      return exports.deleteDiscussionComment(this.$getCommentUrl(), null, opts);
+      if (this.$discussionId) {
+        return exports.deleteDiscussionComment(this.$getCommentUrl() || this.$discussionId, this.id, opts);
+      }
+      else {
+        return exports.deleteMemoryComment(this.$getCommentUrl() || this.$memoryId, this.id, opts);
+      }
     }
 
   };
@@ -3625,6 +3637,34 @@ define('discussions',[
       function(url) {
         return plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
           return did;
+        });
+      }
+    );
+  };
+
+  /**
+   * @ngdoc function
+   * @name discussions.functions:deleteMemoryComment
+   * @function
+   *
+   * @description
+   * Delete the specified memory comment
+   *
+   * {@link https://familysearch.org/developers/docs/api/memories/Memory_Comment_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/5bbuQ/ editable example}
+   *
+   * @param {string} mid memory id or full URL of the comment
+   * @param {string=} cmid id of the comment (must be set if mid is a memory id and not the full URL)
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the mid
+   */
+  exports.deleteMemoryComment = function(mid, cmid, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('memory-comment-template', mid, {mid: mid, cmid: cmid}),
+      function(url) {
+        return plumbing.del(url, {}, opts, function() {
+          return mid;
         });
       }
     );
@@ -4467,7 +4507,7 @@ define('memories',[
      * @function
      * @return {Object} promise for the {@link memories.functions:getMemoryComments getMemoryComments} response
      */
-    $getComments: function() { return exports.getMemoryComments(this.$getCommentsUrl()); },
+    $getComments: function() { return exports.getMemoryComments(this.$getCommentsUrl() || this.id); },
 
     /**
      * @ngdoc function
@@ -4584,7 +4624,7 @@ define('memories',[
      * @return {Object} promise for the memory URL
      */
     $delete: function(opts) {
-      return exports.deleteMemory(this.$getMemoryUrl(), opts);
+      return exports.deleteMemory(this.$getMemoryUrl() || this.id, opts);
     }
 
   };
@@ -4693,7 +4733,7 @@ define('memories',[
      * @return {Object} promise for the {@link memories.functions:getMemory getMemory} response
      */
     $getMemory:  function() {
-      return exports.getMemory(this.$getMemoryUrl());
+      return exports.getMemory(this.$getMemoryUrl() || this.$memoryId);
     },
 
     /**
@@ -4785,7 +4825,7 @@ define('memories',[
      * @return {Object} promise for the memory persona URL
      */
     $delete: function(opts) {
-      return exports.deleteMemoryPersona(this.$getMemoryPersonaUrl(), null, opts);
+      return exports.deleteMemoryPersona(this.$getMemoryPersonaUrl() || this.$memoryId, this.id, opts);
     }
 
   };
@@ -4876,6 +4916,7 @@ define('memories',[
      * @return {Object} promise for the {@link memories.functions:getMemoryPersona getMemoryPersona} response
      */
     $getMemoryPersona:  function() {
+      // TODO add alternative (mid, mpid) if we get mid
       return exports.getMemoryPersona(this.$getMemoryPersonaUrl());
     },
 
@@ -4899,6 +4940,7 @@ define('memories',[
      * @return {Object} promise for the {@link memories.functions:getMemory getMemory} response
      */
     $getMemory:  function() {
+      // TODO add alternative mid if we get mid
       return exports.getMemory(this.$getMemoryUrl());
     },
 
@@ -4966,7 +5008,7 @@ define('memories',[
      * @return {Object} promise for the memory persona ref URL
      */
     $delete: function(opts) {
-      return exports.deleteMemoryPersonaRef(this.$getMemoryPersonaRefUrl(), null, opts);
+      return exports.deleteMemoryPersonaRef(this.$getMemoryPersonaRefUrl() || this.$personId, this.id, opts);
     }
 
   };
@@ -5461,34 +5503,6 @@ define('memories',[
     );
   };
 
-  /**
-   * @ngdoc function
-   * @name memories.functions:deleteMemoryComment
-   * @function
-   *
-   * @description
-   * Delete the specified memory comment
-   *
-   * {@link https://familysearch.org/developers/docs/api/memories/Memory_Comment_resource FamilySearch API Docs}
-   *
-   * {@link http://jsfiddle.net/DallanQ/5bbuQ/ editable example}
-   *
-   * @param {string} mid memory id or full URL of the comment
-   * @param {string=} cmid id of the comment (must be set if mid is a memory id and not the full URL)
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the mid
-   */
-  exports.deleteMemoryComment = function(mid, cmid, opts) {
-    return helpers.chainHttpPromises(
-      plumbing.getUrl('memory-comment-template', mid, {mid: mid, cmid: cmid}),
-      function(url) {
-        return plumbing.del(url, {}, opts, function() {
-          return mid;
-        });
-      }
-    );
-  };
-
   return exports;
 });
 
@@ -5668,8 +5682,15 @@ define('notes',[
      * @return {Object} promise for the note URL
      */
     $delete: function(opts) {
-      // since we're passing in the full url we can delete couple and child-and-parents notes with this function as well
-      return exports.deletePersonNote(this.$getNoteUrl(), null, opts);
+      if (this.$personId) {
+        return exports.deletePersonNote(this.$getNoteUrl() || this.$personId, this.id, opts);
+      }
+      else if (this.$coupleId) {
+        return exports.deleteCoupleNote(this.$getNoteUrl() || this.$coupleId, this.id, opts);
+      }
+      else {
+        return exports.deleteChildAndParentsNote(this.$getNoteUrl() || this.$childAndParentsId, this.id, opts);
+      }
     }
 
   };
@@ -5698,9 +5719,10 @@ define('notes',[
      * @ngdoc property
      * @name notes.types:constructor.NoteRef#id
      * @propertyOf notes.types:constructor.NoteRef
-     * @return {String} Id of the note - pass into {@link notes.functions:getPersonNote getPersonNote},
-     * {@link notes.functions:getCoupleNote getCoupleNote}, or {@link notes.functions:getChildAndParentsNote getChildAndParentsNote}
-     * for details
+     * @return {String} Id of the note
+     * - pass into {@link notes.functions:getPersonNote getPersonNote},
+     * {@link notes.functions:getCoupleNote getCoupleNote}, or
+     * {@link notes.functions:getChildAndParentsNote getChildAndParentsNote} for details
      */
 
     /**
@@ -5754,7 +5776,15 @@ define('notes',[
      * {@link sources.functions:getChildAndParentsNote getChildAndParentsNote} response
      */
     $getNote: function() {
-      return getNote(this.$getNoteUrl());
+      if (this.$personId) {
+        return exports.getPersonNote(this.$getNoteUrl() || this.$personId, this.id);
+      }
+      else if (this.$coupleId) {
+        return exports.getCoupleNote(this.$getNoteUrl() || this.$coupleId, this.id);
+      }
+      else {
+        return exports.getChildAndParentsNote(this.$getNoteUrl() || this.$childAndParentsId, this.id);
+      }
     },
 
     /**
@@ -5769,8 +5799,15 @@ define('notes',[
      * @return {Object} promise for the note URL
      */
     $delete: function(opts) {
-      // since we're passing in the full url we can delete couple and child-and-parents notes with this function as well
-      return exports.deletePersonNote(helpers.removeAccessToken(maybe(maybe(this.links).note).href), null, opts);
+      if (this.$personId) {
+        return exports.deletePersonNote(this.$getNoteUrl() || this.$personId, this.id, opts);
+      }
+      else if (this.$coupleId) {
+        return exports.deleteCoupleNote(this.$getNoteUrl() || this.$coupleId, this.id, opts);
+      }
+      else {
+        return exports.deleteChildAndParentsNote(this.$getNoteUrl() || this.$childAndParentsId, this.id, opts);
+      }
     }
 
   };
@@ -6321,17 +6358,16 @@ define('sources',[
 
     // TODO add $getSourceDescriptionUrl when that's available (last checked 4/2/14)
 
-    // TODO uncomment when this is available also from getCollectionSourceDescriptions(+ForUser) (last checked 4/2/14)
-//    /**
-//     * @ngdoc function
-//     * @name sources.types:constructor.SourceDescription#$getSourceRefsQuery
-//     * @methodOf sources.types:constructor.SourceDescription
-//     * @function
-//     * @return {Object} promise for the {@link sources.functions:getSourceRefsQuery getSourceRefsQuery} response
-//     */
-//    $getSourceRefsQuery: function() {
-//      return exports.getSourceRefsQuery(helpers.removeAccessToken(this.links['source-references-query'].href));
-//    },
+    /**
+     * @ngdoc function
+     * @name sources.types:constructor.SourceDescription#$getSourceRefsQuery
+     * @methodOf sources.types:constructor.SourceDescription
+     * @function
+     * @return {Object} promise for the {@link sources.functions:getSourceRefsQuery getSourceRefsQuery} response
+     */
+    $getSourceRefsQuery: function() {
+      return exports.getSourceRefsQuery(this.id);
+    },
 
     /**
      * @ngdoc function
@@ -6486,13 +6522,6 @@ define('sources',[
 
     /**
      * @ngdoc property
-     * @name sources.types:constructor.SourceRef#description
-     * @propertyOf sources.types:constructor.SourceRef
-     * @return {string} URL of the source description
-     */
-
-    /**
-     * @ngdoc property
      * @name sources.types:constructor.SourceRef#attribution
      * @propertyOf sources.types:constructor.SourceRef
      * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
@@ -6520,6 +6549,13 @@ define('sources',[
      */
 
     /**
+     * @ngdoc property
+     * @name sources.types:constructor.SourceRef#$sourceDescriptionId
+     * @propertyOf sources.types:constructor.SourceRef
+     * @return {string} Id of the source description
+     */
+
+    /**
      * @ngdoc function
      * @name sources.types:constructor.SourceRef#$getSourceRefUrl
      * @methodOf sources.types:constructor.SourceRef
@@ -6538,7 +6574,7 @@ define('sources',[
      * @return {string} URL of the source description - pass into {@link sources.functions:getSourceDescription getSourceDescription} for details
      */
     $getSourceDescriptionUrl: function() {
-      return helpers.removeAccessToken(this.description);
+      return helpers.removeAccessToken(this.$sourceDescriptionUrl);
     },
 
     /**
@@ -6573,18 +6609,18 @@ define('sources',[
      * @return {SourceRef} this source reference
      */
     $setSourceDescription: function(srcDesc) {
-      // $sourceDescriptionId is an undocumented variable that is set only when srcDesc is an id
       if (srcDesc instanceof SourceDescription) {
-        // TODO use source description URL when available
+        // TODO use source description URL when available and set both id and URL
         srcDesc = srcDesc.id;
       }
       if (helpers.isAbsoluteUrl(srcDesc)) {
         delete this.$sourceDescriptionId;
-        this.description = helpers.removeAccessToken(srcDesc);
+        this.$sourceDescriptionUrl = helpers.removeAccessToken(srcDesc);
+        this.description = this.$sourceDescriptionUrl;
       }
       else {
         this.$sourceDescriptionId = srcDesc;
-        delete this.description;
+        delete this.$sourceDescriptionUrl;
       }
       //noinspection JSValidateTypes
       return this;
@@ -6648,7 +6684,7 @@ define('sources',[
      * @description
      * Create a new source reference (if this source reference does not have an id) or update the existing source reference
      *
-     * _NOTE_: there's no _refresh_ parameter because it's not possible to read individual discussion references;
+     * _NOTE_: there's no _refresh_ parameter because it's not possible to read individual source references;
      * however, the source reference's id and URL are set when creating a new source reference.
      *
      * _NOTE_: the person/couple/childAndParents id and the source description are not updateable.
@@ -6684,10 +6720,13 @@ define('sources',[
       return helpers.chainHttpPromises(
         plumbing.getUrl(template, null, {pid: self.$personId, crid: self.$coupleId, caprid: self.$childAndParentsId, srid: self.id}),
         function(url) {
-          if (!self.description && self.$sourceDescriptionId) {
+          if (!self.$sourceDescriptionUrl && self.$sourceDescriptionId) {
             // the discovery resource is guaranteed to be set due to the getUrl statement
-            self.description = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'source-description-template',
-                                                                   {sdid: self.$sourceDescriptionId});
+            self.$sourceDescriptionUrl = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'source-description-template',
+                                                                             {sdid: self.$sourceDescriptionId});
+          }
+          if (self.$sourceDescriptionUrl) {
+            self.description = helpers.removeAccessToken(self.$sourceDescriptionUrl);
           }
           var payload = {};
           payload[label] = [ { sources: [ self ] } ];
@@ -6719,9 +6758,15 @@ define('sources',[
      * @return {Object} promise for the source reference URL
      */
     $delete: function(changeMessage, opts) {
-      var fn = this.$personId ? exports.deletePersonSourceRef :
-        (this.$coupleId ? exports.deleteCoupleSourceRef : exports.deleteChildAndParentsSourceRef);
-      return fn(this.$getSourceRefUrl(), null, changeMessage, opts);
+      if (this.$personId) {
+        return exports.deletePersonSourceRef(this.$getSourceRefUrl() || this.$personID, this.id, changeMessage, opts);
+      }
+      else if (this.$coupleId) {
+        return exports.deleteCoupleSourceRef(this.$getSourceRefUrl() || this.$coupleId, this.id, changeMessage, opts);
+      }
+      else {
+        return exports.deleteChildAndParentsSourceRef(this.$getSourceRefUrl() || this.$childAndParentsId, this.id, changeMessage, opts);
+      }
     }
 
   };
@@ -6818,7 +6863,7 @@ define('sources',[
    *
    * {@link http://jsfiddle.net/DallanQ/E866s/ editable example}
    *
-   * @param {String} sdid of the source description or full URL of the source-references-query endpoint
+   * @param {String} sdid id of the source description (cannot be the URL)
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
@@ -6827,7 +6872,7 @@ define('sources',[
     return helpers.chainHttpPromises(
       plumbing.getUrl('source-references-query'),
       function(url) {
-        url = helpers.isAbsoluteUrl(sdid) ? sdid : helpers.appendQueryParameters(url, {source: sdid});
+        url = helpers.appendQueryParameters(url, {source: sdid});
         return plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
           helpers.compose(
             helpers.objectExtender({getPersonSourceRefs: function() {
@@ -6859,7 +6904,11 @@ define('sources',[
               var person = helpers.find(maybe(response).persons, function(person) {
                 return !!helpers.find(maybe(person).sources, {id: sourceRef.id});
               });
-              return { $personId: person.id };
+              return {
+                $personId: person.id,
+                $sourceDescriptionId: sdid,
+                $sourceDescriptionUrl: sourceRef.description
+              };
             }, function(response) {
               return helpers.flatMap(maybe(response).persons, function(person) {
                 return person.sources;
@@ -6870,7 +6919,11 @@ define('sources',[
               var couple = helpers.find(maybe(response).relationships, function(couple) {
                 return !!helpers.find(maybe(couple).sources, {id: sourceRef.id});
               });
-              return { $coupleId: couple.id };
+              return {
+                $coupleId: couple.id,
+                $sourceDescriptionId: sdid,
+                $sourceDescriptionUrl: sourceRef.description
+              };
             }, function(response) {
               return helpers.flatMap(maybe(response).relationships, function(couple) {
                 return couple.sources;
@@ -6881,7 +6934,11 @@ define('sources',[
               var childAndParents = helpers.find(maybe(response).childAndParentsRelationships, function(childAndParents) {
                 return !!helpers.find(maybe(childAndParents).sources, {id: sourceRef.id});
               });
-              return { $childAndParentsId: childAndParents.id };
+              return {
+                $childAndParentsId: childAndParents.id,
+                $sourceDescriptionId: sdid,
+                $sourceDescriptionUrl: sourceRef.description
+              };
             }, function(response) {
               return helpers.flatMap(maybe(response).childAndParentsRelationships, function(childAndParents) {
                 return childAndParents.sources;
@@ -6892,6 +6949,44 @@ define('sources',[
     );
   };
 
+  function getSourceRefsResponseMapper(root, label) {
+    return helpers.compose(
+      helpers.objectExtender({
+        getSourceRefs: function() {
+          return maybe(maybe(this[root])[0]).sources || [];
+        },
+        getSourceDescriptions: function() {
+          return this.sourceDescriptions || [];
+        },
+        getSourceDescription: function(id) {
+          return helpers.find(this.sourceDescriptions, {id: id});
+        }
+      }),
+      helpers.constructorSetter(SourceRef, 'sources', function(response) {
+        return maybe(maybe(response)[root])[0];
+      }),
+      helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+        return maybe(maybe(maybe(response)[root])[0]).sources;
+      }),
+      helpers.objectExtender(function(response, srcRef) {
+        var sdid = srcRef.description.substr(1); // #ID -> ID
+        // the discovery resource is guaranteed to be set due to the getUrl statement
+        var result = {
+          $sourceDescriptionId: sdid,
+          $sourceDescriptionUrl: helpers.getUrlFromDiscoveryResource(globals.discoveryResource,
+            'source-description-template', {sdid: sdid})
+        };
+        result[label] = maybe(maybe(maybe(response)[root])[0]).id;
+        return result;
+      }, function(response) {
+        return maybe(maybe(maybe(response)[root])[0]).sources;
+      }),
+      helpers.constructorSetter(SourceDescription, 'sourceDescriptions'),
+      helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+        return response.sourceDescriptions;
+      })
+    );
+  }
   /**
    * @ngdoc function
    * @name sources.functions:getPersonSourceRefs
@@ -6899,40 +6994,27 @@ define('sources',[
    *
    * @description
    * Get references to sources for a person
-   * The response includes the following convenience function
+   * The response includes the following convenience functions
    *
    * - `getSourceRefs()` - get an array of {@link sources.types:constructor.SourceRef SourceRefs} from the response
+   * - `getSourceDescriptions()` get an array of {@link sources.types:constructor.SourceDescription SourceDescriptions} from the response
+   * - `getSourceDescription(id)` get the {@link sources.types:constructor.SourceDescription SourceDescription}
+   * with the specified source description id from the response
    *
-   * {@link https://familysearch.org/developers/docs/api/tree/Person_Source_References_resource FamilySearch API Docs}
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Sources_Query_resource FamilySearch API Docs}
    *
    * {@link http://jsfiddle.net/DallanQ/BkydV/ editable example}
    *
-   * @param {String} pid of the person or full URL of the person-source-references endpoint
+   * @param {String} pid person id or full URL of the person-sources-query endpoint
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   exports.getPersonSourceRefs = function(pid, params, opts) {
     return helpers.chainHttpPromises(
-      plumbing.getUrl('person-source-references-template', pid, {pid: pid}),
+      plumbing.getUrl('person-sources-query-template', pid, {pid: pid}),
       function(url) {
-        return plumbing.get(url, params, {}, opts,
-          helpers.compose(
-            helpers.objectExtender({getSourceRefs: function() {
-              return maybe(maybe(this.persons)[0]).sources || [];
-            }}),
-            helpers.constructorSetter(SourceRef, 'sources', function(response) {
-              return maybe(maybe(response).persons)[0];
-            }),
-            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
-              return maybe(maybe(maybe(response).persons)[0]).sources;
-            }),
-            helpers.objectExtender(function(response) {
-              return { $personId: maybe(maybe(maybe(response).persons)[0]).id };
-            }, function(response) {
-              return maybe(maybe(maybe(response).persons)[0]).sources;
-            })
-          ));
+        return plumbing.get(url, params, {}, opts, getSourceRefsResponseMapper('persons','$personId'));
       });
   };
 
@@ -6951,32 +7033,16 @@ define('sources',[
    *
    * {@link http://jsfiddle.net/DallanQ/ahu29/ editable example}
    *
-   * @param {String} crid or full URL of the couple relationship
+   * @param {String} crid couple relationship id or full URL of the couple-relationship-sources-query endpoint
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   exports.getCoupleSourceRefs = function(crid, params, opts) {
     return helpers.chainHttpPromises(
-      plumbing.getUrl('couple-relationship-source-references-template', crid, {crid: crid}),
+      plumbing.getUrl('couple-relationship-sources-query-template', crid, {crid: crid}),
       function(url) {
-        return plumbing.get(url, params, {}, opts,
-          helpers.compose(
-            helpers.objectExtender({getSourceRefs: function() {
-              return maybe(maybe(this.relationships)[0]).sources || [];
-            }}),
-            helpers.constructorSetter(SourceRef, 'sources', function(response) {
-              return maybe(maybe(response).relationships)[0];
-            }),
-            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
-              return maybe(maybe(maybe(response).relationships)[0]).sources;
-            }),
-            helpers.objectExtender(function(response) {
-              return { $coupleId: maybe(maybe(maybe(response).relationships)[0]).id };
-            }, function(response) {
-              return maybe(maybe(maybe(response).relationships)[0]).sources;
-            })
-          ));
+        return plumbing.get(url, params, {}, opts, getSourceRefsResponseMapper('relationships', '$coupleId'));
       });
   };
 
@@ -6995,33 +7061,17 @@ define('sources',[
    *
    * {@link http://jsfiddle.net/DallanQ/ZKLVT/ editable example}
    *
-   * @param {String} caprid id or full URL of the child and parents relationship
+   * @param {String} caprid child-and-parents relationship id or full URL of the child-and-parents-relationship-sources-query endpoint
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   exports.getChildAndParentsSourceRefs = function(caprid, params, opts) {
     return helpers.chainHttpPromises(
-      plumbing.getUrl('child-and-parents-relationship-source-references-template', caprid, {caprid: caprid}),
+      plumbing.getUrl('child-and-parents-relationship-sources-template', caprid, {caprid: caprid}),
       function(url) {
         return plumbing.get(url, params,
-          {'Accept': 'application/x-fs-v1+json'}, opts,
-          helpers.compose(
-            helpers.objectExtender({getSourceRefs: function() {
-              return maybe(maybe(this.childAndParentsRelationships)[0]).sources || [];
-            }}),
-            helpers.constructorSetter(SourceRef, 'sources', function(response) {
-              return maybe(maybe(response).childAndParentsRelationships)[0];
-            }),
-            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
-              return maybe(maybe(maybe(response).childAndParentsRelationships)[0]).sources;
-            }),
-            helpers.objectExtender(function(response) {
-              return { $childAndParentsId: maybe(maybe(maybe(response).childAndParentsRelationships)[0]).id };
-            }, function(response) {
-              return maybe(maybe(maybe(response).childAndParentsRelationships)[0]).sources;
-            })
-          ));
+          {'Accept': 'application/x-fs-v1+json'}, opts, getSourceRefsResponseMapper('childAndParentsRelationships', '$childAndParentsId'));
       });
   };
 
@@ -7244,7 +7294,7 @@ define('parentsAndChildren',[
       this[role] = {};
     }
     if (person instanceof globals.Person) {
-      this[role].resource = person.$getUrl();
+      this[role].resource = person.$getPersonUrl();
       delete this[role].resourceId;
     }
     else if (helpers.isAbsoluteUrl(person)) {
@@ -7317,6 +7367,15 @@ define('parentsAndChildren',[
 
     /**
      * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$getChildAndParentsUrl
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @return {String} Url of this child-and-parents relationship
+     */
+    $getChildAndParentsUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).relationship).href); },
+
+    /**
+     * @ngdoc function
      * @name parentsAndChildren.types:constructor.ChildAndParents#$getFatherFacts
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @return {Fact[]} array of {@link fact.types:constructor.Fact Facts}; e.g., parent-relationship type
@@ -7356,7 +7415,7 @@ define('parentsAndChildren',[
      * @function
      * @return {Object} promise for the {@link person.functions:getPerson getPerson} response
      */
-    $getFather: function() { return globals.getPerson(this.$getFatherUrl()); },
+    $getFather: function() { return globals.getPerson(this.$getFatherUrl() || this.$getFatherId()); },
 
     /**
      * @ngdoc function
@@ -7383,7 +7442,7 @@ define('parentsAndChildren',[
      * @function
      * @return {Object} promise for the {@link person.functions:getPerson getPerson} response
      */
-    $getMother: function() { return globals.getPerson(this.$getMotherUrl()); },
+    $getMother: function() { return globals.getPerson(this.$getMotherUrl() || this.$getMotherId()); },
 
     /**
      * @ngdoc function
@@ -7410,7 +7469,7 @@ define('parentsAndChildren',[
      * @function
      * @return {Object} promise for the {@link person.functions:getPerson getPerson} response
      */
-    $getChild: function() { return globals.getPerson(this.$getChildUrl()); },
+    $getChild: function() { return globals.getPerson(this.$getChildUrl() || this.$getChildId()); },
 
     /**
      * @ngdoc function
@@ -7428,7 +7487,7 @@ define('parentsAndChildren',[
      * @function
      * @return {Object} promise for the {@link sources.functions:getChildAndParentsSourceRefs getChildAndParentsSourceRefs} response
      */
-    $getSourceRefs: function() { return sources.getChildAndParentsSourceRefs(helpers.removeAccessToken(maybe(this.links['source-references']).href)); },
+    $getSourceRefs: function() { return sources.getChildAndParentsSourceRefs(this.id); },
 
     /**
      * @ngdoc function
@@ -7745,7 +7804,7 @@ define('parentsAndChildren',[
      * @return {Object} promise for the relationship URL
      */
     $delete: function(changeMessage, opts) {
-      return exports.deleteChildAndParents(helpers.removeAccessToken(maybe(maybe(this.links).relationship).href) || this.id, changeMessage, opts);
+      return exports.deleteChildAndParents(this.$getChildAndParentsUrl() || this.id, changeMessage, opts);
     }
   };
 
@@ -8033,6 +8092,15 @@ define('spouses',[
 
     /**
      * @ngdoc function
+     * @name spouses.types:constructor.Couple#$getCoupleUrl
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @return {String} Url of this couple relationship
+     */
+    $getCoupleUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).relationship).href); },
+
+    /**
+     * @ngdoc function
      * @name spouses.types:constructor.Couple#$getFacts
      * @methodOf spouses.types:constructor.Couple
      * @return {Fact[]} array of {@link fact.types:constructor.Fact Facts}; e.g., marriage
@@ -8072,7 +8140,7 @@ define('spouses',[
      * @function
      * @return {Object} promise for the {@link exports.functions:getPerson getPerson} response
      */
-    $getHusband: function() { return globals.getPerson(this.$getHusbandUrl()); },
+    $getHusband: function() { return globals.getPerson(this.$getHusbandUrl() || this.$getHusbandId()); },
 
     /**
      * @ngdoc function
@@ -8099,7 +8167,7 @@ define('spouses',[
      * @function
      * @return {Object} promise for the {@link exports.functions:getPerson getPerson} response
      */
-    $getWife: function() { return globals.getPerson(this.$getWifeUrl()); },
+    $getWife: function() { return globals.getPerson(this.$getWifeUrl() || this.$getWifeId()); },
 
     /**
      * @ngdoc function
@@ -8117,7 +8185,7 @@ define('spouses',[
      * @function
      * @return {Object} promise for the {@link sources.functions:getCoupleSourceRefs getCoupleSourceRefs} response
      */
-    $getSourceRefs: function() { return sources.getCoupleSourceRefs(helpers.removeAccessToken(this.links['source-references'].href)); },
+    $getSourceRefs: function() { return sources.getCoupleSourceRefs(this.id); },
 
     /**
      * @ngdoc function
@@ -8310,7 +8378,7 @@ define('spouses',[
      * @return {Object} promise for the relationship URL
      */
     $delete: function(changeMessage, opts) {
-      return exports.deleteCouple(helpers.removeAccessToken(maybe(maybe(this.links).relationship).href) || this.id, changeMessage, opts);
+      return exports.deleteCouple(this.$getCoupleUrl() || this.id, changeMessage, opts);
     }
   };
 
@@ -8865,8 +8933,8 @@ define('person',[
      * @function
      * @return {Object} promise for the {@link sources.functions:getPersonSourceRefs getPersonSourceRefs} response
      */
-    $getPersonSourceRefs: function() {
-      return sources.getPersonSourceRefs(helpers.removeAccessToken(this.links['source-references'].href));
+    $getSourceRefs: function() {
+      return sources.getPersonSourceRefs(this.id);
     },
 
     /**
@@ -9233,7 +9301,7 @@ define('person',[
      * @return {Object} promise for the person URL
      */
     $delete: function(changeMessage, opts) {
-      return exports.deletePerson(helpers.removeAccessToken(maybe(maybe(this.links).person).href) || this.id, changeMessage, opts);
+      return exports.deletePerson(this.$getPersonUrl() || this.id, changeMessage, opts);
     }
   };
 
@@ -9872,8 +9940,9 @@ define('person',[
     );
   };
 
-  // TODO getPersonMerge
-  // TODO getPersonNotAMatch
+  // TODO person merge
+  // TODO person not a match
+  // TODO restore person
 
   return exports;
 });
@@ -10322,6 +10391,8 @@ define('sourceBox',[
      * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
      */
 
+    // TODO add $getCollectionUrl when "self" link is available
+
     /**
      * @ngdoc function
      * @name sourceBox.types:constructor.Collection#$getSourceDescriptions
@@ -10388,6 +10459,7 @@ define('sourceBox',[
      * @return {Object} promise for the collection id
      */
     $delete: function(opts) {
+      // TODO use $getCollectionUrl() as alternative when it is available
       return exports.deleteCollection(this.id, opts);
     }
 
@@ -10719,6 +10791,7 @@ define('FamilySearch',[
     deleteDiscussion: discussions.deleteDiscussion,
     deleteDiscussionRef: discussions.deleteDiscussionRef,
     deleteDiscussionComment: discussions.deleteDiscussionComment,
+    deleteMemoryComment: discussions.deleteMemoryComment,
 
     // fact
     Fact: fact.Fact,
@@ -10739,7 +10812,6 @@ define('FamilySearch',[
     deleteMemory: memories.deleteMemory,
     deleteMemoryPersona: memories.deleteMemoryPersona,
     deleteMemoryPersonaRef: memories.deleteMemoryPersonaRef,
-    deleteMemoryComment: memories.deleteMemoryComment,
 
     // name
     Name: name.Name,
@@ -10787,6 +10859,8 @@ define('FamilySearch',[
     getPreferredParents: person.getPreferredParents,
     setPreferredParents: person.setPreferredParents,
     deletePreferredParents: person.deletePreferredParents,
+
+    // TODO places
 
     // plumbing
     get: plumbing.get,
