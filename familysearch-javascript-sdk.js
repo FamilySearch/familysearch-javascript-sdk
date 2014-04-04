@@ -1285,7 +1285,7 @@ define('jquery-wrappers',[
         },
         function(jqXHR, textStatus, errorThrown) {
           statusCode = jqXHR.status;
-          if (!jqXHR.responseText) {
+          if (statusCode >= 200 && statusCode <= 299 && !jqXHR.responseText) {
             // FamilySearch sometimes returns no content in the response even though we have requested json
             // No content is not valid json, so we get an error parsing it
             // Treat it as valid but empty content
