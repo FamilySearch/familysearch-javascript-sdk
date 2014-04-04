@@ -36,7 +36,11 @@ Check out the [jsFiddle](http://jsfiddle.net/DallanQ/MpUg7/) to see it in action
 
 * Retry in the case of throttled responses is handled for you.
 
-* Cross-platform: the SDK currently depends upon jQuery, but soon you will be able to substitute AngularJS or Node.js.
+* Cross-platform: the SDK works with jQuery or AngularJS, and soon Node.js.
+
+* Object-oriented: SDK functions return objects, which have convenience functions to make getting or setting data easy.
+
+* Consistent update API: each object has $save and $delete functions to persist changes or delete the object respectively.
 
 * Modular: the SDK can be called from AMD (RequireJS), CommonJS (Node.js), or browser global environments.
 
@@ -67,5 +71,8 @@ Roadmap
 ####Milestone 2 - complete
 * Create an example application (RootSnap) showing how to use the SDK.
 
-####Milestone 3 - March 31, 2014
+####Milestone 3 - complete
 * Create functions for the basic create, update, and delete operations
+
+####Milestone 4 - June 1, 2014
+* All functions implemented, end-to-end tests in place, Node.js support, available in bower & npm repositories.
