@@ -115,6 +115,17 @@ module.exports = function(grunt) {
         livereload: true,
         spawn: false
       }
+    },
+
+    copy: {
+      dist: {
+        files: [{
+          cwd: '.',
+          src: 'bower.json',
+          dest: 'dist',
+          expand: true
+        }]
+      }
     }
   });
 
@@ -126,6 +137,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-requirejs');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
   grunt.registerTask('server', [
     'connect',
@@ -142,7 +154,8 @@ module.exports = function(grunt) {
     'jshint',
     'test',
     'ngdocs',
-    'requirejs'
+    'requirejs',
+    'copy:dist'
   ]);
 
   grunt.registerTask('publish', [
