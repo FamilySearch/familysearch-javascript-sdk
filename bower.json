@@ -8,6 +8,10 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "test"
+    "test",
+    "css",
+    "font",
+    "js",
+    "partials"
   ]
 }
