@@ -11,6 +11,7 @@
     "css",
     "font",
     "js",
-    "partials"
+    "partials",
+    "index.html"
   ]
 }
