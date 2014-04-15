@@ -104,8 +104,8 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "authorities.functions:getPlace",
-      "shortName": "getPlace",
+      "id": "authorities.functions:getPlaceSearch",
+      "shortName": "getPlaceSearch",
       "type": "function",
       "moduleName": "authorities",
       "shortDescription": "Get the standardized place",
