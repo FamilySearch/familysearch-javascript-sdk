@@ -24,7 +24,7 @@ define(['authorities','FamilySearch'], function(authorities, FamilySearch) {
     });
 
     it('standardizes places', function() {
-      FamilySearch.getPlace('MN').then(function(response) {
+      FamilySearch.getPlaceSearch('MN').then(function(response) {
         expect(response.getPlaces().length).toBe(5);
         expect(response.getPlaces()[1].$getNormalizedPlace()).toBe('Minnesota, United States');
       });

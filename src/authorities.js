@@ -280,7 +280,7 @@ define([
 
   /**
    * @ngdoc function
-   * @name authorities.functions:getPlace
+   * @name authorities.functions:getPlaceSearch
    * @function
    *
    * @description
@@ -296,7 +296,7 @@ define([
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getPlace = function(place, opts) {
+  exports.getPlaceSearch = function(place, opts) {
     var params = {
       place: place,
       view: 'simple',

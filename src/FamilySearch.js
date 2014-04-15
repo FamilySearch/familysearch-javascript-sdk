@@ -34,7 +34,7 @@ define([
     Date: authorities.Date,
     Place: authorities.Place,
     getDate: authorities.getDate,
-    getPlace: authorities.getPlace,
+    getPlaceSearch: authorities.getPlaceSearch,
 
     // changeHistory
     Change: changeHistory.Change,
