@@ -72,6 +72,8 @@
  *
  * ## Getting started
  *
+ * See the README.md file for information on downloading the SDK.
+ *
  * To use the SDK, you need to
  *
  * 1. init the SDK; e.g., ({@link init.functions:init all options})

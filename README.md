@@ -44,16 +44,21 @@ Check out the [jsFiddle](http://jsfiddle.net/DallanQ/MpUg7/) to see it in action
 
 * Modular: the SDK can be called from AMD (RequireJS), CommonJS (Node.js), or browser global environments.
 
-Download
-========
+Installation
+============
 
-The SDK is in the early stages and the calls may change somewhat. Once the SDK stablizes, which it should by the
-end of the year, I will add semantic version numbering to the downloads. Once we get 100 people watching the repo,
-[cdnJS](http://cdnjs.com/) will host it.
+You can install using bower:
+
+    bower install familysearch-javascript-sdk
+
+or by downloading one of the following files:
 
 [familysearch-javascript-sdk.js](http://rootsdev.org/familysearch-javascript-sdk/familysearch-javascript-sdk.js)
 
 [familysearch-javascript-sdk.min.js](http://rootsdev.org/familysearch-javascript-sdk/familysearch-javascript-sdk.min.js)
+
+In the future, once we get 100 people watching the repo,
+[cdnJS](http://cdnjs.com/) will host it.
 
 Documentation
 =============
