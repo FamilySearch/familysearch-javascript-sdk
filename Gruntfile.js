@@ -168,6 +168,7 @@ module.exports = function(grunt) {
     'karma:travis',
     'ngdocs',
     'requirejs',
+    'copy:dist',
     'gh-pages:travis'
   ]);
 
