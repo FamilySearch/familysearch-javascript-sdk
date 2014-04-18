@@ -935,6 +935,15 @@ define('helpers',[
   };
 
   /**
+   * log to console only if debugging is turned on
+   */
+  exports.log = function() {
+    if (globals.debug) {
+      console.log.apply(null, arguments);
+    }
+  };
+
+  /**
    * Call the callback on the next tick
    * @param {function()} cb Function to call
    */
@@ -1629,7 +1638,7 @@ define('plumbing',[
         },
         function() {
           var statusCode = promise.getStatusCode();
-          console.log('http failure', statusCode, retries, promise.getAllResponseHeaders());
+          helpers.log('http failure', statusCode, retries, promise.getAllResponseHeaders());
           if (statusCode === 401) {
             helpers.eraseAccessToken();
           }
@@ -1705,6 +1714,7 @@ define('init',[
    * (uses a session cookie, must be false for node.js) - *setting `save_access_token` along with `auto_signin` and
    * `auto_expire` is very convenient*
    * - `access_token` - pass this in if you already have an access token
+   * - `debug` - set to true to turn on console logging during development
    *
    * @param {Object} opts opts
    */
@@ -1780,6 +1790,8 @@ define('init',[
     if (opts['access_token']) {
       globals.accessToken = opts['access_token'];
     }
+
+    globals.debug = opts['debug'];
 
     // request the discovery resource
     globals.discoveryPromise = plumbing.get(globals.discoveryUrl);
