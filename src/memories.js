@@ -1126,7 +1126,7 @@ define([
         delete params.followRedirect;
         var promise = plumbing.get(url, params, {}, opts);
         return helpers.handleRedirect(promise, function(promise) {
-          return helpers.appendAccessToken(promise.getResponseHeader('Content-Location'));
+          return promise.getStatusCode() === 204 ? '' : helpers.appendAccessToken(promise.getResponseHeader('Content-Location'));
         });
       }
       else {
