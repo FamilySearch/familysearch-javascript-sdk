@@ -855,6 +855,15 @@ define([
   };
 
   /**
+   * log to console only if debugging is turned on
+   */
+  exports.log = function() {
+    if (globals.debug) {
+      console.log.apply(null, arguments);
+    }
+  };
+
+  /**
    * Call the callback on the next tick
    * @param {function()} cb Function to call
    */

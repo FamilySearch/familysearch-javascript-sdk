@@ -40,6 +40,7 @@ define([
    * (uses a session cookie, must be false for node.js) - *setting `save_access_token` along with `auto_signin` and
    * `auto_expire` is very convenient*
    * - `access_token` - pass this in if you already have an access token
+   * - `debug` - set to true to turn on console logging during development
    *
    * @param {Object} opts opts
    */
@@ -115,6 +116,8 @@ define([
     if (opts['access_token']) {
       globals.accessToken = opts['access_token'];
     }
+
+    globals.debug = opts['debug'];
 
     // request the discovery resource
     globals.discoveryPromise = plumbing.get(globals.discoveryUrl);

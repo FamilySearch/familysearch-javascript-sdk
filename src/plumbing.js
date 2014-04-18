@@ -300,7 +300,7 @@ define([
         },
         function() {
           var statusCode = promise.getStatusCode();
-          console.log('http failure', statusCode, retries, promise.getAllResponseHeaders());
+          helpers.log('http failure', statusCode, retries, promise.getAllResponseHeaders());
           if (statusCode === 401) {
             helpers.eraseAccessToken();
           }
