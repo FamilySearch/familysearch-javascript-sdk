@@ -940,7 +940,7 @@ define([
    */
   exports.createCookie = function(name, value, days) {
     var expires = '';
-    var isSecure = document.location.hostname !== 'localhost'; // can't set secure cookies on localhost in chrome
+    var isSecure = document.location.protocol === 'https' && document.location.hostname !== 'localhost'; // can't set secure cookies on localhost in chrome
     if (days) {
       var date = new Date();
       date.setTime(date.getTime()+(days*86400));
