@@ -26,7 +26,7 @@ NG_DOCS={
       "id": "attribution.types:constructor.Attribution",
       "shortName": "constructor.Attribution",
       "type": "function",
-      "moduleName": "attribution.types:constructor",
+      "moduleName": "attribution",
       "shortDescription": "Attribution",
       "keywords": "$getagent $getagentid $getagenturl agent api attribution change changemessage details function functions getagent message modified pass promise property response timestamp types url user"
     },
@@ -116,7 +116,7 @@ NG_DOCS={
       "id": "authorities.types:constructor.Date",
       "shortName": "constructor.Date",
       "type": "function",
-      "moduleName": "authorities.types:constructor",
+      "moduleName": "authorities",
       "shortDescription": "Standardized date",
       "keywords": "$getformaldate ambiguous api astro authorities earliest formal format function gedcom-x latest normalized numeric original property range requested standardize standardized true types valid"
     },
@@ -125,7 +125,7 @@ NG_DOCS={
       "id": "authorities.types:constructor.Place",
       "shortName": "constructor.Place",
       "type": "function",
-      "moduleName": "authorities.types:constructor",
+      "moduleName": "authorities",
       "shortDescription": "Standardized place",
       "keywords": "$getnormalizedplace administrative api array authorities convenience culture division element first-order fully-normalized function idea iso minnesota names normalized official original place property requestedid return standardize standardized type types united us-mn"
     },
@@ -170,7 +170,7 @@ NG_DOCS={
       "id": "changeHistory.types:constructor.Change",
       "shortName": "constructor.Change",
       "type": "function",
-      "moduleName": "changeHistory.types:constructor",
+      "moduleName": "changeHistory",
       "shortDescription": "Change made to a person or relationship",
       "keywords": "$getagent $getagentname $getagenturl $getchangereason agent api change changehistory details function functions getagent pass person promise property reason relationship response timestamp title types updated url user"
     },
@@ -260,7 +260,7 @@ NG_DOCS={
       "id": "discussions.types:constructor.Comment",
       "shortName": "constructor.Comment",
       "type": "function",
-      "moduleName": "discussions.types:constructor",
+      "moduleName": "discussions",
       "shortDescription": "Comment on a discussion",
       "keywords": "$delete $discussionid $getagent $getagentid $getagenturl $getcommenturl $memoryid $save __note__ _note_ _refresh_ api attributes comment comments contributor create created creating currently data delete deletediscussioncomment deletememorycomment details discussion discussions editable example existing function functions getagent http individual init memories memory net object optional options opts parameter pass promise property read response set text timestamp types update url user"
     },
@@ -269,7 +269,7 @@ NG_DOCS={
       "id": "discussions.types:constructor.Discussion",
       "shortName": "constructor.Discussion",
       "type": "function",
-      "moduleName": "discussions.types:constructor",
+      "moduleName": "discussions",
       "shortDescription": "Discussion",
       "keywords": "$delete $getagent $getagentid $getagenturl $getcomments $getcommentsurl $save __note__ api attach attributes aware best comments committed contributor corresponding create created data delete deletediscussion description details discussion discussion-reference discussions editable endpoint example existing familysearch fulfilled function functions getagent getdiscussioncomments hasn http init issue linked millis modified net number numberofcomments object optional options opts pass people person promise property read refresh response single text timestamp title true types update updated updating url user"
     },
@@ -278,7 +278,7 @@ NG_DOCS={
       "id": "discussions.types:constructor.DiscussionRef",
       "shortName": "constructor.DiscussionRef",
       "type": "function",
-      "moduleName": "discussions.types:constructor",
+      "moduleName": "discussions",
       "shortDescription": "Reference to a discussion on a person.",
       "keywords": "$delete $getdiscussion $getdiscussionrefurl $getdiscussionurl $personid $save $setdiscussionurl _discussion_ _note_ _refresh_ access api attached attributes change changemessage create created creating data delete deleted deletediscussionref details discussion discussionref discussions editable example function functions getdiscussion http individual init message net note object optional options opts parameter pass person promise property read reference references resource resourceid response set token types updated url"
     },
@@ -296,7 +296,7 @@ NG_DOCS={
       "id": "fact.types:constructor.Fact",
       "shortName": "constructor.Fact",
       "type": "function",
-      "moduleName": "fact.types:constructor",
+      "moduleName": "fact",
       "shortDescription": "Fact",
       "keywords": "$getdate $getformaldate $getnormalizedplace $getnormalizedplaceid $getplace $setchangemessage $setdate $setformaldate $setnormalizedplace $setplace $settype api attributes attribution authorities authority change changemessage data event fact formal formaldate format function gedcomx http message normalized normalizedplace object optional org original place property sets standard string text type types update user written"
     },
@@ -431,7 +431,7 @@ NG_DOCS={
       "id": "memories.types:constructor.Memory",
       "shortName": "constructor.Memory",
       "type": "function",
-      "moduleName": "memories.types:constructor",
+      "moduleName": "memories",
       "shortDescription": "Memory",
       "keywords": "$data $delete $getartifactfilename $getartifactheight $getartifacttype $getartifactwidth $getcomments $getcommentsurl $getdescription $geticonurl $getimageurl $getmemoryartifacturl $getmemoryurl $getthumbnailurl $gettitle $save $setartifactfilename $setdescription $settitle __note__ _description_ _must_ access api appear apply array artifact artifactfilename artifactmetadata artifacttype attributes attribution comments contents create currently data default delete deletememory description details discussion docs document documents doesn editable endpoint example existing familysearch field file filename formdata fulfilled full function functions getmemorycomments height http https icon ignored image images init media mediatype memories memory net object optional options opts org pass promise property read refresh resource resourcetype response stories story string thumbnail title token true type types update updated updating upload uploaded url user width"
     },
@@ -440,7 +440,7 @@ NG_DOCS={
       "id": "memories.types:constructor.MemoryArtifactRef",
       "shortName": "constructor.MemoryArtifactRef",
       "type": "function",
-      "moduleName": "memories.types:constructor",
+      "moduleName": "memories",
       "shortDescription": "Memory Artifact Reference",
       "keywords": "$getqualifiername $getqualifiervalue $setqualifiername $setqualifiervalue _description_ _qualifiername_ _qualifiervalue_ api artifact attributes bottom-right comma-separated corresponding data description function http memories memory memoryartifactref number numbers object optional org property qualifier qualifiername qualifiervalue ranges reference required set string top-left types url x-end x-start y-end y-start"
     },
@@ -449,7 +449,7 @@ NG_DOCS={
       "id": "memories.types:constructor.MemoryPersona",
       "shortName": "constructor.MemoryPersona",
       "type": "function",
-      "moduleName": "memories.types:constructor",
+      "moduleName": "memories",
       "shortDescription": "Memory Persona (not a true persona; can only contain a name and a media artifact reference)",
       "keywords": "$delete $getdisplayname $getmemory $getmemoryartifactref $getmemorypersonaurl $getmemoryurl $getnames $memoryid $save $setmemoryartifactref $setname _name_ _note_ api artifact attached attributes create data delete deletememorypersona display docs don editable example existing extracted familysearch fulfilled fulltext function functions getmemory http https init media memories memory memoryartifactref memorypersona names net object optional options opts org parts pass persona promise property read reference refresh response set string surname true types update updated updating url"
     },
@@ -458,7 +458,7 @@ NG_DOCS={
       "id": "memories.types:constructor.MemoryPersonaRef",
       "shortName": "constructor.MemoryPersonaRef",
       "type": "function",
-      "moduleName": "memories.types:constructor",
+      "moduleName": "memories",
       "shortDescription": "Reference from a person to a memory persona",
       "keywords": "$delete $getmemory $getmemorypersona $getmemorypersonarefurl $getmemorypersonaurl $getmemoryurl $personid $save $setmemorypersona _memorypersona_ _note_ _refresh_ access api attached attributes create created creating data delete deleted deletememorypersonaref details docs editable example familysearch fulfilled function functions getmemory getmemorypersona http https individual init memories memory memorypersona memorypersonaref net note object optional options opts org parameter pass person persona promise property read reference references resource resourceid response set token types updated url"
     },
@@ -476,7 +476,7 @@ NG_DOCS={
       "id": "name.types:constructor.Name",
       "shortName": "constructor.Name",
       "type": "function",
-      "moduleName": "name.types:constructor",
+      "moduleName": "name",
       "shortDescription": "Name",
       "keywords": "$changed $getfulltext $getgivenname $getnameformscount $getnamepart $getprefix $getsuffix $getsurname $setchangemessage $setfulltext $setgivenname $setnamepart $setpreferred $setprefix $setsuffix $setsurname $settype __note__ api attributes attribution call change changemessage created data defaults flag form forms full fulltext function givenname http initially ispreferred message number object optional org person preferred prefix property read read-only set sets string suffix surname text true type types update"
     },
@@ -602,7 +602,7 @@ NG_DOCS={
       "id": "notes.types:constructor.Note",
       "shortName": "constructor.Note",
       "type": "function",
-      "moduleName": "notes.types:constructor",
+      "moduleName": "notes",
       "shortDescription": "Note",
       "keywords": "$childandparentsid $coupleid $delete $getnoteurl $personid $save access api attached attributes attribution child corresponding couple create data delete deletechildandparentsnote deletecouplenote deletepersonnote editable example existing fulfilled function functions http init net note noteref notes object optional options opts parents pass person promise property read refresh relationship set subject text title token true types update updated updating url"
     },
@@ -611,7 +611,7 @@ NG_DOCS={
       "id": "notes.types:constructor.NoteRef",
       "shortName": "constructor.NoteRef",
       "type": "function",
-      "moduleName": "notes.types:constructor",
+      "moduleName": "notes",
       "shortDescription": "Reference to a note on a person.",
       "keywords": "$childandparentsid $coupleid $delete $getnote $getnoteurl $personid _getchildandparentsnoterefs_ _getcouplenoterefs_ _getpersonnoterefs_ api attached attribution call child corresponding couple create delete deletechildandparentsnote deletecouplenote deletepersonnote details function functions getchildandparentsnote getcouplenote getpersonnote http init note noteref noterefs notes options opts parents pass person promise property read reference relationship response returned sources subject text types url"
     },
@@ -647,7 +647,7 @@ NG_DOCS={
       "id": "parentsAndChildren.types:constructor.ChildAndParents",
       "shortName": "constructor.ChildAndParents",
       "type": "function",
-      "moduleName": "parentsAndChildren.types:constructor",
+      "moduleName": "parentsAndChildren",
       "shortDescription": "Child and parents relationship",
       "keywords": "$addfatherfact $addmotherfact $delete $deletefather $deletefatherfact $deletemother $deletemotherfact $getchanges $getchild $getchildandparentsurl $getchildid $getchildurl $getfather $getfatherfacts $getfatherid $getfatherurl $getmother $getmotherfacts $getmotherid $getmotherurl $getnoterefs $getsourcerefs $save $setchild $setfather $setfatherfacts $setmother $setmotherfacts __broken__ _child_ _father_ _fatherfacts_ _mother_ _motherfacts_ add api array arrays attributes biologicalparent change changed changemessage changes child child-and-parents childandparents create data dates default delete deletechildandparents deleted docs editable element example existing fact facts familysearch father fatherfacts fulfilled function functions getchildandparentschanges getchildandparentsnoterefs getchildandparentssourcerefs getperson http https ids init longer message methods mother motherfacts net note notes object objects optional options opts org parent-relationship parents parentsandchildren pass passed persists person places promise property read refresh relationship remove removes response saved set sources supported true type types update updated updating url urls"
     },
@@ -818,7 +818,7 @@ NG_DOCS={
       "id": "person.types:constructor.Person",
       "shortName": "constructor.Person",
       "type": "function",
-      "moduleName": "person.types:constructor",
+      "moduleName": "person",
       "shortDescription": "Person",
       "keywords": "$addfact $addname $delete $deletefact $deletename $getancestry $getbirth $getbirthdate $getbirthplace $getburial $getburialdate $getburialplace $getchanges $getchildren $getchristening $getchristeningdate $getchristeningplace $getdeath $getdeathdate $getdeathplace $getdescendancy $getdiscussionrefs $getdisplaybirthdate $getdisplaybirthplace $getdisplaydeathdate $getdisplaydeathplace $getdisplaygender $getdisplaylifespan $getdisplayname $getfact $getfacts $getgivenname $getmemorypersonarefs $getnames $getnoterefs $getparents $getpersistentidentifier $getpersonportraiturl $getpersonurl $getpreferredname $getsourcerefs $getspouses $getsurname $save $setfacts $setgender $setnames _facts_ _gender_ _names_ add ancestor ancestry api array arrays attributes attribution birth birthdate birthplace burial change changehistory changemessage changes christening christning conclusion count create data death deathdate deathplace default delete deleted deleteperson descendency discussions display docs doesn editable element entries example exist existing fact facts false familysearch female final follow followredirect fulfilled full function functions gender generations getancestry getchildren getdescendancy getmemorypersonarefs getparents getpersonchanges getpersondiscussionrefs getpersonnoterefs getpersonportraiturl getpersonsourcerefs getspouses http https identifers identifier includes init lifespan living male map max memories message methods names net note notes number object objects optional options opts org params pass passed pedigree persistent persists person persondetails place portrait preferred promise property read redirect refresh remove removes response retrieve return set sources spouse string strings surname true type types update updated updating url values year"
     },
@@ -944,7 +944,7 @@ NG_DOCS={
       "id": "searchAndMatch.types:constructor.SearchResult",
       "shortName": "constructor.SearchResult",
       "type": "function",
-      "moduleName": "searchAndMatch.types:constructor",
+      "moduleName": "searchAndMatch",
       "shortDescription": "Reference from a person or relationship to a source",
       "keywords": "$getchildids $getchildren $getfatherids $getfathers $getfullprimaryperson $getmotherids $getmothers $getperson $getprimaryperson $getspouseids $getspouses api array aware better child father function functions getperson higher mother objects pedigree person persons pid primary promise property reference relationship response result returned score search searchandmatch searchresult searchresults source spouse title types"
     },
@@ -1025,7 +1025,7 @@ NG_DOCS={
       "id": "sourceBox.types:constructor.Collection",
       "shortName": "constructor.Collection",
       "type": "function",
-      "moduleName": "sourceBox.types:constructor",
+      "moduleName": "sourceBox",
       "shortDescription": "Collection",
       "keywords": "$delete $getsourcedescriptions $save api attributes attribution collection count create data delete deletecollection descriptions docs editable empty example familysearch fulfilled function functions getcollectionsourcedescriptions http https init maximum net number object optional options opts org params pass promise property read refresh response return size source sourcebox sources start title true types updated updating user-defined zero-based"
     },
@@ -1133,7 +1133,7 @@ NG_DOCS={
       "id": "sources.types:constructor.SourceDescription",
       "shortName": "constructor.SourceDescription",
       "type": "function",
-      "moduleName": "sources.types:constructor",
+      "moduleName": "sources",
       "shortDescription": "Description of a source",
       "keywords": "$delete $getcitation $getsourcerefsquery $gettext $gettitle $save $setcitation $settext $settitle _about_ api attributes attribution change changemessage citation create data delete deletesourcedescription deletion description docs editable example existing familysearch fulfilled function functions getsourcerefsquery http https init memory message net object optional options opts org pass promise property read reason record refer references refresh response source sourcedescription sources text title true types update updated updating url"
     },
@@ -1142,7 +1142,7 @@ NG_DOCS={
       "id": "sources.types:constructor.SourceRef",
       "shortName": "constructor.SourceRef",
       "type": "function",
-      "moduleName": "sources.types:constructor",
+      "moduleName": "sources",
       "shortDescription": "Reference from a person or relationship to a source.",
       "keywords": "$addtag $childandparentsid $coupleid $delete $getsourcedescription $getsourcedescriptionurl $getsourcerefurl $gettags $personid $removetag $save $setsourcedescription $settags $sourcedescriptionid _note_ _refresh_ _sourcedescription_ _tags_ add api array attached attributes attribution change changemessage child childandparents couple create creating data delete deletechildandparentssourceref deletecouplesourceref deletepersonsourceref deletion description details docs editable example existing familysearch fulfilled function functions getsourcedescription http https individual init message names net object optional options opts org parameter parents pass person promise property read reason reference references relationship remove response set source sourcedescription sourceref sources srcdesc tag tags types update updateable updated url"
     },
@@ -1178,7 +1178,7 @@ NG_DOCS={
       "id": "spouses.types:constructor.Couple",
       "shortName": "constructor.Couple",
       "type": "function",
-      "moduleName": "spouses.types:constructor",
+      "moduleName": "spouses",
       "shortDescription": "Couple relationship",
       "keywords": "$addfact $delete $deletefact $getchanges $getcoupleurl $getfacts $gethusband $gethusbandid $gethusbandurl $getmarriagefact $getnoterefs $getsourcerefs $getwife $getwifeid $getwifeurl $save $setfacts $sethusband $setwife _facts_ _husband_ _wife_ add api array attributes call change changemessage changes couple create data default delete deletecouple deleted editable elements example existing exports fact facts fulfilled function functions getcouplechanges getcouplenoterefs getcouplesourcerefs getperson http husband ids init initializing marriage message methods multiple net note notes object objects optional options opts org pass passed persists person plan promise property read refresh relationship remove removes response sdk seconds set sources spouses true type types update updated updating url urls wife"
     },
@@ -1232,7 +1232,7 @@ NG_DOCS={
       "id": "user.types:constructor.Agent",
       "shortName": "constructor.Agent",
       "type": "function",
-      "moduleName": "user.types:constructor",
+      "moduleName": "user",
       "shortDescription": "An agent is returned from getAgent.",
       "keywords": "$getaccountname $getemail $getname account agent api contact contributor email function functions getagent ids property returned types user"
     },
@@ -1241,7 +1241,7 @@ NG_DOCS={
       "id": "user.types:constructor.User",
       "shortName": "constructor.User",
       "type": "function",
-      "moduleName": "user.types:constructor",
+      "moduleName": "user",
       "shortDescription": "User - a user is returned from getCurrentUser;",
       "keywords": "agent api contact contactname contributor email full fullname function functions getcurrentuser ids property returned treeuserid types user"
     },
