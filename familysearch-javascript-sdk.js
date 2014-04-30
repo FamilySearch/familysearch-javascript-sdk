@@ -1626,6 +1626,9 @@ define('plumbing',[
       helpers.extendHttpPromise(returnedPromise, promise);
       promise.then(
         function(data) {
+          if (method === 'GET' && data == null) { // == null also catches undefined
+            data = {}; // an empty GET response should become an empty json object
+          }
           helpers.refreshAccessToken();
           var processingTime = promise.getResponseHeader('X-PROCESSING-TIME');
           if (processingTime) {
@@ -1987,8 +1990,11 @@ define('authentication',[
     helpers.eraseAccessToken();
     return helpers.chainHttpPromises(
       plumbing.getUrl('http://oauth.net/core/2.0/endpoint/token'),
-      function(url) {
-        return plumbing.del(url);
+      function() {
+        // See issue #48 - issuing the delete to FamilySearch returns an error
+        // so for not, just return an empty string
+        //return plumbing.del(url);
+        return '';
       });
   };
 
