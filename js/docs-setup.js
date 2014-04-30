@@ -244,7 +244,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Get multiple discussions at once by requesting them in parallel",
-      "keywords": "api currently dids discussion discussionref discussionrefs discussions docs editable example familysearch fulfilled full function functions getdiscussion http https init map multiple net opts org parallel params pass promise read requesting response returning types unused url urls"
+      "keywords": "api array currently dids discussion discussionref discussionrefs discussions docs editable example familysearch fulfilled full function functions getdiscussion http https init map multiple net opts org parallel params pass promise read requesting response returning types unused url urls"
     },
     {
       "section": "api",

@@ -3459,7 +3459,8 @@ define('discussions',[
    * @param {Object=} params pass to getDiscussion currently unused
    * @param {Object=} opts pass to the http function specified during init
    * @return {Object} promise that is fulfilled when all of the discussions have been read,
-   * returning a map of discussion id or URL to {@link discussions.functions:getDiscussion getDiscussion} response
+   * returning a map of discussion id (or URL if dids is an array of URLs) to
+   * {@link discussions.functions:getDiscussion getDiscussion} response
    */
   exports.getMultiDiscussion = function(dids, params, opts) {
     var promises = {};
@@ -3467,8 +3468,7 @@ define('discussions',[
       var key, url;
       if (did instanceof DiscussionRef) {
         url = did.$getDiscussionUrl();
-        // TODO use resourceId when we know whether it's a discussion id or a discussion reference id
-        key = url;
+        key = did.resourceId;
       }
       else {
         url = did;
