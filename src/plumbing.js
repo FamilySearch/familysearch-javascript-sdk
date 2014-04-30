@@ -288,6 +288,9 @@ define([
       helpers.extendHttpPromise(returnedPromise, promise);
       promise.then(
         function(data) {
+          if (method === 'GET' && data == null) { // == null also catches undefined
+            data = {}; // an empty GET response should become an empty json object
+          }
           helpers.refreshAccessToken();
           var processingTime = promise.getResponseHeader('X-PROCESSING-TIME');
           if (processingTime) {
