@@ -47,18 +47,24 @@ Check out the [jsFiddle](http://jsfiddle.net/DallanQ/MpUg7/) to see it in action
 Installation
 ============
 
-You can install using bower:
+The SDK is available as a versioned javascript file, following the [semantic versioning](http://semver.org/) guidelines.
+We are still on major version 0, so the API is subject to some change.
+
+There are three ways to download the SDK for use in your own projects:
+
+First, if you use bower you can install it using:
 
     bower install familysearch-javascript-sdk
 
-or by downloading one of the following files:
+Second, you can click on the _Releases_ tab near the top of this github project page and select the release you want to download.
+
+Third, you can get the most up-to-date version by downloading one of the following files:
 
 [familysearch-javascript-sdk.js](http://rootsdev.org/familysearch-javascript-sdk/familysearch-javascript-sdk.js)
 
 [familysearch-javascript-sdk.min.js](http://rootsdev.org/familysearch-javascript-sdk/familysearch-javascript-sdk.min.js)
 
-In the future, once we get 100 people watching the repo,
-[cdnJS](http://cdnjs.com/) will host it.
+In the future, if we can get 100 people watching the repo, [cdnJS](http://cdnjs.com/) will host it.
 
 Documentation
 =============
@@ -81,3 +87,38 @@ Roadmap
 
 ####Milestone 4 - June 1, 2014
 * All functions implemented, end-to-end tests in place, Node.js support, available in bower & npm repositories.
+
+Contributing
+============
+
+Thank you for your interest in contributing! We love pull requests.
+
+To contribute, fork this repo, run `npm install` to install the build dependencies, and run `grunt build` to build the project,
+or `grunt server` to have grunt launch a server watch for changed files with live-reload support.
+(RequireJS is not needed; just grunt.)
+
+This project uses .editorconfig to help configure your editor for consistent code indentation and styling.
+Please follow the existing style in your changes.
+
+Grunt runs jshint on the files using a rather strict .jshintrc file, which finds a lot of potential problems almost immediately.
+Your changes should pass the jshint checks.
+If you have a good reason not to follow a particular check for a particular statement,
+you can disable the jshint test for that statement.
+Some editors (e.g., WebStorm) can be configured to read the .jshintrc file to notify you immediately when something doesn't pass.
+
+Grunt runs unit tests using karma. Please create unit tests for your changes.
+See the existing unit test files for examples.
+
+Grunt also generates documentation for the project.
+Nearly a third of the code consists of comments that is turned into online documentation.
+Please comment your changes.
+
+Please create editable examples for your changes on jsFiddle.net.
+Many of the existing examples on jsFiddle are in the DallanQ namespace; put your examples in your own namespace.
+In the near future we will use Facebook's Huxley project to create end-to-end (integration) tests from the examples on jsFiddle,
+so they will serve two purposes simultaneously: as human-readable examples and as end-to-end tests.
+(There is a proof-of-concept in the huxley directory.)
+
+When choosing what to work on, you may pick an existing issue to implement or create a new issue.
+We suggest that you describe what you plan to implement in order to get feedback prior to implementation and
+issuing a pull request, though you are also free to issue a pull request and ask for comments afterward.
