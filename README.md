@@ -9,19 +9,20 @@ Overview
 * Javascript functions wrap the underlying REST API calls.
 The objects returned by the functions include convenience functions for extracting information from the returned JSON.
 For example, the following logs the name of a person along with their spouses and chilren.
-<pre>
-FamilySearch.getPersonWithRelationships('KW7S-VQJ', {persons:true}).then(function(response) {
-   console.log(response.getPrimaryPerson().getName());
-   var spouses = response.getSpouses();
-   for (var s = 0; spousesLen = spouses.length; s &lt; spousesLen; s++) {
-      console.log(spouses[s].getName());
-      var children = response.getChildren(spouses[s].getId());
-      for (var c = 0; childrenLen = children.length; c &lt; childrenLen; c++) {
-         console.log(children[c].getName());
+
+    ```javascript
+    FamilySearch.getPersonWithRelationships('KW7S-VQJ', {persons:true}).then(function(response) {
+      console.log(response.getPrimaryPerson().getName());
+      var spouses = response.getSpouses();
+      for (var s = 0; spousesLen = spouses.length; s &lt; spousesLen; s++) {
+        console.log(spouses[s].getName());
+        var children = response.getChildren(spouses[s].getId());
+        for (var c = 0; childrenLen = children.length; c &lt; childrenLen; c++) {
+          console.log(children[c].getName());
+        }
       }
-   }
-});
-</pre>
+    });
+    ```
 
 * Asynchronous functions (like the one above) return promises to make it easy for you to refer to their results from anywhere in your code.
 
