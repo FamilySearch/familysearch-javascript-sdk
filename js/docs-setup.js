@@ -1211,15 +1211,6 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "user.functions:getCurrentUserPersonId",
-      "shortName": "getCurrentUserPersonId",
-      "type": "function",
-      "moduleName": "user",
-      "shortDescription": "Get the id of the current user person in the tree; pass into getPerson for details",
-      "keywords": "api current currently details docs editable example familysearch function functions getperson http https init net options opts org params pass person promise tree unused user"
-    },
-    {
-      "section": "api",
       "id": "user.functions:getMultiAgent",
       "shortName": "getMultiAgent",
       "type": "function",
@@ -1243,7 +1234,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "user",
       "shortDescription": "User - a user is returned from getCurrentUser;",
-      "keywords": "agent api contact contactname contributor email full fullname function functions getcurrentuser ids property returned treeuserid types user"
+      "keywords": "address agent api contact contactname contributor display displayname email en family familyname female full function functions gender getcurrentuser givenname ids male person personid preferredlanguage property returned treeuserid types user"
     },
     {
       "section": "api",

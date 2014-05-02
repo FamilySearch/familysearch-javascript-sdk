@@ -2418,23 +2418,9 @@ define('user',[
 
     /**
      * @ngdoc property
-     * @name user.types:constructor.User#contactName
+     * @name user.types:constructor.User#personId
      * @propertyOf user.types:constructor.User
-     * @return {String} contact name of the user
-     */
-
-    /**
-     * @ngdoc property
-     * @name user.types:constructor.User#fullName
-     * @propertyOf user.types:constructor.User
-     * @return {String} full name of the user
-     */
-
-    /**
-     * @ngdoc property
-     * @name user.types:constructor.User#email
-     * @propertyOf user.types:constructor.User
-     * @return {String} email of the user
+     * @return {String} id of the {@link person.types:constructor.Person Person} for this user
      */
 
     /**
@@ -2442,6 +2428,55 @@ define('user',[
      * @name user.types:constructor.User#treeUserId
      * @propertyOf user.types:constructor.User
      * @return {String} agent (contributor) id of the user
+     */
+
+    /**
+     * @ngdoc property
+     * @name user.types:constructor.User#contactName
+     * @propertyOf user.types:constructor.User
+     * @return {String} contact name
+     */
+
+    /**
+     * @ngdoc property
+     * @name user.types:constructor.User#displayName
+     * @propertyOf user.types:constructor.User
+     * @return {String} full display name
+     */
+
+    /**
+     * @ngdoc property
+     * @name user.types:constructor.User#givenName
+     * @propertyOf user.types:constructor.User
+     * @return {String} given name
+     */
+
+    /**
+     * @ngdoc property
+     * @name user.types:constructor.User#familyName
+     * @propertyOf user.types:constructor.User
+     * @return {String} family name
+     */
+
+    /**
+     * @ngdoc property
+     * @name user.types:constructor.User#gender
+     * @propertyOf user.types:constructor.User
+     * @return {String} MALE or FEMALE
+     */
+
+    /**
+     * @ngdoc property
+     * @name user.types:constructor.User#email
+     * @propertyOf user.types:constructor.User
+     * @return {String} email address
+     */
+
+    /**
+     * @ngdoc property
+     * @name user.types:constructor.User#preferredLanguage
+     * @propertyOf user.types:constructor.User
+     * @return {String} e.g., en
      */
   };
 
@@ -2525,33 +2560,6 @@ define('user',[
             helpers.constructorSetter(User, 'users')
           ));
       });
-  };
-
-  /**
-   * @ngdoc function
-   * @name user.functions:getCurrentUserPersonId
-   * @function
-   *
-   * @description
-   * Get the id of the current user person in the tree; pass into {@link person.functions:getPerson getPerson} for details
-   *
-   * {@link https://familysearch.org/developers/docs/api/tree/Current_User_Person_resource FamilySearch API Docs}
-   *
-   * {@link http://jsfiddle.net/DallanQ/c4puF/ editable example}
-   *
-   * @param {Object=} params currently unused
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the (string) id of the current user person
-   */
-  exports.getCurrentUserPersonId = function(params, opts) {
-    return plumbing.getUrl('current-user-person').then(function(url) {
-      // pass in .json suffix to force the the accept-header-less redirect to return a json response that we can parse
-      // however, since .json this isn't a _versioned_ accept header, don't trust it too much
-      // just get the id field and hand it back
-      return plumbing.get(url+'.json', params, {}, opts).then(function(response) {
-        return maybe(maybe(maybe(response).persons)[0]).id;
-      });
-    });
   };
 
   /**
@@ -10941,7 +10949,6 @@ define('FamilySearch',[
     Agent: user.Agent,
     User: user.User,
     getCurrentUser: user.getCurrentUser,
-    getCurrentUserPersonId: user.getCurrentUserPersonId,
     getAgent: user.getAgent,
     getMultiAgent: user.getMultiAgent,
 
