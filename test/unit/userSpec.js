@@ -5,15 +5,8 @@ define(['FamilySearch'], function(FamilySearch) {
         var user = response.getUser();
         expect(user.id).toBe('cis.MMM.RX9');
         expect(user.contactName).toBe('Pete Townsend');
-        expect(user.fullName).toBe('Pete Townsend');
         expect(user.email).toBe('peter@acme.org');
         expect(user.treeUserId).toBe('PXRQ-FMXT');
-      });
-    });
-
-    it('person id is returned from getCurrentUserPersonId', function() {
-      FamilySearch.getCurrentUserPersonId().then(function(response) {
-        expect(response).toBe('12345');
       });
     });
 

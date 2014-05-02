@@ -187,7 +187,6 @@ define([
     Agent: user.Agent,
     User: user.User,
     getCurrentUser: user.getCurrentUser,
-    getCurrentUserPersonId: user.getCurrentUserPersonId,
     getAgent: user.getAgent,
     getMultiAgent: user.getMultiAgent,
 
