@@ -9784,7 +9784,7 @@ define('person',[
         return plumbing.getUrl('preferred-spouse-relationship-template', null, {uid: uid, pid: pid});
       },
       function(url) {
-        var promise = plumbing.get(url, params, {}, opts);
+        var promise = plumbing.get(url + '.json', params, {}, opts);
         // FamilySearch returns a 303 function to redirect to the preferred relationship, but the response may come back as XML in chrome.
         // So just get the relationship id from the content-location header
         return helpers.handleRedirect(promise, function(promise) {
@@ -9888,7 +9888,7 @@ define('person',[
       },
       function(url) {
         // TODO remove accept header when FS bug is fixed (last checked 4/2/14)
-        var promise = plumbing.get(url, params, {Accept: 'application/x-fs-v1+json'}, opts);
+        var promise = plumbing.get(url + '.json', params, {Accept: 'application/x-fs-v1+json'}, opts);
         // FamilySearch returns a 303 function to redirect to the preferred relationship, but the response may come back as XML in chrome.
         // So just get the relationship id from the content-location header
         return helpers.handleRedirect(promise, function(promise) {
