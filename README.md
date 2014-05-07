@@ -100,6 +100,8 @@ Follow these steps to properly setup your development environment:
 * [Install the grunt-cli ](http://gruntjs.com/getting-started#installing-the-cli)
 * [Install PhantomJS](http://phantomjs.org/download.html)
 
+Run `grunt test` to run the tests.
+
 Run `grunt build` to build the project or `grunt server` to have grunt launch a server and watch for changed files with live-reload support.
 (RequireJS is not needed; just grunt.)
 
