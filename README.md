@@ -94,8 +94,13 @@ Contributing
 
 Thank you for your interest in contributing! We love pull requests.
 
-To contribute, fork this repo, run `npm install` to install the build dependencies, and run `grunt build` to build the project,
-or `grunt server` to have grunt launch a server watch for changed files with live-reload support.
+Follow these steps to properly setup your development environment:
+* Fork this repo
+* Run `npm install` to install the build dependencies
+* [Install the grunt-cli ](http://gruntjs.com/getting-started#installing-the-cli)
+* [Install PhantomJS](http://phantomjs.org/download.html)
+
+Run `grunt build` to build the project or `grunt server` to have grunt launch a server and watch for changed files with live-reload support.
 (RequireJS is not needed; just grunt.)
 
 This project uses .editorconfig to help configure your editor for consistent code indentation and styling.
