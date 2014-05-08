@@ -14,6 +14,11 @@ define(['FamilySearch'], function(FamilySearch) {
           var person = response.getPerson();
           expect(person.id).toBe('PPPJ-MYZ');
         });
+        expect(rel.$getSpouseId('PPPJ-MYY')).toBe('PPPJ-MYZ');
+        rel.$getSpouse('PPPJ-MYY').then(function(response) {
+          var person = response.getPerson();
+          expect(person.id).toBe('PPPJ-MYZ');
+        });
         expect(rel.$getFacts().length).toBe(1);
         var fact = rel.$getFacts()[0];
         expect(fact.type).toBe('http://gedcomx.org/Marriage');
