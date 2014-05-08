@@ -8197,6 +8197,53 @@ define('spouses',[
 
     /**
      * @ngdoc function
+     * @name spouses.types:constructor.Couple#$getSpouseId
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @description Use this method when you know the ID of one person in the relationship and you want to fetch the ID of the other person.
+     * @param {string} ID of the spouse which you already know
+     * @return {String} Id of the other spouse
+     */
+    $getSpouseId: function(knownSpouseId) { 
+      if(maybe(this.person1).resourceId === knownSpouseId) {
+        return maybe(this.person2).resourceId;
+      } else {
+        return maybe(this.person1).resourceId;
+      }
+    },
+
+    /**
+     * @ngdoc function
+     * @name spouses.types:constructor.Couple#$getSpouseUrl
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @description Use this method when you know the ID of one person in the relationship and you want to fetch the URL of the other person.
+     * @param {string} ID of the spouse which you already know
+     * @return {String} URL of the other spouse
+     */
+    $getSpouseUrl: function(knownSpouseId) {
+      if(maybe(this.person1).resourceId === knownSpouseId) {
+        return helpers.removeAccessToken(maybe(this.person2).resource);
+      } else {
+        return helpers.removeAccessToken(maybe(this.person1).resource);
+      }
+    },
+
+    /**
+     * @ngdoc function
+     * @name spouses.types:constructor.Couple#$getSpouse
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @description Use this method when you know the ID of one person in the relationship and you want to fetch the other person.
+     * @param {string} ID of the spouse which you already know
+     * @return {Object} promise for the {@link exports.functions:getPerson getPerson} response
+     */
+    $getSpouse: function(knownSpouseId) { 
+      return globals.getPerson(this.$getSpouseUrl(knownSpouseId) || this.$getSpouseId(knownSpouseId));
+    },
+    
+    /**
+     * @ngdoc function
      * @name spouses.types:constructor.Couple#$getNoteRefs
      * @methodOf spouses.types:constructor.Couple
      * @function
