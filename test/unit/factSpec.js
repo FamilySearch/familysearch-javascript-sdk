@@ -23,8 +23,9 @@ define(['FamilySearch'], function(FamilySearch) {
       expect(fact.$changed).toBe(true);
 
       fact = new FamilySearch.Fact();
-      fact.$setDate({date: '6 Mar 2014', formalDate: '+2014-03-06'});
+      fact.$setDate({original: '6 Mar 2014', normalized: '6 March 2014', formal: '+2014-03-06'});
       expect(fact.$getDate()).toBe('6 Mar 2014');
+      expect(fact.$getNormalizedDate()).toBe('6 March 2014');
       expect(fact.$getFormalDate()).toBe('+2014-03-06');
       expect(fact.$changed).toBe(true);
 
@@ -34,6 +35,7 @@ define(['FamilySearch'], function(FamilySearch) {
       date.normalized = '6 March 2014';
       fact.$setDate(date);
       expect(fact.$getDate()).toBe('6 Mar 2014');
+      expect(fact.$getNormalizedDate()).toBe('6 March 2014');
       expect(fact.$getFormalDate()).toBe('+2014-03-06');
       expect(fact.$changed).toBe(true);
 
@@ -43,7 +45,7 @@ define(['FamilySearch'], function(FamilySearch) {
       expect(fact.$changed).toBe(true);
 
       fact = new FamilySearch.Fact();
-      fact.$setPlace({place: 'place', normalizedPlace: 'normalizedPlace'});
+      fact.$setPlace({original: 'place', normalized: 'normalizedPlace'});
       expect(fact.$getPlace()).toBe('place');
       expect(fact.$getNormalizedPlace()).toBe('normalizedPlace');
       expect(fact.$changed).toBe(true);

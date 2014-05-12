@@ -712,6 +712,8 @@ define([
         return maybe(maybe(maybe(response)[root])[0]).sources;
       }),
       helpers.objectExtender(function(response, srcRef) {
+        // TODO consider getting the sourceDescriptionUrl from sourceDescription.links.description.href
+        // where sourceDescription.id === srcRef.description.substr(1)
         var sdid = srcRef.description.substr(1); // #ID -> ID
         // the discovery resource is guaranteed to be set due to the getUrl statement
         var result = {
