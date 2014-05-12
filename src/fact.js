@@ -88,7 +88,7 @@ define([
 
     /**
      * @ngdoc function
-     * @name fact.types:constructor.Fact#$getNormalizedPlace
+     * @name fact.types:constructor.Fact#$getNormalizedDate
      * @methodOf fact.types:constructor.Fact
      * @function
      * @return {String} normalized place text
