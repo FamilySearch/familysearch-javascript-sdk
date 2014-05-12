@@ -27,7 +27,8 @@
     "grunt-contrib-copy": "~0.5.0"
   },
   "scripts": {
-    "test": "grunt travis --verbose"
+    "test": "grunt travis --verbose",
+    "test-pull-request": "grunt travis-pull-request --verbose"
   },
   "repository": {
     "type": "git",

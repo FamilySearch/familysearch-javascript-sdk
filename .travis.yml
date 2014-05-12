@@ -9,3 +9,5 @@ cache:
   - node_modules
 before_script:
 - npm install -g grunt-cli
+script:
+- 'if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then npm test; else npm run-script test-pull-request; fi;'

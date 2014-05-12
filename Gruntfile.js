@@ -163,10 +163,14 @@ module.exports = function(grunt) {
     'gh-pages:dev'
   ]);
 
-  grunt.registerTask('travis', [
+  grunt.registerTask('travis-pull-request', [
     'jshint',
     'karma:travis',
-    'ngdocs',
+    'ngdocs' // build the docs to make sure there aren't errors
+  ]);
+
+  grunt.registerTask('travis', [
+    'travis-pull-request',
     'requirejs',
     'copy:dist',
     'gh-pages:travis'
