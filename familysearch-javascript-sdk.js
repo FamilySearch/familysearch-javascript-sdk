@@ -3789,6 +3789,15 @@ define('fact',[
 
     /**
      * @ngdoc function
+     * @name fact.types:constructor.Fact#$getNormalizedPlace
+     * @methodOf fact.types:constructor.Fact
+     * @function
+     * @return {String} normalized place text
+     */
+    $getNormalizedDate: function() { return maybe(maybe(maybe(this.date).normalized)[0]).value; },
+
+    /**
+     * @ngdoc function
      * @name fact.types:constructor.Fact#$getFormalDate
      * @methodOf fact.types:constructor.Fact
      * @function
@@ -3847,9 +3856,10 @@ define('fact',[
      * @name fact.types:constructor.Fact#$setDate
      * @methodOf fact.types:constructor.Fact
      * @function
-     * @description sets the fact date
-     * @param {String|Object|Date} date either a date string as written by the user, or {date, formalDate},
-     * or a {@link authorities.types:constructor.Date Date} object
+     * @description sets the fact date; original and formal date forms must be set -
+     * if normalized form is not set it is set by the server
+     * @param {String|Object|Date} date either a date string as written by the user (in which case you must also call $setFormalDate()),
+     * or a {original, formal, normalized} object, or a {@link authorities.types:constructor.Date Date} object
      * @return {Fact} this fact
      */
     $setDate: function(date) {
@@ -3864,10 +3874,18 @@ define('fact',[
         this.date.original = date.original;
         //noinspection JSUnresolvedFunction
         this.$setFormalDate(date.$getFormalDate());
+        this.$setNormalizedDate(date.normalized);
       }
       else if (helpers.isObject(date)) {
-        this.date.original = date.date;
-        this.$setFormalDate(date.formalDate);
+        if (date.original) {
+          this.date.original = date.original;
+        }
+        if (date.formal) {
+          this.$setFormalDate(date.formal);
+        }
+        if (date.normalized) {
+          this.$setNormalizedDate(date.normalized);
+        }
       }
       //noinspection JSValidateTypes
       return this;
@@ -3894,12 +3912,31 @@ define('fact',[
 
     /**
      * @ngdoc function
+     * @name fact.types:constructor.Fact#$setNormalizedDate
+     * @methodOf fact.types:constructor.Fact
+     * @function
+     * @description sets the normalized date
+     * @param {String} normalizedDate; e.g., 6 April 1836
+     * @return {Fact} this fact
+     */
+    $setNormalizedDate: function(normalizedDate) {
+      this.$changed = true;
+      if (!this.date) {
+        this.date = {};
+      }
+      this.date.normalized = [{ value: normalizedDate }];
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
      * @name fact.types:constructor.Fact#$setPlace
      * @methodOf fact.types:constructor.Fact
      * @function
-     * @description sets the place
-     * @param {String|Object|Date} place either a place string as written by the user, or {place, normalizedPlace},
-     * or a {@link authorities.types:constructor.Place Place} object
+     * @description sets the place; original and normalized forms must be set
+     * @param {String|Object|Date} place either a place string as written by the user (in which case you must also call $setNormalizedPlace()),
+     * or a {original, normalized} object, or a {@link authorities.types:constructor.Place Place} object
      * @return {Fact} this fact
      */
     $setPlace: function(place) {
@@ -3916,8 +3953,12 @@ define('fact',[
         this.$setNormalizedPlace(place.$getNormalizedPlace());
       }
       else if (helpers.isObject(place)) {
-        this.place.original = place.place;
-        this.$setNormalizedPlace(place.normalizedPlace);
+        if (place.original) {
+          this.place.original = place.original;
+        }
+        if (place.normalized) {
+          this.$setNormalizedPlace(place.normalized);
+        }
       }
       //noinspection JSValidateTypes
       return this;
@@ -6995,6 +7036,8 @@ define('sources',[
         return maybe(maybe(maybe(response)[root])[0]).sources;
       }),
       helpers.objectExtender(function(response, srcRef) {
+        // TODO consider getting the sourceDescriptionUrl from sourceDescription.links.description.href
+        // where sourceDescription.id === srcRef.description.substr(1)
         var sdid = srcRef.description.substr(1); // #ID -> ID
         // the discovery resource is guaranteed to be set due to the getUrl statement
         var result = {

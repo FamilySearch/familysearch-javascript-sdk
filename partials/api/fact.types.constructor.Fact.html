@@ -24,6 +24,10 @@
 <div class="$getnormalizedplace"><h5 id="methods_$getnormalizedplace_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="fact-types-page fact-types-constructor-fact-getnormalizedplace-page"><p>normalized place text</p>
 </div></td></tr></table></div>
 </li>
+<li><h3 id="methods_$getnormalizedplace">$getNormalizedPlace()</h3>
+<div class="$getnormalizedplace"><h5 id="methods_$getnormalizedplace_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="fact-types-page fact-types-constructor-fact-getnormalizedplace-page"><p>normalized place text</p>
+</div></td></tr></table></div>
+</li>
 <li><h3 id="methods_$getnormalizedplaceid">$getNormalizedPlaceId()</h3>
 <div class="$getnormalizedplaceid"><h5 id="methods_$getnormalizedplaceid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="fact-types-page fact-types-constructor-fact-getnormalizedplaceid-page"><p>normalized place id</p>
 </div></td></tr></table></div>
@@ -39,9 +43,10 @@
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_$setdate">$setDate(date)</h3>
-<div class="$setdate"><div class="fact-types-page fact-types-constructor-fact-setdate-page"><p>sets the fact date</p>
-</div><h5 id="methods_$setdate_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>date</td><td><a href="" class="label type-hint type-hint-string">String</a><a href="" class="label type-hint type-hint-object">Object</a><a href="" class="label type-hint type-hint-date">Date</a></td><td><div class="fact-types-page fact-types-constructor-fact-setdate-page"><p>either a date string as written by the user, or {date, formalDate},
-or a <a href="#/api/authorities.types:constructor.Date">Date</a> object</p>
+<div class="$setdate"><div class="fact-types-page fact-types-constructor-fact-setdate-page"><p>sets the fact date; original and formal date forms must be set -
+if normalized form is not set it is set by the server</p>
+</div><h5 id="methods_$setdate_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>date</td><td><a href="" class="label type-hint type-hint-string">String</a><a href="" class="label type-hint type-hint-object">Object</a><a href="" class="label type-hint type-hint-date">Date</a></td><td><div class="fact-types-page fact-types-constructor-fact-setdate-page"><p>either a date string as written by the user (in which case you must also call $setFormalDate()),
+or a {original, formal, normalized} object, or a <a href="#/api/authorities.types:constructor.Date">Date</a> object</p>
 </div></td></tr></tbody></table><h5 id="methods_$setdate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="fact-types-page fact-types-constructor-fact-setdate-page"><p>this fact</p>
 </div></td></tr></table></div>
 </li>
@@ -51,6 +56,12 @@ or a <a href="#/api/authorities.types:constructor.Date">Date</a> object</p>
 </div></td></tr></tbody></table><h5 id="methods_$setformaldate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="fact-types-page fact-types-constructor-fact-setformaldate-page"><p>this fact</p>
 </div></td></tr></table></div>
 </li>
+<li><h3 id="methods_$setnormalizeddate">$setNormalizedDate(normalizedDate;)</h3>
+<div class="$setnormalizeddate"><div class="fact-types-page fact-types-constructor-fact-setnormalizeddate-page"><p>sets the normalized date</p>
+</div><h5 id="methods_$setnormalizeddate_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>normalizedDate;</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="fact-types-page fact-types-constructor-fact-setnormalizeddate-page"><p>e.g., 6 April 1836</p>
+</div></td></tr></tbody></table><h5 id="methods_$setnormalizeddate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="fact-types-page fact-types-constructor-fact-setnormalizeddate-page"><p>this fact</p>
+</div></td></tr></table></div>
+</li>
 <li><h3 id="methods_$setnormalizedplace">$setNormalizedPlace(normalizedPlace)</h3>
 <div class="$setnormalizedplace"><div class="fact-types-page fact-types-constructor-fact-setnormalizedplace-page"><p>sets the standard place text</p>
 </div><h5 id="methods_$setnormalizedplace_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>normalizedPlace</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="fact-types-page fact-types-constructor-fact-setnormalizedplace-page"><p>from the place authority</p>
@@ -58,9 +69,9 @@ or a <a href="#/api/authorities.types:constructor.Date">Date</a> object</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_$setplace">$setPlace(place)</h3>
-<div class="$setplace"><div class="fact-types-page fact-types-constructor-fact-setplace-page"><p>sets the place</p>
-</div><h5 id="methods_$setplace_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>place</td><td><a href="" class="label type-hint type-hint-string">String</a><a href="" class="label type-hint type-hint-object">Object</a><a href="" class="label type-hint type-hint-date">Date</a></td><td><div class="fact-types-page fact-types-constructor-fact-setplace-page"><p>either a place string as written by the user, or {place, normalizedPlace},
-or a <a href="#/api/authorities.types:constructor.Place">Place</a> object</p>
+<div class="$setplace"><div class="fact-types-page fact-types-constructor-fact-setplace-page"><p>sets the place; original and normalized forms must be set</p>
+</div><h5 id="methods_$setplace_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>place</td><td><a href="" class="label type-hint type-hint-string">String</a><a href="" class="label type-hint type-hint-object">Object</a><a href="" class="label type-hint type-hint-date">Date</a></td><td><div class="fact-types-page fact-types-constructor-fact-setplace-page"><p>either a place string as written by the user (in which case you must also call $setNormalizedPlace()),
+or a {original, normalized} object, or a <a href="#/api/authorities.types:constructor.Place">Place</a> object</p>
 </div></td></tr></tbody></table><h5 id="methods_$setplace_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="fact-types-page fact-types-constructor-fact-setplace-page"><p>this fact</p>
 </div></td></tr></table></div>
 </li>
