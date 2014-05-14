@@ -15,9 +15,10 @@ To create a new memory persona, you must set $memoryId and name.
 <em>NOTE</em> memory persona names don&#39;t have given or surname parts, only fullText</p>
 </div></td></tr></tbody></table></div>
 <div class="member method"><h2 id="methods">Methods</h2>
-<ul class="methods"><li><h3 id="methods_$delete">$delete(opts)</h3>
+<ul class="methods"><li><h3 id="methods_$delete">$delete(changeMessage, opts)</h3>
 <div class="$delete"><div class="memories-types-page memories-types-constructor-memorypersona-delete-page"><p>delete this memory persona - see <a href="#/api/memories.functions:deleteMemoryPersona">deleteMemoryPersona</a></p>
-</div><h5 id="methods_$delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-delete-page"><p>options to pass to the http function specified during init</p>
+</div><h5 id="methods_$delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-delete-page"><p>change message (currently ignored)</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-delete-page"><p>options to pass to the http function specified during init</p>
 </div></td></tr></tbody></table><h5 id="methods_$delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-delete-page"><p>promise for the memory persona URL</p>
 </div></td></tr></table></div>
 </li>
@@ -45,11 +46,12 @@ To create a new memory persona, you must set $memoryId and name.
 <div class="$getnames"><h5 id="methods_$getnames_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-name">Name</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-getnames-page"><p>a <a href="#/api/name.types:constructor.Name">Name</a></p>
 </div></td></tr></table></div>
 </li>
-<li><h3 id="methods_$save">$save(refresh, opts)</h3>
+<li><h3 id="methods_$save">$save(changeMessage, refresh, opts)</h3>
 <div class="$save"><div class="memories-types-page memories-types-constructor-memorypersona-save-page"><p>Create a new memory persona (if this memory persona does not have an id) or update the existing memory persona.
 Only the name can be updated, not the memory id or the memory artifact reference.</p>
 <p><a href="http://jsfiddle.net/DallanQ/dLfA8/">editable example</a></p>
-</div><h5 id="methods_$save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>refresh <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-save-page"><p>true to read the memory persona after updating</p>
+</div><h5 id="methods_$save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-save-page"><p>change message (currently ignored)</p>
+</div></td></tr><tr><td>refresh <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-save-page"><p>true to read the memory persona after updating</p>
 </div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-save-page"><p>options to pass to the http function specified during init</p>
 </div></td></tr></tbody></table><h5 id="methods_$save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-save-page"><p>promise of the memory persona URL, which is fulfilled after the memory persona has been updated,
 and if refresh is true, after the memory persona has been read.</p>

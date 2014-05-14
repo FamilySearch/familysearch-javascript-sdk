@@ -418,13 +418,18 @@ define('helpers',[
     return dest;
   };
 
+  exports.appFieldRejector = function(key) {
+    return !(exports.isString(key) && key.charAt(0) === '_');
+  };
+
   /**
-   * remove all properties of an object
+   * delete properties of an object with a filter function to limit which fields are deleted
    * @param {Object} obj object to delete properties from
+   * @param {Function=} filter Function(key) returns true to delete the field; all fields are deleted if omitted
    */
-  exports.deleteProperties = function(obj) {
+  exports.deletePropertiesPartial = function(obj, filter) {
     for (var attr in obj) {
-      if (obj.hasOwnProperty(attr)) {
+      if (obj.hasOwnProperty(attr) && (!filter || filter(attr))) {
         delete obj[attr];
       }
     }
@@ -3028,12 +3033,13 @@ define('discussions',[
      *
      * {@link http://jsfiddle.net/DallanQ/t6Yh2/ editable example}
      *
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {boolean=} refresh true to read the discussion after updating
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise of the discussion id, which is fulfilled after the discussion has been updated,
      * and if refresh is true, after the discussion has been read.
      */
-    $save: function(refresh, opts) {
+    $save: function(changeMessage, refresh, opts) {
       var self = this;
       var promise = helpers.chainHttpPromises(
         self.id ? plumbing.getUrl('discussion-template', null, {did: self.id}) : plumbing.getUrl('discussions'),
@@ -3048,7 +3054,7 @@ define('discussions',[
         if (refresh) {
           // re-read the discussion and set this object's properties from response
           return exports.getDiscussion(did, {}, opts).then(function(response) {
-            helpers.deleteProperties(self);
+            helpers.deletePropertiesPartial(self, helpers.appFieldRejector);
             helpers.extend(self, response.getDiscussion());
             return did;
           });
@@ -3072,12 +3078,13 @@ define('discussions',[
      * attach a discussion to a single person and to delete the discussion when you delete the discussion-reference
      * FamilySearch is aware of this issue but hasn't committed to a fix.
      *
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the discussion id
      */
-    $delete: function(opts) {
+    $delete: function(changeMessage, opts) {
       // TODO use the discussion URL as an alternative when that is available
-      return exports.deleteDiscussion(this.id, opts);
+      return exports.deleteDiscussion(this.id, changeMessage, opts);
     }
 
   };
@@ -3372,10 +3379,11 @@ define('discussions',[
      *
      * {@link http://jsfiddle.net/DallanQ/9YHfX/ editable example}
      *
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise of the comment id
      */
-    $save: function(opts) {
+    $save: function(changeMessage, opts) {
       var self = this;
       var template = this.$memoryId ? 'memory-comments-template' : 'discussion-comments-template';
       return helpers.chainHttpPromises(
@@ -3403,15 +3411,16 @@ define('discussions',[
      * @description delete this comment
      * @description delete this comment - see {@link discussions.functions:deleteDiscussionComment deleteDiscussionComment}
      * or {@link memories.functions:deleteMemoryComment deleteMemoryComment}
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the comment url
      */
-    $delete: function(opts) {
+    $delete: function(changeMessage, opts) {
       if (this.$discussionId) {
-        return exports.deleteDiscussionComment(this.$getCommentUrl() || this.$discussionId, this.id, opts);
+        return exports.deleteDiscussionComment(this.$getCommentUrl() || this.$discussionId, this.id, changeMessage, opts);
       }
       else {
-        return exports.deleteMemoryComment(this.$getCommentUrl() || this.$memoryId, this.id, opts);
+        return exports.deleteMemoryComment(this.$getCommentUrl() || this.$memoryId, this.id, changeMessage, opts);
       }
     }
 
@@ -3593,10 +3602,11 @@ define('discussions',[
    * {@link http://jsfiddle.net/DallanQ/LTm24/ editable example}
    *
    * @param {string} did id or full URL of the discussion
+   * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the discussion id/URL
    */
-  exports.deleteDiscussion = function(did, opts) {
+  exports.deleteDiscussion = function(did, changeMessage, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('discussion-template', did, {did: did}),
       function(url) {
@@ -3654,10 +3664,11 @@ define('discussions',[
    *
    * @param {string} did discussion id or full URL of the comment
    * @param {string=} cmid id of the comment (must be set if did is a comment id and not the full URL)
+   * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the did
    */
-  exports.deleteDiscussionComment = function(did, cmid, opts) {
+  exports.deleteDiscussionComment = function(did, cmid, changeMessage, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('discussion-comment-template', did, {did: did, cmid: cmid}),
       function(url) {
@@ -3682,10 +3693,11 @@ define('discussions',[
    *
    * @param {string} mid memory id or full URL of the comment
    * @param {string=} cmid id of the comment (must be set if mid is a memory id and not the full URL)
+   * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the mid
    */
-  exports.deleteMemoryComment = function(mid, cmid, opts) {
+  exports.deleteMemoryComment = function(mid, cmid, changeMessage, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('memory-comment-template', mid, {mid: mid, cmid: cmid}),
       function(url) {
@@ -4631,12 +4643,13 @@ define('memories',[
      *
      * {@link http://jsfiddle.net/DallanQ/2ghkh/ editable example}
      *
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {boolean=} refresh true to read the discussion after updating
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise of the memory id, which is fulfilled after the memory has been updated,
      * and if refresh is true, after the memory has been read.
      */
-    $save: function(refresh, opts) {
+    $save: function(changeMessage, refresh, opts) {
       var self = this;
       var promise = helpers.chainHttpPromises(
         self.id ? plumbing.getUrl('memory-template', null, {mid: self.id}) : plumbing.getUrl('memories'),
@@ -4669,7 +4682,7 @@ define('memories',[
         if (refresh) {
           // re-read the person and set this object's properties from response
           return exports.getMemory(mid, {}, opts).then(function(response) {
-            helpers.deleteProperties(self);
+            helpers.deletePropertiesPartial(self, helpers.appFieldRejector);
             helpers.extend(self, response.getMemory());
             return mid;
           });
@@ -4687,11 +4700,12 @@ define('memories',[
      * @methodOf memories.types:constructor.Memory
      * @function
      * @description delete this memory - see {@link memories.functions:deleteMemory deleteMemory}
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the memory URL
      */
-    $delete: function(opts) {
-      return exports.deleteMemory(this.$getMemoryUrl() || this.id, opts);
+    $delete: function(changeMessage, opts) {
+      return exports.deleteMemory(this.$getMemoryUrl() || this.id, changeMessage, opts);
     }
 
   };
@@ -4845,12 +4859,13 @@ define('memories',[
      *
      * {@link http://jsfiddle.net/DallanQ/dLfA8/ editable example}
      *
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {boolean=} refresh true to read the memory persona after updating
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise of the memory persona URL, which is fulfilled after the memory persona has been updated,
      * and if refresh is true, after the memory persona has been read.
      */
-    $save: function(refresh, opts) {
+    $save: function(changeMessage, refresh, opts) {
       var self = this;
       var promise = helpers.chainHttpPromises(
         plumbing.getUrl((self.id ? 'memory-persona-template' : 'memory-personas-template'), null, {mid: self.$memoryId, pid: self.id}),
@@ -4870,7 +4885,7 @@ define('memories',[
         if (refresh) {
           // re-read the person and set this object's properties from response
           return exports.getMemoryPersona(url, null, {}, opts).then(function(response) {
-            helpers.deleteProperties(self);
+            helpers.deletePropertiesPartial(self, helpers.appFieldRejector);
             helpers.extend(self, response.getMemoryPersona());
             return url;
           });
@@ -4888,11 +4903,12 @@ define('memories',[
      * @methodOf memories.types:constructor.MemoryPersona
      * @function
      * @description delete this memory persona - see {@link memories.functions:deleteMemoryPersona deleteMemoryPersona}
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the memory persona URL
      */
-    $delete: function(opts) {
-      return exports.deleteMemoryPersona(this.$getMemoryPersonaUrl() || this.$memoryId, this.id, opts);
+    $delete: function(changeMessage, opts) {
+      return exports.deleteMemoryPersona(this.$getMemoryPersonaUrl() || this.$memoryId, this.id, changeMessage, opts);
     }
 
   };
@@ -5044,11 +5060,12 @@ define('memories',[
      *
      * {@link http://jsfiddle.net/DallanQ/wrNj2/ editable example}
      *
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise of the memory persona ref URL, which is fulfilled after the memory persona ref has been created
      * (note however that individual memory persona references cannot be read).
      */
-    $save: function(opts) {
+    $save: function(changeMessage, opts) {
       var self = this;
       return helpers.chainHttpPromises(
         plumbing.getUrl('person-memory-persona-references-template', null, {pid: self.$personId}),
@@ -5071,11 +5088,12 @@ define('memories',[
      * @methodOf memories.types:constructor.MemoryPersonaRef
      * @function
      * @description delete this memory persona reference - see {@link memories.functions:deleteMemoryPersonaRef deleteMemoryPersonaRef}
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the memory persona ref URL
      */
-    $delete: function(opts) {
-      return exports.deleteMemoryPersonaRef(this.$getMemoryPersonaRefUrl() || this.$personId, this.id, opts);
+    $delete: function(changeMessage, opts) {
+      return exports.deleteMemoryPersonaRef(this.$getMemoryPersonaRefUrl() || this.$personId, this.id, changeMessage, opts);
     }
 
   };
@@ -5500,10 +5518,11 @@ define('memories',[
    * {@link http://jsfiddle.net/DallanQ/Tm6X2/ editable example}
    *
    * @param {string} mid id or full URL of the memory
+   * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the memory id/URL
    */
-  exports.deleteMemory = function(mid, opts) {
+  exports.deleteMemory = function(mid, changeMessage, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('memory-template', mid, {mid: mid}),
       function(url) {
@@ -5528,10 +5547,11 @@ define('memories',[
    *
    * @param {string} mid memory id or full URL of the memory persona
    * @param {string=} mpid id of the memory persona (must be set if mid is a memory id and not the full URL)
+   * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the mid
    */
-  exports.deleteMemoryPersona = function(mid, mpid, opts) {
+  exports.deleteMemoryPersona = function(mid, mpid, changeMessage, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('memory-persona-template', mid, {mid: mid, pid: mpid}),
       function(url) {
@@ -5556,10 +5576,11 @@ define('memories',[
    *
    * @param {string} pid person id or full URL of the memory persona reference
    * @param {string=} mprid id of the memory persona reference (must be set if pid is a person id and not the full URL)
+   * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the pid
    */
-  exports.deleteMemoryPersonaRef = function(pid, mprid, opts) {
+  exports.deleteMemoryPersonaRef = function(pid, mprid, changeMessage, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-memory-persona-reference-template', pid, {pid: pid, erid: mprid}),
       function(url) {
@@ -5683,12 +5704,13 @@ define('notes',[
      *
      * {@link http://jsfiddle.net/DallanQ/6fVkh/ editable example}
      *
+     * @param {string} changeMessage change message
      * @param {boolean=} refresh true to read the note after updating
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise of the note id, which is fulfilled after the note has been updated,
      * and if refresh is true, after the note has been read.
      */
-    $save: function(refresh, opts) {
+    $save: function(changeMessage, refresh, opts) {
       var self = this;
       var template, label;
       var headers = {};
@@ -5710,6 +5732,9 @@ define('notes',[
         function(url) {
           var payload = {};
           payload[label] = [ { notes: [ self ] } ];
+          if (changeMessage) {
+            payload[label][0].attribution = new attribution.Attribution(changeMessage);
+          }
           return plumbing.post(url, payload, headers, opts, function(data, promise) {
             // x-entity-id and location headers are not set on update, only on create
             return {
@@ -5725,7 +5750,7 @@ define('notes',[
           // we use getPersonNote here to read couple and child-and-parents notes also
           // it's ok to do this since we pass in the full url
           return exports.getPersonNote(idLocation.location, null, {}, opts).then(function(response) {
-            helpers.deleteProperties(self);
+            helpers.deletePropertiesPartial(self, helpers.appFieldRejector);
             helpers.extend(self, response.getNote());
             return idLocation.id;
           });
@@ -5745,18 +5770,19 @@ define('notes',[
      * @description delete this note (and corresponding NoteRef) - see {@link notes.functions:deletePersonNote deletePersonNote}
      * or {@link notes.functions:deleteCoupleNote deleteCoupleNote}
      * or {@link notes.functions:deleteChildAndParentsNote deleteChildAndParentsNote}
+     * @param {string=} changeMessage change message
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the note URL
      */
-    $delete: function(opts) {
+    $delete: function(changeMessage, opts) {
       if (this.$personId) {
-        return exports.deletePersonNote(this.$getNoteUrl() || this.$personId, this.id, opts);
+        return exports.deletePersonNote(this.$getNoteUrl() || this.$personId, this.id, changeMessage, opts);
       }
       else if (this.$coupleId) {
-        return exports.deleteCoupleNote(this.$getNoteUrl() || this.$coupleId, this.id, opts);
+        return exports.deleteCoupleNote(this.$getNoteUrl() || this.$coupleId, this.id, changeMessage, opts);
       }
       else {
-        return exports.deleteChildAndParentsNote(this.$getNoteUrl() || this.$childAndParentsId, this.id, opts);
+        return exports.deleteChildAndParentsNote(this.$getNoteUrl() || this.$childAndParentsId, this.id, changeMessage, opts);
       }
     }
 
@@ -5862,18 +5888,19 @@ define('notes',[
      * @description delete this note ref (and corresponding Note) - see {@link notes.functions:deletePersonNote deletePersonNote}
      * or {@link notes.functions:deleteCoupleNote deleteCoupleNote}
      * or {@link notes.functions:deleteChildAndParentsNote deleteChildAndParentsNote}
+     * @param {string=} changeMessage change message
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the note URL
      */
-    $delete: function(opts) {
+    $delete: function(changeMessage, opts) {
       if (this.$personId) {
-        return exports.deletePersonNote(this.$getNoteUrl() || this.$personId, this.id, opts);
+        return exports.deletePersonNote(this.$getNoteUrl() || this.$personId, this.id, changeMessage, opts);
       }
       else if (this.$coupleId) {
-        return exports.deleteCoupleNote(this.$getNoteUrl() || this.$coupleId, this.id, opts);
+        return exports.deleteCoupleNote(this.$getNoteUrl() || this.$coupleId, this.id, changeMessage, opts);
       }
       else {
-        return exports.deleteChildAndParentsNote(this.$getNoteUrl() || this.$childAndParentsId, this.id, opts);
+        return exports.deleteChildAndParentsNote(this.$getNoteUrl() || this.$childAndParentsId, this.id, changeMessage, opts);
       }
     }
 
@@ -6251,16 +6278,21 @@ define('notes',[
    *
    * @param {string} pid person id or full URL of the note
    * @param {string=} nid id of the note (must be set if pid is an id and not the full URL of the note)
+   * @param {string=} changeMessage change message
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the pid
    */
-  exports.deletePersonNote = function(pid, nid, opts) {
+  exports.deletePersonNote = function(pid, nid, changeMessage, opts) {
     // this function is called from note.$delete() also to delete couple notes and child-and-parents notes by passing in the full URL
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-note-template', pid, {pid: pid, nid: nid}),
       function(url) {
         // need to use x-fs-v1+json, required for child-and-parents notes
-        return plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
+        var headers = {'Content-Type': 'application/x-fs-v1+json'};
+        if (changeMessage) {
+          headers['X-Reason'] = changeMessage;
+        }
+        return plumbing.del(url, headers, opts, function() {
           return pid;
         });
       }
@@ -6279,14 +6311,19 @@ define('notes',[
    *
    * @param {string} crid couple relationship id or full URL of the note
    * @param {string=} nid id of the note (must be set if crid is an id and not the full URL of the note)
+   * @param {string=} changeMessage change message
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the crid
    */
-  exports.deleteCoupleNote = function(crid, nid, opts) {
+  exports.deleteCoupleNote = function(crid, nid, changeMessage, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('couple-relationship-note-template', crid, {crid: crid, nid: nid}),
       function(url) {
-        return plumbing.del(url, {}, opts, function() {
+        var headers = {};
+        if (changeMessage) {
+          headers['X-Reason'] = changeMessage;
+        }
+        return plumbing.del(url, headers, opts, function() {
           return crid;
         });
       }
@@ -6305,14 +6342,19 @@ define('notes',[
    *
    * @param {string} caprid child-and-parents relationship id or full URL of the note
    * @param {string=} nid id of the note (must be set if caprid is an id and not the full URL of the note)
+   * @param {string=} changeMessage change message
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the pid
    */
-  exports.deleteChildAndParentsNote = function(caprid, nid, opts) {
+  exports.deleteChildAndParentsNote = function(caprid, nid, changeMessage, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('child-and-parents-relationship-note-template', caprid, {caprid: caprid, nid: nid}),
       function(url) {
-        return plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
+        var headers = {'Content-Type': 'application/x-fs-v1+json'};
+        if (changeMessage) {
+          headers['X-Reason'] = changeMessage;
+        }
+        return plumbing.del(url, headers, opts, function() {
           return caprid;
         });
       }
@@ -6512,7 +6554,7 @@ define('sources',[
         if (refresh) {
           // re-read the SourceDescription and set this object's properties from response
           return exports.getSourceDescription(sdid, {}, opts).then(function(response) {
-            helpers.deleteProperties(self);
+            helpers.deletePropertiesPartial(self, helpers.appFieldRejector);
             helpers.extend(self, response.getSourceDescription());
             return sdid;
           });
@@ -7850,7 +7892,7 @@ define('parentsAndChildren',[
         if (refresh) {
           // re-read the relationship and set this object's properties from response
           return exports.getChildAndParents(id, {}, opts).then(function(response) {
-            helpers.deleteProperties(relationship);
+            helpers.deletePropertiesPartial(relationship, helpers.appFieldRejector);
             helpers.extend(relationship, response.getRelationship());
             return id;
           });
@@ -8471,7 +8513,7 @@ define('spouses',[
         if (refresh) {
           // re-read the relationship and set this object's properties from response
           return exports.getCouple(id, {}, opts).then(function(response) {
-            helpers.deleteProperties(relationship);
+            helpers.deletePropertiesPartial(relationship, helpers.appFieldRejector);
             helpers.extend(relationship, response.getRelationship());
             return id;
           });
@@ -9394,7 +9436,7 @@ define('person',[
         if (refresh) {
           // re-read the person and set this object's properties from response
           return exports.getPerson(id, {}, opts).then(function(response) {
-            helpers.deleteProperties(person);
+            helpers.deletePropertiesPartial(person, helpers.appFieldRejector);
             helpers.extend(person, response.getPerson());
             return id;
           });
@@ -10551,7 +10593,7 @@ define('sourceBox',[
         if (refresh) {
           // re-read the collection and set this object's properties from response
           return exports.getCollection(udcid, {}, opts).then(function(response) {
-            helpers.deleteProperties(self);
+            helpers.deletePropertiesPartial(self, helpers.appFieldRejector);
             helpers.extend(self, response.getCollection());
             return udcid;
           });

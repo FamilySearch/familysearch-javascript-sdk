@@ -12,10 +12,11 @@ To create a new comment, you must set text and either $discussionId or $memoryId
 <h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-page"><p>an object with optional attributes {text, $discussionId, $memoryId}</p>
 </div></td></tr></tbody></table></div>
 <div class="member method"><h2 id="methods">Methods</h2>
-<ul class="methods"><li><h3 id="methods_$delete">$delete(opts)</h3>
+<ul class="methods"><li><h3 id="methods_$delete">$delete(changeMessage, opts)</h3>
 <div class="$delete"><div class="discussions-types-page discussions-types-constructor-comment-delete-page"><p>delete this comment - see <a href="#/api/discussions.functions:deleteDiscussionComment">deleteDiscussionComment</a>
 or <a href="#/api/memories.functions:deleteMemoryComment">deleteMemoryComment</a></p>
-</div><h5 id="methods_$delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-delete-page"><p>options to pass to the http function specified during init</p>
+</div><h5 id="methods_$delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-delete-page"><p>change message (currently ignored)</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-delete-page"><p>options to pass to the http function specified during init</p>
 </div></td></tr></tbody></table><h5 id="methods_$delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-delete-page"><p>promise for the comment url</p>
 </div></td></tr></table></div>
 </li>
@@ -35,13 +36,14 @@ or <a href="#/api/memories.functions:deleteMemoryComment">deleteMemoryComment</a
 <div class="$getcommenturl"><h5 id="methods_$getcommenturl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-getcommenturl-page"><p>URL of this comment; <em>NOTE</em> however, that individual comments cannot be read</p>
 </div></td></tr></table></div>
 </li>
-<li><h3 id="methods_$save">$save(opts)</h3>
+<li><h3 id="methods_$save">$save(changeMessage, opts)</h3>
 <div class="$save"><div class="discussions-types-page discussions-types-constructor-comment-save-page"><p>Create a new comment or update an existing comment</p>
 <p><em>NOTE</em>: there&#39;s no <em>refresh</em> parameter because it&#39;s not possible to read individual comments;
 however, the comment&#39;s id and URL is set when creating a new comment</p>
 <p><strong>NOTE</strong>: it is not currently possible to update memory comments.</p>
 <p><a href="http://jsfiddle.net/DallanQ/9YHfX/">editable example</a></p>
-</div><h5 id="methods_$save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-save-page"><p>options to pass to the http function specified during init</p>
+</div><h5 id="methods_$save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-save-page"><p>change message (currently ignored)</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-save-page"><p>options to pass to the http function specified during init</p>
 </div></td></tr></tbody></table><h5 id="methods_$save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-save-page"><p>promise of the comment id</p>
 </div></td></tr></table></div>
 </li>

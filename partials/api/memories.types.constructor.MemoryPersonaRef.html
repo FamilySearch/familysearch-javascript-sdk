@@ -15,9 +15,10 @@ To create a new memory persona reference, you must set both $personId and memory
 <em>memoryPersona</em> can be a <a href="#/api/memories.types:constructor.MemoryPersona">MemoryPersona</a> or a memory persona url</p>
 </div></td></tr></tbody></table></div>
 <div class="member method"><h2 id="methods">Methods</h2>
-<ul class="methods"><li><h3 id="methods_$delete">$delete(opts)</h3>
+<ul class="methods"><li><h3 id="methods_$delete">$delete(changeMessage, opts)</h3>
 <div class="$delete"><div class="memories-types-page memories-types-constructor-memorypersonaref-delete-page"><p>delete this memory persona reference - see <a href="#/api/memories.functions:deleteMemoryPersonaRef">deleteMemoryPersonaRef</a></p>
-</div><h5 id="methods_$delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-delete-page"><p>options to pass to the http function specified during init</p>
+</div><h5 id="methods_$delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-delete-page"><p>change message (currently ignored)</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-delete-page"><p>options to pass to the http function specified during init</p>
 </div></td></tr></tbody></table><h5 id="methods_$delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-delete-page"><p>promise for the memory persona ref URL</p>
 </div></td></tr></table></div>
 </li>
@@ -42,12 +43,13 @@ pass into <a href="#/api/memories.functions:getMemoryPersona">getMemoryPersona</
 <div class="$getmemoryurl"><h5 id="methods_$getmemoryurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-getmemoryurl-page"><p>URL of the memory; pass into <a href="#/api/memories.functions:getMemory">getMemory</a> for details</p>
 </div></td></tr></table></div>
 </li>
-<li><h3 id="methods_$save">$save(opts)</h3>
+<li><h3 id="methods_$save">$save(changeMessage, opts)</h3>
 <div class="$save"><div class="memories-types-page memories-types-constructor-memorypersonaref-save-page"><p>Create a new memory persona ref</p>
 <p>NOTE: there&#39;s no <em>refresh</em> parameter because it&#39;s not possible to read individual memory persona references;
 however, the memory persona ref&#39;s id and URL is set when creating a new memory persona ref</p>
 <p><a href="http://jsfiddle.net/DallanQ/wrNj2/">editable example</a></p>
-</div><h5 id="methods_$save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-save-page"><p>options to pass to the http function specified during init</p>
+</div><h5 id="methods_$save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-save-page"><p>change message (currently ignored)</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-save-page"><p>options to pass to the http function specified during init</p>
 </div></td></tr></tbody></table><h5 id="methods_$save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-save-page"><p>promise of the memory persona ref URL, which is fulfilled after the memory persona ref has been created
 (note however that individual memory persona references cannot be read).</p>
 </div></td></tr></table></div>

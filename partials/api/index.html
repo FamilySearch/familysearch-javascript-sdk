@@ -180,8 +180,10 @@ FamilySearch.getPerson('ID').then(function(response) {
 });
 </pre>
 <p>To avoid name conflicts with FamilySearch property names and SDK convenience functions, we recommend that you begin
-your convenience functions with a <code>_</code>, though you are free to begin your convenience functions however you want.</p>
-<p>Also, object properties beginning with <code>$</code> or <code>_</code> are removed before posting data to FamilySearch.</p>
+your prototype functions and any properties you add to objects with a <code>_</code>.</p>
+<p>You are free to begin your prototype functions and object properties however you want; however, properties
+beginning with a <code>_</code> are retained when an object is updated and the refresh parameter is set to true.
+Also, object properties beginning with <code>$</code> or <code>_</code> are removed before posting data to FamilySearch.</p>
 <h3 id="updates">Updates</h3>
 <p>All updateable objects have a constructor that takes a parameters object for initialization,
 one or more <em>$set...()</em> functions, <em>$save()</em>, and <em>$delete()</em> functions.
