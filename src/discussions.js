@@ -139,12 +139,13 @@ define([
      *
      * {@link http://jsfiddle.net/DallanQ/t6Yh2/ editable example}
      *
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {boolean=} refresh true to read the discussion after updating
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise of the discussion id, which is fulfilled after the discussion has been updated,
      * and if refresh is true, after the discussion has been read.
      */
-    $save: function(refresh, opts) {
+    $save: function(changeMessage, refresh, opts) {
       var self = this;
       var promise = helpers.chainHttpPromises(
         self.id ? plumbing.getUrl('discussion-template', null, {did: self.id}) : plumbing.getUrl('discussions'),
@@ -183,12 +184,13 @@ define([
      * attach a discussion to a single person and to delete the discussion when you delete the discussion-reference
      * FamilySearch is aware of this issue but hasn't committed to a fix.
      *
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the discussion id
      */
-    $delete: function(opts) {
+    $delete: function(changeMessage, opts) {
       // TODO use the discussion URL as an alternative when that is available
-      return exports.deleteDiscussion(this.id, opts);
+      return exports.deleteDiscussion(this.id, changeMessage, opts);
     }
 
   };
@@ -483,10 +485,11 @@ define([
      *
      * {@link http://jsfiddle.net/DallanQ/9YHfX/ editable example}
      *
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise of the comment id
      */
-    $save: function(opts) {
+    $save: function(changeMessage, opts) {
       var self = this;
       var template = this.$memoryId ? 'memory-comments-template' : 'discussion-comments-template';
       return helpers.chainHttpPromises(
@@ -514,15 +517,16 @@ define([
      * @description delete this comment
      * @description delete this comment - see {@link discussions.functions:deleteDiscussionComment deleteDiscussionComment}
      * or {@link memories.functions:deleteMemoryComment deleteMemoryComment}
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the comment url
      */
-    $delete: function(opts) {
+    $delete: function(changeMessage, opts) {
       if (this.$discussionId) {
-        return exports.deleteDiscussionComment(this.$getCommentUrl() || this.$discussionId, this.id, opts);
+        return exports.deleteDiscussionComment(this.$getCommentUrl() || this.$discussionId, this.id, changeMessage, opts);
       }
       else {
-        return exports.deleteMemoryComment(this.$getCommentUrl() || this.$memoryId, this.id, opts);
+        return exports.deleteMemoryComment(this.$getCommentUrl() || this.$memoryId, this.id, changeMessage, opts);
       }
     }
 
@@ -704,10 +708,11 @@ define([
    * {@link http://jsfiddle.net/DallanQ/LTm24/ editable example}
    *
    * @param {string} did id or full URL of the discussion
+   * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the discussion id/URL
    */
-  exports.deleteDiscussion = function(did, opts) {
+  exports.deleteDiscussion = function(did, changeMessage, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('discussion-template', did, {did: did}),
       function(url) {
@@ -765,10 +770,11 @@ define([
    *
    * @param {string} did discussion id or full URL of the comment
    * @param {string=} cmid id of the comment (must be set if did is a comment id and not the full URL)
+   * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the did
    */
-  exports.deleteDiscussionComment = function(did, cmid, opts) {
+  exports.deleteDiscussionComment = function(did, cmid, changeMessage, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('discussion-comment-template', did, {did: did, cmid: cmid}),
       function(url) {
@@ -793,10 +799,11 @@ define([
    *
    * @param {string} mid memory id or full URL of the comment
    * @param {string=} cmid id of the comment (must be set if mid is a memory id and not the full URL)
+   * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the mid
    */
-  exports.deleteMemoryComment = function(mid, cmid, opts) {
+  exports.deleteMemoryComment = function(mid, cmid, changeMessage, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('memory-comment-template', mid, {mid: mid, cmid: cmid}),
       function(url) {

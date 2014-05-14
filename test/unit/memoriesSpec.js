@@ -105,7 +105,7 @@ define(['FamilySearch'], function(FamilySearch) {
     it('is updated', function() {
       var memory = new FamilySearch.Memory({title: 'Birth Certificate of Ethel Hollivet', description: 'Shows Ethel Hollivet was born 3 Aug 1899'});
       memory.id = 'ARXX-MMM';
-      var promise = memory.$save(true);
+      var promise = memory.$save('', true);
       promise.then(function(response) {
         var request = promise.getRequest();
         //noinspection JSUnresolvedFunction

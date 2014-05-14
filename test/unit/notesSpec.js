@@ -100,7 +100,7 @@ define(['FamilySearch'], function(FamilySearch) {
 
     it('is created (person note)', function() {
       var promise = new FamilySearch.Note({subject: 'Sample', text: 'Sample note text.', $personId: 'P12-3456'})
-        .$save();
+        .$save('change message');
       promise.then(function(response) {
         var request = promise.getRequest();
         //noinspection JSUnresolvedFunction
@@ -109,7 +109,10 @@ define(['FamilySearch'], function(FamilySearch) {
             'notes' : [ {
               'subject' : 'Sample',
               'text' : 'Sample note text.'
-            } ]
+            } ],
+            'attribution' : {
+              'changeMessage' : 'change message'
+            }
           } ]
         });
         expect(promise.getStatusCode()).toBe(201);
@@ -121,7 +124,7 @@ define(['FamilySearch'], function(FamilySearch) {
       var note = new FamilySearch.Note({subject: 'Sample', text: 'Sample note text', $personId: 'P12-3456'});
       note.id = '1804317705';
       note.links = {note: {href: 'https://sandbox.familysearch.org/platform/tree/persons/P12-3456/notes/1804317705'}};
-      var promise = note.$save(true);
+      var promise = note.$save('change message', true);
       promise.then(function(response) {
         var request = promise.getRequest();
         //noinspection JSUnresolvedFunction
@@ -136,7 +139,10 @@ define(['FamilySearch'], function(FamilySearch) {
                   'href' : 'https://sandbox.familysearch.org/platform/tree/persons/P12-3456/notes/1804317705'
                 }
               }
-            } ]
+            } ],
+            'attribution' : {
+              'changeMessage' : 'change message'
+            }
           } ]
         });
         expect(promise.getStatusCode()).toBe(204);
@@ -155,7 +161,7 @@ define(['FamilySearch'], function(FamilySearch) {
 
     it('is created (couple note)', function() {
       var promise = new FamilySearch.Note({subject: 'Sample', text: 'Sample note text.', $coupleId: 'R12-3456'})
-        .$save();
+        .$save('change message');
       promise.then(function(response) {
         var request = promise.getRequest();
         //noinspection JSUnresolvedFunction
@@ -164,7 +170,10 @@ define(['FamilySearch'], function(FamilySearch) {
             'notes' : [ {
               'subject' : 'Sample',
               'text' : 'Sample note text.'
-            } ]
+            } ],
+            'attribution' : {
+              'changeMessage' : 'change message'
+            }
           } ]
         });
         expect(promise.getStatusCode()).toBe(201);
@@ -176,7 +185,7 @@ define(['FamilySearch'], function(FamilySearch) {
       var note = new FamilySearch.Note({subject: 'Sample', text: 'Sample note text', $coupleId: '12345'});
       note.id = 'MMMM-ZP8';
       note.links = {note: {href: 'https://sandbox.familysearch.org/platform/tree/couple-relationships/12345/notes/MMMM-ZP8'}};
-      var promise = note.$save(true);
+      var promise = note.$save('change message', true);
       promise.then(function(response) {
         var request = promise.getRequest();
         //noinspection JSUnresolvedFunction
@@ -191,7 +200,10 @@ define(['FamilySearch'], function(FamilySearch) {
                   'href' : 'https://sandbox.familysearch.org/platform/tree/couple-relationships/12345/notes/MMMM-ZP8'
                 }
               }
-            } ]
+            } ],
+            'attribution' : {
+              'changeMessage' : 'change message'
+            }
           } ]
         });
         expect(promise.getStatusCode()).toBe(204);
@@ -210,7 +222,7 @@ define(['FamilySearch'], function(FamilySearch) {
 
     it('is created (child-and-parents note)', function() {
       var promise = new FamilySearch.Note({subject: 'Sample', text: 'Sample note text.', $childAndParentsId: 'R12-3456'})
-        .$save();
+        .$save('change message');
       promise.then(function(response) {
         var request = promise.getRequest();
         //noinspection JSUnresolvedFunction
@@ -219,7 +231,10 @@ define(['FamilySearch'], function(FamilySearch) {
             'notes' : [ {
               'subject' : 'Sample',
               'text' : 'Sample note text.'
-            } ]
+            } ],
+            'attribution' : {
+              'changeMessage' : 'change message'
+            }
           } ]
         });
         expect(promise.getStatusCode()).toBe(201);
@@ -231,7 +246,7 @@ define(['FamilySearch'], function(FamilySearch) {
       var note = new FamilySearch.Note({subject: 'Sample', text: 'Sample note text', $childAndParentsId: 'RRRX-RRX'});
       note.id = 'NOTE1';
       note.links = {note: {href: 'https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/RRRX-RRX/notes/NOTE1'}};
-      var promise = note.$save(true);
+      var promise = note.$save('change message', true);
       promise.then(function(response) {
         var request = promise.getRequest();
         //noinspection JSUnresolvedFunction
@@ -246,7 +261,10 @@ define(['FamilySearch'], function(FamilySearch) {
                   'href' : 'https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/RRRX-RRX/notes/NOTE1'
                 }
               }
-            } ]
+            } ],
+            'attribution' : {
+              'changeMessage' : 'change message'
+            }
           } ]
         });
         expect(promise.getStatusCode()).toBe(204);

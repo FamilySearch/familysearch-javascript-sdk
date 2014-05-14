@@ -108,12 +108,13 @@ define([
      *
      * {@link http://jsfiddle.net/DallanQ/6fVkh/ editable example}
      *
+     * @param {string} changeMessage change message
      * @param {boolean=} refresh true to read the note after updating
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise of the note id, which is fulfilled after the note has been updated,
      * and if refresh is true, after the note has been read.
      */
-    $save: function(refresh, opts) {
+    $save: function(changeMessage, refresh, opts) {
       var self = this;
       var template, label;
       var headers = {};
@@ -135,6 +136,9 @@ define([
         function(url) {
           var payload = {};
           payload[label] = [ { notes: [ self ] } ];
+          if (changeMessage) {
+            payload[label][0].attribution = new attribution.Attribution(changeMessage);
+          }
           return plumbing.post(url, payload, headers, opts, function(data, promise) {
             // x-entity-id and location headers are not set on update, only on create
             return {
@@ -170,18 +174,19 @@ define([
      * @description delete this note (and corresponding NoteRef) - see {@link notes.functions:deletePersonNote deletePersonNote}
      * or {@link notes.functions:deleteCoupleNote deleteCoupleNote}
      * or {@link notes.functions:deleteChildAndParentsNote deleteChildAndParentsNote}
+     * @param {string=} changeMessage change message
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the note URL
      */
-    $delete: function(opts) {
+    $delete: function(changeMessage, opts) {
       if (this.$personId) {
-        return exports.deletePersonNote(this.$getNoteUrl() || this.$personId, this.id, opts);
+        return exports.deletePersonNote(this.$getNoteUrl() || this.$personId, this.id, changeMessage, opts);
       }
       else if (this.$coupleId) {
-        return exports.deleteCoupleNote(this.$getNoteUrl() || this.$coupleId, this.id, opts);
+        return exports.deleteCoupleNote(this.$getNoteUrl() || this.$coupleId, this.id, changeMessage, opts);
       }
       else {
-        return exports.deleteChildAndParentsNote(this.$getNoteUrl() || this.$childAndParentsId, this.id, opts);
+        return exports.deleteChildAndParentsNote(this.$getNoteUrl() || this.$childAndParentsId, this.id, changeMessage, opts);
       }
     }
 
@@ -287,18 +292,19 @@ define([
      * @description delete this note ref (and corresponding Note) - see {@link notes.functions:deletePersonNote deletePersonNote}
      * or {@link notes.functions:deleteCoupleNote deleteCoupleNote}
      * or {@link notes.functions:deleteChildAndParentsNote deleteChildAndParentsNote}
+     * @param {string=} changeMessage change message
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the note URL
      */
-    $delete: function(opts) {
+    $delete: function(changeMessage, opts) {
       if (this.$personId) {
-        return exports.deletePersonNote(this.$getNoteUrl() || this.$personId, this.id, opts);
+        return exports.deletePersonNote(this.$getNoteUrl() || this.$personId, this.id, changeMessage, opts);
       }
       else if (this.$coupleId) {
-        return exports.deleteCoupleNote(this.$getNoteUrl() || this.$coupleId, this.id, opts);
+        return exports.deleteCoupleNote(this.$getNoteUrl() || this.$coupleId, this.id, changeMessage, opts);
       }
       else {
-        return exports.deleteChildAndParentsNote(this.$getNoteUrl() || this.$childAndParentsId, this.id, opts);
+        return exports.deleteChildAndParentsNote(this.$getNoteUrl() || this.$childAndParentsId, this.id, changeMessage, opts);
       }
     }
 
@@ -676,16 +682,21 @@ define([
    *
    * @param {string} pid person id or full URL of the note
    * @param {string=} nid id of the note (must be set if pid is an id and not the full URL of the note)
+   * @param {string=} changeMessage change message
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the pid
    */
-  exports.deletePersonNote = function(pid, nid, opts) {
+  exports.deletePersonNote = function(pid, nid, changeMessage, opts) {
     // this function is called from note.$delete() also to delete couple notes and child-and-parents notes by passing in the full URL
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-note-template', pid, {pid: pid, nid: nid}),
       function(url) {
         // need to use x-fs-v1+json, required for child-and-parents notes
-        return plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
+        var headers = {'Content-Type': 'application/x-fs-v1+json'};
+        if (changeMessage) {
+          headers['X-Reason'] = changeMessage;
+        }
+        return plumbing.del(url, headers, opts, function() {
           return pid;
         });
       }
@@ -704,14 +715,19 @@ define([
    *
    * @param {string} crid couple relationship id or full URL of the note
    * @param {string=} nid id of the note (must be set if crid is an id and not the full URL of the note)
+   * @param {string=} changeMessage change message
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the crid
    */
-  exports.deleteCoupleNote = function(crid, nid, opts) {
+  exports.deleteCoupleNote = function(crid, nid, changeMessage, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('couple-relationship-note-template', crid, {crid: crid, nid: nid}),
       function(url) {
-        return plumbing.del(url, {}, opts, function() {
+        var headers = {};
+        if (changeMessage) {
+          headers['X-Reason'] = changeMessage;
+        }
+        return plumbing.del(url, headers, opts, function() {
           return crid;
         });
       }
@@ -730,14 +746,19 @@ define([
    *
    * @param {string} caprid child-and-parents relationship id or full URL of the note
    * @param {string=} nid id of the note (must be set if caprid is an id and not the full URL of the note)
+   * @param {string=} changeMessage change message
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the pid
    */
-  exports.deleteChildAndParentsNote = function(caprid, nid, opts) {
+  exports.deleteChildAndParentsNote = function(caprid, nid, changeMessage, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('child-and-parents-relationship-note-template', caprid, {caprid: caprid, nid: nid}),
       function(url) {
-        return plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
+        var headers = {'Content-Type': 'application/x-fs-v1+json'};
+        if (changeMessage) {
+          headers['X-Reason'] = changeMessage;
+        }
+        return plumbing.del(url, headers, opts, function() {
           return caprid;
         });
       }

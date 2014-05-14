@@ -281,12 +281,13 @@ define([
      *
      * {@link http://jsfiddle.net/DallanQ/2ghkh/ editable example}
      *
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {boolean=} refresh true to read the discussion after updating
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise of the memory id, which is fulfilled after the memory has been updated,
      * and if refresh is true, after the memory has been read.
      */
-    $save: function(refresh, opts) {
+    $save: function(changeMessage, refresh, opts) {
       var self = this;
       var promise = helpers.chainHttpPromises(
         self.id ? plumbing.getUrl('memory-template', null, {mid: self.id}) : plumbing.getUrl('memories'),
@@ -337,11 +338,12 @@ define([
      * @methodOf memories.types:constructor.Memory
      * @function
      * @description delete this memory - see {@link memories.functions:deleteMemory deleteMemory}
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the memory URL
      */
-    $delete: function(opts) {
-      return exports.deleteMemory(this.$getMemoryUrl() || this.id, opts);
+    $delete: function(changeMessage, opts) {
+      return exports.deleteMemory(this.$getMemoryUrl() || this.id, changeMessage, opts);
     }
 
   };
@@ -495,12 +497,13 @@ define([
      *
      * {@link http://jsfiddle.net/DallanQ/dLfA8/ editable example}
      *
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {boolean=} refresh true to read the memory persona after updating
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise of the memory persona URL, which is fulfilled after the memory persona has been updated,
      * and if refresh is true, after the memory persona has been read.
      */
-    $save: function(refresh, opts) {
+    $save: function(changeMessage, refresh, opts) {
       var self = this;
       var promise = helpers.chainHttpPromises(
         plumbing.getUrl((self.id ? 'memory-persona-template' : 'memory-personas-template'), null, {mid: self.$memoryId, pid: self.id}),
@@ -538,11 +541,12 @@ define([
      * @methodOf memories.types:constructor.MemoryPersona
      * @function
      * @description delete this memory persona - see {@link memories.functions:deleteMemoryPersona deleteMemoryPersona}
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the memory persona URL
      */
-    $delete: function(opts) {
-      return exports.deleteMemoryPersona(this.$getMemoryPersonaUrl() || this.$memoryId, this.id, opts);
+    $delete: function(changeMessage, opts) {
+      return exports.deleteMemoryPersona(this.$getMemoryPersonaUrl() || this.$memoryId, this.id, changeMessage, opts);
     }
 
   };
@@ -694,11 +698,12 @@ define([
      *
      * {@link http://jsfiddle.net/DallanQ/wrNj2/ editable example}
      *
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise of the memory persona ref URL, which is fulfilled after the memory persona ref has been created
      * (note however that individual memory persona references cannot be read).
      */
-    $save: function(opts) {
+    $save: function(changeMessage, opts) {
       var self = this;
       return helpers.chainHttpPromises(
         plumbing.getUrl('person-memory-persona-references-template', null, {pid: self.$personId}),
@@ -721,11 +726,12 @@ define([
      * @methodOf memories.types:constructor.MemoryPersonaRef
      * @function
      * @description delete this memory persona reference - see {@link memories.functions:deleteMemoryPersonaRef deleteMemoryPersonaRef}
+     * @param {string=} changeMessage change message (currently ignored)
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise for the memory persona ref URL
      */
-    $delete: function(opts) {
-      return exports.deleteMemoryPersonaRef(this.$getMemoryPersonaRefUrl() || this.$personId, this.id, opts);
+    $delete: function(changeMessage, opts) {
+      return exports.deleteMemoryPersonaRef(this.$getMemoryPersonaRefUrl() || this.$personId, this.id, changeMessage, opts);
     }
 
   };
@@ -1150,10 +1156,11 @@ define([
    * {@link http://jsfiddle.net/DallanQ/Tm6X2/ editable example}
    *
    * @param {string} mid id or full URL of the memory
+   * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the memory id/URL
    */
-  exports.deleteMemory = function(mid, opts) {
+  exports.deleteMemory = function(mid, changeMessage, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('memory-template', mid, {mid: mid}),
       function(url) {
@@ -1178,10 +1185,11 @@ define([
    *
    * @param {string} mid memory id or full URL of the memory persona
    * @param {string=} mpid id of the memory persona (must be set if mid is a memory id and not the full URL)
+   * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the mid
    */
-  exports.deleteMemoryPersona = function(mid, mpid, opts) {
+  exports.deleteMemoryPersona = function(mid, mpid, changeMessage, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('memory-persona-template', mid, {mid: mid, pid: mpid}),
       function(url) {
@@ -1206,10 +1214,11 @@ define([
    *
    * @param {string} pid person id or full URL of the memory persona reference
    * @param {string=} mprid id of the memory persona reference (must be set if pid is a person id and not the full URL)
+   * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the pid
    */
-  exports.deleteMemoryPersonaRef = function(pid, mprid, opts) {
+  exports.deleteMemoryPersonaRef = function(pid, mprid, changeMessage, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-memory-persona-reference-template', pid, {pid: pid, erid: mprid}),
       function(url) {

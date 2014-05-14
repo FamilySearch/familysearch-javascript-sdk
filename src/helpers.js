@@ -341,10 +341,11 @@ define([
   /**
    * remove all properties of an object
    * @param {Object} obj object to delete properties from
+   * @param {Function=} filter Function(key) returns true to delete the field; all fields are deleted if omitted
    */
-  exports.deleteProperties = function(obj) {
+  exports.deleteProperties = function(obj, filter) {
     for (var attr in obj) {
-      if (obj.hasOwnProperty(attr)) {
+      if (obj.hasOwnProperty(attr) && (!filter || filter(attr))) {
         delete obj[attr];
       }
     }

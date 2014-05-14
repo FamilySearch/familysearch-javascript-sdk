@@ -56,7 +56,7 @@ define(['FamilySearch'], function(FamilySearch) {
 
     it('is created', function() {
       var disc = new FamilySearch.Discussion({title: '1900 US Census, Ethel Hollivet', details: 'details'});
-      var promise = disc.$save(true);
+      var promise = disc.$save('', true);
       promise.then(function(response) {
         var request = promise.getRequest();
         //noinspection JSUnresolvedFunction
@@ -76,7 +76,7 @@ define(['FamilySearch'], function(FamilySearch) {
     it('is updated', function() {
       var disc = new FamilySearch.Discussion({title: '1900 US Census, Ethel Hollivet', details: 'details'});
       disc.id = 'dis-MMMM-MMM';
-      var promise = disc.$save(true);
+      var promise = disc.$save('', true);
       promise.then(function(response) {
         var request = promise.getRequest();
         //noinspection JSUnresolvedFunction
