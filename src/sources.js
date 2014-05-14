@@ -188,7 +188,7 @@ define([
         if (refresh) {
           // re-read the SourceDescription and set this object's properties from response
           return exports.getSourceDescription(sdid, {}, opts).then(function(response) {
-            helpers.deleteProperties(self);
+            helpers.deletePropertiesPartial(self, helpers.appFieldRejector);
             helpers.extend(self, response.getSourceDescription());
             return sdid;
           });

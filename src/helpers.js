@@ -338,12 +338,16 @@ define([
     return dest;
   };
 
+  exports.appFieldRejector = function(key) {
+    return !(exports.isString(key) && key.charAt(0) === '_');
+  };
+
   /**
-   * remove all properties of an object
+   * delete properties of an object with a filter function to limit which fields are deleted
    * @param {Object} obj object to delete properties from
    * @param {Function=} filter Function(key) returns true to delete the field; all fields are deleted if omitted
    */
-  exports.deleteProperties = function(obj, filter) {
+  exports.deletePropertiesPartial = function(obj, filter) {
     for (var attr in obj) {
       if (obj.hasOwnProperty(attr) && (!filter || filter(attr))) {
         delete obj[attr];

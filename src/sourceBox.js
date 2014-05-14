@@ -109,7 +109,7 @@ define([
         if (refresh) {
           // re-read the collection and set this object's properties from response
           return exports.getCollection(udcid, {}, opts).then(function(response) {
-            helpers.deleteProperties(self);
+            helpers.deletePropertiesPartial(self, helpers.appFieldRejector);
             helpers.extend(self, response.getCollection());
             return udcid;
           });

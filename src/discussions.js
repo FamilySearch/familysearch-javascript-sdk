@@ -160,7 +160,7 @@ define([
         if (refresh) {
           // re-read the discussion and set this object's properties from response
           return exports.getDiscussion(did, {}, opts).then(function(response) {
-            helpers.deleteProperties(self);
+            helpers.deletePropertiesPartial(self, helpers.appFieldRejector);
             helpers.extend(self, response.getDiscussion());
             return did;
           });

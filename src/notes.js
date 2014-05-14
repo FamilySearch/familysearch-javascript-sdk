@@ -154,7 +154,7 @@ define([
           // we use getPersonNote here to read couple and child-and-parents notes also
           // it's ok to do this since we pass in the full url
           return exports.getPersonNote(idLocation.location, null, {}, opts).then(function(response) {
-            helpers.deleteProperties(self);
+            helpers.deletePropertiesPartial(self, helpers.appFieldRejector);
             helpers.extend(self, response.getNote());
             return idLocation.id;
           });

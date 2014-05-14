@@ -814,7 +814,7 @@ define([
         if (refresh) {
           // re-read the person and set this object's properties from response
           return exports.getPerson(id, {}, opts).then(function(response) {
-            helpers.deleteProperties(person);
+            helpers.deletePropertiesPartial(person, helpers.appFieldRejector);
             helpers.extend(person, response.getPerson());
             return id;
           });

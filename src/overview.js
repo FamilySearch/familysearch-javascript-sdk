@@ -203,8 +203,10 @@
  * </pre>
  *
  * To avoid name conflicts with FamilySearch property names and SDK convenience functions, we recommend that you begin
- * your convenience functions with a `_`, though you are free to begin your convenience functions however you want.
+ * your prototype functions and any properties you add to objects with a `_`.
  *
+ * You are free to begin your prototype functions and object properties however you want; however, properties
+ * beginning with a `_` are retained when an object is updated and the refresh parameter is set to true.
  * Also, object properties beginning with `$` or `_` are removed before posting data to FamilySearch.
  *
  * ## Updates

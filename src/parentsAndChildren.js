@@ -559,7 +559,7 @@ define([
         if (refresh) {
           // re-read the relationship and set this object's properties from response
           return exports.getChildAndParents(id, {}, opts).then(function(response) {
-            helpers.deleteProperties(relationship);
+            helpers.deletePropertiesPartial(relationship, helpers.appFieldRejector);
             helpers.extend(relationship, response.getRelationship());
             return id;
           });

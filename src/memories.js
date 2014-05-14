@@ -320,7 +320,7 @@ define([
         if (refresh) {
           // re-read the person and set this object's properties from response
           return exports.getMemory(mid, {}, opts).then(function(response) {
-            helpers.deleteProperties(self);
+            helpers.deletePropertiesPartial(self, helpers.appFieldRejector);
             helpers.extend(self, response.getMemory());
             return mid;
           });
@@ -523,7 +523,7 @@ define([
         if (refresh) {
           // re-read the person and set this object's properties from response
           return exports.getMemoryPersona(url, null, {}, opts).then(function(response) {
-            helpers.deleteProperties(self);
+            helpers.deletePropertiesPartial(self, helpers.appFieldRejector);
             helpers.extend(self, response.getMemoryPersona());
             return url;
           });
