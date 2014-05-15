@@ -280,7 +280,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Reference to a discussion on a person.",
-      "keywords": "$delete $getdiscussion $getdiscussionrefurl $getdiscussionurl $personid $save $setdiscussionurl _discussion_ _note_ _refresh_ access api attached attributes change changemessage create created creating data delete deleted deletediscussionref details discussion discussionref discussions editable example function functions getdiscussion http individual init message net note object optional options opts parameter pass person promise property read reference references resource resourceid response set token types updated url"
+      "keywords": "$delete $getdiscussion $getdiscussionrefurl $getdiscussionurl $personid $save $setdiscussion _discussion_ _note_ _refresh_ access api attached attributes attribution change changemessage create created creating data delete deleted deletediscussionref details discussion discussionref discussions editable example function functions getdiscussion http individual init message net note object optional options opts parameter pass person promise property read reference references resource resourceid response set token types updated url"
     },
     {
       "section": "api",
