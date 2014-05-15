@@ -111,7 +111,9 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(request.data).toEqualJson({
           'persons' : [ {
             'id' : '12345',
-            'discussion-references' : [ 'https://sandbox.familysearch.org/platform/discussions/discussions/dis-1' ],
+            'discussion-references' : [{
+              resource: 'https://sandbox.familysearch.org/platform/discussions/discussions/dis-1'
+            }],
             'attribution' : { changeMessage: 'change msg' }
           } ]
         });

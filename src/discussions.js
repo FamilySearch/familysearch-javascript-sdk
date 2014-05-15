@@ -238,6 +238,13 @@ define([
 
     /**
      * @ngdoc property
+     * @name discussions.types:constructor.DiscussionRef#attribution
+     * @propertyOf discussions.types:constructor.DiscussionRef
+     * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
+     */
+
+    /**
+     * @ngdoc property
      * @name discussions.types:constructor.DiscussionRef#$personId
      * @propertyOf discussions.types:constructor.DiscussionRef
      * @return {String} Id of the person to whom this discussion is attached
@@ -251,11 +258,8 @@ define([
      * @return {String} URL of this discussion reference; _NOTE_ however, that individual discussion references cannot be read
      */
     $getDiscussionRefUrl: function() {
-      // TODO change this once links is an associative array (last checked 4/2/14)
-      return helpers.removeAccessToken(maybe(helpers.find(this.links, {title: 'Discussion Reference'})).href);
+      return helpers.removeAccessToken(maybe(maybe(this.links)['discussion-reference']).href);
     },
-
-    // TODO add attribution when that is available (last checked 4/2/14)
 
     /**
      * @ngdoc function
@@ -277,13 +281,12 @@ define([
      * @return {Object} promise for the {@link discussions.functions:getDiscussion getDiscussion} response
      */
     $getDiscussion: function() {
-      // TODO remove this.resourceId if resourceId ends up being discussion reference id
       return exports.getDiscussion(this.$getDiscussionUrl() || this.resourceId);
     },
 
     /**
      * @ngdoc function
-     * @name discussions.types:constructor.DiscussionRef#$setDiscussionUrl
+     * @name discussions.types:constructor.DiscussionRef#$setDiscussion
      * @methodOf discussions.types:constructor.DiscussionRef
      * @function
      * @param {Discussion|string} discussion Discussion object or discussion url or discussion id
@@ -298,7 +301,6 @@ define([
         this.resource = helpers.removeAccessToken(discussion);
       }
       else {
-        // TODO if resourceId is a discussion ref id instead of a discussion id, we'll need to set a $discussionId variable
         this.resourceId = discussion;
       }
       //noinspection JSValidateTypes
@@ -328,16 +330,14 @@ define([
       return helpers.chainHttpPromises(
         plumbing.getUrl('person-discussion-references-template', null, {pid: self.$personId}),
         function(url) {
-          // TODO if resourceId is a discussion ref id instead of a discussion id, we need to use $discussionId
           if (!self.resource && self.resourceId) {
             // the discovery resource is guaranteed to be set due to the getUrl statement
             self.resource = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'discussion-template', {did: self.resourceId});
           }
-          // TODO save discussion references in new json serialization format when that works
           var payload = {
             persons: [{
               id: self.$personId,
-              'discussion-references' : [ self.resource ]
+              'discussion-references' : [ { resource: self.resource } ]
             }]
           };
           if (changeMessage) {
@@ -346,12 +346,12 @@ define([
           var headers = {'Content-Type': 'application/x-fs-v1+json', 'X-FS-Feature-Tag': 'discussion-reference-json-fix'};
           return plumbing.post(url, payload, headers, opts, function(data, promise) {
             if (!self.$getDiscussionRefUrl()) {
-              // TODO change this once links is an associative array
-              // TODO also set id when that field has been added
-              self.links = [{
-                href: promise.getResponseHeader('Location'),
-                title: 'Discussion Reference'
-              }];
+              self.links = {
+                'discussion-reference': {
+                  href: promise.getResponseHeader('Location'),
+                  title: 'Discussion Reference'
+                }
+              };
             }
             return self.$getDiscussionRefUrl();
           });
@@ -497,7 +497,6 @@ define([
         function(url) {
           var payload = {discussions: [{ comments: [ self ] }] };
           return plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
-            // TODO currently when creating discussion comments, X-ENTITY-ID and Location headers aren't returned (last checked 4/2/14)
             if (!self.id) {
               self.id = promise.getResponseHeader('X-ENTITY-ID');
             }
