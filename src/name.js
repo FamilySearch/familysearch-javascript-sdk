@@ -236,7 +236,12 @@ define([
     $setFullText: function(fullText, i) {
       this.$changed = true;
       var nameForm = ensureNameForm(this, i);
-      nameForm.fullText = fullText;
+      if (!!fullText) {
+        nameForm.fullText = fullText;
+      }
+      else {
+        delete nameForm.fullText;
+      }
       //noinspection JSValidateTypes
       return this;
     },
@@ -260,11 +265,16 @@ define([
         nameForm.parts = [];
       }
       var part = helpers.find(nameForm.parts, {type: type});
-      if (!part) {
-        part = {type: type};
-        nameForm.parts.push(part);
+      if (!!name) {
+        if (!part) {
+          part = {type: type};
+          nameForm.parts.push(part);
+        }
+        part.value = name;
       }
-      part.value = name;
+      else if (!!part) {
+        nameForm.parts.splice(nameForm.parts.indexOf(part), 1);
+      }
       //noinspection JSValidateTypes
       return this;
     },
