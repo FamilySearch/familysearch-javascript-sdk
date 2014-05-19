@@ -163,28 +163,29 @@ define([
      */
     $setDate: function(date) {
       this.$changed = true;
-      if (!this.date) {
-        this.date = {};
-      }
+      var originalDate;
       if (helpers.isString(date)) {
-        this.date.original = date;
+        originalDate = date;
       }
       else if (date instanceof authorities.Date) {
-        this.date.original = date.original;
+        originalDate = date.original;
         //noinspection JSUnresolvedFunction
         this.$setFormalDate(date.$getFormalDate());
         this.$setNormalizedDate(date.normalized);
       }
       else if (helpers.isObject(date)) {
-        if (date.original) {
-          this.date.original = date.original;
+        originalDate = date.original;
+        this.$setFormalDate(date.formal);
+        this.$setNormalizedDate(date.normalized);
+      }
+      if (!!originalDate) {
+        if (!this.date) {
+          this.date = {};
         }
-        if (date.formal) {
-          this.$setFormalDate(date.formal);
-        }
-        if (date.normalized) {
-          this.$setNormalizedDate(date.normalized);
-        }
+        this.date.original = originalDate;
+      }
+      else {
+        delete this.date;
       }
       //noinspection JSValidateTypes
       return this;
@@ -201,10 +202,15 @@ define([
      */
     $setFormalDate: function(formalDate) {
       this.$changed = true;
-      if (!this.date) {
-        this.date = {};
+      if (!!formalDate) {
+        if (!this.date) {
+          this.date = {};
+        }
+        this.date.formal = formalDate;
       }
-      this.date.formal = formalDate;
+      else if (this.date) {
+        delete this.date.formal;
+      }
       //noinspection JSValidateTypes
       return this;
     },
@@ -220,10 +226,15 @@ define([
      */
     $setNormalizedDate: function(normalizedDate) {
       this.$changed = true;
-      if (!this.date) {
-        this.date = {};
+      if (!!normalizedDate) {
+        if (!this.date) {
+          this.date = {};
+        }
+        this.date.normalized = [{ value: normalizedDate }];
       }
-      this.date.normalized = [{ value: normalizedDate }];
+      else if (this.date) {
+        delete this.date.normalized;
+      }
       //noinspection JSValidateTypes
       return this;
     },
@@ -240,24 +251,27 @@ define([
      */
     $setPlace: function(place) {
       this.$changed = true;
-      if (!this.place) {
-        this.place = {};
-      }
-      if (helpers.isString(place)) {
-        this.place.original = place;
+      var originalPlace;
+      if (helpers.isString(place) || place == null) {
+        originalPlace = place;
       }
       else if (place instanceof authorities.Place) {
-        this.place.original = place.original;
+        originalPlace = place.original;
         //noinspection JSUnresolvedFunction
         this.$setNormalizedPlace(place.$getNormalizedPlace());
       }
       else if (helpers.isObject(place)) {
-        if (place.original) {
-          this.place.original = place.original;
+        originalPlace = place.original;
+        this.$setNormalizedPlace(place.normalized);
+      }
+      if (!!originalPlace) {
+        if (!this.place) {
+          this.place = {};
         }
-        if (place.normalized) {
-          this.$setNormalizedPlace(place.normalized);
-        }
+        this.place.original = originalPlace;
+      }
+      else {
+        delete this.place;
       }
       //noinspection JSValidateTypes
       return this;
@@ -274,10 +288,15 @@ define([
      */
     $setNormalizedPlace: function(normalizedPlace) {
       this.$changed = true;
-      if (!this.place) {
-        this.place = {};
+      if (!!normalizedPlace) {
+        if (!this.place) {
+          this.place = {};
+        }
+        this.place.normalized = [{ value: normalizedPlace }];
       }
-      this.place.normalized = [{ value: normalizedPlace }];
+      else if (this.place) {
+        delete this.place.normalized;
+      }
       //noinspection JSValidateTypes
       return this;
     },
