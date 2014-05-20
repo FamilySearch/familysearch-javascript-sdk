@@ -72,6 +72,13 @@ define([
 
     /**
      * @ngdoc property
+     * @name fact.types:constructor.Fact#value
+     * @propertyOf fact.types:constructor.Fact
+     * @return {String} Description (some facts have descriptions)
+     */
+
+    /**
+     * @ngdoc property
      * @name fact.types:constructor.Fact#attribution
      * @propertyOf fact.types:constructor.Fact
      * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object

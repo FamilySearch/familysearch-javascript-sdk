@@ -119,13 +119,33 @@ define([
 
     /**
      * @ngdoc function
+     * @name name.types:constructor.Name#$getNameForm
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @param {Number=} i name form to read; defaults to 0
+     * @return {Number} get the `i`'th name form: each name form has `lang`, `fullText`, and `parts` properties
+     */
+    $getNameForm: function(i) { return maybe(this.nameForms)[i || 0]; },
+
+    /**
+     * @ngdoc function
      * @name name.types:constructor.Name#$getFullText
      * @methodOf name.types:constructor.Name
      * @function
      * @param {Number=} i name form to read; defaults to 0
      * @return {String} get the full text of the `i`'th name form
      */
-    $getFullText: function(i) { return maybe(maybe(this.nameForms)[i || 0]).fullText; },
+    $getFullText: function(i) { return maybe(this.$getNameForm(i)).fullText; },
+
+    /**
+     * @ngdoc function
+     * @name name.types:constructor.Name#$getLanguage
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @param {Number=} i name form to read; defaults to 0
+     * @return {String} get the language of the `i`'th name form
+     */
+    $getLang: function(i) { return maybe(this.$getNameForm(i)).lang; },
 
     /**
      * @ngdoc function
@@ -138,7 +158,7 @@ define([
      * @return {String} get the specified part of the `i`'th name form
      */
     $getNamePart: function(type, i) {
-      return maybe(helpers.find(maybe(maybe(this.nameForms)[i || 0]).parts, {type: type})).value;
+      return maybe(helpers.find(maybe(this.$getNameForm(i)).parts, {type: type})).value;
     },
 
     /**
