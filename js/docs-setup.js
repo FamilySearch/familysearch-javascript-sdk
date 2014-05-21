@@ -298,7 +298,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "fact",
       "shortDescription": "Fact",
-      "keywords": "$getdate $getformaldate $getnormalizeddate $getnormalizedplace $getnormalizedplaceid $getplace $setchangemessage $setdate $setformaldate $setnormalizeddate $setnormalizedplace $setplace $settype api april attributes attribution authorities authority call case change changemessage data event fact form formal formaldate format forms function gedcomx http message normalized normalizeddate normalizedplace object optional org original place property server set sets standard string text type types update user written"
+      "keywords": "$getdate $getformaldate $getnormalizeddate $getnormalizedplace $getnormalizedplaceid $getplace $setchangemessage $setdate $setformaldate $setnormalizeddate $setnormalizedplace $setplace $settype api april attributes attribution authorities authority call case change changemessage data description descriptions event fact facts form formal formaldate format forms function gedcomx http message normalized normalizeddate normalizedplace object optional org original place property server set sets standard string text type types update user written"
     },
     {
       "section": "api",
@@ -478,7 +478,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "name",
       "shortDescription": "Name",
-      "keywords": "$changed $getfulltext $getgivenname $getnameformscount $getnamepart $getprefix $getsuffix $getsurname $setchangemessage $setfulltext $setgivenname $setnamepart $setpreferred $setprefix $setsuffix $setsurname $settype __note__ api attributes attribution call change changemessage created data defaults flag form forms full fulltext function givenname http initially ispreferred message number object optional org person preferred prefix property read read-only set sets string suffix surname text true type types update"
+      "keywords": "$changed $getfulltext $getgivenname $getlanguage $getnameform $getnameformscount $getnamepart $getprefix $getsuffix $getsurname $setchangemessage $setfulltext $setgivenname $setnamepart $setpreferred $setprefix $setsuffix $setsurname $settype __note__ api attributes attribution call change changemessage created data defaults flag form forms full fulltext function givenname http initially ispreferred lang language message number object optional org parts person preferred prefix properties property read read-only set sets string suffix surname text true type types update"
     },
     {
       "section": "api",
@@ -1225,7 +1225,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "user",
       "shortDescription": "An agent is returned from getAgent.",
-      "keywords": "$getaccountname $getemail $getname account agent api contact contributor email function functions getagent ids property returned types user"
+      "keywords": "$getaccountname $getaddress $getemail $getname $getphonenumber account address agent api contact contributor email function functions getagent ids number phone postal property returned types user"
     },
     {
       "section": "api",

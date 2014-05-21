@@ -2513,7 +2513,7 @@ define('user',[
      * @function
      * @return {String} name of the agent
      */
-    $getName:        function() { return maybe(maybe(this.names)[0]).value; },
+    $getName: function() { return maybe(maybe(this.names)[0]).value; },
 
     /**
      * @ngdoc function
@@ -2524,6 +2524,7 @@ define('user',[
      */
     $getAccountName: function() { return maybe(maybe(this.accounts)[0]).accountName; },
 
+
     /**
      * @ngdoc function
      * @name user.types:constructor.Agent#$getEmail
@@ -2531,9 +2532,31 @@ define('user',[
      * @function
      * @return {String} email of the agent
      */
-    $getEmail:       function() {
+    $getEmail: function() {
       var email = maybe(maybe(this.emails)[0]).resource;
       return email ? email.replace(/^mailto:/,'') : email;
+    },
+
+    /**
+     * @ngdoc function
+     * @name user.types:constructor.Agent#$getPhoneNumber
+     * @methodOf user.types:constructor.Agent
+     * @function
+     * @return {String} phone number of the agent
+     */
+    $getPhoneNumber: function() {
+      return maybe(maybe(this.phones)[0]).resource;
+    },
+
+    /**
+     * @ngdoc function
+     * @name user.types:constructor.Agent#$getAddress
+     * @methodOf user.types:constructor.Agent
+     * @function
+     * @return {String} postal address of the agent
+     */
+    $getAddress: function() {
+      return maybe(maybe(this.addresses)[0]).value;
     }
   };
 
@@ -3784,6 +3807,13 @@ define('fact',[
 
     /**
      * @ngdoc property
+     * @name fact.types:constructor.Fact#value
+     * @propertyOf fact.types:constructor.Fact
+     * @return {String} Description (some facts have descriptions)
+     */
+
+    /**
+     * @ngdoc property
      * @name fact.types:constructor.Fact#attribution
      * @propertyOf fact.types:constructor.Fact
      * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
@@ -4153,13 +4183,33 @@ define('name',[
 
     /**
      * @ngdoc function
+     * @name name.types:constructor.Name#$getNameForm
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @param {Number=} i name form to read; defaults to 0
+     * @return {Number} get the `i`'th name form: each name form has `lang`, `fullText`, and `parts` properties
+     */
+    $getNameForm: function(i) { return maybe(this.nameForms)[i || 0]; },
+
+    /**
+     * @ngdoc function
      * @name name.types:constructor.Name#$getFullText
      * @methodOf name.types:constructor.Name
      * @function
      * @param {Number=} i name form to read; defaults to 0
      * @return {String} get the full text of the `i`'th name form
      */
-    $getFullText: function(i) { return maybe(maybe(this.nameForms)[i || 0]).fullText; },
+    $getFullText: function(i) { return maybe(this.$getNameForm(i)).fullText; },
+
+    /**
+     * @ngdoc function
+     * @name name.types:constructor.Name#$getLanguage
+     * @methodOf name.types:constructor.Name
+     * @function
+     * @param {Number=} i name form to read; defaults to 0
+     * @return {String} get the language of the `i`'th name form
+     */
+    $getLang: function(i) { return maybe(this.$getNameForm(i)).lang; },
 
     /**
      * @ngdoc function
@@ -4172,7 +4222,7 @@ define('name',[
      * @return {String} get the specified part of the `i`'th name form
      */
     $getNamePart: function(type, i) {
-      return maybe(helpers.find(maybe(maybe(this.nameForms)[i || 0]).parts, {type: type})).value;
+      return maybe(helpers.find(maybe(this.$getNameForm(i)).parts, {type: type})).value;
     },
 
     /**
@@ -4234,7 +4284,12 @@ define('name',[
      */
     $setType: function(type) {
       this.$changed = true;
-      this.type = type;
+      if (!!type) {
+        this.type = type;
+      }
+      else {
+        delete this.type;
+      }
       //noinspection JSValidateTypes
       return this;
     },
