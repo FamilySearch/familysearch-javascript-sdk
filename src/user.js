@@ -129,7 +129,7 @@ define([
      * @function
      * @return {String} name of the agent
      */
-    $getName:        function() { return maybe(maybe(this.names)[0]).value; },
+    $getName: function() { return maybe(maybe(this.names)[0]).value; },
 
     /**
      * @ngdoc function
@@ -140,6 +140,7 @@ define([
      */
     $getAccountName: function() { return maybe(maybe(this.accounts)[0]).accountName; },
 
+
     /**
      * @ngdoc function
      * @name user.types:constructor.Agent#$getEmail
@@ -147,9 +148,31 @@ define([
      * @function
      * @return {String} email of the agent
      */
-    $getEmail:       function() {
+    $getEmail: function() {
       var email = maybe(maybe(this.emails)[0]).resource;
       return email ? email.replace(/^mailto:/,'') : email;
+    },
+
+    /**
+     * @ngdoc function
+     * @name user.types:constructor.Agent#$getPhoneNumber
+     * @methodOf user.types:constructor.Agent
+     * @function
+     * @return {String} phone number of the agent
+     */
+    $getPhoneNumber: function() {
+      return maybe(maybe(this.phones)[0]).resource;
+    },
+
+    /**
+     * @ngdoc function
+     * @name user.types:constructor.Agent#$getAddress
+     * @methodOf user.types:constructor.Agent
+     * @function
+     * @return {String} postal address of the agent
+     */
+    $getAddress: function() {
+      return maybe(maybe(this.addresses)[0]).value;
     }
   };
 

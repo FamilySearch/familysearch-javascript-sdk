@@ -220,7 +220,12 @@ define([
      */
     $setType: function(type) {
       this.$changed = true;
-      this.type = type;
+      if (!!type) {
+        this.type = type;
+      }
+      else {
+        delete this.type;
+      }
       //noinspection JSValidateTypes
       return this;
     },
