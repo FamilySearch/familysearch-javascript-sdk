@@ -1081,7 +1081,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Get the source references for a child and parents relationship",
-      "keywords": "api array caprid child child-and-parents child-and-parents-relationship-sources-query convenience currently docs editable endpoint example familysearch full function functions getsourcerefs http https includes init net options opts org params parents pass promise references relationship response source sourceref sourcerefs sources types unused url"
+      "keywords": "api array caprid child child-and-parents child-and-parents-relationship-sources-query convenience currently description docs editable endpoint example familysearch full function functions getsourcedescription getsourcedescriptions getsourcerefs http https includes init net options opts org params parents pass promise references relationship response source sourcedescription sourcedescriptions sourceref sourcerefs sources types unused url"
     },
     {
       "section": "api",
@@ -1090,7 +1090,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Get the source references for a couple relationship",
-      "keywords": "api array convenience couple couple-relationship-sources-query crid currently docs editable endpoint example familysearch full function functions getsourcerefs http https includes init net options opts org params pass promise references relationship response source sourceref sourcerefs sources types unused url"
+      "keywords": "api array convenience couple couple-relationship-sources-query crid currently description docs editable endpoint example familysearch full function functions getsourcedescription getsourcedescriptions getsourcerefs http https includes init net options opts org params pass promise references relationship response source sourcedescription sourcedescriptions sourceref sourcerefs sources types unused url"
     },
     {
       "section": "api",
