@@ -773,6 +773,9 @@ define([
    * The response includes the following convenience function
    *
    * - `getSourceRefs()` - get an array of {@link sources.types:constructor.SourceRef SourceRefs} from the response
+   * - `getSourceDescriptions()` get an array of {@link sources.types:constructor.SourceDescription SourceDescriptions} from the response
+   * - `getSourceDescription(id)` get the {@link sources.types:constructor.SourceDescription SourceDescription}
+   * with the specified source description id from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Source_References_resource FamilySearch API Docs}
    *
@@ -801,6 +804,9 @@ define([
    * The response includes the following convenience function
    *
    * - `getSourceRefs()` - get an array of {@link sources.types:constructor.SourceRef SourceRefs} from the response
+   * - `getSourceDescriptions()` get an array of {@link sources.types:constructor.SourceDescription SourceDescriptions} from the response
+   * - `getSourceDescription(id)` get the {@link sources.types:constructor.SourceDescription SourceDescription}
+   * with the specified source description id from the response
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource FamilySearch API Docs}
    *
