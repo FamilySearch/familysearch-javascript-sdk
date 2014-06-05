@@ -412,6 +412,12 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response).toBe('PPPJ-MYY');
       });
     });
+    
+    it('preferred name does not exist', function(){
+      var person = createMockPerson('12345', 'ABCDE');
+      var name = person.$getPreferredName();
+      expect(name).toBeUndefined();
+    });
 
   });
 });
