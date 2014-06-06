@@ -1634,7 +1634,7 @@ define('plumbing',[
       helpers.extendHttpPromise(returnedPromise, promise);
       promise.then(
         function(data) {
-          if (method === 'GET' && data == null) { // == null also catches undefined
+          if (method === 'GET' && promise.getStatusCode() === 204) {
             data = {}; // an empty GET response should become an empty json object
           }
           helpers.refreshAccessToken();
