@@ -60,5 +60,13 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(results[0].$getMothers()[0].id).toBe('76543');
       });
     });
+    
+    it('getResultsCounts returns 0 for empty matches response', function(){
+      var promise = FamilySearch.getPersonMatches('PPPP-PPP');
+      promise.then(function(response){
+        expect(response.getResultsCount()).toBe(0);
+        expect(promise.getStatusCode()).toBe(204);
+      });
+    });
   });
 });

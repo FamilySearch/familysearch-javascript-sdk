@@ -215,7 +215,7 @@ define([
 
   var searchMatchResponseConvenienceFunctions = {
     getSearchResults: function() { return this.entries || []; },
-    getResultsCount: function() { return this.results; },
+    getResultsCount: function() { return this.results || 0; },
     getIndex: function() { return this.index; }
   };
 
