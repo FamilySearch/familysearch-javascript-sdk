@@ -11,11 +11,12 @@ define([
   'parentsAndChildren',
   'pedigree',
   'plumbing',
+  'searchAndMatch',
   'sources',
   'spouses',
   'user'
 ], function(attribution, changeHistory, discussions, fact, globals, helpers, memories, name, notes, parentsAndChildren,
-            pedigree, plumbing, sources, spouses, user) {
+            pedigree, plumbing, searchAndMatch, sources, spouses, user) {
   /**
    * @ngdoc overview
    * @name person
@@ -504,6 +505,17 @@ define([
      */
     $getChildren: function() {
       return exports.getChildren(this.id);
+    },
+    
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getMatches
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {Object} promise for the {@link person.functions:getMatches getMatches} response
+     */
+    $getMatches: function() {
+      return searchAndMatch.getPersonMatches(this.id);
     },
 
     /**
