@@ -1998,8 +1998,11 @@ define('authentication',[
     helpers.eraseAccessToken();
     return helpers.chainHttpPromises(
       plumbing.getUrl('http://oauth.net/core/2.0/endpoint/token'),
-      function(url) {
-        return plumbing.del(url);
+      function() {
+        // See issue #48 - issuing the delete to FamilySearch returns an error
+        // so for not, just return an empty string
+        //return plumbing.del(url);
+        return '';
       });
   };
 
@@ -8442,7 +8445,7 @@ define('searchAndMatch',[
 
   var searchMatchResponseConvenienceFunctions = {
     getSearchResults: function() { return this.entries || []; },
-    getResultsCount: function() { return this.results || 0; },
+    getResultsCount: function() { return this.results; },
     getIndex: function() { return this.index; }
   };
 
