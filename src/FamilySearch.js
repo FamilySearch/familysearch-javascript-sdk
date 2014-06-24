@@ -54,6 +54,7 @@ define([
     getPersonChanges: changeHistory.getPersonChanges,
     getChildAndParentsChanges: changeHistory.getChildAndParentsChanges,
     getCoupleChanges: changeHistory.getCoupleChanges,
+    restoreChange: changeHistory.restoreChange,
 
     // TODO discovery
 

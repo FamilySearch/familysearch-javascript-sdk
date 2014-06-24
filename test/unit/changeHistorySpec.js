@@ -37,5 +37,15 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response.getChanges()[0].$getChangeReason()).toBe('because it was necessary');
       });
     });
+
+    it('change is restored', function() {
+      var promise = FamilySearch.restoreChange('C12-345');
+      promise.then(function() {
+        var request = promise.getRequest();
+        expect(request.data).toBeNull();
+        expect(request.headers['Content-Type']).toBeUndefined();
+        expect(promise.getStatusCode()).toBe(204);
+      });
+    });
   });
 });
