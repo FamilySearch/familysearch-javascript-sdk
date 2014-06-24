@@ -33,7 +33,7 @@ define({
   authoritiesServer: {
     'sandbox'   : 'https://sandbox.familysearch.org',
     'staging'   : 'https://stage.familysearch.org',
-    'beta'      : 'https://beta.familysearch.org',
+    'beta'      : 'https://apibeta.familysearch.org',
     'production': 'https://api.familysearch.org'
   },
   discoveryUrl: '/.well-known/app-meta'
