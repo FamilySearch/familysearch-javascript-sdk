@@ -167,12 +167,21 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "changeHistory.functions:restoreChange",
+      "shortName": "restoreChange",
+      "type": "function",
+      "moduleName": "changeHistory",
+      "shortDescription": "Restore the specified change",
+      "keywords": "api change changehistory changes chid editable endpoint example full function functions http https init net options opts org pass promise restore url"
+    },
+    {
+      "section": "api",
       "id": "changeHistory.types:constructor.Change",
       "shortName": "constructor.Change",
       "type": "function",
       "moduleName": "changeHistory",
       "shortDescription": "Change made to a person or relationship",
-      "keywords": "$getagent $getagentname $getagenturl $getchangereason agent api change changehistory details function functions getagent pass person promise property reason relationship response timestamp title types updated url user"
+      "keywords": "$getagent $getagentname $getagenturl $getchangereason $restore agent api change changehistory details function functions getagent http init options opts pass person promise property reason relationship response restorechange timestamp title types updated url user"
     },
     {
       "section": "api",

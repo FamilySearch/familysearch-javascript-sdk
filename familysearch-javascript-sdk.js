@@ -1998,11 +1998,8 @@ define('authentication',[
     helpers.eraseAccessToken();
     return helpers.chainHttpPromises(
       plumbing.getUrl('http://oauth.net/core/2.0/endpoint/token'),
-      function() {
-        // See issue #48 - issuing the delete to FamilySearch returns an error
-        // so for not, just return an empty string
-        //return plumbing.del(url);
-        return '';
+      function(url) {
+        return plumbing.del(url);
       });
   };
 
@@ -2741,7 +2738,20 @@ define('changeHistory',[
      * @function
      * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
      */
-    $getAgent: function() { return user.getAgent(this.$getAgentUrl()); }
+    $getAgent: function() { return user.getAgent(this.$getAgentUrl()); },
+
+    /**
+     * @ngdoc function
+     * @name changeHistory.types:constructor.Change#$restore
+     * @methodOf changeHistory.types:constructor.Change
+     * @function
+     * @param {Object=} opts options to pass to the http function specified during init
+     * @return {Object} promise for the {@link changeHistory.functions:restoreChange restoreChange} response
+     */
+    $restore: function(opts) {
+      return exports.restoreChange(this.id, opts);
+    }
+
   };
 
   var changeHistoryResponseMapper = helpers.compose(
@@ -2836,7 +2846,31 @@ define('changeHistory',[
       });
   };
 
-  // TODO restore change
+  /**
+   * @ngdoc function
+   * @name changeHistory.functions:restoreChange
+   * @function
+   *
+   * @description
+   * Restore the specified change
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Restore_Change_resource}
+   *
+   * {@link http://jsfiddle.net/DallanQ/JZ29U/ editable example}
+   *
+   * @param {string} chid change id or full URL of the restore changes endpoint
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the chid
+   */
+  exports.restoreChange = function(chid, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('change-restore-template', chid, {chid: chid}),
+      function(url) {
+        return plumbing.post(url, null, {'Content-Type': void 0}, opts, function() { // don't send a Content-Type header
+          return chid;
+        });
+      });
+  };
 
   return exports;
 });
@@ -11052,6 +11086,7 @@ define('FamilySearch',[
     getPersonChanges: changeHistory.getPersonChanges,
     getChildAndParentsChanges: changeHistory.getChildAndParentsChanges,
     getCoupleChanges: changeHistory.getCoupleChanges,
+    restoreChange: changeHistory.restoreChange,
 
     // TODO discovery
 
