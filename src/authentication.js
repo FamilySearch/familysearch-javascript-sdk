@@ -210,6 +210,16 @@ define([
     return window.open(helpers.appendQueryParameters(url, params),'',features);
   }
 
+  function getCode(href, d) {
+    var params = helpers.decodeQueryString(href);
+    if (params['code']) {
+      d.resolve(params['code']);
+    }
+    else {
+      d.reject(params['error']);
+    }
+  }
+
   /**
    * Polls the popup window location for the auth code
    *
@@ -219,23 +229,26 @@ define([
    */
   function pollForAuthCode(popup) {
     var d = globals.deferredWrapper();
+
     if (popup) {
-      var i = setInterval(function() {
+      var interval = setInterval(function() {
         try {
           if (popup.location.hostname === window.location.hostname) {
-            var params = helpers.decodeQueryString(popup.location.href);
-            clearInterval(i);
+            getCode(popup.location.href, d);
+            clearInterval(interval);
             popup.close();
-            if (params['code']) {
-              d.resolve(params['code']);
-            }
-            else {
-              d.reject(params['error']);
-            }
           }
         }
         catch(err) {}
       }, globals.authCodePollDelay);
+
+      // Mobile safari opens the popup window in a new tab and doesn't run javascript in background tabs
+      // The popup window needs to send us the href and close itself
+      // (I know this is ugly, but I can't think of a cleaner way to do this that isn't intrusive.)
+      window.FamilySearchOauthReceiver = function(href) {
+        getCode(href, d);
+        clearInterval(interval);
+      };
     }
     else {
       d.reject('Popup blocked');

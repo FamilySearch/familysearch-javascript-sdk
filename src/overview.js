@@ -83,7 +83,9 @@
  *   environment: 'sandbox',
  *   // auth_callback is the URI you registered with FamilySearch.
  *   // The page does not need to exist. The URI only needs to have
- *   // the same host and port as the server running your script
+ *   // the same host and port as the server running your script.
+ *   // (If you want your app to work on Mobile Safari, the page does need to exist.
+ *   //  see the "Authentication with Mobile Safari" section below for more information.)
  *   auth_callback: 'REDIRECT_GOES_HERE',
  *   http_function: jQuery.ajax,
  *   deferred_function: jQuery.Deferred
@@ -220,6 +222,21 @@
  * Most *$save()* functions take a *refresh* parameter that causes the object to be re-read from the server after it is saved.
  * This is useful when the server adds new fields to the object or modifies fields when saving it.
  * Many *$save()* and *$delete()* functions also take a *changeMessage* parameter to record the reason for the change.
+ *
+ * ## Authentication with Mobile Safari
+ *
+ * Mobile Safari opens the authentication popup window in a new tab and doesn't run javascript in background tabs.
+ * Therefore, to run your app on Mobile Safari the auth_callback URL must point to an HTML page containing the following:
+ *
+ * <pre>
+ * <!DOCTYPE html>
+ * <html><body>
+ * <script>
+ *   window.opener.FamilySearchOauthReceiver(window.location.href);
+ *   window.close();
+ * </script>
+ * </body></html>
+ * </pre>
  *
  * ## Using the SDK with module loaders
  *
