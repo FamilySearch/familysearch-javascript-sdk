@@ -75,7 +75,9 @@ FamilySearch.init({
   environment: 'sandbox',
   // auth_callback is the URI you registered with FamilySearch.
   // The page does not need to exist. The URI only needs to have
-  // the same host and port as the server running your script
+  // the same host and port as the server running your script.
+  // (If you want your app to work on Mobile Safari, the page does need to exist.
+  //  see the "Authentication with Mobile Safari" section below for more information.)
   auth_callback: 'REDIRECT_GOES_HERE',
   http_function: jQuery.ajax,
   deferred_function: jQuery.Deferred
@@ -193,6 +195,18 @@ To delete an object, call <em>$delete()</em>.</p>
 <p>Most <em>$save()</em> functions take a <em>refresh</em> parameter that causes the object to be re-read from the server after it is saved.
 This is useful when the server adds new fields to the object or modifies fields when saving it.
 Many <em>$save()</em> and <em>$delete()</em> functions also take a <em>changeMessage</em> parameter to record the reason for the change.</p>
+<h3 id="authentication-with-mobile-safari">Authentication with Mobile Safari</h3>
+<p>Mobile Safari opens the authentication popup window in a new tab and doesn&#39;t run javascript in background tabs.
+Therefore, to run your app on Mobile Safari the auth_callback URL must point to an HTML page containing the following:</p>
+<pre class="prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;&lt;body&gt;
+&lt;script&gt;
+  window.opener.FamilySearchOauthReceiver(window.location.href);
+  window.close();
+&lt;/script&gt;
+&lt;/body&gt;&lt;/html&gt;
+</pre>
 <h3 id="using-the-sdk-with-module-loaders">Using the SDK with module loaders</h3>
 <p>The SDK can be used</p>
 <ul>
