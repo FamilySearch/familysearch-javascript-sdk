@@ -139,16 +139,23 @@ define([
    */
   exports.getAccessTokenForMobile = function(userName, password) {
     var accessTokenDeferred = globals.deferredWrapper();
-    plumbing.getUrl('http://oauth.net/core/2.0/endpoint/token').then(function(url) {
-      var promise = plumbing.post(url, {
-          'grant_type': 'password',
-          'client_id' : globals.appKey,
-          'username'  : userName,
-          'password'  : password
-        },
-        {'Content-Type': 'application/x-www-form-urlencoded'}); // access token endpoint says it accepts json but it doesn't
-      handleAccessTokenResponse(promise, accessTokenDeferred);
-    });
+    if (globals.accessToken) {
+      helpers.nextTick(function() {
+        accessTokenDeferred.resolve(globals.accessToken);
+      });
+    }
+    else {
+      plumbing.getUrl('http://oauth.net/core/2.0/endpoint/token').then(function(url) {
+        var promise = plumbing.post(url, {
+            'grant_type': 'password',
+            'client_id' : globals.appKey,
+            'username'  : userName,
+            'password'  : password
+          },
+          {'Content-Type': 'application/x-www-form-urlencoded'}); // access token endpoint says it accepts json but it doesn't
+        handleAccessTokenResponse(promise, accessTokenDeferred);
+      });
+    }
     return accessTokenDeferred.promise;
   };
 
