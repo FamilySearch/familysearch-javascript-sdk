@@ -41,13 +41,13 @@
     return result;
   }
 define('globals',{
-  appKey: null,
+  clientId: null,
   environment: null,
   httpWrapper: null,
   deferredWrapper: null,
   setTimeout: null,
   clearTimeout: null,
-  authCallbackUri: null,
+  redirectUri: null,
   autoSignin: false,
   autoExpire: false,
   accessToken: null,
@@ -1714,7 +1714,7 @@ define('init',[
    *
    * **Options**
    *
-   * - `app_key` - the developer key you received from FamilySearch
+   * - `client_id` - the developer key you received from FamilySearch
    * - `environment` - sandbox, staging, or production
    * - `http_function` - a function for issuing http requests: `jQuery.ajax` or angular's `$http`, or eventually node.js's ...
    * - `deferred_function` - a function for creating deferred's: `jQuery.Deferred` or angular's `$q.defer` or eventually `Q`
@@ -1737,11 +1737,10 @@ define('init',[
   exports.init = function(opts) {
     opts = opts || {};
 
-    if(!opts['app_key']) {
-      throw 'app_key must be set';
+    if(!opts['client_id'] && !opts['app_key']) {
+      throw 'client_id must be set';
     }
-    //noinspection JSUndeclaredVariable
-    globals.appKey = opts['app_key'];
+    globals.clientId = opts['client_id'] || opts['app_key']; //app_key is deprecated
 
     if(!opts['environment']) {
       throw 'environment must be set';
@@ -1792,7 +1791,10 @@ define('init',[
       };
     }
 
-    globals.authCallbackUri = opts['auth_callback'];
+    if(!opts['redirect_uri'] && !opts['auth_callback']) {
+      throw 'redirect_uri must be set';
+    }
+    globals.redirectUri = opts['redirect_uri'] || opts['auth_callback']; // auth_callback is deprecated
 
     globals.autoSignin = opts['auto_signin'];
 
@@ -1854,8 +1856,8 @@ define('authentication',[
     return plumbing.getUrl('http://oauth.net/core/2.0/endpoint/authorize').then(function(url) {
       var popup = openPopup(url, {
         'response_type' : 'code',
-        'client_id'     : globals.appKey,
-        'redirect_uri'  : globals.authCallbackUri
+        'client_id'     : globals.clientId,
+        'redirect_uri'  : globals.redirectUri
       });
       return pollForAuthCode(popup);
     });
@@ -1927,7 +1929,7 @@ define('authentication',[
             var promise = plumbing.post(url, {
                 'grant_type' : 'authorization_code',
                 'code'       : authCode,
-                'client_id'  : globals.appKey
+                'client_id'  : globals.clientId
               },
               {'Content-Type': 'application/x-www-form-urlencoded'}); // access token endpoint says it accepts json but it doesn't
             handleAccessTokenResponse(promise, accessTokenDeferred);
@@ -1969,7 +1971,7 @@ define('authentication',[
       plumbing.getUrl('http://oauth.net/core/2.0/endpoint/token').then(function(url) {
         var promise = plumbing.post(url, {
             'grant_type': 'password',
-            'client_id' : globals.appKey,
+            'client_id' : globals.clientId,
             'username'  : userName,
             'password'  : password
           },
