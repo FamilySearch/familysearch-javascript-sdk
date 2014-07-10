@@ -676,7 +676,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "pedigree",
       "shortDescription": "Get the ancestors of a specified person and optionally a specified spouse with the following convenience functions",
-      "keywords": "$getascendancynumber additional ancestor ancestors ancestry api array ascendancy convenience display docs editable example exists familysearch full function functions generations getperson getpersons http https includes init marriagedate marriagedetails marriageplace max net notes number object objects optionally options opts org params pass pedigree person persondetails persons pid promise retrieve return returns set spouse true types"
+      "keywords": "$getascendancynumber $getdescendancynumber additional ancestor ancestors ancestry api array ascendancy convenience descendancy descendants display docs editable example exists existsdescendant familysearch full function functions generation generations getdescendant getperson getpersons http https includes init marriagedate marriagedetails marriageplace net notes number object objects optionally options opts org parameter params pass pedigree person persondetails persons pid promise retrieve return returns set spouse true types"
     },
     {
       "section": "api",
