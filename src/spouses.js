@@ -209,6 +209,15 @@ define([
 
     /**
      * @ngdoc function
+     * @name spouses.types:constructor.Couple#$getSources
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @return {Object} promise for the {@link sources.functions:getCoupleSourcesQuery getCoupleSourcesQuery} response
+     */
+    $getSources: function() { return sources.getCoupleSourcesQuery(this.id); },
+
+    /**
+     * @ngdoc function
      * @name spouses.types:constructor.Couple#$getChanges
      * @methodOf spouses.types:constructor.Couple
      * @function

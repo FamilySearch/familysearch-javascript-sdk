@@ -476,6 +476,17 @@ define([
 
     /**
      * @ngdoc function
+     * @name person.types:constructor.Person#$getSources
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {Object} promise for the {@link sources.functions:getPersonSourcesQuery getPersonSourcesQuery} response
+     */
+    $getSources: function() {
+      return sources.getPersonSourcesQuery(this.id);
+    },
+
+    /**
+     * @ngdoc function
      * @name person.types:constructor.Person#$getSpouses
      * @methodOf person.types:constructor.Person
      * @function

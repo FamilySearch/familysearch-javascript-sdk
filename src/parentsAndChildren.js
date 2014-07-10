@@ -269,10 +269,19 @@ define([
 
     /**
      * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$getSources
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @return {Object} promise for the {@link sources.functions:getChildAndParentsSourcesQuery getChildAndParentsSourcesQuery} response
+     */
+    $getSources: function() { return sources.getChildAndParentsSourcesQuery(this.id); },
+
+    /**
+     * @ngdoc function
      * @name parentsAndChildren.types:constructor.ChildAndParents#$getChanges
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
-     * @return {Object} __BROKEN__ promise for the {@link sources.functions:getChildAndParentsChanges getChildAndParentsChanges} response
+     * @return {Object} __BROKEN__ promise for the {@link changeHistory.functions:getChildAndParentsChanges getChildAndParentsChanges} response
      */
     $getChanges: function() { return changeHistory.getChildAndParentsChanges(helpers.removeAccessToken(maybe(this.links['change-history']).href)); },
 

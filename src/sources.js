@@ -692,19 +692,19 @@ define([
     );
   };
 
-  function getSourceRefsResponseMapper(root, label) {
+  function getSourcesResponseMapper(root, label, includeDescriptions) {
     return helpers.compose(
-      helpers.objectExtender({
+      helpers.objectExtender(helpers.removeEmptyProperties({
         getSourceRefs: function() {
           return maybe(maybe(this[root])[0]).sources || [];
         },
-        getSourceDescriptions: function() {
+        getSourceDescriptions: includeDescriptions ? function() {
           return this.sourceDescriptions || [];
-        },
-        getSourceDescription: function(id) {
+        } : null,
+        getSourceDescription: includeDescriptions ? function(id) {
           return helpers.find(this.sourceDescriptions, {id: id});
-        }
-      }),
+        } : null
+      })),
       helpers.constructorSetter(SourceRef, 'sources', function(response) {
         return maybe(maybe(response)[root])[0];
       }),
@@ -726,13 +726,13 @@ define([
       }, function(response) {
         return maybe(maybe(maybe(response)[root])[0]).sources;
       }),
-      helpers.constructorSetter(SourceDescription, 'sourceDescriptions'),
-      helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+      includeDescriptions ? helpers.constructorSetter(SourceDescription, 'sourceDescriptions') : null,
+      includeDescriptions ? helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
         return response.sourceDescriptions;
-      })
+      }) : null
     );
   }
-  
+
   /**
    * @ngdoc function
    * @name sources.functions:getPersonSourceRefs
@@ -746,7 +746,7 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Source_References_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/DallanQ/ahu29/ editable example}
+   * {@link http://jsfiddle.net/DallanQ/BkydV/ editable example}
    *
    * @param {String} pid person id or full URL of the source-references endpoint
    * @param {Object=} params currently unused
@@ -757,7 +757,7 @@ define([
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-source-references-template', pid, {pid: pid}),
       function(url) {
-        return plumbing.get(url, params, {}, opts, getSourceRefsResponseMapper('persons', '$personId'));
+        return plumbing.get(url, params, {}, opts, getSourcesResponseMapper('persons', '$personId', false));
       });
   };
   
@@ -777,7 +777,7 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Sources_Query_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/BkydV/10/ editable example}
+   * {@link http://jsfiddle.net/DallanQ/8Dy8n/ editable example}
    *
    * @param {String} pid person id or full URL of the person-sources-query endpoint
    * @param {Object=} params currently unused
@@ -788,7 +788,7 @@ define([
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-sources-query-template', pid, {pid: pid}),
       function(url) {
-        return plumbing.get(url, params, {}, opts, getSourceRefsResponseMapper('persons','$personId'));
+        return plumbing.get(url, params, {}, opts, getSourcesResponseMapper('persons','$personId', true));
       });
   };
 
@@ -819,7 +819,7 @@ define([
     return helpers.chainHttpPromises(
       plumbing.getUrl('couple-relationship-source-references-template', crid, {crid: crid}),
       function(url) {
-        return plumbing.get(url, params, {}, opts, getSourceRefsResponseMapper('relationships', '$coupleId'));
+        return plumbing.get(url, params, {}, opts, getSourcesResponseMapper('relationships', '$coupleId', false));
       });
   };
   
@@ -839,7 +839,7 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Sources_Query_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/DallanQ/ahu29/ editable example}
+   * {@link http://jsfiddle.net/DallanQ/Hd34g/ editable example}
    *
    * @param {String} crid couple relationship id or full URL of the couple-relationship-sources-query endpoint
    * @param {Object=} params currently unused
@@ -850,7 +850,7 @@ define([
     return helpers.chainHttpPromises(
       plumbing.getUrl('couple-relationship-sources-query-template', crid, {crid: crid}),
       function(url) {
-        return plumbing.get(url, params, {}, opts, getSourceRefsResponseMapper('relationships', '$coupleId'));
+        return plumbing.get(url, params, {}, opts, getSourcesResponseMapper('relationships', '$coupleId', true));
       });
   };
   
@@ -882,7 +882,7 @@ define([
       plumbing.getUrl('child-and-parents-relationship-source-references-template', caprid, {caprid: caprid}),
       function(url) {
         return plumbing.get(url, params,
-          {'Accept': 'application/x-fs-v1+json'}, opts, getSourceRefsResponseMapper('childAndParentsRelationships', '$childAndParentsId'));
+          {'Accept': 'application/x-fs-v1+json'}, opts, getSourcesResponseMapper('childAndParentsRelationships', '$childAndParentsId', false));
       });
   };
 
@@ -902,7 +902,7 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/DallanQ/ZKLVT/ editable example}
+   * {@link http://jsfiddle.net/DallanQ/SDVz2/ editable example}
    *
    * @param {String} caprid child-and-parents relationship id or full URL of the child-and-parents-relationship-sources-query endpoint
    * @param {Object=} params currently unused
@@ -914,7 +914,7 @@ define([
       plumbing.getUrl('child-and-parents-relationship-sources-template', caprid, {caprid: caprid}),
       function(url) {
         return plumbing.get(url, params,
-          {'Accept': 'application/x-fs-v1+json'}, opts, getSourceRefsResponseMapper('childAndParentsRelationships', '$childAndParentsId'));
+          {'Accept': 'application/x-fs-v1+json'}, opts, getSourcesResponseMapper('childAndParentsRelationships', '$childAndParentsId', true));
       });
   };
 
