@@ -22,18 +22,7 @@ define([
 ], function(init, authentication, authorities, changeHistory, discussions, fact, helpers, memories, name, notes,
             parentsAndChildren, pedigree, person, plumbing, searchAndMatch, sourceBox, sources, spouses, user, utilities) {
 
-  var Foo = function(params) {
-    //noinspection JSPotentiallyInvalidUsageOfThis
-    this.params = params;
-
-    this.getAccessToken = helpers.partial(authentication.getAccessToken, this.params);
-    this.getCurrentUser = helpers.partial(user.getCurrentUser, this.params);
-    this.Fact = function(data) { return new fact.Fact(this.params, data); };
-    this.createFact = function(data) { return new fact.Fact(this.params, data); };
-  };
-
   return {
-    Foo: Foo,
     init: init.init,
 
     // authentication
