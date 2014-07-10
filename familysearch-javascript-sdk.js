@@ -9138,6 +9138,8 @@ define('spouses',[
         if (!crid) {
           postData.type = 'http://gedcomx.org/Couple'; // set type on new relationships
         }
+        // as of 9 July 2014 it's possible to update relationships using the relationships endpoint,
+        // but the way we're doing it is fine as well
         promises.push(helpers.chainHttpPromises(
           crid ? plumbing.getUrl('couple-relationship-template', null, {crid: crid}) :
             plumbing.getUrl('relationships'),
@@ -9404,6 +9406,16 @@ define('person',[
      * @propertyOf person.types:constructor.Person
      * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
      */
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$isReadOnly
+     * @propertyOf person.types:constructor.Person
+     * @description
+     * This function is available only if the person is read with `getPerson`.
+     * @returns {Boolean} true if the person is read-only
+     */
+    // this function is added in the getPerson() function below
 
     /**
      * @ngdoc function
@@ -10175,7 +10187,14 @@ define('person',[
         return plumbing.get(url, params, {}, opts,
           helpers.compose(
             helpers.objectExtender({getPerson: function() { return this.persons[0]; }}),
-            exports.personMapper()
+            exports.personMapper(),
+            function(response, promise) {
+              response.persons[0].$isReadOnly = function() {
+                var allowHeader = promise.getResponseHeader('Allow');
+                return !!allowHeader && allowHeader.indexOf('POST') < 0;
+              };
+              return response;
+            }
           ));
       });
   };
