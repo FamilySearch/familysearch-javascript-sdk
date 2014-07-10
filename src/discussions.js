@@ -343,7 +343,7 @@ define([
           if (changeMessage) {
             payload.persons[0].attribution = new attribution.Attribution(changeMessage);
           }
-          var headers = {'Content-Type': 'application/x-fs-v1+json', 'X-FS-Feature-Tag': 'discussion-reference-json-fix'};
+          var headers = {'Content-Type': 'application/x-fs-v1+json'};
           return plumbing.post(url, payload, headers, opts, function(data, promise) {
             if (!self.$getDiscussionRefUrl()) {
               self.links = {
@@ -625,9 +625,8 @@ define([
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-discussion-references-template', pid, {pid: pid}),
       function(url) {
-        // TODO remove discussion-reference-json-fix header when it becomes standard
         return plumbing.get(url, params,
-          {'Accept': 'application/x-fs-v1+json', 'X-FS-Feature-Tag': 'discussion-reference-json-fix'}, opts,
+          {'Accept': 'application/x-fs-v1+json'}, opts,
           helpers.compose(
             helpers.objectExtender({getDiscussionRefs: function() {
               return maybe(maybe(maybe(this).persons)[0])['discussion-references'] || [];
