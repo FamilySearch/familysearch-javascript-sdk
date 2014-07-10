@@ -317,10 +317,11 @@ define([
    * @returns {*} Thing found or first element of array
    */
   exports.findOrFirst = function(arr, objOrFn) {
-    if(!exports.isUndefined(arr)){
+    if (!exports.isUndefined(arr)) {
       var result = exports.find(arr, objOrFn);
-      return exports.isUndefined(result) > 0 ? arr[0] : result;
+      return exports.isUndefined(result) ? arr[0] : result;
     }
+    return void 0;
   };
 
   /**
