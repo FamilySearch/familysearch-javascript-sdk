@@ -523,7 +523,7 @@ define([
      * @name person.types:constructor.Person#$getMatches
      * @methodOf person.types:constructor.Person
      * @function
-     * @return {Object} promise for the {@link person.functions:getMatches getMatches} response
+     * @return {Object} promise for the {@link searchAndMatch.functions:getPersonMatches getPersonMatches} response
      */
     $getMatches: function() {
       return searchAndMatch.getPersonMatches(this.id);

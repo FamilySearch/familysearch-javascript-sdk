@@ -72,21 +72,22 @@
  *
  * ## Getting started
  *
- * See the README.md file for information on downloading the SDK.
+ * Download the SDK from [GitHub](https://github.com/rootsdev/familysearch-javascript-sdk)
+ * (see the README file for more information).
  *
  * To use the SDK, you need to
  *
  * 1. init the SDK; e.g., ({@link init.functions:init all options})
  * <pre>
  * FamilySearch.init({
- *   client_id: 'YOUR_ACCESS_KEY_GOES_HERE',
+ *   client_id: 'YOUR_CLIENT_ID_GOES_HERE',
  *   environment: 'sandbox',
  *   // redirect_uri is the URI you registered with FamilySearch.
  *   // The page does not need to exist. The URI only needs to have
  *   // the same host and port as the server running your script.
  *   // (If you want your app to work on Mobile Safari, the page does need to exist.
  *   //  see the "Authentication with Mobile Safari" section below for more information.)
- *   redirect_uri: 'REDIRECT_GOES_HERE',
+ *   redirect_uri: 'REDIRECT_URI_GOES_HERE',
  *   http_function: jQuery.ajax,
  *   deferred_function: jQuery.Deferred
  * });
@@ -110,7 +111,7 @@
  *
  * <pre>
  * FamilySearch.init({
- *   client_id: 'MY_ACCESS_KEY',
+ *   client_id: 'MY_CLIENT_ID',
  *   environment: 'sandbox',
  *   redirect_uri: 'http://localhost/auth',
  *   http_function: $.ajax,
