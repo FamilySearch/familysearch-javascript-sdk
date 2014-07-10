@@ -76,7 +76,7 @@ define([
         return plumbing.get(url, helpers.extend({'person': pid}, params), {}, opts,
           helpers.compose(
             helpers.objectExtender(pedigreeConvenienceFunctionGenerator('ascendancyNumber')),
-            !!params.descendants ? helpers.objectExtender({
+            !!params && !!params.descendants ? helpers.objectExtender({
               getDescendant:    function(num) { return helpers.find(this.persons, matchPersonNum('descendancyNumber', num)); },
               existsDescendant: function(num) { return !!maybe(helpers.find(this.persons, matchPersonNum('descendancyNumber', num))).id; }
             }) : null,
@@ -84,7 +84,7 @@ define([
             helpers.objectExtender({$getAscendancyNumber: function() { return this.display.ascendancyNumber; }}, function(response) {
               return maybe(response).persons;
             }),
-            !!params.descendants ? helpers.objectExtender({$getDescendancyNumber: function() { return this.display.descendancyNumber; }}, function(response) {
+            !!params && !!params.descendants ? helpers.objectExtender({$getDescendancyNumber: function() { return this.display.descendancyNumber; }}, function(response) {
               return maybe(response).persons;
             }) : null
           ));
