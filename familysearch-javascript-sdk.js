@@ -356,7 +356,9 @@ define('helpers',[
     return function() {
       var args = arguments;
       for (var i = funcs.length - 1; i >= 0; i--) {
-        args = [funcs[i].apply(this, args)];
+        if (!!funcs[i]) {
+          args = [funcs[i].apply(this, args)];
+        }
       }
       return args[0];
     };
@@ -400,10 +402,11 @@ define('helpers',[
    * @returns {*} Thing found or first element of array
    */
   exports.findOrFirst = function(arr, objOrFn) {
-    if(!exports.isUndefined(arr)){
+    if (!exports.isUndefined(arr)) {
       var result = exports.find(arr, objOrFn);
-      return exports.isUndefined(result) > 0 ? arr[0] : result;
+      return exports.isUndefined(result) ? arr[0] : result;
     }
+    return void 0;
   };
 
   /**
@@ -7193,19 +7196,19 @@ define('sources',[
     );
   };
 
-  function getSourceRefsResponseMapper(root, label) {
+  function getSourcesResponseMapper(root, label, includeDescriptions) {
     return helpers.compose(
-      helpers.objectExtender({
+      helpers.objectExtender(helpers.removeEmptyProperties({
         getSourceRefs: function() {
           return maybe(maybe(this[root])[0]).sources || [];
         },
-        getSourceDescriptions: function() {
+        getSourceDescriptions: includeDescriptions ? function() {
           return this.sourceDescriptions || [];
-        },
-        getSourceDescription: function(id) {
+        } : null,
+        getSourceDescription: includeDescriptions ? function(id) {
           return helpers.find(this.sourceDescriptions, {id: id});
-        }
-      }),
+        } : null
+      })),
       helpers.constructorSetter(SourceRef, 'sources', function(response) {
         return maybe(maybe(response)[root])[0];
       }),
@@ -7227,13 +7230,13 @@ define('sources',[
       }, function(response) {
         return maybe(maybe(maybe(response)[root])[0]).sources;
       }),
-      helpers.constructorSetter(SourceDescription, 'sourceDescriptions'),
-      helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+      includeDescriptions ? helpers.constructorSetter(SourceDescription, 'sourceDescriptions') : null,
+      includeDescriptions ? helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
         return response.sourceDescriptions;
-      })
+      }) : null
     );
   }
-  
+
   /**
    * @ngdoc function
    * @name sources.functions:getPersonSourceRefs
@@ -7247,7 +7250,7 @@ define('sources',[
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Source_References_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/DallanQ/ahu29/ editable example}
+   * {@link http://jsfiddle.net/DallanQ/BkydV/ editable example}
    *
    * @param {String} pid person id or full URL of the source-references endpoint
    * @param {Object=} params currently unused
@@ -7258,7 +7261,7 @@ define('sources',[
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-source-references-template', pid, {pid: pid}),
       function(url) {
-        return plumbing.get(url, params, {}, opts, getSourceRefsResponseMapper('persons', '$personId'));
+        return plumbing.get(url, params, {}, opts, getSourcesResponseMapper('persons', '$personId', false));
       });
   };
   
@@ -7278,7 +7281,7 @@ define('sources',[
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Sources_Query_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/BkydV/10/ editable example}
+   * {@link http://jsfiddle.net/DallanQ/8Dy8n/ editable example}
    *
    * @param {String} pid person id or full URL of the person-sources-query endpoint
    * @param {Object=} params currently unused
@@ -7289,7 +7292,7 @@ define('sources',[
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-sources-query-template', pid, {pid: pid}),
       function(url) {
-        return plumbing.get(url, params, {}, opts, getSourceRefsResponseMapper('persons','$personId'));
+        return plumbing.get(url, params, {}, opts, getSourcesResponseMapper('persons','$personId', true));
       });
   };
 
@@ -7320,7 +7323,7 @@ define('sources',[
     return helpers.chainHttpPromises(
       plumbing.getUrl('couple-relationship-source-references-template', crid, {crid: crid}),
       function(url) {
-        return plumbing.get(url, params, {}, opts, getSourceRefsResponseMapper('relationships', '$coupleId'));
+        return plumbing.get(url, params, {}, opts, getSourcesResponseMapper('relationships', '$coupleId', false));
       });
   };
   
@@ -7340,7 +7343,7 @@ define('sources',[
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Sources_Query_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/DallanQ/ahu29/ editable example}
+   * {@link http://jsfiddle.net/DallanQ/Hd34g/ editable example}
    *
    * @param {String} crid couple relationship id or full URL of the couple-relationship-sources-query endpoint
    * @param {Object=} params currently unused
@@ -7351,7 +7354,7 @@ define('sources',[
     return helpers.chainHttpPromises(
       plumbing.getUrl('couple-relationship-sources-query-template', crid, {crid: crid}),
       function(url) {
-        return plumbing.get(url, params, {}, opts, getSourceRefsResponseMapper('relationships', '$coupleId'));
+        return plumbing.get(url, params, {}, opts, getSourcesResponseMapper('relationships', '$coupleId', true));
       });
   };
   
@@ -7383,7 +7386,7 @@ define('sources',[
       plumbing.getUrl('child-and-parents-relationship-source-references-template', caprid, {caprid: caprid}),
       function(url) {
         return plumbing.get(url, params,
-          {'Accept': 'application/x-fs-v1+json'}, opts, getSourceRefsResponseMapper('childAndParentsRelationships', '$childAndParentsId'));
+          {'Accept': 'application/x-fs-v1+json'}, opts, getSourcesResponseMapper('childAndParentsRelationships', '$childAndParentsId', false));
       });
   };
 
@@ -7403,7 +7406,7 @@ define('sources',[
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/DallanQ/ZKLVT/ editable example}
+   * {@link http://jsfiddle.net/DallanQ/SDVz2/ editable example}
    *
    * @param {String} caprid child-and-parents relationship id or full URL of the child-and-parents-relationship-sources-query endpoint
    * @param {Object=} params currently unused
@@ -7415,7 +7418,7 @@ define('sources',[
       plumbing.getUrl('child-and-parents-relationship-sources-template', caprid, {caprid: caprid}),
       function(url) {
         return plumbing.get(url, params,
-          {'Accept': 'application/x-fs-v1+json'}, opts, getSourceRefsResponseMapper('childAndParentsRelationships', '$childAndParentsId'));
+          {'Accept': 'application/x-fs-v1+json'}, opts, getSourcesResponseMapper('childAndParentsRelationships', '$childAndParentsId', true));
       });
   };
 
@@ -7835,10 +7838,19 @@ define('parentsAndChildren',[
 
     /**
      * @ngdoc function
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$getSources
+     * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+     * @function
+     * @return {Object} promise for the {@link sources.functions:getChildAndParentsSourcesQuery getChildAndParentsSourcesQuery} response
+     */
+    $getSources: function() { return sources.getChildAndParentsSourcesQuery(this.id); },
+
+    /**
+     * @ngdoc function
      * @name parentsAndChildren.types:constructor.ChildAndParents#$getChanges
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
-     * @return {Object} __BROKEN__ promise for the {@link sources.functions:getChildAndParentsChanges getChildAndParentsChanges} response
+     * @return {Object} __BROKEN__ promise for the {@link changeHistory.functions:getChildAndParentsChanges getChildAndParentsChanges} response
      */
     $getChanges: function() { return changeHistory.getChildAndParentsChanges(helpers.removeAccessToken(maybe(this.links['change-history']).href)); },
 
@@ -8957,6 +8969,15 @@ define('spouses',[
 
     /**
      * @ngdoc function
+     * @name spouses.types:constructor.Couple#$getSources
+     * @methodOf spouses.types:constructor.Couple
+     * @function
+     * @return {Object} promise for the {@link sources.functions:getCoupleSourcesQuery getCoupleSourcesQuery} response
+     */
+    $getSources: function() { return sources.getCoupleSourcesQuery(this.id); },
+
+    /**
+     * @ngdoc function
      * @name spouses.types:constructor.Couple#$getChanges
      * @methodOf spouses.types:constructor.Couple
      * @function
@@ -9704,6 +9725,17 @@ define('person',[
      */
     $getSourceRefs: function() {
       return sources.getPersonSourceRefs(this.id);
+    },
+
+    /**
+     * @ngdoc function
+     * @name person.types:constructor.Person#$getSources
+     * @methodOf person.types:constructor.Person
+     * @function
+     * @return {Object} promise for the {@link sources.functions:getPersonSourcesQuery getPersonSourcesQuery} response
+     */
+    $getSources: function() {
+      return sources.getPersonSourcesQuery(this.id);
     },
 
     /**
@@ -11161,18 +11193,7 @@ define('FamilySearch',[
 ], function(init, authentication, authorities, changeHistory, discussions, fact, helpers, memories, name, notes,
             parentsAndChildren, pedigree, person, plumbing, searchAndMatch, sourceBox, sources, spouses, user, utilities) {
 
-  var Foo = function(params) {
-    //noinspection JSPotentiallyInvalidUsageOfThis
-    this.params = params;
-
-    this.getAccessToken = helpers.partial(authentication.getAccessToken, this.params);
-    this.getCurrentUser = helpers.partial(user.getCurrentUser, this.params);
-    this.Fact = function(data) { return new fact.Fact(this.params, data); };
-    this.createFact = function(data) { return new fact.Fact(this.params, data); };
-  };
-
   return {
-    Foo: Foo,
     init: init.init,
 
     // authentication
