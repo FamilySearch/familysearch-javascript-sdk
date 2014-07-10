@@ -124,6 +124,16 @@ define([
 
     /**
      * @ngdoc function
+     * @name person.types:constructor.Person#$isReadOnly
+     * @propertyOf person.types:constructor.Person
+     * @description
+     * This function is available only if the person is read with `getPerson`.
+     * @returns {Boolean} true if the person is read-only
+     */
+    // this function is added in the getPerson() function below
+
+    /**
+     * @ngdoc function
      * @name person.types:constructor.Person#$getFacts
      * @methodOf person.types:constructor.Person
      * @function
@@ -892,7 +902,14 @@ define([
         return plumbing.get(url, params, {}, opts,
           helpers.compose(
             helpers.objectExtender({getPerson: function() { return this.persons[0]; }}),
-            exports.personMapper()
+            exports.personMapper(),
+            function(response, promise) {
+              response.persons[0].$isReadOnly = function() {
+                var allowHeader = promise.getResponseHeader('Allow');
+                return !!allowHeader && allowHeader.indexOf('POST') < 0;
+              };
+              return response;
+            }
           ));
       });
   };

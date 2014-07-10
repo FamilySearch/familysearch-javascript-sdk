@@ -348,6 +348,8 @@ define([
         if (!crid) {
           postData.type = 'http://gedcomx.org/Couple'; // set type on new relationships
         }
+        // as of 9 July 2014 it's possible to update relationships using the relationships endpoint,
+        // but the way we're doing it is fine as well
         promises.push(helpers.chainHttpPromises(
           crid ? plumbing.getUrl('couple-relationship-template', null, {crid: crid}) :
             plumbing.getUrl('relationships'),
