@@ -117,7 +117,7 @@ define([
    * @param {string} pid id of the person
    * @param {Object=} params includes
    * `generations` to retrieve max 2,
-   * `spouse` id to get descendency of person and spouse,
+   * `spouse` id to get descendency of person and spouse (set to null to get descendants of unknown spouse),
    * `marriageDetails` set to true to provide marriage details, and
    * `personDetails` set to true to provide person details.
    * @param {Object=} opts options to pass to the http function specified during init
