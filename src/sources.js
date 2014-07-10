@@ -732,13 +732,42 @@ define([
       })
     );
   }
+  
   /**
    * @ngdoc function
    * @name sources.functions:getPersonSourceRefs
    * @function
    *
    * @description
-   * Get references to sources for a person
+   * Get the source references for a person
+   * The response includes the following convenience function
+   *
+   * - `getSourceRefs()` - get an array of {@link sources.types:constructor.SourceRef SourceRefs} from the response
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Source_References_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/ahu29/ editable example}
+   *
+   * @param {String} pid person id or full URL of the source-references endpoint
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getPersonSourceRefs = function(pid, params, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('person-source-references-template', pid, {pid: pid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts, getSourceRefsResponseMapper('persons', '$personId'));
+      });
+  };
+  
+  /**
+   * @ngdoc function
+   * @name sources.functions:getPersonSourcesQuery
+   * @function
+   *
+   * @description
+   * Get source references and descriptions for a person
    * The response includes the following convenience functions
    *
    * - `getSourceRefs()` - get an array of {@link sources.types:constructor.SourceRef SourceRefs} from the response
@@ -748,14 +777,14 @@ define([
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Sources_Query_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/DallanQ/BkydV/ editable example}
+   * {@link http://jsfiddle.net/BkydV/10/ editable example}
    *
    * @param {String} pid person id or full URL of the person-sources-query endpoint
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  exports.getPersonSourceRefs = function(pid, params, opts) {
+  exports.getPersonSourcesQuery = function(pid, params, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-sources-query-template', pid, {pid: pid}),
       function(url) {
@@ -781,19 +810,50 @@ define([
    *
    * {@link http://jsfiddle.net/DallanQ/ahu29/ editable example}
    *
-   * @param {String} crid couple relationship id or full URL of the couple-relationship-sources-query endpoint
+   * @param {String} crid couple relationship id or full URL of the couple-relationship-source-references endpoint
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
   exports.getCoupleSourceRefs = function(crid, params, opts) {
     return helpers.chainHttpPromises(
+      plumbing.getUrl('couple-relationship-source-references-template', crid, {crid: crid}),
+      function(url) {
+        return plumbing.get(url, params, {}, opts, getSourceRefsResponseMapper('relationships', '$coupleId'));
+      });
+  };
+  
+  /**
+   * @ngdoc function
+   * @name sources.functions:getCoupleSourcesQuery
+   * @function
+   *
+   * @description
+   * Get the source references and descriptions for a couple relationship
+   * The response includes the following convenience function
+   *
+   * - `getSourceRefs()` - get an array of {@link sources.types:constructor.SourceRef SourceRefs} from the response
+   * - `getSourceDescriptions()` get an array of {@link sources.types:constructor.SourceDescription SourceDescriptions} from the response
+   * - `getSourceDescription(id)` get the {@link sources.types:constructor.SourceDescription SourceDescription}
+   * with the specified source description id from the response
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Sources_Query_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/ahu29/ editable example}
+   *
+   * @param {String} crid couple relationship id or full URL of the couple-relationship-sources-query endpoint
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getCoupleSourcesQuery = function(crid, params, opts) {
+    return helpers.chainHttpPromises(
       plumbing.getUrl('couple-relationship-sources-query-template', crid, {crid: crid}),
       function(url) {
         return plumbing.get(url, params, {}, opts, getSourceRefsResponseMapper('relationships', '$coupleId'));
       });
   };
-
+  
   /**
    * @ngdoc function
    * @name sources.functions:getChildAndParentsSourceRefs
@@ -818,6 +878,38 @@ define([
    * @return {Object} promise for the response
    */
   exports.getChildAndParentsSourceRefs = function(caprid, params, opts) {
+    return helpers.chainHttpPromises(
+      plumbing.getUrl('child-and-parents-relationship-source-references-template', caprid, {caprid: caprid}),
+      function(url) {
+        return plumbing.get(url, params,
+          {'Accept': 'application/x-fs-v1+json'}, opts, getSourceRefsResponseMapper('childAndParentsRelationships', '$childAndParentsId'));
+      });
+  };
+
+  /**
+   * @ngdoc function
+   * @name sources.functions:getChildAndParentsSourcesQuery
+   * @function
+   *
+   * @description
+   * Get the source references and descriptions for a child and parents relationship
+   * The response includes the following convenience function
+   *
+   * - `getSourceRefs()` - get an array of {@link sources.types:constructor.SourceRef SourceRefs} from the response
+   * - `getSourceDescriptions()` get an array of {@link sources.types:constructor.SourceDescription SourceDescriptions} from the response
+   * - `getSourceDescription(id)` get the {@link sources.types:constructor.SourceDescription SourceDescription}
+   * with the specified source description id from the response
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/DallanQ/ZKLVT/ editable example}
+   *
+   * @param {String} caprid child-and-parents relationship id or full URL of the child-and-parents-relationship-sources-query endpoint
+   * @param {Object=} params currently unused
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
+   */
+  exports.getChildAndParentsSourcesQuery = function(caprid, params, opts) {
     return helpers.chainHttpPromises(
       plumbing.getUrl('child-and-parents-relationship-sources-template', caprid, {caprid: caprid}),
       function(url) {
