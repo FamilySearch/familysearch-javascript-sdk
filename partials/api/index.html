@@ -65,20 +65,21 @@ whatever custom information is desired.</li>
 <li><a href="#/api/user.types:constructor.User">User</a></li>
 </ul>
 <h3 id="getting-started">Getting started</h3>
-<p>See the README.md file for information on downloading the SDK.</p>
+<p>Download the SDK from <a href="https://github.com/rootsdev/familysearch-javascript-sdk">GitHub</a>
+(see the README file for more information).</p>
 <p>To use the SDK, you need to</p>
 <ol>
 <li><p>init the SDK; e.g., (<a href="#/api/init.functions:init">all options</a>)
 <pre class="prettyprint linenums">
 FamilySearch.init({
-  client_id: 'YOUR_ACCESS_KEY_GOES_HERE',
+  client_id: 'YOUR_CLIENT_ID_GOES_HERE',
   environment: 'sandbox',
   // redirect_uri is the URI you registered with FamilySearch.
   // The page does not need to exist. The URI only needs to have
   // the same host and port as the server running your script.
   // (If you want your app to work on Mobile Safari, the page does need to exist.
   //  see the "Authentication with Mobile Safari" section below for more information.)
-  redirect_uri: 'REDIRECT_GOES_HERE',
+  redirect_uri: 'REDIRECT_URI_GOES_HERE',
   http_function: jQuery.ajax,
   deferred_function: jQuery.Deferred
 });
@@ -102,7 +103,7 @@ FamilySearch.getCurrentUser().then(function(response) {
 <h4 id="getting-started_example">Example</h4>
 <pre class="prettyprint linenums">
 FamilySearch.init({
-  client_id: 'MY_ACCESS_KEY',
+  client_id: 'MY_CLIENT_ID',
   environment: 'sandbox',
   redirect_uri: 'http://localhost/auth',
   http_function: $.ajax,
