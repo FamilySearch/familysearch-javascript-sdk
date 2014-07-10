@@ -1085,13 +1085,16 @@ define([
   /**
    * Erase access token, clear the expiry timers, and erase the cookie
    */
-  exports.eraseAccessToken = function() {
+  exports.eraseAccessToken = function(omitCallback) {
     globals.accessToken = null;
     if (globals.autoExpire) {
       clearAccessTokenTimers();
     }
     if (globals.saveAccessToken) {
       exports.eraseCookie(globals.accessTokenCookie);
+    }
+    if (!!globals.expireCallback && !omitCallback) {
+      globals.expireCallback();
     }
   };
 

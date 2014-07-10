@@ -31,14 +31,15 @@ define([
    * - `deferred_function` - a function for creating deferred's: `jQuery.Deferred` or angular's `$q.defer`
    * or eventually `Q`; defaults to `jQuery.Deferred`
    * - `timeout_function` - optional timeout function: angular users should pass `$timeout`; otherwise the global `setTimeout` is used
-   * - `auth_callback` - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
+   * - `redirect_uri` - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
    * but must have the same host and port as the server running your script;
    * however, it must exist for mobile safari - see the Overview section of the documentation
    * - `auto_expire` - set to true if you want to the system to clear the access token when it has expired
    * (after one hour of inactivity or 24 hours, whichever comes first; should probably be false for node.js)
    * - `auto_signin` - set to true if you want the user to be prompted to sign in whenever you call an API function
-   * without an access token (must be false for node.js, and may result in a blocked pop-up if the API call is
-   * not in direct response to a user-initiated action)
+   * without an access token; must be false for node.js, and may result in a blocked pop-up if the API call is
+   * not in direct response to a user-initiated action; because of the blocked pop-up issue, you may want to use `expire_callback` instead
+   * - `expire_callback` - pass in a function that will be called when the access token expires
    * - `save_access_token` - set to true if you want the access token to be saved and re-read in future init calls
    * (uses a session cookie, must be false for node.js) - *setting `save_access_token` along with `auto_signin` and
    * `auto_expire` is very convenient*
@@ -112,6 +113,8 @@ define([
     globals.autoSignin = opts['auto_signin'];
 
     globals.autoExpire = opts['auto_expire'];
+
+    globals.expireCallback = opts['expire_callback'];
 
     if (opts['save_access_token']) {
       globals.saveAccessToken = true;

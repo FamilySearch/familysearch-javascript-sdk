@@ -186,7 +186,7 @@ define([
    * @return {Object} promise that is resolved once the access token has been invalidated
    */
   exports.invalidateAccessToken = function() {
-    helpers.eraseAccessToken();
+    helpers.eraseAccessToken(true);
     return helpers.chainHttpPromises(
       plumbing.getUrl('http://oauth.net/core/2.0/endpoint/token'),
       function(url) {
