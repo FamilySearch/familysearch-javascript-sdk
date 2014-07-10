@@ -1094,12 +1094,30 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "sources.functions:getChildAndParentsSourcesQuery",
+      "shortName": "getChildAndParentsSourcesQuery",
+      "type": "function",
+      "moduleName": "sources",
+      "shortDescription": "Get the source references and descriptions for a child and parents relationship",
+      "keywords": "api array caprid child child-and-parents child-and-parents-relationship-sources-query convenience currently description descriptions docs editable endpoint example familysearch full function functions getsourcedescription getsourcedescriptions getsourcerefs http https includes init net options opts org params parents pass promise references relationship response source sourcedescription sourcedescriptions sourceref sourcerefs sources types unused url"
+    },
+    {
+      "section": "api",
       "id": "sources.functions:getCoupleSourceRefs",
       "shortName": "getCoupleSourceRefs",
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Get the source references for a couple relationship",
-      "keywords": "api array convenience couple couple-relationship-sources-query crid currently description docs editable endpoint example familysearch full function functions getsourcedescription getsourcedescriptions getsourcerefs http https includes init net options opts org params pass promise references relationship response source sourcedescription sourcedescriptions sourceref sourcerefs sources types unused url"
+      "keywords": "api array convenience couple couple-relationship-source-references crid currently description docs editable endpoint example familysearch full function functions getsourcedescription getsourcedescriptions getsourcerefs http https includes init net options opts org params pass promise references relationship response source sourcedescription sourcedescriptions sourceref sourcerefs sources types unused url"
+    },
+    {
+      "section": "api",
+      "id": "sources.functions:getCoupleSourcesQuery",
+      "shortName": "getCoupleSourcesQuery",
+      "type": "function",
+      "moduleName": "sources",
+      "shortDescription": "Get the source references and descriptions for a couple relationship",
+      "keywords": "api array convenience couple couple-relationship-sources-query crid currently description descriptions docs editable endpoint example familysearch full function functions getsourcedescription getsourcedescriptions getsourcerefs http https includes init net options opts org params pass promise references relationship response source sourcedescription sourcedescriptions sourceref sourcerefs sources types unused url"
     },
     {
       "section": "api",
@@ -1116,8 +1134,17 @@ NG_DOCS={
       "shortName": "getPersonSourceRefs",
       "type": "function",
       "moduleName": "sources",
-      "shortDescription": "Get references to sources for a person",
-      "keywords": "api array convenience currently description docs editable endpoint example familysearch full function functions getsourcedescription getsourcedescriptions getsourcerefs http https includes init net options opts org params pass person person-sources-query pid promise references response source sourcedescription sourcedescriptions sourceref sourcerefs sources types unused url"
+      "shortDescription": "Get the source references for a person",
+      "keywords": "api array convenience currently docs editable endpoint example familysearch full function functions getsourcerefs http https includes init net options opts org params pass person pid promise references response source source-references sourceref sourcerefs sources types unused url"
+    },
+    {
+      "section": "api",
+      "id": "sources.functions:getPersonSourcesQuery",
+      "shortName": "getPersonSourcesQuery",
+      "type": "function",
+      "moduleName": "sources",
+      "shortDescription": "Get source references and descriptions for a person",
+      "keywords": "api array convenience currently description descriptions docs editable endpoint example familysearch full function functions getsourcedescription getsourcedescriptions getsourcerefs http https includes init net options opts org params pass person person-sources-query pid promise references response source sourcedescription sourcedescriptions sourceref sourcerefs sources types unused url"
     },
     {
       "section": "api",
