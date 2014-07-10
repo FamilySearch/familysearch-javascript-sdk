@@ -9,11 +9,14 @@
 <ul>
 <li><code>client_id</code> - the developer key you received from FamilySearch</li>
 <li><code>environment</code> - sandbox, staging, or production</li>
-<li><code>http_function</code> - a function for issuing http requests: <code>jQuery.ajax</code> or angular&#39;s <code>$http</code>, or eventually node.js&#39;s ...</li>
-<li><code>deferred_function</code> - a function for creating deferred&#39;s: <code>jQuery.Deferred</code> or angular&#39;s <code>$q.defer</code> or eventually <code>Q</code></li>
+<li><code>http_function</code> - a function for issuing http requests: <code>jQuery.ajax</code> or angular&#39;s <code>$http</code>,
+or eventually node.js&#39;s http function; defaults to <code>jQuery.ajax</code></li>
+<li><code>deferred_function</code> - a function for creating deferred&#39;s: <code>jQuery.Deferred</code> or angular&#39;s <code>$q.defer</code>
+or eventually <code>Q</code>; defaults to <code>jQuery.Deferred</code></li>
 <li><code>timeout_function</code> - optional timeout function: angular users should pass <code>$timeout</code>; otherwise the global <code>setTimeout</code> is used</li>
 <li><code>auth_callback</code> - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
-but must have the same host and port as the server running your script</li>
+but must have the same host and port as the server running your script;
+however, it must exist for mobile safari - see the Overview section of the documentation</li>
 <li><code>auto_expire</code> - set to true if you want to the system to clear the access token when it has expired
 (after one hour of inactivity or 24 hours, whichever comes first; should probably be false for node.js)</li>
 <li><code>auto_signin</code> - set to true if you want the user to be prompted to sign in whenever you call an API function

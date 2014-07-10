@@ -325,7 +325,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "init",
       "shortDescription": "Initialize the FamilySearch object",
-      "keywords": "$http $q $timeout access access_token action ajax angular api auth_callback auto_expire auto_signin blocked call calls clear client_id console convenient cookie creating debug defer deferred deferred_function developer development direct environment eventually exist expired false familysearch function functions future global host hour hours http http_function inactivity init initialize issuing jquery js key logging node oauth2 object optional opts pass pop-up port production prompted re-read received redirect registered requests response result running sandbox save_access_token saved script server session set settimeout sign staging system timeout timeout_function token true turn uri user user-initiated users whichever"
+      "keywords": "$http $q $timeout access access_token action ajax angular api auth_callback auto_expire auto_signin blocked call calls clear client_id console convenient cookie creating debug defaults defer deferred deferred_function developer development direct documentation environment eventually exist expired false familysearch function functions future global host hour hours http http_function inactivity init initialize issuing jquery js key logging mobile node oauth2 object optional opts overview pass pop-up port production prompted re-read received redirect registered requests response result running safari sandbox save_access_token saved script server session set settimeout sign staging system timeout timeout_function token true turn uri user user-initiated users whichever"
     },
     {
       "section": "api",
