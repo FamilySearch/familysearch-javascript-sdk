@@ -26,11 +26,14 @@ define([
    *
    * - `client_id` - the developer key you received from FamilySearch
    * - `environment` - sandbox, staging, or production
-   * - `http_function` - a function for issuing http requests: `jQuery.ajax` or angular's `$http`, or eventually node.js's ...
-   * - `deferred_function` - a function for creating deferred's: `jQuery.Deferred` or angular's `$q.defer` or eventually `Q`
+   * - `http_function` - a function for issuing http requests: `jQuery.ajax` or angular's `$http`,
+   * or eventually node.js's http function; defaults to `jQuery.ajax`
+   * - `deferred_function` - a function for creating deferred's: `jQuery.Deferred` or angular's `$q.defer`
+   * or eventually `Q`; defaults to `jQuery.Deferred`
    * - `timeout_function` - optional timeout function: angular users should pass `$timeout`; otherwise the global `setTimeout` is used
    * - `auth_callback` - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
-   * but must have the same host and port as the server running your script
+   * but must have the same host and port as the server running your script;
+   * however, it must exist for mobile safari - see the Overview section of the documentation
    * - `auto_expire` - set to true if you want to the system to clear the access token when it has expired
    * (after one hour of inactivity or 24 hours, whichever comes first; should probably be false for node.js)
    * - `auto_signin` - set to true if you want the user to be prompted to sign in whenever you call an API function
@@ -58,10 +61,10 @@ define([
     //noinspection JSUndeclaredVariable
     globals.environment = opts['environment'];
 
-    if(!opts['http_function']) {
+    if(!opts['http_function'] && !window.jQuery) {
       throw 'http must be set; e.g., jQuery.ajax';
     }
-    var httpFunction = opts['http_function'];
+    var httpFunction = opts['http_function'] || window.jQuery.ajax;
     if (httpFunction.defaults) {
       globals.httpWrapper = angularjsWrappers.httpWrapper(httpFunction);
     }
@@ -69,10 +72,10 @@ define([
       globals.httpWrapper = jQueryWrappers.httpWrapper(httpFunction);
     }
 
-    if(!opts['deferred_function']) {
+    if(!opts['deferred_function'] && !window.jQuery) {
       throw 'deferred_function must be set; e.g., jQuery.Deferred';
     }
-    var deferredFunction = opts['deferred_function'];
+    var deferredFunction = opts['deferred_function'] || window.jQuery.Deferred;
     var d = deferredFunction();
     d.resolve(); // required for unit tests
     if (!helpers.isFunction(d.promise)) {
