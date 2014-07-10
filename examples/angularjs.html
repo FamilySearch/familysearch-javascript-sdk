@@ -8,9 +8,9 @@
     function DemoCntl($scope, $location, $http, $q, $timeout) {
       $scope.run = function() {
         FamilySearch.init({
-          app_key: 'YOUR_APP_KEY_GOES_HERE',
+          client_id: 'YOUR_CLIENT_ID_GOES_HERE',
           environment: 'sandbox',
-          auth_callback: 'YOUR_CALLBACK_URI_GOES_HERE',
+          redirect_uri: 'YOUR_REDIRECT_URI_GOES_HERE',
           http_function: $http,
           deferred_function: $q.defer,
           timeout_function: $timeout,

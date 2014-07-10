@@ -198,9 +198,9 @@ define(['FamilySearch', '_', 'jasmine-jquery'], function(FamilySearch, _) {
     });
 
     FamilySearch.init({
-      'app_key': 'mock',
+      'client_id': 'mock',
       'environment': 'sandbox',
-      'auth_callback': 'mock',
+      'redirect_uri': 'mock',
       'http_function': httpMock,
       'deferred_function': deferredMock,
       'access_token': 'mock'

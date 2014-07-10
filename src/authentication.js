@@ -33,8 +33,8 @@ define([
     return plumbing.getUrl('http://oauth.net/core/2.0/endpoint/authorize').then(function(url) {
       var popup = openPopup(url, {
         'response_type' : 'code',
-        'client_id'     : globals.appKey,
-        'redirect_uri'  : globals.authCallbackUri
+        'client_id'     : globals.clientId,
+        'redirect_uri'  : globals.redirectUri
       });
       return pollForAuthCode(popup);
     });
@@ -106,7 +106,7 @@ define([
             var promise = plumbing.post(url, {
                 'grant_type' : 'authorization_code',
                 'code'       : authCode,
-                'client_id'  : globals.appKey
+                'client_id'  : globals.clientId
               },
               {'Content-Type': 'application/x-www-form-urlencoded'}); // access token endpoint says it accepts json but it doesn't
             handleAccessTokenResponse(promise, accessTokenDeferred);
@@ -148,7 +148,7 @@ define([
       plumbing.getUrl('http://oauth.net/core/2.0/endpoint/token').then(function(url) {
         var promise = plumbing.post(url, {
             'grant_type': 'password',
-            'client_id' : globals.appKey,
+            'client_id' : globals.clientId,
             'username'  : userName,
             'password'  : password
           },

@@ -79,14 +79,14 @@
  * 1. init the SDK; e.g., ({@link init.functions:init all options})
  * <pre>
  * FamilySearch.init({
- *   app_key: 'YOUR_ACCESS_KEY_GOES_HERE',
+ *   client_id: 'YOUR_ACCESS_KEY_GOES_HERE',
  *   environment: 'sandbox',
- *   // auth_callback is the URI you registered with FamilySearch.
+ *   // redirect_uri is the URI you registered with FamilySearch.
  *   // The page does not need to exist. The URI only needs to have
  *   // the same host and port as the server running your script.
  *   // (If you want your app to work on Mobile Safari, the page does need to exist.
  *   //  see the "Authentication with Mobile Safari" section below for more information.)
- *   auth_callback: 'REDIRECT_GOES_HERE',
+ *   redirect_uri: 'REDIRECT_GOES_HERE',
  *   http_function: jQuery.ajax,
  *   deferred_function: jQuery.Deferred
  * });
@@ -110,9 +110,9 @@
  *
  * <pre>
  * FamilySearch.init({
- *   app_key: 'MY_ACCESS_KEY',
+ *   client_id: 'MY_ACCESS_KEY',
  *   environment: 'sandbox',
- *   auth_callback: 'http://localhost/auth',
+ *   redirect_uri: 'http://localhost/auth',
  *   http_function: $.ajax,
  *   deferred_function: $.Deferred,
  * });
@@ -226,7 +226,7 @@
  * ## Authentication with Mobile Safari
  *
  * Mobile Safari opens the authentication popup window in a new tab and doesn't run javascript in background tabs.
- * Therefore, to run your app on Mobile Safari the auth_callback URL must point to an HTML page containing the following:
+ * Therefore, to run your app on Mobile Safari the redirect_uri URL must point to an HTML page containing the following:
  *
  * <pre>
  * <!DOCTYPE html>

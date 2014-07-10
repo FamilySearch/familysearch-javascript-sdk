@@ -24,7 +24,7 @@ define([
    *
    * **Options**
    *
-   * - `app_key` - the developer key you received from FamilySearch
+   * - `client_id` - the developer key you received from FamilySearch
    * - `environment` - sandbox, staging, or production
    * - `http_function` - a function for issuing http requests: `jQuery.ajax` or angular's `$http`, or eventually node.js's ...
    * - `deferred_function` - a function for creating deferred's: `jQuery.Deferred` or angular's `$q.defer` or eventually `Q`
@@ -47,11 +47,10 @@ define([
   exports.init = function(opts) {
     opts = opts || {};
 
-    if(!opts['app_key']) {
-      throw 'app_key must be set';
+    if(!opts['client_id'] && !opts['app_key']) {
+      throw 'client_id must be set';
     }
-    //noinspection JSUndeclaredVariable
-    globals.appKey = opts['app_key'];
+    globals.clientId = opts['client_id'] || opts['app_key']; //app_key is deprecated
 
     if(!opts['environment']) {
       throw 'environment must be set';
@@ -102,7 +101,10 @@ define([
       };
     }
 
-    globals.authCallbackUri = opts['auth_callback'];
+    if(!opts['redirect_uri'] && !opts['auth_callback']) {
+      throw 'redirect_uri must be set';
+    }
+    globals.redirectUri = opts['redirect_uri'] || opts['auth_callback']; // auth_callback is deprecated
 
     globals.autoSignin = opts['auto_signin'];
 

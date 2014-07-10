@@ -1,11 +1,11 @@
 define({
-  appKey: null,
+  clientId: null,
   environment: null,
   httpWrapper: null,
   deferredWrapper: null,
   setTimeout: null,
   clearTimeout: null,
-  authCallbackUri: null,
+  redirectUri: null,
   autoSignin: false,
   autoExpire: false,
   accessToken: null,
