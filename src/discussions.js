@@ -637,6 +637,9 @@ define([
               return { $personId: maybe(maybe(maybe(response).persons)[0]).id };
             }, function(response) {
               return maybe(maybe(maybe(response).persons)[0])['discussion-references'];
+            }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return maybe(maybe(maybe(response).persons)[0])['discussion-references'];
             })
           ));
       });
