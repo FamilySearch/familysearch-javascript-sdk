@@ -143,6 +143,21 @@ define([
 
     /**
      * @ngdoc function
+     * @name fact.types:constructor.Fact#$isCustomNonEvent
+     * @methodOf fact.types:constructor.Fact
+     * @function
+     * @return {Boolean} true if this custom item is a non-event (i.e., fact)
+     */
+    $isCustomNonEvent: function() {
+      if (!!this.qualifiers) {
+        var qual = helpers.find(this.qualifiers, {name: 'http://familysearch.org/v1/Event'});
+        return !!qual && qual.value === 'false';
+      }
+      return false;
+    },
+
+    /**
+     * @ngdoc function
      * @name fact.types:constructor.Fact#$setType
      * @methodOf fact.types:constructor.Fact
      * @function
@@ -153,6 +168,43 @@ define([
     $setType: function(type) {
       this.$changed = true;
       this.type = type;
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name fact.types:constructor.Fact#$setCustomNonEvent
+     * @methodOf fact.types:constructor.Fact
+     * @function
+     * @description declares whether this custom item is a fact or an event
+     * @param {boolean} isNonEvent true for non-event (i.e., fact)
+     * @return {Fact} this fact
+     */
+    $setCustomNonEvent: function(isNonEvent) {
+      var pos;
+      if (isNonEvent) {
+        if (!this.qualifiers) {
+          this.qualifiers = [];
+        }
+        pos = helpers.findIndex(this.qualifiers, {name: 'http://familysearch.org/v1/Event'});
+        if (pos < 0) {
+          pos = this.qualifiers.push({name: 'http://familysearch.org/v1/Event'}) - 1;
+        }
+        this.qualifiers[pos].value = 'false';
+      }
+      else {
+        if (!!this.qualifiers) {
+          pos = helpers.findIndex(this.qualifiers, {name: 'http://familysearch.org/v1/Event'});
+          if (pos >= 0) {
+            this.qualifiers.splice(pos, 1);
+          }
+          if (this.qualifiers.length === 0) {
+            delete this.qualifiers;
+          }
+        }
+      }
+      this.$changed = true;
       //noinspection JSValidateTypes
       return this;
     },

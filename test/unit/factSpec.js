@@ -63,6 +63,13 @@ define(['FamilySearch'], function(FamilySearch) {
       fact = new FamilySearch.Fact();
       fact.$setChangeMessage('changeMessage');
       expect(fact.attribution.changeMessage).toBe('changeMessage');
+
+      fact = new FamilySearch.Fact();
+      expect(fact.$isCustomNonEvent()).toBeFalsy();
+      fact.$setCustomNonEvent(true);
+      expect(fact.$isCustomNonEvent()).toBeTruthy();
+      fact.$setCustomNonEvent(false);
+      expect(fact.$isCustomNonEvent()).toBeFalsy();
     });
   });
 });

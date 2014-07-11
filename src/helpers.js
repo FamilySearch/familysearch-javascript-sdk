@@ -264,6 +264,29 @@ define([
   };
 
   /**
+   * simplified version of underscore's findIndex
+   * returns -1 if nothing found
+   * @param {Array} arr Array to search
+   * @param {Object|function(elm)} objOrFn If object, look for matching object; otherwise look for function to return true
+   * @param {Object=} context Object for this
+   * @returns {*} Thing found
+   */
+  exports.findIndex = function(arr, objOrFn, context) {
+    var result = -1;
+    var isFn = exports.isFunction(objOrFn);
+    if (arr) {
+      for (var i = 0, len = arr.length; i < len; i++) {
+        var elm = arr[i];
+        if (isFn ? objOrFn.call(context, elm) : templateMatches(objOrFn, elm)) {
+          result = i;
+          break;
+        }
+      }
+    }
+    return result;
+  };
+
+  /**
    * borrowed from underscore.js
    * Compose functions from right to left, with each function consuming the return value of the function that follows
    * @returns {Function} Composed function
