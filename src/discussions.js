@@ -331,8 +331,7 @@ define([
         plumbing.getUrl('person-discussion-references-template', null, {pid: self.$personId}),
         function(url) {
           if (!self.resource && self.resourceId) {
-            // the discovery resource is guaranteed to be set due to the getUrl statement
-            self.resource = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'discussion-template', {did: self.resourceId});
+            self.resource = self.resourceId;
           }
           var payload = {
             persons: [{

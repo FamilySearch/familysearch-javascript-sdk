@@ -354,11 +354,10 @@ define([
           crid ? plumbing.getUrl('couple-relationship-template', null, {crid: crid}) :
             plumbing.getUrl('relationships'),
           function(url) {
-            // set url from id now that discovery resource is guaranteed to be loaded
+            // set url from id
             helpers.forEach(['person1', 'person2'], function(role) {
               if (postData[role] && !postData[role].resource && postData[role].resourceId) {
-                postData[role].resource =
-                  helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'person-template', {pid: postData[role].resourceId});
+                postData[role].resource = postData[role].resourceId;
               }
             });
             return plumbing.post(url,

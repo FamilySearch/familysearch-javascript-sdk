@@ -145,7 +145,7 @@ define([
    * @function
    *
    * @description
-   * Search people
+   * Get the collections for the specified user
    * The response includes the following convenience function
    *
    * - `getCollections()` - get an array of {@link sourceBox.types:constructor.Collection Collections} from the response

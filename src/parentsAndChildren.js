@@ -515,11 +515,10 @@ define([
           caprid ? plumbing.getUrl('child-and-parents-relationship-template', null, {caprid: caprid}) :
                    plumbing.getUrl('relationships'),
           function(url) {
-            // set url from id now that discovery resource is guaranteed to be loaded
+            // set url from id
             helpers.forEach(['father', 'mother', 'child'], function(role) {
               if (postData[role] && !postData[role].resource && postData[role].resourceId) {
-                postData[role].resource =
-                  helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'person-template', {pid: postData[role].resourceId});
+                postData[role].resource =postData[role].resourceId;
               }
             });
             return plumbing.post(url,
