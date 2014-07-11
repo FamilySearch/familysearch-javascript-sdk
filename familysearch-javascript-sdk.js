@@ -10681,7 +10681,9 @@ define('person',[
    * @param {string} pid id of the person
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the preferred couple relationship id or null if no preference
+   * @return {Object} promise for the preferred couple relationship id,
+   * null if the preferred spouse is the unknown spouse,
+   * or undefined if no preference
    */
   exports.getPreferredSpouse = function(pid, params, opts) {
     return helpers.chainHttpPromises(
@@ -10695,7 +10697,16 @@ define('person',[
         // FamilySearch returns a 303 function to redirect to the preferred relationship, but the response may come back as XML in chrome.
         // So just get the relationship id from the content-location header
         return helpers.handleRedirect(promise, function(promise) {
-          return promise.getStatusCode() === 200 ? helpers.getLastUrlSegment(promise.getResponseHeader('Content-Location')) : null;
+          if (promise.getStatusCode() === 200) {
+            var contentLocation = promise.getResponseHeader('Content-Location');
+            if (contentLocation.indexOf('child-and-parents-relationships') >= 0) {
+              return null;
+            }
+            else {
+              return helpers.getLastUrlSegment(contentLocation);
+            }
+          }
+          return void 0;
         });
       }
     );
@@ -10714,16 +10725,33 @@ define('person',[
    * {@link http://jsfiddle.net/DallanQ/SnYk9/ editable example}
    *
    * @param {string} pid id of the person
-   * @param {string} crid id or URL of the preferred Couple relationship
+   * @param {string} crid id or URL of the preferred Couple relationship, or null to set the unknown spouse
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the person id
    */
   exports.setPreferredSpouse = function(pid, crid, opts) {
-    var coupleUrl;
-    return helpers.chainHttpPromises(
-      plumbing.getUrl('couple-relationship-template', crid, {crid: crid}),
+    var location;
+    var promises = [];
+    if (crid === null) {
+      // grab the first child-and-parents relationship with an unknown parent
+      promises.push(
+        exports.getChildren(pid),
+        function(response) {
+          var capr = helpers.find(response.getChildAndParentsRelationships(), function(capr) {
+            return !capr.$getFatherId() || !capr.$getMotherId();
+          });
+          return plumbing.getUrl('child-and-parents-relationship-template', null, {caprid: capr.id});
+        }
+      );
+    }
+    else {
+      promises.push(
+        plumbing.getUrl('couple-relationship-template', crid, {crid: crid})
+      );
+    }
+    promises.push(
       function(url) {
-        coupleUrl = url;
+        location = url;
         return user.getCurrentUser();
       },
       function(response) {
@@ -10731,11 +10759,12 @@ define('person',[
         return plumbing.getUrl('preferred-spouse-relationship-template', null, {uid: uid, pid: pid});
       },
       function(url) {
-        return plumbing.put(url, null, {'Location': coupleUrl}, opts, function() {
+        return plumbing.put(url, null, {'Location': location}, opts, function() {
           return pid;
         });
       }
     );
+    return helpers.chainHttpPromises.apply(this, promises);
   };
 
   /**
@@ -10784,7 +10813,7 @@ define('person',[
    * @param {string} pid id of the person
    * @param {Object=} params currently unused
    * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the preferred ChildAndParents relationship id or null if no preference
+   * @return {Object} promise for the preferred ChildAndParents relationship id or undefined if no preference
    */
   exports.getPreferredParents = function(pid, params, opts) {
     return helpers.chainHttpPromises(
@@ -10799,7 +10828,7 @@ define('person',[
         // FamilySearch returns a 303 function to redirect to the preferred relationship, but the response may come back as XML in chrome.
         // So just get the relationship id from the content-location header
         return helpers.handleRedirect(promise, function(promise) {
-          return promise.getStatusCode() === 200 ? helpers.getLastUrlSegment(promise.getResponseHeader('Content-Location')) : null;
+          return promise.getStatusCode() === 200 ? helpers.getLastUrlSegment(promise.getResponseHeader('Content-Location')) : void 0;
         });
       }
     );

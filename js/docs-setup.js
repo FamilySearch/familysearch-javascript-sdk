@@ -784,7 +784,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Get the preferred ChildAndParents relationship id if any for this person and this user.",
-      "keywords": "api childandparents currently docs editable example familysearch function functions http https init net null options opts org params pass person pid preference preferred promise relationship unused user"
+      "keywords": "api childandparents currently docs editable example familysearch function functions http https init net options opts org params pass person pid preference preferred promise relationship undefined unused user"
     },
     {
       "section": "api",
@@ -793,7 +793,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Get the preferred Couple relationship id if any for this person and this user.",
-      "keywords": "api couple currently docs editable example familysearch function functions http https init net null options opts org params pass person pid preference preferred promise relationship unused user"
+      "keywords": "api couple currently docs editable example familysearch function functions http https init net null options opts org params pass person pid preference preferred promise relationship spouse undefined unknown unused user"
     },
     {
       "section": "api",
@@ -820,7 +820,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Set the preferred spouse for this person and this user",
-      "keywords": "api couple crid docs editable example familysearch function functions http https init net options opts org pass person pid preferred promise relationship set spouse url user"
+      "keywords": "api couple crid docs editable example familysearch function functions http https init net null options opts org pass person pid preferred promise relationship set spouse unknown url user"
     },
     {
       "section": "api",
