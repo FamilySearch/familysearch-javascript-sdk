@@ -307,7 +307,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "fact",
       "shortDescription": "Fact",
-      "keywords": "$getdate $getformaldate $getnormalizeddate $getnormalizedplace $getnormalizedplaceid $getplace $setchangemessage $setdate $setformaldate $setnormalizeddate $setnormalizedplace $setplace $settype api april attributes attribution authorities authority call case change changemessage data description descriptions event fact facts form formal formaldate format forms function gedcomx http message normalized normalizeddate normalizedplace object optional org original place property server set sets standard string text type types update user written"
+      "keywords": "$getdate $getformaldate $getnormalizeddate $getnormalizedplace $getnormalizedplaceid $getplace $iscustomnonevent $setchangemessage $setcustomnonevent $setdate $setformaldate $setnormalizeddate $setnormalizedplace $setplace $settype api april attributes attribution authorities authority call case change changemessage custom data declares description descriptions event fact facts form formal formaldate format forms function gedcomx http isnonevent item message non-event normalized normalizeddate normalizedplace object optional org original place property server set sets standard string text true type types update user written"
     },
     {
       "section": "api",
@@ -685,7 +685,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "pedigree",
       "shortDescription": "Get the descendants of a specified person and optionally a specified spouse with the following convenience functions",
-      "keywords": "$getdescendancynumber additional api array ascendancy convenience descendancy descendants descendency details display docs editable example exists familysearch function functions generations getancestry getperson getpersons http https includes init marriage marriagedate marriagedetails marriageplace max net notes number object objects optionally options opts org params pass pedigree person persondetails persons pid promise provide retrieve return returns set spouse true types"
+      "keywords": "$getdescendancynumber additional api array ascendancy convenience descendancy descendants descendency details display docs editable example exists familysearch function functions generations getancestry getperson getpersons http https includes init marriage marriagedate marriagedetails marriageplace max net notes null number object objects optionally options opts org params pass pedigree person persondetails persons pid promise provide retrieve return returns set spouse true types unknown"
     },
     {
       "section": "api",
@@ -990,8 +990,8 @@ NG_DOCS={
       "shortName": "getCollectionsForUser",
       "type": "function",
       "moduleName": "sourceBox",
-      "shortDescription": "Search people",
-      "keywords": "api array collection collections collections-for-user convenience currently docs editable endpoint example familysearch full function functions getcollections http https includes init net options opts org params pass people promise response search sourcebox types uid unused url user"
+      "shortDescription": "Get the collections for the specified user",
+      "keywords": "api array collection collections collections-for-user convenience currently docs editable endpoint example familysearch full function functions getcollections http https includes init net options opts org params pass promise response sourcebox types uid unused url user"
     },
     {
       "section": "api",

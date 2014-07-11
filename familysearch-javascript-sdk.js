@@ -347,6 +347,29 @@ define('helpers',[
   };
 
   /**
+   * simplified version of underscore's findIndex
+   * returns -1 if nothing found
+   * @param {Array} arr Array to search
+   * @param {Object|function(elm)} objOrFn If object, look for matching object; otherwise look for function to return true
+   * @param {Object=} context Object for this
+   * @returns {*} Thing found
+   */
+  exports.findIndex = function(arr, objOrFn, context) {
+    var result = -1;
+    var isFn = exports.isFunction(objOrFn);
+    if (arr) {
+      for (var i = 0, len = arr.length; i < len; i++) {
+        var elm = arr[i];
+        if (isFn ? objOrFn.call(context, elm) : templateMatches(objOrFn, elm)) {
+          result = i;
+          break;
+        }
+      }
+    }
+    return result;
+  };
+
+  /**
    * borrowed from underscore.js
    * Compose functions from right to left, with each function consuming the return value of the function that follows
    * @returns {Function} Composed function
@@ -3321,8 +3344,7 @@ define('discussions',[
         plumbing.getUrl('person-discussion-references-template', null, {pid: self.$personId}),
         function(url) {
           if (!self.resource && self.resourceId) {
-            // the discovery resource is guaranteed to be set due to the getUrl statement
-            self.resource = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'discussion-template', {did: self.resourceId});
+            self.resource = self.resourceId;
           }
           var payload = {
             persons: [{
@@ -3333,7 +3355,7 @@ define('discussions',[
           if (changeMessage) {
             payload.persons[0].attribution = new attribution.Attribution(changeMessage);
           }
-          var headers = {'Content-Type': 'application/x-fs-v1+json', 'X-FS-Feature-Tag': 'discussion-reference-json-fix'};
+          var headers = {'Content-Type': 'application/x-fs-v1+json'};
           return plumbing.post(url, payload, headers, opts, function(data, promise) {
             if (!self.$getDiscussionRefUrl()) {
               self.links = {
@@ -3615,9 +3637,8 @@ define('discussions',[
     return helpers.chainHttpPromises(
       plumbing.getUrl('person-discussion-references-template', pid, {pid: pid}),
       function(url) {
-        // TODO remove discussion-reference-json-fix header when it becomes standard
         return plumbing.get(url, params,
-          {'Accept': 'application/x-fs-v1+json', 'X-FS-Feature-Tag': 'discussion-reference-json-fix'}, opts,
+          {'Accept': 'application/x-fs-v1+json'}, opts,
           helpers.compose(
             helpers.objectExtender({getDiscussionRefs: function() {
               return maybe(maybe(maybe(this).persons)[0])['discussion-references'] || [];
@@ -3951,6 +3972,21 @@ define('fact',[
 
     /**
      * @ngdoc function
+     * @name fact.types:constructor.Fact#$isCustomNonEvent
+     * @methodOf fact.types:constructor.Fact
+     * @function
+     * @return {Boolean} true if this custom item is a non-event (i.e., fact)
+     */
+    $isCustomNonEvent: function() {
+      if (!!this.qualifiers) {
+        var qual = helpers.find(this.qualifiers, {name: 'http://familysearch.org/v1/Event'});
+        return !!qual && qual.value === 'false';
+      }
+      return false;
+    },
+
+    /**
+     * @ngdoc function
      * @name fact.types:constructor.Fact#$setType
      * @methodOf fact.types:constructor.Fact
      * @function
@@ -3961,6 +3997,43 @@ define('fact',[
     $setType: function(type) {
       this.$changed = true;
       this.type = type;
+      //noinspection JSValidateTypes
+      return this;
+    },
+
+    /**
+     * @ngdoc function
+     * @name fact.types:constructor.Fact#$setCustomNonEvent
+     * @methodOf fact.types:constructor.Fact
+     * @function
+     * @description declares whether this custom item is a fact or an event
+     * @param {boolean} isNonEvent true for non-event (i.e., fact)
+     * @return {Fact} this fact
+     */
+    $setCustomNonEvent: function(isNonEvent) {
+      var pos;
+      if (isNonEvent) {
+        if (!this.qualifiers) {
+          this.qualifiers = [];
+        }
+        pos = helpers.findIndex(this.qualifiers, {name: 'http://familysearch.org/v1/Event'});
+        if (pos < 0) {
+          pos = this.qualifiers.push({name: 'http://familysearch.org/v1/Event'}) - 1;
+        }
+        this.qualifiers[pos].value = 'false';
+      }
+      else {
+        if (!!this.qualifiers) {
+          pos = helpers.findIndex(this.qualifiers, {name: 'http://familysearch.org/v1/Event'});
+          if (pos >= 0) {
+            this.qualifiers.splice(pos, 1);
+          }
+          if (this.qualifiers.length === 0) {
+            delete this.qualifiers;
+          }
+        }
+      }
+      this.$changed = true;
       //noinspection JSValidateTypes
       return this;
     },
@@ -7236,7 +7309,8 @@ define('sources',[
       helpers.objectExtender(function(response, srcRef) {
         // TODO consider getting the sourceDescriptionUrl from sourceDescription.links.description.href
         // where sourceDescription.id === srcRef.description.substr(1)
-        var sdid = srcRef.description.substr(1); // #ID -> ID
+        // #ID -> ID
+        var sdid = srcRef.description.substr(srcRef.description.indexOf('#')+1);
         // the discovery resource is guaranteed to be set due to the getUrl statement
         var result = {
           $sourceDescriptionId: sdid,
@@ -8102,11 +8176,10 @@ define('parentsAndChildren',[
           caprid ? plumbing.getUrl('child-and-parents-relationship-template', null, {caprid: caprid}) :
                    plumbing.getUrl('relationships'),
           function(url) {
-            // set url from id now that discovery resource is guaranteed to be loaded
+            // set url from id
             helpers.forEach(['father', 'mother', 'child'], function(role) {
               if (postData[role] && !postData[role].resource && postData[role].resourceId) {
-                postData[role].resource =
-                  helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'person-template', {pid: postData[role].resourceId});
+                postData[role].resource =postData[role].resourceId;
               }
             });
             return plumbing.post(url,
@@ -8388,7 +8461,7 @@ define('pedigree',[
    * @param {string} pid id of the person
    * @param {Object=} params includes
    * `generations` to retrieve max 2,
-   * `spouse` id to get descendency of person and spouse,
+   * `spouse` id to get descendency of person and spouse (set to null to get descendants of unknown spouse),
    * `marriageDetails` set to true to provide marriage details, and
    * `personDetails` set to true to provide person details.
    * @param {Object=} opts options to pass to the http function specified during init
@@ -9144,11 +9217,10 @@ define('spouses',[
           crid ? plumbing.getUrl('couple-relationship-template', null, {crid: crid}) :
             plumbing.getUrl('relationships'),
           function(url) {
-            // set url from id now that discovery resource is guaranteed to be loaded
+            // set url from id
             helpers.forEach(['person1', 'person2'], function(role) {
               if (postData[role] && !postData[role].resource && postData[role].resourceId) {
-                postData[role].resource =
-                  helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'person-template', {pid: postData[role].resourceId});
+                postData[role].resource = postData[role].resourceId;
               }
             });
             return plumbing.post(url,
@@ -10955,7 +11027,7 @@ define('sourceBox',[
    * @function
    *
    * @description
-   * Search people
+   * Get the collections for the specified user
    * The response includes the following convenience function
    *
    * - `getCollections()` - get an array of {@link sourceBox.types:constructor.Collection Collections} from the response
