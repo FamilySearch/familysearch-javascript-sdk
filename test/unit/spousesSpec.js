@@ -60,11 +60,11 @@ define(['FamilySearch'], function(FamilySearch) {
             },
             'person1' : {
               'resourceId' : 'FJP-M4RK',
-              'resource' : 'https://sandbox.familysearch.org/platform/tree/persons/FJP-M4RK'
+              'resource' : 'FJP-M4RK'
             },
             'person2' : {
               'resourceId' : 'JRW-NMSD',
-              'resource' : 'https://sandbox.familysearch.org/platform/tree/persons/JRW-NMSD'
+              'resource' : 'JRW-NMSD'
             },
             'facts' : [ {
               'type' : 'http://gedcomx.org/Marriage',
@@ -140,11 +140,11 @@ define(['FamilySearch'], function(FamilySearch) {
           'relationships' : [ {
             'person1' : {
               'resourceId' : 'FJP-M4RK',
-              'resource' : 'https://sandbox.familysearch.org/platform/tree/persons/FJP-M4RK'
+              'resource' : 'FJP-M4RK'
             },
             'person2' : {
               'resourceId' : 'wife',
-              'resource' : 'https://sandbox.familysearch.org/platform/tree/persons/wife'
+              'resource' : 'wife'
             },
             'attribution' : {
               'changeMessage' : '...change message...'

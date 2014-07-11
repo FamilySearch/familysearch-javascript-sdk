@@ -57,15 +57,15 @@ define(['FamilySearch'], function(FamilySearch) {
             },
             'father' : {
               'resourceId' : 'PPPX-MP1',
-              'resource' : 'https://sandbox.familysearch.org/platform/tree/persons/PPPX-MP1'
+              'resource' : 'PPPX-MP1'
             },
             'mother' : {
               'resourceId' : 'PPPX-FP2',
-              'resource' : 'https://sandbox.familysearch.org/platform/tree/persons/PPPX-FP2'
+              'resource' : 'PPPX-FP2'
             },
             'child' : {
               'resourceId' : 'PPPX-PP3',
-              'resource' : 'https://sandbox.familysearch.org/platform/tree/persons/PPPX-PP3'
+              'resource' : 'PPPX-PP3'
             },
             'fatherFacts' : [ {
               'type' : 'http://gedcomx.org/AdoptiveParent'
@@ -138,7 +138,7 @@ define(['FamilySearch'], function(FamilySearch) {
             },
             'mother' : {
               'resourceId' : 'PPPX-FP2',
-              'resource' : 'https://sandbox.familysearch.org/platform/tree/persons/PPPX-FP2'
+              'resource' : 'PPPX-FP2'
             },
             'motherFacts' : [ {
               'id' : 'C.1',

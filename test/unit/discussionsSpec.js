@@ -112,7 +112,7 @@ define(['FamilySearch'], function(FamilySearch) {
           'persons' : [ {
             'id' : '12345',
             'discussion-references' : [{
-              resource: 'https://sandbox.familysearch.org/platform/discussions/discussions/dis-1'
+              resource: 'dis-1'
             }],
             'attribution' : { changeMessage: 'change msg' }
           } ]
