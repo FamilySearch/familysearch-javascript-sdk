@@ -320,7 +320,7 @@ define([
      *
      * {@link http://jsfiddle.net/DallanQ/UarXL/ editable example}
      *
-     * @param {string} changeMessage change message
+     * @param {string} changeMessage change message - unused - discussion reference attributions do not contain change messages
      * @param {Object=} opts options to pass to the http function specified during init
      * @return {Object} promise of the discussion reference url
      * (note however that individual discussion references cannot be read).
