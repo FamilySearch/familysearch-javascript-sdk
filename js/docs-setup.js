@@ -10,7 +10,7 @@ NG_DOCS={
       "type": "overview",
       "moduleName": "index",
       "shortDescription": "Overview",
-      "keywords": "$getdisplayname $getgivenname $getsurname $http $q _getnameandid _low_level_commands_plumbing access actual add addition additional adds agent ajax amd angularjs anticipated api app approach array arrays asynchronous attribution authentication automatically avoid background branch browser bugs build builds built call callback called calling calls case catch change changehistory changes childandparents client_id close code combine combined comment comments commonjs config conflicts console constructors consume contactname contributing convenience cookie copying correct corresponding couple create created custom data defer deferred deferred_function delete dependencies described description_the-promise-api desired developers directory directs discussion discussionref discussions display docs documentation documented doesn download easier element elements endpoint endpoints environment error errors errorthrown example examples exist existing expectations expired exposed extended extracting fact facts fail fairly familysearch familysearchoauthreceiver features fields file files format frag free front fulfilled fully function functionality functions generate generated getaccesstoken getallresponseheaders getcurrentuser getperson getrequest getresponseheader getstatuscode getuser gh-pages git github global goal google great grunt handle handled handling header headers hello higher-level host href html http http_function https illustrated implemented includes init initialization javascript jquery js jsdoc jshint jshintrc json kernel keywords loader loaders located location log low-level manage mapped match memories memory memoryartifactref memorypersona memorypersonaref method methods minified minify mobile mock model modifies module my_client_id nameforms names navigate navigating node note noteref notes object objects occur ojects opener opens option optional options org original overview parameter parameters parentsandchildren parts pass passed pasting people performed person plumbing point popup port posting potential prepending project promise promises properties property prototype prototypes provided publish pull purpose push re-read read readme reason recommend record redirect_uri redirect_uri_goes_here referring refresh registered rejected relationships removed request requests required requires response responses rest retained retried return returned returning returns running safari sample sandbox saved saving script sdk search searchandmatch searchresult serve server set simple single source sourcedescription sourceref sources spouses src started starts status strict submitting success suppose surname tab tabs takes targets test tests textstatus throttling token tool top transient travis-ci true type types typically unit update updateable updated updates uri url user users var wanted watches website window work works wraps write written your_client_id_goes_here"
+      "keywords": "$getdisplayname $getgivenname $getsurname $http $q _getnameandid _low_level_commands_plumbing access actual add addition additional adds agent ajax amd angularjs anticipated api app approach array arrays asynchronous attribution authentication automatically avoid background branch browser bugs build builds built call callback called calling calls case catch change changehistory changes childandparents client_id close code combine combined comment comments commonjs config conflicts console constructors consume contactname contributing convenience cookie copying correct corresponding couple create created custom data defer deferred deferred_function delete dependencies described description_the-promise-api desired developers directory directs discussion discussionref discussions display docs documentation documented doesn download easier element elements endpoint endpoints environment error errors errorthrown example examples exist existing expectations expired exposed extended extracting fact facts fail fairly familysearch familysearchoauthreceiver features fields file files format frag free front fulfilled fully function functionality functions generate generated getaccesstoken getallresponseheaders getcurrentuser getperson getrequest getresponseheader getstatuscode getuser gh-pages git github global goal google great grunt handle handled handling header headers hello higher-level host href html http http_function https illustrated implemented includes init initialization javascript jquery js jsdoc jshint jshintrc json kernel keywords loader loaders located location log low-level manage mapped match memories memory memoryartifactref memorypersona memorypersonaref method methods minified minify mobile mock model modifies module my_client_id nameforms names navigate navigating node note notes object objects occur ojects opener opens option optional options org original overview parameter parameters parentsandchildren parts pass passed pasting people performed person plumbing point popup port posting potential prepending project promise promises properties property prototype prototypes provided publish pull purpose push re-read read readme reason recommend record redirect_uri redirect_uri_goes_here referring refresh registered rejected relationships removed request requests required requires response responses rest retained retried return returned returning returns running safari sample sandbox saved saving script sdk search searchandmatch searchresult serve server set simple single source sourcedescription sourceref sources spouses src started starts status strict submitting success suppose surname tab tabs takes targets test tests textstatus throttling token tool top transient travis-ci true type types typically unit update updateable updated updates uri url user users var wanted watches website window work works wraps write written your_client_id_goes_here"
     },
     {
       "section": "api",
@@ -289,7 +289,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Reference to a discussion on a person.",
-      "keywords": "$delete $getdiscussion $getdiscussionrefurl $getdiscussionurl $personid $save $setdiscussion _discussion_ _note_ _refresh_ access api attached attributes attribution change changemessage create created creating data delete deleted deletediscussionref details discussion discussionref discussions editable example function functions getdiscussion http individual init message net note object optional options opts parameter pass person promise property read reference references resource resourceid response set token types updated url"
+      "keywords": "$delete $getdiscussion $getdiscussionrefurl $getdiscussionurl $personid $save $setdiscussion _discussion_ _note_ _refresh_ access api attached attributes attribution attributions change changemessage create created creating data delete deleted deletediscussionref details discussion discussionref discussions editable example function functions getdiscussion http individual init message messages net note object optional options opts parameter pass person promise property read reference references resource resourceid response set token types unused updated url"
     },
     {
       "section": "api",
@@ -532,16 +532,16 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Get information about a child and parents relationship note",
-      "keywords": "api caprid child convenience currently docs editable example familysearch full function functions getnote http https includes init net nid note noteref notes options opts org params parents pass promise relationship response types unused url"
+      "keywords": "api caprid child convenience currently docs editable example familysearch full function functions getnote http https includes init net nid note notes options opts org params parents pass promise relationship response types unused url"
     },
     {
       "section": "api",
-      "id": "notes.functions:getChildAndParentsNoteRefs",
-      "shortName": "getChildAndParentsNoteRefs",
+      "id": "notes.functions:getChildAndParentsNotes",
+      "shortName": "getChildAndParentsNotes",
       "type": "function",
       "moduleName": "notes",
-      "shortDescription": "Get the note references for a child and parents relationship",
-      "keywords": "api array caprid child child-and-parents-relationship-notes convenience currently docs editable endpoint example familysearch full function functions getnoterefs http https includes init net note noteref noterefs notes options opts org params parents pass promise references relationship response types unused url"
+      "shortDescription": "Get the notes for a child and parents relationship",
+      "keywords": "api array caprid child child-and-parents-relationship-notes convenience currently docs editable endpoint example familysearch full function functions getnotes http https includes init net note notes options opts org params parents pass promise relationship response types unused url"
     },
     {
       "section": "api",
@@ -550,16 +550,16 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Get information about a couple relationship note",
-      "keywords": "api convenience couple crid currently docs editable example familysearch full function functions getnote http https includes init net nid note noteref notes options opts org params pass promise relationship response types unused url"
+      "keywords": "api convenience couple crid currently docs editable example familysearch full function functions getnote http https includes init net nid note notes options opts org params pass promise relationship response types unused url"
     },
     {
       "section": "api",
-      "id": "notes.functions:getCoupleNoteRefs",
-      "shortName": "getCoupleNoteRefs",
+      "id": "notes.functions:getCoupleNotes",
+      "shortName": "getCoupleNotes",
       "type": "function",
       "moduleName": "notes",
-      "shortDescription": "Get the note references for a couple relationship",
-      "keywords": "api array convenience couple couple-relationship-notes crid currently docs editable endpoint example familysearch full function functions getnoterefs http https includes init net note noteref noterefs notes options opts org params pass promise references relationship response types unused url"
+      "shortDescription": "Get the notes for a couple relationship",
+      "keywords": "api array convenience couple couple-relationship-notes crid currently docs editable endpoint example familysearch full function functions getnotes http https includes init net note notes options opts org params pass promise relationship response types unused url"
     },
     {
       "section": "api",
@@ -568,7 +568,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Get multiple notes at once by requesting them in parallel",
-      "keywords": "api caprid child currently docs editable example familysearch fulfilled full function functions getchildandparentsnote http https ids init map multiple net nids note noteref noterefs notes opts org parallel params parents pass promise read relationship requesting response returning types unused urls"
+      "keywords": "api caprid child currently docs editable example familysearch fulfilled full function functions getchildandparentsnote http https ids init map multiple net nids note notes opts org parallel params parents pass promise read relationship requesting response returning unused urls"
     },
     {
       "section": "api",
@@ -577,7 +577,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Get multiple notes at once by requesting them in parallel",
-      "keywords": "api couple crid currently docs editable example familysearch fulfilled full function functions getcouplenote http https ids init map multiple net nids note noteref noterefs notes opts org parallel params pass promise read relationship requesting response returning types unused urls"
+      "keywords": "api couple crid currently docs editable example familysearch fulfilled full function functions getcouplenote http https ids init map multiple net nids note notes opts org parallel params pass promise read relationship requesting response returning unused urls"
     },
     {
       "section": "api",
@@ -586,7 +586,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Get multiple notes at once by requesting them in parallel",
-      "keywords": "api currently docs editable example familysearch fulfilled full function functions getpersonnote http https ids init map multiple net nids note noteref noterefs notes opts org parallel params pass person pid promise read requesting response returning types unused url urls"
+      "keywords": "api currently docs editable example familysearch fulfilled full function functions getpersonnote http https ids init map multiple net nids note notes opts org parallel params pass person pid promise read requesting response returning unused url urls"
     },
     {
       "section": "api",
@@ -595,16 +595,16 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Get information about a note",
-      "keywords": "api convenience currently docs editable example familysearch full function functions getnote http https includes init net nid note noteref notes options opts org params pass person pid promise response types unused url"
+      "keywords": "api convenience currently docs editable example familysearch full function functions getnote http https includes init net nid note notes options opts org params pass person pid promise response types unused url"
     },
     {
       "section": "api",
-      "id": "notes.functions:getPersonNoteRefs",
-      "shortName": "getPersonNoteRefs",
+      "id": "notes.functions:getPersonNotes",
+      "shortName": "getPersonNotes",
       "type": "function",
       "moduleName": "notes",
-      "shortDescription": "Get note references for a person",
-      "keywords": "api array convenience currently docs editable endpoint example familysearch full function functions getnoterefs http https includes init net note noteref noterefs notes options opts org params pass person person-notes pid promise references response types unused url"
+      "shortDescription": "Get notes for a person",
+      "keywords": "api array convenience currently docs editable endpoint example familysearch full function functions getnotes http https includes init net note notes options opts org params pass person person-notes pid promise response types unused url"
     },
     {
       "section": "api",
@@ -613,16 +613,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "notes",
       "shortDescription": "Note",
-      "keywords": "$childandparentsid $coupleid $delete $getnoteurl $personid $save access api attached attributes attribution change changemessage child corresponding couple create data delete deletechildandparentsnote deletecouplenote deletepersonnote editable example existing fulfilled function functions http init message net note noteref notes object optional options opts parents pass person promise property read refresh relationship set subject text title token true types update updated updating url"
-    },
-    {
-      "section": "api",
-      "id": "notes.types:constructor.NoteRef",
-      "shortName": "constructor.NoteRef",
-      "type": "function",
-      "moduleName": "notes",
-      "shortDescription": "Reference to a note on a person.",
-      "keywords": "$childandparentsid $coupleid $delete $getnote $getnoteurl $personid _getchildandparentsnoterefs_ _getcouplenoterefs_ _getpersonnoterefs_ api attached attribution call change changemessage child corresponding couple create delete deletechildandparentsnote deletecouplenote deletepersonnote details function functions getchildandparentsnote getcouplenote getpersonnote http init message note noteref noterefs notes options opts parents pass person promise property read reference relationship response returned sources subject text types url"
+      "keywords": "$childandparentsid $coupleid $delete $getnoteurl $personid $save access api attached attributes attribution change changemessage child couple create data delete deletechildandparentsnote deletecouplenote editable example existing fulfilled function functions http init message net note notes object optional options opts parents pass person promise property read refresh relationship set subject text title token true types update updated updating url"
     },
     {
       "section": "api",
@@ -658,7 +649,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "parentsAndChildren",
       "shortDescription": "Child and parents relationship",
-      "keywords": "$addfatherfact $addmotherfact $delete $deletefather $deletefatherfact $deletemother $deletemotherfact $getchanges $getchild $getchildandparentsurl $getchildid $getchildurl $getfather $getfatherfacts $getfatherid $getfatherurl $getmother $getmotherfacts $getmotherid $getmotherurl $getnoterefs $getsourcerefs $getsources $save $setchild $setfather $setfatherfacts $setmother $setmotherfacts __broken__ _child_ _father_ _fatherfacts_ _mother_ _motherfacts_ add api array arrays attributes biologicalparent change changed changehistory changemessage changes child child-and-parents childandparents create data dates default delete deletechildandparents deleted docs editable element example existing fact facts familysearch father fatherfacts fulfilled function functions getchildandparentschanges getchildandparentsnoterefs getchildandparentssourcerefs getchildandparentssourcesquery getperson http https ids init longer message methods mother motherfacts net note notes object objects optional options opts org parent-relationship parents parentsandchildren pass passed persists person places promise property read refresh relationship remove removes response saved set sources supported true type types update updated updating url urls"
+      "keywords": "$addfatherfact $addmotherfact $delete $deletefather $deletefatherfact $deletemother $deletemotherfact $getchanges $getchild $getchildandparentsurl $getchildid $getchildurl $getfather $getfatherfacts $getfatherid $getfatherurl $getmother $getmotherfacts $getmotherid $getmotherurl $getnotes $getsourcerefs $getsources $save $setchild $setfather $setfatherfacts $setmother $setmotherfacts __broken__ _child_ _father_ _fatherfacts_ _mother_ _motherfacts_ add api array arrays attributes biologicalparent change changed changehistory changemessage changes child child-and-parents childandparents create data dates default delete deletechildandparents deleted docs editable element example existing fact facts familysearch father fatherfacts fulfilled function functions getchildandparentschanges getchildandparentsnotes getchildandparentssourcerefs getchildandparentssourcesquery getperson http https ids init longer message methods mother motherfacts net note notes object objects optional options opts org parent-relationship parents parentsandchildren pass passed persists person places promise property read refresh relationship remove removes response saved set sources supported true type types update updated updating url urls"
     },
     {
       "section": "api",
@@ -829,7 +820,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Person",
-      "keywords": "$addfact $addname $delete $deletefact $deletename $getancestry $getbirth $getbirthdate $getbirthplace $getburial $getburialdate $getburialplace $getchanges $getchildren $getchristening $getchristeningdate $getchristeningplace $getdeath $getdeathdate $getdeathplace $getdescendancy $getdiscussionrefs $getdisplaybirthdate $getdisplaybirthplace $getdisplaydeathdate $getdisplaydeathplace $getdisplaygender $getdisplaylifespan $getdisplayname $getfact $getfacts $getgivenname $getmatches $getmemorypersonarefs $getnames $getnoterefs $getparents $getpersistentidentifier $getpersonportraiturl $getpersonurl $getpreferredname $getsourcerefs $getsources $getspouses $getsurname $isreadonly $save $setfacts $setgender $setnames _facts_ _gender_ _names_ add ancestor ancestry api array arrays attributes attribution birth birthdate birthplace burial change changehistory changemessage changes christening christning conclusion count create data death deathdate deathplace default delete deleted deleteperson descendency discussions display docs doesn editable element entries example exist existing fact facts false familysearch female final follow followredirect fulfilled full function functions gender generations getancestry getchildren getdescendancy getmemorypersonarefs getparents getperson getpersonchanges getpersondiscussionrefs getpersonmatches getpersonnoterefs getpersonportraiturl getpersonsourcerefs getpersonsourcesquery getspouses http https identifers identifier includes init lifespan living male map max memories message methods names net note notes number object objects optional options opts org params pass passed pedigree persistent persists person persondetails place portrait preferred promise property read read-only redirect refresh remove removes response retrieve return searchandmatch set sources spouse string strings surname true type types update updated updating url values year"
+      "keywords": "$addfact $addname $delete $deletefact $deletename $getancestry $getbirth $getbirthdate $getbirthplace $getburial $getburialdate $getburialplace $getchanges $getchildren $getchristening $getchristeningdate $getchristeningplace $getdeath $getdeathdate $getdeathplace $getdescendancy $getdiscussionrefs $getdisplaybirthdate $getdisplaybirthplace $getdisplaydeathdate $getdisplaydeathplace $getdisplaygender $getdisplaylifespan $getdisplayname $getfact $getfacts $getgivenname $getmatches $getmemorypersonarefs $getnames $getnotes $getparents $getpersistentidentifier $getpersonportraiturl $getpersonurl $getpreferredname $getsourcerefs $getsources $getspouses $getsurname $isreadonly $save $setfacts $setgender $setnames _facts_ _gender_ _names_ add ancestor ancestry api array arrays attributes attribution birth birthdate birthplace burial change changehistory changemessage changes christening christning conclusion count create data death deathdate deathplace default delete deleted deleteperson descendency discussions display docs doesn editable element entries example exist existing fact facts false familysearch female final follow followredirect fulfilled full function functions gender generations getancestry getchildren getdescendancy getmemorypersonarefs getparents getperson getpersonchanges getpersondiscussionrefs getpersonmatches getpersonnotes getpersonportraiturl getpersonsourcerefs getpersonsourcesquery getspouses http https identifers identifier includes init lifespan living male map max memories message methods names net note notes number object objects optional options opts org params pass passed pedigree persistent persists person persondetails place portrait preferred promise property read read-only redirect refresh remove removes response retrieve return searchandmatch set sources spouse string strings surname true type types update updated updating url values year"
     },
     {
       "section": "api",
@@ -1216,7 +1207,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "spouses",
       "shortDescription": "Couple relationship",
-      "keywords": "$addfact $delete $deletefact $getchanges $getcoupleurl $getfacts $gethusband $gethusbandid $gethusbandurl $getmarriagefact $getnoterefs $getsourcerefs $getsources $getspouse $getspouseid $getspouseurl $getwife $getwifeid $getwifeurl $save $setfacts $sethusband $setwife _facts_ _husband_ _wife_ add api array attributes call change changemessage changes couple create data default delete deletecouple deleted editable elements example existing exports fact facts fetch fulfilled function functions getcouplechanges getcouplenoterefs getcouplesourcerefs getcouplesourcesquery getperson http husband ids init initializing marriage message method methods multiple net note notes object objects optional options opts org pass passed persists person plan promise property read refresh relationship remove removes response sdk seconds set sources spouse spouses true type types update updated updating url urls wife"
+      "keywords": "$addfact $delete $deletefact $getchanges $getcoupleurl $getfacts $gethusband $gethusbandid $gethusbandurl $getmarriagefact $getnotes $getsourcerefs $getsources $getspouse $getspouseid $getspouseurl $getwife $getwifeid $getwifeurl $save $setfacts $sethusband $setwife _facts_ _husband_ _wife_ add api array attributes call change changemessage changes couple create data default delete deletecouple deleted editable elements example existing exports fact facts fetch fulfilled function functions getcouplechanges getcouplenotes getcouplesourcerefs getcouplesourcesquery getperson http husband ids init initializing marriage message method methods multiple net note notes object objects optional options opts org pass passed persists person plan promise property read refresh relationship remove removes response sdk seconds set sources spouse spouses true type types update updated updating url urls wife"
     },
     {
       "section": "api",
