@@ -251,12 +251,12 @@ define([
 
     /**
      * @ngdoc function
-     * @name parentsAndChildren.types:constructor.ChildAndParents#$getNoteRefs
+     * @name parentsAndChildren.types:constructor.ChildAndParents#$getNotes
      * @methodOf parentsAndChildren.types:constructor.ChildAndParents
      * @function
-     * @return {Object} promise for the {@link notes.functions:getChildAndParentsNoteRefs getChildAndParentsNoteRefs} response
+     * @return {Object} promise for the {@link notes.functions:getChildAndParentsNotes getChildAndParentsNotes} response
      */
-    $getNoteRefs: function() { return notes.getChildAndParentsNoteRefs(helpers.removeAccessToken(this.links.notes.href)); },
+    $getNotes: function() { return notes.getChildAndParentsNotes(helpers.removeAccessToken(this.links.notes.href)); },
 
     /**
      * @ngdoc function

@@ -85,14 +85,13 @@ define([
 
     // notes
     Note: notes.Note,
-    NoteRef: notes.NoteRef,
-    getPersonNoteRefs: notes.getPersonNoteRefs,
+    getPersonNotes: notes.getPersonNotes,
     getPersonNote: notes.getPersonNote,
     getMultiPersonNote: notes.getMultiPersonNote,
-    getCoupleNoteRefs: notes.getCoupleNoteRefs,
+    getCoupleNotes: notes.getCoupleNotes,
     getCoupleNote: notes.getCoupleNote,
     getMultiCoupleNote: notes.getMultiCoupleNote,
-    getChildAndParentsNoteRefs: notes.getChildAndParentsNoteRefs,
+    getChildAndParentsNotes: notes.getChildAndParentsNotes,
     getChildAndParentsNote: notes.getChildAndParentsNote,
     getMultiChildAndParentsNote: notes.getMultiChildAndParentsNote,
     deletePersonNote: notes.deletePersonNote,

@@ -44,7 +44,6 @@
  *
  * Ojects related to people and relationships
  *
- * - {@link notes.types:constructor.NoteRef NoteRef}
  * - {@link notes.types:constructor.Note Note}
  * - {@link sources.types:constructor.SourceRef SourceRef}
  * - {@link sources.types:constructor.SourceDescription SourceDescription}

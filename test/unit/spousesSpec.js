@@ -31,10 +31,10 @@ define(['FamilySearch'], function(FamilySearch) {
           expect(sourceRefs.length).toBe(2);
           expect(sourceRefs[0].attribution.modified).toBe(123456789);
         });
-        rel.$getNoteRefs().then(function(response) {
-          var noteRefs = response.getNoteRefs();
-          expect(noteRefs.length).toBe(2);
-          expect(noteRefs[0].id).toBe('1804317705');
+        rel.$getNotes().then(function(response) {
+          var notes = response.getNotes();
+          expect(notes.length).toBe(2);
+          expect(notes[0].id).toBe('1804317705');
         });
         rel.$getChanges().then(function(response) {
           var changes = response.getChanges();

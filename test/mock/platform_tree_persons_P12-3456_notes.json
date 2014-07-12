@@ -15,7 +15,8 @@
           "title" : "Person Notes"
         }
       },
-      "subject" : "note 0"
+      "subject" : "note 0",
+      "text" : "Sample note text"
     }, {
       "id" : "1805241226",
       "links" : {

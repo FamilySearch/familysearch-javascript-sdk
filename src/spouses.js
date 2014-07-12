@@ -191,12 +191,12 @@ define([
     
     /**
      * @ngdoc function
-     * @name spouses.types:constructor.Couple#$getNoteRefs
+     * @name spouses.types:constructor.Couple#$getNotes
      * @methodOf spouses.types:constructor.Couple
      * @function
-     * @return {Object} promise for the {@link notes.functions:getCoupleNoteRefs getCoupleNoteRefs} response
+     * @return {Object} promise for the {@link notes.functions:getCoupleNotes getCoupleNotes} response
      */
-    $getNoteRefs: function() { return notes.getCoupleNoteRefs(helpers.removeAccessToken(this.links.notes.href)); },
+    $getNotes: function() { return notes.getCoupleNotes(helpers.removeAccessToken(this.links.notes.href)); },
 
     /**
      * @ngdoc function

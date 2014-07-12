@@ -464,13 +464,13 @@ define([
 
     /**
      * @ngdoc function
-     * @name person.types:constructor.Person#$getNoteRefs
+     * @name person.types:constructor.Person#$getNotes
      * @methodOf person.types:constructor.Person
      * @function
-     * @return {Object} promise for the {@link notes.functions:getPersonNoteRefs getPersonNoteRefs} response
+     * @return {Object} promise for the {@link notes.functions:getPersonNotes getPersonNotes} response
      */
-    $getNoteRefs: function() {
-      return notes.getPersonNoteRefs(helpers.removeAccessToken(this.links['notes'].href));
+    $getNotes: function() {
+      return notes.getPersonNotes(helpers.removeAccessToken(this.links['notes'].href));
     },
 
     /**
