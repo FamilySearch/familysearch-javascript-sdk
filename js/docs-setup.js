@@ -271,7 +271,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Comment on a discussion",
-      "keywords": "$delete $discussionid $getagent $getagentid $getagenturl $getcommenturl $memoryid $save __note__ _note_ _refresh_ api attributes change changemessage comment comments contributor create created creating currently data delete deletediscussioncomment deletememorycomment details discussion discussions editable example existing function functions getagent http ignored individual init memories memory message net object optional options opts parameter pass promise property read response set text timestamp types update url user"
+      "keywords": "$delete $discussionid $getagent $getagentid $getagenturl $getcommenturl $memoryid $save _note_ _refresh_ api attributes change changemessage comment comments contributor create created creating data delete deletediscussioncomment deletememorycomment details discussion discussions editable example existing function functions getagent http ignored individual init memories memory message net object optional options opts parameter pass promise property read response set text timestamp types update url user"
     },
     {
       "section": "api",
@@ -280,7 +280,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Discussion",
-      "keywords": "$delete $getagent $getagentid $getagenturl $getcomments $getcommentsurl $save __note__ api attach attributes aware best change changemessage comments committed contributor corresponding create created data delete deletediscussion description details discussion discussion-reference discussions editable endpoint example existing familysearch fulfilled function functions getagent getdiscussioncomments hasn http ignored init issue linked message millis modified net number numberofcomments object optional options opts pass people person promise property read refresh response single text timestamp title true types update updated updating url user"
+      "keywords": "$delete $getagent $getagentid $getagenturl $getcomments $getcommentsurl $getdiscussionurl $save __note__ api attach attributes aware best change changemessage comments committed contributor corresponding create created data delete deletediscussion description details discussion discussion-reference discussions editable endpoint example existing familysearch fulfilled function functions getagent getdiscussioncomments hasn http ignored init issue linked message millis modified net number numberofcomments object optional options opts pass people person promise property read refresh response single text timestamp title true types update updated updating url user"
     },
     {
       "section": "api",

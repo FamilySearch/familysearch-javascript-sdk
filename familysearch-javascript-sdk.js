@@ -2779,7 +2779,7 @@ define('changeHistory',[
      */
     $getChangeReason: function() { return maybe(maybe(this.changeInfo)[0]).reason; },
 
-    // TODO check for agent id; also add $getAgentId as option in $getAgent (last checked 4/2/14)
+    // TODO check for agent id; also add $getAgentId as option in $getAgent (last checked 12 July 14)
 
     /**
      * @ngdoc function
@@ -3095,7 +3095,14 @@ define('discussions',[
      * @return {Number} number of comments
      */
 
-    // TODO add $getDiscussionUrl when that's available (last checked 4/2/14)
+    /**
+     * @ngdoc function
+     * @name discussions.types:constructor.Discussion#$getDiscussionUrl
+     * @methodOf discussions.types:constructor.Discussion
+     * @function
+     * @return {String} URL of this discussion
+     */
+    $getDiscussionUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).discussion).href); },
 
     /**
      * @ngdoc function
@@ -3202,8 +3209,7 @@ define('discussions',[
      * @return {Object} promise for the discussion id
      */
     $delete: function(changeMessage, opts) {
-      // TODO use the discussion URL as an alternative when that is available
-      return exports.deleteDiscussion(this.id, changeMessage, opts);
+      return exports.deleteDiscussion(this.$getDiscussionUrl() || this.id, changeMessage, opts);
     }
 
   };
@@ -3234,6 +3240,13 @@ define('discussions',[
 
   exports.DiscussionRef.prototype = {
     constructor: DiscussionRef,
+
+    /**
+     * @ngdoc property
+     * @name discussions.types:constructor.DiscussionRef#id
+     * @propertyOf discussions.types:constructor.DiscussionRef
+     * @return {String} Discussion Ref Id
+     */
 
     /**
      * @ngdoc property
@@ -3307,7 +3320,7 @@ define('discussions',[
      */
     $setDiscussion: function(discussion) {
       if (discussion instanceof Discussion) {
-        // TODO set resource to discussion url when discussions have a "self" link
+        this.resource = discussion.$getDiscussionUrl();
         this.resourceId = discussion.id;
       }
       else if (helpers.isAbsoluteUrl(discussion)) {
@@ -3381,8 +3394,7 @@ define('discussions',[
      * @return {Object} promise for the discussion reference url
      */
     $delete: function(changeMessage, opts) {
-      // TODO pass in alternative $personId and drid when drid is available
-      return exports.deleteDiscussionRef(this.$getDiscussionRefUrl(), null, changeMessage, opts);
+      return exports.deleteDiscussionRef(this.$getDiscussionRefUrl() || this.$personId, this.id, changeMessage, opts);
     }
 
   };
@@ -3480,8 +3492,6 @@ define('discussions',[
      */
     $getAgent: function() { return user.getAgent(this.$getAgentUrl() || this.$getAgentId()); },
 
-    // TODO check whether it's possible to update memory comments now and remove the note
-
     /**
      * @ngdoc function
      * @name discussions.types:constructor.Comment#$save
@@ -3492,8 +3502,6 @@ define('discussions',[
      *
      * _NOTE_: there's no _refresh_ parameter because it's not possible to read individual comments;
      * however, the comment's id and URL is set when creating a new comment
-     *
-     * __NOTE__: it is not currently possible to update memory comments.
      *
      * {@link http://jsfiddle.net/DallanQ/9YHfX/ editable example}
      *
