@@ -153,14 +153,14 @@ define(['FamilySearch'], function(FamilySearch) {
       });
     });
 
-    it('change summary is returned from getPersonChangeSummary', function() {
-      FamilySearch.getPersonChangeSummary('PID').then(function(response) {
-        expect(response.getChanges()[0].id).toBe('12345');
-        expect(response.getChanges()[0].published).toBe(1386006311124);
-        expect(response.getChanges()[0].title).toBe('Change Summary 1');
-        expect(response.getChanges()[0].updated).toBe(1386006311124);
-      });
-    });
+//    it('change summary is returned from getPersonChangeSummary', function() {
+//      FamilySearch.getPersonChangeSummary('PID').then(function(response) {
+//        expect(response.getChanges()[0].id).toBe('12345');
+//        expect(response.getChanges()[0].published).toBe(1386006311124);
+//        expect(response.getChanges()[0].title).toBe('Change Summary 1');
+//        expect(response.getChanges()[0].updated).toBe(1386006311124);
+//      });
+//    });
 
     it('spouse relationships are returned from getSpouses', function() {
       FamilySearch.getSpouses('FJP-M4RK').then(function(response) {

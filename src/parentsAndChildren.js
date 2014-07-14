@@ -492,7 +492,6 @@ define([
       }
 
       // set global changeMessage
-      // TODO as far as I can tell, the change message isn't stored (last checked 4/2/14)
       if (changeMessage) {
         postData.attribution = new attribution.Attribution(changeMessage);
       }

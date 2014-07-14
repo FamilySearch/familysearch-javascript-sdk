@@ -115,7 +115,7 @@ define([
     getPerson: person.getPerson,
     getMultiPerson: person.getMultiPerson,
     getPersonWithRelationships: person.getPersonWithRelationships,
-    getPersonChangeSummary: person.getPersonChangeSummary,
+    //getPersonChangeSummary: person.getPersonChangeSummary, -- REST API broken
     getSpouses: person.getSpouses,
     getParents: person.getParents,
     getChildren: person.getChildren,

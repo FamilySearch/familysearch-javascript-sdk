@@ -35,7 +35,7 @@ define([
 
   var exports = {};
 
-  // TODO see if moving to the new https://github.com/angular/dgeni will allow links to _methods_ like $save and $delete
+  // TODO consider moving to another document generator so we can link to _methods_ like $save and $delete
 
   /**********************************/
   /**
@@ -1128,39 +1128,37 @@ define([
     getChildrenOf:   function(spouseId) { return helpers.map(this.getChildIdsOf(spouseId), this.getPerson, this); }
   };
 
-  /**
-   * @ngdoc function
-   * @name person.functions:getPersonChangeSummary
-   * @function
-   *
-   * @description
-   * Get the change summary for a person. For detailed change information see functions in the changeHistory module
-   * The response includes the following convenience function
-   *
-   * - `getChanges()` - get the array of {@link changeHistory.types:constructor.Change Changes} from the response
-   *
-   * **NOTE The sandbox REST endpoint for this function is broken. Do not use.**
-   *
-   * {@link https://familysearch.org/developers/docs/api/tree/Person_Change_Summary_resource FamilySearch API Docs}
-   *
-   * {@link http://jsfiddle.net/DallanQ/ga37h/ editable example}
-   *
-   * @param {String} pid id of the person or full URL of the person-change-summary endpoint
-   * @param {Object=} params currently unused
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the response
-   */
-  // TODO check if this has been fixed, and check if the entries really contain changeInfo and contributors attributes (last checked 4/2/14)
-  exports.getPersonChangeSummary = function(pid, params, opts) {
-    return helpers.chainHttpPromises(
-      plumbing.getUrl('person-change-summary-template', pid, {pid: pid}),
-      function(url) {
-        return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-          helpers.compose(
-            helpers.objectExtender({getChanges: function() { return this.entries || []; }}),
-            helpers.constructorSetter(changeHistory.Change, 'entries')));
-      });
-  };
+  // TODO check if this has been fixed, and check if the entries really contain changeInfo and contributors attributes (last checked 14 July 14)
+//  /**
+//   * @ngdoc function
+//   * @name person.functions:getPersonChangeSummary
+//   * @function
+//   *
+//   * @description
+//   * Get the change summary for a person. For detailed change information see functions in the changeHistory module
+//   * The response includes the following convenience function
+//   *
+//   * - `getChanges()` - get the array of {@link changeHistory.types:constructor.Change Changes} from the response
+//   *
+//   * {@link https://familysearch.org/developers/docs/api/tree/Person_Change_Summary_resource FamilySearch API Docs}
+//   *
+//   * {@link http://jsfiddle.net/DallanQ/ga37h/ editable example}
+//   *
+//   * @param {String} pid id of the person or full URL of the person-change-summary endpoint
+//   * @param {Object=} params currently unused
+//   * @param {Object=} opts options to pass to the http function specified during init
+//   * @return {Object} promise for the response
+//   */
+//  exports.getPersonChangeSummary = function(pid, params, opts) {
+//    return helpers.chainHttpPromises(
+//      plumbing.getUrl('person-change-summary-template', pid, {pid: pid}),
+//      function(url) {
+//        return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+//          helpers.compose(
+//            helpers.objectExtender({getChanges: function() { return this.entries || []; }}),
+//            helpers.constructorSetter(changeHistory.Change, 'entries')));
+//      });
+//  };
 
   var relationshipsResponseMapper = helpers.compose(
     helpers.constructorSetter(spouses.Couple, 'relationships'),
@@ -1466,7 +1464,8 @@ define([
         return plumbing.getUrl('preferred-parent-relationship-template', null, {uid: uid, pid: pid});
       },
       function(url) {
-        // TODO remove accept header when FS bug is fixed (last checked 4/2/14)
+        // TODO remove accept header when FS bug is fixed (last checked 4/2/14) - unable to check 14 July 14
+        // couldn't check 14 July 14 because the endpoint returns a 403 now
         var promise = plumbing.get(url + '.json', params, {Accept: 'application/x-fs-v1+json'}, opts);
         // FamilySearch returns a 303 function to redirect to the preferred relationship, but the response may come back as XML in chrome.
         // So just get the relationship id from the content-location header
