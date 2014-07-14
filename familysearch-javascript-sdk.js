@@ -2788,7 +2788,7 @@ define('changeHistory',[
      * @function
      * @return {String} URL of the agent - pass into {@link user.functions:getAgent getAgent} for details
      */
-    $getAgentUrl: function() { return helpers.removeAccessToken(this.links.agent.href); },
+    $getAgentUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).agent).href); },
 
     /**
      * @ngdoc function
@@ -5153,8 +5153,6 @@ define('memories',[
 
   };
 
-  // TODO check whether person memory references can be updated
-
   /**********************************/
   /**
    * @ngdoc function
@@ -5239,11 +5237,9 @@ define('memories',[
      * @return {Object} promise for the {@link memories.functions:getMemoryPersona getMemoryPersona} response
      */
     $getMemoryPersona:  function() {
-      // TODO add alternative (mid, mpid) if we get mid
       return exports.getMemoryPersona(this.$getMemoryPersonaUrl());
     },
 
-    // TODO stop hacking into the resource when links.memory.href works (last checked 4/2/14)
     /**
      * @ngdoc function
      * @name memories.types:constructor.MemoryPersonaRef#$getMemoryUrl
@@ -5252,7 +5248,7 @@ define('memories',[
      * @return {String} URL of the memory; pass into {@link memories.functions:getMemory getMemory} for details
      */
     $getMemoryUrl:  function() {
-      return this.resource ? helpers.removeAccessToken(this.resource.replace(/(^.*\/memories\/[^\/]*)\/personas\/.*$/, '$1')) : this.resource;
+      return helpers.removeAccessToken(maybe(maybe(this.links).memory).href);
     },
 
     /**
@@ -5263,7 +5259,6 @@ define('memories',[
      * @return {Object} promise for the {@link memories.functions:getMemory getMemory} response
      */
     $getMemory:  function() {
-      // TODO add alternative mid if we get mid
       return exports.getMemory(this.$getMemoryUrl());
     },
 
@@ -5464,7 +5459,7 @@ define('memories',[
       function(url) {
         return plumbing.get(url, params, {}, opts,
           helpers.compose(
-            // TODO when the response contains personas, add a function to return them (last checked 4/2/14)
+            // TODO when the response contains personas, add a function to return them (last checked 14 July 14)
             helpers.objectExtender({getMemories: function() { return this.sourceDescriptions || []; }}),
             helpers.constructorSetter(Memory, 'sourceDescriptions'),
             helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
@@ -5662,8 +5657,6 @@ define('memories',[
       });
   };
 
-  // TODO check whether all memory personas are still included in the results
-
   /**
    * @ngdoc function
    * @name memories.functions:getMemoryPersonaRefs
@@ -5674,9 +5667,6 @@ define('memories',[
    * The response includes the following convenience function
    *
    * - `getMemoryPersonaRefs()` - get an array of {@link memories.types:constructor.MemoryPersonaRef MemoryPersonaRefs} from the response
-   *
-   * __NOTE__ currently, if a memory has multiple personas and one of them it attached to a person, _all_ of the personas
-   * for the memory will appear in the results for the person.
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_References_resource FamilySearch API Docs}
    *
@@ -6566,7 +6556,14 @@ define('sources',[
      */
     $getText: function() { return maybe(maybe(this.notes)[0]).text; },
 
-    // TODO add $getSourceDescriptionUrl when that's available (last checked 4/2/14)
+    /**
+     * @ngdoc function
+     * @name sources.types:constructor.SourceDescription#$getSourceDescriptionUrl
+     * @methodOf sources.types:constructor.SourceDescription
+     * @function
+     * @return {String} Url of the of this source description
+     */
+    $getSourceDescriptionUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).description).href); },
 
     /**
      * @ngdoc function
@@ -6784,7 +6781,7 @@ define('sources',[
      * @return {string} URL of the source description - pass into {@link sources.functions:getSourceDescription getSourceDescription} for details
      */
     $getSourceDescriptionUrl: function() {
-      return helpers.removeAccessToken(this.$sourceDescriptionUrl);
+      return helpers.removeAccessToken(this.description);
     },
 
     /**
@@ -6820,17 +6817,16 @@ define('sources',[
      */
     $setSourceDescription: function(srcDesc) {
       if (srcDesc instanceof SourceDescription) {
-        // TODO use source description URL when available and set both id and URL
-        srcDesc = srcDesc.id;
+        this.$sourceDescriptionId = srcDesc.id;
+        this.description = srcDesc.$getSourceDescriptionUrl();
       }
-      if (helpers.isAbsoluteUrl(srcDesc)) {
+      else if (helpers.isAbsoluteUrl(srcDesc)) {
         delete this.$sourceDescriptionId;
-        this.$sourceDescriptionUrl = helpers.removeAccessToken(srcDesc);
         this.description = this.$sourceDescriptionUrl;
       }
       else {
         this.$sourceDescriptionId = srcDesc;
-        delete this.$sourceDescriptionUrl;
+        delete this.description;
       }
       //noinspection JSValidateTypes
       return this;
@@ -6930,14 +6926,12 @@ define('sources',[
       return helpers.chainHttpPromises(
         plumbing.getUrl(template, null, {pid: self.$personId, crid: self.$coupleId, caprid: self.$childAndParentsId, srid: self.id}),
         function(url) {
-          if (!self.$sourceDescriptionUrl && self.$sourceDescriptionId) {
+          if (!self.description && !!self.$sourceDescriptionId) {
             // the discovery resource is guaranteed to be set due to the getUrl statement
-            self.$sourceDescriptionUrl = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'source-description-template',
-                                                                             {sdid: self.$sourceDescriptionId});
+            self.description = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'source-description-template',
+                                                                   {sdid: self.$sourceDescriptionId});
           }
-          if (self.$sourceDescriptionUrl) {
-            self.description = helpers.removeAccessToken(self.$sourceDescriptionUrl);
-          }
+          self.description = helpers.removeAccessToken(self.description);
           var payload = {};
           payload[label] = [ { sources: [ self ] } ];
           return plumbing.post(url, payload, headers, opts, function(data, promise) {
@@ -7004,7 +6998,7 @@ define('sources',[
   exports.getSourceDescription = function(sdid, params, opts) {
     if (sdid instanceof SourceRef) {
       //noinspection JSUnresolvedFunction
-      sdid = sdid.$getSourceDescriptionUrl();
+      sdid = sdid.$getSourceDescriptionUrl() || sdid.$sourceDescriptionId;
     }
     return helpers.chainHttpPromises(
       plumbing.getUrl('source-description-template', sdid, {sdid: sdid}),
@@ -7043,9 +7037,8 @@ define('sources',[
     helpers.forEach(sdids, function(sdid) {
       var id, url;
       if (sdid instanceof SourceRef) {
-        // TODO use source description id here when it is available
-        id = sdid.$getSourceDescriptionUrl();
-        url = sdid.$getSourceDescriptionUrl();
+        id = sdid.$sourceDescriptionId || sdid.$getSourceDescriptionUrl();
+        url = sdid.$getSourceDescriptionUrl() || sdid.$sourceDescriptionId;
       }
       else {
         id = sdid;
@@ -7116,8 +7109,7 @@ define('sources',[
               });
               return {
                 $personId: person.id,
-                $sourceDescriptionId: sdid,
-                $sourceDescriptionUrl: sourceRef.description
+                $sourceDescriptionId: sdid
               };
             }, function(response) {
               return helpers.flatMap(maybe(response).persons, function(person) {
@@ -7131,8 +7123,7 @@ define('sources',[
               });
               return {
                 $coupleId: couple.id,
-                $sourceDescriptionId: sdid,
-                $sourceDescriptionUrl: sourceRef.description
+                $sourceDescriptionId: sdid
               };
             }, function(response) {
               return helpers.flatMap(maybe(response).relationships, function(couple) {
@@ -7146,8 +7137,7 @@ define('sources',[
               });
               return {
                 $childAndParentsId: childAndParents.id,
-                $sourceDescriptionId: sdid,
-                $sourceDescriptionUrl: sourceRef.description
+                $sourceDescriptionId: sdid
               };
             }, function(response) {
               return helpers.flatMap(maybe(response).childAndParentsRelationships, function(childAndParents) {
@@ -7179,16 +7169,21 @@ define('sources',[
         return maybe(maybe(maybe(response)[root])[0]).sources;
       }),
       helpers.objectExtender(function(response, srcRef) {
-        // TODO consider getting the sourceDescriptionUrl from sourceDescription.links.description.href
-        // where sourceDescription.id === srcRef.description.substr(1)
-        // #ID -> ID
-        var sdid = srcRef.description.substr(srcRef.description.indexOf('#')+1);
-        // the discovery resource is guaranteed to be set due to the getUrl statement
-        var result = {
-          $sourceDescriptionId: sdid,
-          $sourceDescriptionUrl: helpers.getUrlFromDiscoveryResource(globals.discoveryResource,
-            'source-description-template', {sdid: sdid})
-        };
+        var result;
+        if (helpers.isAbsoluteUrl(srcRef.description)) {
+          // TODO check whether source description id is in source references as resourceId (last checked 14 July 14)
+          result = {
+            $sourceDescriptionId: helpers.getLastUrlSegment(srcRef.description)
+          };
+        }
+        else { // '#id' format (or maybe just 'id', though 'id' may be deprecated now)
+          var sdid = srcRef.description.charAt(0) === '#' ? srcRef.description.substr(1) : srcRef.description;
+          result = {
+            $sourceDescriptionId: sdid,
+            description: helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'source-description-template',
+              {sdid: sdid})
+          };
+        }
         result[label] = maybe(maybe(maybe(response)[root])[0]).id;
         return result;
       }, function(response) {
@@ -7789,7 +7784,8 @@ define('parentsAndChildren',[
      * @function
      * @return {Object} promise for the {@link notes.functions:getChildAndParentsNotes getChildAndParentsNotes} response
      */
-    $getNotes: function() { return notes.getChildAndParentsNotes(helpers.removeAccessToken(this.links.notes.href)); },
+    $getNotes: function() { return notes.getChildAndParentsNotes(helpers.removeAccessToken(maybe(maybe(this.links).notes).href)); },
+
 
     /**
      * @ngdoc function
@@ -8025,7 +8021,6 @@ define('parentsAndChildren',[
       }
 
       // set global changeMessage
-      // TODO as far as I can tell, the change message isn't stored (last checked 4/2/14)
       if (changeMessage) {
         postData.attribution = new attribution.Attribution(changeMessage);
       }
@@ -8931,7 +8926,8 @@ define('spouses',[
      * @function
      * @return {Object} promise for the {@link notes.functions:getCoupleNotes getCoupleNotes} response
      */
-    $getNotes: function() { return notes.getCoupleNotes(helpers.removeAccessToken(this.links.notes.href)); },
+    $getNotes: function() { return notes.getCoupleNotes(helpers.removeAccessToken(maybe(maybe(this.links).notes).href)); },
+
 
     /**
      * @ngdoc function
@@ -9264,7 +9260,7 @@ define('person',[
 
   var exports = {};
 
-  // TODO see if moving to the new https://github.com/angular/dgeni will allow links to _methods_ like $save and $delete
+  // TODO consider moving to another documentation generator so we can link to _methods_ like $save and $delete
 
   /**********************************/
   /**
@@ -10357,39 +10353,38 @@ define('person',[
     getChildrenOf:   function(spouseId) { return helpers.map(this.getChildIdsOf(spouseId), this.getPerson, this); }
   };
 
-  /**
-   * @ngdoc function
-   * @name person.functions:getPersonChangeSummary
-   * @function
-   *
-   * @description
-   * Get the change summary for a person. For detailed change information see functions in the changeHistory module
-   * The response includes the following convenience function
-   *
-   * - `getChanges()` - get the array of {@link changeHistory.types:constructor.Change Changes} from the response
-   *
-   * **NOTE The sandbox REST endpoint for this function is broken. Do not use.**
-   *
-   * {@link https://familysearch.org/developers/docs/api/tree/Person_Change_Summary_resource FamilySearch API Docs}
-   *
-   * {@link http://jsfiddle.net/DallanQ/ga37h/ editable example}
-   *
-   * @param {String} pid id of the person or full URL of the person-change-summary endpoint
-   * @param {Object=} params currently unused
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the response
-   */
-  // TODO check if this has been fixed, and check if the entries really contain changeInfo and contributors attributes (last checked 4/2/14)
-  exports.getPersonChangeSummary = function(pid, params, opts) {
-    return helpers.chainHttpPromises(
-      plumbing.getUrl('person-change-summary-template', pid, {pid: pid}),
-      function(url) {
-        return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-          helpers.compose(
-            helpers.objectExtender({getChanges: function() { return this.entries || []; }}),
-            helpers.constructorSetter(changeHistory.Change, 'entries')));
-      });
-  };
+  // TODO check if person change summary has been fixed (last checked 14 July 14)
+  // also check if the entries really contain changeInfo and contributors attributes
+//  /**
+//   * @ngdoc function
+//   * @name person.functions:getPersonChangeSummary
+//   * @function
+//   *
+//   * @description
+//   * Get the change summary for a person. For detailed change information see functions in the changeHistory module
+//   * The response includes the following convenience function
+//   *
+//   * - `getChanges()` - get the array of {@link changeHistory.types:constructor.Change Changes} from the response
+//   *
+//   * {@link https://familysearch.org/developers/docs/api/tree/Person_Change_Summary_resource FamilySearch API Docs}
+//   *
+//   * {@link http://jsfiddle.net/DallanQ/ga37h/ editable example}
+//   *
+//   * @param {String} pid id of the person or full URL of the person-change-summary endpoint
+//   * @param {Object=} params currently unused
+//   * @param {Object=} opts options to pass to the http function specified during init
+//   * @return {Object} promise for the response
+//   */
+//  exports.getPersonChangeSummary = function(pid, params, opts) {
+//    return helpers.chainHttpPromises(
+//      plumbing.getUrl('person-change-summary-template', pid, {pid: pid}),
+//      function(url) {
+//        return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+//          helpers.compose(
+//            helpers.objectExtender({getChanges: function() { return this.entries || []; }}),
+//            helpers.constructorSetter(changeHistory.Change, 'entries')));
+//      });
+//  };
 
   var relationshipsResponseMapper = helpers.compose(
     helpers.constructorSetter(spouses.Couple, 'relationships'),
@@ -10695,7 +10690,8 @@ define('person',[
         return plumbing.getUrl('preferred-parent-relationship-template', null, {uid: uid, pid: pid});
       },
       function(url) {
-        // TODO remove accept header when FS bug is fixed (last checked 4/2/14)
+        // TODO remove accept header when FS bug is fixed (last checked 4/2/14) - unable to check 14 July 14
+        // couldn't check 14 July 14 because the endpoint returns a 403 now
         var promise = plumbing.get(url + '.json', params, {Accept: 'application/x-fs-v1+json'}, opts);
         // FamilySearch returns a 303 function to redirect to the preferred relationship, but the response may come back as XML in chrome.
         // So just get the relationship id from the content-location header
@@ -10848,7 +10844,14 @@ define('sourceBox',[
      * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
      */
 
-    // TODO add $getCollectionUrl when "self" link is available
+    /**
+     * @ngdoc function
+     * @name sourceBox.types:constructor.Collection#$getCollectionUrl
+     * @methodOf sourceBox.types:constructor.Collection
+     * @function
+     * @return {String} Url of the person
+     */
+    $getCollectionUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).self).href); },
 
     /**
      * @ngdoc function
@@ -10916,8 +10919,7 @@ define('sourceBox',[
      * @return {Object} promise for the collection id
      */
     $delete: function(opts) {
-      // TODO use $getCollectionUrl() as alternative when it is available
-      return exports.deleteCollection(this.id, opts);
+      return exports.deleteCollection(this.$getCollectionUrl() || this.id, opts);
     }
 
   };
@@ -11308,7 +11310,7 @@ define('FamilySearch',[
     getPerson: person.getPerson,
     getMultiPerson: person.getMultiPerson,
     getPersonWithRelationships: person.getPersonWithRelationships,
-    getPersonChangeSummary: person.getPersonChangeSummary,
+    //getPersonChangeSummary: person.getPersonChangeSummary, -- REST API broken
     getSpouses: person.getSpouses,
     getParents: person.getParents,
     getChildren: person.getChildren,

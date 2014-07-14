@@ -397,7 +397,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Get references to memories for a person",
-      "keywords": "__note__ _all_ api appear array attached convenience currently docs editable endpoint example familysearch full function functions getmemorypersonarefs http https includes init memories memory memorypersonaref memorypersonarefs multiple net options opts org params pass person person-memory-references personas pid promise references response types unused url"
+      "keywords": "api array convenience currently docs editable endpoint example familysearch full function functions getmemorypersonarefs http https includes init memories memorypersonaref memorypersonarefs net options opts org params pass person person-memory-references pid promise references response types unused url"
     },
     {
       "section": "api",
@@ -752,15 +752,6 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "person.functions:getPersonChangeSummary",
-      "shortName": "getPersonChangeSummary",
-      "type": "function",
-      "moduleName": "person",
-      "shortDescription": "Get the change summary for a person. For detailed change information see functions in the changeHistory module",
-      "keywords": "api array broken change changehistory changes convenience currently detailed docs editable endpoint example familysearch full function functions getchanges http https includes init module net options opts org params pass person person-change-summary pid promise response rest sandbox summary types unused url"
-    },
-    {
-      "section": "api",
       "id": "person.functions:getPersonWithRelationships",
       "shortName": "getPersonWithRelationships",
       "type": "function",
@@ -1027,7 +1018,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sourceBox",
       "shortDescription": "Collection",
-      "keywords": "$delete $getsourcedescriptions $save api attributes attribution collection count create data delete deletecollection descriptions docs editable empty example familysearch fulfilled function functions getcollectionsourcedescriptions http https init maximum net number object optional options opts org params pass promise property read refresh response return size source sourcebox sources start title true types updated updating user-defined zero-based"
+      "keywords": "$delete $getcollectionurl $getsourcedescriptions $save api attributes attribution collection count create data delete deletecollection descriptions docs editable empty example familysearch fulfilled function functions getcollectionsourcedescriptions http https init maximum net number object optional options opts org params pass person promise property read refresh response return size source sourcebox sources start title true types updated updating url user-defined zero-based"
     },
     {
       "section": "api",
@@ -1162,7 +1153,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Description of a source",
-      "keywords": "$delete $getcitation $getsourcerefsquery $gettext $gettitle $save $setcitation $settext $settitle _about_ api attributes attribution change changemessage citation create data delete deletesourcedescription deletion description docs editable example existing familysearch fulfilled function functions getsourcerefsquery http https init memory message net object optional options opts org pass promise property read reason record refer references refresh response source sourcedescription sources text title true types update updated updating url"
+      "keywords": "$delete $getcitation $getsourcedescriptionurl $getsourcerefsquery $gettext $gettitle $save $setcitation $settext $settitle _about_ api attributes attribution change changemessage citation create data delete deletesourcedescription deletion description docs editable example existing familysearch fulfilled function functions getsourcerefsquery http https init memory message net object optional options opts org pass promise property read reason record refer references refresh response source sourcedescription sources text title true types update updated updating url"
     },
     {
       "section": "api",
