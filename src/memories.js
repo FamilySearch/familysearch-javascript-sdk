@@ -551,8 +551,6 @@ define([
 
   };
 
-  // TODO check whether person memory references can be updated
-
   /**********************************/
   /**
    * @ngdoc function
@@ -637,11 +635,9 @@ define([
      * @return {Object} promise for the {@link memories.functions:getMemoryPersona getMemoryPersona} response
      */
     $getMemoryPersona:  function() {
-      // TODO add alternative (mid, mpid) if we get mid
       return exports.getMemoryPersona(this.$getMemoryPersonaUrl());
     },
 
-    // TODO stop hacking into the resource when links.memory.href works (last checked 4/2/14)
     /**
      * @ngdoc function
      * @name memories.types:constructor.MemoryPersonaRef#$getMemoryUrl
@@ -650,7 +646,7 @@ define([
      * @return {String} URL of the memory; pass into {@link memories.functions:getMemory getMemory} for details
      */
     $getMemoryUrl:  function() {
-      return this.resource ? helpers.removeAccessToken(this.resource.replace(/(^.*\/memories\/[^\/]*)\/personas\/.*$/, '$1')) : this.resource;
+      return helpers.removeAccessToken(this.links.memory.href);
     },
 
     /**
@@ -661,7 +657,6 @@ define([
      * @return {Object} promise for the {@link memories.functions:getMemory getMemory} response
      */
     $getMemory:  function() {
-      // TODO add alternative mid if we get mid
       return exports.getMemory(this.$getMemoryUrl());
     },
 
@@ -862,7 +857,7 @@ define([
       function(url) {
         return plumbing.get(url, params, {}, opts,
           helpers.compose(
-            // TODO when the response contains personas, add a function to return them (last checked 4/2/14)
+            // TODO when the response contains personas, add a function to return them (last checked 14 July 14)
             helpers.objectExtender({getMemories: function() { return this.sourceDescriptions || []; }}),
             helpers.constructorSetter(Memory, 'sourceDescriptions'),
             helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
@@ -1060,8 +1055,6 @@ define([
       });
   };
 
-  // TODO check whether all memory personas are still included in the results
-
   /**
    * @ngdoc function
    * @name memories.functions:getMemoryPersonaRefs
@@ -1072,9 +1065,6 @@ define([
    * The response includes the following convenience function
    *
    * - `getMemoryPersonaRefs()` - get an array of {@link memories.types:constructor.MemoryPersonaRef MemoryPersonaRefs} from the response
-   *
-   * __NOTE__ currently, if a memory has multiple personas and one of them it attached to a person, _all_ of the personas
-   * for the memory will appear in the results for the person.
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_References_resource FamilySearch API Docs}
    *
