@@ -70,24 +70,9 @@ In the future, if we can get 100 people watching the repo, [cdnJS](http://cdnjs.
 Documentation
 =============
 
-* [API docs](http://rootsdev.org/familysearch-javascript-sdk)
+* [API docs](http://rootsdev.org/familysearch-javascript-sdk).
 * [Slides from 2014 RootsTech talk](http://dallanq.github.io/rootstech-2014-fs-js-sdk-slides).
-
-Roadmap
-=======
-
-####Milestone 1 - complete
-* Create functions for basic read operations
-* Make the SDK work with jQuery and AngularJS
-
-####Milestone 2 - complete
-* Create an example application (RootSnap) showing how to use the SDK.
-
-####Milestone 3 - complete
-* Create functions for the basic create, update, and delete operations - everything that you're likely to use
-
-####Milestone 4 - November 1, 2014
-* Version 1.0 -- all functions implemented, end-to-end tests in place, Node.js support, available in bower & npm repositories.
+* [Comprehensive example application](https://github.com/rootsdev/familysearch-reference-client) showing how to use the SDK.
 
 Releases
 ========
@@ -99,6 +84,22 @@ Once we hit version 1.0.0 later this Fall, I will make sure that changes are bac
 
 You can check out a specific release by clicking on the github _Releases_ link.
 The _Releases_ link also serves as a _Change Log_, so it's worth looking at even if you plan to work off the master branch. 
+
+Roadmap
+=======
+
+####Milestone 1 - complete
+* Create functions for basic read operations
+* Make the SDK work with jQuery and AngularJS
+
+####Milestone 2 - complete
+* Create an [example application](https://github.com/rootsdev/familysearch-reference-client) showing how to use the SDK.
+
+####Milestone 3 - complete
+* Create functions for the basic create, update, and delete operations - everything that you're likely to use
+
+####Milestone 4 - November 1, 2014
+* Version 1.0 -- all functions implemented, end-to-end tests in place, Node.js support, available in bower & npm repositories.
 
 Contributing
 ============
