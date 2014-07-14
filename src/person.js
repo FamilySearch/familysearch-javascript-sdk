@@ -35,7 +35,7 @@ define([
 
   var exports = {};
 
-  // TODO consider moving to another document generator so we can link to _methods_ like $save and $delete
+  // TODO consider moving to another documentation generator so we can link to _methods_ like $save and $delete
 
   /**********************************/
   /**
@@ -1128,7 +1128,8 @@ define([
     getChildrenOf:   function(spouseId) { return helpers.map(this.getChildIdsOf(spouseId), this.getPerson, this); }
   };
 
-  // TODO check if this has been fixed, and check if the entries really contain changeInfo and contributors attributes (last checked 14 July 14)
+  // TODO check if person change summary has been fixed (last checked 14 July 14)
+  // also check if the entries really contain changeInfo and contributors attributes
 //  /**
 //   * @ngdoc function
 //   * @name person.functions:getPersonChangeSummary

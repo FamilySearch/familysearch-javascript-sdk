@@ -99,7 +99,14 @@ define([
      */
     $getText: function() { return maybe(maybe(this.notes)[0]).text; },
 
-    // TODO add $getSourceDescriptionUrl when that's available (last checked 4/2/14)
+    /**
+     * @ngdoc function
+     * @name sources.types:constructor.SourceDescription#$getSourceDescriptionUrl
+     * @methodOf sources.types:constructor.SourceDescription
+     * @function
+     * @return {String} Url of the of this source description
+     */
+    $getSourceDescriptionUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).description).href); },
 
     /**
      * @ngdoc function
@@ -317,7 +324,7 @@ define([
      * @return {string} URL of the source description - pass into {@link sources.functions:getSourceDescription getSourceDescription} for details
      */
     $getSourceDescriptionUrl: function() {
-      return helpers.removeAccessToken(this.$sourceDescriptionUrl);
+      return helpers.removeAccessToken(this.description);
     },
 
     /**
@@ -353,17 +360,16 @@ define([
      */
     $setSourceDescription: function(srcDesc) {
       if (srcDesc instanceof SourceDescription) {
-        // TODO use source description URL when available and set both id and URL
-        srcDesc = srcDesc.id;
+        this.$sourceDescriptionId = srcDesc.id;
+        this.description = srcDesc.$getSourceDescriptionUrl();
       }
-      if (helpers.isAbsoluteUrl(srcDesc)) {
+      else if (helpers.isAbsoluteUrl(srcDesc)) {
         delete this.$sourceDescriptionId;
-        this.$sourceDescriptionUrl = helpers.removeAccessToken(srcDesc);
         this.description = this.$sourceDescriptionUrl;
       }
       else {
         this.$sourceDescriptionId = srcDesc;
-        delete this.$sourceDescriptionUrl;
+        delete this.description;
       }
       //noinspection JSValidateTypes
       return this;
@@ -463,14 +469,12 @@ define([
       return helpers.chainHttpPromises(
         plumbing.getUrl(template, null, {pid: self.$personId, crid: self.$coupleId, caprid: self.$childAndParentsId, srid: self.id}),
         function(url) {
-          if (!self.$sourceDescriptionUrl && self.$sourceDescriptionId) {
+          if (!self.description && !!self.$sourceDescriptionId) {
             // the discovery resource is guaranteed to be set due to the getUrl statement
-            self.$sourceDescriptionUrl = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'source-description-template',
-                                                                             {sdid: self.$sourceDescriptionId});
+            self.description = helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'source-description-template',
+                                                                   {sdid: self.$sourceDescriptionId});
           }
-          if (self.$sourceDescriptionUrl) {
-            self.description = helpers.removeAccessToken(self.$sourceDescriptionUrl);
-          }
+          self.description = helpers.removeAccessToken(self.description);
           var payload = {};
           payload[label] = [ { sources: [ self ] } ];
           return plumbing.post(url, payload, headers, opts, function(data, promise) {
@@ -537,7 +541,7 @@ define([
   exports.getSourceDescription = function(sdid, params, opts) {
     if (sdid instanceof SourceRef) {
       //noinspection JSUnresolvedFunction
-      sdid = sdid.$getSourceDescriptionUrl();
+      sdid = sdid.$getSourceDescriptionUrl() || sdid.$sourceDescriptionId;
     }
     return helpers.chainHttpPromises(
       plumbing.getUrl('source-description-template', sdid, {sdid: sdid}),
@@ -576,9 +580,8 @@ define([
     helpers.forEach(sdids, function(sdid) {
       var id, url;
       if (sdid instanceof SourceRef) {
-        // TODO use source description id here when it is available
-        id = sdid.$getSourceDescriptionUrl();
-        url = sdid.$getSourceDescriptionUrl();
+        id = sdid.$sourceDescriptionId || sdid.$getSourceDescriptionUrl();
+        url = sdid.$getSourceDescriptionUrl() || sdid.$sourceDescriptionId;
       }
       else {
         id = sdid;
@@ -649,8 +652,7 @@ define([
               });
               return {
                 $personId: person.id,
-                $sourceDescriptionId: sdid,
-                $sourceDescriptionUrl: sourceRef.description
+                $sourceDescriptionId: sdid
               };
             }, function(response) {
               return helpers.flatMap(maybe(response).persons, function(person) {
@@ -664,8 +666,7 @@ define([
               });
               return {
                 $coupleId: couple.id,
-                $sourceDescriptionId: sdid,
-                $sourceDescriptionUrl: sourceRef.description
+                $sourceDescriptionId: sdid
               };
             }, function(response) {
               return helpers.flatMap(maybe(response).relationships, function(couple) {
@@ -679,8 +680,7 @@ define([
               });
               return {
                 $childAndParentsId: childAndParents.id,
-                $sourceDescriptionId: sdid,
-                $sourceDescriptionUrl: sourceRef.description
+                $sourceDescriptionId: sdid
               };
             }, function(response) {
               return helpers.flatMap(maybe(response).childAndParentsRelationships, function(childAndParents) {
@@ -712,16 +712,21 @@ define([
         return maybe(maybe(maybe(response)[root])[0]).sources;
       }),
       helpers.objectExtender(function(response, srcRef) {
-        // TODO consider getting the sourceDescriptionUrl from sourceDescription.links.description.href
-        // where sourceDescription.id === srcRef.description.substr(1)
-        // #ID -> ID
-        var sdid = srcRef.description.substr(srcRef.description.indexOf('#')+1);
-        // the discovery resource is guaranteed to be set due to the getUrl statement
-        var result = {
-          $sourceDescriptionId: sdid,
-          $sourceDescriptionUrl: helpers.getUrlFromDiscoveryResource(globals.discoveryResource,
-            'source-description-template', {sdid: sdid})
-        };
+        var result;
+        if (helpers.isAbsoluteUrl(srcRef.description)) {
+          // TODO check whether source description id is in source references as resourceId (last checked 14 July 14)
+          result = {
+            $sourceDescriptionId: helpers.getLastUrlSegment(srcRef.description)
+          };
+        }
+        else { // '#id' format (or maybe just 'id', though 'id' may be deprecated now)
+          var sdid = srcRef.description.charAt(0) === '#' ? srcRef.description.substr(1) : srcRef.description;
+          result = {
+            $sourceDescriptionId: sdid,
+            description: helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'source-description-template',
+              {sdid: sdid})
+          };
+        }
         result[label] = maybe(maybe(maybe(response)[root])[0]).id;
         return result;
       }, function(response) {

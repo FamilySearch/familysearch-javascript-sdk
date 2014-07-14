@@ -23,7 +23,7 @@
         "modified" : 123456789,
         "changeMessage" : "Family is at the same address found in other sources associated with this family.  Names are a good match.  Estimated births are reasonable."
       },
-      "description" : "#SSSS-SS1",
+      "description" : "https://sandbox.familysearch.org/platform/sources/descriptions/SSSS-SS1",
       "tags" : [ {
         "resource" : "http://gedcomx.org/Name"
       }, {
@@ -47,7 +47,7 @@
         "modified" : 987654321,
         "changeMessage" : "Dates and location match with other sources."
       },
-      "description" : "#SSSS-SS2"
+      "description" : "https://sandbox.familysearch.org/platform/sources/descriptions/SSSS-SS2"
     } ]
   } ]
 }
