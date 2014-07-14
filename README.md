@@ -84,10 +84,21 @@ Roadmap
 * Create an example application (RootSnap) showing how to use the SDK.
 
 ####Milestone 3 - complete
-* Create functions for the basic create, update, and delete operations
+* Create functions for the basic create, update, and delete operations - everything that you're likely to use
 
-####Milestone 4 - June 1, 2014
-* All functions implemented, end-to-end tests in place, Node.js support, available in bower & npm repositories.
+####Milestone 4 - November 1, 2014
+* Version 1.0 -- all functions implemented, end-to-end tests in place, Node.js support, available in bower & npm repositories.
+
+Releases
+========
+
+The Javascript SDK uses [semantic versioning](http://semver.org/) for releases. 
+We are currently in a pre-1.0 state, which means that occasionally there will be backwards-incompatible changes.
+Backward-incompatible changes don't happen very often, but they do happen occasionally. 
+Once we hit version 1.0.0 later this Fall, I will make sure that changes are backwards-compatible.
+
+You can check out a specific release by clicking on the github _Releases_ link.
+The _Releases_ link also serves as a _Change Log_, so it's worth looking at even if you plan to work off the master branch. 
 
 Contributing
 ============
