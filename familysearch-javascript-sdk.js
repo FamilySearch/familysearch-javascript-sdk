@@ -6267,6 +6267,9 @@ define('notes',[
               return { $personId: maybe(maybe(maybe(response).persons)[0]).id };
             }, function(response) {
               return maybe(maybe(maybe(response).persons)[0]).notes;
+            }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
+              return maybe(maybe(maybe(response).persons)[0]).notes;
             })
           ));
       });
@@ -6307,6 +6310,9 @@ define('notes',[
             helpers.objectExtender(function(response) {
               return { $coupleId: maybe(maybe(maybe(response).relationships)[0]).id };
             }, function(response) {
+              return maybe(maybe(maybe(response).relationships)[0]).notes;
+            }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
               return maybe(maybe(maybe(response).relationships)[0]).notes;
             })
           ));
@@ -6349,6 +6355,9 @@ define('notes',[
             helpers.objectExtender(function(response) {
               return { $childAndParentsId: maybe(maybe(maybe(response).childAndParentsRelationships)[0]).id };
             }, function(response) {
+              return maybe(maybe(maybe(response).childAndParentsRelationships)[0]).notes;
+            }),
+            helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
               return maybe(maybe(maybe(response).childAndParentsRelationships)[0]).notes;
             })
           ));
