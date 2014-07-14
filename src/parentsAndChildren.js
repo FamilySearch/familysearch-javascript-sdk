@@ -256,7 +256,8 @@ define([
      * @function
      * @return {Object} promise for the {@link notes.functions:getChildAndParentsNotes getChildAndParentsNotes} response
      */
-    $getNotes: function() { return notes.getChildAndParentsNotes(helpers.removeAccessToken(this.links.notes.href)); },
+    $getNotes: function() { return notes.getChildAndParentsNotes(helpers.removeAccessToken(maybe(maybe(this.links).notes).href)); },
+
 
     /**
      * @ngdoc function

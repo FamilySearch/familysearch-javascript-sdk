@@ -65,7 +65,14 @@ define([
      * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
      */
 
-    // TODO add $getCollectionUrl when "self" link is available
+    /**
+     * @ngdoc function
+     * @name sourceBox.types:constructor.Collection#$getCollectionUrl
+     * @methodOf sourceBox.types:constructor.Collection
+     * @function
+     * @return {String} Url of the person
+     */
+    $getCollectionUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).self).href); },
 
     /**
      * @ngdoc function
@@ -133,8 +140,7 @@ define([
      * @return {Object} promise for the collection id
      */
     $delete: function(opts) {
-      // TODO use $getCollectionUrl() as alternative when it is available
-      return exports.deleteCollection(this.id, opts);
+      return exports.deleteCollection(this.$getCollectionUrl() || this.id, opts);
     }
 
   };

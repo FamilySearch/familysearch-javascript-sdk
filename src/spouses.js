@@ -196,7 +196,8 @@ define([
      * @function
      * @return {Object} promise for the {@link notes.functions:getCoupleNotes getCoupleNotes} response
      */
-    $getNotes: function() { return notes.getCoupleNotes(helpers.removeAccessToken(this.links.notes.href)); },
+    $getNotes: function() { return notes.getCoupleNotes(helpers.removeAccessToken(maybe(maybe(this.links).notes).href)); },
+
 
     /**
      * @ngdoc function

@@ -77,7 +77,7 @@ define([
      * @function
      * @return {String} URL of the agent - pass into {@link user.functions:getAgent getAgent} for details
      */
-    $getAgentUrl: function() { return helpers.removeAccessToken(this.links.agent.href); },
+    $getAgentUrl: function() { return helpers.removeAccessToken(maybe(maybe(this.links).agent).href); },
 
     /**
      * @ngdoc function

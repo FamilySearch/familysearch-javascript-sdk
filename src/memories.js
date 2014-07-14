@@ -646,7 +646,7 @@ define([
      * @return {String} URL of the memory; pass into {@link memories.functions:getMemory getMemory} for details
      */
     $getMemoryUrl:  function() {
-      return helpers.removeAccessToken(this.links.memory.href);
+      return helpers.removeAccessToken(maybe(maybe(this.links).memory).href);
     },
 
     /**
