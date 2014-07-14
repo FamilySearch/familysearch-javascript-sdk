@@ -16,7 +16,14 @@
         }
       },
       "subject" : "note 0",
-      "text" : "Sample note text"
+      "text" : "Sample note text",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMD8-3NT",
+          "resourceId" : "MMD8-3NT"
+        },
+        "modified" : 1403312322000
+      }
     }, {
       "id" : "1805241226",
       "links" : {
@@ -25,7 +32,15 @@
           "title" : "Person Notes"
         }
       },
-      "subject" : "note 1"
+      "subject" : "note 1",
+      "text" : "text",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMD8-3NT",
+          "resourceId" : "MMD8-3NT"
+        },
+        "modified" : 1403312322000
+      }
     } ]
   } ]
 }

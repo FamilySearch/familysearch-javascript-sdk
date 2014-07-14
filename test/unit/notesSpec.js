@@ -8,6 +8,7 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(notes[0].$personId).toBe('P12-3456');
         expect(notes[0].$getNoteUrl()).toBe('https://familysearch.org/platform/tree/persons/P12-3456/notes/1804317705');
         expect(notes[0].text).toBe('Sample note text');
+        expect(notes[0].attribution.$getAgentId()).toBe('MMD8-3NT');
         expect(notes[1].id).toBe('1805241226');
         expect(notes[1].subject).toBe('note 1');
         expect(notes[1].$personId).toBe('P12-3456');
@@ -39,6 +40,7 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(notes[0].id).toBe('1804317705');
         expect(notes[0].subject).toBe('note 0');
         expect(notes[0].$coupleId).toBe('12345');
+        expect(notes[0].attribution.$getAgentId()).toBe('MMD8-3NT');
         expect(notes[1].id).toBe('1805241226');
         expect(notes[1].subject).toBe('note 1');
         expect(notes[1].$coupleId).toBe('12345');
@@ -71,6 +73,7 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(notes[0].id).toBe('1804317705');
         expect(notes[0].subject).toBe('note 0');
         expect(notes[0].$childAndParentsId).toBe('PPPX-PP0');
+        expect(notes[0].attribution.$getAgentId()).toBe('MMD8-3NT');
         expect(notes[1].id).toBe('1805241226');
         expect(notes[1].subject).toBe('note 1');
         expect(notes[1].$childAndParentsId).toBe('PPPX-PP0');
