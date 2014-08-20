@@ -125,9 +125,9 @@ define([
     /**
      * @ngdoc function
      * @name person.types:constructor.Person#$isReadOnly
-     * @propertyOf person.types:constructor.Person
+     * @methodOf person.types:constructor.Person
      * @description
-     * This function is available only if the person is read with `getPerson`.
+     * This function is available only if the person is read with `getPerson` or `getPersonWithRelationships`.
      * @returns {Boolean} true if the person is read-only
      */
     // this function is added in the getPerson() function below
@@ -1041,7 +1041,14 @@ define([
             helpers.constructorSetter(spouses.Couple, 'relationships'), // some of the relationships are ParentChild relationships, but
             // we don't have a way to change the constructor on only some elements of the array
             helpers.objectExtender(personWithRelationshipsConvenienceFunctions),
-            exports.personMapper()
+            exports.personMapper(),
+            function(response, promise) {
+              response.persons[0].$isReadOnly = function() {
+                var allowHeader = promise.getResponseHeader('Allow');
+                return !!allowHeader && allowHeader.indexOf('POST') < 0;
+              };
+              return response;
+            }
           ));
       });
   };
