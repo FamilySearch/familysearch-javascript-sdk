@@ -27,6 +27,8 @@
     "setInterval": false,
     "clearInterval": false,
     "console": false,
+    "require": false,
+    "module": false,
 
     "requirejs": false,
     "define": false,

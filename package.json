@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "Javascript SDK for FamilySearch",
   "main": "familysearch-javascript-sdk.js",
+  "dependencies": {
+    "q": "1.1.2",
+    "request": "2.51.0"
+  },
   "devDependencies": {
     "jshint": "~2.3.0",
     "connect-livereload": "~0.3.0",

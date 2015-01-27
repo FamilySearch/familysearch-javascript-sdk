@@ -27,6 +27,9 @@
     "clearTimeout": false,
     "setInterval": false,
     "clearInterval": false,
-    "console": false
+    "console": false,
+    "require": false,
+    "nodeRequire": false,
+    "module": false
   }
 }
