@@ -2,7 +2,7 @@
   "name": "familysearch-javascript-sdk",
   "version": "0.1.0",
   "description": "Javascript SDK for FamilySearch",
-  "main": "familysearch-javascript-sdk.js",
+  "main": "src/FamilySearch.js",
   "dependencies": {
     "amdefine": "0.1.0",
     "q": "1.1.2",
