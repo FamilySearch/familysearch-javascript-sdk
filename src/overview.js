@@ -176,11 +176,11 @@
  * may catch the code in an unstable mid-release state.
  * 
  * <pre>
- * "FamilySearch": "https://github.com/rootsdev/familysearch-javascript-sdk.git#v0.9.15"
+ * "familysearch-javascript-sdk": "https://github.com/rootsdev/familysearch-javascript-sdk.git#v0.9.15"
  * </pre>
  * 
  * <pre>
- * var FS = require('FamilySearch');
+ * var FS = require('familysearch-javascript-sdk');
  * </pre>
  *
  * ## Handling responses

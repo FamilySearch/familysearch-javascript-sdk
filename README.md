@@ -63,7 +63,7 @@ We are still on major version 0, so the API is subject to some change.
    may catch the code in an unstable mid-release state.
    
    ```
-   "FamilySearch": "https://github.com/rootsdev/familysearch-javascript-sdk.git#v0.9.15"
+   "familysearch-javascript-sdk": "https://github.com/rootsdev/familysearch-javascript-sdk.git#v0.9.15"
    ```
 
 1. Download
