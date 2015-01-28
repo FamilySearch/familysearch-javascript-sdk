@@ -1,5 +1,7 @@
+if (typeof define !== 'function') { var define = require('amdefine')(module); }
+
 define([
-  'globals'
+  './globals'
 ], function(globals) {
   var exports = {};
 

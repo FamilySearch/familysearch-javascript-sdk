@@ -1,13 +1,15 @@
+if (typeof define !== 'function') { var define = require('amdefine')(module); }
+
 define([
-  'attribution',
-  'changeHistory',
-  'fact',
-  'globals',
-  'helpers',
-  'parentsAndChildren',
-  'plumbing',
-  'notes',
-  'sources'
+  './attribution',
+  './changeHistory',
+  './fact',
+  './globals',
+  './helpers',
+  './parentsAndChildren',
+  './plumbing',
+  './notes',
+  './sources'
 ], function(attribution, changeHistory, fact, globals, helpers, parentsAndChildren, plumbing, notes, sources) {
   /**
    * @ngdoc overview

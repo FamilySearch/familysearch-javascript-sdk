@@ -16,12 +16,7 @@
 'use strict';
   
   // Rather than use the RequireJS almond loader, this is less code for our simple use case
-  var modules = {}, requireCache = {}, nodeRequire = function(){};
-  
-  // Expose require function for non-nodejs environments
-  if (typeof module === 'object' && typeof module.exports === 'object') {
-    nodeRequire = require;
-  }
+  var modules = {}, requireCache = {};
   
   function define(name, deps, fn) {
     modules[name] = {
@@ -47,3 +42,4 @@
     }
     return result;
   }
+  

@@ -1,20 +1,22 @@
+if (typeof define !== 'function') { var define = require('amdefine')(module); }
+
 define([
-  'attribution',
-  'changeHistory',
-  'discussions',
-  'fact',
-  'globals',
-  'helpers',
-  'memories',
-  'name',
-  'notes',
-  'parentsAndChildren',
-  'pedigree',
-  'plumbing',
-  'searchAndMatch',
-  'sources',
-  'spouses',
-  'user'
+  './attribution',
+  './changeHistory',
+  './discussions',
+  './fact',
+  './globals',
+  './helpers',
+  './memories',
+  './name',
+  './notes',
+  './parentsAndChildren',
+  './pedigree',
+  './plumbing',
+  './searchAndMatch',
+  './sources',
+  './spouses',
+  './user'
 ], function(attribution, changeHistory, discussions, fact, globals, helpers, memories, name, notes, parentsAndChildren,
             pedigree, plumbing, searchAndMatch, sources, spouses, user) {
   /**

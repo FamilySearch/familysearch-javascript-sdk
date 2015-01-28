@@ -1,10 +1,12 @@
+if (typeof define !== 'function') { var define = require('amdefine')(module); }
+
 define([  
-  'globals',
-  'helpers',
-  'plumbing',
-  'angularjs-wrappers',
-  'jquery-wrappers',
-  'nodejs-wrappers'
+  './globals',
+  './helpers',
+  './plumbing',
+  './angularjs-wrappers',
+  './jquery-wrappers',
+  './nodejs-wrappers'
 ], function(globals, helpers, plumbing, angularjsWrappers, jQueryWrappers, nodejsWrappers) {
   /**
    * @ngdoc overview

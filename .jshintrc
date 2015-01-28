@@ -20,7 +20,7 @@
   "eqnull": true,
   "sub": true,
   "globals": {
-    "define": false,
+    "define": true,
     "window": false,
     "document": false,
     "setTimeout": false,
@@ -29,7 +29,6 @@
     "clearInterval": false,
     "console": false,
     "require": false,
-    "nodeRequire": false,
     "module": false
   }
 }
