@@ -25,6 +25,9 @@
     };
   }
   function amdRequire(name) {
+    if(name.indexOf('./') === 0){
+      name = name.substr(2);
+    }    
     var mod = modules[name],
       depResults = [],
       result = mod.fn;
