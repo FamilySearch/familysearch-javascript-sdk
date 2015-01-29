@@ -47,7 +47,7 @@ define(['FamilySearch', '_', 'jasmine-jquery'], function(FamilySearch, _) {
         }
         fired = true;
         resolveArgs = arguments;
-        doCallbacks();
+        doCallbacks.call(this);
       },
 
       reject: function() {
@@ -56,7 +56,7 @@ define(['FamilySearch', '_', 'jasmine-jquery'], function(FamilySearch, _) {
         }
         fired = true;
         rejectArgs = arguments;
-        doCallbacks();
+        doCallbacks.call(this);
       },
 
       promise: function() {
@@ -161,8 +161,8 @@ define(['FamilySearch', '_', 'jasmine-jquery'], function(FamilySearch, _) {
       returnedData = null;
     }
 
-    var d = deferredMock();
-    d.resolve(returnedData, '', { status: status });
+    var d = deferredMock(); 
+    d.resolve.call(d, returnedData, '', { status: status });    
     var returnedPromise = d.promise();
 
     returnedPromise.getAllResponseHeaders = function() {
@@ -182,6 +182,10 @@ define(['FamilySearch', '_', 'jasmine-jquery'], function(FamilySearch, _) {
     returnedPromise.getRequest = function() {
       return opts;
     };
+    
+    returnedPromise.getStatusCode = function() {
+      return status;
+    };    
 
     return returnedPromise;
   }

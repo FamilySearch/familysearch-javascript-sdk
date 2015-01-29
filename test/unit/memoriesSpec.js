@@ -67,6 +67,13 @@ define(['FamilySearch'], function(FamilySearch) {
         expect(response).toBe('https://sandbox.familysearch.org/platform/tree/persons/PID/portrait?access_token=mock');
       });
     });
+    
+    it('portrait URL is returned from getPersonPortraitUrl with follow redirect', function() {
+      FamilySearch.getPersonPortraitUrl('PID2', {followRedirect: true}).then(function(response) {
+        expect(response).toBe('https://somegoodplace.com?access_token=mock');
+      });
+    });
+
 
     it('are returned from getPersonMemoriesQuery', function() {
       FamilySearch.getPersonMemoriesQuery('KWCR-JWS', {start: 2, count: 2}).then(function(response) {
