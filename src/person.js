@@ -1342,12 +1342,9 @@ define([
         return plumbing.getUrl('preferred-spouse-relationship-template', null, {uid: uid, pid: pid});
       },
       function(url) {
-        var promise = plumbing.get(url + '.json', params, {}, opts);
-        // FamilySearch returns a 303 function to redirect to the preferred relationship, but the response may come back as XML in chrome.
-        // So just get the relationship id from the content-location header
-        return helpers.handleRedirect(promise, function(promise) {
-          if (promise.getStatusCode() === 200) {
-            var contentLocation = promise.getResponseHeader('Content-Location');
+        return plumbing.get(url + '.json', params, { 'X-Expect-Override': '200-ok' }, opts).then(function(){
+          if (this.promise.getStatusCode() === 200) {
+            var contentLocation = this.promise.getResponseHeader('Location');
             if (contentLocation.indexOf('child-and-parents-relationships') >= 0) {
               return null;
             }
@@ -1474,11 +1471,8 @@ define([
       function(url) {
         // TODO remove accept header when FS bug is fixed (last checked 4/2/14) - unable to check 14 July 14
         // couldn't check 14 July 14 because the endpoint returns a 403 now
-        var promise = plumbing.get(url + '.json', params, {Accept: 'application/x-fs-v1+json'}, opts);
-        // FamilySearch returns a 303 function to redirect to the preferred relationship, but the response may come back as XML in chrome.
-        // So just get the relationship id from the content-location header
-        return helpers.handleRedirect(promise, function(promise) {
-          return promise.getStatusCode() === 200 ? helpers.getLastUrlSegment(promise.getResponseHeader('Content-Location')) : void 0;
+        return plumbing.get(url + '.json', params, {Accept: 'application/x-fs-v1+json', 'X-Expect-Override': '200-ok'}, opts).then(function(){
+          return this.promise.getStatusCode() === 200 ? helpers.getLastUrlSegment(this.promise.getResponseHeader('Location')) : void 0;
         });
       }
     );

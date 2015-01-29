@@ -1,6 +1,6 @@
 {
   "status" : 200,
   "headers" : {
-    "Content-Location" : "/platform/tree/child-and-parents-relationships/12345"
+    "Location" : "/platform/tree/child-and-parents-relationships/12345"
   }
 }
