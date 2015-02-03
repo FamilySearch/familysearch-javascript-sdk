@@ -1,9 +1,11 @@
+if (typeof define !== 'function') { var define = require('amdefine')(module); }
+
 define([
-  'attribution',
-  'helpers',
-  'plumbing',
-  'sources',
-  'user'
+  './attribution',
+  './helpers',
+  './plumbing',
+  './sources',
+  './user'
 ], function(attribution, helpers, plumbing, sources, user) {
   /**
    * @ngdoc overview

@@ -1,6 +1,8 @@
+if (typeof define !== 'function') { var define = require('amdefine')(module); }
+
 define([
-  'globals',
-  'helpers'
+  './globals',
+  './helpers'
 ], function(globals, helpers) {
   /**
    * @ngdoc overview

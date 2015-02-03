@@ -20,13 +20,15 @@
   "eqnull": true,
   "sub": true,
   "globals": {
-    "define": false,
+    "define": true,
     "window": false,
     "document": false,
     "setTimeout": false,
     "clearTimeout": false,
     "setInterval": false,
     "clearInterval": false,
-    "console": false
+    "console": false,
+    "require": false,
+    "module": false
   }
 }

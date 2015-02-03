@@ -168,7 +168,20 @@
  * - `then(function(response) {}, function({data: response, status: status, headers: headers, config: config}) {})`
  * - `catch(function({data: response, status: status, headers: headers, config: config}) {})`
  *
- * #### Node.js -- not yet implemented
+ * #### Node.js
+ *
+ * The SDK isn't published in npm yet. For now you'll have to point directly to the
+ * repository from your package.json file. We ___strongly___ recommend using a tag (hash)
+ * to point to a particular version. Without the hash you'll be pointing to master and
+ * may catch the code in an unstable mid-release state.
+ * 
+ * <pre>
+ * "familysearch-javascript-sdk": "https://github.com/rootsdev/familysearch-javascript-sdk.git#v0.9.15"
+ * </pre>
+ * 
+ * <pre>
+ * var FS = require('familysearch-javascript-sdk');
+ * </pre>
  *
  * ## Handling responses
  *

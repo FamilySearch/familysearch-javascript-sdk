@@ -1,7 +1,9 @@
+if (typeof define !== 'function') { var define = require('amdefine')(module); }
+
 define([
-  'globals',
-  'helpers',
-  'plumbing'
+  './globals',
+  './helpers',
+  './plumbing'
 ], function(globals, helpers, plumbing) {
   /**
    * @ngdoc overview
@@ -30,14 +32,20 @@ define([
    * @return {Object} a promise of the (string) auth code
    */
   exports.getAuthCode = function() {
-    return plumbing.getUrl('http://oauth.net/core/2.0/endpoint/authorize').then(function(url) {
-      var popup = openPopup(url, {
-        'response_type' : 'code',
-        'client_id'     : globals.clientId,
-        'redirect_uri'  : globals.redirectUri
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+      var d = globals.deferredWrapper();
+      d.reject();
+      return d.promise;
+    } else {
+      return plumbing.getUrl('http://oauth.net/core/2.0/endpoint/authorize').then(function(url) {
+        var popup = openPopup(url, {
+          'response_type' : 'code',
+          'client_id'     : globals.clientId,
+          'redirect_uri'  : globals.redirectUri
+        });
+        return pollForAuthCode(popup);
       });
-      return pollForAuthCode(popup);
-    });
+    }
   };
 
   /**

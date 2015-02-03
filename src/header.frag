@@ -14,15 +14,20 @@
   }
 }(this, function() {
 'use strict';
+  
   // Rather than use the RequireJS almond loader, this is less code for our simple use case
   var modules = {}, requireCache = {};
+  
   function define(name, deps, fn) {
     modules[name] = {
       deps: arguments.length === 3 ? deps : [],
       fn: arguments.length === 3 ? fn : deps
     };
   }
-  function require(name) {
+  function amdRequire(name) {
+    if(name.indexOf('./') === 0){
+      name = name.substr(2);
+    }    
     var mod = modules[name],
       depResults = [],
       result = mod.fn;
@@ -31,7 +36,7 @@
         var depName = mod.deps[i];
         var depResult = requireCache[depName];
         if (depResult === void 0) {
-          depResult = require(depName);
+          depResult = amdRequire(depName);
           requireCache[depName] = depResult;
         }
         depResults.push(depResult);
@@ -40,3 +45,4 @@
     }
     return result;
   }
+  

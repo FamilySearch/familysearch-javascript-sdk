@@ -1,7 +1,9 @@
+if (typeof define !== 'function') { var define = require('amdefine')(module); }
+
 define([
-  'globals',
-  'helpers',
-  'plumbing'
+  './globals',
+  './helpers',
+  './plumbing'
 ], function(globals, helpers, plumbing) {
   /**
    * @ngdoc overview

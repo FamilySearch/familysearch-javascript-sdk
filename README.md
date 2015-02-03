@@ -51,19 +51,29 @@ Installation
 The SDK is available as a versioned javascript file, following the [semantic versioning](http://semver.org/) guidelines.
 We are still on major version 0, so the API is subject to some change.
 
-There are three ways to download the SDK for use in your own projects:
+1. Bower
 
-First, if you use bower you can install it using:
+        bower install familysearch-javascript-sdk
 
-    bower install familysearch-javascript-sdk
+1. Node
 
-Second, you can click on the _Releases_ tab near the top of this github project page and select the release you want to download.
+   The SDK isn't published in npm yet. For now you'll have to point directly to the
+   repository from your package.json file. We ___strongly___ recommend using a tag (hash)
+   to point to a particular version. Without the hash you'll be pointing to master and
+   may catch the code in an unstable mid-release state.
+   
+   ```
+   "familysearch-javascript-sdk": "https://github.com/rootsdev/familysearch-javascript-sdk.git#v0.9.15"
+   ```
 
-Third, you can get the most up-to-date version by downloading one of the following files:
+1. Download
 
-[familysearch-javascript-sdk.js](http://rootsdev.org/familysearch-javascript-sdk/familysearch-javascript-sdk.js)
+    Click on the _Releases_ tab near the top of this github project page and select the
+    release you want to download or get the most up-to-date version by downloading one 
+    of the following files:
 
-[familysearch-javascript-sdk.min.js](http://rootsdev.org/familysearch-javascript-sdk/familysearch-javascript-sdk.min.js)
+    * [familysearch-javascript-sdk.js](http://rootsdev.org/familysearch-javascript-sdk/familysearch-javascript-sdk.js)
+    * [familysearch-javascript-sdk.min.js](http://rootsdev.org/familysearch-javascript-sdk/familysearch-javascript-sdk.min.js)
 
 In the future, if we can get 100 people watching the repo, [cdnJS](http://cdnjs.com/) will host it.
 

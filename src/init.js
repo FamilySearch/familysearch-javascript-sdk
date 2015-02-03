@@ -1,10 +1,13 @@
-define([
-  'angularjs-wrappers',
-  'globals',
-  'helpers',
-  'jquery-wrappers',
-  'plumbing'
-], function(angularjsWrappers, globals, helpers, jQueryWrappers, plumbing) {
+if (typeof define !== 'function') { var define = require('amdefine')(module); }
+
+define([  
+  './globals',
+  './helpers',
+  './plumbing',
+  './angularjs-wrappers',
+  './jquery-wrappers',
+  './nodejs-wrappers'
+], function(globals, helpers, plumbing, angularjsWrappers, jQueryWrappers, nodejsWrappers) {
   /**
    * @ngdoc overview
    * @name init
@@ -62,28 +65,38 @@ define([
     //noinspection JSUndeclaredVariable
     globals.environment = opts['environment'];
 
-    if(!opts['http_function'] && !window.jQuery) {
-      throw 'http must be set; e.g., jQuery.ajax';
-    }
-    var httpFunction = opts['http_function'] || window.jQuery.ajax;
-    if (httpFunction.defaults) {
-      globals.httpWrapper = angularjsWrappers.httpWrapper(httpFunction);
-    }
+    // nodejs
+    if(typeof module === 'object' && typeof module.exports === 'object'){
+      globals.httpWrapper = nodejsWrappers.httpWrapper();
+      globals.deferredWrapper = nodejsWrappers.deferredWrapper();
+    } 
+    
+    // browsers
     else {
-      globals.httpWrapper = jQueryWrappers.httpWrapper(httpFunction);
-    }
+    
+      if(!opts['http_function'] && !window.jQuery) {
+        throw 'http must be set; e.g., jQuery.ajax';
+      }
+      var httpFunction = opts['http_function'] || window.jQuery.ajax;
+      if (httpFunction.defaults) {
+        globals.httpWrapper = angularjsWrappers.httpWrapper(httpFunction);
+      }
+      else {
+        globals.httpWrapper = jQueryWrappers.httpWrapper(httpFunction);
+      }
 
-    if(!opts['deferred_function'] && !window.jQuery) {
-      throw 'deferred_function must be set; e.g., jQuery.Deferred';
-    }
-    var deferredFunction = opts['deferred_function'] || window.jQuery.Deferred;
-    var d = deferredFunction();
-    d.resolve(); // required for unit tests
-    if (!helpers.isFunction(d.promise)) {
-      globals.deferredWrapper = angularjsWrappers.deferredWrapper(deferredFunction);
-    }
-    else {
-      globals.deferredWrapper = jQueryWrappers.deferredWrapper(deferredFunction);
+      if(!opts['deferred_function'] && !window.jQuery) {
+        throw 'deferred_function must be set; e.g., jQuery.Deferred';
+      }
+      var deferredFunction = opts['deferred_function'] || window.jQuery.Deferred;
+      var d = deferredFunction();
+      d.resolve(); // required for unit tests
+      if (!helpers.isFunction(d.promise)) {
+        globals.deferredWrapper = angularjsWrappers.deferredWrapper(deferredFunction);
+      }
+      else {
+        globals.deferredWrapper = jQueryWrappers.deferredWrapper(deferredFunction);
+      }
     }
 
     var timeout = opts['timeout_function'];

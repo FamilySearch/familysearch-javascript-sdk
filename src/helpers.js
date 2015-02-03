@@ -1,5 +1,7 @@
+if (typeof define !== 'function') { var define = require('amdefine')(module); }
+
 define([
-  'globals'
+  './globals'
 ], function(globals) {
   var exports = {};
 
@@ -1050,7 +1052,10 @@ define([
   /**
    * Read the access token from the cookie and start the expiry timers
    */
-  exports.readAccessToken = function() {
+  exports.readAccessToken = function() {    
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+      return;
+    }
     var now = (new Date()).getTime();
     var cookie = exports.readCookie(globals.accessTokenCookie);
     if (cookie) {
@@ -1072,8 +1077,11 @@ define([
   /**
    * Set the access token, start the expiry timers, and write the cookie
    */
-  exports.setAccessToken = function(accessToken) {
+  exports.setAccessToken = function(accessToken) {    
     globals.accessToken = accessToken;
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+      return;
+    }
     if (globals.autoExpire) {
       setAccessTokenInactiveTimer(globals.maxAccessTokenInactivityTime);
       setAccessTokenCreationTimer(globals.maxAccessTokenCreationTime);
@@ -1110,6 +1118,9 @@ define([
    */
   exports.eraseAccessToken = function(omitCallback) {
     globals.accessToken = null;
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+      return;
+    }
     if (globals.autoExpire) {
       clearAccessTokenTimers();
     }

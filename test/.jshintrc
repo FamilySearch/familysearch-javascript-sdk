@@ -29,7 +29,7 @@
     "console": false,
 
     "requirejs": false,
-    "define": false,
+    "define": true,
     "describe": false,
     "it": false,
     "iit": false,
