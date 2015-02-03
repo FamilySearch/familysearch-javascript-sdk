@@ -733,15 +733,16 @@ Helpers.prototype.maybe = function(value) {
  * @return {function(Object)} The extender function
  */
 Helpers.prototype.objectExtender = function(extensions, extensionPointGetter) {
+  var self = this;
   return function(obj) {
     if (obj) {
       if (extensionPointGetter) {
         forEach(extensionPointGetter(obj), function(extensionPoint) {
-          this.extend(extensionPoint, this.isFunction(extensions) ? extensions(obj, extensionPoint) : extensions);
+          self.extend(extensionPoint, self.isFunction(extensions) ? extensions(obj, extensionPoint) : extensions);
         });
       }
       else {
-        this.extend(obj, this.isFunction(extensions) ? extensions(obj, obj) : extensions);
+        self.extend(obj, self.isFunction(extensions) ? extensions(obj, obj) : extensions);
       }
     }
     return obj;
@@ -758,17 +759,18 @@ Helpers.prototype.objectExtender = function(extensions, extensionPointGetter) {
  */
 Helpers.prototype.constructorSetter = function(constructorFunction, attr, subObjectGenerator) {
   var setConstructor;
+  var self = this;
   if (subObjectGenerator) {
     setConstructor = this.constructorSetter(constructorFunction, attr);
     return function(obj) {
-      if (this.isObject(obj)) {
+      if (self.isObject(obj)) {
         var subObjs = subObjectGenerator(obj);
-        if (this.isArray(subObjs)) {
-          this.forEach(subObjs, function(subObj) {
+        if (self.isArray(subObjs)) {
+          self.forEach(subObjs, function(subObj) {
             setConstructor(subObj);
           });
         }
-        else if (this.isObject(subObjs)) {
+        else if (self.isObject(subObjs)) {
           setConstructor(subObjs);
         }
       }
@@ -778,13 +780,13 @@ Helpers.prototype.constructorSetter = function(constructorFunction, attr, subObj
   else if (attr) {
     setConstructor = this.constructorSetter(constructorFunction);
     return function(obj) {
-      if (this.isObject(obj)) {
-        if (this.isArray(obj[attr])) {
-          obj[attr] = this.map(obj[attr], function(o) {
+      if (self.isObject(obj)) {
+        if (self.isArray(obj[attr])) {
+          obj[attr] = self.map(obj[attr], function(o) {
             return setConstructor(o);
           });
         }
-        else if (this.isObject(obj[attr])) {
+        else if (self.isObject(obj[attr])) {
           obj[attr] = setConstructor(obj[attr]);
         }
       }
@@ -794,7 +796,7 @@ Helpers.prototype.constructorSetter = function(constructorFunction, attr, subObj
   else {
     return function(obj) {
       var result = Object.create(constructorFunction.prototype);
-      this.extend(result, obj);
+      self.extend(result, obj);
       return result;
     };
   }

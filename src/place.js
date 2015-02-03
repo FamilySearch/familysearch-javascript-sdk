@@ -74,7 +74,7 @@ Place.prototype = {
    * @return {string} convenience function to return the first element of the normalized array
    */
   $getNormalizedPlace: function() {
-    return maybe(this.normalized)[0];
+    return this.normalized ? this.normalized[0] : undefined;
   }
 };
 

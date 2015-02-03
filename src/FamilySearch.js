@@ -2,8 +2,11 @@ var globals = require('./globals'),
     angularjsWrappers = require('./angularjs-wrappers'),
     jQueryWrappers = require('./jquery-wrappers'),
     nodejsWrappers = require('./nodejs-wrappers'),
-    Authentication = require('./authentication'),
     Attribution = require('./attribution'),
+    Authentication = require('./authentication'),
+    Authorities = require('./authorities'),
+    Place = require('./place'),
+    Date = require('./date'),
     Helpers = require('./helpers'),
     Plumbing = require('./plumbing');
 
@@ -49,6 +52,7 @@ var FS = module.exports = function(opts){
   self.helpers = new Helpers(self);
   self.plumbing = new Plumbing(self);
   self.authentication = new Authentication(self);
+  self.authorities = new Authorities(self);
   
   self.settings = self.helpers.extend(self.settings, globals);
   
@@ -154,6 +158,9 @@ var FS = module.exports = function(opts){
 
 };
 
+// Attribution
+FS.Attribution = Attribution;
+
 // Authentication
 extendFSPrototype('authentication', 'getAccessToken');
 extendFSPrototype('authentication', 'getAccessTokenForMobile');
@@ -161,10 +168,11 @@ extendFSPrototype('authentication', 'getAuthCode');
 extendFSPrototype('authentication', 'hasAccessToken');
 extendFSPrototype('authentication', 'invalidateAccessToken');
 
-// Attribution
-FS.Attribution = Attribution;
-
 // Authorities
+extendFSPrototype('authorities', 'getDate');
+extendFSPrototype('authorities', 'getPlaceSearch');
+FS.Date = Date;
+FS.Place = Place;
 
 // Plumbing
 extendFSPrototype('plumbing', 'del');

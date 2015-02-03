@@ -1,3 +1,6 @@
+var Date = require('./date'),
+    Place = require('./place');
+
 /**
  * @ngdoc overview
  * @name authorities
@@ -84,4 +87,4 @@ Authorities.prototype.getPlaceSearch = function(place, opts) {
 // TODO name authority
 // TODO culture authority
 
-return Authorities;
+module.exports = Authorities;
