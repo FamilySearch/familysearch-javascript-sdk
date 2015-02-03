@@ -1121,10 +1121,9 @@ define([
     return plumbing.getUrl('person-portrait-template', pid, {pid: pid}).then(function(url) {
       if (params && params.followRedirect) {
         params = helpers.extend({}, params);
-        delete params.followRedirect;
-        var promise = plumbing.get(url, params, {}, opts);
-        return helpers.handleRedirect(promise, function(promise) {
-          return promise.getStatusCode() === 204 ? '' : helpers.appendAccessToken(promise.getResponseHeader('Content-Location'));
+        delete params.followRedirect;     
+        return plumbing.get(url, params, { 'X-Expect-Override': '200-ok' }, opts).then(function(){
+          return this.promise.getStatusCode() === 204 ? '' : helpers.appendAccessToken(this.promise.getResponseHeader('Location'));
         });
       }
       else {

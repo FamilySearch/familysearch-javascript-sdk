@@ -637,31 +637,6 @@ define([
   };
 
   /**
-   * Sometimes FamilySearch returns a 303, which the browser follows automatically.
-   * Unfortunately, chrome doesn't include the Accept header on the redirect request
-   * (the spec doesn't address the point of whether the browser should include headers on redirects)
-   * so data is returned in some other format, which we don't expect.
-   * We try to parse the response as json and fail, so rely upon the status code
-   *
-   * @param {Object} promise promise for the response
-   * @param {Function} resultGenerator function to generate a result
-   * @returns {Object} promise for the final result
-   */
-  exports.handleRedirect = function(promise, resultGenerator) {
-    var d = globals.deferredWrapper();
-    var handler = function() {
-      if (promise.getStatusCode() === 200 || promise.getStatusCode() === 204) {
-        d.resolve(resultGenerator(promise));
-      }
-      else {
-        d.reject(arguments);
-      }
-    };
-    promise.then(handler, handler);
-    return exports.extendHttpPromise(d.promise, promise);
-  };
-
-  /**
    * Return true if url starts with https?://
    * @param {string} url
    * @returns {boolean} true if url starts with https?://
