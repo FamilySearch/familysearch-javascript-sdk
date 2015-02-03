@@ -14,15 +14,20 @@
   }
 }(this, function() {
 
+  
   // Rather than use the RequireJS almond loader, this is less code for our simple use case
   var modules = {}, requireCache = {};
+  
   function define(name, deps, fn) {
     modules[name] = {
       deps: arguments.length === 3 ? deps : [],
       fn: arguments.length === 3 ? fn : deps
     };
   }
-  function require(name) {
+  function amdRequire(name) {
+    if(name.indexOf('./') === 0){
+      name = name.substr(2);
+    }    
     var mod = modules[name],
       depResults = [],
       result = mod.fn;
@@ -31,7 +36,7 @@
         var depName = mod.deps[i];
         var depResult = requireCache[depName];
         if (depResult === void 0) {
-          depResult = require(depName);
+          depResult = amdRequire(depName);
           requireCache[depName] = depResult;
         }
         depResults.push(depResult);
@@ -40,6 +45,8 @@
     }
     return result;
   }
+  
+
 define('globals',{
   clientId: null,
   environment: null,
@@ -81,8 +88,10 @@ define('globals',{
   discoveryUrl: '/.well-known/app-meta'
 });
 
+
+
 define('helpers',[
-  'globals'
+  './globals'
 ], function(globals) {
   var exports = {};
 
@@ -1133,7 +1142,10 @@ define('helpers',[
   /**
    * Read the access token from the cookie and start the expiry timers
    */
-  exports.readAccessToken = function() {
+  exports.readAccessToken = function() {    
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+      return;
+    }
     var now = (new Date()).getTime();
     var cookie = exports.readCookie(globals.accessTokenCookie);
     if (cookie) {
@@ -1155,8 +1167,11 @@ define('helpers',[
   /**
    * Set the access token, start the expiry timers, and write the cookie
    */
-  exports.setAccessToken = function(accessToken) {
+  exports.setAccessToken = function(accessToken) {    
     globals.accessToken = accessToken;
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+      return;
+    }
     if (globals.autoExpire) {
       setAccessTokenInactiveTimer(globals.maxAccessTokenInactivityTime);
       setAccessTokenCreationTimer(globals.maxAccessTokenCreationTime);
@@ -1193,6 +1208,9 @@ define('helpers',[
    */
   exports.eraseAccessToken = function(omitCallback) {
     globals.accessToken = null;
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+      return;
+    }
     if (globals.autoExpire) {
       clearAccessTokenTimers();
     }
@@ -1207,177 +1225,11 @@ define('helpers',[
   return exports;
 });
 
-define('angularjs-wrappers',[
-  'globals',
-  'helpers'
-], function(globals, helpers) {
-  var exports = {};
 
-  /**
-   * httpWrapper function based upon Angular's $http function
-   * @param http Angular's $http function
-   * @returns {Function} http function that exposes a standard interface
-   */
-  exports.httpWrapper = function(http) {
-    return function(method, url, headers, data, opts) {
-      // set up the options
-      var config = helpers.extend({
-        method: method,
-        url: url,
-        responseType: 'json',
-        data: data,
-        transformRequest: function(obj) {
-          return obj;
-        }
-      }, opts);
-      config.headers = helpers.extend({}, headers, opts.headers);
-      if (config.headers['Content-Type'] === 'multipart/form-data') {
-        config.headers['Content-Type'] = void 0;
-      }
-
-      // make the call
-      var promise = http(config);
-
-      // process the response
-      var d = globals.deferredWrapper();
-      var returnedPromise = d.promise;
-      var statusCode = null;
-      var headerGetter = null;
-      promise.then(
-        function(response) {
-          statusCode = response.status;
-          headerGetter = response.headers;
-          d.resolve(response.data);
-        },
-        function(response) {
-          statusCode = response.status;
-          headerGetter = response.headers;
-          d.reject(response);
-        });
-
-      // add http-specific functions to the returned promise
-      returnedPromise.getStatusCode = function() {
-        return statusCode;
-      };
-      returnedPromise.getResponseHeader = function(header) {
-        return headerGetter(header);
-      };
-      returnedPromise.getAllResponseHeaders = function() {
-        return headerGetter();
-      };
-      returnedPromise.getRequest = function() {
-        return config;
-      };
-
-      return returnedPromise;
-    };
-  };
-
-  /**
-   * deferredWrapper function based upon Angular's $q.defer function
-   * @param deferred Angular's $q.defer function
-   * @returns {Function} deferred function that exposes a standard interface
-   */
-  exports.deferredWrapper = function(deferred) {
-    return function() {
-      var d = deferred();
-      return {
-        promise: d.promise,
-        resolve: d.resolve,
-        reject: d.reject
-      };
-    };
-  };
-
-  return exports;
-});
-
-define('jquery-wrappers',[
-  'globals',
-  'helpers'
-], function(globals, helpers) {
-  var exports = {};
-
-  /**
-   * httpWrapper function based upon jQuery's $.ajax function
-   * @param ajax jQuery's $.ajax function
-   * @returns {Function} http function that exposes a standard interface
-   */
-  exports.httpWrapper = function(ajax) {
-    return function(method, url, headers, data, opts) {
-      // set up the options
-      opts = helpers.extend({
-        url: url,
-        type: method,
-        dataType: 'json',
-        data: data,
-        processData: false
-      }, opts);
-      opts.headers = helpers.extend({}, headers, opts.headers);
-      if (opts.headers['Content-Type'] === 'multipart/form-data') {
-        opts.contentType = false;
-        delete opts.headers['Content-Type'];
-      }
-
-      // make the call
-      var jqXHR = ajax(opts);
-
-      // process the response
-      var d = globals.deferredWrapper();
-      var returnedPromise = d.promise;
-      var statusCode = null;
-      jqXHR.then(
-        function(data, textStatus, jqXHR) {
-          statusCode = jqXHR.status;
-          d.resolve(data);
-        },
-        function(jqXHR, textStatus, errorThrown) {
-          statusCode = jqXHR.status;
-          if (statusCode >= 200 && statusCode <= 299 && !jqXHR.responseText) {
-            // FamilySearch sometimes returns no content in the response even though we have requested json
-            // No content is not valid json, so we get an error parsing it
-            // Treat it as valid but empty content
-            d.resolve(null);
-          }
-          else {
-            d.reject(jqXHR, textStatus, errorThrown);
-          }
-        });
-
-      // add http-specific functions to the returned promise
-      helpers.wrapFunctions(returnedPromise, jqXHR, ['getResponseHeader', 'getAllResponseHeaders']);
-      returnedPromise.getStatusCode = function() {
-        return statusCode;
-      };
-      returnedPromise.getRequest = function() {
-        return opts;
-      };
-      return returnedPromise;
-    };
-  };
-
-  /**
-   * deferredWrapper function based upon jQuery's $.Deferred function
-   * @param deferred jQuery's $.Deferred function
-   * @returns {Function} deferred function that exposes a standard interface
-   */
-  exports.deferredWrapper = function(deferred) {
-    return function() {
-      var d = deferred();
-      return {
-        promise: d.promise(),
-        resolve: d.resolve,
-        reject: d.reject
-      };
-    };
-  };
-
-  return exports;
-});
 
 define('plumbing',[
-  'globals',
-  'helpers'
+  './globals',
+  './helpers'
 ], function(globals, helpers) {
   /**
    * @ngdoc overview
@@ -1714,13 +1566,287 @@ define('plumbing',[
   return exports;
 });
 
-define('init',[
-  'angularjs-wrappers',
-  'globals',
-  'helpers',
-  'jquery-wrappers',
-  'plumbing'
-], function(angularjsWrappers, globals, helpers, jQueryWrappers, plumbing) {
+
+
+define('angularjs-wrappers',[
+  './globals',
+  './helpers'
+], function(globals, helpers) {
+  var exports = {};
+
+  /**
+   * httpWrapper function based upon Angular's $http function
+   * @param http Angular's $http function
+   * @returns {Function} http function that exposes a standard interface
+   */
+  exports.httpWrapper = function(http) {
+    return function(method, url, headers, data, opts) {
+      // set up the options
+      var config = helpers.extend({
+        method: method,
+        url: url,
+        responseType: 'json',
+        data: data,
+        transformRequest: function(obj) {
+          return obj;
+        }
+      }, opts);
+      config.headers = helpers.extend({}, headers, opts.headers);
+      if (config.headers['Content-Type'] === 'multipart/form-data') {
+        config.headers['Content-Type'] = void 0;
+      }
+
+      // make the call
+      var promise = http(config);
+
+      // process the response
+      var d = globals.deferredWrapper();
+      var returnedPromise = d.promise;
+      var statusCode = null;
+      var headerGetter = null;
+      promise.then(
+        function(response) {
+          statusCode = response.status;
+          headerGetter = response.headers;
+          d.resolve(response.data);
+        },
+        function(response) {
+          statusCode = response.status;
+          headerGetter = response.headers;
+          d.reject(response);
+        });
+
+      // add http-specific functions to the returned promise
+      returnedPromise.getStatusCode = function() {
+        return statusCode;
+      };
+      returnedPromise.getResponseHeader = function(header) {
+        return headerGetter(header);
+      };
+      returnedPromise.getAllResponseHeaders = function() {
+        return headerGetter();
+      };
+      returnedPromise.getRequest = function() {
+        return config;
+      };
+
+      return returnedPromise;
+    };
+  };
+
+  /**
+   * deferredWrapper function based upon Angular's $q.defer function
+   * @param deferred Angular's $q.defer function
+   * @returns {Function} deferred function that exposes a standard interface
+   */
+  exports.deferredWrapper = function(deferred) {
+    return function() {
+      var d = deferred();
+      return {
+        promise: d.promise,
+        resolve: d.resolve,
+        reject: d.reject
+      };
+    };
+  };
+
+  return exports;
+});
+
+
+
+define('jquery-wrappers',[
+  './globals',
+  './helpers'
+], function(globals, helpers) {
+  var exports = {};
+
+  /**
+   * httpWrapper function based upon jQuery's $.ajax function
+   * @param ajax jQuery's $.ajax function
+   * @returns {Function} http function that exposes a standard interface
+   */
+  exports.httpWrapper = function(ajax) {
+    return function(method, url, headers, data, opts) {
+      // set up the options
+      opts = helpers.extend({
+        url: url,
+        type: method,
+        dataType: 'json',
+        data: data,
+        processData: false
+      }, opts);
+      opts.headers = helpers.extend({}, headers, opts.headers);
+      if (opts.headers['Content-Type'] === 'multipart/form-data') {
+        opts.contentType = false;
+        delete opts.headers['Content-Type'];
+      }
+
+      // make the call
+      var jqXHR = ajax(opts);
+
+      // process the response
+      var d = globals.deferredWrapper();
+      var returnedPromise = d.promise;
+      var statusCode = null;
+      jqXHR.then(
+        function(data, textStatus, jqXHR) {
+          statusCode = jqXHR.status;
+          d.resolve(data);
+        },
+        function(jqXHR, textStatus, errorThrown) {
+          statusCode = jqXHR.status;
+          if (statusCode >= 200 && statusCode <= 299 && !jqXHR.responseText) {
+            // FamilySearch sometimes returns no content in the response even though we have requested json
+            // No content is not valid json, so we get an error parsing it
+            // Treat it as valid but empty content
+            d.resolve(null);
+          }
+          else {
+            d.reject(jqXHR, textStatus, errorThrown);
+          }
+        });
+
+      // add http-specific functions to the returned promise
+      helpers.wrapFunctions(returnedPromise, jqXHR, ['getResponseHeader', 'getAllResponseHeaders']);
+      returnedPromise.getStatusCode = function() {
+        return statusCode;
+      };
+      returnedPromise.getRequest = function() {
+        return opts;
+      };
+      return returnedPromise;
+    };
+  };
+
+  /**
+   * deferredWrapper function based upon jQuery's $.Deferred function
+   * @param deferred jQuery's $.Deferred function
+   * @returns {Function} deferred function that exposes a standard interface
+   */
+  exports.deferredWrapper = function(deferred) {
+    return function() {
+      var d = deferred();
+      return {
+        promise: d.promise(),
+        resolve: d.resolve,
+        reject: d.reject
+      };
+    };
+  };
+
+  return exports;
+});
+
+
+
+if (typeof module === 'object' && typeof module.exports === 'object') {
+  
+  // Include dependencies dynamically to prevent requirejs from trying
+  // to load Q.js and request.js during the build
+  var deps = [
+    './globals',
+    './helpers',
+    'q',
+    'request'
+  ];
+  
+  define(deps, function(globals, helpers, Q, http) {
+    
+    var exports = {};
+
+    /**
+     * httpWrapper function based upon request
+     * https://github.com/request/request
+     * @param request request library
+     * @returns {Function} http function that exposes a standard interface
+     */
+    exports.httpWrapper = function() {
+      return function(method, url, headers, data, opts) {
+        
+        // set up the options
+        opts = helpers.extend({
+          url: url,
+          method: method,
+          json: true,
+          body: data
+        }, opts);
+        opts.headers = helpers.extend({}, headers, opts.headers);
+
+        if (opts.headers['Content-Type'] === 'multipart/form-data') {
+          opts.formData = opts.body;
+          delete opts.body;
+          delete opts.headers['Content-Type'];
+          delete opts.json;
+        }
+        
+        // process the response
+        var d = globals.deferredWrapper();
+        var returnedPromise = d.promise;
+        var statusCode = null;
+        var responseHeaders = {};
+
+        // make the call
+        http(opts, function(error, response, body){
+          if(response && response.headers){
+            responseHeaders = response.headers;
+          }
+          if(error){
+            d.reject(error);
+          } else {
+            d.resolve(body);
+          }
+        });
+
+        // add http-specific functions to the returned promise
+        returnedPromise.getStatusCode = function() {
+          return statusCode;
+        };
+        returnedPromise.getResponseHeader = function(header) {
+          return responseHeaders[header];
+        };
+        returnedPromise.getAllResponseHeaders = function() {
+          return responseHeaders;
+        };
+        returnedPromise.getRequest = function() {
+          return opts;
+        };
+        return returnedPromise;
+        
+      };
+    };
+
+    /**
+     * deferredWrapper function based upon Q's defer function
+     * @param deferred Q's defer function
+     * @returns {Function} deferred function that exposes a standard interface
+     */
+    exports.deferredWrapper = function() {
+      return function() {
+        var d = Q.defer();
+        return {
+          promise: d.promise,
+          resolve: d.resolve,
+          reject: d.reject
+        };
+      };
+    };
+
+    return exports;
+  });
+};
+define("nodejs-wrappers", function(){});
+
+
+
+define('init',[  
+  './globals',
+  './helpers',
+  './plumbing',
+  './angularjs-wrappers',
+  './jquery-wrappers',
+  './nodejs-wrappers'
+], function(globals, helpers, plumbing, angularjsWrappers, jQueryWrappers, nodejsWrappers) {
   /**
    * @ngdoc overview
    * @name init
@@ -1778,28 +1904,38 @@ define('init',[
     //noinspection JSUndeclaredVariable
     globals.environment = opts['environment'];
 
-    if(!opts['http_function'] && !window.jQuery) {
-      throw 'http must be set; e.g., jQuery.ajax';
-    }
-    var httpFunction = opts['http_function'] || window.jQuery.ajax;
-    if (httpFunction.defaults) {
-      globals.httpWrapper = angularjsWrappers.httpWrapper(httpFunction);
-    }
+    // nodejs
+    if(typeof module === 'object' && typeof module.exports === 'object'){
+      globals.httpWrapper = nodejsWrappers.httpWrapper();
+      globals.deferredWrapper = nodejsWrappers.deferredWrapper();
+    } 
+    
+    // browsers
     else {
-      globals.httpWrapper = jQueryWrappers.httpWrapper(httpFunction);
-    }
+    
+      if(!opts['http_function'] && !window.jQuery) {
+        throw 'http must be set; e.g., jQuery.ajax';
+      }
+      var httpFunction = opts['http_function'] || window.jQuery.ajax;
+      if (httpFunction.defaults) {
+        globals.httpWrapper = angularjsWrappers.httpWrapper(httpFunction);
+      }
+      else {
+        globals.httpWrapper = jQueryWrappers.httpWrapper(httpFunction);
+      }
 
-    if(!opts['deferred_function'] && !window.jQuery) {
-      throw 'deferred_function must be set; e.g., jQuery.Deferred';
-    }
-    var deferredFunction = opts['deferred_function'] || window.jQuery.Deferred;
-    var d = deferredFunction();
-    d.resolve(); // required for unit tests
-    if (!helpers.isFunction(d.promise)) {
-      globals.deferredWrapper = angularjsWrappers.deferredWrapper(deferredFunction);
-    }
-    else {
-      globals.deferredWrapper = jQueryWrappers.deferredWrapper(deferredFunction);
+      if(!opts['deferred_function'] && !window.jQuery) {
+        throw 'deferred_function must be set; e.g., jQuery.Deferred';
+      }
+      var deferredFunction = opts['deferred_function'] || window.jQuery.Deferred;
+      var d = deferredFunction();
+      d.resolve(); // required for unit tests
+      if (!helpers.isFunction(d.promise)) {
+        globals.deferredWrapper = angularjsWrappers.deferredWrapper(deferredFunction);
+      }
+      else {
+        globals.deferredWrapper = jQueryWrappers.deferredWrapper(deferredFunction);
+      }
     }
 
     var timeout = opts['timeout_function'];
@@ -1853,10 +1989,12 @@ define('init',[
   return exports;
 });
 
+
+
 define('authentication',[
-  'globals',
-  'helpers',
-  'plumbing'
+  './globals',
+  './helpers',
+  './plumbing'
 ], function(globals, helpers, plumbing) {
   /**
    * @ngdoc overview
@@ -1885,14 +2023,20 @@ define('authentication',[
    * @return {Object} a promise of the (string) auth code
    */
   exports.getAuthCode = function() {
-    return plumbing.getUrl('http://oauth.net/core/2.0/endpoint/authorize').then(function(url) {
-      var popup = openPopup(url, {
-        'response_type' : 'code',
-        'client_id'     : globals.clientId,
-        'redirect_uri'  : globals.redirectUri
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+      var d = globals.deferredWrapper();
+      d.reject();
+      return d.promise;
+    } else {
+      return plumbing.getUrl('http://oauth.net/core/2.0/endpoint/authorize').then(function(url) {
+        var popup = openPopup(url, {
+          'response_type' : 'code',
+          'client_id'     : globals.clientId,
+          'redirect_uri'  : globals.redirectUri
+        });
+        return pollForAuthCode(popup);
       });
-      return pollForAuthCode(popup);
-    });
+    }
   };
 
   /**
@@ -2121,9 +2265,11 @@ define('authentication',[
   return exports;
 });
 
+
+
 define('authorities',[
-  'helpers',
-  'plumbing'
+  './helpers',
+  './plumbing'
 ], function(helpers, plumbing) {
   /**
    * @ngdoc overview
@@ -2441,10 +2587,12 @@ define('authorities',[
   return exports;
 });
 
+
+
 define('user',[
-  'globals',
-  'helpers',
-  'plumbing'
+  './globals',
+  './helpers',
+  './plumbing'
 ], function(globals, helpers, plumbing) {
   /**
    * @ngdoc overview
@@ -2709,10 +2857,12 @@ define('user',[
   return exports;
 });
 
+
+
 define('changeHistory',[
-  'helpers',
-  'plumbing',
-  'user'
+  './helpers',
+  './plumbing',
+  './user'
 ], function(helpers, plumbing, user) {
   /**
    * @ngdoc overview
@@ -2934,10 +3084,12 @@ define('changeHistory',[
   return exports;
 });
 
+
+
 define('attribution',[
-  'helpers',
-  'plumbing',
-  'user'
+  './helpers',
+  './plumbing',
+  './user'
 ], function(helpers, plumbing, user) {
   /**
    * @ngdoc overview
@@ -3011,12 +3163,14 @@ define('attribution',[
   return exports;
 });
 
+
+
 define('discussions',[
-  'attribution',
-  'globals',
-  'helpers',
-  'plumbing',
-  'user'
+  './attribution',
+  './globals',
+  './helpers',
+  './plumbing',
+  './user'
 ], function(attribution, globals, helpers, plumbing, user) {
   /**
    * @ngdoc overview
@@ -3838,10 +3992,12 @@ define('discussions',[
   return exports;
 });
 
+
+
 define('fact',[
-  'attribution',
-  'authorities',
-  'helpers'
+  './attribution',
+  './authorities',
+  './helpers'
 ], function(attribution, authorities, helpers) {
   /**
    * @ngdoc overview
@@ -4219,9 +4375,11 @@ define('fact',[
   return exports;
 });
 
+
+
 define('name',[
-  'attribution',
-  'helpers'
+  './attribution',
+  './helpers'
 ], function(attribution, helpers) {
   /**
    * @ngdoc overview
@@ -4600,13 +4758,15 @@ define('name',[
   return exports;
 });
 
+
+
 define('memories',[
-  'attribution',
-  'discussions',
-  'globals',
-  'helpers',
-  'name',
-  'plumbing'
+  './attribution',
+  './discussions',
+  './globals',
+  './helpers',
+  './name',
+  './plumbing'
 ], function(attribution, discussions, globals, helpers, name, plumbing) {
   /**
    * @ngdoc overview
@@ -5824,10 +5984,12 @@ define('memories',[
   return exports;
 });
 
+
+
 define('notes',[
-  'attribution',
-  'helpers',
-  'plumbing'
+  './attribution',
+  './helpers',
+  './plumbing'
 ], function(attribution, helpers, plumbing) {
   /**
    * @ngdoc overview
@@ -6464,11 +6626,13 @@ define('notes',[
   return exports;
 });
 
+
+
 define('sources',[
-  'attribution',
-  'globals',
-  'helpers',
-  'plumbing'
+  './attribution',
+  './globals',
+  './helpers',
+  './plumbing'
 ], function(attribution, globals, helpers, plumbing) {
   /**
    * @ngdoc overview
@@ -7535,15 +7699,17 @@ define('sources',[
   return exports;
 });
 
+
+
 define('parentsAndChildren',[
-  'attribution',
-  'changeHistory',
-  'fact',
-  'globals',
-  'helpers',
-  'notes',
-  'plumbing',
-  'sources'
+  './attribution',
+  './changeHistory',
+  './fact',
+  './globals',
+  './helpers',
+  './notes',
+  './plumbing',
+  './sources'
 ], function(attribution, changeHistory, fact, globals, helpers, notes, plumbing, sources) {
   /**
    * @ngdoc overview
@@ -8218,10 +8384,12 @@ define('parentsAndChildren',[
   return exports;
 });
 
+
+
 define('pedigree',[
-  'globals',
-  'helpers',
-  'plumbing'
+  './globals',
+  './helpers',
+  './plumbing'
 ], function(globals, helpers, plumbing) {
   /**
    * @ngdoc overview
@@ -8360,10 +8528,12 @@ define('pedigree',[
 
   return exports;
 });
+
+
 define('searchAndMatch',[
-  'globals',
-  'helpers',
-  'plumbing'
+  './globals',
+  './helpers',
+  './plumbing'
 ], function(globals, helpers, plumbing) {
   /**
    * @ngdoc overview
@@ -8737,16 +8907,18 @@ define('searchAndMatch',[
   return exports;
 });
 
+
+
 define('spouses',[
-  'attribution',
-  'changeHistory',
-  'fact',
-  'globals',
-  'helpers',
-  'parentsAndChildren',
-  'plumbing',
-  'notes',
-  'sources'
+  './attribution',
+  './changeHistory',
+  './fact',
+  './globals',
+  './helpers',
+  './parentsAndChildren',
+  './plumbing',
+  './notes',
+  './sources'
 ], function(attribution, changeHistory, fact, globals, helpers, parentsAndChildren, plumbing, notes, sources) {
   /**
    * @ngdoc overview
@@ -9232,23 +9404,25 @@ define('spouses',[
   return exports;
 });
 
+
+
 define('person',[
-  'attribution',
-  'changeHistory',
-  'discussions',
-  'fact',
-  'globals',
-  'helpers',
-  'memories',
-  'name',
-  'notes',
-  'parentsAndChildren',
-  'pedigree',
-  'plumbing',
-  'searchAndMatch',
-  'sources',
-  'spouses',
-  'user'
+  './attribution',
+  './changeHistory',
+  './discussions',
+  './fact',
+  './globals',
+  './helpers',
+  './memories',
+  './name',
+  './notes',
+  './parentsAndChildren',
+  './pedigree',
+  './plumbing',
+  './searchAndMatch',
+  './sources',
+  './spouses',
+  './user'
 ], function(attribution, changeHistory, discussions, fact, globals, helpers, memories, name, notes, parentsAndChildren,
             pedigree, plumbing, searchAndMatch, sources, spouses, user) {
   /**
@@ -10793,12 +10967,14 @@ define('person',[
   return exports;
 });
 
+
+
 define('sourceBox',[
-  'attribution',
-  'helpers',
-  'plumbing',
-  'sources',
-  'user'
+  './attribution',
+  './helpers',
+  './plumbing',
+  './sources',
+  './user'
 ], function(attribution, helpers, plumbing, sources, user) {
   /**
    * @ngdoc overview
@@ -11175,9 +11351,11 @@ define('sourceBox',[
   return exports;
 });
 
+
+
 define('utilities',[
-  'globals',
-  'helpers'
+  './globals',
+  './helpers'
 ], function(globals, helpers) {
   /**
    * @ngdoc overview
@@ -11209,27 +11387,29 @@ define('utilities',[
   return exports;
 });
 
+
+
 define('FamilySearch',[
-  'init',
-  'authentication',
-  'authorities',
-  'changeHistory',
-  'discussions',
-  'fact',
-  'helpers',
-  'memories',
-  'name',
-  'notes',
-  'parentsAndChildren',
-  'pedigree',
-  'person',
-  'plumbing',
-  'searchAndMatch',
-  'sourceBox',
-  'sources',
-  'spouses',
-  'user',
-  'utilities'
+  './init',
+  './authentication',
+  './authorities',
+  './changeHistory',
+  './discussions',
+  './fact',
+  './helpers',
+  './memories',
+  './name',
+  './notes',
+  './parentsAndChildren',
+  './pedigree',
+  './person',
+  './plumbing',
+  './searchAndMatch',
+  './sourceBox',
+  './sources',
+  './spouses',
+  './user',
+  './utilities'
 ], function(init, authentication, authorities, changeHistory, discussions, fact, helpers, memories, name, notes,
             parentsAndChildren, pedigree, person, plumbing, searchAndMatch, sourceBox, sources, spouses, user, utilities) {
 
@@ -11400,5 +11580,5 @@ define('FamilySearch',[
   // Ask almond to synchronously require the
   // module value here and return it as the
   // value to use for the public API for the built file.
-  return require('FamilySearch');
+  return amdRequire('FamilySearch');
 }));

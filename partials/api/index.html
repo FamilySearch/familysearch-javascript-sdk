@@ -152,7 +152,17 @@ will have the methods <a href="http://docs.angularjs.org/api/ng.$q#description_t
 <li><code>then(function(response) {}, function({data: response, status: status, headers: headers, config: config}) {})</code></li>
 <li><code>catch(function({data: response, status: status, headers: headers, config: config}) {})</code></li>
 </ul>
-<h5 id="sdk-functions-return-promises_examples_nodejs----not-yet-implemented">Node.js -- not yet implemented</h5>
+<h5 id="sdk-functions-return-promises_examples_nodejs">Node.js</h5>
+<p>The SDK isn&#39;t published in npm yet. For now you&#39;ll have to point directly to the
+repository from your package.json file. We <strong><em>strongly</em></strong> recommend using a tag (hash)
+to point to a particular version. Without the hash you&#39;ll be pointing to master and
+may catch the code in an unstable mid-release state.</p>
+<pre class="prettyprint linenums">
+"familysearch-javascript-sdk": "https://github.com/rootsdev/familysearch-javascript-sdk.git#v0.9.15"
+</pre>
+<pre class="prettyprint linenums">
+var FS = require('familysearch-javascript-sdk');
+</pre>
 <h3 id="handling-responses">Handling responses</h3>
 <p>SDK function responses are typically json objects.
 The SDK function calls add <em>convenience functions</em> for returning various objects from the response.
