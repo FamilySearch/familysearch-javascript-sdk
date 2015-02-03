@@ -37,8 +37,11 @@ if (typeof module === 'object' && typeof module.exports === 'object') {
 
       // make the call
       http(opts, function(error, response, body){
-        if(response && response.headers){
-          responseHeaders = response.headers;
+        if(response){
+          if(response.headers){
+            responseHeaders = response.headers;
+          }
+          statusCode = response.statusCode;
         }
         if(error){
           d.reject(error);

@@ -61,7 +61,7 @@ Authentication.prototype.handleAccessTokenResponse = function(promise, accessTok
     function(data) {
       var accessToken = data['access_token'];
       if (accessToken) {
-        this.helpers.setAccessToken(accessToken);
+        self.helpers.setAccessToken(accessToken);
         accessTokenDeferred.resolve(accessToken);
       }
       else {

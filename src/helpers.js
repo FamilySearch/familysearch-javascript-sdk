@@ -834,19 +834,20 @@ Helpers.prototype.extendHttpPromise = function(destPromise, sourcePromise) {
 Helpers.prototype.chainHttpPromises = function() {
   var promise = arguments[0];
   var bridge = {}; // bridge object is needed because the "then" function is executed immediately in unit tests
+  var self = this;
   forEach(Array.prototype.slice.call(arguments, 1), function(fn) {
     promise = promise.then(function() {
-      var result = fn.apply(null, arguments);
+     var result = fn.apply(null, arguments);
       if (result && result.then) {
         // the bridge object is extended with the functions from each promise-generating function,
         // but the final functions will be those from the last promise-generating function
-        this.extendHttpPromise(bridge, result);
+        self.extendHttpPromise(bridge, result);
       }
       return result;
     });
   });
   // the returned promise will call into the bridge object for the http functions
-  this.extendHttpPromise(promise, bridge);
+  self.extendHttpPromise(promise, bridge);
   return promise;
 };
 
@@ -920,12 +921,13 @@ Helpers.prototype.isAuthoritiesServerUrl = function(url) {
  * @returns {string} URL-encoded string
  */
 Helpers.prototype.encodeQueryString = function(params) {
-  var arr = [];
+  var self = this,
+      arr = [];
   forEach(params, function(value, key) {
     key = encodeURIComponent(key);
     var param;
-    if (this.isArray(value)) {
-      param = this.map(value, function(elm) {
+    if (self.isArray(value)) {
+      param = self.map(value, function(elm) {
         //noinspection JSValidateTypes
         return key + '=' + encodeURIComponent(elm);
       }).join('&');

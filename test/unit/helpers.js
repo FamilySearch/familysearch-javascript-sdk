@@ -38,8 +38,8 @@ function isEmpty(obj) {
 function getFilename(opts) {
   var params = decodeQueryString(opts.url);
   var filename = opts.url.replace(/[^\/]*\/\/[^\/]+\//, '').replace(/\?.*$/, ''); // get path portion of URL
-  if (opts.type !== 'GET') {
-    filename = opts.type.toLowerCase() + '_' + filename;
+  if (opts.method !== 'GET') {
+    filename = opts.method.toLowerCase() + '_' + filename;
   }
   var sortedKeys = keys(params).sort(); // sort parameters in alphabetical order
   for (var i = 0, len = sortedKeys.length; i < len; i++) {
@@ -54,7 +54,7 @@ function getFilename(opts) {
 function loadFile(filename){
   var contents = {};
   try {
-    contents = JSON.parse(fs.readFileSync(filename));
+    contents = JSON.parse(fs.readFileSync(__dirname + '/../mock/' + filename));
   } catch (e) { }
   return contents;
 }
@@ -73,7 +73,7 @@ FamilySearch.getHttpRequests = function() {
  * @param opts
  * @returns {Object} promise
  */
-function httpMock(opts) {
+function httpMock(opts, callback) {
   requests.push(opts);
   var filename = getFilename(opts);
   var data = loadFile(filename);
@@ -93,37 +93,16 @@ function httpMock(opts) {
       }
     }
   }
-  if (opts.type === 'POST' && isEmpty(returnedData)) {
+  if (opts.method === 'POST' && isEmpty(returnedData)) {
     returnedData = null;
   }
 
-  var d = deferredMock(); 
-  d.resolve.call(d, returnedData, '', { status: status });    
-  var returnedPromise = d.promise();
-
-  returnedPromise.getAllResponseHeaders = function() {
-    var h = [];
-    for (var prop in headers) {
-      if (headers.hasOwnProperty(prop)) {
-        h.push(prop+':'+headers[prop]);
-      }
-    }
-    return h.join('\n');
-  };
-
-  returnedPromise.getResponseHeader = function(header) {
-    return headers[header];
-  };
-
-  returnedPromise.getRequest = function() {
-    return opts;
-  };
-  
-  returnedPromise.getStatusCode = function() {
-    return status;
-  };    
-
-  return returnedPromise;
+  setTimeout(function(){
+    callback(null, {
+      headers: headers,
+      statusCode: status
+    }, data);
+  });
 }
 
 beforeEach(function() {

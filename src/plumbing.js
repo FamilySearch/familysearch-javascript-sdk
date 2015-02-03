@@ -57,11 +57,11 @@ Plumbing.prototype.getUrl = function(resourceName, possibleUrl, params) {
   return this.settings.discoveryPromise.then(function(discoveryResource) {
     var url = '';
 
-    if (self.isAbsoluteUrl(possibleUrl)) {
+    if (self.helpers.isAbsoluteUrl(possibleUrl)) {
       url = possibleUrl;
     }
     else {
-      url = self.getUrlFromDiscoveryResource(discoveryResource, resourceName, params);
+      url = self.helpers.getUrlFromDiscoveryResource(discoveryResource, resourceName, params);
     }
     return url;
   });

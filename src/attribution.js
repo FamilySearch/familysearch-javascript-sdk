@@ -1,14 +1,9 @@
-var FS = require('./FamilySearch'),
-    utils = require('./utilities');
-
 /**
  * @ngdoc overview
  * @name attribution
  * @description
  * Functions related to an attribution object
  */
-
-var maybe = utils.maybe; // shorthand
 
 /**
  * @ngdoc function
@@ -18,8 +13,9 @@ var maybe = utils.maybe; // shorthand
  * Attribution
  * @param {String=} changeMessage change message
  */
-var Attribution = FS.Attribution = function(client, changeMessage) {
+var Attribution = function(client, changeMessage) {
   this.client = client;
+  this.maybe = client.helpers.maybe;
   if (changeMessage) {
     this.changeMessage = changeMessage;
   }
@@ -48,7 +44,7 @@ Attribution.prototype = {
    * @function
    * @return {String} id of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
    */
-  $getAgentId: function() { return maybe(this.contributor).resourceId; },
+  $getAgentId: function() { return this.maybe(this.contributor).resourceId; },
 
   /**
    * @ngdoc function
@@ -57,7 +53,7 @@ Attribution.prototype = {
    * @function
    * @return {String} URL of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
    */
-  $getAgentUrl: function() { return utils.removeAccessToken(maybe(this.contributor).resource); },
+  $getAgentUrl: function() { return utils.removeAccessToken(this.maybe(this.contributor).resource); },
 
   /**
    * @ngdoc function
@@ -68,3 +64,5 @@ Attribution.prototype = {
    */
   $getAgent: function() { return this.client.getAgent(this.$getAgentUrl() || this.$getAgentId()); }
 };
+
+module.exports = Attribution;

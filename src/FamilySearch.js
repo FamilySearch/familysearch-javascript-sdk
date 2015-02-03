@@ -2,8 +2,9 @@ var globals = require('./globals'),
     angularjsWrappers = require('./angularjs-wrappers'),
     jQueryWrappers = require('./jquery-wrappers'),
     nodejsWrappers = require('./nodejs-wrappers'),
-    Helpers = require('./helpers'),
     Authentication = require('./authentication'),
+    Attribution = require('./attribution'),
+    Helpers = require('./helpers'),
     Plumbing = require('./plumbing');
 
 /**
@@ -153,11 +154,27 @@ var FS = module.exports = function(opts){
 
 };
 
+// Authentication
 extendFSPrototype('authentication', 'getAccessToken');
 extendFSPrototype('authentication', 'getAccessTokenForMobile');
 extendFSPrototype('authentication', 'getAuthCode');
 extendFSPrototype('authentication', 'hasAccessToken');
 extendFSPrototype('authentication', 'invalidateAccessToken');
+
+// Attribution
+FS.Attribution = Attribution;
+
+// Authorities
+
+// Plumbing
+extendFSPrototype('plumbing', 'del');
+extendFSPrototype('plumbing', 'get');
+extendFSPrototype('plumbing', 'getTotalProcessingTime');
+extendFSPrototype('plumbing', 'getUrl');
+extendFSPrototype('plumbing', 'http');
+extendFSPrototype('plumbing', 'post');
+extendFSPrototype('plumbing', 'put');
+extendFSPrototype('plumbing', 'setTotalProcessingTime');
 
 function extendFSPrototype(moduleName, functionName){
   FS.prototype[functionName] = function(){
