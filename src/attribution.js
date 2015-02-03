@@ -1,78 +1,70 @@
-if (typeof define !== 'function') { var define = require('amdefine')(module); }
+var FS = require('./FamilySearch'),
+    utils = require('./utilities');
 
-define([
-  './helpers',
-  './plumbing',
-  './user'
-], function(helpers, plumbing, user) {
+/**
+ * @ngdoc overview
+ * @name attribution
+ * @description
+ * Functions related to an attribution object
+ */
+
+var maybe = utils.maybe; // shorthand
+
+/**
+ * @ngdoc function
+ * @name attribution.types:constructor.Attribution
+ * @description
+ *
+ * Attribution
+ * @param {String=} changeMessage change message
+ */
+var Attribution = FS.Attribution = function(client, changeMessage) {
+  this.client = client;
+  if (changeMessage) {
+    this.changeMessage = changeMessage;
+  }
+};
+
+Attribution.prototype = {
+  constructor: Attribution,
   /**
-   * @ngdoc overview
-   * @name attribution
-   * @description
-   * Functions related to an attribution object
+   * @ngdoc property
+   * @name attribution.types:constructor.Attribution#modified
+   * @propertyOf attribution.types:constructor.Attribution
+   * @return {number} timestamp
    */
 
-  var maybe = helpers.maybe; // shorthand
-
-  var exports = {};
+  /**
+   * @ngdoc property
+   * @name attribution.types:constructor.Attribution#changeMessage
+   * @propertyOf attribution.types:constructor.Attribution
+   * @return {string} change message
+   */
 
   /**
    * @ngdoc function
-   * @name attribution.types:constructor.Attribution
-   * @description
-   *
-   * Attribution
-   * @param {String=} changeMessage change message
+   * @name attribution.types:constructor.Attribution#$getAgentId
+   * @methodOf attribution.types:constructor.Attribution
+   * @function
+   * @return {String} id of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
    */
-  var Attribution = exports.Attribution = function(changeMessage) {
-    if (changeMessage) {
-      this.changeMessage = changeMessage;
-    }
-  };
+  $getAgentId: function() { return maybe(this.contributor).resourceId; },
 
-  exports.Attribution.prototype = {
-    constructor: Attribution,
-    /**
-     * @ngdoc property
-     * @name attribution.types:constructor.Attribution#modified
-     * @propertyOf attribution.types:constructor.Attribution
-     * @return {number} timestamp
-     */
+  /**
+   * @ngdoc function
+   * @name attribution.types:constructor.Attribution#$getAgentUrl
+   * @methodOf attribution.types:constructor.Attribution
+   * @function
+   * @return {String} URL of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
+   */
+  $getAgentUrl: function() { return utils.removeAccessToken(maybe(this.contributor).resource); },
 
-    /**
-     * @ngdoc property
-     * @name attribution.types:constructor.Attribution#changeMessage
-     * @propertyOf attribution.types:constructor.Attribution
-     * @return {string} change message
-     */
-
-    /**
-     * @ngdoc function
-     * @name attribution.types:constructor.Attribution#$getAgentId
-     * @methodOf attribution.types:constructor.Attribution
-     * @function
-     * @return {String} id of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
-     */
-    $getAgentId: function() { return maybe(this.contributor).resourceId; },
-
-    /**
-     * @ngdoc function
-     * @name attribution.types:constructor.Attribution#$getAgentUrl
-     * @methodOf attribution.types:constructor.Attribution
-     * @function
-     * @return {String} URL of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
-     */
-    $getAgentUrl: function() { return helpers.removeAccessToken(maybe(this.contributor).resource); },
-
-    /**
-     * @ngdoc function
-     * @name attribution.types:constructor.Attribution#$getAgent
-     * @methodOf attribution.types:constructor.Attribution
-     * @function
-     * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
-     */
-    $getAgent: function() { return user.getAgent(this.$getAgentUrl() || this.$getAgentId()); }
-  };
-
-  return exports;
-});
+  /**
+   * @ngdoc function
+   * @name attribution.types:constructor.Attribution#$getAgent
+   * @methodOf attribution.types:constructor.Attribution
+   * @function
+   * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
+   */
+  $getAgent: function() { return this.client.getAgent(this.$getAgentUrl() || this.$getAgentId()); }
+};

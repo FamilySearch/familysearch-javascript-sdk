@@ -4,3 +4,4 @@ dist/*
 .grunt/*
 index.html
 angularjs.html
+npm-debug.log

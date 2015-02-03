@@ -1,190 +1,166 @@
-if (typeof define !== 'function') { var define = require('amdefine')(module); }
+var globals = require('./globals'),
+    angularjsWrappers = require('./angularjs-wrappers'),
+    jQueryWrappers = require('./jquery-wrappers'),
+    nodejsWrappers = require('./nodejs-wrappers'),
+    Helpers = require('./helpers'),
+    Authentication = require('./authentication'),
+    Plumbing = require('./plumbing');
 
-define([
-  './init',
-  './authentication',
-  './authorities',
-  './changeHistory',
-  './discussions',
-  './fact',
-  './helpers',
-  './memories',
-  './name',
-  './notes',
-  './parentsAndChildren',
-  './pedigree',
-  './person',
-  './plumbing',
-  './searchAndMatch',
-  './sourceBox',
-  './sources',
-  './spouses',
-  './user',
-  './utilities'
-], function(init, authentication, authorities, changeHistory, discussions, fact, helpers, memories, name, notes,
-            parentsAndChildren, pedigree, person, plumbing, searchAndMatch, sourceBox, sources, spouses, user, utilities) {
+/**
+ * @ngdoc function
+ * @name init.functions:init
+ * @function
+ *
+ * @description
+ * Initialize the FamilySearch object
+ *
+ * **Options**
+ *
+ * - `client_id` - the developer key you received from FamilySearch
+ * - `environment` - sandbox, staging, or production
+ * - `http_function` - a function for issuing http requests: `jQuery.ajax` or angular's `$http`,
+ * or eventually node.js's http function; defaults to `jQuery.ajax`
+ * - `deferred_function` - a function for creating deferred's: `jQuery.Deferred` or angular's `$q.defer`
+ * or eventually `Q`; defaults to `jQuery.Deferred`
+ * - `timeout_function` - optional timeout function: angular users should pass `$timeout`; otherwise the global `setTimeout` is used
+ * - `redirect_uri` - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
+ * but must have the same host and port as the server running your script;
+ * however, it must exist for mobile safari - see the Overview section of the documentation
+ * - `auto_expire` - set to true if you want to the system to clear the access token when it has expired
+ * (after one hour of inactivity or 24 hours, whichever comes first; should probably be false for node.js)
+ * - `auto_signin` - set to true if you want the user to be prompted to sign in whenever you call an API function
+ * without an access token; must be false for node.js, and may result in a blocked pop-up if the API call is
+ * not in direct response to a user-initiated action; because of the blocked pop-up issue, you may want to use `expire_callback` instead
+ * - `expire_callback` - pass in a function that will be called when the access token expires
+ * - `save_access_token` - set to true if you want the access token to be saved and re-read in future init calls
+ * (uses a session cookie, must be false for node.js) - *setting `save_access_token` along with `auto_signin` and
+ * `auto_expire` is very convenient*
+ * - `access_token` - pass this in if you already have an access token
+ * - `debug` - set to true to turn on console logging during development
+ *
+ * @param {Object} opts opts
+ */
+var FS = module.exports = function(opts){
 
-  return {
-    init: init.init,
+  var self = this;
+  self.settings = {};
 
-    // authentication
-    getAuthCode: authentication.getAuthCode,
-    getAccessToken: authentication.getAccessToken,
-    getAccessTokenForMobile: authentication.getAccessTokenForMobile,
-    hasAccessToken: authentication.hasAccessToken,
-    invalidateAccessToken: authentication.invalidateAccessToken,
+  self.helpers = new Helpers(self);
+  self.plumbing = new Plumbing(self);
+  self.authentication = new Authentication(self);
+  
+  self.settings = self.helpers.extend(self.settings, globals);
+  
+  opts = opts || {};
 
-    // authorities
-    Date: authorities.Date,
-    Place: authorities.Place,
-    getDate: authorities.getDate,
-    getPlaceSearch: authorities.getPlaceSearch,
+  if(!opts['client_id'] && !opts['app_key']) {
+    throw 'client_id must be set';
+  }
+  self.settings.clientId = opts['client_id'] || opts['app_key']; //app_key is deprecated
 
-    // changeHistory
-    Change: changeHistory.Change,
-    getPersonChanges: changeHistory.getPersonChanges,
-    getChildAndParentsChanges: changeHistory.getChildAndParentsChanges,
-    getCoupleChanges: changeHistory.getCoupleChanges,
-    restoreChange: changeHistory.restoreChange,
+  if(!opts['environment']) {
+    throw 'environment must be set';
+  }
+  //noinspection JSUndeclaredVariable
+  self.settings.environment = opts['environment'];
+  
+  // nodejs
+  if(typeof module === 'object' && typeof module.exports !== 'undefined'){
+    if(!opts['http_function']){
+      throw 'missing http_function for node';
+    }
+    self.settings.httpWrapper = nodejsWrappers.httpWrapper(opts['http_function'], self);
+    
+    if(!opts['deferred_function']){
+      throw 'missing deferred_function for node';
+    }
+    self.settings.deferredWrapper = nodejsWrappers.deferredWrapper(opts['deferred_function']);
+  } 
+  
+  // browsers
+  else {
+    if(!opts['http_function'] && !window.jQuery) {
+      throw 'http must be set; e.g., jQuery.ajax';
+    }
+    var httpFunction = opts['http_function'] || window.jQuery.ajax;
+    if (httpFunction.defaults) {
+      self.settings.httpWrapper = angularjsWrappers.httpWrapper(httpFunction, self);
+    }
+    else {
+      self.settings.httpWrapper = jQueryWrappers.httpWrapper(httpFunction, self);
+    }
 
-    // TODO discovery
+    if(!opts['deferred_function'] && !window.jQuery) {
+      throw 'deferred_function must be set; e.g., jQuery.Deferred';
+    }
+    var deferredFunction = opts['deferred_function'] || window.jQuery.Deferred;
+    var d = deferredFunction();
+    d.resolve(); // required for unit tests
+    if (!utils.isFunction(d.promise)) {
+      self.settings.deferredWrapper = angularjsWrappers.deferredWrapper(deferredFunction);
+    }
+    else {
+      self.settings.deferredWrapper = jQueryWrappers.deferredWrapper(deferredFunction);
+    }
+  }
 
-    // discussions
-    Discussion: discussions.Discussion,
-    DiscussionRef: discussions.DiscussionRef,
-    Comment: discussions.Comment,
-    getPersonDiscussionRefs: discussions.getPersonDiscussionRefs,
-    getDiscussion: discussions.getDiscussion,
-    getMultiDiscussion: discussions.getMultiDiscussion,
-    getDiscussionComments: discussions.getDiscussionComments,
-    deleteDiscussion: discussions.deleteDiscussion,
-    deleteDiscussionRef: discussions.deleteDiscussionRef,
-    deleteDiscussionComment: discussions.deleteDiscussionComment,
-    deleteMemoryComment: discussions.deleteMemoryComment,
+  var timeout = opts['timeout_function'];
+  if (timeout) {
+    self.settings.setTimeout = function(fn, delay) {
+      return timeout(fn, delay);
+    };
+    self.settings.clearTimeout = function(timer) {
+      timeout.cancel(timer);
+    };
+  }
+  else {
+    // not sure why I can't just set self.settings.setTimeout = setTimeout, but it doesn't seem to work; anyone know why?
+    self.settings.setTimeout = function(fn, delay) {
+      return setTimeout(fn, delay);
+    };
+    self.settings.clearTimeout = function(timer) {
+      clearTimeout(timer);
+    };
+  }
 
-    // fact
-    Fact: fact.Fact,
+  if(!opts['redirect_uri'] && !opts['auth_callback']) {
+    throw 'redirect_uri must be set';
+  }
+  self.settings.redirectUri = opts['redirect_uri'] || opts['auth_callback']; // auth_callback is deprecated
 
-    // memories
-    Memory: memories.Memory,
-    MemoryPersona: memories.MemoryPersona,
-    MemoryPersonaRef: memories.MemoryPersonaRef,
-    MemoryArtifactRef: memories.MemoryArtifactRef,
-    getMemoryPersonaRefs: memories.getMemoryPersonaRefs,
-    getMemory: memories.getMemory,
-    getMemoryComments: memories.getMemoryComments,
-    getMemoryPersonas: memories.getMemoryPersonas,
-    getMemoryPersona: memories.getMemoryPersona,
-    getPersonPortraitUrl: memories.getPersonPortraitUrl,
-    getPersonMemoriesQuery: memories.getPersonMemoriesQuery,
-    getUserMemoriesQuery: memories.getUserMemoriesQuery,
-    deleteMemory: memories.deleteMemory,
-    deleteMemoryPersona: memories.deleteMemoryPersona,
-    deleteMemoryPersonaRef: memories.deleteMemoryPersonaRef,
+  self.settings.autoSignin = opts['auto_signin'];
 
-    // name
-    Name: name.Name,
+  self.settings.autoExpire = opts['auto_expire'];
 
-    // notes
-    Note: notes.Note,
-    getPersonNotes: notes.getPersonNotes,
-    getPersonNote: notes.getPersonNote,
-    getMultiPersonNote: notes.getMultiPersonNote,
-    getCoupleNotes: notes.getCoupleNotes,
-    getCoupleNote: notes.getCoupleNote,
-    getMultiCoupleNote: notes.getMultiCoupleNote,
-    getChildAndParentsNotes: notes.getChildAndParentsNotes,
-    getChildAndParentsNote: notes.getChildAndParentsNote,
-    getMultiChildAndParentsNote: notes.getMultiChildAndParentsNote,
-    deletePersonNote: notes.deletePersonNote,
-    deleteCoupleNote: notes.deleteCoupleNote,
-    deleteChildAndParentsNote: notes.deleteChildAndParentsNote,
+  self.settings.expireCallback = opts['expire_callback'];
 
-    // TODO ordinances
+  if (opts['save_access_token']) {
+    self.settings.saveAccessToken = true;
+    self.readAccessToken();
+  }
 
-    // parents and children
-    ChildAndParents: parentsAndChildren.ChildAndParents,
-    deleteChildAndParents: parentsAndChildren.deleteChildAndParents,
-    getChildAndParents: parentsAndChildren.getChildAndParents,
+  if (opts['access_token']) {
+    self.settings.accessToken = opts['access_token'];
+  }
 
-    // pedigree
-    getAncestry: pedigree.getAncestry,
-    getDescendancy: pedigree.getDescendancy,
+  self.settings.debug = opts['debug'];
+  
+  // request the discovery resource
+  self.settings.discoveryPromise = self.plumbing.get(self.settings.discoveryUrl);
+  self.settings.discoveryPromise.then(function(discoveryResource) {
+    self.settings.discoveryResource = discoveryResource;
+  });
 
-    // person
-    Person: person.Person,
-    deletePerson: person.deletePerson,
-    getPerson: person.getPerson,
-    getMultiPerson: person.getMultiPerson,
-    getPersonWithRelationships: person.getPersonWithRelationships,
-    //getPersonChangeSummary: person.getPersonChangeSummary, -- REST API broken
-    getSpouses: person.getSpouses,
-    getParents: person.getParents,
-    getChildren: person.getChildren,
-    getPreferredSpouse: person.getPreferredSpouse,
-    setPreferredSpouse: person.setPreferredSpouse,
-    deletePreferredSpouse: person.deletePreferredSpouse,
-    getPreferredParents: person.getPreferredParents,
-    setPreferredParents: person.setPreferredParents,
-    deletePreferredParents: person.deletePreferredParents,
+};
 
-    // TODO places
+extendFSPrototype('authentication', 'getAccessToken');
+extendFSPrototype('authentication', 'getAccessTokenForMobile');
+extendFSPrototype('authentication', 'getAuthCode');
+extendFSPrototype('authentication', 'hasAccessToken');
+extendFSPrototype('authentication', 'invalidateAccessToken');
 
-    // plumbing
-    get: plumbing.get,
-    post: plumbing.post,
-    put: plumbing.put,
-    del: plumbing.del,
-    http: plumbing.http,
-    getTotalProcessingTime: plumbing.getTotalProcessingTime,
-    setTotalProcessingTime: plumbing.setTotalProcessingTime,
-
-    // search and match
-    SearchResult: searchAndMatch.SearchResult,
-    getPersonSearch: searchAndMatch.getPersonSearch,
-    getPersonMatches: searchAndMatch.getPersonMatches,
-    getPersonMatchesQuery: searchAndMatch.getPersonMatchesQuery,
-
-    // sourceBox
-    Collection: sourceBox.Collection,
-    getCollectionsForUser: sourceBox.getCollectionsForUser,
-    getCollection: sourceBox.getCollection,
-    getCollectionSourceDescriptions: sourceBox.getCollectionSourceDescriptions,
-    getCollectionSourceDescriptionsForUser: sourceBox.getCollectionSourceDescriptionsForUser,
-    moveSourceDescriptionsToCollection: sourceBox.moveSourceDescriptionsToCollection,
-    removeSourceDescriptionsFromCollections: sourceBox.removeSourceDescriptionsFromCollections,
-    deleteCollection: sourceBox.deleteCollection,
-
-    // sources
-    SourceDescription: sources.SourceDescription,
-    SourceRef: sources.SourceRef,
-    getPersonSourceRefs: sources.getPersonSourceRefs,
-    getPersonSourcesQuery: sources.getPersonSourcesQuery,
-    getSourceDescription: sources.getSourceDescription,
-    getMultiSourceDescription: sources.getMultiSourceDescription,
-    getCoupleSourceRefs: sources.getCoupleSourceRefs,
-    getCoupleSourcesQuery: sources.getCoupleSourcesQuery,
-    getChildAndParentsSourceRefs: sources.getChildAndParentsSourceRefs,
-    getChildAndParentsSourcesQuery: sources.getChildAndParentsSourcesQuery,
-    getSourceRefsQuery: sources.getSourceRefsQuery,
-    deleteSourceDescription: sources.deleteSourceDescription,
-    deletePersonSourceRef: sources.deletePersonSourceRef,
-    deleteCoupleSourceRef: sources.deleteCoupleSourceRef,
-    deleteChildAndParentsSourceRef: sources.deleteChildAndParentsSourceRef,
-
-    // spouses
-    Couple: spouses.Couple,
-    deleteCouple: spouses.deleteCouple,
-    getCouple: spouses.getCouple,
-
-    // user
-    Agent: user.Agent,
-    User: user.User,
-    getCurrentUser: user.getCurrentUser,
-    getAgent: user.getAgent,
-    getMultiAgent: user.getMultiAgent,
-
-    // utilities
-    getRedirectUrl: utilities.getRedirectUrl
+function extendFSPrototype(moduleName, functionName){
+  FS.prototype[functionName] = function(){
+    return this[moduleName][functionName].apply(this[moduleName], arguments);
   };
-});
+}
