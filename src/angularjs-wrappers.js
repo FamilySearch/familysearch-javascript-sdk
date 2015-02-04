@@ -1,4 +1,5 @@
-var exports = module.exports;
+var utils = require('./utils'),
+    exports = {};
 
 /**
  * httpWrapper function based upon Angular's $http function
@@ -6,12 +7,9 @@ var exports = module.exports;
  * @returns {Function} http function that exposes a standard interface
  */
 exports.httpWrapper = function(http, client) {
-  var self = this,
-      settings = client.settings,
-      helpers = client.helpers;
   return function(method, url, headers, data, opts) {
     // set up the options
-    var config = helpers.extend({
+    var config = utils.extend({
       method: method,
       url: url,
       responseType: 'json',
@@ -20,7 +18,7 @@ exports.httpWrapper = function(http, client) {
         return obj;
       }
     }, opts);
-    config.headers = helpers.extend({}, headers, opts.headers);
+    config.headers = utils.extend({}, headers, opts.headers);
     if (config.headers['Content-Type'] === 'multipart/form-data') {
       config.headers['Content-Type'] = void 0;
     }
@@ -29,7 +27,7 @@ exports.httpWrapper = function(http, client) {
     var promise = http(config);
 
     // process the response
-    var d = settings.deferredWrapper();
+    var d = client.settings.deferredWrapper();
     var returnedPromise = d.promise;
     var statusCode = null;
     var headerGetter = null;
@@ -78,3 +76,5 @@ exports.deferredWrapper = function(deferred) {
     };
   };
 };
+
+module.exports = exports;

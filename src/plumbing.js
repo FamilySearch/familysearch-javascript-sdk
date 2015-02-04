@@ -1,3 +1,5 @@
+var utils = require('./utils');
+
 /**
  * @ngdoc overview
  * @name plumbing
@@ -85,7 +87,7 @@ Plumbing.prototype.getUrl = function(resourceName, possibleUrl, params) {
 Plumbing.prototype.get = function(url, params, headers, opts, responseMapper) {
   return this.http('GET',
     this.helpers.appendQueryParameters(url, params),
-    this.helpers.extend({'Accept': 'application/x-gedcomx-v1+json'}, headers),
+    utils.extend({'Accept': 'application/x-gedcomx-v1+json'}, headers),
     null,
     opts,
     responseMapper);
@@ -109,7 +111,7 @@ Plumbing.prototype.get = function(url, params, headers, opts, responseMapper) {
 Plumbing.prototype.post = function(url, data, headers, opts, responseMapper) {
   return this.http('POST',
     url,
-    this.helpers.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers),
+    utils.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers),
     data,
     opts,
     responseMapper);
@@ -133,7 +135,7 @@ Plumbing.prototype.post = function(url, data, headers, opts, responseMapper) {
 Plumbing.prototype.put = function(url, data, headers, opts, responseMapper) {
   return this.http('PUT',
     url,
-    this.helpers.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers),
+    utils.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers),
     data,
     opts,
     responseMapper);
@@ -156,7 +158,7 @@ Plumbing.prototype.put = function(url, data, headers, opts, responseMapper) {
 Plumbing.prototype.del = function(url, headers, opts, responseMapper) {
   return this.http('DELETE',
     url,
-    this.helpers.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers),
+    utils.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers),
     null,
     opts,
     responseMapper);
@@ -214,10 +216,10 @@ function formEncode(obj)
  */
 Plumbing.prototype.transformData = function(data, contentType) {
   var self = this;
-  if (data && self.helpers.isObject(data) && String(data) !== '[object FormData]') {
+  if (data && utils.isObject(data) && String(data) !== '[object FormData]') {
     // remove $... and _... attrs from data
-    data = self.helpers.clonePartial(data, function(key) {
-      return (!(self.helpers.isString(key) && (key.charAt(0) === '$' || key.charAt(0) === '_')));
+    data = utils.clonePartial(data, function(key) {
+      return (!(utils.isString(key) && (key.charAt(0) === '$' || key.charAt(0) === '_')));
     });
     if (contentType === 'application/x-www-form-urlencoded') {
       return formEncode(data);

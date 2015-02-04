@@ -101,9 +101,11 @@ function httpMock(opts, callback) {
     callback(null, {
       headers: headers,
       statusCode: status
-    }, data);
+    }, returnedData);
   });
 }
+
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 750;
 
 beforeEach(function() {
 

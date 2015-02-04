@@ -1,3 +1,6 @@
+var utils = require('./utils'),
+    maybe = utils.maybe;
+
 /**
  * @ngdoc overview
  * @name attribution
@@ -15,7 +18,6 @@
  */
 var Attribution = function(client, changeMessage) {
   this.client = client;
-  this.maybe = client.helpers.maybe;
   if (changeMessage) {
     this.changeMessage = changeMessage;
   }
@@ -44,7 +46,7 @@ Attribution.prototype = {
    * @function
    * @return {String} id of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
    */
-  $getAgentId: function() { return this.maybe(this.contributor).resourceId; },
+  $getAgentId: function() { return maybe(this.contributor).resourceId; },
 
   /**
    * @ngdoc function
@@ -53,7 +55,7 @@ Attribution.prototype = {
    * @function
    * @return {String} URL of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
    */
-  $getAgentUrl: function() { return utils.removeAccessToken(this.maybe(this.contributor).resource); },
+  $getAgentUrl: function() { return utils.removeAccessToken(maybe(this.contributor).resource); },
 
   /**
    * @ngdoc function

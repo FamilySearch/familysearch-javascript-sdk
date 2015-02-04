@@ -1,24 +1,22 @@
-var exports = module.exports;
+var utils = require('./utils'),
+    exports = {};
 
 /**
  * httpWrapper function based upon jQuery's $.ajax function
  * @param ajax jQuery's $.ajax function
  * @returns {Function} http function that exposes a standard interface
  */
-exports.httpWrapper = function(ajax) {
-  var self = this,
-      settings = client.settings,
-      helpers = client.helpers;
+exports.httpWrapper = function(ajax, client) {
   return function(method, url, headers, data, opts) {
     // set up the options
-    opts = helpers.extend({
+    opts = utils.extend({
       url: url,
       type: method,
       dataType: 'json',
       data: data,
       processData: false
     }, opts);
-    opts.headers = helpers.extend({}, headers, opts.headers);
+    opts.headers = utils.extend({}, headers, opts.headers);
     if (opts.headers['Content-Type'] === 'multipart/form-data') {
       opts.contentType = false;
       delete opts.headers['Content-Type'];
@@ -28,7 +26,7 @@ exports.httpWrapper = function(ajax) {
     var jqXHR = ajax(opts);
 
     // process the response
-    var d = settings.deferredWrapper();
+    var d = client.settings.deferredWrapper();
     var returnedPromise = d.promise;
     var statusCode = null;
     jqXHR.then(
@@ -50,7 +48,7 @@ exports.httpWrapper = function(ajax) {
       });
 
     // add http-specific functions to the returned promise
-    helpers.wrapFunctions(returnedPromise, jqXHR, ['getResponseHeader', 'getAllResponseHeaders']);
+    utils.wrapFunctions(returnedPromise, jqXHR, ['getResponseHeader', 'getAllResponseHeaders']);
     returnedPromise.getStatusCode = function() {
       return statusCode;
     };

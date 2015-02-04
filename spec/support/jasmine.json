@@ -3,7 +3,9 @@
   "spec_files": [
     "unit/familysearchSpec.js",
     "unit/authenticationSpec.js",
-    "unit/authoritiesSpec.js"
+    "unit/authoritiesSpec.js",
+    "unit/changeHistorySpec.js",
+    "unit/usersSpec.js"
   ],
   "helpers": [
     "unit/helpers.js"

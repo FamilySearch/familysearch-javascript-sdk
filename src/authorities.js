@@ -1,4 +1,5 @@
-var Date = require('./date'),
+var utils = require('./utils'),
+    Date = require('./date'),
     Place = require('./place');
 
 /**
@@ -11,7 +12,6 @@ var Date = require('./date'),
  */
 
 var Authorities = function(client){
-  this.maybe = client.helpers.maybe;
   this.helpers = client.helpers;
   this.plumbing = client.plumbing;
 };
@@ -41,9 +41,9 @@ Authorities.prototype.getDate = function(date, opts) {
         dataFormat: 'application/json'
       };
   return self.plumbing.get(self.helpers.getAuthoritiesServerUrl('/authorities/v1/date'), params, {'Accept': 'application/json'}, opts,
-    self.helpers.compose(
-      self.helpers.objectExtender({getDate: function() { return self.maybe(self.maybe(this.dates).date)[0]; }}),
-      self.helpers.constructorSetter(Date, 'date', function(response) {
+    utils.compose(
+      utils.objectExtender({getDate: function() { return utils.maybe(utils.maybe(this.dates).date)[0]; }}),
+      utils.constructorSetter(Date, 'date', function(response) {
         return response.dates;
       })
     ));
@@ -75,9 +75,9 @@ Authorities.prototype.getPlaceSearch = function(place, opts) {
         dataFormat: 'application/json'
       };
   return self.plumbing.get(self.helpers.getAuthoritiesServerUrl('/authorities/v1/place'), params, {'Accept': 'application/json'}, opts,
-    self.helpers.compose(
-      self.helpers.objectExtender({getPlaces: function() { return self.maybe(this.places).place; }}),
-      self.helpers.constructorSetter(Place, 'place', function(response) {
+    utils.compose(
+      utils.objectExtender({getPlaces: function() { return utils.maybe(this.places).place; }}),
+      utils.constructorSetter(Place, 'place', function(response) {
         return response.places;
       })
     ));

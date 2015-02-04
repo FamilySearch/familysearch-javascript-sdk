@@ -1,14 +1,17 @@
 var globals = require('./globals'),
+    utils = require('./utils'),
     angularjsWrappers = require('./angularjs-wrappers'),
     jQueryWrappers = require('./jquery-wrappers'),
     nodejsWrappers = require('./nodejs-wrappers'),
     Attribution = require('./attribution'),
     Authentication = require('./authentication'),
     Authorities = require('./authorities'),
+    ChangeHistory = require('./changeHistory'),
     Place = require('./place'),
     Date = require('./date'),
     Helpers = require('./helpers'),
-    Plumbing = require('./plumbing');
+    Plumbing = require('./plumbing'),
+    Users = require('./users');
 
 /**
  * @ngdoc function
@@ -47,14 +50,14 @@ var globals = require('./globals'),
 var FS = module.exports = function(opts){
 
   var self = this;
-  self.settings = {};
+  self.settings = utils.extend(self.settings, globals);
 
   self.helpers = new Helpers(self);
   self.plumbing = new Plumbing(self);
   self.authentication = new Authentication(self);
   self.authorities = new Authorities(self);
-  
-  self.settings = self.helpers.extend(self.settings, globals);
+  self.changeHistory = new ChangeHistory(self);
+  self.users = new Users(self);
   
   opts = opts || {};
 
@@ -174,6 +177,13 @@ extendFSPrototype('authorities', 'getPlaceSearch');
 FS.Date = Date;
 FS.Place = Place;
 
+// Change History
+extendFSPrototype('changeHistory', 'getChildAndParentsChanges');
+extendFSPrototype('changeHistory', 'getCoupleChanges');
+extendFSPrototype('changeHistory', 'getPersonChanges');
+extendFSPrototype('changeHistory', 'restoreChange');
+FS.Change = ChangeHistory.Change;
+
 // Plumbing
 extendFSPrototype('plumbing', 'del');
 extendFSPrototype('plumbing', 'get');
@@ -183,6 +193,13 @@ extendFSPrototype('plumbing', 'http');
 extendFSPrototype('plumbing', 'post');
 extendFSPrototype('plumbing', 'put');
 extendFSPrototype('plumbing', 'setTotalProcessingTime');
+
+// User
+extendFSPrototype('users', 'getAgent');
+extendFSPrototype('users', 'getCurrentUser');
+extendFSPrototype('users', 'getMultiAgent');
+FS.Agent = Users.Agent;
+FS.User = Users.User;
 
 function extendFSPrototype(moduleName, functionName){
   FS.prototype[functionName] = function(){

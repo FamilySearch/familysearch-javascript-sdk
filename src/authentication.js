@@ -1,3 +1,5 @@
+var utils = require('./utils');
+
 
 /**
  * @ngdoc overview
@@ -222,11 +224,10 @@ Authentication.prototype.invalidateAccessToken = function() {
 Authentication.prototype.openPopup = function(url, params) {
   // figure out where the center is
   var
-    helpers     = this.helpers,
-    screenX     = helpers.isUndefined(window.screenX) ? window.screenLeft : window.screenX,
-    screenY     = helpers.isUndefined(window.screenY) ? window.screenTop : window.screenY,
-    outerWidth  = helpers.isUndefined(window.outerWidth) ? document.documentElement.clientWidth : window.outerWidth,
-    outerHeight = helpers.isUndefined(window.outerHeight) ? (document.documentElement.clientHeight - 22) : window.outerHeight,
+    screenX     = utils.isUndefined(window.screenX) ? window.screenLeft : window.screenX,
+    screenY     = utils.isUndefined(window.screenY) ? window.screenTop : window.screenY,
+    outerWidth  = utils.isUndefined(window.outerWidth) ? document.documentElement.clientWidth : window.outerWidth,
+    outerHeight = utils.isUndefined(window.outerHeight) ? (document.documentElement.clientHeight - 22) : window.outerHeight,
     width       = params.width|| 780,
     height      = params.height || 500,
     left        = parseInt(screenX + ((outerWidth - width) / 2), 10),
