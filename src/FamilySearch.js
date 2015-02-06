@@ -7,6 +7,7 @@ var globals = require('./globals'),
     Authentication = require('./authentication'),
     Authorities = require('./authorities'),
     ChangeHistory = require('./changeHistory'),
+    Discussions = require('./discussions'),
     Place = require('./place'),
     Date = require('./date'),
     Helpers = require('./helpers'),
@@ -57,6 +58,7 @@ var FS = module.exports = function(opts){
   self.authentication = new Authentication(self);
   self.authorities = new Authorities(self);
   self.changeHistory = new ChangeHistory(self);
+  self.discussions = new Discussions(self);
   self.users = new Users(self);
   
   opts = opts || {};
@@ -163,6 +165,9 @@ var FS = module.exports = function(opts){
 
 // Attribution
 FS.Attribution = Attribution;
+FS.prototype.createAttribution = function(message){
+  return new Attribution(this, message);
+};
 
 // Authentication
 extendFSPrototype('authentication', 'getAccessToken');
@@ -183,6 +188,31 @@ extendFSPrototype('changeHistory', 'getCoupleChanges');
 extendFSPrototype('changeHistory', 'getPersonChanges');
 extendFSPrototype('changeHistory', 'restoreChange');
 FS.Change = ChangeHistory.Change;
+FS.prototype.createChange = function(data){
+  return new ChangeHistory.Change(this, data);
+};
+
+// Discussions
+extendFSPrototype('discussions', 'deleteDiscussion');
+extendFSPrototype('discussions', 'deleteDiscussionComment');
+extendFSPrototype('discussions', 'deleteDiscussionRef');
+extendFSPrototype('discussions', 'deleteMemoryComment');
+extendFSPrototype('discussions', 'getDiscussion');
+extendFSPrototype('discussions', 'getDiscussionComments');
+extendFSPrototype('discussions', 'getMultiDiscussion');
+extendFSPrototype('discussions', 'getPersonDiscussionRefs');
+FS.Comment = Discussions.Comment;
+FS.Discussion = Discussions.Discussion;
+FS.DiscussionRef = Discussions.DiscussionRef;
+FS.prototype.createComment = function(data){
+  return new Discussions.Comment(this, data);
+};
+FS.prototype.createDiscussion = function(data){
+  return new Discussions.Discussion(this, data);
+};
+FS.prototype.createDiscussionRef = function(data){
+  return new Discussions.DiscussionRef(this, data);
+};
 
 // Plumbing
 extendFSPrototype('plumbing', 'del');

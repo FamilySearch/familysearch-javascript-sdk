@@ -110,11 +110,22 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 750;
 beforeEach(function() {
 
   jasmine.addMatchers({
-    toEqualJson: function(expected) {
-      // if actual is a string, parse it
-      var actual = _.isString(this.actual) ? JSON.parse(this.actual) : this.actual;
-      // use deep comparison
-      return _.isEqual(actual, expected);
+    toEqualJson: function(){
+      return {
+        compare: function(actual, expected) {
+          var result = {};
+          // if actual is a string, parse it
+          actual = _.isString(actual) ? JSON.parse(actual) : actual;
+          // use deep comparison
+          result.pass = _.isEqual(actual, expected);
+          if(result.pass){
+            result.message = 'Equal JSON';
+          } else {
+            result.message = 'JSON not equal';
+          }
+          return result;
+        }
+      }
     }
   });
 

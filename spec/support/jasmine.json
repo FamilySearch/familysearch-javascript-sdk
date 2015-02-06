@@ -5,6 +5,7 @@
     "unit/authenticationSpec.js",
     "unit/authoritiesSpec.js",
     "unit/changeHistorySpec.js",
+    "unit/discussionsSpec.js",
     "unit/usersSpec.js"
   ],
   "helpers": [

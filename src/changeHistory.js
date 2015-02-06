@@ -109,7 +109,7 @@ ChangeHistory.prototype.changeHistoryResponseMapper = function(){
     utils.objectExtender({getChanges: function() { return this.entries || []; }}),
     function(response){
       for(var i = 0; i < response.entries.length; i++){
-        response.entries[i] = new Change(self.client, response.entries[i]);
+        response.entries[i] = self.client.createChange(response.entries[i]);
       }
       return response;
     }

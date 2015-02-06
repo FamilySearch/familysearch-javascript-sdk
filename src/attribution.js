@@ -17,7 +17,7 @@ var utils = require('./utils'),
  * @param {String=} changeMessage change message
  */
 var Attribution = function(client, changeMessage) {
-  this.client = client;
+  this.$client = client;
   if (changeMessage) {
     this.changeMessage = changeMessage;
   }
@@ -64,7 +64,7 @@ Attribution.prototype = {
    * @function
    * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
    */
-  $getAgent: function() { return this.client.getAgent(this.$getAgentUrl() || this.$getAgentId()); }
+  $getAgent: function() { return this.$client.getAgent(this.$getAgentUrl() || this.$getAgentId()); }
 };
 
 module.exports = Attribution;
