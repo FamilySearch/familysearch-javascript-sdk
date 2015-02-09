@@ -1,4 +1,5 @@
-var FS = require('./FamilySearch');
+var utils = require('./utils'),
+    FS = require('./FamilySearch');
 
 /**
  * @ngdoc overview
@@ -21,6 +22,6 @@ var FS = require('./FamilySearch');
  * @param {Object=} params context (details, memories, ordinances, or changes), or person (id), or uri (takes precedence)
  * @return {string} URL with access token that will redirect the user to the specified location
  */
-FS.getRedirectUrl = function(params) {
-  return helpers.appendAccessToken(helpers.appendQueryParameters(helpers.getAPIServerUrl('/platform/redirect'), params));
+FS.prototype.getRedirectUrl = function(params) {
+  return this.helpers.appendAccessToken(this.helpers.appendQueryParameters(this.helpers.getAPIServerUrl('/platform/redirect'), params));
 };

@@ -167,6 +167,7 @@ var Attribution = require('./attribution'),
     Name = require('./name'),
     Helpers = require('./helpers'),
     Plumbing = require('./plumbing'),
+    Redirect = require('./redirect'),
     Users = require('./users');
 
 // Attribution
