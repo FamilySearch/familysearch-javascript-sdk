@@ -1,4 +1,5 @@
-var utils = require('./utils'),
+var FS = require('./FamilySearch'),
+    utils = require('./utils'),
     maybe = utils.maybe;
 
 /**
@@ -29,7 +30,7 @@ var Discussions = function(client){
  * @param {Object=} data an object with optional attributes {title, details}
  **********************************/
 
-var Discussion = Discussions.Discussion = function(client, data) {
+var Discussion = function(client, data) {
   this.$client = client;
   this.$helpers = client.helpers;
   this.$plumbing = client.plumbing;
@@ -135,7 +136,7 @@ Discussion.prototype = {
    * @function
    * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
    */
-  $getAgent: function() { return this.$client.users.getAgent(this.$getAgentUrl() || this.$getAgentId()); },
+  $getAgent: function() { return this.$client.getAgent(this.$getAgentUrl() || this.$getAgentId()); },
 
   /**
    * @ngdoc function
@@ -216,7 +217,7 @@ Discussion.prototype = {
  * _discussion_ can be a {@link discussions.types:constructor.Discussion Discussion} or a discussion URL or a discussion id
  **********************************/
 
-var DiscussionRef = Discussions.DiscussionRef = function(client, data) {
+var DiscussionRef = function(client, data) {
   this.$client = client;
   this.$helpers = client.helpers;
   this.$plumbing = client.plumbing;
@@ -403,7 +404,7 @@ DiscussionRef.prototype = {
  * @param {Object=} data an object with optional attributes {text, $discussionId, $memoryId}
  **********************************/
 
-var Comment = Discussions.Comment = function(client, data) {
+var Comment = function(client, data) {
   this.$client = client;
   this.$helpers = client.helpers;
   this.$plumbing = client.plumbing;
@@ -486,7 +487,7 @@ Comment.prototype = {
    * @function
    * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
    */
-  $getAgent: function() { return this.$client.users.getAgent(this.$getAgentUrl() || this.$getAgentId()); },
+  $getAgent: function() { return this.$client.getAgent(this.$getAgentUrl() || this.$getAgentId()); },
 
   /**
    * @ngdoc function
@@ -857,3 +858,16 @@ Discussions.prototype.deleteMemoryComment = function(mid, cmid, changeMessage, o
 };
 
 module.exports = Discussions;
+
+FS.Comment = Comment;
+FS.Discussion = Discussion;
+FS.DiscussionRef = DiscussionRef;
+FS.prototype.createComment = function(data){
+  return new Comment(this, data);
+};
+FS.prototype.createDiscussion = function(data){
+  return new Discussion(this, data);
+};
+FS.prototype.createDiscussionRef = function(data){
+  return new DiscussionRef(this, data);
+};

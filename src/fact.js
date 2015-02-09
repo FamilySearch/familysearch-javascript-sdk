@@ -372,4 +372,7 @@ exports.Fact.prototype = {
   }
 };
 
-module.exports = Fact;
+module.exports = FS.Fact = Fact;
+FS.prototype.createFact = function(data){
+  return new Fact(this, data);
+};

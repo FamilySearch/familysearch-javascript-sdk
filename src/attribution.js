@@ -1,4 +1,5 @@
-var utils = require('./utils'),
+var FS = require('./FamilySearch'),
+    utils = require('./utils'),
     maybe = utils.maybe;
 
 /**
@@ -67,4 +68,7 @@ Attribution.prototype = {
   $getAgent: function() { return this.$client.getAgent(this.$getAgentUrl() || this.$getAgentId()); }
 };
 
-module.exports = Attribution;
+module.exports = FS.Attribution = Attribution;
+FS.prototype.createAttribution = function(message){
+  return new Attribution(this, message);
+};

@@ -1,4 +1,5 @@
-var utils = require('./utils'),
+var FS = require('./FamilySearch'),
+    utils = require('./utils'),
     maybe = utils.maybe;
     
 /**
@@ -372,4 +373,7 @@ Name.prototype = {
   }
 };
 
-module.exports = Name;
+module.exports = FS.Name = Name;
+FS.prototype.createName = function(data){
+  return new Name(this, data);
+};

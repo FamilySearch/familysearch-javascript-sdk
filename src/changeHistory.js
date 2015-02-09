@@ -1,4 +1,5 @@
-var utils = require('./utils');
+var FS = require('./FamilySearch'),
+    utils = require('./utils');
 
 /**
  * @ngdoc overview
@@ -9,12 +10,6 @@ var utils = require('./utils');
  * {@link https://familysearch.org/developers/docs/api/resources#change-history FamilySearch API Docs}
  */
 
-var ChangeHistory = function(client){
-  this.client = client;
-  this.helpers = client.helpers;
-  this.plumbing = client.plumbing;
-};
-
 /**
  * @ngdoc function
  * @name changeHistory.types:constructor.Change
@@ -22,10 +17,14 @@ var ChangeHistory = function(client){
  *
  * Change made to a person or relationship
  */
-var Change = ChangeHistory.Change = function(client, change) {
+var Change = FS.Change = function(client, change) {
   this.client = client;
   this.helpers = client.helpers;
   utils.extend(this, change);
+};
+
+FS.prototype.createChange = function(data){
+  return new Change(this, data);
 };
 
 Change.prototype = {
@@ -87,7 +86,7 @@ Change.prototype = {
    * @function
    * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
    */
-  $getAgent: function() { return this.client.users.getAgent(this.$getAgentUrl()); },
+  $getAgent: function() { return this.client.getAgent(this.$getAgentUrl()); },
 
   /**
    * @ngdoc function
@@ -103,13 +102,13 @@ Change.prototype = {
 
 };
 
-ChangeHistory.prototype.changeHistoryResponseMapper = function(){
+FS.prototype._changeHistoryResponseMapper = function(){
   var self = this;
   return utils.compose(
     utils.objectExtender({getChanges: function() { return this.entries || []; }}),
     function(response){
       for(var i = 0; i < response.entries.length; i++){
-        response.entries[i] = self.client.createChange(response.entries[i]);
+        response.entries[i] = self.createChange(response.entries[i]);
       }
       return response;
     }
@@ -136,13 +135,13 @@ ChangeHistory.prototype.changeHistoryResponseMapper = function(){
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-ChangeHistory.prototype.getPersonChanges = function(pid, params, opts) {
+FS.prototype.getPersonChanges = function(pid, params, opts) {
   var self = this;
   return self.helpers.chainHttpPromises(
     self.plumbing.getUrl('person-changes-template', pid, {pid: pid}),
     function(url) {
       return self.plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-        self.changeHistoryResponseMapper());
+        self._changeHistoryResponseMapper());
     });
 };
 
@@ -166,13 +165,13 @@ ChangeHistory.prototype.getPersonChanges = function(pid, params, opts) {
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-ChangeHistory.prototype.getChildAndParentsChanges = function(caprid, params, opts) {
+FS.prototype.getChildAndParentsChanges = function(caprid, params, opts) {
   var self = this;
   return self.helpers.chainHttpPromises(
     self.plumbing.getUrl('child-and-parents-relationship-changes-template', caprid, {caprid: caprid}),
     function(url) {
       return self.plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-        self.changeHistoryResponseMapper());
+        self._changeHistoryResponseMapper());
     });
 };
 
@@ -196,13 +195,13 @@ ChangeHistory.prototype.getChildAndParentsChanges = function(caprid, params, opt
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-ChangeHistory.prototype.getCoupleChanges = function(crid, params, opts) {
+FS.prototype.getCoupleChanges = function(crid, params, opts) {
   var self = this;
   return self.helpers.chainHttpPromises(
     self.plumbing.getUrl('couple-relationship-changes-template', crid, {crid: crid}),
     function(url) {
       return self.plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-        self.changeHistoryResponseMapper());
+        self._changeHistoryResponseMapper());
     });
 };
 
@@ -222,7 +221,7 @@ ChangeHistory.prototype.getCoupleChanges = function(crid, params, opts) {
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the chid
  */
-ChangeHistory.prototype.restoreChange = function(chid, opts) {
+FS.prototype.restoreChange = function(chid, opts) {
   var self = this;
   return self.helpers.chainHttpPromises(
     self.plumbing.getUrl('change-restore-template', chid, {chid: chid}),
@@ -232,5 +231,3 @@ ChangeHistory.prototype.restoreChange = function(chid, opts) {
       });
     });
 };
-
-module.exports = ChangeHistory;

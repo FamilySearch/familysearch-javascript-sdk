@@ -46,10 +46,7 @@ var FS = module.exports = function(opts){
   self.helpers = new Helpers(self);
   self.plumbing = new Plumbing(self);
   self.authentication = new Authentication(self);
-  self.authorities = new Authorities(self);
-  self.changeHistory = new ChangeHistory(self);
   self.discussions = new Discussions(self);
-  self.users = new Users(self);
   
   opts = opts || {};
 
@@ -156,54 +153,27 @@ var FS = module.exports = function(opts){
 // require these after setting module.exports so that
 // they can have access to the FS global if they want
 // to require it also
-var Attribution = require('./attribution'),
-    Authentication = require('./authentication'),
-    Authorities = require('./authorities'),
-    ChangeHistory = require('./changeHistory'),
+var Authentication = require('./authentication'),
     Discussions = require('./discussions'),
-    Place = require('./place'),
-    Date = require('./date'),
-    Fact = require('./fact'),
-    Name = require('./name'),
     Helpers = require('./helpers'),
-    Plumbing = require('./plumbing'),
-    Redirect = require('./redirect'),
-    Users = require('./users');
+    Plumbing = require('./plumbing');
 
-// Attribution
-FS.Attribution = Attribution;
-FS.prototype.createAttribution = function(message){
-  return new Attribution(this, message);
-};
-
+require('./attribution');
+require('./authorities');
+require('./changeHistory')
+require('./date');
+require('./fact');
+require('./name');    
+require('./place');
+require('./redirect');
+require('./users');
+    
 // Authentication
 extendFSPrototype('authentication', 'getAccessToken');
 extendFSPrototype('authentication', 'getAccessTokenForMobile');
 extendFSPrototype('authentication', 'getAuthCode');
 extendFSPrototype('authentication', 'hasAccessToken');
 extendFSPrototype('authentication', 'invalidateAccessToken');
-
-// Authorities
-extendFSPrototype('authorities', 'getDate');
-extendFSPrototype('authorities', 'getPlaceSearch');
-FS.Date = Date;
-FS.Place = Place;
-FS.prototype.createDate = function(){
-  return new Date(arguments);
-};
-FS.prototype.createPlace = function(){
-  return new Place(arguments);
-};
-
-// Change History
-extendFSPrototype('changeHistory', 'getChildAndParentsChanges');
-extendFSPrototype('changeHistory', 'getCoupleChanges');
-extendFSPrototype('changeHistory', 'getPersonChanges');
-extendFSPrototype('changeHistory', 'restoreChange');
-FS.Change = ChangeHistory.Change;
-FS.prototype.createChange = function(data){
-  return new ChangeHistory.Change(this, data);
-};
 
 // Discussions
 extendFSPrototype('discussions', 'deleteDiscussion');
@@ -214,30 +184,6 @@ extendFSPrototype('discussions', 'getDiscussion');
 extendFSPrototype('discussions', 'getDiscussionComments');
 extendFSPrototype('discussions', 'getMultiDiscussion');
 extendFSPrototype('discussions', 'getPersonDiscussionRefs');
-FS.Comment = Discussions.Comment;
-FS.Discussion = Discussions.Discussion;
-FS.DiscussionRef = Discussions.DiscussionRef;
-FS.prototype.createComment = function(data){
-  return new Discussions.Comment(this, data);
-};
-FS.prototype.createDiscussion = function(data){
-  return new Discussions.Discussion(this, data);
-};
-FS.prototype.createDiscussionRef = function(data){
-  return new Discussions.DiscussionRef(this, data);
-};
-
-// Fact
-FS.Fact = Fact;
-FS.prototype.createFact = function(data){
-  return new Fact(this, data);
-};
-
-// Name
-FS.Name = Name;
-FS.prototype.createName = function(data){
-  return new Name(this, data);
-};
 
 // Plumbing
 extendFSPrototype('plumbing', 'del');
@@ -248,13 +194,6 @@ extendFSPrototype('plumbing', 'http');
 extendFSPrototype('plumbing', 'post');
 extendFSPrototype('plumbing', 'put');
 extendFSPrototype('plumbing', 'setTotalProcessingTime');
-
-// User
-extendFSPrototype('users', 'getAgent');
-extendFSPrototype('users', 'getCurrentUser');
-extendFSPrototype('users', 'getMultiAgent');
-FS.Agent = Users.Agent;
-FS.User = Users.User;
 
 function extendFSPrototype(moduleName, functionName){
   FS.prototype[functionName] = function(){

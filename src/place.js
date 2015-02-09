@@ -1,3 +1,5 @@
+var FS = require('./FamilySearch');
+
 /**
  * @ngdoc function
  * @name authorities.types:constructor.Place
@@ -78,4 +80,7 @@ Place.prototype = {
   }
 };
 
-module.exports = Place;
+module.exports = FS.Place = Place;
+FS.prototype.createPlace = function(){
+  return new Place(arguments);
+};

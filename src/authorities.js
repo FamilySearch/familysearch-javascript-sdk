@@ -1,4 +1,5 @@
-var utils = require('./utils'),
+var FS = require('./FamilySearch'),
+    utils = require('./utils'),
     Date = require('./date'),
     Place = require('./place');
 
@@ -10,11 +11,6 @@ var utils = require('./utils'),
  *
  * {@link https://familysearch.org/developers/docs/guides/authorities FamilySearch API Docs}
  */
-
-var Authorities = function(client){
-  this.helpers = client.helpers;
-  this.plumbing = client.plumbing;
-};
 
 /**
  * @ngdoc function
@@ -34,7 +30,7 @@ var Authorities = function(client){
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-Authorities.prototype.getDate = function(date, opts) {
+FS.prototype.getDate = function(date, opts) {
   var self = this,
       params = {
         date: date,
@@ -67,7 +63,7 @@ Authorities.prototype.getDate = function(date, opts) {
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-Authorities.prototype.getPlaceSearch = function(place, opts) {
+FS.prototype.getPlaceSearch = function(place, opts) {
   var self = this,
       params = {
         place: place,
@@ -86,5 +82,3 @@ Authorities.prototype.getPlaceSearch = function(place, opts) {
 // TODO authorities properties
 // TODO name authority
 // TODO culture authority
-
-module.exports = Authorities;

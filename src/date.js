@@ -1,3 +1,5 @@
+var FS = require('./FamilySearch');
+
 /**
  * @ngdoc function
  * @name authorities.types:constructor.Date
@@ -145,4 +147,7 @@ Date.prototype = {
   }
 };
 
-module.exports = Date;
+module.exports = FS.Date = Date;
+FS.prototype.createDate = function(){
+  return new Date(arguments);
+};
