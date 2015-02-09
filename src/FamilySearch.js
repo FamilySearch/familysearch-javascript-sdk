@@ -2,17 +2,7 @@ var globals = require('./globals'),
     utils = require('./utils'),
     angularjsWrappers = require('./angularjs-wrappers'),
     jQueryWrappers = require('./jquery-wrappers'),
-    nodejsWrappers = require('./nodejs-wrappers'),
-    Attribution = require('./attribution'),
-    Authentication = require('./authentication'),
-    Authorities = require('./authorities'),
-    ChangeHistory = require('./changeHistory'),
-    Discussions = require('./discussions'),
-    Place = require('./place'),
-    Date = require('./date'),
-    Helpers = require('./helpers'),
-    Plumbing = require('./plumbing'),
-    Users = require('./users');
+    nodejsWrappers = require('./nodejs-wrappers');
 
 /**
  * @ngdoc function
@@ -163,6 +153,21 @@ var FS = module.exports = function(opts){
 
 };
 
+// require these after setting module.exports so that
+// they can have access to the FS global if they want
+// to require it also
+var Attribution = require('./attribution'),
+    Authentication = require('./authentication'),
+    Authorities = require('./authorities'),
+    ChangeHistory = require('./changeHistory'),
+    Discussions = require('./discussions'),
+    Place = require('./place'),
+    Date = require('./date'),
+    Fact = require('./fact'),
+    Helpers = require('./helpers'),
+    Plumbing = require('./plumbing'),
+    Users = require('./users');
+
 // Attribution
 FS.Attribution = Attribution;
 FS.prototype.createAttribution = function(message){
@@ -181,6 +186,12 @@ extendFSPrototype('authorities', 'getDate');
 extendFSPrototype('authorities', 'getPlaceSearch');
 FS.Date = Date;
 FS.Place = Place;
+FS.prototype.createDate = function(){
+  return new Date(arguments);
+};
+FS.prototype.createPlace = function(){
+  return new Place(arguments);
+};
 
 // Change History
 extendFSPrototype('changeHistory', 'getChildAndParentsChanges');
@@ -212,6 +223,12 @@ FS.prototype.createDiscussion = function(data){
 };
 FS.prototype.createDiscussionRef = function(data){
   return new Discussions.DiscussionRef(this, data);
+};
+
+// Fact
+FS.Fact = Fact;
+FS.prototype.createFact = function(data){
+  return new Fact(this, data);
 };
 
 // Plumbing

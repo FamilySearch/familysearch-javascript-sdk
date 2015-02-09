@@ -128,7 +128,7 @@ beforeEach(function() {
       }
     }
   });
-
+  
   global.FS = new FamilySearch({
     'client_id': 'mock',
     'environment': 'sandbox',
