@@ -7,6 +7,7 @@
     "unit/changeHistorySpec.js",
     "unit/discussionsSpec.js",
     "unit/factSpec.js",
+    "unit/nameSpec.js",
     "unit/usersSpec.js"
   ],
   "helpers": [

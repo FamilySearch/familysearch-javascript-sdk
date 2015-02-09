@@ -164,6 +164,7 @@ var Attribution = require('./attribution'),
     Place = require('./place'),
     Date = require('./date'),
     Fact = require('./fact'),
+    Name = require('./name'),
     Helpers = require('./helpers'),
     Plumbing = require('./plumbing'),
     Users = require('./users');
@@ -229,6 +230,12 @@ FS.prototype.createDiscussionRef = function(data){
 FS.Fact = Fact;
 FS.prototype.createFact = function(data){
   return new Fact(this, data);
+};
+
+// Name
+FS.Name = Name;
+FS.prototype.createName = function(data){
+  return new Name(this, data);
 };
 
 // Plumbing
