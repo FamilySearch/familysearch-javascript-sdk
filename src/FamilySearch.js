@@ -45,8 +45,6 @@ var FS = module.exports = function(opts){
 
   self.helpers = new Helpers(self);
   self.plumbing = new Plumbing(self);
-  self.authentication = new Authentication(self);
-  self.discussions = new Discussions(self);
   
   opts = opts || {};
 
@@ -153,37 +151,20 @@ var FS = module.exports = function(opts){
 // require these after setting module.exports so that
 // they can have access to the FS global if they want
 // to require it also
-var Authentication = require('./authentication'),
-    Discussions = require('./discussions'),
-    Helpers = require('./helpers'),
+var Helpers = require('./helpers'),
     Plumbing = require('./plumbing');
 
 require('./attribution');
 require('./authorities');
-require('./changeHistory')
+require('./authentication');
+require('./changeHistory');
 require('./date');
 require('./fact');
 require('./name');    
 require('./place');
 require('./redirect');
 require('./users');
-    
-// Authentication
-extendFSPrototype('authentication', 'getAccessToken');
-extendFSPrototype('authentication', 'getAccessTokenForMobile');
-extendFSPrototype('authentication', 'getAuthCode');
-extendFSPrototype('authentication', 'hasAccessToken');
-extendFSPrototype('authentication', 'invalidateAccessToken');
-
-// Discussions
-extendFSPrototype('discussions', 'deleteDiscussion');
-extendFSPrototype('discussions', 'deleteDiscussionComment');
-extendFSPrototype('discussions', 'deleteDiscussionRef');
-extendFSPrototype('discussions', 'deleteMemoryComment');
-extendFSPrototype('discussions', 'getDiscussion');
-extendFSPrototype('discussions', 'getDiscussionComments');
-extendFSPrototype('discussions', 'getMultiDiscussion');
-extendFSPrototype('discussions', 'getPersonDiscussionRefs');
+require('./discussions');
 
 // Plumbing
 extendFSPrototype('plumbing', 'del');

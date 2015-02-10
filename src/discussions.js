@@ -11,12 +11,6 @@ var FS = require('./FamilySearch'),
  * {@link https://familysearch.org/developers/docs/api/resources#discussions FamilySearch API Docs}
  */
 
-var Discussions = function(client){
-  this.$client = client;
-  this.$helpers = client.helpers;
-  this.$plumbing = client.plumbing;
-};
-
 // TODO consider disallowing $save()'ing or $delete()'ing discussions
 
 /**********************************/
@@ -34,7 +28,6 @@ var Discussion = function(client, data) {
   this.$client = client;
   this.$helpers = client.helpers;
   this.$plumbing = client.plumbing;
-  this.$discussions = client.discussions;
   if (data) {
     utils.extend(this, data);
   }
@@ -109,7 +102,7 @@ Discussion.prototype = {
    * @function
    * @return {Object} promise for the {@link discussions.functions:getDiscussionComments getDiscussionComments} response
    */
-  $getComments: function() { return this.$discussions.getDiscussionComments(this.$getCommentsUrl()); },
+  $getComments: function() { return this.$client.getDiscussionComments(this.$getCommentsUrl()); },
 
   /**
    * @ngdoc function
@@ -168,7 +161,7 @@ Discussion.prototype = {
       self.$helpers.extendHttpPromise(returnedPromise, promise); // extend the first promise into the returned promise
       if (refresh) {
         // re-read the discussion and set this object's properties from response
-        return self.$discussions.getDiscussion(did, {}, opts).then(function(response) {
+        return self.$client.getDiscussion(did, {}, opts).then(function(response) {
           utils.deletePropertiesPartial(self, utils.appFieldRejector);
           utils.extend(self, response.getDiscussion());
           return did;
@@ -198,7 +191,7 @@ Discussion.prototype = {
    * @return {Object} promise for the discussion id
    */
   $delete: function(changeMessage, opts) {
-    return this.$discussions.deleteDiscussion(this.$getDiscussionUrl() || this.id, changeMessage, opts);
+    return this.$client.deleteDiscussion(this.$getDiscussionUrl() || this.id, changeMessage, opts);
   }
 
 };
@@ -221,7 +214,6 @@ var DiscussionRef = function(client, data) {
   this.$client = client;
   this.$helpers = client.helpers;
   this.$plumbing = client.plumbing;
-  this.$discussions = client.discussions;
   if (data) {
     utils.extend(this, data);
     if (data.discussion) {
@@ -300,7 +292,7 @@ DiscussionRef.prototype = {
    * @return {Object} promise for the {@link discussions.functions:getDiscussion getDiscussion} response
    */
   $getDiscussion: function() {
-    return this.$discussions.getDiscussion(this.$getDiscussionUrl() || this.resourceId);
+    return this.$client.getDiscussion(this.$getDiscussionUrl() || this.resourceId);
   },
 
   /**
@@ -387,7 +379,7 @@ DiscussionRef.prototype = {
    * @return {Object} promise for the discussion reference url
    */
   $delete: function(changeMessage, opts) {
-    return this.$discussions.deleteDiscussionRef(this.$getDiscussionRefUrl() || this.$personId, this.id, changeMessage, opts);
+    return this.$client.deleteDiscussionRef(this.$getDiscussionRefUrl() || this.$personId, this.id, changeMessage, opts);
   }
 
 };
@@ -408,7 +400,6 @@ var Comment = function(client, data) {
   this.$client = client;
   this.$helpers = client.helpers;
   this.$plumbing = client.plumbing;
-  this.$discussions = client.discussions;
   if (data) {
     utils.extend(this, data);
     this.$discussionId = data.$discussionId;
@@ -539,10 +530,10 @@ Comment.prototype = {
    */
   $delete: function(changeMessage, opts) {
     if (this.$discussionId) {
-      return this.$discussions.deleteDiscussionComment(this.$getCommentUrl() || this.$discussionId, this.id, changeMessage, opts);
+      return this.$client.deleteDiscussionComment(this.$getCommentUrl() || this.$discussionId, this.id, changeMessage, opts);
     }
     else {
-      return this.$discussions.deleteMemoryComment(this.$getCommentUrl() || this.$memoryId, this.id, changeMessage, opts);
+      return this.$client.deleteMemoryComment(this.$getCommentUrl() || this.$memoryId, this.id, changeMessage, opts);
     }
   }
 
@@ -568,19 +559,19 @@ Comment.prototype = {
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-Discussions.prototype.getDiscussion = function(did, params, opts) {
+FS.prototype.getDiscussion = function(did, params, opts) {
   var self = this;
-  return self.$helpers.chainHttpPromises(
-    self.$plumbing.getUrl('discussion-template', did, {did: did}),
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getUrl('discussion-template', did, {did: did}),
     function(url) {
-      return self.$plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
+      return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
         utils.compose(
           utils.objectExtender({getDiscussion: function() {
             return maybe(maybe(this).discussions)[0];
           }}),
           function(response){
             for(var i = 0; i < response.discussions.length; i++){
-              response.discussions[i] = self.$client.createDiscussion(response.discussions[i]);
+              response.discussions[i] = self.createDiscussion(response.discussions[i]);
             }
             return response;
           }
@@ -607,7 +598,7 @@ Discussions.prototype.getDiscussion = function(did, params, opts) {
  * returning a map of discussion id (or URL if dids is an array of URLs) to
  * {@link discussions.functions:getDiscussion getDiscussion} response
  */
-Discussions.prototype.getMultiDiscussion = function(dids, params, opts) {
+FS.prototype.getMultiDiscussion = function(dids, params, opts) {
   var self = this,
       promises = {};
   utils.forEach(dids, function(did) {
@@ -622,7 +613,7 @@ Discussions.prototype.getMultiDiscussion = function(dids, params, opts) {
     }
     promises[key] = self.getDiscussion(url, params, opts);
   });
-  return self.$helpers.promiseAll(promises);
+  return self.helpers.promiseAll(promises);
 };
 
 /**
@@ -645,12 +636,12 @@ Discussions.prototype.getMultiDiscussion = function(dids, params, opts) {
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-Discussions.prototype.getPersonDiscussionRefs = function(pid, params, opts) {
+FS.prototype.getPersonDiscussionRefs = function(pid, params, opts) {
   var self = this;
-  return self.$helpers.chainHttpPromises(
-    self.$plumbing.getUrl('person-discussion-references-template', pid, {pid: pid}),
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getUrl('person-discussion-references-template', pid, {pid: pid}),
     function(url) {
-      return self.$plumbing.get(url, params,
+      return self.plumbing.get(url, params,
         {'Accept': 'application/x-fs-v1+json'}, opts,
         utils.compose(
           utils.objectExtender({getDiscussionRefs: function() {
@@ -660,7 +651,7 @@ Discussions.prototype.getPersonDiscussionRefs = function(pid, params, opts) {
             if(response && response.persons && response.persons[0] && utils.isArray(response.persons[0]['discussion-references'])){
               var refs = response.persons[0]['discussion-references'];
               for(var i = 0; i < refs.length; i++){
-                refs[i] = self.$client.createDiscussionRef(refs[i]);
+                refs[i] = self.createDiscussionRef(refs[i]);
               }
             }
             return response;
@@ -674,7 +665,7 @@ Discussions.prototype.getPersonDiscussionRefs = function(pid, params, opts) {
     });
 };
 
-Discussions.prototype.commentsResponseMapper = function(){
+FS.prototype._commentsResponseMapper = function(){
   var self = this;
   return utils.compose(
     utils.objectExtender({getComments: function() {
@@ -684,7 +675,7 @@ Discussions.prototype.commentsResponseMapper = function(){
       if(response && response.discussions && response.discussions[0] && utils.isArray(response.discussions[0].comments)){
         var comments = response.discussions[0].comments;
         for(var i = 0; i < comments.length; i++){
-          comments[i] = self.$client.createComment(comments[i]);
+          comments[i] = self.createComment(comments[i]);
         }
       }
       return response;
@@ -712,14 +703,14 @@ Discussions.prototype.commentsResponseMapper = function(){
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-Discussions.prototype.getDiscussionComments = function(did, params, opts) {
+FS.prototype.getDiscussionComments = function(did, params, opts) {
   var self = this;
-  return self.$helpers.chainHttpPromises(
-    self.$plumbing.getUrl('discussion-comments-template', did, {did: did}),
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getUrl('discussion-comments-template', did, {did: did}),
     function(url) {
-      return self.$plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
+      return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
         utils.compose(
-          self.commentsResponseMapper(),
+          self._commentsResponseMapper(),
           utils.objectExtender(function(response) {
             return { $discussionId: maybe(maybe(maybe(response).discussions)[0]).id };
           }, function(response) {
@@ -751,12 +742,12 @@ Discussions.prototype.getDiscussionComments = function(did, params, opts) {
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the discussion id/URL
  */
-Discussions.prototype.deleteDiscussion = function(did, changeMessage, opts) {
+FS.prototype.deleteDiscussion = function(did, changeMessage, opts) {
   var self = this;
-  return self.$helpers.chainHttpPromises(
-    self.$plumbing.getUrl('discussion-template', did, {did: did}),
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getUrl('discussion-template', did, {did: did}),
     function(url) {
-      return self.$plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
+      return self.plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
         return did;
       });
     }
@@ -781,16 +772,16 @@ Discussions.prototype.deleteDiscussion = function(did, changeMessage, opts) {
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the pid
  */
-Discussions.prototype.deleteDiscussionRef = function(pid, drid, changeMessage, opts) {
+FS.prototype.deleteDiscussionRef = function(pid, drid, changeMessage, opts) {
   var self = this;
-  return self.$helpers.chainHttpPromises(
-    self.$plumbing.getUrl('person-discussion-reference-template', pid, {pid: pid, drid: drid}),
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getUrl('person-discussion-reference-template', pid, {pid: pid, drid: drid}),
     function(url) {
       var headers = {'Content-Type': 'application/x-fs-v1+json'};
       if (changeMessage) {
         headers['X-Reason'] = changeMessage;
       }
-      return self.$plumbing.del(url, headers, opts, function() {
+      return self.plumbing.del(url, headers, opts, function() {
         return pid;
       });
     }
@@ -815,12 +806,12 @@ Discussions.prototype.deleteDiscussionRef = function(pid, drid, changeMessage, o
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the did
  */
-Discussions.prototype.deleteDiscussionComment = function(did, cmid, changeMessage, opts) {
+FS.prototype.deleteDiscussionComment = function(did, cmid, changeMessage, opts) {
   var self = this;
-  return self.$helpers.chainHttpPromises(
-    self.$plumbing.getUrl('discussion-comment-template', did, {did: did, cmid: cmid}),
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getUrl('discussion-comment-template', did, {did: did, cmid: cmid}),
     function(url) {
-      return self.$plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
+      return self.plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
         return did;
       });
     }
@@ -845,19 +836,17 @@ Discussions.prototype.deleteDiscussionComment = function(did, cmid, changeMessag
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the mid
  */
-Discussions.prototype.deleteMemoryComment = function(mid, cmid, changeMessage, opts) {
+FS.prototype.deleteMemoryComment = function(mid, cmid, changeMessage, opts) {
   var self = this;
-  return self.$helpers.chainHttpPromises(
-    self.$plumbing.getUrl('memory-comment-template', mid, {mid: mid, cmid: cmid}),
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getUrl('memory-comment-template', mid, {mid: mid, cmid: cmid}),
     function(url) {
-      return self.$plumbing.del(url, {}, opts, function() {
+      return self.plumbing.del(url, {}, opts, function() {
         return mid;
       });
     }
   );
 };
-
-module.exports = Discussions;
 
 FS.Comment = Comment;
 FS.Discussion = Discussion;

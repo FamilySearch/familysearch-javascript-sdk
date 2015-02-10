@@ -1,4 +1,5 @@
-var utils = require('./utils');
+var FS = require('./FamilySearch'),
+    utils = require('./utils');
 
 
 /**
@@ -10,12 +11,6 @@ var utils = require('./utils');
  *
  * {@link https://familysearch.org/developers/docs/api/resources#authentication FamilySearch API docs}
  */
-
-var Authentication = function(client){
-  this.settings = client.settings;
-  this.helpers = client.helpers;
-  this.plumbing = client.plumbing;
-};
 
 /**
  * @ngdoc function
@@ -31,7 +26,7 @@ var Authentication = function(client){
  *
  * @return {Object} a promise of the (string) auth code
  */
-Authentication.prototype.getAuthCode = function() {
+FS.prototype.getAuthCode = function() {
   var self = this,
       settings = self.settings;
       
@@ -46,7 +41,7 @@ Authentication.prototype.getAuthCode = function() {
         'client_id'     : settings.clientId,
         'redirect_uri'  : settings.redirectUri
       });
-      return pollForAuthCode(popup);
+      return _pollForAuthCode(popup);
     });
   }
 };
@@ -57,7 +52,7 @@ Authentication.prototype.getAuthCode = function() {
  * @param {Object} promise promise from the access token endpoint
  * @param {Object} accessTokenDeferred deferred that needs to be resolved or rejected
  */
-Authentication.prototype.handleAccessTokenResponse = function(promise, accessTokenDeferred) {
+FS.prototype.handleAccessTokenResponse = function(promise, accessTokenDeferred) {
   var self = this;
   promise.then(
     function(data) {
@@ -94,7 +89,7 @@ Authentication.prototype.handleAccessTokenResponse = function(promise, accessTok
  * @param {String=} authCode auth code from getAuthCode; if not passed in, this function will call getAuthCode
  * @return {Object} a promise of the (string) access token.
  */
-Authentication.prototype.getAccessToken = function(authCode) {
+FS.prototype.getAccessToken = function(authCode) {
   var self = this,
       settings = self.settings,
       accessTokenDeferred = settings.deferredWrapper(),
@@ -112,7 +107,7 @@ Authentication.prototype.getAccessToken = function(authCode) {
       authCodePromise = helpers.refPromise(authCode);
     }
     else {
-      authCodePromise = Authentication.prototype.getAuthCode();
+      authCodePromise = FS.prototype.getAuthCode();
     }
     authCodePromise.then(
       function(authCode) {
@@ -152,7 +147,7 @@ Authentication.prototype.getAccessToken = function(authCode) {
  * @param {String} password of the user
  * @return {Object} a promise of the (string) access token.
  */
-Authentication.prototype.getAccessTokenForMobile = function(userName, password) {
+FS.prototype.getAccessTokenForMobile = function(userName, password) {
   var self = this,
       accessTokenDeferred = self.settings.deferredWrapper(),
       plumbing = self.plumbing,
@@ -189,7 +184,7 @@ Authentication.prototype.getAccessTokenForMobile = function(userName, password) 
  *
  * @return {boolean} true if the access token exists
  */
-Authentication.prototype.hasAccessToken = function() {
+FS.prototype.hasAccessToken = function() {
   return !!this.settings.accessToken;
 };
 
@@ -203,7 +198,7 @@ Authentication.prototype.hasAccessToken = function() {
  *
  * @return {Object} promise that is resolved once the access token has been invalidated
  */
-Authentication.prototype.invalidateAccessToken = function() {
+FS.prototype.invalidateAccessToken = function() {
   var self = this;
   self.helpers.eraseAccessToken(true);
   return self.helpers.chainHttpPromises(
@@ -221,7 +216,7 @@ Authentication.prototype.invalidateAccessToken = function() {
  * @param {Object} params query parameters to append to the window url
  * @return {window} reference to the popup window
  */
-Authentication.prototype.openPopup = function(url, params) {
+FS.prototype.openPopup = function(url, params) {
   // figure out where the center is
   var
     screenX     = utils.isUndefined(window.screenX) ? window.screenLeft : window.screenX,
@@ -236,7 +231,7 @@ Authentication.prototype.openPopup = function(url, params) {
   return window.open(helpers.appendQueryParameters(url, params),'',features);
 }
 
-Authentication.prototype.getCode = function(href, d) {
+FS.prototype.getCode = function(href, d) {
   var params = this.helpers.decodeQueryString(href);
   if (params['code']) {
     d.resolve(params['code']);
@@ -253,7 +248,7 @@ Authentication.prototype.getCode = function(href, d) {
  * @param {window} popup window to poll
  * @return a promise of the auth code
  */
-function pollForAuthCode(popup) {
+FS.prototype._pollForAuthCode = function(popup) {
   var d = this.settings.deferredWrapper();
 
   if (popup) {
@@ -281,5 +276,3 @@ function pollForAuthCode(popup) {
   }
   return d.promise;
 }
-
-module.exports = Authentication;
