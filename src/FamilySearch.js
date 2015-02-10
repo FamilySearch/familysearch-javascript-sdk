@@ -154,15 +154,21 @@ var FS = module.exports = function(opts){
 var Helpers = require('./helpers'),
     Plumbing = require('./plumbing');
 
+require('./agent');
 require('./attribution');
 require('./authorities');
 require('./authentication');
 require('./changeHistory');
+require('./change');
+require('./comment');
 require('./date');
+require('./discussion');
+require('./discussionRef');
 require('./fact');
 require('./name');    
 require('./place');
 require('./redirect');
+require('./user');
 require('./users');
 require('./discussions');
 
