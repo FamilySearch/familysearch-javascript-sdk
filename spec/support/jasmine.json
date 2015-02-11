@@ -9,6 +9,7 @@
     "unit/factSpec.js",
     "unit/memoriesSpec.js",
     "unit/nameSpec.js",
+    "unit/notesSpec.js",
     "unit/redirectSpec.js",
     "unit/usersSpec.js"
   ],

@@ -265,11 +265,9 @@ Memory.prototype = {
       function(url) {
         if (self.id) {
           // update memory
-          try {
           return self.$plumbing.post(url, { sourceDescriptions: [ self ] }, {}, opts, function() {
             return self.id;
           });
-          } catch(e) { console.error(e.stack); }
         }
         else {
           // create memory

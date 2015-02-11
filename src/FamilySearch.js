@@ -171,6 +171,8 @@ require('./memoryPersona');
 require('./memoryPersonaRef');
 require('./memory');
 require('./name');
+require('./notes');
+require('./note');
 require('./place');
 require('./redirect');
 require('./user');
