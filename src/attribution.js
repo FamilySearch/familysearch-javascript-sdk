@@ -17,11 +17,15 @@ var FS = require('./FamilySearch'),
  * Attribution
  * @param {String=} changeMessage change message
  */
-var Attribution = function(client, changeMessage) {
+var Attribution = FS.Attribution = function(client, changeMessage) {
   this.$client = client;
   if (changeMessage) {
     this.changeMessage = changeMessage;
   }
+};
+
+FS.prototype.createAttribution = function(message){
+  return new Attribution(this, message);
 };
 
 Attribution.prototype = {
@@ -66,9 +70,4 @@ Attribution.prototype = {
    * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
    */
   $getAgent: function() { return this.$client.getAgent(this.$getAgentUrl() || this.$getAgentId()); }
-};
-
-module.exports = FS.Attribution = Attribution;
-FS.prototype.createAttribution = function(message){
-  return new Attribution(this, message);
 };

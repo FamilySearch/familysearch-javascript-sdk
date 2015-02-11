@@ -23,44 +23,7 @@ var FS = require('./FamilySearch'),
 
 var Name = function(client, data) {
   this.$client = client;
-  if (data) {
-    if (utils.isString(data)) {
-      //noinspection JSUnresolvedFunction
-      this.$setFullText(data);
-    }
-    else {
-      if (data.type) {
-        //noinspection JSUnresolvedFunction
-        this.$setType(data.type);
-      }
-      if (data.givenName) {
-        //noinspection JSUnresolvedFunction
-        this.$setGivenName(data.givenName);
-      }
-      if (data.surname) {
-        //noinspection JSUnresolvedFunction
-        this.$setSurname(data.surname);
-      }
-      if (data.prefix) {
-        //noinspection JSUnresolvedFunction
-        this.$setPrefix(data.prefix);
-      }
-      if (data.suffix) {
-        //noinspection JSUnresolvedFunction
-        this.$setSuffix(data.suffix);
-      }
-      if (data.fullText) {
-        //noinspection JSUnresolvedFunction
-        this.$setFullText(data.fullText);
-      }
-      //noinspection JSUnresolvedFunction
-      this.$setPreferred(!!data.preferred);
-      if (data.changeMessage) {
-        //noinspection JSUnresolvedFunction
-        this.$setChangeMessage(data.changeMessage);
-      }
-    }
-  }
+  utils.extend(this, data);
 };
 
 // return the i'th name form; add it if it doesn't exist
