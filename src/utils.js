@@ -122,6 +122,20 @@ var forEach = exports.forEach = function(obj, iterator, context) {
 };
 
 /**
+ * "empty" properties are undefined, null, or the empty string
+ * @param {Object} obj Object to remove properties from
+ * @returns {Object} Object with empty properties removed
+ */
+exports.removeEmptyProperties = function(obj) {
+  forEach(obj, function(value, key) {
+    if (value == null || value === '') {  // == null also catches undefined
+      delete obj[key];
+    }
+  });
+  return obj;
+};
+
+/**
  * borrowed from underscore.js
  * @param {Object} obj Object to get keys from
  * @returns {Array.<string>} keys

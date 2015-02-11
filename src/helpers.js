@@ -304,20 +304,6 @@ Helpers.prototype.chainHttpPromises = function() {
 };
 
 /**
- * "empty" properties are undefined, null, or the empty string
- * @param {Object} obj Object to remove properties from
- * @returns {Object} Object with empty properties removed
- */
-Helpers.prototype.removeEmptyProperties = function(obj) {
-  forEach(obj, function(value, key) {
-    if (value == null || value === '') {  // == null also catches undefined
-      delete obj[key];
-    }
-  });
-  return obj;
-};
-
-/**
  * Get the last segment of a URL
  * @param url
  * @returns {string}

@@ -11,6 +11,7 @@
     "unit/nameSpec.js",
     "unit/notesSpec.js",
     "unit/redirectSpec.js",
+    "unit/sourcesSpec.js",
     "unit/usersSpec.js"
   ],
   "helpers": [

@@ -63,10 +63,6 @@ function loadFile(filename){
 
 var requests = [];
 
-FamilySearch.getHttpRequests = function() {
-  return requests;
-};
-
 /**
  * Mock an http call, fetching the json from a file in test/mock
  *
@@ -137,6 +133,10 @@ beforeEach(function() {
     'deferred_function': q.defer,
     'access_token': 'mock'
   });
+  
+  global.FS.getHttpRequests = function() {
+    return requests;
+  };
 
   requests = []; // reset requests
 
