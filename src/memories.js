@@ -355,9 +355,12 @@ FS.prototype.getPersonPortraitUrl = function(pid, params, opts) {
   return self.plumbing.getUrl('person-portrait-template', pid, {pid: pid}).then(function(url) {
     if (params && params.followRedirect) {
       params = utils.extend({}, params);
-      delete params.followRedirect;     
-      return self.plumbing.get(url, params, { 'X-Expect-Override': '200-ok' }, opts).then(function(){
-        return this.promise.getStatusCode() === 204 ? '' : self.helpers.appendAccessToken(this.promise.getResponseHeader('Location'));
+      delete params.followRedirect;
+      var promise = self.plumbing.get(url, params, { 'X-Expect-Override': '200-ok' }, opts);
+      // we don't use chaining directly between the .get() and the .then() because .then()
+      // returns a new promise representing the return value of the resolve/reject functions
+      return promise.then(function(){
+        return promise.getStatusCode() === 204 ? '' : self.helpers.appendAccessToken(promise.getResponseHeader('Location'));
       });
     }
     else {

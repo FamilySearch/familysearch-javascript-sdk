@@ -116,7 +116,7 @@ MemoryPersona.prototype = {
    */
   $setName: function(value) {
     if (!(value instanceof FS.Name)) {
-      value = new FS.Name(value);
+      value = this.$client.createName(value);
     }
     this.names = [ value ];
     //noinspection JSValidateTypes
@@ -162,8 +162,8 @@ MemoryPersona.prototype = {
         if (!self.$getMemoryArtifactRef()) {
           // default the media artifact reference to point to the memory
           // the discovery resource is guaranteed to be set due to the getUrl statement
-          var memoryUrl = self.$helpers.getUrlFromDiscoveryResource(globals.discoveryResource, 'memory-template', {mid: self.$memoryId});
-          self.$setMemoryArtifactRef(new MemoryArtifactRef({description: memoryUrl}));
+          var memoryUrl = self.$helpers.getUrlFromDiscoveryResource(self.$client.settings.discoveryResource, 'memory-template', {mid: self.$memoryId});
+          self.$setMemoryArtifactRef(self.$client.createMemoryArtifactRef({description: memoryUrl}));
         }
         return self.$plumbing.post(url, { persons: [ self ] }, {}, opts, function(data, promise) {
           return self.$getMemoryPersonaUrl() || self.$helpers.removeAccessToken(promise.getResponseHeader('Location'));
@@ -173,7 +173,7 @@ MemoryPersona.prototype = {
       self.$helpers.extendHttpPromise(returnedPromise, promise); // extend the first promise into the returned promise
       if (refresh) {
         // re-read the person and set this object's properties from response
-        return exports.getMemoryPersona(url, null, {}, opts).then(function(response) {
+        return self.$client.getMemoryPersona(url, null, {}, opts).then(function(response) {
           utils.deletePropertiesPartial(self, utils.appFieldRejector);
           utils.extend(self, response.getMemoryPersona());
           return url;

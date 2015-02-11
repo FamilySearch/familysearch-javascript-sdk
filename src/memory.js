@@ -265,9 +265,11 @@ Memory.prototype = {
       function(url) {
         if (self.id) {
           // update memory
+          try {
           return self.$plumbing.post(url, { sourceDescriptions: [ self ] }, {}, opts, function() {
             return self.id;
           });
+          } catch(e) { console.error(e.stack); }
         }
         else {
           // create memory
@@ -290,7 +292,7 @@ Memory.prototype = {
       self.$helpers.extendHttpPromise(returnedPromise, promise); // extend the first promise into the returned promise
       if (refresh) {
         // re-read the person and set this object's properties from response
-        return exports.getMemory(mid, {}, opts).then(function(response) {
+        return self.$client.getMemory(mid, {}, opts).then(function(response) {
           utils.deletePropertiesPartial(self, utils.appFieldRejector);
           utils.extend(self, response.getMemory());
           return mid;

@@ -255,7 +255,7 @@ Plumbing.prototype.http = function(method, url, headers, data, opts, responseMap
   // prepend the server
   var absoluteUrl = this.helpers.getAPIServerUrl(url);
   headers = headers || {};
-
+    
   // do we need to request an access token?
   var accessTokenPromise;
   if (!this.settings.accessToken &&

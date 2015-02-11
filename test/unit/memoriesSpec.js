@@ -1,4 +1,4 @@
-fdescribe('Memory', function() {
+describe('Memory', function() {
   it('references are returned from getPersonMemoryRefs', function(done) {
     FS.getMemoryPersonaRefs('PPPP-PPP').then(function(response) {
       var personaRefs = response.getMemoryPersonaRefs();
@@ -106,7 +106,8 @@ fdescribe('Memory', function() {
   });
 
   it('is created', function(done) {
-    var promise = FS.createMemory({title: 'Grandfather\'s Horse', $data: 'Test'})
+    var promise = FS.createMemory({ $data: 'Test' })
+      .$setTitle('Grandfather\'s Horse')
       .$save();
     promise.then(function(response) {
       var request = promise.getRequest();
@@ -119,7 +120,9 @@ fdescribe('Memory', function() {
   });
 
   it('is updated', function(done) {
-    var memory = FS.createMemory({title: 'Birth Certificate of Ethel Hollivet', description: 'Shows Ethel Hollivet was born 3 Aug 1899'});
+    var memory = FS.createMemory()
+      .$setTitle('Birth Certificate of Ethel Hollivet')
+      .$setDescription('Shows Ethel Hollivet was born 3 Aug 1899');
     memory.id = 'ARXX-MMM';
     var promise = memory.$save('', true);
     promise.then(function(response) {
@@ -149,7 +152,8 @@ fdescribe('Memory', function() {
   });
 
   it('persona is created', function(done) {
-    var promise = FS.createMemoryPersona({$memoryId: 'AR-1234', name: 'Anastasia Aleksandrova'})
+    var promise = FS.createMemoryPersona({$memoryId: 'AR-1234'})
+      .$setName('Anastasia Aleksandrova')
       .$save();
     promise.then(function(response) {
       var request = promise.getRequest();
@@ -173,7 +177,7 @@ fdescribe('Memory', function() {
   });
 
   it('persona is updated', function(done) {
-    var persona = FS.createMemoryPersona({$memoryId: 'AR-1234', name: 'Anastasia Alexsandrova'});
+    var persona = FS.createMemoryPersona({$memoryId: 'AR-1234'}).$setName('Anastasia Alexsandrova');
     persona.id = 'PXX-1234';
     persona.links = { persona: { href: 'https://sandbox.familysearch.org/platform/memories/memories/AR-1234/personas/PXX-1234' } };
     var promise = persona.$save();
@@ -206,7 +210,8 @@ fdescribe('Memory', function() {
   it('persona ref is created', function(done) {
     var memoryPersona = FS.createMemoryPersona();
     memoryPersona.links = { persona: { href: 'https://familysearch.org/platform/memories/memories/3649/personas/1083' } };
-    var promise = FS.createMemoryPersonaRef({$personId: 'PPPP-PPP', memoryPersona: memoryPersona})
+    var promise = FS.createMemoryPersonaRef({$personId: 'PPPP-PPP'})
+      .$setMemoryPersona(memoryPersona)
       .$save();
     promise.then(function(response) {
       var request = promise.getRequest();
