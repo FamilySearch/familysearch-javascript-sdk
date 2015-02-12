@@ -1,4 +1,5 @@
-var FS = require('./FamilySearch');
+var FS = require('./../FamilySearch'),
+    utils = require('./../utils');
 
 /**
  * @ngdoc function
@@ -7,7 +8,13 @@ var FS = require('./FamilySearch');
  *
  * Standardized place
  */
-var Place = function() { };
+var Place = FS.Place = function(client, data){ 
+  utils.extend(this, data);
+};
+
+FS.prototype.createPlace = function(data){
+  return new Place(this, data);
+};
 
 Place.prototype = {
   constructor: Place,
@@ -78,9 +85,4 @@ Place.prototype = {
   $getNormalizedPlace: function() {
     return this.normalized ? this.normalized[0] : undefined;
   }
-};
-
-module.exports = FS.Place = Place;
-FS.prototype.createPlace = function(){
-  return new Place(arguments);
 };

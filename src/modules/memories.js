@@ -1,5 +1,5 @@
-var FS = require('./FamilySearch'),
-    utils = require('./utils'),
+var FS = require('./../FamilySearch'),
+    utils = require('./../utils'),
     maybe = utils.maybe;
 
 /**

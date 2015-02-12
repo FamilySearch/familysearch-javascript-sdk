@@ -1,4 +1,5 @@
-var FS = require('./FamilySearch');
+var FS = require('./../FamilySearch'),
+    utils = require('./../utils');
 
 /**
  * @ngdoc function
@@ -55,7 +56,13 @@ var constructFormalDate = function(fields, ignoreModifiers) {
   return prefix+sign+year+(month ? '-' : '')+month+(day ? '-' : '')+day+suffix;
 };
 
-var Date = function() { };
+var Date = FS.Date = function(client, data) {
+  utils.extend(this, data);
+};
+
+FS.prototype.createDate = function(data){
+  return new Date(this, data);
+}
 
 Date.prototype = {
   constructor: Date,
@@ -145,9 +152,4 @@ Date.prototype = {
     }
     return formalDate;
   }
-};
-
-module.exports = FS.Date = Date;
-FS.prototype.createDate = function(){
-  return new Date(arguments);
 };

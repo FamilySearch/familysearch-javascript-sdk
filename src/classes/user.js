@@ -1,4 +1,4 @@
-var FS = require('./FamilySearch');
+var FS = require('./../FamilySearch');
 
 /**
  * @ngdoc function

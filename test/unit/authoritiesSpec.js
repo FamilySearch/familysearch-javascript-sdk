@@ -1,5 +1,3 @@
-var Date = require('../../src/date');
-
 describe('Authorities', function() {
   it('standardizes dates', function(done) {
     FS.getDate('8 Mar 2006').then(function(response) {
@@ -10,7 +8,7 @@ describe('Authorities', function() {
   });
 
   it('formalizes dates', function() {
-    var date = new Date();
+    var date = FS.createDate();
     date.normalized = '4 March 2006 / 16 December 2007';
     expect(date.$getFormalDate()).toBe('+2006-03-04');
     date.normalized = 'FROM 4 March 2006 TO 16 December 2007';

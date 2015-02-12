@@ -148,39 +148,43 @@ var FS = module.exports = function(opts){
 
 };
 
-// require these after setting module.exports so that
+// Require these after setting module.exports so that
 // they can have access to the FS global if they want
 // to require it also
 var Helpers = require('./helpers'),
     Plumbing = require('./plumbing');
+    
+// These modules contain functions which extend 
+// the FamilySearch prototype to provide api functionality
+require('./modules/authorities');
+require('./modules/authentication');
+require('./modules/changeHistory');
+require('./modules/discussions');
+require('./modules/memories');
+require('./modules/notes');
+require('./modules/redirect');
+require('./modules/sources');
+require('./modules/users');
 
-require('./agent');
-require('./attribution');
-require('./authorities');
-require('./authentication');
-require('./changeHistory');
-require('./change');
-require('./comment');
-require('./date');
-require('./discussion');
-require('./discussionRef');
-require('./fact');
-require('./memories');
-require('./memoryArtifactRef');
-require('./memoryPersona');
-require('./memoryPersonaRef');
-require('./memory');
-require('./name');
-require('./notes');
-require('./note');
-require('./place');
-require('./redirect');
-require('./sources');
-require('./sourceDescription');
-require('./sourceRef');
-require('./user');
-require('./users');
-require('./discussions');
+// These files contain class definitions
+require('./classes/agent');
+require('./classes/attribution');
+require('./classes/change');
+require('./classes/comment');
+require('./classes/date');
+require('./classes/discussion');
+require('./classes/discussionRef');
+require('./classes/fact');
+require('./classes/memoryArtifactRef');
+require('./classes/memoryPersona');
+require('./classes/memoryPersonaRef');
+require('./classes/memory');
+require('./classes/name');
+require('./classes/note');
+require('./classes/place');
+require('./classes/sourceDescription');
+require('./classes/sourceRef');
+require('./classes/user');
 
 // Plumbing
 extendFSPrototype('plumbing', 'del');

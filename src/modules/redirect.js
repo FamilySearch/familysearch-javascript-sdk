@@ -1,5 +1,4 @@
-var utils = require('./utils'),
-    FS = require('./FamilySearch');
+var FS = require('./../FamilySearch');
 
 /**
  * @ngdoc overview
