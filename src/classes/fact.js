@@ -20,9 +20,10 @@ var FS = require('./../FamilySearch'),
  * {type, date, formalDate, place, normalizedPlace, changeMessage}
  **********************************/
 
-var Fact = exports.Fact = function(client, data) {
+var Fact = FS.Fact = function(client, data) {
   this.$client = client;
   if (data) {
+    utils.extend(this, data);
     if (data.type) {
       //noinspection JSUnresolvedFunction
       this.$setType(data.type);
@@ -47,10 +48,18 @@ var Fact = exports.Fact = function(client, data) {
       //noinspection JSUnresolvedFunction
       this.$setChangeMessage(data.changeMessage);
     }
+    if (data.attribution && !(data.attribution instanceof FS.Attribution)) {
+      this.attribution = client.createAttribution(data.attribution);
+    }
   }
 };
 
-exports.Fact.prototype = {
+
+FS.prototype.createFact = function(data){
+  return new Fact(this, data);
+};
+
+Fact.prototype = {
   constructor: Fact,
   /**
    * @ngdoc property
@@ -370,9 +379,4 @@ exports.Fact.prototype = {
     //noinspection JSValidateTypes
     return this;
   }
-};
-
-module.exports = FS.Fact = Fact;
-FS.prototype.createFact = function(data){
-  return new Fact(this, data);
 };

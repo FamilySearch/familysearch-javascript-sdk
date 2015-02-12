@@ -58,6 +58,9 @@ var Name = function(client, data) {
         //noinspection JSUnresolvedFunction
         this.$setChangeMessage(data.changeMessage);
       }
+      if (data.attribution && !(data.attribution instanceof FS.Attribution)) {
+        this.attribution = client.createAttribution(data.attribution);
+      }
     }
   }
 };
