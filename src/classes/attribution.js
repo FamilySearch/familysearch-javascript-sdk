@@ -64,7 +64,7 @@ Attribution.prototype = {
    * @function
    * @return {String} URL of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
    */
-  $getAgentUrl: function() { return utils.removeAccessToken(maybe(this.contributor).resource); },
+  $getAgentUrl: function() { return this.$client.helpers.removeAccessToken(maybe(this.contributor).resource); },
 
   /**
    * @ngdoc function

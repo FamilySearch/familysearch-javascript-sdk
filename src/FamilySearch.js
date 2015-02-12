@@ -163,6 +163,7 @@ require('./modules/discussions');
 require('./modules/memories');
 require('./modules/notes');
 require('./modules/redirect');
+require('./modules/sourceBox');
 require('./modules/sources');
 require('./modules/users');
 
@@ -170,6 +171,7 @@ require('./modules/users');
 require('./classes/agent');
 require('./classes/attribution');
 require('./classes/change');
+require('./classes/collection');
 require('./classes/comment');
 require('./classes/date');
 require('./classes/discussion');
