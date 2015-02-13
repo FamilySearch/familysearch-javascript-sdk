@@ -37,7 +37,12 @@ FS.prototype.getCurrentUser = function(params, opts) {
       return self.plumbing.get(url, params, {}, opts,
         utils.compose(
           utils.objectExtender({getUser: function() { return maybe(this.users)[0]; }}),
-          utils.constructorSetter(FS.User, 'users')
+          function(response){
+            utils.forEach(response.users, function(user, index, obj){
+              obj[index] = self.createUser(user);
+            });
+            return response;
+          }
         ));
     });
 };
@@ -69,7 +74,12 @@ FS.prototype.getAgent = function(aid, params, opts) {
       return self.plumbing.get(url, params, {}, opts,
         utils.compose(
           utils.objectExtender({getAgent: function() { return maybe(this.agents)[0]; }}),
-          utils.constructorSetter(FS.Agent, 'agents')
+          function(response){
+            utils.forEach(response.agents, function(agent, index, obj){
+              obj[index] = self.createAgent(agent);
+            });
+            return response;
+          }
         ));
     });
 };

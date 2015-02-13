@@ -10,8 +10,13 @@ var FS = require('./../FamilySearch'),
  * An agent is returned from {@link user.functions:getAgent getAgent}.
  * Contributor Ids are agent ids, not user ids.
  */
-var Agent = FS.Agent = function() {
+var Agent = FS.Agent = function(client, data) {
+  // client isn't used right now but may be used in the future
+  utils.extend(this, data);
+};
 
+FS.prototype.createAgent = function(data){
+  return new Agent(this, data);
 };
 
 Agent.prototype = {

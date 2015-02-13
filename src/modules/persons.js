@@ -259,6 +259,7 @@ var personWithRelationshipsConvenienceFunctions = {
 // TODO check if person change summary has been fixed (last checked 14 July 14)
 // also check if the entries really contain changeInfo and contributors attributes
 // can't get any data from this resource as of 12 Feb 2015
+// needs to be adapted to new sdk structure when fixed
 //  /**
 //   * @ngdoc function
 //   * @name person.functions:getPersonChangeSummary

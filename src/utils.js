@@ -500,58 +500,6 @@ exports.deletePropertiesPartial = function(obj, filter) {
 };
 
 /**
- * Return a function that takes an object and returns an object with the same properties but with the constructor function's prototype
- * @param {function()} constructorFunction Create new objects with this constructor
- * @param {string=} attr if passed in, the constructor function will be applied to (each) element of object[attr] instead of the object itself
- * @param {function(Object)=} subObjectGenerator Function that takes an object and returns a set of sub-objects (or a single sub-object);
- * if passed in, the constructor function will be applied to sub-object[attr] for each sub-object returned by subObjectGenerator
- * @return {function(Object)} The constructor setter function
- */
-exports.constructorSetter = function(constructorFunction, attr, subObjectGenerator) {
-  var setConstructor;
-  if (subObjectGenerator) {
-    setConstructor = exports.constructorSetter(constructorFunction, attr);
-    return function(obj) {
-      if (exports.isObject(obj)) {
-        var subObjs = subObjectGenerator(obj);
-        if (exports.isArray(subObjs)) {
-          exports.forEach(subObjs, function(subObj) {
-            setConstructor(subObj);
-          });
-        }
-        else if (exports.isObject(subObjs)) {
-          setConstructor(subObjs);
-        }
-      }
-      return obj;
-    };
-  }
-  else if (attr) {
-    setConstructor = exports.constructorSetter(constructorFunction);
-    return function(obj) {
-      if (exports.isObject(obj)) {
-        if (exports.isArray(obj[attr])) {
-          obj[attr] = exports.map(obj[attr], function(o) {
-            return setConstructor(o);
-          });
-        }
-        else if (exports.isObject(obj[attr])) {
-          obj[attr] = setConstructor(obj[attr]);
-        }
-      }
-      return obj;
-    };
-  }
-  else {
-    return function(obj) {
-      var result = Object.create(constructorFunction.prototype);
-      exports.extend(result, obj);
-      return result;
-    };
-  }
-};
-
-/**
  * Copy functions from source to dest, binding them to source
  * @param {Object} dest Destination object
  * @param {Object} source Source object

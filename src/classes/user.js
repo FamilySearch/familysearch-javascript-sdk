@@ -1,4 +1,5 @@
-var FS = require('./../FamilySearch');
+var FS = require('../FamilySearch'),
+    utils = require('../utils');
 
 /**
  * @ngdoc function
@@ -8,8 +9,13 @@ var FS = require('./../FamilySearch');
  * User - a user is returned from {@link user.functions:getCurrentUser getCurrentUser};
  * Contributor Ids are agent ids, not user ids.
  */
-var User = FS.User = function() {
+var User = FS.User = function(client, data) {
+  // client isn't used right now but may be used in the future
+  utils.extend(this, data);
+};
 
+FS.prototype.createUser = function(data){
+  return new User(this, data);
 };
 
 User.prototype = {
