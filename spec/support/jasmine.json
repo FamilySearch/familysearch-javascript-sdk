@@ -13,6 +13,7 @@
     "unit/parentsAndChildrenSpec.js",
     "unit/personsSpec.js",
     "unit/redirectSpec.js",
+    "unit/searchAndMatchSpec.js",
     "unit/sourceBoxSpec.js",
     "unit/sourcesSpec.js",
     "unit/spousesSpec.js",

@@ -29,9 +29,10 @@ var Person = FS.Person = function(client, data) {
   
   if (data) {
     utils.extend(this, data);
-    if (data.gender) {
+    if (data.$gender) {
       //noinspection JSUnresolvedFunction
-      this.$setGender(data.gender);
+      this.$setGender(data.$gender);
+      delete this.$gender;
     }
     if (data.names) {
       //noinspection JSUnresolvedFunction
