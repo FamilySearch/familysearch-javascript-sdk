@@ -18,7 +18,7 @@ var FS = require('./../FamilySearch'),
  * Name
  *
  * @param {Object|String=} data either a fullText string or an object with optional attributes
- * {type, givenName, surname, prefix, suffix, fullText, preferred, changeMessage}
+ * {type, $givenName, $surname, $prefix, $suffix, $fullText, preferred, $changeMessage}
  **********************************/
 
 var Name = function(client, data) {
@@ -32,31 +32,37 @@ var Name = function(client, data) {
         //noinspection JSUnresolvedFunction
         this.$setType(data.type);
       }
-      if (data.givenName) {
+      if (data.$givenName) {
         //noinspection JSUnresolvedFunction
-        this.$setGivenName(data.givenName);
+        this.$setGivenName(data.$givenName);
+        delete this.$givenName;
       }
-      if (data.surname) {
+      if (data.$surname) {
         //noinspection JSUnresolvedFunction
-        this.$setSurname(data.surname);
+        this.$setSurname(data.$surname);
+        delete this.$surname;
       }
-      if (data.prefix) {
+      if (data.$prefix) {
         //noinspection JSUnresolvedFunction
-        this.$setPrefix(data.prefix);
+        this.$setPrefix(data.$prefix);
+        delete this.$prefix;
       }
-      if (data.suffix) {
+      if (data.$suffix) {
         //noinspection JSUnresolvedFunction
-        this.$setSuffix(data.suffix);
+        this.$setSuffix(data.$suffix);
+        delete this.$suffix;
       }
-      if (data.fullText) {
+      if (data.$fullText) {
         //noinspection JSUnresolvedFunction
-        this.$setFullText(data.fullText);
+        this.$setFullText(data.$fullText);
+        delete this.$fullText;
       }
       //noinspection JSUnresolvedFunction
       this.$setPreferred(!!data.preferred);
-      if (data.changeMessage) {
+      if (data.$changeMessage) {
         //noinspection JSUnresolvedFunction
-        this.$setChangeMessage(data.changeMessage);
+        this.$setChangeMessage(data.$changeMessage);
+        delete this.$changeMessage;
       }
       if (data.attribution && !(data.attribution instanceof FS.Attribution)) {
         this.attribution = client.createAttribution(data.attribution);

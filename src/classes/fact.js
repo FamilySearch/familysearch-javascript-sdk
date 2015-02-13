@@ -17,36 +17,37 @@ var FS = require('./../FamilySearch'),
  *
  * Fact
  * @param {Object=} data with optional attributes
- * {type, date, formalDate, place, normalizedPlace, changeMessage}
+ * {type, $date, $formalDate, $place, $normalizedPlace, $changeMessage}
  **********************************/
 
 var Fact = FS.Fact = function(client, data) {
   this.$client = client;
   if (data) {
     utils.extend(this, data);
-    if (data.type) {
+    if (data.$date) {
       //noinspection JSUnresolvedFunction
-      this.$setType(data.type);
+      this.$setDate(data.$date);
+      delete this.$date;
     }
-    if (data.date) {
+    if (data.$formalDate) {
       //noinspection JSUnresolvedFunction
-      this.$setDate(data.date);
+      this.$setFormalDate(data.$formalDate);
+      delete this.$formalDate;
     }
-    if (data.formalDate) {
+    if (data.$place) {
       //noinspection JSUnresolvedFunction
-      this.$setFormalDate(data.formalDate);
+      this.$setPlace(data.$place);
+      delete this.$place;
     }
-    if (data.place) {
+    if (data.$normalizedPlace) {
       //noinspection JSUnresolvedFunction
-      this.$setPlace(data.place);
+      this.$setNormalizedPlace(data.$normalizedPlace);
+      delete this.$normalizedPlace;
     }
-    if (data.normalizedPlace) {
+    if (data.$changeMessage) {
       //noinspection JSUnresolvedFunction
-      this.$setNormalizedPlace(data.normalizedPlace);
-    }
-    if (data.changeMessage) {
-      //noinspection JSUnresolvedFunction
-      this.$setChangeMessage(data.changeMessage);
+      this.$setChangeMessage(data.$changeMessage);
+      delete this.$changeMessage;
     }
     if (data.attribution && !(data.attribution instanceof FS.Attribution)) {
       this.attribution = client.createAttribution(data.attribution);

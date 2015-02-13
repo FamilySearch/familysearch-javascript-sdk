@@ -162,18 +162,22 @@ require('./modules/changeHistory');
 require('./modules/discussions');
 require('./modules/memories');
 require('./modules/notes');
+require('./modules/parentsAndChildren');
 require('./modules/persons');
 require('./modules/redirect');
 require('./modules/sourceBox');
 require('./modules/sources');
+require('./modules/spouses');
 require('./modules/users');
 
 // These files contain class definitions
 require('./classes/agent');
 require('./classes/attribution');
 require('./classes/change');
+require('./classes/childAndParents');
 require('./classes/collection');
 require('./classes/comment');
+require('./classes/couple');
 require('./classes/date');
 require('./classes/discussion');
 require('./classes/discussionRef');

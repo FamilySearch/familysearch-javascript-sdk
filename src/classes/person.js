@@ -797,7 +797,7 @@ Person.prototype = {
     // post update
     if (isChanged) {
       promises.push(self.$helpers.chainHttpPromises(
-        postData.id ? self.$plumbing.getUrl('person-template', null, {pid: postData.id}) : plumbing.getUrl('persons'),
+        postData.id ? self.$plumbing.getUrl('person-template', null, {pid: postData.id}) : self.$plumbing.getUrl('persons'),
         function(url) {
           return self.$plumbing.post(url, { persons: [ postData ] }, {}, opts, self.$helpers.getResponseEntityId);
         }));

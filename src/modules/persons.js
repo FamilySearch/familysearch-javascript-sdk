@@ -79,7 +79,7 @@ FS.prototype.getPerson = function(pid, params, opts) {
 FS.prototype.getMultiPerson = function(pids, params, opts) {
   var promises = {},
       self = this;
-  self.helpers.forEach(pids, function(pid) {
+  utils.forEach(pids, function(pid) {
     promises[pid] = self.getPerson(pid, params, opts);
   });
   return self.helpers.promiseAll(promises);
@@ -87,21 +87,28 @@ FS.prototype.getMultiPerson = function(pids, params, opts) {
 
 FS.prototype._personsAndRelationshipsMapper = function(){
   var self = this;
-  return function(response){
-    utils.forEach(response.persons, function(person, index, obj){
-      obj[index] = self.createPerson(person);
-    });
-    utils.forEach(response.relationships, function(rel, index, obj){
-      // This will create couple objects for ParentChild relationships
-      // but those are ignored/filtered out in the convenience functions.
-      // TODO: try removing the ParentChild relationships
-      obj[index] = self.createCouple(rel);
-    });
-    utils.forEach(response.childAndParentsRelationships, function(rel, index, obj){
-      obj[index] = self.createChildAndParents(rel);
-    });
-    return response;
-  };
+  return utils.compose(
+    utils.objectExtender({
+      getCoupleRelationships: function() { return utils.filter(maybe(this).relationships, {type: 'http://gedcomx.org/Couple'}) || []; },
+      getChildAndParentsRelationships: function() { return maybe(this).childAndParentsRelationships || []; },
+      getPerson:    function(id) { return utils.find(this.persons, {id: id}); }
+    }),
+    function(response){
+      utils.forEach(response.persons, function(person, index, obj){
+        obj[index] = self.createPerson(person);
+      });
+      utils.forEach(response.relationships, function(rel, index, obj){
+        // This will create couple objects for ParentChild relationships
+        // but those are ignored/filtered out in the convenience functions.
+        // TODO: try removing the ParentChild relationships
+        obj[index] = self.createCouple(rel);
+      });
+      utils.forEach(response.childAndParentsRelationships, function(rel, index, obj){
+        obj[index] = self.createChildAndParents(rel);
+      });
+      return response;
+    }
+  );
 };
 
 /**
@@ -151,7 +158,7 @@ FS.prototype.getPersonWithRelationships = function(pid, params, opts) {
   return self.helpers.chainHttpPromises(
     self.plumbing.getUrl('person-with-relationships-query'),
     function(url) {
-      return self.plumbing.get(url, helpers.extend({'person': pid}, params), {}, opts,
+      return self.plumbing.get(url, utils.extend({'person': pid}, params), {}, opts,
         utils.compose(
           utils.objectExtender({getPrimaryId: function() { return pid; }}), // Make the primary person's id available
           self._personsAndRelationshipsMapper(),
@@ -503,7 +510,7 @@ FS.prototype.setPreferredSpouse = function(pid, crid, opts) {
       });
     }
   );
-  return self.helpers.chainHttpPromises.apply(this, promises);
+  return self.helpers.chainHttpPromises.apply(self.helpers, promises);
 };
 
 /**

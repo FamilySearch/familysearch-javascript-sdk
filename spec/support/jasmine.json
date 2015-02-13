@@ -10,10 +10,12 @@
     "unit/memoriesSpec.js",
     "unit/nameSpec.js",
     "unit/notesSpec.js",
+    "unit/parentsAndChildrenSpec.js",
     "unit/personsSpec.js",
     "unit/redirectSpec.js",
     "unit/sourceBoxSpec.js",
     "unit/sourcesSpec.js",
+    "unit/spousesSpec.js",
     "unit/usersSpec.js"
   ],
   "helpers": [
