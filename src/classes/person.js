@@ -47,7 +47,7 @@ var Person = FS.Person = function(client, data) {
   }
 };
 
-FS.prototype.createPerson(data){
+FS.prototype.createPerson = function(data){
   return new Person(this, data);
 };
 

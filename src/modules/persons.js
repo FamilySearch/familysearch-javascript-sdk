@@ -85,6 +85,25 @@ FS.prototype.getMultiPerson = function(pids, params, opts) {
   return self.helpers.promiseAll(promises);
 };
 
+FS.prototype._personsAndRelationshipsMapper = function(){
+  var self = this;
+  return function(response){
+    utils.forEach(response.persons, function(person, index, obj){
+      obj[index] = self.createPerson(person);
+    });
+    utils.forEach(response.relationships, function(rel, index, obj){
+      // This will create couple objects for ParentChild relationships
+      // but those are ignored/filtered out in the convenience functions.
+      // TODO: try removing the ParentChild relationships
+      obj[index] = self.createCouple(rel);
+    });
+    utils.forEach(response.childAndParentsRelationships, function(rel, index, obj){
+      obj[index] = self.createChildAndParents(rel);
+    });
+    return response;
+  };
+};
+
 /**
  * @ngdoc function
  * @name person.functions:getPersonWithRelationships
@@ -135,23 +154,8 @@ FS.prototype.getPersonWithRelationships = function(pid, params, opts) {
       return self.plumbing.get(url, helpers.extend({'person': pid}, params), {}, opts,
         utils.compose(
           utils.objectExtender({getPrimaryId: function() { return pid; }}), // Make the primary person's id available
-          function(response){
-            utils.forEach(response.persons, function(person, index, obj){
-              obj[index] = self.createPerson(person);
-            });
-            utils.forEach(response.relationships, function(rel, index, obj){
-              // This will create couple objects for ParentChild relationships
-              // but those are ignored/filtered out in the convenience functions.
-              // TODO: try removing the ParentChild relationships
-              obj[index] = self.createCouple(rel);
-            });
-            utils.forEach(response.childAndParentsRelationships, function(rel, index, obj){
-              obj[index] = self.createChildAndParents(rel);
-            });
-            return response;
-          },
+          self._personsAndRelationshipsMapper(),
           utils.objectExtender(personWithRelationshipsConvenienceFunctions),
-          exports.personMapper(),
           function(response, promise) {
             response.persons[0].$isReadOnly = function() {
               var allowHeader = promise.getResponseHeader('Allow');
@@ -247,6 +251,7 @@ var personWithRelationshipsConvenienceFunctions = {
 
 // TODO check if person change summary has been fixed (last checked 14 July 14)
 // also check if the entries really contain changeInfo and contributors attributes
+// can't get any data from this resource as of 12 Feb 2015
 //  /**
 //   * @ngdoc function
 //   * @name person.functions:getPersonChangeSummary
@@ -278,35 +283,6 @@ var personWithRelationshipsConvenienceFunctions = {
 //      });
 //  };
 
-var relationshipsResponseMapper = helpers.compose(
-  helpers.constructorSetter(spouses.Couple, 'relationships'),
-  helpers.constructorSetter(parentsAndChildren.ChildAndParents, 'childAndParentsRelationships'),
-  helpers.objectExtender({
-    getCoupleRelationships: function() { return helpers.filter(maybe(this).relationships, {type: 'http://gedcomx.org/Couple'}) || []; },
-    getChildAndParentsRelationships: function() { return maybe(this).childAndParentsRelationships || []; },
-    getPerson:    function(id) { return helpers.find(this.persons, {id: id}); }
-  }),
-  helpers.constructorSetter(fact.Fact, 'facts', function(response) {
-    return response.relationships;
-  }),
-  helpers.constructorSetter(fact.Fact, 'fatherFacts', function(response) {
-    return response.childAndParentsRelationships;
-  }),
-  helpers.constructorSetter(fact.Fact, 'motherFacts', function(response) {
-    return response.childAndParentsRelationships;
-  }),
-  helpers.constructorSetter(attribution.Attribution, 'attribution', function(response) {
-    return helpers.union(
-      helpers.flatMap(response.relationships, function(rel) {
-        return rel.facts;
-      }),
-      helpers.flatMap(response.childAndParentsRelationships, function(rel) {
-        return helpers.union(rel.fatherFacts, rel.motherFacts);
-      }));
-  }),
-  exports.personMapper()
-);
-
 /**
  * @ngdoc function
  * @name person.functions:getSpouses
@@ -331,10 +307,11 @@ var relationshipsResponseMapper = helpers.compose(
  * @return {Object} promise for the response
  */
 FS.prototype.getSpouses = function(pid, params, opts) {
-  return helpers.chainHttpPromises(
-    plumbing.getUrl('spouses-template', pid, {pid: pid}),
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getUrl('spouses-template', pid, {pid: pid}),
     function(url) {
-      return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+      return self.plumbing.get(url, params, {}, opts, self._personsAndRelationshipsMapper());
     });
 };
 
@@ -361,10 +338,11 @@ FS.prototype.getSpouses = function(pid, params, opts) {
  * @return {Object} promise for the response
  */
 FS.prototype.getParents = function(pid, params, opts) {
-  return helpers.chainHttpPromises(
-    plumbing.getUrl('parents-template', pid, {pid: pid}),
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getUrl('parents-template', pid, {pid: pid}),
     function(url) {
-      return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+      return self.plumbing.get(url, params, {}, opts, self._personsAndRelationshipsMapper());
     });
 };
 
@@ -390,10 +368,11 @@ FS.prototype.getParents = function(pid, params, opts) {
  * @return {Object} promise for the response
  */
 FS.prototype.getChildren = function(pid, params, opts) {
-  return helpers.chainHttpPromises(
-    plumbing.getUrl('children-template', pid, {pid: pid}),
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getUrl('children-template', pid, {pid: pid}),
     function(url) {
-      return plumbing.get(url, params, {}, opts, relationshipsResponseMapper);
+      return self.plumbing.get(url, params, {}, opts, self._personsAndRelationshipsMapper());
     });
 };
 
@@ -415,10 +394,11 @@ FS.prototype.getChildren = function(pid, params, opts) {
  * @return {Object} promise for the person id/URL
  */
 FS.prototype.deletePerson = function(pid, changeMessage, opts) {
-  return helpers.chainHttpPromises(
-    plumbing.getUrl('person-template', pid, {pid: pid}),
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getUrl('person-template', pid, {pid: pid}),
     function(url) {
-      return plumbing.del(url, changeMessage ? {'X-Reason': changeMessage} : {}, opts, function() {
+      return self.plumbing.del(url, changeMessage ? {'X-Reason': changeMessage} : {}, opts, function() {
         return pid;
       });
     }
@@ -445,21 +425,23 @@ FS.prototype.deletePerson = function(pid, changeMessage, opts) {
  * or undefined if no preference
  */
 FS.prototype.getPreferredSpouse = function(pid, params, opts) {
-  return helpers.chainHttpPromises(
-    user.getCurrentUser(),
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.getCurrentUser(),
     function(response) {
       var uid = response.getUser().treeUserId;
-      return plumbing.getUrl('preferred-spouse-relationship-template', null, {uid: uid, pid: pid});
+      return self.plumbing.getUrl('preferred-spouse-relationship-template', null, {uid: uid, pid: pid});
     },
     function(url) {
-      return plumbing.get(url + '.json', params, { 'X-Expect-Override': '200-ok' }, opts).then(function(){
-        if (this.promise.getStatusCode() === 200) {
-          var contentLocation = this.promise.getResponseHeader('Location');
+      var promise = self.plumbing.get(url + '.json', params, { 'X-Expect-Override': '200-ok' }, opts);
+      return promise.then(function(){
+        if (promise.getStatusCode() === 200) {
+          var contentLocation = promise.getResponseHeader('Location');
           if (contentLocation.indexOf('child-and-parents-relationships') >= 0) {
             return null;
           }
           else {
-            return helpers.getLastUrlSegment(contentLocation);
+            return self.helpers.getLastUrlSegment(contentLocation);
           }
         }
         return void 0;
@@ -486,41 +468,42 @@ FS.prototype.getPreferredSpouse = function(pid, params, opts) {
  * @return {Object} promise for the person id
  */
 FS.prototype.setPreferredSpouse = function(pid, crid, opts) {
-  var location;
-  var promises = [];
+  var location,
+      promises = [],
+      self = this;
   if (crid === null) {
     // grab the first child-and-parents relationship with an unknown parent
     promises.push(
-      exports.getChildren(pid),
+      self.getChildren(pid),
       function(response) {
-        var capr = helpers.find(response.getChildAndParentsRelationships(), function(capr) {
+        var capr = utils.find(response.getChildAndParentsRelationships(), function(capr) {
           return !capr.$getFatherId() || !capr.$getMotherId();
         });
-        return plumbing.getUrl('child-and-parents-relationship-template', null, {caprid: capr.id});
+        return self.plumbing.getUrl('child-and-parents-relationship-template', null, {caprid: capr.id});
       }
     );
   }
   else {
     promises.push(
-      plumbing.getUrl('couple-relationship-template', crid, {crid: crid})
+      self.plumbing.getUrl('couple-relationship-template', crid, {crid: crid})
     );
   }
   promises.push(
     function(url) {
       location = url;
-      return user.getCurrentUser();
+      return self.getCurrentUser();
     },
     function(response) {
       var uid = response.getUser().treeUserId;
-      return plumbing.getUrl('preferred-spouse-relationship-template', null, {uid: uid, pid: pid});
+      return self.plumbing.getUrl('preferred-spouse-relationship-template', null, {uid: uid, pid: pid});
     },
     function(url) {
-      return plumbing.put(url, null, {'Location': location}, opts, function() {
+      return self.plumbing.put(url, null, {'Location': location}, opts, function() {
         return pid;
       });
     }
   );
-  return helpers.chainHttpPromises.apply(this, promises);
+  return self.helpers.chainHttpPromises.apply(this, promises);
 };
 
 /**
@@ -540,14 +523,15 @@ FS.prototype.setPreferredSpouse = function(pid, crid, opts) {
  * @return {Object} promise for the person id
  */
 FS.prototype.deletePreferredSpouse = function(pid, opts) {
-  return helpers.chainHttpPromises(
-    user.getCurrentUser(),
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.getCurrentUser(),
     function(response) {
       var uid = response.getUser().treeUserId;
-      return plumbing.getUrl('preferred-spouse-relationship-template', null, {uid: uid, pid: pid});
+      return self.plumbing.getUrl('preferred-spouse-relationship-template', null, {uid: uid, pid: pid});
     },
     function(url) {
-      return plumbing.del(url, {}, opts, function() {
+      return self.plumbing.del(url, {}, opts, function() {
         return pid;
       });
     }
@@ -572,17 +556,19 @@ FS.prototype.deletePreferredSpouse = function(pid, opts) {
  * @return {Object} promise for the preferred ChildAndParents relationship id or undefined if no preference
  */
 FS.prototype.getPreferredParents = function(pid, params, opts) {
-  return helpers.chainHttpPromises(
-    user.getCurrentUser(),
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.getCurrentUser(),
     function(response) {
       var uid = response.getUser().treeUserId;
-      return plumbing.getUrl('preferred-parent-relationship-template', null, {uid: uid, pid: pid});
+      return self.plumbing.getUrl('preferred-parent-relationship-template', null, {uid: uid, pid: pid});
     },
     function(url) {
       // TODO remove accept header when FS bug is fixed (last checked 4/2/14) - unable to check 14 July 14
       // couldn't check 14 July 14 because the endpoint returns a 403 now
-      return plumbing.get(url + '.json', params, {Accept: 'application/x-fs-v1+json', 'X-Expect-Override': '200-ok'}, opts).then(function(){
-        return this.promise.getStatusCode() === 200 ? helpers.getLastUrlSegment(this.promise.getResponseHeader('Location')) : void 0;
+      var promise = self.plumbing.get(url + '.json', params, {Accept: 'application/x-fs-v1+json', 'X-Expect-Override': '200-ok'}, opts);
+      return promise.then(function(){
+        return promise.getStatusCode() === 200 ? self.helpers.getLastUrlSegment(promise.getResponseHeader('Location')) : void 0;
       });
     }
   );
@@ -606,19 +592,20 @@ FS.prototype.getPreferredParents = function(pid, params, opts) {
  * @return {Object} promise for the person id
  */
 FS.prototype.setPreferredParents = function(pid, caprid, opts) {
-  var childAndParentsUrl;
-  return helpers.chainHttpPromises(
-    plumbing.getUrl('child-and-parents-relationship-template', caprid, {caprid: caprid}),
+  var childAndParentsUrl,
+      self = this;
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getUrl('child-and-parents-relationship-template', caprid, {caprid: caprid}),
     function(url) {
       childAndParentsUrl = url;
-      return user.getCurrentUser();
+      return self.getCurrentUser();
     },
     function(response) {
       var uid = response.getUser().treeUserId;
-      return plumbing.getUrl('preferred-parent-relationship-template', null, {uid: uid, pid: pid});
+      return self.plumbing.getUrl('preferred-parent-relationship-template', null, {uid: uid, pid: pid});
     },
     function(url) {
-      return plumbing.put(url, null, {'Location': childAndParentsUrl}, opts, function() {
+      return self.plumbing.put(url, null, {'Location': childAndParentsUrl}, opts, function() {
         return pid;
       });
     }
@@ -642,14 +629,15 @@ FS.prototype.setPreferredParents = function(pid, caprid, opts) {
  * @return {Object} promise for the person id
  */
 FS.prototype.deletePreferredParents = function(pid, opts) {
-  return helpers.chainHttpPromises(
-    user.getCurrentUser(),
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.getCurrentUser(),
     function(response) {
       var uid = response.getUser().treeUserId;
-      return plumbing.getUrl('preferred-parent-relationship-template', null, {uid: uid, pid: pid});
+      return self.plumbing.getUrl('preferred-parent-relationship-template', null, {uid: uid, pid: pid});
     },
     function(url) {
-      return plumbing.del(url, {}, opts, function() {
+      return self.plumbing.del(url, {}, opts, function() {
         return pid;
       });
     }
