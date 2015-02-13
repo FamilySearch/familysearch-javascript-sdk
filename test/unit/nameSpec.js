@@ -5,8 +5,8 @@ describe('A Name', function() {
   });
 
   it('is constructed from an object', function() {
-    var name = FS.createName({type: 'type', givenName: 'given', surname: 'surname', prefix: 'prefix', suffix: 'suffix',
-                                      fullText: 'fulltext', preferred: true, changeMessage: 'changeMessage'});
+    var name = FS.createName({type: 'type', $givenName: 'given', $surname: 'surname', $prefix: 'prefix', $suffix: 'suffix',
+                                      $fullText: 'fulltext', preferred: true, $changeMessage: 'changeMessage'});
     expect(name.type).toBe('type');
     expect(name.$getGivenName()).toBe('given');
     expect(name.$getSurname()).toBe('surname');

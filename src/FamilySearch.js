@@ -163,6 +163,7 @@ require('./modules/discussions');
 require('./modules/memories');
 require('./modules/notes');
 require('./modules/parentsAndChildren');
+require('./modules/pedigree');
 require('./modules/persons');
 require('./modules/redirect');
 require('./modules/searchAndMatch');

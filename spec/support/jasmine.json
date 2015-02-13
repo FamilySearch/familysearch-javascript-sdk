@@ -11,6 +11,7 @@
     "unit/nameSpec.js",
     "unit/notesSpec.js",
     "unit/parentsAndChildrenSpec.js",
+    "unit/pedigreeSpec.js",
     "unit/personsSpec.js",
     "unit/redirectSpec.js",
     "unit/searchAndMatchSpec.js",

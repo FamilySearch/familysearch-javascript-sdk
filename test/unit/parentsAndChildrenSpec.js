@@ -45,11 +45,11 @@ describe('Parents and Children relationship', function() {
     });
   });
 
-  it('is created', function() {
+  it('is created', function(done) {
     var promise = FS.createChildAndParents({
-      father: 'PPPX-MP1',
-      mother: 'PPPX-FP2',
-      child: 'PPPX-PP3',
+      $father: 'PPPX-MP1',
+      $mother: 'PPPX-FP2',
+      $child: 'PPPX-PP3',
       fatherFacts: [{type:'http://gedcomx.org/AdoptiveParent'}],
       motherFacts: [{type:'http://gedcomx.org/BiologicalParent'}]
     }).$save('...change message...');
@@ -83,14 +83,15 @@ describe('Parents and Children relationship', function() {
       });
       expect(promise.getStatusCode()).toBe(201);
       expect(response).toBe('PPPX-PP0');
+      done();
     });
   });
 
-  it('conclusion is created', function() {
+  it('conclusion is created', function(done) {
     var rel = FS.createChildAndParents();
     rel.id = '12345';
     var promise = rel
-      .$addMotherFact({type:'http://gedcomx.org/BiologicalParent', changeMessage: '...change message...'})
+      .$addMotherFact({type:'http://gedcomx.org/BiologicalParent', $changeMessage: '...change message...'})
       .$save();
     promise.then(function(response) {
       var request = promise.getRequest();
@@ -107,6 +108,7 @@ describe('Parents and Children relationship', function() {
       });
       expect(promise.getStatusCode()).toBe(204);
       expect(response).toBe('12345');
+      done();
     });
   });
 
@@ -128,7 +130,7 @@ describe('Parents and Children relationship', function() {
     return rel;
   }
 
-  it('is updated', function() {
+  it('is updated', function(done) {
     var rel = createMockRelationship('12345', 'C.1');
     // update mother and mother fact
     rel.$setMother('PPPX-FP2')
@@ -159,10 +161,11 @@ describe('Parents and Children relationship', function() {
       });
       expect(promise.getStatusCode()).toBe(204);
       expect(response).toBe('12345');
+      done();
     });
   });
 
-  it('conclusion is deleted', function() {
+  it('conclusion is deleted', function(done) {
     var rel = createMockRelationship('R123-456', 'C123-456');
     // delete fact
     var promise = rel
@@ -172,10 +175,11 @@ describe('Parents and Children relationship', function() {
       expect(promise.getStatusCode()).toBe(204);
       expect(promise.getRequest().headers['X-Reason']).toBe('Deleted for reason 1');
       expect(response).toBe('R123-456');
+      done();
     });
   });
 
-  it('parent is deleted', function() {
+  it('parent is deleted', function(done) {
     var promise = createMockRelationship('RRRX-RRX','fid')
       // delete mother
       .$deleteMother()
@@ -184,16 +188,18 @@ describe('Parents and Children relationship', function() {
       expect(promise.getStatusCode()).toBe(204);
       expect(promise.getRequest().headers['X-Reason']).toBe('Deleted for reason 1');
       expect(response).toBe('RRRX-RRX');
+      done();
     });
   });
 
-  it('is deleted', function() {
+  it('is deleted', function(done) {
     var promise = createMockRelationship('PPPX-PP0','fid')
       .$delete('Deleted for reason 1');
     promise.then(function(response) {
       expect(promise.getStatusCode()).toBe(204);
       expect(promise.getRequest().headers['X-Reason']).toBe('Deleted for reason 1');
       expect(response).toBe('PPPX-PP0');
+      done();
     });
   });
 

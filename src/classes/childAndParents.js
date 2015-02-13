@@ -27,17 +27,20 @@ var ChildAndParents = FS.ChildAndParents = function(client, data) {
   
   if (data) {
     utils.extend(this, data);
-    if (data.father) {
+    if (data.$father) {
       //noinspection JSUnresolvedFunction
-      this.$setFather(data.father);
+      this.$setFather(data.$father);
+      delete this.$father;
     }
-    if (data.mother) {
+    if (data.$mother) {
       //noinspection JSUnresolvedFunction
-      this.$setMother(data.mother);
+      this.$setMother(data.$mother);
+      delete this.$mother;
     }
-    if (data.child) {
+    if (data.$child) {
       //noinspection JSUnresolvedFunction
-      this.$setChild(data.child);
+      this.$setChild(data.$child);
+      delete this.$child;
     }
     if (data.fatherFacts) {
       //noinspection JSUnresolvedFunction
