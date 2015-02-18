@@ -239,9 +239,9 @@ Fact.prototype = {
       this.$setNormalizedDate(date.normalized);
     }
     else if (utils.isObject(date)) {
-      originalDate = date.original;
-      this.$setFormalDate(date.formal);
-      this.$setNormalizedDate(date.normalized);
+      originalDate = date.$original;
+      this.$setFormalDate(date.$formal);
+      this.$setNormalizedDate(date.$normalized);
     }
     if (!!originalDate) {
       if (!this.date) {
@@ -326,8 +326,8 @@ Fact.prototype = {
       this.$setNormalizedPlace(place.$getNormalizedPlace());
     }
     else if (utils.isObject(place)) {
-      originalPlace = place.original;
-      this.$setNormalizedPlace(place.normalized);
+      originalPlace = place.$original;
+      this.$setNormalizedPlace(place.$normalized);
     }
     if (!!originalPlace) {
       if (!this.place) {

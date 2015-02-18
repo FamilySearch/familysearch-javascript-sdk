@@ -57,7 +57,7 @@ var constructFormalDate = function(fields, ignoreModifiers) {
 };
 
 var Date = FS.Date = function(client, data) {
-  utils.extend(this, data);
+  FS.BaseClass.call(this, client, data);
 };
 
 FS.prototype.createDate = function(data){

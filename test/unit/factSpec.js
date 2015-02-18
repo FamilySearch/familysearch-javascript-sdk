@@ -10,7 +10,7 @@ describe('A Fact', function() {
     expect(fact.attribution.changeMessage).toBe('changeMessage');
   });
 
-  xit('is updated correctly', function() {
+  it('is updated correctly', function() {
     var fact = FS.createFact();
     fact.$setType('type');
     expect(fact.type).toBe('type');
@@ -29,9 +29,10 @@ describe('A Fact', function() {
     expect(fact.$changed).toBe(true);
 
     fact = FS.createFact();
-    var date = FS.createDate();
-    date.original = '6 Mar 2014';
-    date.normalized = '6 March 2014';
+    var date = FS.createDate({
+      original: '6 Mar 2014',
+      normalized: '6 March 2014'
+    });
     fact.$setDate(date);
     expect(fact.$getDate()).toBe('6 Mar 2014');
     expect(fact.$getNormalizedDate()).toBe('6 March 2014');
@@ -44,16 +45,17 @@ describe('A Fact', function() {
     expect(fact.$changed).toBe(true);
 
     fact = FS.createFact();
-    fact.$setPlace({$original: 'place', normalized: 'normalizedPlace'});
+    fact.$setPlace({$original: 'place', $normalized: 'normalizedPlace'});
     expect(fact.$getPlace()).toBe('place');
     expect(fact.$getNormalizedPlace()).toBe('normalizedPlace');
     expect(fact.$changed).toBe(true);
 
     fact = FS.createFact();
-    var place = FS.createPlace();
-    place.original = 'place';
-    place.id = 'normalizedPlaceId';
-    place.normalized = ['normalizedPlace'];
+    var place = FS.createPlace({
+      original: 'place',
+      id: 'normalizedPlaceId',
+      normalized: ['normalizedPlace']
+    });
     fact.$setPlace(place);
     expect(fact.$getPlace()).toBe('place');
     expect(fact.$getNormalizedPlace()).toBe('normalizedPlace');
