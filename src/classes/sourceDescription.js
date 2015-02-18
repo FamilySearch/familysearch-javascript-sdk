@@ -217,7 +217,7 @@ SourceDescription.prototype = {
    */
   $delete: function(changeMessage, opts) {
     // must use the id, not the full url, here
-    return self.$client.deleteSourceDescription(this.id, changeMessage, opts);
+    return this.$client.deleteSourceDescription(this.id, changeMessage, opts);
   }
 
 };

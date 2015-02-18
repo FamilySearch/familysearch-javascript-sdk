@@ -11,6 +11,11 @@ var FS = require('../FamilySearch'),
  * {@link https://familysearch.org/developers/docs/api/resources#spouses FamilySearch API Docs}
  */
 
+var coupleConvenienceFunctions = {
+  getRelationship: function() { return maybe(this.relationships)[0]; },
+  getPerson:       function(id) { return utils.find(this.persons, {id: id}); }
+};
+
 /**
  * @ngdoc function
  * @name spouses.functions:getCouple
@@ -53,11 +58,6 @@ FS.prototype.getCouple = function(crid, params, opts) {
           }
         ));
     });
-};
-
-var coupleConvenienceFunctions = {
-  getRelationship: function() { return maybe(this.relationships)[0]; },
-  getPerson:       function(id) { return utils.find(this.persons, {id: id}); }
 };
 
 /**

@@ -1,6 +1,5 @@
 var FS = require('./../FamilySearch'),
-    utils = require('./../utils'),
-    maybe = utils.maybe;
+    utils = require('./../utils');
 
 /**
  * @ngdoc overview
@@ -40,7 +39,7 @@ FS.prototype._getSearchMatchResponseMapper = function() {
       return response;
     }
   );
-}
+};
 
 /**
  * @ngdoc function

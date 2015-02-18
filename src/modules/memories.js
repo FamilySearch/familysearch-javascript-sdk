@@ -26,7 +26,7 @@ FS.prototype._memoriesResponseMapper = function(){
       }
     }
     return response;
-  }
+  };
 };
 
 /**

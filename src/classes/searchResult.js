@@ -9,7 +9,7 @@ var FS = require('./../FamilySearch'),
  *
  * Reference from a person or relationship to a source
  */
-var SearchResult = exports.SearchResult = function(client, data) {
+var SearchResult = FS.SearchResult = function(client, data) {
   FS.BaseClass.call(this, client, data);
   
   utils.forEach(maybe(maybe(maybe(data).content).gedcomx).persons, function(person, index, obj){
@@ -21,7 +21,7 @@ FS.prototype.createSearchResult = function(data){
   return new SearchResult(this, data);
 };
 
-exports.SearchResult.prototype = {
+SearchResult.prototype = {
   constructor: SearchResult,
   /**
    * @ngdoc property

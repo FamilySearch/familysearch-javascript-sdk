@@ -241,7 +241,7 @@ FS.prototype._getSourcesResponseMapper = function(root, label, includeDescriptio
       return response;
     } : null
   );
-}
+};
 
 /**
  * @ngdoc function

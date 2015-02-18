@@ -1,5 +1,5 @@
 var FS = require('../FamilySearch'),
-    relHelpers = require('../relationshipHelpers')
+    relHelpers = require('../relationshipHelpers'),
     utils = require('../utils'),
     maybe = utils.maybe;
 

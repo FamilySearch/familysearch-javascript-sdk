@@ -231,7 +231,7 @@ Memory.prototype = {
    * @return {Memory} this memory
    */
   $setArtifactFilename: function(filename) {
-    if (!helpers.isArray(this.artifactMetadata) || !this.artifactMetadata.length) {
+    if (!utils.isArray(this.artifactMetadata) || !this.artifactMetadata.length) {
       this.artifactMetadata = [ {} ];
     }
     this.artifactMetadata[0].filename = filename;

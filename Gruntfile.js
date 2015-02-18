@@ -2,7 +2,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    src: 'src/*.js',
+    src: ['src/**/*.js'],
 
     clean: {
       dist: ['dist']
@@ -15,7 +15,7 @@ module.exports = function(grunt) {
         title: 'FamilySearch Javascript SDK',
         bestMatch: false
       },
-      all: ['<%= src %>', 'src/*.frag']
+      all: ['<%= src %>']
     },
 
     jshint: {
@@ -53,21 +53,7 @@ module.exports = function(grunt) {
         src: ['**/*']
       }
     },
-
-    karma: {
-      options: {
-        configFile: 'karma.conf.js'
-      },
-      dev: {
-        background: true,
-        browsers: ['PhantomJS']
-      },
-      travis: {
-        singleRun: true,
-        browsers: ['PhantomJS']
-      }
-    },
-
+    
     requirejs: {
       options: {
         baseUrl: 'src',
@@ -91,32 +77,6 @@ module.exports = function(grunt) {
       }
     },
 
-    connect: {
-      server: {
-        options: {
-          port: 9000,
-          open: 'http://localhost:9000/',
-          livereload: true
-        }
-      }
-    },
-
-    watch: {
-      files: [
-        '<%= src %>',
-        'test/unit/*.js',
-        '.jshintrc',
-        'test/.jshintrc',
-        'Gruntfile.js',
-        'index.html'
-      ],
-      tasks: ['jshint', 'karma:dev:run', 'ngdocs'],
-      options: {
-        livereload: true,
-        spawn: false
-      }
-    },
-
     copy: {
       dist: {
         files: [{
@@ -126,6 +86,12 @@ module.exports = function(grunt) {
           expand: true
         }]
       }
+    },
+    
+    run: {
+      jasmine: {
+        exec: 'npm run jasmine'
+      }
     }
   });
 
@@ -133,20 +99,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-ngdocs');
   grunt.loadNpmTasks('grunt-gh-pages');
-  grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-requirejs');
   grunt.loadNpmTasks('grunt-contrib-copy');
-
-  grunt.registerTask('server', [
-    'connect',
-    'karma:dev:start',
-    'watch'
-  ]);
+  grunt.loadNpmTasks('grunt-run');
 
   grunt.registerTask('test', [
-    'karma:travis'
+    'run'
   ]);
 
   grunt.registerTask('build', [
@@ -165,7 +123,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('travis-pull-request', [
     'jshint',
-    'karma:travis',
+    'test',
     'ngdocs' // build the docs to make sure there aren't errors
   ]);
 

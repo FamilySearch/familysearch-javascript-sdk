@@ -41,7 +41,7 @@ FS.prototype.getAuthCode = function() {
         'client_id'     : settings.clientId,
         'redirect_uri'  : settings.redirectUri
       });
-      return _pollForAuthCode(popup);
+      return self._pollForAuthCode(popup);
     });
   }
 };
@@ -68,7 +68,7 @@ FS.prototype.handleAccessTokenResponse = function(promise, accessTokenDeferred) 
     function() {
       accessTokenDeferred.reject.apply(accessTokenDeferred, arguments);
     });
-}
+};
 
 /**
  * @ngdoc function
@@ -152,16 +152,16 @@ FS.prototype.getAccessTokenForMobile = function(userName, password) {
       accessTokenDeferred = self.settings.deferredWrapper(),
       plumbing = self.plumbing,
       helpers = self.helpers;
-  if (globals.accessToken) {
+  if (self.settings.accessToken) {
     helpers.nextTick(function() {
-      accessTokenDeferred.resolve(globals.accessToken);
+      accessTokenDeferred.resolve(self.settings.accessToken);
     });
   }
   else {
     plumbing.getUrl('http://oauth.net/core/2.0/endpoint/token').then(function(url) {
       var promise = plumbing.post(url, {
           'grant_type': 'password',
-          'client_id' : globals.clientId,
+          'client_id' : self.settings.clientId,
           'username'  : userName,
           'password'  : password
         },
@@ -228,8 +228,8 @@ FS.prototype.openPopup = function(url, params) {
     left        = parseInt(screenX + ((outerWidth - width) / 2), 10),
     top         = parseInt(screenY + ((outerHeight - height) / 2.5), 10),
     features    = 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top;
-  return window.open(helpers.appendQueryParameters(url, params),'',features);
-}
+  return window.open(this.appendQueryParameters(url, params),'',features);
+};
 
 FS.prototype.getCode = function(href, d) {
   var params = this.helpers.decodeQueryString(href);
@@ -239,7 +239,7 @@ FS.prototype.getCode = function(href, d) {
   else {
     d.reject(params['error']);
   }
-}
+};
 
 /**
  * Polls the popup window location for the auth code
@@ -275,4 +275,4 @@ FS.prototype._pollForAuthCode = function(popup) {
     d.reject('Popup blocked');
   }
   return d.promise;
-}
+};

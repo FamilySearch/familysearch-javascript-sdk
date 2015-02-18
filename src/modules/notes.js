@@ -65,7 +65,7 @@ FS.prototype._getMultiNote = function(id, nids, params, opts, getNoteFn) {
     });
   }
   return promises;
-}
+};
 
 /**
  * @ngdoc function

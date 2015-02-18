@@ -20,7 +20,7 @@ FS.prototype._changeHistoryResponseMapper = function(){
       }
       return response;
     }
-  )
+  );
 };
 
 /**

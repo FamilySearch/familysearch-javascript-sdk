@@ -51,7 +51,7 @@ FS.prototype.createPerson = function(data){
 
 function spacePrefix(namePiece) {
   return namePiece ? ' ' + namePiece : '';
-};
+}
 
 Person.prototype = {
   constructor: Person,

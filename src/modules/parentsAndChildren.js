@@ -11,6 +11,11 @@ var FS = require('../FamilySearch'),
  * {@link https://familysearch.org/developers/docs/api/resources#parents-and-children FamilySearch API Docs}
  */
 
+var childAndParentsConvenienceFunctions = {
+  getRelationship: function() { return maybe(this.childAndParentsRelationships)[0]; },
+  getPerson:       function(id) { return utils.find(this.persons, {id: id}); }
+};
+
 /**
  * @ngdoc function
  * @name parentsAndChildren.functions:getChildAndParents
@@ -53,11 +58,6 @@ FS.prototype.getChildAndParents = function(caprid, params, opts) {
           }
         ));
     });
-};
-
-var childAndParentsConvenienceFunctions = {
-  getRelationship: function() { return maybe(this.childAndParentsRelationships)[0]; },
-  getPerson:       function(id) { return helpers.find(this.persons, {id: id}); }
 };
 
 /**

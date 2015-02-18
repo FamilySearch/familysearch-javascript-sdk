@@ -1,7 +1,5 @@
 var FS = require('./../FamilySearch'),
-    utils = require('./../utils'),
-    Date = require('./../classes/date'),
-    Place = require('./../classes/place');
+    utils = require('./../utils');
 
 /**
  * @ngdoc overview

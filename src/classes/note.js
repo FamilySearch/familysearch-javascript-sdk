@@ -167,13 +167,13 @@ Note.prototype = {
    */
   $delete: function(changeMessage, opts) {
     if (this.$personId) {
-      return self.$client.deletePersonNote(this.$getNoteUrl() || this.$personId, this.id, changeMessage, opts);
+      return this.$client.deletePersonNote(this.$getNoteUrl() || this.$personId, this.id, changeMessage, opts);
     }
     else if (this.$coupleId) {
-      return self.$client.deleteCoupleNote(this.$getNoteUrl() || this.$coupleId, this.id, changeMessage, opts);
+      return this.$client.deleteCoupleNote(this.$getNoteUrl() || this.$coupleId, this.id, changeMessage, opts);
     }
     else {
-      return self.$client.deleteChildAndParentsNote(this.$getNoteUrl() || this.$childAndParentsId, this.id, changeMessage, opts);
+      return this.$client.deleteChildAndParentsNote(this.$getNoteUrl() || this.$childAndParentsId, this.id, changeMessage, opts);
     }
   }
 
