@@ -9,7 +9,7 @@ var FS = require('./../FamilySearch'),
  * Standardized place
  */
 var Place = FS.Place = function(client, data){ 
-  utils.extend(this, data);
+  FS.BaseClass.call(this, client, data);
 };
 
 FS.prototype.createPlace = function(data){

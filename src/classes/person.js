@@ -23,12 +23,9 @@ var FS = require('../FamilySearch'),
  **********************************/
  
 var Person = FS.Person = function(client, data) {
-  this.$client = client;
-  this.$helpers = client.helpers;
-  this.$plumbing = client.plumbing;
+  FS.BaseClass.call(this, client, data);
   
   if (data) {
-    utils.extend(this, data);
     if (data.$gender) {
       //noinspection JSUnresolvedFunction
       this.$setGender(data.$gender);

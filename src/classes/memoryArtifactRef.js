@@ -18,8 +18,7 @@ var FS = require('./../FamilySearch'),
  *********************************/
 
 var MemoryArtifactRef = FS.MemoryArtifactRef = function(client, data) {
-  this.$client = client;
-  utils.extend(this, data);
+  FS.BaseClass.call(this, client, data);
 };
 
 FS.prototype.createMemoryArtifactRef = function(data){

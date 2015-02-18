@@ -11,8 +11,7 @@ var FS = require('./../FamilySearch'),
  * Contributor Ids are agent ids, not user ids.
  */
 var Agent = FS.Agent = function(client, data) {
-  // client isn't used right now but may be used in the future
-  utils.extend(this, data);
+  FS.BaseClass.call(this, client, data);
 };
 
 FS.prototype.createAgent = function(data){

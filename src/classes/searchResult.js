@@ -10,8 +10,8 @@ var FS = require('./../FamilySearch'),
  * Reference from a person or relationship to a source
  */
 var SearchResult = exports.SearchResult = function(client, data) {
-  this.$client = client;
-  utils.extend(this, data);
+  FS.BaseClass.call(this, client, data);
+  
   utils.forEach(maybe(maybe(maybe(data).content).gedcomx).persons, function(person, index, obj){
     obj[index] = client.createPerson(person);
   });

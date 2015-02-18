@@ -17,11 +17,9 @@ var FS = require('./../FamilySearch'),
  **********************************/
 
 var SourceDescription = FS.SourceDescription = function(client, data) {
-  this.$client = client;
-  this.$helpers = client.helpers;
-  this.$plumbing = client.plumbing;
+  FS.BaseClass.call(this, client, data);
+  
   if (data) {
-    utils.extend(this, data);
     if (data.citation) {
       //noinspection JSUnresolvedFunction
       this.$setCitation(data.citation);

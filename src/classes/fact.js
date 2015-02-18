@@ -21,9 +21,9 @@ var FS = require('./../FamilySearch'),
  **********************************/
 
 var Fact = FS.Fact = function(client, data) {
-  this.$client = client;
+  FS.BaseClass.call(this, client, data);
+  
   if (data) {
-    utils.extend(this, data);
     if (data.$date) {
       //noinspection JSUnresolvedFunction
       this.$setDate(data.$date);

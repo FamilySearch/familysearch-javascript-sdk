@@ -22,11 +22,9 @@ var FS = require('./../FamilySearch'),
  **********************************/
 
 var SourceRef = FS.SourceRef = function(client, data) {
-  this.$client = client;
-  this.$helpers = client.helpers;
-  this.$plumbing = client.plumbing;
+  FS.BaseClass.call(this, client, data);
+  
   if (data) {
-    utils.extend(this, data);
     this.$personId = data.$personId;
     this.$coupleId = data.$coupleId;
     this.$childAndParentsId = data.$childAndParentsId;

@@ -21,12 +21,9 @@ var FS = require('../FamilySearch'),
  * _fatherFacts_ and _motherFacts_ are arrays of Facts or objects to be passed into the Fact constructor.
  */
 var ChildAndParents = FS.ChildAndParents = function(client, data) {
-  this.$client = client;
-  this.$helpers = client.helpers;
-  this.$plumbing = client.plumbing;
+  FS.BaseClass.call(this, client, data);
   
   if (data) {
-    utils.extend(this, data);
     if (data.$father) {
       //noinspection JSUnresolvedFunction
       this.$setFather(data.$father);

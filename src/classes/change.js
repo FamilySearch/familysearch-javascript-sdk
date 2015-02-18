@@ -9,10 +9,8 @@ var FS = require('./../FamilySearch'),
  *
  * Change made to a person or relationship
  */
-var Change = FS.Change = function(client, change) {
-  this.client = client;
-  this.helpers = client.helpers;
-  utils.extend(this, change);
+var Change = FS.Change = function(client, data) {
+  FS.BaseClass.call(this, client, data);
 };
 
 FS.prototype.createChange = function(data){
@@ -69,7 +67,7 @@ Change.prototype = {
    * @function
    * @return {String} URL of the agent - pass into {@link user.functions:getAgent getAgent} for details
    */
-  $getAgentUrl: function() { return this.helpers.removeAccessToken(maybe(maybe(this.links).agent).href); },
+  $getAgentUrl: function() { return this.$helpers.removeAccessToken(maybe(maybe(this.links).agent).href); },
 
   /**
    * @ngdoc function
@@ -78,7 +76,7 @@ Change.prototype = {
    * @function
    * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
    */
-  $getAgent: function() { return this.client.getAgent(this.$getAgentUrl()); },
+  $getAgent: function() { return this.$client.getAgent(this.$getAgentUrl()); },
 
   /**
    * @ngdoc function
@@ -89,7 +87,7 @@ Change.prototype = {
    * @return {Object} promise for the {@link changeHistory.functions:restoreChange restoreChange} response
    */
   $restore: function(opts) {
-    return this.client.changeHistory.restoreChange(this.id, opts);
+    return this.$client.changeHistory.restoreChange(this.id, opts);
   }
 
 };

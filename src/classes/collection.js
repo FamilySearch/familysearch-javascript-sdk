@@ -14,14 +14,10 @@ var FS = require('./../FamilySearch'),
  * @param {Object=} data an object with optional attributes {title}.
  */
 var Collection = FS.Collection = function(client, data) {
-  this.$client = client;
-  this.$helpers = client.helpers;
-  this.$plumbing = client.plumbing;
-  if(data){
-    utils.extend(this, data);
-    if(data.attribution){
-      this.attribution = client.createAttribution(data.attribution);
-    }
+  FS.BaseClass.call(this, client, data);
+  
+  if(data && data.attribution){
+    this.attribution = client.createAttribution(data.attribution);    
   }
 };
 

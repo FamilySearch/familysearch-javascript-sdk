@@ -9,20 +9,13 @@ var FS = require('./../FamilySearch'),
  * @description
  *
  * Comment on a discussion
- * To create a new comment, you must set text and either $discussionId or $memoryId.
+ * To create or update a comment, you must set text and either $discussionId or $memoryId.
  *
  * @param {Object=} data an object with optional attributes {text, $discussionId, $memoryId}
  **********************************/
 
 var Comment = FS.Comment = function(client, data) {
-  this.$client = client;
-  this.$helpers = client.helpers;
-  this.$plumbing = client.plumbing;
-  if (data) {
-    utils.extend(this, data);
-    this.$discussionId = data.$discussionId;
-    this.$memoryId = data.$memoryId;
-  }
+  FS.BaseClass.call(this, client, data);
 };
 
 FS.prototype.createComment = function(data){

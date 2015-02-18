@@ -51,10 +51,11 @@ describe('Spouses relationship', function() {
 
   it('is created', function(done) {
     var promise = FS.createCouple({
-      husband: 'FJP-M4RK',
-      wife: 'JRW-NMSD',
-      facts: [{type:'http://gedcomx.org/Marriage', $date: 'June 1800', $formalDate: '+1800-06', $place: 'Provo, Utah, Utah, United States'}]
-    }).$save('...change message...');
+        facts: [{type:'http://gedcomx.org/Marriage', $date: 'June 1800', $formalDate: '+1800-06', $place: 'Provo, Utah, Utah, United States'}]
+      })
+      .$setHusband('FJP-M4RK')
+      .$setWife('JRW-NMSD')
+      .$save('...change message...');
     promise.then(function(response) {
       var request = promise.getRequest();
       //noinspection JSUnresolvedFunction

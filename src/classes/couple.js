@@ -19,12 +19,9 @@ var FS = require('../FamilySearch'),
  * _facts_ is an array of Facts or objects to be passed into the Fact constructor.
  */
 var Couple = FS.Couple = function(client, data) {
-  this.$client = client;
-  this.$helpers = client.helpers;
-  this.$plumbing = client.plumbing;
+  FS.BaseClass.call(this, client, data);
   
   if (data) {
-    utils.extend(this, data);
     if (data.husband) {
       //noinspection JSUnresolvedFunction
       this.$setHusband(data.husband);

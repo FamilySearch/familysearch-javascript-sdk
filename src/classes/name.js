@@ -22,12 +22,12 @@ var FS = require('./../FamilySearch'),
  **********************************/
 
 var Name = function(client, data) {
-  this.$client = client;
+  FS.BaseClass.call(this, client, data);
+  
   if(data){
     if(utils.isString(data)){
       this.$setFullText(data);
     } else {
-      utils.extend(this, data);
       if (data.type) {
         //noinspection JSUnresolvedFunction
         this.$setType(data.type);

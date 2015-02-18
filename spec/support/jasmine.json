@@ -1,24 +1,7 @@
 {
   "spec_dir": "test",
   "spec_files": [
-    "unit/familysearchSpec.js",
-    "unit/authenticationSpec.js",
-    "unit/authoritiesSpec.js",
-    "unit/changeHistorySpec.js",
-    "unit/discussionsSpec.js",
-    "unit/factSpec.js",
-    "unit/memoriesSpec.js",
-    "unit/nameSpec.js",
-    "unit/notesSpec.js",
-    "unit/parentsAndChildrenSpec.js",
-    "unit/pedigreeSpec.js",
-    "unit/personsSpec.js",
-    "unit/redirectSpec.js",
-    "unit/searchAndMatchSpec.js",
-    "unit/sourceBoxSpec.js",
-    "unit/sourcesSpec.js",
-    "unit/spousesSpec.js",
-    "unit/usersSpec.js"
+    "unit/*[sS]pec.js"
   ],
   "helpers": [
     "unit/helpers.js"

@@ -14,10 +14,8 @@ var FS = require('./../FamilySearch'),
  * @param {Object=} data an object with optional attributes {subject, text, $personId, $childAndParentsId, $coupleId}
  **********************************/
 var Note = FS.Note = function(client, data) {
-  this.$client = client;
-  this.$helpers = client.helpers;
-  this.$plumbing = client.plumbing;
-  utils.extend(this, data);
+  FS.BaseClass.call(this, client, data);
+  
   if(this.attribution && !(this.attribution instanceof FS.Note)){
     this.attribution = client.createAttribution(this.attribution);
   }

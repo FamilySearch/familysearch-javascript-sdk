@@ -17,15 +17,10 @@ var FS = require('./../FamilySearch'),
  **********************************/
 
 var DiscussionRef = FS.DiscussionRef = function(client, data) {
-  this.$client = client;
-  this.$helpers = client.helpers;
-  this.$plumbing = client.plumbing;
-  if (data) {
-    utils.extend(this, data);
-    if (data.discussion) {
-      //noinspection JSUnresolvedFunction
-      this.$setDiscussion(data.discussion);
-    }
+  FS.BaseClass.call(this, client, data);
+  if (data && data.discussion) {
+    //noinspection JSUnresolvedFunction
+    this.$setDiscussion(data.discussion);
   }
 };
 

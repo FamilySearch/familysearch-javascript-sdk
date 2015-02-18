@@ -16,12 +16,7 @@ var FS = require('./../FamilySearch'),
 // TODO consider disallowing $save()'ing or $delete()'ing discussions
  
 var Discussion = FS.Discussion = function(client, data) {
-  this.$client = client;
-  this.$helpers = client.helpers;
-  this.$plumbing = client.plumbing;
-  if (data) {
-    utils.extend(this, data);
-  }
+  FS.BaseClass.call(this, client, data);
 };
 
 FS.prototype.createDiscussion = function(data){

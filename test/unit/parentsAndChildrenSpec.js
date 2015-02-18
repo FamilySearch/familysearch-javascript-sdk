@@ -47,12 +47,13 @@ describe('Parents and Children relationship', function() {
 
   it('is created', function(done) {
     var promise = FS.createChildAndParents({
-      $father: 'PPPX-MP1',
-      $mother: 'PPPX-FP2',
-      $child: 'PPPX-PP3',
-      fatherFacts: [{type:'http://gedcomx.org/AdoptiveParent'}],
-      motherFacts: [{type:'http://gedcomx.org/BiologicalParent'}]
-    }).$save('...change message...');
+        fatherFacts: [{type:'http://gedcomx.org/AdoptiveParent'}],
+        motherFacts: [{type:'http://gedcomx.org/BiologicalParent'}]
+      })
+      .$setFather('PPPX-MP1')
+      .$setMother('PPPX-FP2')
+      .$setChild('PPPX-PP3')
+      .$save('...change message...');
     promise.then(function(response) {
       var request = promise.getRequest();
       //noinspection JSUnresolvedFunction

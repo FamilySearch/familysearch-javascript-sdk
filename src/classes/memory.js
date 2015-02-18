@@ -22,10 +22,7 @@ var FS = require('./../FamilySearch'),
  ******************************************/
 
 var Memory = FS.Memory = function(client, data) {
-  this.$client = client;
-  this.$helpers = client.helpers;
-  this.$plumbing = client.plumbing;
-  utils.extend(this, data);
+  FS.BaseClass.call(this, client, data);
 };
 
 FS.prototype.createMemory = function(data){

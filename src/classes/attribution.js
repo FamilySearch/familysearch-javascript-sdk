@@ -18,13 +18,9 @@ var FS = require('./../FamilySearch'),
  * @param {String=} changeMessage change message
  */
 var Attribution = FS.Attribution = function(client, data) {
-  this.$client = client;
-  if(data) {
-    if(utils.isString(data)){
-      this.changeMessage = data;
-    } else {
-      utils.extend(this, data);
-    }
+  FS.BaseClass.call(this, client, data);
+  if(utils.isString(data)){
+    this.changeMessage = data;
   }
 };
 
