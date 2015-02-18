@@ -1,5 +1,3 @@
-var FamilySearch = require('../../src/FamilySearch');
-
 describe('Change History', function() {
   it('is returned from getPersonChanges', function(done) {
     FS.getPersonChanges('P12-345').then(function(response) {

@@ -24,7 +24,7 @@ Helpers.prototype.getAbsoluteUrl = function(server, path) {
   else {
     return path;
   }
-}
+};
 
 /**
  * Return true if this url is for the OAuth server
@@ -161,22 +161,22 @@ Helpers.prototype.setTimer = function(fn, delay, oldTimer) {
   return this.settings.setTimeout(function() {
     fn();
   }, delay);
-}
+};
 
 Helpers.prototype.setAccessTokenInactiveTimer = function(delay) {
   this.accessTokenInactiveTimer = this.setTimer(this.settings.eraseAccessToken, delay, this.accessTokenInactiveTimer);
-}
+};
 
 Helpers.prototype.setAccessTokenCreationTimer = function(delay) {
   this.accessTokenCreationTimer = this.setTimer(this.settings.eraseAccessToken, delay, this.accessTokenCreationTimer);
-}
+};
 
 Helpers.prototype.clearAccessTokenTimers = function() {
   this.settings.clearTimeout(this.accessTokenInactiveTimer);
   this.accessTokenInactiveTimer = null;
   this.settings.clearTimeout(this.accessTokenCreationTimer);
   this.accessTokenCreationTimer = null;
-}
+};
 
 /**
  * Read the access token from the cookie and start the expiry timers
@@ -185,7 +185,8 @@ Helpers.prototype.readAccessToken = function() {
   if (typeof module === 'object' && typeof module.exports !== 'undefined') {
     return;
   }
-  var now = (new Date()).getTime();
+  var now = (new Date()).getTime(),
+      self = this;
   var cookie = this.readCookie(this.settings.accessTokenCookie);
   if (cookie) {
     var parts = cookie.split('|', 3);
@@ -195,8 +196,8 @@ Helpers.prototype.readAccessToken = function() {
       if (inactiveMillis < this.settings.maxAccessTokenInactivityTime && creationMillis < this.settings.maxAccessTokenCreationTime) {
         this.settings.accessToken = parts[2];
         if (this.settings.autoExpire) {
-          setAccessTokenInactiveTimer(this.settings.maxAccessTokenInactivityTime - inactiveMillis);
-          setAccessTokenCreationTimer(this.settings.maxAccessTokenCreationTime - creationMillis);
+          self.setAccessTokenInactiveTimer(this.settings.maxAccessTokenInactivityTime - inactiveMillis);
+          self.setAccessTokenCreationTimer(this.settings.maxAccessTokenCreationTime - creationMillis);
         }
       }
     }
@@ -212,8 +213,8 @@ Helpers.prototype.setAccessToken = function(accessToken) {
     return;
   }
   if (this.settings.autoExpire) {
-    setAccessTokenInactiveTimer(this.settings.maxAccessTokenInactivityTime);
-    setAccessTokenCreationTimer(this.settings.maxAccessTokenCreationTime);
+    this.setAccessTokenInactiveTimer(this.settings.maxAccessTokenInactivityTime);
+    this.setAccessTokenCreationTimer(this.settings.maxAccessTokenCreationTime);
   }
   if (this.settings.saveAccessToken) {
     var now = (new Date()).getTime();
@@ -228,7 +229,7 @@ Helpers.prototype.setAccessToken = function(accessToken) {
 Helpers.prototype.refreshAccessToken = function() {
   var now = (new Date()).getTime();
   if (this.settings.autoExpire) {
-    setAccessTokenInactiveTimer(this.settings.maxAccessTokenInactivityTime);
+    this.setAccessTokenInactiveTimer(this.settings.maxAccessTokenInactivityTime);
   }
   if (this.settings.saveAccessToken) {
     var cookie = this.readCookie(this.settings.accessTokenCookie);
@@ -251,7 +252,7 @@ Helpers.prototype.eraseAccessToken = function(omitCallback) {
     return;
   }
   if (this.settings.autoExpire) {
-    clearAccessTokenTimers();
+    this.clearAccessTokenTimers();
   }
   if (this.settings.saveAccessToken) {
     this.eraseCookie(this.settings.accessTokenCookie);
@@ -359,8 +360,7 @@ Helpers.prototype.isAuthoritiesServerUrl = function(url) {
  * @returns {string} URL-encoded string
  */
 Helpers.prototype.encodeQueryString = function(params) {
-  var self = this,
-      arr = [];
+  var arr = [];
   forEach(params, function(value, key) {
     key = encodeURIComponent(key);
     var param;

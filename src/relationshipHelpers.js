@@ -41,7 +41,6 @@ exports.deleteMember = function(role, changeMessage) {
 };
 
 exports.setFacts = function(prop, values, changeMessage) {
-  var self = this;
   if (utils.isArray(this[prop])) {
     utils.forEach(this[prop], function(fact) {
       exports.deleteFact.call(this, prop, fact, changeMessage);

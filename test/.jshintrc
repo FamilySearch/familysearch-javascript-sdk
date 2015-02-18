@@ -28,8 +28,7 @@
     "clearInterval": false,
     "console": false,
 
-    "requirejs": false,
-    "define": true,
+    "require": true,
     "describe": false,
     "it": false,
     "iit": false,
@@ -39,9 +38,12 @@
     "jasmine": false,
     "waitsFor": false,
     "getJSONFixture": false,
+    "global": false,
+    "__dirname": false,
     "httpMock": true,
     "deferredMock": true,
     "FamilySearch": true,
+    "FS": true,
     "$": true,
     "dump": false
   }

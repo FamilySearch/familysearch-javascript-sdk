@@ -215,7 +215,6 @@ function formEncode(obj)
  * @returns {*}
  */
 Plumbing.prototype.transformData = function(data, contentType) {
-  var self = this;
   if (data && utils.isObject(data) && String(data) !== '[object FormData]') {
     // remove $... and _... attrs from data
     data = utils.clonePartial(data, function(key) {
@@ -229,7 +228,7 @@ Plumbing.prototype.transformData = function(data, contentType) {
     }
   }
   return data;
-}
+};
 
 /**
  * @ngdoc function
@@ -299,7 +298,7 @@ Plumbing.prototype.http = function(method, url, headers, data, opts, responseMap
         self.helpers.refreshAccessToken();
         var processingTime = promise.getResponseHeader('X-PROCESSING-TIME');
         if (processingTime) {
-          totalProcessingTime += parseInt(processingTime,10);
+          self.totalProcessingTime += parseInt(processingTime,10);
         }
         if (responseMapper) {
           data = responseMapper(data, promise);
@@ -316,7 +315,7 @@ Plumbing.prototype.http = function(method, url, headers, data, opts, responseMap
           var retryAfterHeader = promise.getResponseHeader('Retry-After');
           var retryAfter = retryAfterHeader ? parseInt(retryAfterHeader,10) : self.settings.defaultThrottleRetryAfter;
           self.settings.setTimeout(function() {
-            promise = exports.http(method, url, headers, data, opts, responseMapper, retries-1);
+            promise = self.http(method, url, headers, data, opts, responseMapper, retries-1);
             self.helpers.extendHttpPromise(returnedPromise, promise);
             promise.then(
               function(data) {

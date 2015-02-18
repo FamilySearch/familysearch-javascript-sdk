@@ -121,7 +121,7 @@ beforeEach(function() {
           }
           return result;
         }
-      }
+      };
     }
   });
   

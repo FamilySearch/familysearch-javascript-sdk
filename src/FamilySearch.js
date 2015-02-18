@@ -2,7 +2,9 @@ var globals = require('./globals'),
     utils = require('./utils'),
     angularjsWrappers = require('./angularjs-wrappers'),
     jQueryWrappers = require('./jquery-wrappers'),
-    nodejsWrappers = require('./nodejs-wrappers');
+    nodejsWrappers = require('./nodejs-wrappers'),
+    Helpers = require('./helpers'),
+    Plumbing = require('./plumbing');
 
 /**
  * @ngdoc function
@@ -168,12 +170,6 @@ FS.BaseClass = function(client, data){
   this.$helpers = client.helpers;
   this.$plumbing = client.plumbing;
 };
-
-// Require these after setting module.exports so that
-// they can have access to the FS global if they want
-// to require it also
-var Helpers = require('./helpers'),
-    Plumbing = require('./plumbing');
     
 // These modules contain functions which extend 
 // the FamilySearch prototype to provide api functionality
