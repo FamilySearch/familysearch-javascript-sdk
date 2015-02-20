@@ -10,7 +10,7 @@ var instanceId = 0;
     
 /**
  * @ngdoc function
- * @name init.functions:init
+ * @name FamilySearch.types:FamilySearch
  * @function
  *
  * @description
@@ -20,10 +20,10 @@ var instanceId = 0;
  *
  * - `client_id` - the developer key you received from FamilySearch
  * - `environment` - sandbox, staging, or production
- * - `http_function` - a function for issuing http requests: `jQuery.ajax` or angular's `$http`,
- * or eventually node.js's http function; defaults to `jQuery.ajax`
- * - `deferred_function` - a function for creating deferred's: `jQuery.Deferred` or angular's `$q.defer`
- * or eventually `Q`; defaults to `jQuery.Deferred`
+ * - `http_function` - a function for issuing http requests: `jQuery.ajax`, angular's `$http`,
+ * or the [request](https://github.com/request/request) library for node; defaults to `jQuery.ajax`
+ * - `deferred_function` - a function for creating deferred's: `jQuery.Deferred`, angular's `$q.defer`
+ * or the [Q](https://github.com/kriskowal/q) library for node
  * - `timeout_function` - optional timeout function: angular users should pass `$timeout`; otherwise the global `setTimeout` is used
  * - `redirect_uri` - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
  * but must have the same host and port as the server running your script;
