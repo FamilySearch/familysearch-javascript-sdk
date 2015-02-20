@@ -179,6 +179,13 @@ Helpers.prototype.clearAccessTokenTimers = function() {
 };
 
 /**
+ * Return the name of the cookie that stores the access token
+ */
+Helpers.prototype.getAccessTokenCookieName = function(){
+  return this.settings.accessTokenCookie + '_' + this.settings.instanceId;
+};
+
+/**
  * Read the access token from the cookie and start the expiry timers
  */
 Helpers.prototype.readAccessToken = function() {
@@ -187,7 +194,7 @@ Helpers.prototype.readAccessToken = function() {
   }
   var now = (new Date()).getTime(),
       self = this;
-  var cookie = this.readCookie(this.settings.accessTokenCookie);
+  var cookie = this.readCookie(this.getAccessTokenCookieName());
   if (cookie) {
     var parts = cookie.split('|', 3);
     if (parts.length === 3) {
@@ -219,7 +226,7 @@ Helpers.prototype.setAccessToken = function(accessToken) {
   if (this.settings.saveAccessToken) {
     var now = (new Date()).getTime();
     var cookie = now+'|'+now+'|'+accessToken;
-    this.createCookie(this.settings.accessTokenCookie, cookie, 0);
+    this.createCookie(this.getAccessTokenCookieName(), cookie, 0);
   }
 };
 
@@ -232,12 +239,12 @@ Helpers.prototype.refreshAccessToken = function() {
     this.setAccessTokenInactiveTimer(this.settings.maxAccessTokenInactivityTime);
   }
   if (this.settings.saveAccessToken) {
-    var cookie = this.readCookie(this.settings.accessTokenCookie);
+    var cookie = this.readCookie(this.getAccessTokenCookieName());
     if (cookie) {
       var parts = cookie.split('|', 3);
       if (parts.length === 3) {
         cookie = now+'|'+parts[1]+'|'+parts[2];
-        this.createCookie(this.settings.accessTokenCookie, cookie, 0);
+        this.createCookie(this.getAccessTokenCookieName(), cookie, 0);
       }
     }
   }
@@ -255,7 +262,7 @@ Helpers.prototype.eraseAccessToken = function(omitCallback) {
     this.clearAccessTokenTimers();
   }
   if (this.settings.saveAccessToken) {
-    this.eraseCookie(this.settings.accessTokenCookie);
+    this.eraseCookie(this.getAccessTokenCookieName());
   }
   if (!!this.settings.expireCallback && !omitCallback) {
     this.settings.expireCallback();

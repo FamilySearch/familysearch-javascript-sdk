@@ -6,6 +6,8 @@ var globals = require('./globals'),
     Helpers = require('./helpers'),
     Plumbing = require('./plumbing');
 
+var instanceId = 0;    
+    
 /**
  * @ngdoc function
  * @name init.functions:init
@@ -44,6 +46,7 @@ var FS = module.exports = function(opts){
 
   var self = this;
   self.settings = utils.extend(self.settings, globals);
+  self.settings.instanceId = ++instanceId;
 
   self.helpers = new Helpers(self);
   self.plumbing = new Plumbing(self);
