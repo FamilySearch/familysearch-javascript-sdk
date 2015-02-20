@@ -63,46 +63,39 @@ var FS = module.exports = function(opts){
   }
   //noinspection JSUndeclaredVariable
   self.settings.environment = opts['environment'];
-  
-  // nodejs
-  if(typeof module === 'object' && typeof module.exports !== 'undefined'){
-    if(!opts['http_function']){
-      throw 'missing http_function for node';
-    }
-    self.settings.httpWrapper = nodejsWrappers.httpWrapper(opts['http_function'], self);
-    
-    if(!opts['deferred_function']){
-      throw 'missing deferred_function for node';
-    }
-    self.settings.deferredWrapper = nodejsWrappers.deferredWrapper(opts['deferred_function']);
-  } 
-  
-  // browsers
-  else {
-    if(!opts['http_function'] && !window.jQuery) {
-      throw 'http must be set; e.g., jQuery.ajax';
-    }
-    var httpFunction = opts['http_function'] || window.jQuery.ajax;
-    if (httpFunction.defaults) {
-      self.settings.httpWrapper = angularjsWrappers.httpWrapper(httpFunction, self);
-    }
-    else {
-      self.settings.httpWrapper = jQueryWrappers.httpWrapper(httpFunction, self);
-    }
 
-    if(!opts['deferred_function'] && !window.jQuery) {
-      throw 'deferred_function must be set; e.g., jQuery.Deferred';
-    }
-    var deferredFunction = opts['deferred_function'] || window.jQuery.Deferred;
-    var d = deferredFunction();
-    d.resolve(); // required for unit tests
-    if (!utils.isFunction(d.promise)) {
-      self.settings.deferredWrapper = angularjsWrappers.deferredWrapper(deferredFunction);
-    }
-    else {
-      self.settings.deferredWrapper = jQueryWrappers.deferredWrapper(deferredFunction);
-    }
+  // Determine which http function is being used
+  if(!opts['http_function'] && !window.jQuery) {
+    throw 'http must be set; e.g., jQuery.ajax';
   }
+  var httpFunction = opts['http_function'] || window.jQuery.ajax;
+  if (httpFunction.defaults) {
+    self.settings.httpWrapper = angularjsWrappers.httpWrapper(httpFunction, self);
+  }
+  else if (httpFunction.cookie){
+    self.settings.httpWrapper = nodejsWrappers.httpWrapper(httpFunction, self);
+  }
+  else {
+    self.settings.httpWrapper = jQueryWrappers.httpWrapper(httpFunction, self);
+  }
+
+  // Determine which deferred function is being used
+  if(!opts['deferred_function'] && !window.jQuery) {
+    throw 'deferred_function must be set; e.g., jQuery.Deferred';
+  }
+  var deferredFunction = opts['deferred_function'] || window.jQuery.Deferred;
+  var d = deferredFunction();
+  d.resolve(); // required for unit tests
+  if (utils.isFunction(d.promise)) {
+    self.settings.deferredWrapper = jQueryWrappers.deferredWrapper(deferredFunction);    
+  }
+  else if (utils.isFunction(deferredFunction.nfcall)) {
+    self.settings.deferredWrapper = nodejsWrappers.deferredWrapper(deferredFunction);
+  }
+  else {
+    self.settings.deferredWrapper = angularjsWrappers.deferredWrapper(deferredFunction);
+  }
+  
 
   var timeout = opts['timeout_function'];
   if (timeout) {
@@ -136,7 +129,7 @@ var FS = module.exports = function(opts){
 
   if (opts['save_access_token']) {
     self.settings.saveAccessToken = true;
-    self.readAccessToken();
+    self.helpers.readAccessToken();
   }
 
   if (opts['access_token']) {

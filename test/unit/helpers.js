@@ -101,6 +101,10 @@ function httpMock(opts, callback) {
   });
 }
 
+// Set this attribute so that the init function
+// correctly detects this as the request node lib
+httpMock.cookie = 1;
+
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 750;
 
 beforeEach(function() {
