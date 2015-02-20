@@ -40,25 +40,6 @@ exports.isArray = function(value) {
  * @param {*} value to test
  * @returns {boolean}
  */
-exports.isNumber = function(value) {
-  /*jshint eqeqeq:false */
-  return Object.prototype.toString.call(value) == '[object Number]';
-};
-
-/**
- * borrowed from http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric
- * @param {*} value to test
- * @returns {boolean}
- */
-exports.isNumeric = function(value) {
-  return !isNaN(parseFloat(value)) && isFinite(value);
-};
-
-/**
- * borrowed from underscore.js
- * @param {*} value to test
- * @returns {boolean}
- */
 exports.isString = function(value) {
   /*jshint eqeqeq:false */
   return Object.prototype.toString.call(value) == '[object String]';
