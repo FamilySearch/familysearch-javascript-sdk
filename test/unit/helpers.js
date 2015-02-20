@@ -1,4 +1,4 @@
-var FamilySearch = require('../../src/FamilySearch'),
+var FamilySearch = require('../../dist/familysearch-javascript-sdk.min'),
     _ = require('lodash'),
     fs = require('fs'),
     q = require('q');
@@ -124,6 +124,8 @@ beforeEach(function() {
       };
     }
   });
+  
+  global.FamilySearch = FamilySearch;
   
   global.FS = new FamilySearch({
     'client_id': 'mock',

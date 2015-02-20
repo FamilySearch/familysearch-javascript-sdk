@@ -1,5 +1,3 @@
-var FamilySearch = require('../../src/FamilySearch');
-
 describe('A person', function() {
   it('is updated in memory', function() {
     var person = FS.createPerson();

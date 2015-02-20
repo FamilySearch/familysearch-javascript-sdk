@@ -1,5 +1,4 @@
-var FamilySearch = require('../../src/FamilySearch'),
-    q = require('q');
+var q = require('q');
 
 describe('Parents and Children relationship', function() {
   it('is returned from getChildAndParents', function(done) {

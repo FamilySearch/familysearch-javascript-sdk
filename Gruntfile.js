@@ -91,14 +91,16 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-ngdocs');
   grunt.loadNpmTasks('grunt-run');
 
+  // We test the built and minified version so that
+  // we also verify a proper build process
   grunt.registerTask('test', [
+    'build',
     'run:jasmine'
   ]);
 
   grunt.registerTask('build', [
     'clean:dist',
     'jshint',
-    'test',
     'ngdocs',
     'run:browserify',
     'uglify',
@@ -106,7 +108,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('publish', [
-    'build',
+    'test',
     'gh-pages:dev'
   ]);
 
@@ -124,5 +126,5 @@ module.exports = function(grunt) {
   ]);
 
   // Default task(s)
-  grunt.registerTask('default', ['build']);
+  grunt.registerTask('default', ['test']);
 };
