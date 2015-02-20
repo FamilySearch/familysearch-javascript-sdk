@@ -53,29 +53,6 @@ module.exports = function(grunt) {
         src: ['**/*']
       }
     },
-    
-    requirejs: {
-      options: {
-        baseUrl: 'src',
-        include: ['FamilySearch'],
-        wrap: {
-          startFile: 'src/header.frag',
-          endFile: 'src/footer.frag'
-        }
-      },
-      dev: {
-        options: {
-          out: 'dist/familysearch-javascript-sdk.js',
-          optimize: 'none'
-        }
-      },
-      prod: {
-        options: {
-          out: 'dist/familysearch-javascript-sdk.min.js',
-          optimize: 'uglify2'
-        }
-      }
-    },
 
     copy: {
       dist: {
@@ -91,20 +68,31 @@ module.exports = function(grunt) {
     run: {
       jasmine: {
         exec: 'npm run jasmine'
+      },
+      browserify: {
+        exec: 'npm run browserify'
+      }
+    },
+    
+    uglify: {
+      build: {
+        files: {
+          'dist/familysearch-javascript-sdk.min.js': 'dist/familysearch-javascript-sdk.js'
+        }
       }
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-ngdocs');
-  grunt.loadNpmTasks('grunt-gh-pages');
-  grunt.loadNpmTasks('grunt-requirejs');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-gh-pages');
+  grunt.loadNpmTasks('grunt-ngdocs');
   grunt.loadNpmTasks('grunt-run');
 
   grunt.registerTask('test', [
-    'run'
+    'run:jasmine'
   ]);
 
   grunt.registerTask('build', [
@@ -112,7 +100,8 @@ module.exports = function(grunt) {
     'jshint',
     'test',
     'ngdocs',
-    'requirejs',
+    'run:browserify',
+    'uglify',
     'copy:dist'
   ]);
 
@@ -129,7 +118,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('travis', [
     'travis-pull-request',
-    'requirejs',
+    'run:browserify',
     'copy:dist',
     'gh-pages:travis'
   ]);
