@@ -9,7 +9,6 @@ var FS = require('./../FamilySearch'),
  * Name
  */
 
-/**********************************/
 /**
  * @ngdoc function
  * @name name.types:constructor.Name
@@ -19,9 +18,8 @@ var FS = require('./../FamilySearch'),
  *
  * @param {Object|String=} data either a fullText string or an object with optional attributes
  * {type, $givenName, $surname, $prefix, $suffix, $fullText, preferred, $changeMessage}
- **********************************/
-
-var Name = function(client, data) {
+ */
+var Name = FS.Name = function(client, data) {
   FS.BaseClass.call(this, client, data);
   
   if(data){
@@ -69,6 +67,17 @@ var Name = function(client, data) {
       }
     }
   }
+};
+
+/**
+ * @ngdoc function
+ * @name name.functions:createName
+ * @param {Object} data [Name](https://familysearch.org/developers/docs/api/gx/Name_json) data
+ * @return {Object} {@link name.types:constructor.Name Name}
+ * @description Create a {@link name.types:constructor.Name Name} object. Use this method instead of calling the constructor directly.
+ */
+FS.prototype.createName = function(data){
+  return new Name(this, data);
 };
 
 // return the i'th name form; add it if it doesn't exist
@@ -379,9 +388,4 @@ Name.prototype = {
     //noinspection JSValidateTypes
     return this;
   }
-};
-
-module.exports = FS.Name = Name;
-FS.prototype.createName = function(data){
-  return new Name(this, data);
 };

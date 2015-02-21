@@ -2,7 +2,6 @@ var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
 
-/**********************************/
 /**
  * @ngdoc function
  * @name memories.types:constructor.MemoryPersona
@@ -16,12 +15,18 @@ var FS = require('./../FamilySearch'),
  * To create a new memory persona, you must set $memoryId and name.
  * _name_ can be a {@link name.types:constructor.Name Name} object or a fullText string.
  * _NOTE_ memory persona names don't have given or surname parts, only fullText
- *********************************/
-
+ */
 var MemoryPersona = FS.MemoryPersona = function(client, data) {
   FS.BaseClass.call(this, client, data);
 };
 
+/**
+ * @ngdoc function
+ * @name memories.functions:createMemoryPersona
+ * @param {Object} data MemoryPerson data which is a [Person](https://familysearch.org/developers/docs/api/gx/Person_json) with additional memory data.
+ * @return {Object} {@link memories.types:constructor.MemoryPersona MemoryPersona}
+ * @description Create a {@link memories.types:constructor.MemoryPersona MemoryPersona} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createMemoryPersona = function(data){
   return new MemoryPersona(this, data);
 };

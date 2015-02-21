@@ -10,7 +10,7 @@ var instanceId = 0;
     
 /**
  * @ngdoc function
- * @name FamilySearch.types:FamilySearch
+ * @name familysearch.types:constructor.FamilySearch
  * @function
  *
  * @description

@@ -13,6 +13,13 @@ var Change = FS.Change = function(client, data) {
   FS.BaseClass.call(this, client, data);
 };
 
+/**
+ * @ngdoc function
+ * @name changeHistory.functions:createChange
+ * @param {Object} data change data which is an [Entry](https://familysearch.org/developers/docs/api/atom/Entry_json) with a [ChangeInfo](https://familysearch.org/developers/docs/api/fs/ChangeInfo_json) field.
+ * @return {Object} {@link changeHistory.types:constructor.Change Change}
+ * @description Create a {@link changeHistory.types:constructor.Change Change} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createChange = function(data){
   return new Change(this, data);
 };

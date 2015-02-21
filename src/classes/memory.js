@@ -2,7 +2,6 @@ var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
 
-/******************************************/
 /**
  * @ngdoc function
  * @name memories.types:constructor.Memory
@@ -19,12 +18,18 @@ var FS = require('./../FamilySearch'),
  * _description_ doesn't appear to apply to stories.
  *
  * __NOTE__ it is not currently possible to update memory contents - not even for stories
- ******************************************/
-
+ */
 var Memory = FS.Memory = function(client, data) {
   FS.BaseClass.call(this, client, data);
 };
 
+/**
+ * @ngdoc function
+ * @name memories.functions:createMemory
+ * @param {Object} data Memory data which is a [SourceDescription](https://familysearch.org/developers/docs/api/gx/SourceDescription_json) data
+ * @return {Object} {@link memories.types:constructor.Memory Memory}
+ * @description Create a {@link memories.types:constructor.Memory Memory} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createMemory = function(data){
   return new Memory(this, data);
 };

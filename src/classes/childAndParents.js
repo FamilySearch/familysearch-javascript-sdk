@@ -16,8 +16,8 @@ var FS = require('../FamilySearch'),
  * _$save_ persists the changes made to father, mother, child, and facts;
  * _$delete_ removes the relationship.
  *
- * @param {Object=} data an object with optional attributes {father, mother, child, fatherFacts, motherFacts}.
- * _father_, _mother_, and _child_ are Person objects, URLs, or ids.
+ * @param {Object=} data an object with optional attributes {$father, $mother, $child, fatherFacts, motherFacts}.
+ * _$father_, _$mother_, and _$child_ are Person objects, URLs, or ids.
  * _fatherFacts_ and _motherFacts_ are arrays of Facts or objects to be passed into the Fact constructor.
  */
 var ChildAndParents = FS.ChildAndParents = function(client, data) {
@@ -50,6 +50,13 @@ var ChildAndParents = FS.ChildAndParents = function(client, data) {
   }
 };
 
+/**
+ * @ngdoc function
+ * @name parentsAndChildren.functions:createChildAndParents
+ * @param {Object} data [ChildAndParentsRelationship](https://familysearch.org/developers/docs/api/fs/ChildAndParentsRelationship_json) data
+ * @return {Object} {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents}
+ * @description Create a {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createChildAndParents = function(data){
   return new ChildAndParents(this, data);
 };

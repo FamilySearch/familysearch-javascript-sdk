@@ -2,7 +2,6 @@ var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
 
-/**********************************/
 /**
  * @ngdoc function
  * @name notes.types:constructor.Note
@@ -12,7 +11,7 @@ var FS = require('./../FamilySearch'),
  * To create a new note, you must set subject, text, and either $personId, $childAndParentsId, or $coupleId.
  *
  * @param {Object=} data an object with optional attributes {subject, text, $personId, $childAndParentsId, $coupleId}
- **********************************/
+ */
 var Note = FS.Note = function(client, data) {
   FS.BaseClass.call(this, client, data);
   
@@ -21,6 +20,13 @@ var Note = FS.Note = function(client, data) {
   }
 };
 
+/**
+ * @ngdoc function
+ * @name notes.functions:createNote
+ * @param {Object} data [Note](https://familysearch.org/developers/docs/api/gx/Note_json) data
+ * @return {Object} {@link notes.types:constructor.Note Note}
+ * @description Create a {@link notes.types:constructor.Note Note} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createNote = function(data){
   return new Note(this, data);
 };

@@ -11,7 +11,7 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_resource FamilySearch API Docs}
  *
- * @param {Object=} data an object with optional attributes {title}.
+ * @param {Object=} data data
  */
 var Collection = FS.Collection = function(client, data) {
   FS.BaseClass.call(this, client, data);
@@ -21,6 +21,13 @@ var Collection = FS.Collection = function(client, data) {
   }
 };
 
+/**
+ * @ngdoc function
+ * @name sourceBox.functions:createCollection
+ * @param {Object} data [Collection](https://familysearch.org/developers/docs/api/gx/Collection_json) data
+ * @return {Object} {@link sourceBox.types:constructor.Collection Collection}
+ * @description Create a {@link sourceBox.types:constructor.Collection Collection} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createCollection = function(data){
   return new Collection(this, data);
 };

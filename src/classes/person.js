@@ -2,7 +2,6 @@ var FS = require('../FamilySearch'),
     utils = require('../utils'),
     maybe = utils.maybe;
     
-/**********************************/
 /**
  * @ngdoc function
  * @name person.types:constructor.Person
@@ -16,12 +15,11 @@ var FS = require('../FamilySearch'),
  * _$save_ persists the changes made to names, facts, and gender;
  * _$delete_ removes the person.
  *
- * @param {Object=} data an object with optional attributes {gender, names, facts}.
- * _gender_ is a string.
+ * @param {Object=} data an object with optional attributes {$gender, names, facts}.
+ * _$gender_ is a string.
  * _names_ is an array of Name's, or Objects or strings to pass into the Name constructor.
  * _facts_ is an array of Fact's or Objects to pass into the Fact constructor.
- **********************************/
- 
+ */
 var Person = FS.Person = function(client, data) {
   FS.BaseClass.call(this, client, data);
   
@@ -45,6 +43,13 @@ var Person = FS.Person = function(client, data) {
   }
 };
 
+/**
+ * @ngdoc function
+ * @name person.functions:createPerson
+ * @param {Object} data [Person](https://familysearch.org/developers/docs/api/gx/Person_json) data
+ * @return {Object} {@link person.types:constructor.Person Person}
+ * @description Create a {@link person.types:constructor.Person Person} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createPerson = function(data){
   return new Person(this, data);
 };

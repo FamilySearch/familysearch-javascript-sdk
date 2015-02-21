@@ -2,7 +2,6 @@ var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
 
-/**********************************/
 /**
  * @ngdoc function
  * @name sources.types:constructor.SourceRef
@@ -19,8 +18,7 @@ var FS = require('./../FamilySearch'),
  * _sourceDescription_ can be a {@link sources.types:constructor.SourceDescription SourceDescription},
  * a source description id, or a source description URL.
  * _tags_ is an array (string[]) of tag names
- **********************************/
-
+ */
 var SourceRef = FS.SourceRef = function(client, data) {
   FS.BaseClass.call(this, client, data);
   
@@ -44,6 +42,13 @@ var SourceRef = FS.SourceRef = function(client, data) {
   }
 };
 
+/**
+ * @ngdoc function
+ * @name sources.functions:createSourceRef
+ * @param {Object} data [SourceReference](https://familysearch.org/developers/docs/api/gx/SourceReference_json) data
+ * @return {Object} {@link sources.types:constructor.SourceRef SourceRef}
+ * @description Create a {@link sources.types:constructor.SourceRef SourceRef} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createSourceRef = function(data){
   return new SourceRef(this, data);
 };

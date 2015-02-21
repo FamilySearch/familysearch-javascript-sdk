@@ -2,7 +2,6 @@ var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
 
-/**********************************/
 /**
  * @ngdoc function
  * @name sources.types:constructor.SourceDescription
@@ -14,8 +13,7 @@ var FS = require('./../FamilySearch'),
  *
  * @param {Object=} data an object with optional attributes {about, citation, title, text}.
  * _about_ is a URL (link to the record) it can be a memory URL.
- **********************************/
-
+ */
 var SourceDescription = FS.SourceDescription = function(client, data) {
   FS.BaseClass.call(this, client, data);
   
@@ -41,6 +39,13 @@ var SourceDescription = FS.SourceDescription = function(client, data) {
   }
 };
 
+/**
+ * @ngdoc function
+ * @name sources.functions:createSourceDescription
+ * @param {Object} data [SourceDescription](https://familysearch.org/developers/docs/api/gx/SourceDescription_json) data
+ * @return {Object} {@link sources.types:constructor.SourceDescription SourceDescription}
+ * @description Create a {@link sources.types:constructor.SourceDescription SourceDescription} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createSourceDescription = function(data){
   return new SourceDescription(this, data);
 };

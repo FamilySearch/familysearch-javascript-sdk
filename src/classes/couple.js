@@ -14,21 +14,21 @@ var FS = require('../FamilySearch'),
  * _$save_ persists the changes made to husband, wife, and facts;
  * _$delete_ removes the relationship.
  *
- * @param {Object=} data an object with optional attributes {husband, wife, facts}.
- * _husband_ and _wife_ are Person objects, URLs, or ids.
+ * @param {Object=} data an object with optional attributes {$husband, $wife, facts}.
+ * _$husband_ and _$wife_ are Person objects, URLs, or ids.
  * _facts_ is an array of Facts or objects to be passed into the Fact constructor.
  */
 var Couple = FS.Couple = function(client, data) {
   FS.BaseClass.call(this, client, data);
   
   if (data) {
-    if (data.husband) {
+    if (data.$husband) {
       //noinspection JSUnresolvedFunction
-      this.$setHusband(data.husband);
+      this.$setHusband(data.$husband);
     }
-    if (data.wife) {
+    if (data.$wife) {
       //noinspection JSUnresolvedFunction
-      this.$setWife(data.wife);
+      this.$setWife(data.$wife);
     }
     if (data.facts) {
       //noinspection JSUnresolvedFunction
@@ -37,6 +37,13 @@ var Couple = FS.Couple = function(client, data) {
   }
 };
 
+/**
+ * @ngdoc function
+ * @name spouses.functions:createCouple
+ * @param {Object} data [Relationship](https://familysearch.org/developers/docs/api/gx/Relationship_json) data
+ * @return {Object} {@link spouses.types:constructor.Couple Couple}
+ * @description Create a {@link spouses.types:constructor.Couple Couple} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createCouple = function(data){
   return new Couple(this, data);
 };

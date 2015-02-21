@@ -11,6 +11,13 @@ var Place = FS.Place = function(client, data){
   FS.BaseClass.call(this, client, data);
 };
 
+/**
+ * @ngdoc function
+ * @name authorities.functions:createPlace
+ * @param {Object} data [PlaceReference](https://familysearch.org/developers/docs/api/gx/PlaceReference_json) data
+ * @return {Object} {@link authorities.types:constructor.Place Place}
+ * @description Create a {@link authorities.types:constructor.Place Place} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createPlace = function(data){
   return new Place(this, data);
 };

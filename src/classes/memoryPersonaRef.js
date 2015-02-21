@@ -2,7 +2,6 @@ var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
 
-/**********************************/
 /**
  * @ngdoc function
  * @name memories.types:constructor.MemoryPersonaRef
@@ -17,12 +16,18 @@ var FS = require('./../FamilySearch'),
  *
  * @param {Object=} data an object with optional attributes {$personId, memoryPersona}.
  * _memoryPersona_ can be a {@link memories.types:constructor.MemoryPersona MemoryPersona} or a memory persona url
- *********************************/
-
+ */
 var MemoryPersonaRef = FS.MemoryPersonaRef = function(client, data) {
   FS.BaseClass.call(this, client, data);
 };
 
+/**
+ * @ngdoc function
+ * @name memories.functions:createMemoryPersonaRef
+ * @param {Object} data [EvidenceReference](https://familysearch.org/developers/docs/api/gx/EvidenceReference_json) data
+ * @return {Object} {@link memories.types:constructor.MemoryPersonaRef MemoryPersonaRef}
+ * @description Create a {@link memories.types:constructor.MemoryPersonaRef MemoryPersonaRef} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createMemoryPersonaRef = function(data){
   return new MemoryPersonaRef(this, data);
 };

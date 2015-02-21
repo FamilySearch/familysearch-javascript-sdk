@@ -24,6 +24,13 @@ var Attribution = FS.Attribution = function(client, data) {
   }
 };
 
+/**
+ * @ngdoc function
+ * @name attribution.functions:createAttribution
+ * @param {Object} data [Attribution](https://familysearch.org/developers/docs/api/gx/Attribution_json) data
+ * @return {Object} {@link attribution.types:constructor.Attribution Attribution}
+ * @description Create an {@link attribution.types:constructor.Attribution Attribution} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createAttribution = function(message){
   return new Attribution(this, message);
 };

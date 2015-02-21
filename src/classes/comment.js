@@ -18,6 +18,13 @@ var Comment = FS.Comment = function(client, data) {
   FS.BaseClass.call(this, client, data);
 };
 
+/**
+ * @ngdoc function
+ * @name discussions.functions:createComment
+ * @param {Object} data [Comment](https://familysearch.org/developers/docs/api/fs/Comment_json) data
+ * @return {Object} {@link discussions.types:constructor.Comment Comment}
+ * @description Create a {@link discussions.types:constructor.Comment Comment} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createComment = function(data){
   return new Comment(this, data);
 };

@@ -76,7 +76,7 @@
  *
  * ### Browser
  *
- * 1. Create an instance of the SDK. Read more about {@link FamilySearch.types:FamilySearch all available options}.
+ * 1. Create an instance of the SDK. Read more about {@link familysearch.types:constructor.FamilySearch all available options}.
  * <pre>
  * var client = new FamilySearch({
  *   client_id: 'YOUR_CLIENT_ID_GOES_HERE',
@@ -146,7 +146,7 @@
  *     q = require('q');
  * </pre>
  * 
- * 3. Create an instance of the SDK. Read more about {@link FamilySearch.types:FamilySearch all available options}.
+ * 3. Create an instance of the SDK. Read more about {@link familysearch.types:constructor.FamilySearch all available options}.
  * <pre>
  * var client = new FamilySearch({
  *   client_id: 'YOUR_CLIENT_ID_GOES_HERE',

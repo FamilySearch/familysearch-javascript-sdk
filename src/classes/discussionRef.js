@@ -2,7 +2,6 @@ var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
 
-/**********************************/
 /**
  * @ngdoc function
  * @name discussions.types:constructor.DiscussionRef
@@ -14,8 +13,7 @@ var FS = require('./../FamilySearch'),
  *
  * @param {Object=} data an object with optional attributes {$personId, discussion}
  * _discussion_ can be a {@link discussions.types:constructor.Discussion Discussion} or a discussion URL or a discussion id
- **********************************/
-
+ */
 var DiscussionRef = FS.DiscussionRef = function(client, data) {
   FS.BaseClass.call(this, client, data);
   if (data && data.discussion) {
@@ -24,6 +22,13 @@ var DiscussionRef = FS.DiscussionRef = function(client, data) {
   }
 };
 
+/**
+ * @ngdoc function
+ * @name discussions.functions:createDiscussionRef
+ * @param {Object} data [DiscussionReference](https://familysearch.org/developers/docs/api/fs/DiscussionReference_json) data
+ * @return {Object} {@link discussions.types:constructor.DiscussionRef DiscussionRef}
+ * @description Create a {@link discussions.types:constructor.DiscussionRef DiscussionRef} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createDiscussionRef = function(data){
   return new DiscussionRef(this, data);
 };

@@ -12,6 +12,13 @@ var User = FS.User = function(client, data) {
   FS.BaseClass.call(this, client, data);
 };
 
+/**
+ * @ngdoc function
+ * @name user.functions:createUser
+ * @param {Object} data [User](https://familysearch.org/developers/docs/api/fs/User_json) data
+ * @return {Object} {@link user.types:constructor.User User}
+ * @description Create a {@link user.types:constructor.User User} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createUser = function(data){
   return new User(this, data);
 };

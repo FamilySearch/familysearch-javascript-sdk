@@ -1,13 +1,5 @@
 var FS = require('./../FamilySearch');
 
-/**
- * @ngdoc function
- * @name authorities.types:constructor.Date
- * @description
- *
- * Standardized date
- */
-
 // construct formal date from [about|after|before] [[day] month] year [BC]
 var constructFormalDate = function(fields, ignoreModifiers) {
   var prefix = '', suffix = '', day = '', month = '', year, sign = '+';
@@ -55,10 +47,24 @@ var constructFormalDate = function(fields, ignoreModifiers) {
   return prefix+sign+year+(month ? '-' : '')+month+(day ? '-' : '')+day+suffix;
 };
 
+/**
+ * @ngdoc function
+ * @name authorities.types:constructor.Date
+ * @description
+ *
+ * Standardized date
+ */
 var FSDate = FS.Date = function(client, data) {
   FS.BaseClass.call(this, client, data);
 };
 
+/**
+ * @ngdoc function
+ * @name authorities.functions:createDate
+ * @param {Object} data [Date](https://familysearch.org/developers/docs/api/gx/Date_json) data
+ * @return {Object} {@link authorities.types:constructor.Date Date}
+ * @description Create a {@link authorities.types:constructor.Date Date} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createDate = function(data){
   return new FSDate(this, data);
 };

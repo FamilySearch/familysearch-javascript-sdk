@@ -14,6 +14,13 @@ var Agent = FS.Agent = function(client, data) {
   FS.BaseClass.call(this, client, data);
 };
 
+/**
+ * @ngdoc function
+ * @name user.functions:createAgent
+ * @param {Object} data [Agent](https://familysearch.org/developers/docs/api/gx/Agent_json) data
+ * @return {Object} {@link user.types:constructor.Agent Agent}
+ * @description Create an {@link user.types:constructor.Agent Agent} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createAgent = function(data){
   return new Agent(this, data);
 };

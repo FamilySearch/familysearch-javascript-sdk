@@ -2,7 +2,6 @@ var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
 
-/**********************************/
 /**
  * @ngdoc function
  * @name discussions.types:constructor.Discussion
@@ -10,18 +9,24 @@ var FS = require('./../FamilySearch'),
  *
  * Discussion
  *
- * @param {Object=} data an object with optional attributes {title, details}
- **********************************/
-
-// TODO consider disallowing $save()'ing or $delete()'ing discussions
- 
+ * @param {Object=} data data
+ */ 
 var Discussion = FS.Discussion = function(client, data) {
   FS.BaseClass.call(this, client, data);
 };
 
+/**
+ * @ngdoc function
+ * @name discussions.functions:createDiscussion
+ * @param {Object} data [Discussion](https://familysearch.org/developers/docs/api/fs/Discussion_json) data
+ * @return {Object} {@link discussions.types:constructor.Discussion Discussion}
+ * @description Create a {@link discussions.types:constructor.Discussion Discussion} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createDiscussion = function(data){
   return new Discussion(this, data);
 };
+
+// TODO consider disallowing $save()'ing or $delete()'ing discussions
 
 Discussion.prototype = {
   constructor: Discussion,

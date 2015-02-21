@@ -9,7 +9,6 @@ var FS = require('./../FamilySearch'),
  * Fact
  */
 
-/**********************************/
 /**
  * @ngdoc function
  * @name fact.types:constructor.Fact
@@ -18,8 +17,7 @@ var FS = require('./../FamilySearch'),
  * Fact
  * @param {Object=} data with optional attributes
  * {type, $date, $formalDate, $place, $normalizedPlace, $changeMessage}
- **********************************/
-
+ */
 var Fact = FS.Fact = function(client, data) {
   FS.BaseClass.call(this, client, data);
   
@@ -55,7 +53,13 @@ var Fact = FS.Fact = function(client, data) {
   }
 };
 
-
+/**
+ * @ngdoc function
+ * @name fact.functions:createFact
+ * @param {Object} data [Fact](https://familysearch.org/developers/docs/api/gx/Fact_json) data
+ * @return {Object} {@link fact.types:constructor.Fact Fact}
+ * @description Create a {@link fact.types:constructor.Fact Fact} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createFact = function(data){
   return new Fact(this, data);
 };

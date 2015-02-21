@@ -17,6 +17,13 @@ var SearchResult = FS.SearchResult = function(client, data) {
   });
 };
 
+/**
+ * @ngdoc function
+ * @name searchAndMatch.functions:createSearchResult
+ * @param {Object} data [Entry](https://familysearch.org/developers/docs/api/atom/Entry_json) data
+ * @return {Object} {@link searchAndMatch.types:constructor.SearchResult SearchResult}
+ * @description Create a {@link searchAndMatch.types:constructor.SearchResult SearchResult} object. Use this method instead of calling the constructor directly.
+ */
 FS.prototype.createSearchResult = function(data){
   return new SearchResult(this, data);
 };
