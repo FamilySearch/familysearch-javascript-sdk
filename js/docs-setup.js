@@ -10,7 +10,7 @@ NG_DOCS={
       "type": "overview",
       "moduleName": "index",
       "shortDescription": "Overview",
-      "keywords": "$getdisplayname $getgivenname $getsurname $http $q ___strongly___ _getnameandid _low_level_commands_plumbing access actual add addition additional adds agent ajax amd angularjs anticipated api app approach array arrays asynchronous attribution authentication automatically avoid background branch browser bugs build builds built call callback called calling calls case catch change changehistory changes childandparents client_id close code combine combined comment comments commonjs config conflicts console constructors consume contactname contributing convenience cookie copying correct corresponding couple create created custom data defer deferred deferred_function delete dependencies described description_the-promise-api desired developers directly directory directs discussion discussionref discussions display docs documentation documented doesn download easier element elements endpoint endpoints environment error errors errorthrown example examples exist existing expectations expired exposed extended extracting fact facts fail fairly familysearch familysearch-javascript-sdk familysearchoauthreceiver features fields file files format frag free front fs fulfilled fully function functionality functions generate generated getaccesstoken getallresponseheaders getcurrentuser getperson getrequest getresponseheader getstatuscode getuser gh-pages git github global goal google great grunt handle handled handling hash header headers hello higher-level host href html http http_function https illustrated includes init initialization isn javascript jquery js jsdoc jshint jshintrc json kernel keywords ll loader loaders located location log low-level manage mapped master match memories memory memoryartifactref memorypersona memorypersonaref method methods mid-release minified minify mobile mock model modifies module my_client_id nameforms names navigate navigating node note notes npm object objects occur ojects opener opens option optional options org original overview package parameter parameters parentsandchildren parts pass passed pasting people performed person plumbing point pointing popup port posting potential prepending project promise promises properties property prototype prototypes provided publish published pull purpose push re-read read readme reason recommend record redirect_uri redirect_uri_goes_here referring refresh registered rejected relationships removed repository request requests require required requires response responses rest retained retried return returned returning returns running safari sample sandbox saved saving script sdk search searchandmatch searchresult serve server set simple single source sourcedescription sourceref sources spouses src started starts status strict submitting success suppose surname tab tabs tag takes targets test tests textstatus throttling token tool top transient travis-ci true type types typically unit unstable update updateable updated updates uri url user users v0 var version wanted watches website window work works wraps write written your_client_id_goes_here"
+      "keywords": "$changemessage $fulltext $getdisplayname $getgivenname $getsurname $givenname $http $q $setchangemessage $setfulltext $setgivenname $setsurname $settype $surname ___strongly___ _getnameandid _low_level_commands_plumbing access access_token actual add addition additional adds agent ajax aleksandrova allows amd anastasia angularjs anticipated api app array arrays asynchronous attributes attribution authentication automatically avoid background bits branch browser bugs build built call callback called calling calls case catch change changehistory changemessage childandparents class client client_id close code combine combined comment comments common commonjs config conflicts console constructors consume contactname contributing convenience cookie copying correct corresponding couple create created createname createperson creating custom data defer deferred deferred_function delete depend dependencies described description_the-promise-api desired developers directly directory directs discussion discussionref discussions display docs document documentation documented doesn don download easier element elements endpoint endpoints environment equivalent error errors errorthrown example examples exist existing expectations expects expired exposed extended extracting fact facts fail fairly familysearch familysearch-javascript-sdk familysearchoauthreceiver features fields file files finally free fs fulfilled fulltext fully function functionality functions generate generated getaccesstoken getallresponseheaders getcurrentuser getperson getrequest getresponseheader getstatuscode getuser gh-pages git github global goal google great grunt handle handled handling hash headers hello higher-level host href html http http_function https illustrated includes init initialization instance isn javascript jquery js jsdoc jshint jshintrc json kernel keywords libraries ll loaded loaders location log low-level maintain manage mapped master match matches memories memory memoryartifactref memorypersona memorypersonaref message method methods mid-release minified minify mobile mock model modifies module modules my_client_id nameforms names navigate navigating nest node note notes npm object objects occassionally occur ojects opener opens option optional options org original overview package parameter parameters parentsandchildren parts pass passed pasting people performed person plumbing point pointing popup port posting potential prefixed progress project promise promise-methods promises properties property prototype prototypes provided publish published pull purpose push re-read read readme reason recommend record redirect_uri redirect_uri_goes_here reference referring refresh registered rejected relationships removed repository request requests require required requires response responses rest retained retried return returned returning returns running safari sample sandbox saved saving script sdk search searchandmatch searchresult serve server set setter shortcut shortcuts simple simplified single some_access_token source sourcedescription sourceref sources spouses src started status strict structure submitting success support supported suppose surname tab tabs tag takes targets test tests textstatus throttling token tool top top-level transient travis-ci true type types typically unit unstable update updateable updated updates uri url user users v0 var version wanted website window work works wraps write your_client_id_goes_here"
     },
     {
       "section": "api",
@@ -20,6 +20,15 @@ NG_DOCS={
       "moduleName": "attribution",
       "shortDescription": "Functions related to an attribution object",
       "keywords": "api attribution functions object overview"
+    },
+    {
+      "section": "api",
+      "id": "attribution.functions:createAttribution",
+      "shortName": "createAttribution",
+      "type": "function",
+      "moduleName": "attribution",
+      "shortDescription": "Create an Attribution object. Use this method instead of calling the constructor directly.",
+      "keywords": "api attribution calling create data directly function functions method object org types"
     },
     {
       "section": "api",
@@ -95,6 +104,24 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "authorities.functions:createDate",
+      "shortName": "createDate",
+      "type": "function",
+      "moduleName": "authorities",
+      "shortDescription": "Create a Date object. Use this method instead of calling the constructor directly.",
+      "keywords": "api authorities calling create data directly function functions method object org types"
+    },
+    {
+      "section": "api",
+      "id": "authorities.functions:createPlace",
+      "shortName": "createPlace",
+      "type": "function",
+      "moduleName": "authorities",
+      "shortDescription": "Create a Place object. Use this method instead of calling the constructor directly.",
+      "keywords": "api authorities calling create data directly function functions method object org place types"
+    },
+    {
+      "section": "api",
       "id": "authorities.functions:getDate",
       "shortName": "getDate",
       "type": "function",
@@ -137,6 +164,15 @@ NG_DOCS={
       "moduleName": "changeHistory",
       "shortDescription": "Functions related to change histories",
       "keywords": "api change change-history changehistory docs familysearch functions histories https org overview"
+    },
+    {
+      "section": "api",
+      "id": "changeHistory.functions:createChange",
+      "shortName": "createChange",
+      "type": "function",
+      "moduleName": "changeHistory",
+      "shortDescription": "Create a Change object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling change changehistory create data directly field function functions method object org types"
     },
     {
       "section": "api",
@@ -191,6 +227,33 @@ NG_DOCS={
       "moduleName": "discussions",
       "shortDescription": "Functions related to discussions",
       "keywords": "api discussions docs familysearch functions https org overview"
+    },
+    {
+      "section": "api",
+      "id": "discussions.functions:createComment",
+      "shortName": "createComment",
+      "type": "function",
+      "moduleName": "discussions",
+      "shortDescription": "Create a Comment object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling comment create data directly discussions function functions method object org types"
+    },
+    {
+      "section": "api",
+      "id": "discussions.functions:createDiscussion",
+      "shortName": "createDiscussion",
+      "type": "function",
+      "moduleName": "discussions",
+      "shortDescription": "Create a Discussion object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly discussion discussions function functions method object org types"
+    },
+    {
+      "section": "api",
+      "id": "discussions.functions:createDiscussionRef",
+      "shortName": "createDiscussionRef",
+      "type": "function",
+      "moduleName": "discussions",
+      "shortDescription": "Create a DiscussionRef object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly discussionref discussions function functions method object org types"
     },
     {
       "section": "api",
@@ -280,7 +343,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "discussions",
       "shortDescription": "Discussion",
-      "keywords": "$delete $getagent $getagentid $getagenturl $getcomments $getcommentsurl $getdiscussionurl $save __note__ api attach attributes aware best change changemessage comments committed contributor corresponding create created data delete deletediscussion description details discussion discussion-reference discussions editable endpoint example existing familysearch fulfilled function functions getagent getdiscussioncomments hasn http ignored init issue linked message millis modified net number numberofcomments object optional options opts pass people person promise property read refresh response single text timestamp title true types update updated updating url user"
+      "keywords": "$delete $getagent $getagentid $getagenturl $getcomments $getcommentsurl $getdiscussionurl $save __note__ api attach aware best change changemessage comments committed contributor corresponding create created data delete deletediscussion description details discussion discussion-reference discussions editable endpoint example existing familysearch fulfilled function functions getagent getdiscussioncomments hasn http ignored init issue linked message millis modified net number numberofcomments options opts pass people person promise property read refresh response single text timestamp title true types update updated updating url user"
     },
     {
       "section": "api",
@@ -302,30 +365,30 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "fact.functions:createFact",
+      "shortName": "createFact",
+      "type": "function",
+      "moduleName": "fact",
+      "shortDescription": "Create a Fact object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly fact function functions method object org types"
+    },
+    {
+      "section": "api",
       "id": "fact.types:constructor.Fact",
       "shortName": "constructor.Fact",
       "type": "function",
       "moduleName": "fact",
       "shortDescription": "Fact",
-      "keywords": "$getdate $getformaldate $getnormalizeddate $getnormalizedplace $getnormalizedplaceid $getplace $iscustomnonevent $setchangemessage $setcustomnonevent $setdate $setformaldate $setnormalizeddate $setnormalizedplace $setplace $settype api april attributes attribution authorities authority call case change changemessage custom data declares description descriptions event fact facts form formal formaldate format forms function gedcomx http isnonevent item message non-event normalized normalizeddate normalizedplace object optional org original place property server set sets standard string text true type types update user written"
+      "keywords": "$changemessage $date $formaldate $getdate $getformaldate $getnormalizeddate $getnormalizedplace $getnormalizedplaceid $getplace $iscustomnonevent $normalizedplace $place $setchangemessage $setcustomnonevent $setdate $setformaldate $setnormalizeddate $setnormalizedplace $setplace $settype api april attributes attribution authorities authority call case change changemessage custom data declares description descriptions event fact facts form formal formaldate format forms function gedcomx http isnonevent item message non-event normalized normalizeddate normalizedplace object optional org original place property server set sets standard string text true type types update user written"
     },
     {
       "section": "api",
-      "id": "init",
-      "shortName": "init",
-      "type": "overview",
-      "moduleName": "init",
-      "shortDescription": "Call the init function once to initialize the FamilySearch object before calling any other functions.",
-      "keywords": "api call calling familysearch function functions init initialize object overview"
-    },
-    {
-      "section": "api",
-      "id": "init.functions:init",
-      "shortName": "init",
+      "id": "familysearch.types:constructor.FamilySearch",
+      "shortName": "constructor.FamilySearch",
       "type": "function",
-      "moduleName": "init",
+      "moduleName": "familysearch",
       "shortDescription": "Initialize the FamilySearch object",
-      "keywords": "$http $q $timeout access access_token action ajax angular api auto_expire auto_signin blocked call called calls clear client_id console convenient cookie creating debug defaults defer deferred deferred_function developer development direct documentation environment eventually exist expire_callback expired expires false familysearch function functions future global host hour hours http http_function inactivity init initialize issue issuing jquery js key logging mobile node oauth2 object optional opts overview pass pop-up port production prompted re-read received redirect redirect_uri registered requests response result running safari sandbox save_access_token saved script server session set settimeout sign staging system timeout timeout_function token true turn uri user user-initiated users whichever"
+      "keywords": "$http $q $timeout access access_token action ajax angular api auto_expire auto_signin blocked call called calls clear client_id console convenient cookie creating debug defaults defer deferred deferred_function developer development direct documentation environment exist expire_callback expired expires false familysearch function future global host hour hours http http_function inactivity init initialize issue issuing jquery js key library logging mobile node oauth2 object optional opts overview pass pop-up port production prompted re-read received redirect redirect_uri registered requests response result running safari sandbox save_access_token saved script server session set settimeout sign staging system timeout timeout_function token true turn types uri user user-initiated users whichever"
     },
     {
       "section": "api",
@@ -335,6 +398,42 @@ NG_DOCS={
       "moduleName": "memories",
       "shortDescription": "Functions related to memories",
       "keywords": "api docs familysearch functions https memories org overview"
+    },
+    {
+      "section": "api",
+      "id": "memories.functions:createMemory",
+      "shortName": "createMemory",
+      "type": "function",
+      "moduleName": "memories",
+      "shortDescription": "Create a Memory object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly function functions memories memory method object org types"
+    },
+    {
+      "section": "api",
+      "id": "memories.functions:createMemoryArtifactRef",
+      "shortName": "createMemoryArtifactRef",
+      "type": "function",
+      "moduleName": "memories",
+      "shortDescription": "Create a MemoryArtifactRef object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly function functions memories memoryartifactref method object org types"
+    },
+    {
+      "section": "api",
+      "id": "memories.functions:createMemoryPersona",
+      "shortName": "createMemoryPersona",
+      "type": "function",
+      "moduleName": "memories",
+      "shortDescription": "Create a MemoryPersona object. Use this method instead of calling the constructor directly.",
+      "keywords": "additional api calling create data directly function functions memories memory memoryperson memorypersona method object org types"
+    },
+    {
+      "section": "api",
+      "id": "memories.functions:createMemoryPersonaRef",
+      "shortName": "createMemoryPersonaRef",
+      "type": "function",
+      "moduleName": "memories",
+      "shortDescription": "Create a MemoryPersonaRef object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly function functions memories memorypersonaref method object org types"
     },
     {
       "section": "api",
@@ -482,12 +581,21 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "name.functions:createName",
+      "shortName": "createName",
+      "type": "function",
+      "moduleName": "name",
+      "shortDescription": "Create a Name object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly function functions method object org types"
+    },
+    {
+      "section": "api",
       "id": "name.types:constructor.Name",
       "shortName": "constructor.Name",
       "type": "function",
       "moduleName": "name",
       "shortDescription": "Name",
-      "keywords": "$changed $getfulltext $getgivenname $getlanguage $getnameform $getnameformscount $getnamepart $getprefix $getsuffix $getsurname $setchangemessage $setfulltext $setgivenname $setnamepart $setpreferred $setprefix $setsuffix $setsurname $settype __note__ api attributes attribution call change changemessage created data defaults flag form forms full fulltext function givenname http initially ispreferred lang language message number object optional org parts person preferred prefix properties property read read-only set sets string suffix surname text true type types update"
+      "keywords": "$changed $changemessage $fulltext $getfulltext $getgivenname $getlanguage $getnameform $getnameformscount $getnamepart $getprefix $getsuffix $getsurname $givenname $prefix $setchangemessage $setfulltext $setgivenname $setnamepart $setpreferred $setprefix $setsuffix $setsurname $settype $suffix $surname __note__ api attributes attribution call change changemessage created data defaults flag form forms full fulltext function givenname http initially ispreferred lang language message number object optional org parts person preferred prefix properties property read read-only set sets string suffix surname text true type types update"
     },
     {
       "section": "api",
@@ -497,6 +605,15 @@ NG_DOCS={
       "moduleName": "notes",
       "shortDescription": "Functions related to notes",
       "keywords": "api docs familysearch functions https notes org overview"
+    },
+    {
+      "section": "api",
+      "id": "notes.functions:createNote",
+      "shortName": "createNote",
+      "type": "function",
+      "moduleName": "notes",
+      "shortDescription": "Create a Note object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly function functions method note notes object org types"
     },
     {
       "section": "api",
@@ -626,6 +743,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "parentsAndChildren.functions:createChildAndParents",
+      "shortName": "createChildAndParents",
+      "type": "function",
+      "moduleName": "parentsAndChildren",
+      "shortDescription": "Create a ChildAndParents object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling childandparents create data directly function functions method object org parentsandchildren types"
+    },
+    {
+      "section": "api",
       "id": "parentsAndChildren.functions:deleteChildAndParents",
       "shortName": "deleteChildAndParents",
       "type": "function",
@@ -649,7 +775,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "parentsAndChildren",
       "shortDescription": "Child and parents relationship",
-      "keywords": "$addfatherfact $addmotherfact $delete $deletefather $deletefatherfact $deletemother $deletemotherfact $getchanges $getchild $getchildandparentsurl $getchildid $getchildurl $getfather $getfatherfacts $getfatherid $getfatherurl $getmother $getmotherfacts $getmotherid $getmotherurl $getnotes $getsourcerefs $getsources $save $setchild $setfather $setfatherfacts $setmother $setmotherfacts __broken__ _child_ _father_ _fatherfacts_ _mother_ _motherfacts_ add api array arrays attributes biologicalparent change changed changehistory changemessage changes child child-and-parents childandparents create data dates default delete deletechildandparents deleted docs editable element example existing fact facts familysearch father fatherfacts fulfilled function functions getchildandparentschanges getchildandparentsnotes getchildandparentssourcerefs getchildandparentssourcesquery getperson http https ids init longer message methods mother motherfacts net note notes object objects optional options opts org parent-relationship parents parentsandchildren pass passed persists person places promise property read refresh relationship remove removes response saved set sources supported true type types update updated updating url urls"
+      "keywords": "$addfatherfact $addmotherfact $child $delete $deletefather $deletefatherfact $deletemother $deletemotherfact $getchanges $getchild $getchildandparentsurl $getchildid $getchildurl $getfather $getfatherfacts $getfatherid $getfatherurl $getmother $getmotherfacts $getmotherid $getmotherurl $getnotes $getsourcerefs $getsources $mother $save $setchild $setfather $setfatherfacts $setmother $setmotherfacts __broken__ _fatherfacts_ _motherfacts_ add api array arrays attributes biologicalparent change changed changehistory changemessage changes child child-and-parents childandparents create data dates default delete deletechildandparents deleted docs editable element example existing fact facts familysearch father fatherfacts fulfilled function functions getchildandparentschanges getchildandparentsnotes getchildandparentssourcerefs getchildandparentssourcesquery getperson http https ids init longer message methods mother motherfacts net note notes object objects optional options opts org parent-relationship parents parentsandchildren pass passed persists person places promise property read refresh relationship remove removes response saved set sources supported true type types update updated updating url urls"
     },
     {
       "section": "api",
@@ -686,6 +812,15 @@ NG_DOCS={
       "moduleName": "person",
       "shortDescription": "Functions related to persons",
       "keywords": "api docs familysearch functions https org overview person persons"
+    },
+    {
+      "section": "api",
+      "id": "person.functions:createPerson",
+      "shortName": "createPerson",
+      "type": "function",
+      "moduleName": "person",
+      "shortDescription": "Create a Person object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly function functions method object org person types"
     },
     {
       "section": "api",
@@ -811,7 +946,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Person",
-      "keywords": "$addfact $addname $delete $deletefact $deletename $getancestry $getbirth $getbirthdate $getbirthplace $getburial $getburialdate $getburialplace $getchanges $getchildren $getchristening $getchristeningdate $getchristeningplace $getdeath $getdeathdate $getdeathplace $getdescendancy $getdiscussionrefs $getdisplaybirthdate $getdisplaybirthplace $getdisplaydeathdate $getdisplaydeathplace $getdisplaygender $getdisplaylifespan $getdisplayname $getfact $getfacts $getgivenname $getmatches $getmemorypersonarefs $getnames $getnotes $getparents $getpersistentidentifier $getpersonportraiturl $getpersonurl $getpreferredname $getsourcerefs $getsources $getspouses $getsurname $isreadonly $save $setfacts $setgender $setnames _facts_ _gender_ _names_ add ancestor ancestry api array arrays attributes attribution birth birthdate birthplace burial change changehistory changemessage changes christening christning conclusion count create data death deathdate deathplace default delete deleted deleteperson descendency discussions display docs doesn editable element entries example exist existing fact facts false familysearch female final follow followredirect fulfilled full function functions gender generations getancestry getchildren getdescendancy getmemorypersonarefs getparents getperson getpersonchanges getpersondiscussionrefs getpersonmatches getpersonnotes getpersonportraiturl getpersonsourcerefs getpersonsourcesquery getpersonwithrelationships getspouses http https identifers identifier includes init lifespan living male map max memories message methods names net note notes number object objects optional options opts org params pass passed pedigree persistent persists person persondetails place portrait preferred promise property read read-only redirect refresh remove removes response retrieve return searchandmatch set sources spouse string strings surname true type types update updated updating url values year"
+      "keywords": "$addfact $addname $delete $deletefact $deletename $getancestry $getbirth $getbirthdate $getbirthplace $getburial $getburialdate $getburialplace $getchanges $getchildren $getchristening $getchristeningdate $getchristeningplace $getdeath $getdeathdate $getdeathplace $getdescendancy $getdiscussionrefs $getdisplaybirthdate $getdisplaybirthplace $getdisplaydeathdate $getdisplaydeathplace $getdisplaygender $getdisplaylifespan $getdisplayname $getfact $getfacts $getgivenname $getmatches $getmemorypersonarefs $getnames $getnotes $getparents $getpersistentidentifier $getpersonportraiturl $getpersonurl $getpreferredname $getsourcerefs $getsources $getspouses $getsurname $isreadonly $save $setfacts $setgender $setnames _facts_ _names_ add ancestor ancestry api array arrays attributes attribution birth birthdate birthplace burial change changehistory changemessage changes christening christning conclusion count create data death deathdate deathplace default delete deleted deleteperson descendency discussions display docs doesn editable element entries example exist existing fact facts false familysearch female final follow followredirect fulfilled full function functions gender generations getancestry getchildren getdescendancy getmemorypersonarefs getparents getperson getpersonchanges getpersondiscussionrefs getpersonmatches getpersonnotes getpersonportraiturl getpersonsourcerefs getpersonsourcesquery getpersonwithrelationships getspouses http https identifers identifier includes init lifespan living male map max memories message methods names net note notes number object objects optional options opts org params pass passed pedigree persistent persists person persondetails place portrait preferred promise property read read-only redirect refresh remove removes response retrieve return searchandmatch set sources spouse string strings surname true type types update updated updating url values year"
     },
     {
       "section": "api",
@@ -896,12 +1031,39 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "redirect",
+      "shortName": "redirect",
+      "type": "overview",
+      "moduleName": "redirect",
+      "shortDescription": "Utility functions",
+      "keywords": "api docs familysearch functions https org overview redirect utility"
+    },
+    {
+      "section": "api",
+      "id": "redirect.functions:getRedirectUrl",
+      "shortName": "getRedirectUrl",
+      "type": "function",
+      "moduleName": "redirect",
+      "shortDescription": "FamilySearch API Docs",
+      "keywords": "access api changes context docs familysearch function functions https location memories ordinances org params person precedence redirect token uri url user"
+    },
+    {
+      "section": "api",
       "id": "searchAndMatch",
       "shortName": "searchAndMatch",
       "type": "overview",
       "moduleName": "searchAndMatch",
       "shortDescription": "Functions related to search and match",
       "keywords": "api docs familysearch functions https match org overview search search-and-match searchandmatch"
+    },
+    {
+      "section": "api",
+      "id": "searchAndMatch.functions:createSearchResult",
+      "shortName": "createSearchResult",
+      "type": "function",
+      "moduleName": "searchAndMatch",
+      "shortDescription": "Create a SearchResult object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly function functions method object org searchandmatch searchresult types"
     },
     {
       "section": "api",
@@ -941,12 +1103,12 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "sourceBox",
-      "shortName": "sourceBox",
-      "type": "overview",
+      "id": "sourceBox.functions:createCollection",
+      "shortName": "createCollection",
+      "type": "function",
       "moduleName": "sourceBox",
-      "shortDescription": "Functions related to a user&#39;s source box",
-      "keywords": "api box docs familysearch functions https org overview source source-box sourcebox user"
+      "shortDescription": "Create a Collection object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling collection create data directly function functions method object org sourcebox types"
     },
     {
       "section": "api",
@@ -1018,7 +1180,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sourceBox",
       "shortDescription": "Collection",
-      "keywords": "$delete $getcollectionurl $getsourcedescriptions $save api attributes attribution collection count create data delete deletecollection descriptions docs editable empty example familysearch fulfilled function functions getcollectionsourcedescriptions http https init maximum net number object optional options opts org params pass person promise property read refresh response return size source sourcebox sources start title true types updated updating url user-defined zero-based"
+      "keywords": "$delete $getcollectionurl $getsourcedescriptions $save api attribution collection count create data delete deletecollection descriptions docs editable empty example familysearch fulfilled function functions getcollectionsourcedescriptions http https init maximum net number object options opts org params pass person promise property read refresh response return size source sourcebox sources start title true types updated updating url user-defined zero-based"
     },
     {
       "section": "api",
@@ -1028,6 +1190,24 @@ NG_DOCS={
       "moduleName": "sources",
       "shortDescription": "Functions related to sources",
       "keywords": "api docs familysearch functions https org overview sources"
+    },
+    {
+      "section": "api",
+      "id": "sources.functions:createSourceDescription",
+      "shortName": "createSourceDescription",
+      "type": "function",
+      "moduleName": "sources",
+      "shortDescription": "Create a SourceDescription object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly function functions method object org sourcedescription sources types"
+    },
+    {
+      "section": "api",
+      "id": "sources.functions:createSourceRef",
+      "shortName": "createSourceRef",
+      "type": "function",
+      "moduleName": "sources",
+      "shortDescription": "Create a SourceRef object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly function functions method object org sourceref sources types"
     },
     {
       "section": "api",
@@ -1175,6 +1355,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "spouses.functions:createCouple",
+      "shortName": "createCouple",
+      "type": "function",
+      "moduleName": "spouses",
+      "shortDescription": "Create a Couple object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling couple create data directly function functions method object org spouses types"
+    },
+    {
+      "section": "api",
       "id": "spouses.functions:deleteCouple",
       "shortName": "deleteCouple",
       "type": "function",
@@ -1198,7 +1387,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "spouses",
       "shortDescription": "Couple relationship",
-      "keywords": "$addfact $delete $deletefact $getchanges $getcoupleurl $getfacts $gethusband $gethusbandid $gethusbandurl $getmarriagefact $getnotes $getsourcerefs $getsources $getspouse $getspouseid $getspouseurl $getwife $getwifeid $getwifeurl $save $setfacts $sethusband $setwife _facts_ _husband_ _wife_ add api array attributes call change changemessage changes couple create data default delete deletecouple deleted editable elements example existing exports fact facts fetch fulfilled function functions getcouplechanges getcouplenotes getcouplesourcerefs getcouplesourcesquery getperson http husband ids init initializing marriage message method methods multiple net note notes object objects optional options opts org pass passed persists person plan promise property read refresh relationship remove removes response sdk seconds set sources spouse spouses true type types update updated updating url urls wife"
+      "keywords": "$addfact $delete $deletefact $getchanges $getcoupleurl $getfacts $gethusband $gethusbandid $gethusbandurl $getmarriagefact $getnotes $getsourcerefs $getsources $getspouse $getspouseid $getspouseurl $getwife $getwifeid $getwifeurl $save $setfacts $sethusband $setwife $wife _facts_ add api array attributes call change changemessage changes couple create data default delete deletecouple deleted editable elements example existing exports fact facts fetch fulfilled function functions getcouplechanges getcouplenotes getcouplesourcerefs getcouplesourcesquery getperson http husband ids init initializing marriage message method methods multiple net note notes object objects optional options opts org pass passed persists person plan promise property read refresh relationship remove removes response sdk seconds set sources spouse spouses true type types update updated updating url urls wife"
     },
     {
       "section": "api",
@@ -1208,6 +1397,24 @@ NG_DOCS={
       "moduleName": "user",
       "shortDescription": "Functions related to users",
       "keywords": "api docs familysearch functions https org overview user users"
+    },
+    {
+      "section": "api",
+      "id": "user.functions:createAgent",
+      "shortName": "createAgent",
+      "type": "function",
+      "moduleName": "user",
+      "shortDescription": "Create an Agent object. Use this method instead of calling the constructor directly.",
+      "keywords": "agent api calling create data directly function functions method object org types user"
+    },
+    {
+      "section": "api",
+      "id": "user.functions:createUser",
+      "shortName": "createUser",
+      "type": "function",
+      "moduleName": "user",
+      "shortDescription": "Create a User object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly function functions method object org types user"
     },
     {
       "section": "api",
@@ -1253,24 +1460,6 @@ NG_DOCS={
       "moduleName": "user",
       "shortDescription": "User - a user is returned from getCurrentUser;",
       "keywords": "address agent api contact contactname contributor display displayname email en family familyname female full function functions gender getcurrentuser givenname ids male person personid preferredlanguage property returned treeuserid types user"
-    },
-    {
-      "section": "api",
-      "id": "utilities",
-      "shortName": "utilities",
-      "type": "overview",
-      "moduleName": "utilities",
-      "shortDescription": "Utility functions",
-      "keywords": "api docs familysearch functions https org overview utilities utility"
-    },
-    {
-      "section": "api",
-      "id": "utilities.functions:getRedirectUrl",
-      "shortName": "getRedirectUrl",
-      "type": "function",
-      "moduleName": "utilities",
-      "shortDescription": "FamilySearch API Docs",
-      "keywords": "access api changes context docs familysearch function functions https location memories ordinances org params person precedence redirect token uri url user utilities"
     }
   ],
   "apis": {

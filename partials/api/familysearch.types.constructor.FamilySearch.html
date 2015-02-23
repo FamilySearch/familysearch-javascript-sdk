@@ -1,18 +1,18 @@
-<h1><code ng:non-bindable="">init</code>
-<div><span class="hint">functions in module <code ng:non-bindable="">init</code>
+<h1><code ng:non-bindable="">FamilySearch</code>
+<div><span class="hint">type in module <code ng:non-bindable="">familysearch</code>
 </span>
 </div>
 </h1>
 <div><h2 id="description">Description</h2>
-<div class="description"><div class="init-functions-page init-functions-init-page"><p>Initialize the FamilySearch object</p>
+<div class="description"><div class="familysearch-types-page familysearch-types-constructor-familysearch-page"><p>Initialize the FamilySearch object</p>
 <p><strong>Options</strong></p>
 <ul>
 <li><code>client_id</code> - the developer key you received from FamilySearch</li>
 <li><code>environment</code> - sandbox, staging, or production</li>
-<li><code>http_function</code> - a function for issuing http requests: <code>jQuery.ajax</code> or angular&#39;s <code>$http</code>,
-or eventually node.js&#39;s http function; defaults to <code>jQuery.ajax</code></li>
-<li><code>deferred_function</code> - a function for creating deferred&#39;s: <code>jQuery.Deferred</code> or angular&#39;s <code>$q.defer</code>
-or eventually <code>Q</code>; defaults to <code>jQuery.Deferred</code></li>
+<li><code>http_function</code> - a function for issuing http requests: <code>jQuery.ajax</code>, angular&#39;s <code>$http</code>,
+or the <a href="https://github.com/request/request">request</a> library for node; defaults to <code>jQuery.ajax</code></li>
+<li><code>deferred_function</code> - a function for creating deferred&#39;s: <code>jQuery.Deferred</code>, angular&#39;s <code>$q.defer</code>
+or the <a href="https://github.com/kriskowal/q">Q</a> library for node</li>
 <li><code>timeout_function</code> - optional timeout function: angular users should pass <code>$timeout</code>; otherwise the global <code>setTimeout</code> is used</li>
 <li><code>redirect_uri</code> - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
 but must have the same host and port as the server running your script;
@@ -31,7 +31,7 @@ not in direct response to a user-initiated action; because of the blocked pop-up
 </ul>
 </div></div>
 <h2 id="usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">init(opts);</pre>
-<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>opts</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="init-functions-page init-functions-init-page"><p>opts</p>
+<div class="usage"><pre class="prettyprint linenums">FamilySearch(opts);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>opts</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="familysearch-types-page familysearch-types-constructor-familysearch-page"><p>opts</p>
 </div></td></tr></tbody></table></div>
 </div>
