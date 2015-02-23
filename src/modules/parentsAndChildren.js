@@ -31,7 +31,7 @@ var childAndParentsConvenienceFunctions = {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/C437t/ editable example}
+ * {@link http://jsfiddle.net/swk1pmo7/ editable example}
  *
  * @param {String} caprid id or full URL of the child-and-parents relationship
  * @param {Object=} params set `persons` true to return a person object for each person in the relationship,
@@ -70,7 +70,7 @@ FS.prototype.getChildAndParents = function(caprid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/LvUtM/ editable example}
+ * {@link http://jsfiddle.net/hguctxyv/ editable example}
  *
  * @param {string} caprid id or full URL of the child-and-parents relationship
  * @param {string} changeMessage reason for the deletion

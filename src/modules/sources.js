@@ -24,7 +24,7 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/eECJx/ editable example}
+ * {@link http://jsfiddle.net/m4Lhab24/ editable example}
  *
  * @param {String|SourceRef} sdid id or full URL or {@link sources.types:constructor.SourceRef SourceRef} of the source description
  * @param {Object=} params currently unused
@@ -64,7 +64,7 @@ FS.prototype.getSourceDescription = function(sdid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/chQ64/ editable example}
+ * {@link http://jsfiddle.net/jvvohktt/ editable example}
  *
  * @param {string[]|SourceRef[]} sdids ids or full URLs or {@link sources.types:constructor.SourceRef SourceRefs} of the source descriptions
  * @param {Object=} params pass to getSourceDescription currently unused
@@ -105,7 +105,7 @@ FS.prototype.getMultiSourceDescription = function(sdids, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Source_References_Query_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/E866s/ editable example}
+ * {@link http://jsfiddle.net/gbusgbys/ editable example}
  *
  * @param {String} sdid id of the source description (cannot be the URL)
  * @param {Object=} params currently unused
@@ -256,7 +256,7 @@ FS.prototype._getSourcesResponseMapper = function(root, label, includeDescriptio
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Source_References_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/BkydV/ editable example}
+ * {@link http://jsfiddle.net/xdqcv2dn/ editable example}
  *
  * @param {String} pid person id or full URL of the source-references endpoint
  * @param {Object=} params currently unused
@@ -288,7 +288,7 @@ FS.prototype.getPersonSourceRefs = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Sources_Query_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/8Dy8n/ editable example}
+ * {@link http://jsfiddle.net/bxt10adm/ editable example}
  *
  * @param {String} pid person id or full URL of the person-sources-query endpoint
  * @param {Object=} params currently unused
@@ -320,7 +320,7 @@ FS.prototype.getPersonSourcesQuery = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Source_References_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/ahu29/ editable example}
+ * {@link http://jsfiddle.net/v8Lbxyu3/ editable example}
  *
  * @param {String} crid couple relationship id or full URL of the couple-relationship-source-references endpoint
  * @param {Object=} params currently unused
@@ -352,7 +352,7 @@ FS.prototype.getCoupleSourceRefs = function(crid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Sources_Query_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/Hd34g/ editable example}
+ * {@link http://jsfiddle.net/z1nv7dnc/ editable example}
  *
  * @param {String} crid couple relationship id or full URL of the couple-relationship-sources-query endpoint
  * @param {Object=} params currently unused
@@ -384,7 +384,7 @@ FS.prototype.getCoupleSourcesQuery = function(crid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/ZKLVT/ editable example}
+ * {@link http://jsfiddle.net/hoxqrLcy/ editable example}
  *
  * @param {String} caprid child-and-parents relationship id or full URL of the child-and-parents-relationship-sources-query endpoint
  * @param {Object=} params currently unused
@@ -417,7 +417,7 @@ FS.prototype.getChildAndParentsSourceRefs = function(caprid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/SDVz2/ editable example}
+ * {@link http://jsfiddle.net/192zfzh3/ editable example}
  *
  * @param {String} caprid child-and-parents relationship id or full URL of the child-and-parents-relationship-sources-query endpoint
  * @param {Object=} params currently unused
@@ -448,7 +448,7 @@ FS.prototype.getChildAndParentsSourcesQuery = function(caprid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/UNK8W/ editable example}
+ * {@link http://jsfiddle.net/fb2fzgsv/ editable example}
  *
  * @param {string} sdid id of the source description (cannot be the URL)
  * @param {string} changeMessage reason for the deletion
@@ -496,7 +496,7 @@ FS.prototype.deleteSourceDescription = function(sdid, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Source_Reference_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/eSbWF/ editable example}
+ * {@link http://jsfiddle.net/nenz4de2/ editable example}
  *
  * @param {string} changeMessage reason for the deletion
  * @param {string} pid person id or full url of the source reference
@@ -526,7 +526,7 @@ FS.prototype.deletePersonSourceRef = function(pid, srid, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Source_Reference_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/2tau4/ editable example}
+ * {@link http://jsfiddle.net/txcf4ke3/ editable example}
  *
  * @param {string} changeMessage reason for the deletion
  * @param {string} crid couple relationship id or full url of the source reference
@@ -556,7 +556,7 @@ FS.prototype.deleteCoupleSourceRef = function(crid, srid, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_Reference_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/awM4R/ editable example}
+ * {@link http://jsfiddle.net/hche691q/ editable example}
  *
  * @param {string} changeMessage reason for the deletion
  * @param {string} caprid child-and-parents relationship id or full url of the source reference
