@@ -7987,9 +7987,9 @@ FS.prototype._getNote = function(url, params, opts) {
       }}),
       function(response){
         var notes = maybe(getRoot(response)[0]).notes;
-        for(var i = 0; i < notes.length; i++){
-          notes[i] = self.createNote(notes[i]);
-        }
+        utils.forEach(notes, function(note, i){
+          notes[i] = self.createNote(note);
+        });
         return response;
       },
       utils.objectExtender(function(response) {
@@ -8032,7 +8032,7 @@ FS.prototype._getMultiNote = function(id, nids, params, opts, getNoteFn) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Note_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/96EkL/ editable example}
+ * {@link http://jsfiddle.net/rcud84ur/ editable example}
  *
  * @param {string} pid id of the person or full URL of the note
  * @param {string=} nid id of the note (required if pid is the id of the person)
@@ -8060,7 +8060,7 @@ FS.prototype.getPersonNote = function(pid, nid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Note_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/5dLd4/ editable example}
+ * {@link http://jsfiddle.net/4d1wLp8a/ editable example}
  *
  * @param {string|string[]} pid id of the person, or full URLs of the notes
  * @param {string[]=} nids ids of the notes (required if pid is the id of the person)
@@ -8087,7 +8087,7 @@ FS.prototype.getMultiPersonNote = function(pid, nids, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/T7xj2/ editable example}
+ * {@link http://jsfiddle.net/khbxwa0u/ editable example}
  *
  * @param {string} crid id of the couple relationship or full URL of the note
  * @param {string=} nid id of the note (required if crid is the id of the couple relationship)
@@ -8114,7 +8114,7 @@ FS.prototype.getCoupleNote = function(crid, nid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/TsFky/ editable example}
+ * {@link http://jsfiddle.net/1Lch860h/ editable example}
  *
  * @param {string|string[]} crid id of the couple relationship, or full URLs of the notes
  * @param {string[]=} nids ids of the notes (required if crid is the id of the couple relationship)
@@ -8141,7 +8141,7 @@ FS.prototype.getMultiCoupleNote = function(crid, nids, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/dV9uQ/ editable example}
+ * {@link http://jsfiddle.net/1t1uzgq6/ editable example}
  *
  * @param {string} caprid id of the child and parents relationship or full URL of the note
  * @param {string=} nid id of the note (required if caprid is the id of the child and parents relationship)
@@ -8168,7 +8168,7 @@ FS.prototype.getChildAndParentsNote = function(caprid, nid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/fn8NU/ editable example}
+ * {@link http://jsfiddle.net/wp4hecco/ editable example}
  *
  * @param {string|string[]} caprid id of the child and parents relationship, or full URLs of the notes
  * @param {string[]=} nids ids of the notes (required if caprid is the id of the child and parents relationship)
@@ -8195,7 +8195,7 @@ FS.prototype.getMultiChildAndParentsNote = function(caprid, nids, params, opts) 
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Notes_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/3enGw/ editable example}
+ * {@link http://jsfiddle.net/rcud84ur/ editable example}
  *
  * @param {String} pid id of the person or full URL of the person-notes endpoint
  * @param {Object=} params currently unused
@@ -8241,7 +8241,7 @@ FS.prototype.getPersonNotes = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Notes_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/qe2dc/ editable example}
+ * {@link http://jsfiddle.net/khbxwa0u/ editable example}
  *
  * @param {String} crid id of the couple relationship or full URL of the couple-relationship-notes endpoint
  * @param {Object=} params currently unused
@@ -8287,7 +8287,7 @@ FS.prototype.getCoupleNotes = function(crid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Notes_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/SV8Hs/ editable example}
+ * {@link http://jsfiddle.net/1t1uzgq6/ editable example}
  *
  * @param {String} caprid id of the child and parents relationship or full URL of the child-and-parents-relationship-notes endpoint
  * @param {Object=} params currently unused
@@ -8331,7 +8331,7 @@ FS.prototype.getChildAndParentsNotes = function(caprid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Note_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/wMmn7/ editable example}
+ * {@link http://jsfiddle.net/zxwsxzjr/ editable example}
  *
  * @param {string} pid person id or full URL of the note
  * @param {string=} nid id of the note (must be set if pid is an id and not the full URL of the note)
