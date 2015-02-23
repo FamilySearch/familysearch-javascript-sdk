@@ -1,17 +1,16 @@
-A high-level javascript wrapper around the FamilySearch REST API.
+A high-level JavaScript wrapper around the FamilySearch REST API.
 
 [![Build Status](https://travis-ci.org/rootsdev/familysearch-javascript-sdk.png)](https://travis-ci.org/rootsdev/familysearch-javascript-sdk)
-[![Stories in Ready](https://badge.waffle.io/rootsdev/familysearch-javascript-sdk.png?label=ready)](https://waffle.io/rootsdev/familysearch-javascript-sdk)
 
 Overview
 ========
 
-* Javascript functions wrap the underlying REST API calls.
+* JavaScript functions wrap the underlying REST API calls.
 The objects returned by the functions include convenience functions for extracting information from the returned JSON.
 For example, the following logs the name of a person along with their spouses and chilren.
 
     ```javascript
-    FamilySearch.getPersonWithRelationships('KW7S-VQJ', {persons:true}).then(function(response) {
+    client.getPersonWithRelationships('KW7S-VQJ', {persons:true}).then(function(response) {
       console.log(response.getPrimaryPerson().getName());
       var spouses = response.getSpouses();
       for (var s = 0; spousesLen = spouses.length; s &lt; spousesLen; s++) {
@@ -29,7 +28,7 @@ For example, the following logs the name of a person along with their spouses an
 * Each function is [well-documented](http://rootsdev.org/familysearch-javascript-sdk)
 and has an editable jsFiddle to demonstrate its functionality and allow you to experiment.
 
-* Authentication is handled using a popup window.  You do not need to create an OAuth redirect page.
+* In the browser, authentication is handled using a popup window.  You do not need to create an OAuth redirect page.
 All you need to do is register a callback URI that shares the same hostname and port as your code.
 Check out the [jsFiddle](http://jsfiddle.net/DallanQ/MpUg7/) to see it in action (requires you to have a sandbox account).
 
@@ -37,13 +36,11 @@ Check out the [jsFiddle](http://jsfiddle.net/DallanQ/MpUg7/) to see it in action
 
 * Retry in the case of throttled responses is handled for you.
 
-* Cross-platform: the SDK works with jQuery or AngularJS, and soon Node.js.
+* Cross-platform: the SDK works with jQuery, AngularJS, or Node.js.
 
 * Object-oriented: SDK functions return objects, which have convenience functions to make getting or setting data easy.
 
 * Consistent update API: each object has $save and $delete functions to persist changes or delete the object respectively.
-
-* Modular: the SDK can be called from AMD (RequireJS), CommonJS (Node.js), or browser global environments.
 
 Installation
 ============
@@ -110,7 +107,7 @@ Roadmap
 ####Milestone 3 - complete
 * Create functions for the basic create, update, and delete operations - everything that you're likely to use
 
-####Milestone 4 - November 1, 2014
+####Milestone 4 - 2015
 * Version 1.0 -- all functions implemented, end-to-end tests in place, Node.js support, available in bower & npm repositories.
 
 Contributing
@@ -122,12 +119,10 @@ Follow these steps to properly setup your development environment:
 * Fork this repo
 * Run `npm install` to install the build dependencies
 * [Install the grunt-cli ](http://gruntjs.com/getting-started#installing-the-cli)
-* [Install PhantomJS](http://phantomjs.org/download.html)
 
 Run `grunt test` to run the tests.
 
-Run `grunt build` to build the project or `grunt server` to have grunt launch a server and watch for changed files with live-reload support.
-(RequireJS is not needed; just grunt.)
+Run `grunt build` to build the project.
 
 This project uses .editorconfig to help configure your editor for consistent code indentation and styling.
 Please follow the existing style in your changes.
@@ -138,7 +133,7 @@ If you have a good reason not to follow a particular check for a particular stat
 you can disable the jshint test for that statement.
 Some editors (e.g., WebStorm) can be configured to read the .jshintrc file to notify you immediately when something doesn't pass.
 
-Grunt runs unit tests using karma. Please create unit tests for your changes.
+Grunt runs unit tests using jarmine. Please create unit tests for your changes.
 See the existing unit test files for examples.
 
 Grunt also generates documentation for the project.

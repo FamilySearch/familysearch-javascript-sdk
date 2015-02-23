@@ -1,6 +1,10 @@
-if (typeof define !== 'function') { var define = require('amdefine')(module); }
+/**
+ * TODO: Add interface for modifying these so that you
+ * don't have to pass the same config options
+ * to each new instance
+ */
 
-define({
+module.exports = {
   clientId: null,
   environment: null,
   httpWrapper: null,
@@ -39,4 +43,4 @@ define({
     'production': 'https://api.familysearch.org'
   },
   discoveryUrl: '/.well-known/app-meta'
-});
+};

@@ -74,11 +74,11 @@
  * Download the SDK from [GitHub](https://github.com/rootsdev/familysearch-javascript-sdk)
  * (see the README file for more information).
  *
- * To use the SDK, you need to
+ * ### Browser
  *
- * 1. init the SDK; e.g., ({@link init.functions:init all options})
+ * 1. Create an instance of the SDK. Read more about {@link familysearch.types:constructor.FamilySearch all available options}.
  * <pre>
- * FamilySearch.init({
+ * var client = new FamilySearch({
  *   client_id: 'YOUR_CLIENT_ID_GOES_HERE',
  *   environment: 'sandbox',
  *   // redirect_uri is the URI you registered with FamilySearch.
@@ -92,24 +92,24 @@
  * });
  * </pre>
  *
- * 2. get an access token; e.g.,
+ * 2. Get an access token
  * <pre>
- * FamilySearch.getAccessToken().then(function(response) {
+ * client.getAccessToken().then(function(response) {
  *    // now you have an access token
  * });
  * </pre>
  *
- * 3. make API calls; e.g.,
+ * 3. Make API calls
  * <pre>
- * FamilySearch.getCurrentUser().then(function(response) {
+ * client.getCurrentUser().then(function(response) {
  *    // now you have the response
  * });
  * </pre>
  *
- * ### Example
+ * #### Example
  *
  * <pre>
- * FamilySearch.init({
+ * var client = new FamilySearch({
  *   client_id: 'MY_CLIENT_ID',
  *   environment: 'sandbox',
  *   redirect_uri: 'http://localhost/auth',
@@ -117,11 +117,67 @@
  *   deferred_function: $.Deferred,
  * });
  *
- * FamilySearch.getAccessToken().then(function(accessToken) {
- *   FamilySearch.getCurrentUser().then(function(response) {
+ * client.getAccessToken().then(function(accessToken) {
+ *   client.getCurrentUser().then(function(response) {
  *     var user = response.getUser();
  *     console.log('Hello '+user.contactName);
  *   });
+ * });
+ * </pre>
+ *
+ * ### Node.js
+ *
+ * In node, we depend on the [request](https://github.com/request/request) for http and [Q](https://github.com/kriskowal/q) for promises.
+ * These libraries are not loaded automatically; you need to add `require` them yourself.
+ * 
+ * 1. Add the sdk to your package.json file.
+ * The SDK isn't published in npm yet. For now you'll have to point directly to the
+ * repository from your package.json file. We ___strongly___ recommend using a tag (hash)
+ * to point to a particular version. Without the hash you'll be pointing to master and
+ * may catch the code in an unstable mid-release state.
+ * <pre>
+ * "familysearch-javascript-sdk": "https://github.com/rootsdev/familysearch-javascript-sdk.git#v0.9.15"
+ * </pre>
+ * 
+ * 2. Require the necessary modules:
+ * <pre>
+ * var FS = require('familysearch-javascript-sdk'),
+ *     request = require('request'),
+ *     q = require('q');
+ * </pre>
+ * 
+ * 3. Create an instance of the SDK. Read more about {@link familysearch.types:constructor.FamilySearch all available options}.
+ * <pre>
+ * var client = new FamilySearch({
+ *   client_id: 'YOUR_CLIENT_ID_GOES_HERE',
+ *   environment: 'sandbox',
+ *   access_token: 'SOME_ACCESS_TOKEN',
+ *   http_function: request,
+ *   deferred_function: q.defer
+ * });
+ * </pre>
+ *
+ * 4. Make API calls
+ * <pre>
+ * client.getCurrentUser().then(function(response) {
+ *    // now you have the response
+ * });
+ * </pre>
+ *
+ * #### Example
+ *
+ * <pre>
+ * var client = new FamilySearch({
+ *   client_id: 'MY_CLIENT_ID',
+ *   environment: 'sandbox',
+ *   access_token: 'SOME_ACCESS_TOKEN',
+ *   http_function: require('request'),
+ *   deferred_function: require('q').defer
+ * });
+ *
+ * client.getCurrentUser().then(function(response) {
+ *   var user = response.getUser();
+ *   console.log('Hello '+user.contactName);
  * });
  * </pre>
  *
@@ -170,18 +226,13 @@
  *
  * #### Node.js
  *
- * The SDK isn't published in npm yet. For now you'll have to point directly to the
- * repository from your package.json file. We ___strongly___ recommend using a tag (hash)
- * to point to a particular version. Without the hash you'll be pointing to master and
- * may catch the code in an unstable mid-release state.
+ * When using `q.defer`, the returned promises will have the methods [described here](https://github.com/kriskowal/q/wiki/API-Reference#promise-methods); for example
  * 
- * <pre>
- * "familysearch-javascript-sdk": "https://github.com/rootsdev/familysearch-javascript-sdk.git#v0.9.15"
- * </pre>
- * 
- * <pre>
- * var FS = require('familysearch-javascript-sdk');
- * </pre>
+ * - `then(function(response){}, function(){})`
+ * - `catch(function(){})`
+ * - `progress(function(){})`
+ * - `finally(function(){})`
+ * - `done(function(){}, function(){}, function(){})`
  *
  * ## Handling responses
  *
@@ -236,6 +287,65 @@
  * This is useful when the server adds new fields to the object or modifies fields when saving it.
  * Many *$save()* and *$delete()* functions also take a *changeMessage* parameter to record the reason for the change.
  *
+ * ## Creating New Objects
+ *
+ * When you want to create a new object, do not use the class's constructor directly. 
+ * Each class has function which should be used instead. This allows us to maintain
+ * a reference to the SDK client in each object (so that you don't have to).
+ *
+ * <pre>
+ * var person = client.createPerson({ person data });
+ * </pre>
+ *
+ * For each class, the structure of the data it expects matches what the API uses,
+ * as [documented here](https://familysearch.org/developers/docs/api/media-types).
+ * Occassionally we support simplified attributes, prefixed with a `$`, for common
+ * bits of data so that you don't have to nest them in objects and arrays. The
+ * following two examples are equivalent:
+ * 
+ * <pre>
+ * var name = client.createName({
+ *  "attribution" : {
+ *    "changeMessage" : "change message"
+ *  },
+ *  "type" : "http://gedcomx.org/BirthName",
+ *  "nameForms" : [ {
+ *    "fullText" : "Anastasia Aleksandrova",
+ *    "parts" : [ {
+ *      "type" : "http://gedcomx.org/Given",
+ *      "value" : "Anastasia"
+ *    }, {
+ *      "type" : "http://gedcomx.org/Surname",
+ *      "value" : "Aleksandrova"
+ *    } ]
+ *  } ]
+ * });
+ *
+ * var name = client.createName({
+ *  "$changeMessage" : "change message",
+ *  // type doesn't have a shortcut because it's
+ *  // already simple and top-level
+ *  "type" : "http://gedcomx.org/BirthName",
+ *  "$fullText" : "Anastasia Aleksandrova",
+ *  "$givenName": "Anastasia"
+ *  "$surname": "Aleksandrova"
+ * });
+ * </pre>
+ *
+ * The constructors for each class document whether any simplified attributes are supported.
+ *
+ * Often, the simplified attributes are just shortcuts to a corresponding setter function.
+ * Therefore, this example is equivalent to the two above:
+ *
+ * <pre>
+ * var name = client.createName()
+ *   .$setChangeMessage("change message")
+ *   .$setType("http://gedcomx.org/BirthName")
+ *   .$setFullText("Anastasia Aleksandrova")
+ *   .$setGivenName("Anastasia")
+ *   .$setSurname("Aleksandrova");
+ * </pre>
+ *
  * ## Authentication with Mobile Safari
  *
  * Mobile Safari opens the authentication popup window in a new tab and doesn't run javascript in background tabs.
@@ -257,13 +367,7 @@
  *
  * - as a browser global (i.e., referring to it as `window.FamilySearch` or just `FamilySearch`),
  * - with AMD loaders like *RequireJS* ([see the jQuery.html example](https://github.com/rootsdev/familysearch-javascript-sdk/blob/master/examples/jquery.html)),
- * - or with CommonJS loaders like *Node.js* (no example yet).
- *
- * It does this by prepending [a 40-line header](https://github.com/rootsdev/familysearch-javascript-sdk/blob/master/src/header.frag)
- * to the front of the combined file.
- * This header should work for any project that needs to combine javascript source files located in a single directory
- * written using the AMD *defines* format and make them available also for CommonJS or as a browser global.
- * The header is far less code than using the [Almond loader](https://github.com/jrburke/almond), which is the other approach.
+ * - or with CommonJS loaders like *Node.js*.
  *
  * ## Plumbing functions
  *
@@ -281,8 +385,6 @@
  *
  * **Grunt** We use grunt as our build tool.  Grunt has targets to run jshint, unit tests, generate the HTML documentation,
  * and combine and minify the javascript source files.
- * Two of the most useful targets are `grunt server` which starts a server and watches the source files for changes, and
- * `grunt build` which builds everything.
  *
  * **JSHint** We use a fairly strict .jshintrc file. JSHint is a great way to catch potential bugs before they occur.
  * Please use grunt to run jshint over your files before submitting pull requests.
