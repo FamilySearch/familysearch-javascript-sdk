@@ -94,13 +94,13 @@ module.exports = function(grunt) {
   // We test the built and minified version so that
   // we also verify a proper build process
   grunt.registerTask('test', [
-    'build',
     'run:jasmine'
   ]);
 
   grunt.registerTask('build', [
     'clean:dist',
     'jshint',
+    'test',
     'ngdocs',
     'run:browserify',
     'uglify',
@@ -108,13 +108,13 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('publish', [
-    'test',
+    'build',
     'gh-pages:dev'
   ]);
 
   grunt.registerTask('travis-pull-request', [
     'jshint',
-    'test',
+    'build',
     'ngdocs' // build the docs to make sure there aren't errors
   ]);
 
@@ -126,5 +126,5 @@ module.exports = function(grunt) {
   ]);
 
   // Default task(s)
-  grunt.registerTask('default', ['test']);
+  grunt.registerTask('default', ['build']);
 };

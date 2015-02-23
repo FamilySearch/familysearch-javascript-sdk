@@ -1,4 +1,12 @@
 describe('Note', function() {
+  
+  it('handles empty response from getPersonNotes', function(done){
+    FS.getPersonNotes('P12-8975').then(function(response){
+      expect(response.getNotes().length).toBe(0);
+      done();
+    });
+  });
+  
   it('notes are returned from getPersonNotes', function(done) {
     FS.getPersonNotes('P12-3456').then(function(response) {
       var notes = response.getNotes();
@@ -31,6 +39,13 @@ describe('Note', function() {
     FS.getMultiPersonNote('12345', ['12345']).then(function(response) {
       var note = response['12345'].getNote();
       expect(note.id).toBe('1586334607'); // bad example data
+      done();
+    });
+  });
+  
+  it('handles empty response from getCoupleNotes', function(done){
+    FS.getCoupleNotes('789456').then(function(response){
+      expect(response.getNotes().length).toBe(0);
       done();
     });
   });
@@ -67,6 +82,13 @@ describe('Note', function() {
     FS.getMultiCoupleNote('12345', ['MMMM-ZP8']).then(function(response) {
       var note = response['MMMM-ZP8'].getNote();
       expect(note.id).toBe('MMMM-ZP8');
+      done();
+    });
+  });
+  
+  it('handles empty response from getChildAndParentsNotes', function(done){
+    FS.getChildAndParentsNotes('123465').then(function(response){
+      expect(response.getNotes().length).toBe(0);
       done();
     });
   });

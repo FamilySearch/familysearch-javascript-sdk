@@ -1,4 +1,4 @@
-var FamilySearch = require('../../dist/familysearch-javascript-sdk.min'),
+var FamilySearch = require('../../src/FamilySearch'),
     _ = require('lodash'),
     fs = require('fs'),
     q = require('q');

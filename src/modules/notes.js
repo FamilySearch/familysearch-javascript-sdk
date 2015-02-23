@@ -261,10 +261,10 @@ FS.prototype.getPersonNotes = function(pid, params, opts) {
             return maybe(maybe(maybe(this).persons)[0]).notes || [];
           }}),
           function(response){
-            var notes = maybe(maybe(response).persons)[0].notes;
-            for(var i = 0; i < notes.length; i++){
-              notes[i] = self.createNote(notes[i]);
-            }
+            var notes = maybe(maybe(maybe(response).persons)[0]).notes;
+            utils.forEach(notes, function(note, index){
+              notes[index] = self.createNote(note);
+            });
             return response;
           },
           utils.objectExtender(function(response) {
@@ -307,10 +307,10 @@ FS.prototype.getCoupleNotes = function(crid, params, opts) {
             return maybe(maybe(this.relationships)[0]).notes || [];
           }}),
           function(response){
-            var notes = maybe(maybe(response).relationships)[0].notes;
-            for(var i = 0; i < notes.length; i++){
-              notes[i] = self.createNote(notes[i]);
-            }
+            var notes = maybe(maybe(maybe(response).relationships)[0]).notes;
+            utils.forEach(notes, function(note, index){
+              notes[index] = self.createNote(note);
+            });
             return response;
           },
           utils.objectExtender(function(response) {
@@ -354,10 +354,10 @@ FS.prototype.getChildAndParentsNotes = function(caprid, params, opts) {
             return maybe(maybe(this.childAndParentsRelationships)[0]).notes || [];
           }}),
           function(response){
-            var notes = maybe(maybe(response).childAndParentsRelationships)[0].notes;
-            for(var i = 0; i < notes.length; i++){
-              notes[i] = self.createNote(notes[i]);
-            }
+            var notes = maybe(maybe(maybe(response).childAndParentsRelationships)[0]).notes;
+            utils.forEach(notes, function(note, index){
+              notes[index] = self.createNote(note);
+            });
             return response;
           },
           utils.objectExtender(function(response) {
