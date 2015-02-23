@@ -85,7 +85,7 @@ FS.prototype._getSearchMatchResponseMapper = function() {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Search_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/2abrY/ editable example}
+ * {@link http://jsfiddle.net/ghsyjzLb/ editable example}
  *
  * @param {Object} params described above
  * @param {Object=} opts options to pass to the http function specified during init
@@ -130,7 +130,7 @@ FS.prototype.getPersonSearch = function(params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Matches_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/5uwyf/ editable example}
+ * {@link http://jsfiddle.net/xb0ts69q/ editable example}
  *
  * @param {String} pid id of the person or full URL of the person-matches endpoint
  * @param {Object=} params currently unused
@@ -162,7 +162,7 @@ FS.prototype.getPersonMatches = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Search_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/hhcLP/ editable example}
+ * {@link http://jsfiddle.net/fdLrujkb/ editable example}
  *
  * @param {Object} params generally the same parameters as described for
  * {@link searchAndMatch.functions:getPersonSearch getPersonSearch}, with the the following differences:
