@@ -1,7 +1,6 @@
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
-
 /**
  * @ngdoc overview
  * @name authentication
@@ -30,7 +29,7 @@ FS.prototype.getAuthCode = function() {
   var self = this,
       settings = self.settings;
       
-  if (typeof module === 'object' && typeof module.exports !== 'undefined') {
+  if (typeof window === 'undefined') {
     var d = settings.deferredWrapper();
     d.reject();
     return d.promise;
@@ -107,7 +106,7 @@ FS.prototype.getAccessToken = function(authCode) {
       authCodePromise = helpers.refPromise(authCode);
     }
     else {
-      authCodePromise = FS.prototype.getAuthCode();
+      authCodePromise = self.getAuthCode();
     }
     authCodePromise.then(
       function(authCode) {
@@ -228,7 +227,7 @@ FS.prototype.openPopup = function(url, params) {
     left        = parseInt(screenX + ((outerWidth - width) / 2), 10),
     top         = parseInt(screenY + ((outerHeight - height) / 2.5), 10),
     features    = 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top;
-  return window.open(this.appendQueryParameters(url, params),'',features);
+  return window.open(this.helpers.appendQueryParameters(url, params),'',features);
 };
 
 FS.prototype.getCode = function(href, d) {
@@ -249,25 +248,26 @@ FS.prototype.getCode = function(href, d) {
  * @return a promise of the auth code
  */
 FS.prototype._pollForAuthCode = function(popup) {
-  var d = this.settings.deferredWrapper();
+  var self = this,
+      d = self.settings.deferredWrapper();
 
   if (popup) {
     var interval = setInterval(function() {
       try {
         if (popup.location.hostname === window.location.hostname) {
-          this.getCode(popup.location.href, d);
+          self.getCode(popup.location.href, d);
           clearInterval(interval);
           popup.close();
         }
       }
       catch(err) {}
-    }, this.settings.authCodePollDelay);
+    }, self.settings.authCodePollDelay);
 
     // Mobile safari opens the popup window in a new tab and doesn't run javascript in background tabs
     // The popup window needs to send us the href and close itself
     // (I know this is ugly, but I can't think of a cleaner way to do this that isn't intrusive.)
     window.FamilySearchOauthReceiver = function(href) {
-      this.getCode(href, d);
+      self.getCode(href, d);
       clearInterval(interval);
     };
   }

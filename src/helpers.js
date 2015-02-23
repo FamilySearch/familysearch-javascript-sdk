@@ -189,7 +189,7 @@ Helpers.prototype.getAccessTokenCookieName = function(){
  * Read the access token from the cookie and start the expiry timers
  */
 Helpers.prototype.readAccessToken = function() {
-  if (typeof module === 'object' && typeof module.exports !== 'undefined') {
+  if (typeof window === 'undefined') {
     return;
   }
   var now = (new Date()).getTime(),
@@ -216,7 +216,7 @@ Helpers.prototype.readAccessToken = function() {
  */
 Helpers.prototype.setAccessToken = function(accessToken) {
   this.settings.accessToken = accessToken;
-  if (typeof module === 'object' && typeof module.exports !== 'undefined') {
+  if (typeof window === 'undefined') {
     return;
   }
   if (this.settings.autoExpire) {
@@ -255,7 +255,7 @@ Helpers.prototype.refreshAccessToken = function() {
  */
 Helpers.prototype.eraseAccessToken = function(omitCallback) {
   this.settings.accessToken = null;
-  if (typeof module === 'object' && typeof module.exports !== 'undefined') {
+  if (typeof window === 'undefined') {
     return;
   }
   if (this.settings.autoExpire) {
