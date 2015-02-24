@@ -1197,7 +1197,7 @@ Collection.prototype = {
    * @description
    * Create a new user-defined collection (folder)
    *
-   * {@link http://jsfiddle.net/DallanQ/2VgxM/ editable example}
+   * {@link http://jsfiddle.net/ppm671s2/ editable example}
    *
    * @param {boolean=} refresh true to read the collection after updating
    * @param {Object=} opts options to pass to the http function specified during init
@@ -1363,7 +1363,7 @@ Comment.prototype = {
    * _NOTE_: there's no _refresh_ parameter because it's not possible to read individual comments;
    * however, the comment's id and URL is set when creating a new comment
    *
-   * {@link http://jsfiddle.net/DallanQ/9YHfX/ editable example}
+   * {@link http://jsfiddle.net/yr9zv5fw/ editable example}
    *
    * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init
@@ -1717,7 +1717,7 @@ Couple.prototype = {
    * @description
    * Create a new relationship if this relationship does not have an id, or update the existing relationship
    *
-   * {@link http://jsfiddle.net/DallanQ/vgS9Q/ editable example}
+   * {@link http://jsfiddle.net/LtphkL51/ editable example}
    *
    * @param {String=} changeMessage default change message to use when fact/deletion-specific changeMessage was not specified
    * @param {boolean=} refresh true to read the relationship after updating
@@ -2119,7 +2119,7 @@ Discussion.prototype = {
    * @description
    * Create a new discussion (if this discussion does not have an id) or update the existing discussion
    *
-   * {@link http://jsfiddle.net/DallanQ/t6Yh2/ editable example}
+   * {@link http://jsfiddle.net/fsy9z6kx/ editable example}
    *
    * @param {string=} changeMessage change message (currently ignored)
    * @param {boolean=} refresh true to read the discussion after updating
@@ -2317,7 +2317,7 @@ DiscussionRef.prototype = {
    * NOTE: there's no _refresh_ parameter because it's not possible to read individual discussion references;
    * however, the discussion reference's URL is set when creating a new discussion reference
    *
-   * {@link http://jsfiddle.net/DallanQ/UarXL/ editable example}
+   * {@link http://jsfiddle.net/q7pwkc9k/ editable example}
    *
    * @param {string} changeMessage change message - unused - discussion reference attributions do not contain change messages
    * @param {Object=} opts options to pass to the http function specified during init
@@ -3015,7 +3015,7 @@ Memory.prototype = {
    * @description
    * Create a new memory (if this memory does not have an id) or update the existing memory
    *
-   * {@link http://jsfiddle.net/DallanQ/2ghkh/ editable example}
+   * {@link http://jsfiddle.net/f2wrtgj0/ editable example}
    *
    * @param {string=} changeMessage change message (currently ignored)
    * @param {boolean=} refresh true to read the discussion after updating
@@ -3336,7 +3336,7 @@ MemoryPersona.prototype = {
    * Create a new memory persona (if this memory persona does not have an id) or update the existing memory persona.
    * Only the name can be updated, not the memory id or the memory artifact reference.
    *
-   * {@link http://jsfiddle.net/DallanQ/dLfA8/ editable example}
+   * {@link http://jsfiddle.net/eeozaLkL/ editable example}
    *
    * @param {string=} changeMessage change message (currently ignored)
    * @param {boolean=} refresh true to read the memory persona after updating
@@ -3408,11 +3408,15 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_References_resource FamilySearch API Docs}
  *
- * @param {Object=} data an object with optional attributes {$personId, memoryPersona}.
- * _memoryPersona_ can be a {@link memories.types:constructor.MemoryPersona MemoryPersona} or a memory persona url
+ * @param {Object=} data an object with optional attributes {$personId, $memoryPersona}.
+ * _$memoryPersona_ can be a {@link memories.types:constructor.MemoryPersona MemoryPersona} or a memory persona url
  */
 var MemoryPersonaRef = FS.MemoryPersonaRef = function(client, data) {
   FS.BaseClass.call(this, client, data);
+  
+  if(data && data.$memoryPersona){
+    this.$setMemoryPersona(data.$memoryPersona);
+  }
 };
 
 /**
@@ -3539,7 +3543,7 @@ MemoryPersonaRef.prototype = {
    * NOTE: there's no _refresh_ parameter because it's not possible to read individual memory persona references;
    * however, the memory persona ref's id and URL is set when creating a new memory persona ref
    *
-   * {@link http://jsfiddle.net/DallanQ/wrNj2/ editable example}
+   * {@link http://jsfiddle.net/r3px0ork/ editable example}
    *
    * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init

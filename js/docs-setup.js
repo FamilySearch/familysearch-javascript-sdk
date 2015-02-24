@@ -568,7 +568,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Reference from a person to a memory persona",
-      "keywords": "$delete $getmemory $getmemorypersona $getmemorypersonarefurl $getmemorypersonaurl $getmemoryurl $personid $save $setmemorypersona _memorypersona_ _note_ _refresh_ access api attached attributes change changemessage create created creating data delete deleted deletememorypersonaref details docs editable example familysearch fulfilled function functions getmemory getmemorypersona http https ignored individual init memories memory memorypersona memorypersonaref message net note object optional options opts org parameter pass person persona promise property read reference references resource resourceid response set token types updated url"
+      "keywords": "$delete $getmemory $getmemorypersona $getmemorypersonarefurl $getmemorypersonaurl $getmemoryurl $memorypersona $personid $save $setmemorypersona _note_ _refresh_ access api attached attributes change changemessage create created creating data delete deleted deletememorypersonaref details docs editable example familysearch fulfilled function functions getmemory getmemorypersona http https ignored individual init memories memory memorypersona memorypersonaref message net note object optional options opts org parameter pass person persona promise property read reference references resource resourceid response set token types updated url"
     },
     {
       "section": "api",
