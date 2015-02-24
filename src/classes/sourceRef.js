@@ -14,10 +14,10 @@ var FS = require('./../FamilySearch'),
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Source_References_resource Couple SourceRef}, and
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource ChildAndParents SourceRef}
  *
- * @param {Object=} data an object with optional attributes {$personId, $coupleId, $childAndParentsId, sourceDescription, tags}.
- * _sourceDescription_ can be a {@link sources.types:constructor.SourceDescription SourceDescription},
+ * @param {Object=} data an object with optional attributes {$personId, $coupleId, $childAndParentsId, $sourceDescription, $tags}.
+ * _$sourceDescription_ can be a {@link sources.types:constructor.SourceDescription SourceDescription},
  * a source description id, or a source description URL.
- * _tags_ is an array (string[]) of tag names
+ * _$tags_ is an array (string[]) of tag names
  */
 var SourceRef = FS.SourceRef = function(client, data) {
   FS.BaseClass.call(this, client, data);
@@ -26,15 +26,13 @@ var SourceRef = FS.SourceRef = function(client, data) {
     this.$personId = data.$personId;
     this.$coupleId = data.$coupleId;
     this.$childAndParentsId = data.$childAndParentsId;
-    if (data.sourceDescription) {
+    if (data.$sourceDescription) {
       //noinspection JSUnresolvedFunction
-      this.$setSourceDescription(data.sourceDescription);
-      delete this.sourceDescription;
+      this.$setSourceDescription(data.$sourceDescription);
     }
     if (data.$tags) {
       //noinspection JSUnresolvedFunction
       this.$setTags(data.$tags);
-      delete this.$tags;
     }
     if (data.attribution && !(data.attribution instanceof FS.Attribution)) {
       this.attribution = client.createAttribution(data.attribution);

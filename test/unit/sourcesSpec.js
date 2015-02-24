@@ -247,7 +247,7 @@ describe('Source', function() {
   it('reference is created', function(done) {
     var srcRef = FS.createSourceRef({
       $personId: 'PPPP-PPP',
-      sourceDescription: 'MMMM-MMM',
+      $sourceDescription: 'MMMM-MMM',
       $tags: ['http://gedcomx.org/Name']
     });
     var promise = srcRef.$save('This is the change message');
@@ -277,7 +277,7 @@ describe('Source', function() {
   it('reference is updated', function(done) {
     var srcRef = FS.createSourceRef({
       $personId: 'PPPP-PPX',
-      sourceDescription: 'MMMM-MMM',
+      $sourceDescription: 'MMMM-MMM',
       $tags: ['http://gedcomx.org/Name']
     });
     srcRef.id = 'SRSR-R01';
