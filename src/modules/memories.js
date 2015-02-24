@@ -42,7 +42,7 @@ FS.prototype._memoriesResponseMapper = function(){
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memories_Query_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/XaD23/ editable example}
+ * {@link http://jsfiddle.net/48hw65vz/ editable example}
  *
  * @param {string} pid id of the person or full URL of the person-memories-query endpoint
  * @param {Object=} params `count` maximum number to return - defaults to 25, `start` defaults to 0,
@@ -77,7 +77,7 @@ FS.prototype.getPersonMemoriesQuery = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/User_Memories_Query_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/V8pfd/ editable example}
+ * {@link http://jsfiddle.net/ywg2um4q/ editable example}
  *
  * @param {string} uid user id or full URL of the user-memories-query endpoint - note this is a _user_ id, not an _agent_ id
  * @param {Object=} params `count` maximum number to return - defaults to 25, `start` defaults to 0
@@ -111,7 +111,7 @@ FS.prototype.getUserMemoriesQuery = function(uid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/9J4zn/ editable example}
+ * {@link http://jsfiddle.net/k064qtLt/ editable example}
  *
  * @param {String} mid id or full URL of the memory
  * @param {Object=} params currently unused
@@ -145,7 +145,7 @@ FS.prototype.getMemory = function(mid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Comments_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/aJ77f/ editable example}
+ * {@link http://jsfiddle.net/n4rtc6mo/ editable example}
  *
  * @param {String} mid of the memory or full URL of the memory-comments endpoint
  * @param {Object=} params currently unused
@@ -223,7 +223,7 @@ FS.prototype._memoryPersonasMapper = function(){
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Personas_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/zD5V7/ editable example}
+ * {@link http://jsfiddle.net/ozybtk5v/ editable example}
  *
  * @param {string} mid of the memory or full URL of the memory-personas endpoint
  * @param {Object=} params currently unused
@@ -258,7 +258,7 @@ FS.prototype.getMemoryPersonas = function(mid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Persona_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/xXaZ2/ editable example}
+ * {@link http://jsfiddle.net/180vfb1w/ editable example}
  *
  * @param {String} mid memory id or full URL of the memory persona
  * @param {string=} mpid id of the memory persona (must be set if mid is a memory id and not the full URL)
@@ -292,7 +292,7 @@ FS.prototype.getMemoryPersona = function(mid, mpid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_References_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/vt79D/ editable example}
+ * {@link http://jsfiddle.net/Ldveszee/ editable example}
  *
  * @param {String} pid id of the person or full URL of the person-memory-references endpoint
  * @param {Object=} params currently unused
@@ -342,7 +342,7 @@ FS.prototype.getMemoryPersonaRefs = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memories_Portrait_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/f8DU3/ editable example}
+ * {@link http://jsfiddle.net/oc4g7334/ editable example}
  *
  * @param {String} pid of the person
  * @param {Object=} params `default` URL to redirect to if portrait doesn't exist;
@@ -381,7 +381,7 @@ FS.prototype.getPersonPortraitUrl = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/Tm6X2/ editable example}
+ * {@link http://jsfiddle.net/r3bb6e0u/ editable example}
  *
  * @param {string} mid id or full URL of the memory
  * @param {string=} changeMessage change message (currently ignored)
@@ -410,7 +410,7 @@ FS.prototype.deleteMemory = function(mid, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Persona_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/q8VML/ editable example}
+ * {@link http://jsfiddle.net/77ba424q/ editable example}
  *
  * @param {string} mid memory id or full URL of the memory persona
  * @param {string=} mpid id of the memory persona (must be set if mid is a memory id and not the full URL)
@@ -440,7 +440,7 @@ FS.prototype.deleteMemoryPersona = function(mid, mpid, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_Reference_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/3r3vp/ editable example}
+ * {@link http://jsfiddle.net/cbcs86s5/ editable example}
  *
  * @param {string} pid person id or full URL of the memory persona reference
  * @param {string=} mprid id of the memory persona reference (must be set if pid is a person id and not the full URL)
