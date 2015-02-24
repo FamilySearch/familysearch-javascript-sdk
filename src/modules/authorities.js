@@ -22,7 +22,7 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/guides/authorities/date-authority FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/4ab5M/ editable example}
+ * {@link http://jsfiddle.net/mL906m82/ editable example}
  *
  * @param {String} date text to standardize
  * @param {Object=} opts options to pass to the http function specified during init
@@ -58,7 +58,7 @@ FS.prototype.getDate = function(date, opts) {
  *
  * {@link https://familysearch.org/developers/docs/guides/authorities/place-authority FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/xrsAQ/ editable example}
+ * {@link http://jsfiddle.net/1hjbpzgs/ editable example}
  *
  * @param {String} place text to standardize
  * @param {Object=} opts options to pass to the http function specified during init
