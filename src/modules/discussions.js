@@ -24,7 +24,7 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/FzWSu/ editable example}
+ * {@link http://jsfiddle.net/gb1y9jdj/ editable example}
  *
  * @param {String} did id or full URL of the discussion to read
  * @param {Object=} params currently unused
@@ -61,7 +61,7 @@ FS.prototype.getDiscussion = function(did, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/7GMBT/ editable example}
+ * {@link http://jsfiddle.net/9je6gfp5/ editable example}
  *
  * @param {string[]|DiscussionRef[]} dids id's, full URLs, or {@link discussions.types:constructor.DiscussionRef DiscussionRefs} of the discussions
  * @param {Object=} params pass to getDiscussion currently unused
@@ -101,7 +101,7 @@ FS.prototype.getMultiDiscussion = function(dids, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Discussion_References_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/kd39K/ editable example}
+ * {@link http://jsfiddle.net/rx9wd0nz/ editable example}
  *
  * @param {String} pid id of the person to read or full URL of the person-discussion-references endpoint
  * @param {Object=} params currently unused
@@ -168,7 +168,7 @@ FS.prototype._commentsResponseMapper = function(){
  *
  * {@link https://familysearch.org/developers/docs/api/discussions/Comments_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/b56hz/ editable example}
+ * {@link http://jsfiddle.net/3wfxrkj0/ editable example}
  *
  * @param {String} did of the discussion or full URL of the discussion-comments endpoint
  * @param {Object=} params currently unused
@@ -207,7 +207,7 @@ FS.prototype.getDiscussionComments = function(did, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/LTm24/ editable example}
+ * {@link http://jsfiddle.net/quj3enjs/ editable example}
  *
  * @param {string} did id or full URL of the discussion
  * @param {string=} changeMessage change message (currently ignored)
@@ -236,7 +236,7 @@ FS.prototype.deleteDiscussion = function(did, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Discussion_Reference_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/UFn4T/ editable example}
+ * {@link http://jsfiddle.net/p2sjn4ob/ editable example}
  *
  * @param {string} pid person id or full URL of the discussion reference
  * @param {string=} drid id of the discussion reference (must be set if pid is a person id and not the full URL)
@@ -270,7 +270,7 @@ FS.prototype.deleteDiscussionRef = function(pid, drid, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/discussions/Comment_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/D2r7h/ editable example}
+ * {@link http://jsfiddle.net/fwnjq1nq/ editable example}
  *
  * @param {string} did discussion id or full URL of the comment
  * @param {string=} cmid id of the comment (must be set if did is a comment id and not the full URL)
@@ -300,7 +300,7 @@ FS.prototype.deleteDiscussionComment = function(did, cmid, changeMessage, opts) 
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Comment_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/DallanQ/5bbuQ/ editable example}
+ * {@link http://jsfiddle.net/Lxcy6pcz/ editable example}
  *
  * @param {string} mid memory id or full URL of the comment
  * @param {string=} cmid id of the comment (must be set if mid is a memory id and not the full URL)
