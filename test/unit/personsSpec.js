@@ -277,7 +277,7 @@ describe('A person', function() {
   });
 
   it('is created with defaults and living:true', function(done) {
-    var promise = FS.createPerson({ living: true }).$save('...default change message...');;
+    var promise = FS.createPerson({ living: true }).$save('...default change message...');
     promise.then(function(response) {
       var request = promise.getRequest();
       //noinspection JSUnresolvedFunction
@@ -288,7 +288,7 @@ describe('A person', function() {
             'changeMessage' : '...default change message...'
           },
           'gender' : {
-            'type' : 'http://gedcomx.org/Unknown',
+            'type' : 'http://gedcomx.org/Unknown'
           },
           'names' : [ {
             'nameForms' : [ {
