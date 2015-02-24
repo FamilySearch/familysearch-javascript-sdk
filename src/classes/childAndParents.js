@@ -388,7 +388,7 @@ ChildAndParents.prototype = {
    * @description
    * Create a new relationship if this relationship does not have an id, or update the existing relationship
    *
-   * {@link http://jsfiddle.net/DallanQ/PXN34/ editable example}
+   * {@link http://jsfiddle.net/6of3pzte/ editable example}
    *
    * @param {String=} changeMessage default change message to use when fact/deletion-specific changeMessage was not specified
    * @param {boolean=} refresh true to read the relationship after updating
@@ -427,13 +427,13 @@ ChildAndParents.prototype = {
 
     // send facts if new or changed
     utils.forEach(['fatherFacts', 'motherFacts'], function(prop) {
-      utils.forEach(this[prop], function(fact) {
+      utils.forEach(self[prop], function(fact) {
         if (!caprid || !fact.id || fact.$changed) {
           relHelpers.addFact.call(postData, prop, fact);
           isChanged = true;
         }
       });
-    }, this);
+    });
 
     var promises = [];
 
@@ -459,8 +459,8 @@ ChildAndParents.prototype = {
 
     // post deleted members that haven't been re-set to something else
     utils.forEach(['father', 'mother'], function(role) {
-      if (this.id && this.$deletedMembers && this.$deletedMembers.hasOwnProperty(role) && !this[role]) {
-        var msg = this.$deletedMembers[role] || changeMessage; // default to global change message
+      if (self.id && self.$deletedMembers && self.$deletedMembers.hasOwnProperty(role) && !self[role]) {
+        var msg = self.$deletedMembers[role] || changeMessage; // default to global change message
         promises.push(self.$helpers.chainHttpPromises(
           self.$plumbing.getUrl('child-and-parents-relationship-parent-template', null, {caprid: caprid, role: role}),
           function(url) {
@@ -472,11 +472,11 @@ ChildAndParents.prototype = {
           }
         ));
       }
-    }, this);
+    });
 
     // post deleted facts
-    if (caprid && this.$deletedFacts) {
-      utils.forEach(this.$deletedFacts, function(value, key) {
+    if (caprid && self.$deletedFacts) {
+      utils.forEach(self.$deletedFacts, function(value, key) {
         value = value || changeMessage; // default to global change message
         var headers = {'Content-Type': 'application/x-fs-v1+json'};
         if (value) {
@@ -486,7 +486,6 @@ ChildAndParents.prototype = {
       });
     }
 
-    var relationship = this;
     // wait for all promises to be fulfilled
     var promise = self.$helpers.promiseAll(promises).then(function(results) {
       var id = caprid ? caprid : results[0]; // if we're adding a new relationship, get id from the first (only) promise
@@ -494,9 +493,9 @@ ChildAndParents.prototype = {
 
       if (refresh) {
         // re-read the relationship and set this object's properties from response
-        return this.getChildAndParents(id, {}, opts).then(function(response) {
-          utils.deletePropertiesPartial(relationship, utils.appFieldRejector);
-          utils.extend(relationship, response.getRelationship());
+        return self.$client.getChildAndParents(id, {}, opts).then(function(response) {
+          utils.deletePropertiesPartial(self, utils.appFieldRejector);
+          utils.extend(self, response.getRelationship());
           return id;
         });
       }
