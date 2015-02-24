@@ -14,11 +14,15 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_References_resource FamilySearch API Docs}
  *
- * @param {Object=} data an object with optional attributes {$personId, memoryPersona}.
- * _memoryPersona_ can be a {@link memories.types:constructor.MemoryPersona MemoryPersona} or a memory persona url
+ * @param {Object=} data an object with optional attributes {$personId, $memoryPersona}.
+ * _$memoryPersona_ can be a {@link memories.types:constructor.MemoryPersona MemoryPersona} or a memory persona url
  */
 var MemoryPersonaRef = FS.MemoryPersonaRef = function(client, data) {
   FS.BaseClass.call(this, client, data);
+  
+  if(data && data.$memoryPersona){
+    this.$setMemoryPersona(data.$memoryPersona);
+  }
 };
 
 /**
@@ -145,7 +149,7 @@ MemoryPersonaRef.prototype = {
    * NOTE: there's no _refresh_ parameter because it's not possible to read individual memory persona references;
    * however, the memory persona ref's id and URL is set when creating a new memory persona ref
    *
-   * {@link http://jsfiddle.net/DallanQ/wrNj2/ editable example}
+   * {@link http://jsfiddle.net/r3px0ork/ editable example}
    *
    * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init

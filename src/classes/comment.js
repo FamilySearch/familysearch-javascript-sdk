@@ -113,7 +113,7 @@ Comment.prototype = {
    * _NOTE_: there's no _refresh_ parameter because it's not possible to read individual comments;
    * however, the comment's id and URL is set when creating a new comment
    *
-   * {@link http://jsfiddle.net/DallanQ/9YHfX/ editable example}
+   * {@link http://jsfiddle.net/yr9zv5fw/ editable example}
    *
    * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init

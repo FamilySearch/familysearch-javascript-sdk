@@ -134,7 +134,7 @@ Discussion.prototype = {
    * @description
    * Create a new discussion (if this discussion does not have an id) or update the existing discussion
    *
-   * {@link http://jsfiddle.net/DallanQ/t6Yh2/ editable example}
+   * {@link http://jsfiddle.net/fsy9z6kx/ editable example}
    *
    * @param {string=} changeMessage change message (currently ignored)
    * @param {boolean=} refresh true to read the discussion after updating

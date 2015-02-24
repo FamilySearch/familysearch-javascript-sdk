@@ -228,6 +228,30 @@ describe('Memory', function() {
       done();
     });
   });
+  
+  it('persona ref is created - shortcut', function(done) {
+    var memoryPersona = FS.createMemoryPersona();
+    memoryPersona.links = { persona: { href: 'https://familysearch.org/platform/memories/memories/3649/personas/1083' } };
+    var promise = FS.createMemoryPersonaRef({
+        $personId: 'PPPP-PPP',
+        $memoryPersona: memoryPersona
+      })
+      .$save();
+    promise.then(function(response) {
+      var request = promise.getRequest();
+      //noinspection JSUnresolvedFunction
+      expect(request.body).toEqualJson({
+        'persons' : [ {
+          'evidence' : [ {
+            'resource' : 'https://familysearch.org/platform/memories/memories/3649/personas/1083'
+          } ]
+        } ]
+      });
+      expect(promise.getStatusCode()).toBe(201);
+      expect(response).toBe('https://familysearch.org/platform/tree/persons/PPPP-PPP/memory-references/1083');
+      done();
+    });
+  });
 
   it('persona ref is deleted', function(done) {
     var promise = FS.deleteMemoryPersonaRef('PPPP-PPP', '1083');

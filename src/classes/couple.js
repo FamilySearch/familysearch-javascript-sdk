@@ -304,7 +304,7 @@ Couple.prototype = {
    * @description
    * Create a new relationship if this relationship does not have an id, or update the existing relationship
    *
-   * {@link http://jsfiddle.net/DallanQ/vgS9Q/ editable example}
+   * {@link http://jsfiddle.net/LtphkL51/ editable example}
    *
    * @param {String=} changeMessage default change message to use when fact/deletion-specific changeMessage was not specified
    * @param {boolean=} refresh true to read the relationship after updating

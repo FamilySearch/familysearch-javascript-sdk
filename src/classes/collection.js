@@ -91,7 +91,7 @@ Collection.prototype = {
    * @description
    * Create a new user-defined collection (folder)
    *
-   * {@link http://jsfiddle.net/DallanQ/2VgxM/ editable example}
+   * {@link http://jsfiddle.net/ppm671s2/ editable example}
    *
    * @param {boolean=} refresh true to read the collection after updating
    * @param {Object=} opts options to pass to the http function specified during init
