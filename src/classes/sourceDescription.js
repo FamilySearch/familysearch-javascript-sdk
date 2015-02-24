@@ -11,29 +11,26 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/sources/Source_Descriptions_resource FamilySearch API Docs}
  *
- * @param {Object=} data an object with optional attributes {about, citation, title, text}.
+ * @param {Object=} data an object with optional attributes {about, $citation, $title, $text}.
  * _about_ is a URL (link to the record) it can be a memory URL.
  */
 var SourceDescription = FS.SourceDescription = function(client, data) {
   FS.BaseClass.call(this, client, data);
   
   if (data) {
-    if (data.citation) {
+    if (data.$citation) {
       //noinspection JSUnresolvedFunction
-      this.$setCitation(data.citation);
-      delete this.citation;
+      this.$setCitation(data.$citation);
     }
-    if (data.title) {
+    if (data.$title) {
       //noinspection JSUnresolvedFunction
-      this.$setTitle(data.title);
-      delete this.title;
+      this.$setTitle(data.$title);
     }
-    if (data.text) {
+    if (data.$text) {
       //noinspection JSUnresolvedFunction
-      this.$setText(data.text);
-      delete this.text;
+      this.$setText(data.$text);
     }
-    if (data.attribution) {
+    if (data.attribution && !(data.attribution instanceof FS.Attribution)) {
       this.attribution = client.createAttribution(data.attribution);
     }
   }

@@ -154,9 +154,9 @@ describe('Source', function() {
   it('description is created', function(done) {
     var srcDesc = FS.createSourceDescription({
       about: 'https://familysearch.org/pal:/MM9.1.1/M9PJ-2JJ',
-      citation: '"United States Census, 1900." database and digital images, FamilySearch (https://familysearch.org/)',
-      title: '1900 US Census, Ethel Hollivet',
-      text: 'Ethel Hollivet (line 75) with husband Albert Hollivet (line 74)'
+      $citation: '"United States Census, 1900." database and digital images, FamilySearch (https://familysearch.org/)',
+      $title: '1900 US Census, Ethel Hollivet',
+      $text: 'Ethel Hollivet (line 75) with husband Albert Hollivet (line 74)'
     });
     var promise = srcDesc.$save('This is the change message', true);
     promise.then(function(response) {
@@ -189,9 +189,9 @@ describe('Source', function() {
   it('description is updated', function(done) {
     var srcDesc = FS.createSourceDescription({
       about: 'https://familysearch.org/pal:/MM9.1.1/M9PJ-2JJ',
-      citation: '"United States Census, 1900." database and digital images, FamilySearch (https://familysearch.org/)',
-      title: '1900 US Census, Ethel Hollivet',
-      text: 'Ethel Hollivet (line 75) with husband Albert Hollivet (line 74)'
+      $citation: '"United States Census, 1900." database and digital images, FamilySearch (https://familysearch.org/)',
+      $title: '1900 US Census, Ethel Hollivet',
+      $text: 'Ethel Hollivet (line 75) with husband Albert Hollivet (line 74)'
     });
     srcDesc.id = 'MMMM-MMM';
     var promise = srcDesc.$save('This is the change message');

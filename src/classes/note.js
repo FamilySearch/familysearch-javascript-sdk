@@ -15,7 +15,7 @@ var FS = require('./../FamilySearch'),
 var Note = FS.Note = function(client, data) {
   FS.BaseClass.call(this, client, data);
   
-  if(this.attribution && !(this.attribution instanceof FS.Note)){
+  if(this.attribution && !(this.attribution instanceof FS.Attribution)){
     this.attribution = client.createAttribution(this.attribution);
   }
 };
@@ -99,7 +99,7 @@ Note.prototype = {
    * @description
    * Create a new note (if this note does not have an id) or update the existing note
    *
-   * {@link http://jsfiddle.net/DallanQ/6fVkh/ editable example}
+   * {@link http://jsfiddle.net/vg1kge0o/ editable example}
    *
    * @param {string} changeMessage change message
    * @param {boolean=} refresh true to read the note after updating
