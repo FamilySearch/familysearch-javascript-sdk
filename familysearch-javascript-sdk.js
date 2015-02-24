@@ -3993,7 +3993,7 @@ var FS = require('./../FamilySearch'),
 var Note = FS.Note = function(client, data) {
   FS.BaseClass.call(this, client, data);
   
-  if(this.attribution && !(this.attribution instanceof FS.Note)){
+  if(this.attribution && !(this.attribution instanceof FS.Attribution)){
     this.attribution = client.createAttribution(this.attribution);
   }
 };
@@ -4077,7 +4077,7 @@ Note.prototype = {
    * @description
    * Create a new note (if this note does not have an id) or update the existing note
    *
-   * {@link http://jsfiddle.net/DallanQ/6fVkh/ editable example}
+   * {@link http://jsfiddle.net/vg1kge0o/ editable example}
    *
    * @param {string} changeMessage change message
    * @param {boolean=} refresh true to read the note after updating
@@ -5332,29 +5332,26 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/sources/Source_Descriptions_resource FamilySearch API Docs}
  *
- * @param {Object=} data an object with optional attributes {about, citation, title, text}.
+ * @param {Object=} data an object with optional attributes {about, $citation, $title, $text}.
  * _about_ is a URL (link to the record) it can be a memory URL.
  */
 var SourceDescription = FS.SourceDescription = function(client, data) {
   FS.BaseClass.call(this, client, data);
   
   if (data) {
-    if (data.citation) {
+    if (data.$citation) {
       //noinspection JSUnresolvedFunction
-      this.$setCitation(data.citation);
-      delete this.citation;
+      this.$setCitation(data.$citation);
     }
-    if (data.title) {
+    if (data.$title) {
       //noinspection JSUnresolvedFunction
-      this.$setTitle(data.title);
-      delete this.title;
+      this.$setTitle(data.$title);
     }
-    if (data.text) {
+    if (data.$text) {
       //noinspection JSUnresolvedFunction
-      this.$setText(data.text);
-      delete this.text;
+      this.$setText(data.$text);
     }
-    if (data.attribution) {
+    if (data.attribution && !(data.attribution instanceof FS.Attribution)) {
       this.attribution = client.createAttribution(data.attribution);
     }
   }

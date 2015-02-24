@@ -1333,7 +1333,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "sources",
       "shortDescription": "Description of a source",
-      "keywords": "$delete $getcitation $getsourcedescriptionurl $getsourcerefsquery $gettext $gettitle $save $setcitation $settext $settitle _about_ api attributes attribution change changemessage citation create data delete deletesourcedescription deletion description docs editable example existing familysearch fulfilled function functions getsourcerefsquery http https init memory message net object optional options opts org pass promise property read reason record refer references refresh response source sourcedescription sources text title true types update updated updating url"
+      "keywords": "$citation $delete $getcitation $getsourcedescriptionurl $getsourcerefsquery $gettext $gettitle $save $setcitation $settext $settitle $text $title _about_ api attributes attribution change changemessage citation create data delete deletesourcedescription deletion description docs editable example existing familysearch fulfilled function functions getsourcerefsquery http https init memory message net object optional options opts org pass promise property read reason record refer references refresh response source sourcedescription sources text title true types update updated updating url"
     },
     {
       "section": "api",
