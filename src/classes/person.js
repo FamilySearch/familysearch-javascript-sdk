@@ -750,7 +750,7 @@ Person.prototype = {
       }
       // default name to Unknown if no names
       if (!utils.isArray(this.names) || this.names.length === 0) {
-        this.$addName({fullText: 'Unknown', givenName: 'Unknown'});
+        this.$addName({$fullText: 'Unknown', $givenName: 'Unknown'});
       }
       // default first name to preferred if no names are preferred
       if (!utils.find(this.names, {preferred: true})) {
@@ -760,11 +760,20 @@ Person.prototype = {
       if (this.names.length === 1 && !this.names[0].type) {
         this.names[0].$setType('http://gedcomx.org/BirthName');
       }
+      // default living status to false
+      if (utils.isUndefined(this.living)) {
+        this.living = false;
+      }
     }
 
     // set global changeMessage
     if (changeMessage) {
       postData.attribution = this.$client.createAttribution(changeMessage);
+    }
+    
+    // if new person, send living status
+    if (!this.id) {
+      postData.living = this.living;
     }
 
     // send gender if gender is new or changed

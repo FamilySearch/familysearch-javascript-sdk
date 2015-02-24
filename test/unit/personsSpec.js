@@ -231,6 +231,7 @@ describe('A person', function() {
       //noinspection JSUnresolvedFunction
       expect(request.body).toEqualJson({
         'persons' : [ {
+          'living': false,
           'attribution' : {
             'changeMessage' : '...default change message...'
           },
@@ -266,6 +267,39 @@ describe('A person', function() {
             'attribution' : {
               'changeMessage' : '...change message...'
             }
+          } ]
+        } ]
+      });
+      expect(promise.getStatusCode()).toBe(201);
+      expect(response).toBe('12345');
+      done();
+    });
+  });
+
+  it('is created with defaults and living:true', function(done) {
+    var promise = FS.createPerson({ living: true }).$save('...default change message...');;
+    promise.then(function(response) {
+      var request = promise.getRequest();
+      //noinspection JSUnresolvedFunction
+      expect(request.body).toEqualJson({
+        'persons' : [ {
+          'living': true,
+          'attribution': {
+            'changeMessage' : '...default change message...'
+          },
+          'gender' : {
+            'type' : 'http://gedcomx.org/Unknown',
+          },
+          'names' : [ {
+            'nameForms' : [ {
+              'parts' : [ {
+                'type' : 'http://gedcomx.org/Given',
+                'value' : 'Unknown'
+              } ],
+              'fullText' : 'Unknown'
+            } ],
+            'preferred' : true,
+            'type' : 'http://gedcomx.org/BirthName'
           } ]
         } ]
       });
