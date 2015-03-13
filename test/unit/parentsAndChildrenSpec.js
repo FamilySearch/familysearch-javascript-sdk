@@ -202,5 +202,14 @@ describe('Parents and Children relationship', function() {
       done();
     });
   });
+  
+  it('accepts instances of facts', function(){
+    var rel = FS.createChildAndParents({
+      fatherFacts: [ FS.createFact() ],
+      motherFacts: [ FS.createFact() ]
+    })
+    expect(rel.fatherFacts.length).toBe(1);
+    expect(rel.motherFacts.length).toBe(1);
+  });
 
 });

@@ -470,5 +470,14 @@ describe('A person', function() {
     expect(name).toBeUndefined();
     done();
   });
+  
+  it('accepts instances of facts and names', function(){
+    var person = FS.createPerson({
+      names: [ FS.createName() ],
+      facts: [ FS.createFact() ]
+    });
+    expect(person.names.length).toBe(1);
+    expect(person.facts.length).toBe(1);
+  });
 
 });

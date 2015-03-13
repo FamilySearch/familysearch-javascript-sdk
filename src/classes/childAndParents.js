@@ -40,12 +40,18 @@ var ChildAndParents = FS.ChildAndParents = function(client, data) {
       delete this.$child;
     }
     if (data.fatherFacts) {
-      //noinspection JSUnresolvedFunction
-      this.$setFatherFacts(data.fatherFacts);
+      utils.forEach(this.fatherFacts, function(fact, i){
+        if(!(fact instanceof FS.Fact)){
+          this.fatherFacts[i] = client.createFact(fact);
+        }
+      }, this);
     }
     if (data.motherFacts) {
-      //noinspection JSUnresolvedFunction
-      this.$setMotherFacts(data.motherFacts);
+      utils.forEach(this.motherFacts, function(fact, i){
+        if(!(fact instanceof FS.Fact)){
+          this.motherFacts[i] = client.createFact(fact);
+        }
+      }, this);
     }
   }
 };

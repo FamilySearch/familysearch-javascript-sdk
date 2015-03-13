@@ -214,5 +214,12 @@ describe('Spouses relationship', function() {
       done();
     });
   });
+  
+  it('accepts instances of facts', function(){
+    var couple = FS.createCouple({
+      facts: [ FS.createFact() ]
+    });
+    expect(couple.facts.length).toBe(1);
+  })
 
 });

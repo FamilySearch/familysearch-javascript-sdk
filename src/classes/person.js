@@ -31,11 +31,19 @@ var Person = FS.Person = function(client, data) {
     }
     if (data.names) {
       //noinspection JSUnresolvedFunction
-      this.$setNames(data.names);
+      utils.forEach(this.names, function(name, i){
+        if(!(name instanceof FS.Name)){
+          this.names[i] = client.createName(name);
+        }
+      }, this);
     }
     if (data.facts) {
       //noinspection JSUnresolvedFunction
-      this.$setFacts(data.facts);
+      utils.forEach(this.facts, function(fact, i){
+        if(!(fact instanceof FS.Fact)){
+          this.facts[i] = client.createFact(fact);
+        }
+      }, this);
     }
     if (data.attribution && !(data.attribution instanceof FS.Attribution)) {
       this.attribution = client.createAttribution(data.attribution);

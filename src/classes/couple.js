@@ -31,8 +31,11 @@ var Couple = FS.Couple = function(client, data) {
       this.$setWife(data.$wife);
     }
     if (data.facts) {
-      //noinspection JSUnresolvedFunction
-      this.$setFacts(data.facts);
+      utils.forEach(this.facts, function(fact, i){
+        if(!(fact instanceof FS.Fact)){
+          this.facts[i] = client.createFact(fact);
+        }
+      }, this);
     }
   }
 };
