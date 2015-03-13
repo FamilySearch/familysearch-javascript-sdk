@@ -117,9 +117,6 @@ var FS = module.exports = function(opts){
     };
   }
 
-  if(!opts['redirect_uri'] && !opts['auth_callback']) {
-    throw 'redirect_uri must be set';
-  }
   self.settings.redirectUri = opts['redirect_uri'] || opts['auth_callback']; // auth_callback is deprecated
 
   self.settings.autoSignin = opts['auto_signin'];
