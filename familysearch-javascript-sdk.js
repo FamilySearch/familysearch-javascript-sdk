@@ -620,12 +620,18 @@ var ChildAndParents = FS.ChildAndParents = function(client, data) {
       delete this.$child;
     }
     if (data.fatherFacts) {
-      //noinspection JSUnresolvedFunction
-      this.$setFatherFacts(data.fatherFacts);
+      utils.forEach(this.fatherFacts, function(fact, i){
+        if(!(fact instanceof FS.Fact)){
+          this.fatherFacts[i] = client.createFact(fact);
+        }
+      }, this);
     }
     if (data.motherFacts) {
-      //noinspection JSUnresolvedFunction
-      this.$setMotherFacts(data.motherFacts);
+      utils.forEach(this.motherFacts, function(fact, i){
+        if(!(fact instanceof FS.Fact)){
+          this.motherFacts[i] = client.createFact(fact);
+        }
+      }, this);
     }
   }
 };
@@ -1441,8 +1447,11 @@ var Couple = FS.Couple = function(client, data) {
       this.$setWife(data.$wife);
     }
     if (data.facts) {
-      //noinspection JSUnresolvedFunction
-      this.$setFacts(data.facts);
+      utils.forEach(this.facts, function(fact, i){
+        if(!(fact instanceof FS.Fact)){
+          this.facts[i] = client.createFact(fact);
+        }
+      }, this);
     }
   }
 };
@@ -4193,11 +4202,19 @@ var Person = FS.Person = function(client, data) {
     }
     if (data.names) {
       //noinspection JSUnresolvedFunction
-      this.$setNames(data.names);
+      utils.forEach(this.names, function(name, i){
+        if(!(name instanceof FS.Name)){
+          this.names[i] = client.createName(name);
+        }
+      }, this);
     }
     if (data.facts) {
       //noinspection JSUnresolvedFunction
-      this.$setFacts(data.facts);
+      utils.forEach(this.facts, function(fact, i){
+        if(!(fact instanceof FS.Fact)){
+          this.facts[i] = client.createFact(fact);
+        }
+      }, this);
     }
     if (data.attribution && !(data.attribution instanceof FS.Attribution)) {
       this.attribution = client.createAttribution(data.attribution);
