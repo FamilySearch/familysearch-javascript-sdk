@@ -220,6 +220,6 @@ describe('Spouses relationship', function() {
       facts: [ FS.createFact() ]
     });
     expect(couple.facts.length).toBe(1);
-  })
+  });
 
 });
