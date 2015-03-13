@@ -134,7 +134,6 @@ beforeEach(function() {
   global.FS = new FamilySearch({
     'client_id': 'mock',
     'environment': 'sandbox',
-    'redirect_uri': 'mock',
     'http_function': httpMock,
     'deferred_function': q.defer,
     'access_token': 'mock'
