@@ -42,6 +42,13 @@ exports.httpWrapper = function(http, client) {
       }
       if(error){
         d.reject(error);
+      } else if(statusCode >= 400) {
+        if(body.errors){
+          error = body.errors[0];
+        } else {
+          error = new Error('server responded with a ' + statusCode);
+        }
+        d.reject(error);
       } else {
         d.resolve(body);
       }

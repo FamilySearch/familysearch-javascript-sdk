@@ -69,7 +69,7 @@ var FS = module.exports = function(opts){
     throw 'http must be set; e.g., jQuery.ajax';
   }
   var httpFunction = opts['http_function'] || window.jQuery.ajax;
-  if (httpFunction.defaults) {
+  if (httpFunction.pendingRequests) {
     self.settings.httpWrapper = angularjsWrappers.httpWrapper(httpFunction, self);
   }
   else if (httpFunction.cookie){
