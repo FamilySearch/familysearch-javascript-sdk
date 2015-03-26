@@ -70,7 +70,7 @@ var FS = module.exports = function(opts){
     throw 'http must be set; e.g., jQuery.ajax';
   }
   var httpFunction = opts['http_function'] || window.jQuery.ajax;
-  if (httpFunction.defaults) {
+  if (httpFunction.pendingRequests) {
     self.settings.httpWrapper = angularjsWrappers.httpWrapper(httpFunction, self);
   }
   else if (httpFunction.cookie){
@@ -10647,6 +10647,13 @@ exports.httpWrapper = function(http, client) {
         statusCode = response.statusCode;
       }
       if(error){
+        d.reject(error);
+      } else if(statusCode >= 400) {
+        if(body.errors){
+          error = body.errors[0];
+        } else {
+          error = new Error('server responded with a ' + statusCode);
+        }
         d.reject(error);
       } else {
         d.resolve(body);
