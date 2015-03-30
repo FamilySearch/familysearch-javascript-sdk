@@ -69,6 +69,9 @@ module.exports = function(grunt) {
       jasmine: {
         exec: 'npm run jasmine'
       },
+      coveralls: {
+        exec: 'npm run coveralls'
+      },
       browserify: {
         exec: 'npm run browserify'
       }
@@ -120,6 +123,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('travis', [
     'travis-pull-request',
+    'run:coveralls',
     'run:browserify',
     'copy:dist',
     'gh-pages:travis'
