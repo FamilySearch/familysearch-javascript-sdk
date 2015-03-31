@@ -1,0 +1,29 @@
+fdescribe('base class', function() {
+  
+  it('serializes', function(){
+    var person = FS.createPerson({
+      $gender: 'Male',
+      names: [
+        {
+          $givenName: 'Gustaf'
+        }
+      ]
+    });
+    console.log(JSON.parse(JSON.stringify(person)));
+    expect(JSON.parse(JSON.stringify(person))).toEqualJson({
+      names: [ {
+        nameForms: [ {
+          parts: [ {
+            type: 'http://gedcomx.org/Given',
+            value: 'Gustaf'
+          } ]
+        } ],
+        preferred: false
+      } ],
+      gender: {
+        type: 'Male'
+      }
+    });
+  })
+  
+});
