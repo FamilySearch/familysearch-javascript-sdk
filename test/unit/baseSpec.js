@@ -1,4 +1,4 @@
-fdescribe('base class', function() {
+describe('base class', function() {
   
   it('serializes', function(){
     var person = FS.createPerson({
@@ -9,8 +9,8 @@ fdescribe('base class', function() {
         }
       ]
     });
-    console.log(JSON.parse(JSON.stringify(person)));
-    expect(JSON.parse(JSON.stringify(person))).toEqualJson({
+    var json = JSON.parse(person.serialize());
+    expect(json).toEqualJson({
       names: [ {
         nameForms: [ {
           parts: [ {
