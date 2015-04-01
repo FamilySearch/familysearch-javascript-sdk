@@ -1,4 +1,5 @@
 describe('Search', function() {
+  
   it('results are returned from getPersonSearch', function(done) {
     FS.getPersonSearch({surname:'Heaton'}).then(function(response) {
       expect(response.getContext()).toBe('jvihef7');
@@ -71,4 +72,28 @@ describe('Search', function() {
       done();
     });
   });
+  
+  
+  it('handle non-string params', function(done){
+    var searchPromise = FS.getPersonSearch({
+      givenName: 'Joe',
+      surname: null,
+      birthPlace: undefined,
+      birthDate: 2014
+    });
+    searchPromise.then(function(){
+      expect(searchPromise.getRequest().url).toBe('https://sandbox.familysearch.org/platform/tree/search?q=givenName%3AJoe%20birthDate%3A2014&access_token=mock');
+      var matchPromise = FS.getPersonMatchesQuery({
+        givenName: 'Joe',
+        surname: null,
+        birthPlace: undefined,
+        birthDate: 2014
+      });
+      matchPromise.then(function(){
+        expect(matchPromise.getRequest().url).toBe('https://sandbox.familysearch.org/platform/tree/matches?q=givenName%3AJoe%20birthDate%3A2014&access_token=mock');
+        done();
+      })
+    });
+  });
+  
 });

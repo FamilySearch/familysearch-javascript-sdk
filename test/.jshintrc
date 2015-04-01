@@ -30,9 +30,12 @@
 
     "require": true,
     "describe": false,
+    "xdescribe": false,
+    "fdescribe": false,
     "it": false,
     "iit": false,
     "xit": false,
+    "fit": false,
     "expect": false,
     "beforeEach": false,
     "jasmine": false,
