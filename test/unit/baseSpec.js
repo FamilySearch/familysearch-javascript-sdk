@@ -9,7 +9,7 @@ describe('base class', function() {
         }
       ]
     });
-    var json = JSON.parse(person.serialize());
+    var json = JSON.parse(person.$serialize());
     expect(json).toEqualJson({
       names: [ {
         nameForms: [ {
