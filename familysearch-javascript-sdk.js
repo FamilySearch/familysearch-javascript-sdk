@@ -482,7 +482,7 @@ FS.BaseClass = function(client, data){
   this.$helpers = client.helpers;
   this.$plumbing = client.plumbing;
   
-  this.serialize = function(){
+  this.$serialize = function(){
     return JSON.stringify(this, function(key, value){
       if(key.indexOf('$') === 0){
         return;
