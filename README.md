@@ -121,9 +121,9 @@ Follow these steps to properly setup your development environment:
 * Run `npm install` to install the build dependencies
 * [Install the grunt-cli ](http://gruntjs.com/getting-started#installing-the-cli)
 
-Run `grunt test` to run the tests.
+Run `npm test` to run the tests.
 
-Run `grunt build` to build the project.
+Run `npm build` to build the project.
 
 This project uses .editorconfig to help configure your editor for consistent code indentation and styling.
 Please follow the existing style in your changes.
@@ -134,7 +134,7 @@ If you have a good reason not to follow a particular check for a particular stat
 you can disable the jshint test for that statement.
 Some editors (e.g., WebStorm) can be configured to read the .jshintrc file to notify you immediately when something doesn't pass.
 
-Grunt runs unit tests using jarmine. Please create unit tests for your changes.
+Grunt runs unit tests using jasmine. Please create unit tests for your changes.
 See the existing unit test files for examples.
 
 Grunt also generates documentation for the project.

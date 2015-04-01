@@ -22,8 +22,10 @@
     "request": "2.51.0"
   },
   "scripts": {
-    "test": "grunt travis --verbose",
-    "test-pull-request": "grunt travis-pull-request --verbose",
+    "travis": "grunt travis --verbose",
+    "travis-pr": "grunt travis-pr --verbose",
+    "test": "grunt test",
+    "build": "grunt build",
     "jasmine": "jasmine",
     "coverage": "istanbul cover ./node_modules/jasmine/bin/jasmine.js",
     "coveralls": "istanbul cover ./node_modules/jasmine/bin/jasmine.js && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
