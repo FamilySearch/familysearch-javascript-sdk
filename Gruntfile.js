@@ -121,7 +121,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('travis', [
-    'travis-pull-request',
+    'travis-pr',
     'run:coveralls',
     'run:browserify',
     'copy:dist',
