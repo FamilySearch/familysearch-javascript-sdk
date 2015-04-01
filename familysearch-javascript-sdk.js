@@ -9404,6 +9404,9 @@ var FS = require('./../FamilySearch'),
 var nonQueryParams = {start: true, count: true, context: true};
 
 function quote(value) {
+  if(!utils.isString(value)){
+    return value;
+  }
   value = value.replace(/[:"]/g, '').trim();
   return value.indexOf(' ') >= 0 ? '"' + value + '"' : value;
 }
@@ -9488,7 +9491,7 @@ FS.prototype.getPersonSearch = function(params, opts) {
     self.plumbing.getUrl('person-search'),
     function(url) {
       return self.plumbing.get(url, utils.removeEmptyProperties({
-          q: getQuery(params),
+          q: getQuery(utils.removeEmptyProperties(utils.extend({}, params))),
           start: params.start,
           count: params.count,
           context: params.context
@@ -9568,12 +9571,16 @@ FS.prototype.getPersonMatchesQuery = function(params, opts) {
   return self.helpers.chainHttpPromises(
     self.plumbing.getUrl('person-matches-query'),
     function(url) {
+      try {
       return self.plumbing.get(url, utils.removeEmptyProperties({
-          q: getQuery(params),
+          q: getQuery(utils.removeEmptyProperties(utils.extend({}, params))),
           start: params.start,
           count: params.count
         }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
         self._getSearchMatchResponseMapper());
+      } catch(e) {
+        console.log(e.stack);
+      }
     });
 };
 
