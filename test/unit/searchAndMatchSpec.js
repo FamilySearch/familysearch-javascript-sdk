@@ -92,7 +92,22 @@ describe('Search', function() {
       matchPromise.then(function(){
         expect(matchPromise.getRequest().url).toBe('https://sandbox.familysearch.org/platform/tree/matches?q=givenName%3AJoe%20birthDate%3A2014&access_token=mock');
         done();
-      })
+      });
+    });
+  });
+  
+  it('getPersonSearch and getPersonMatch do not modify the params object', function(done){
+    var params = {
+      givenName: 'good',
+      surname: null,
+      other: undefined
+    };
+    FS.getPersonSearch(params).done(function(){
+      expect(params.surname).toBe(null);
+      FS.getPersonMatchesQuery(params).done(function(){
+        expect(params.other).toBe(undefined);
+        done();
+      });
     });
   });
   

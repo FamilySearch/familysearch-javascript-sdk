@@ -100,7 +100,7 @@ FS.prototype.getPersonSearch = function(params, opts) {
     self.plumbing.getUrl('person-search'),
     function(url) {
       return self.plumbing.get(url, utils.removeEmptyProperties({
-          q: getQuery(utils.removeEmptyProperties(params)),
+          q: getQuery(utils.removeEmptyProperties(utils.extend({}, params))),
           start: params.start,
           count: params.count,
           context: params.context
@@ -182,7 +182,7 @@ FS.prototype.getPersonMatchesQuery = function(params, opts) {
     function(url) {
       try {
       return self.plumbing.get(url, utils.removeEmptyProperties({
-          q: getQuery(utils.removeEmptyProperties(params)),
+          q: getQuery(utils.removeEmptyProperties(utils.extend({}, params))),
           start: params.start,
           count: params.count
         }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
