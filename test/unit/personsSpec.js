@@ -99,6 +99,8 @@ describe('A person', function() {
   it('is returned with relationships from getPersonWithRelationships', function(done) {
     FS.getPersonWithRelationships('PW8J-MZ0').then(function(response) {
       expect(response.getPrimaryId()).toBe('PW8J-MZ0');
+      expect(response.getRequestedId()).toBe('PW8J-MZ0');
+      expect(response.wasRedirected()).toBe(false);
       expect(response.getPerson(response.getPrimaryId())).toBe(response.getPrimaryPerson());
       expect(response.getPrimaryPerson().$getDisplayName()).toBe('Alex Aleksandrova');
       expect(response.getFatherIds()).toEqual(['PW8J-MZ1']);
@@ -152,6 +154,8 @@ describe('A person', function() {
       expect(response.getChildren()[0].$getDisplayName()).toEqual('Christian Ludvic Jensen');
       expect(response.getChildrenOf('KW7S-JB7')[0].$getDisplayName()).toEqual('Christian Ludvic Jensen');
       expect(response.getChildrenOf('FOO').length).toBe(0);
+      expect(response.getRequestedId()).toBe('KW7S-VQJ');
+      expect(response.wasRedirected()).toBe(false);
       done();
     });
   });
@@ -159,6 +163,8 @@ describe('A person', function() {
   it('redirects are properly handled from getPersonWithRelationships', function(done){
     FS.getPersonWithRelationships('DYHJ-R84').then(function(response){
       expect(response.getPrimaryId()).toBe('KJTW-NML');
+      expect(response.getRequestedId()).toBe('DYHJ-R84');
+      expect(response.wasRedirected()).toBe(true);
       done();
     });
   });

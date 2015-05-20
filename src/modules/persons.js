@@ -56,7 +56,7 @@ var personWithRelationshipsConvenienceFunctions = {
         (maybe(r.father).resourceId == spouseId || maybe(r.mother).resourceId == spouseId); // allow spouseId to be null or undefined
     });
   },
-  getFatherIds:  function() {
+  getFatherIds: function() {
     return utils.uniq(utils.map(
       utils.filter(this.getParentRelationships(), function(r) {
         return !!r.$getFatherId();
@@ -65,8 +65,8 @@ var personWithRelationshipsConvenienceFunctions = {
         return r.$getFatherId();
       }, this));
   },
-  getFathers:    function() { return utils.map(this.getFatherIds(), this.getPerson, this); },
-  getMotherIds:  function() {
+  getFathers: function() { return utils.map(this.getFatherIds(), this.getPerson, this); },
+  getMotherIds: function() {
     return utils.uniq(utils.map(
       utils.filter(this.getParentRelationships(), function(r) {
         return !!r.$getMotherId();
@@ -75,8 +75,8 @@ var personWithRelationshipsConvenienceFunctions = {
         return r.$getMotherId();
       }, this));
   },
-  getMothers:    function() { return utils.map(this.getMotherIds(), this.getPerson, this); },
-  getSpouseIds:  function() {
+  getMothers: function() { return utils.map(this.getMotherIds(), this.getPerson, this); },
+  getSpouseIds: function() {
     return utils.uniq(utils.map(
       utils.filter(this.getSpouseRelationships(), function(r) {
         return r.$getHusbandId() && r.$getWifeId(); // only consider couple relationships with both spouses
@@ -85,21 +85,24 @@ var personWithRelationshipsConvenienceFunctions = {
         return this.getPrimaryId() === r.$getHusbandId() ? r.$getWifeId() : r.$getHusbandId();
       }, this));
   },
-  getSpouses:    function() { return utils.map(this.getSpouseIds(), this.getPerson, this); },
-  getChildIds:   function() {
+  getSpouses: function() { return utils.map(this.getSpouseIds(), this.getPerson, this); },
+  getChildIds: function() {
     return utils.uniq(utils.map(this.getChildRelationships(),
       function(r) {
         return r.$getChildId();
       }, this));
   },
-  getChildren:   function() { return utils.map(this.getChildIds(), this.getPerson, this); },
-  getChildIdsOf:   function(spouseId) {
+  getChildren: function() { return utils.map(this.getChildIds(), this.getPerson, this); },
+  getChildIdsOf: function(spouseId) {
     return utils.uniq(utils.map(this.getChildRelationshipsOf(spouseId),
       function(r) {
         return r.$getChildId();
       }, this));
   },
-  getChildrenOf:   function(spouseId) { return utils.map(this.getChildIdsOf(spouseId), this.getPerson, this); }
+  getChildrenOf: function(spouseId) { return utils.map(this.getChildIdsOf(spouseId), this.getPerson, this); },
+  wasRedirected: function() {
+    return this.getPrimaryId() !== this.getRequestedId();
+  }
 };
 
 // TODO consider moving to another documentation generator so we can link to _methods_ like $save and $delete
@@ -211,7 +214,9 @@ FS.prototype._personsAndRelationshipsMapper = function(){
  * Get a person and their children, spouses, and parents.
  * The response has the following convenience functions
  *
- * - `getPrimaryId()` - id of the person requested
+ * - `getPrimaryId()` - id of the person returned
+ * - `getRequestedId()` - person id that was requested; may differ from primary id
+ * when the requested id was deleted due to a merge
  * - `getFatherIds()` - array of ids
  * - `getMotherIds()` - array of ids
  * - `getSpouseIds()` - array of ids
@@ -234,6 +239,7 @@ FS.prototype._personsAndRelationshipsMapper = function(){
  * - `getChildren()` - array of all child {@link person.types:constructor.Person Persons};
  * - `getChildrenOf(spouseId)` - array of child {@link person.types:constructor.Person Persons};
  * if `spouseId` is null/undefined, return children without the other parent
+ * - `wasRedirected()` - returns true when the primary id is different from the requested id
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource FamilySearch API Docs}
  *
@@ -251,6 +257,7 @@ FS.prototype.getPersonWithRelationships = function(pid, params, opts) {
     function(url) {
       return self.plumbing.get(url, utils.extend({'person': pid}, params), {}, opts,
         utils.compose(
+          utils.objectExtender({getRequestedId: function() { return pid; }}),
           self._personsAndRelationshipsMapper(),
           utils.objectExtender(personWithRelationshipsConvenienceFunctions),
           function(response, promise) {
