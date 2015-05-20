@@ -1,4 +1,24 @@
 {
+  "description": "#SD-PW8J-MZ0",
+  "sourceDescriptions" : [ {
+    "id" : "SD-PW8J-MZ0",
+    "citations" : [ {
+      "lang" : "en",
+      "value" : "\"Family Tree,\" database, <i>FamilySearch</i> (http://familysearch.org : modified 20 May 2015, 15:15), entry for Soren Christiansen Jensen(PID https://familysearch.org/ark:/61903/4:1:PW8J-MZ0); contributed by various users."
+    } ],
+    "about" : "#PW8J-MZ0",
+    "componentOf" : {
+      "description" : "https://familysearch.org/platform/collections/tree"
+    },
+    "titles" : [ {
+      "value" : "Soren Christiansen Jensen"
+    } ],
+    "resourceType" : "http://gedcomx.org/Person",
+    "identifiers" : {
+      "http://gedcomx.org/Persistent" : [ "https://familysearch.org/ark:/61903/4:1:PW8J-MZ0" ]
+    },
+    "modified" : 1432134952000
+  } ],
   "persons" : [ {
     "id" : "PW8J-MZ0",
     "links" : {
