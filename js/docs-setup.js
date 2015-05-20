@@ -892,7 +892,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Get a person and their children, spouses, and parents.",
-      "keywords": "addition api array child childandparents children convenience couple docs editable example familysearch father full function functions getchildids getchildidsof getchildrelationships getchildrelationshipsof getchildren getchildrenof getfatherids getfathers getmotherids getmothers getparentrelationships getperson getprimaryid getprimaryperson getspouseids getspouserelationship getspouserelationships getspouses http https ids init mother net null object objects options opts org params parent parents parentsandchildren pass person persons pid primary promise relationship relationships relative requested response retrieve return set spouse spouseid spouses true types"
+      "keywords": "addition api array child childandparents children convenience couple deleted differ docs editable example familysearch father full function functions getchildids getchildidsof getchildrelationships getchildrelationshipsof getchildren getchildrenof getfatherids getfathers getmotherids getmothers getparentrelationships getperson getprimaryid getprimaryperson getrequestedid getspouseids getspouserelationship getspouserelationships getspouses http https ids init merge mother net null object objects options opts org params parent parents parentsandchildren pass person persons pid primary promise relationship relationships relative requested response retrieve return returned returns set spouse spouseid spouses true types wasredirected"
     },
     {
       "section": "api",
