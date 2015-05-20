@@ -1,0 +1,328 @@
+{
+  "persons" : [ {
+    "id" : "KJTW-NML",
+    "links" : {
+      "person" : {
+        "href" : "https://familysearch.org/platform/tree/persons/KJTW-NML",
+        "title" : "Person"
+      }
+    },
+    "attribution" : {
+      "changeMessage" : "wikipedia knows"
+    },
+    "living" : true,
+    "gender" : {
+      "type" : "http://gedcomx.org/Male"
+    },
+    "names" : [ {
+      "id" : "name-id",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://familysearch.org/platform/tree/persons/KJTW-NML/conclusions/name-id",
+          "title" : "Person Conclusion"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "urn:name-attribution",
+          "resourceId" : "KNCV-RMZ"
+        }
+      },
+      "type" : "http://gedcomx.org/BirthName",
+      "nameForms" : [ {
+        "fullText" : "Alex Aleksandrova",
+        "parts" : [ {
+          "type" : "http://gedcomx.org/Given",
+          "value" : "Alex"
+        }, {
+          "type" : "http://gedcomx.org/Surname",
+          "value" : "Aleksandrova"
+        } ]
+      }, {
+        "fullText" : "Анастасия Александрова",
+        "parts" : [ {
+          "type" : "http://gedcomx.org/Given",
+          "value" : "Анастасия"
+        }, {
+          "type" : "http://gedcomx.org/Surname",
+          "value" : "Александрова"
+        } ]
+      } ],
+      "preferred" : true
+    } ],
+    "facts" : [ {
+      "id" : "born",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://familysearch.org/platform/tree/persons/KJTW-NML/conclusions/born",
+          "title" : "Person Conclusion"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "urn:fact-attribution",
+          "resourceId" : "RMQW-LPK"
+        }
+      },
+      "type" : "http://gedcomx.org/Birth",
+      "date" : {
+        "original" : "3 Apr 1836",
+        "formal" : "+1836"
+      },
+      "place" : {
+        "original" : "Moscow, Russia"
+      }
+    }, {
+      "id" : "res",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://familysearch.org/platform/tree/persons/KJTW-NML/conclusions/res",
+          "title" : "Person Conclusion"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://familysearch.org/platform/users/agents/JNYR-KJP",
+          "resourceId" : "JNYR-KJP"
+        }
+      },
+      "type" : "http://gedcomx.org/Residence",
+      "date" : {
+        "original" : "13 Apr 1836",
+        "formal" : "+1836-04-13"
+      },
+      "place" : {
+        "original" : "Moscow, Russia",
+        "description" : "#-1276974106"
+      }
+    } ],
+    "display" : {
+      "name" : "Alex Aleksandrova",
+      "gender" : "Male",
+      "lifespan" : "3 Apr 1836 - Dead",
+      "birthDate" : "3 Apr 1836",
+      "birthPlace" : "Moscow, Russia",
+      "ascendancyNumber" : "1",
+      "descendancyNumber" : "1"
+    }
+  } ],
+  "relationships" : [ {
+    "id" : "C123-ABC",
+    "links" : {
+      "relationship" : {
+        "href" : "https://familysearch.org/platform/tree/couple-relationships/C123-ABC",
+        "title" : "Couple Relationship"
+      },
+      "person1" : {
+        "href" : "https://familysearch.org/platform/tree/persons/KJTW-NML",
+        "title" : "Person"
+      },
+      "person2" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PA65-HG3",
+        "title" : "Person"
+      },
+      "woman" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PA65-HG3",
+        "title" : "Person"
+      },
+      "man" : {
+        "href" : "https://familysearch.org/platform/tree/persons/KJTW-NML",
+        "title" : "Person"
+      }
+    },
+    "type" : "http://gedcomx.org/Couple",
+    "person1" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/KJTW-NML",
+      "resourceId" : "KJTW-NML"
+    },
+    "person2" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/PA65-HG3",
+      "resourceId" : "PA65-HG3"
+    }
+  }, {
+    "id" : "FPPPX-PP0",
+    "links" : {
+      "person1" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PW8J-MZ1",
+        "title" : "Person"
+      },
+      "person2" : {
+        "href" : "https://familysearch.org/platform/tree/persons/KJTW-NML",
+        "title" : "Person"
+      }
+    },
+    "identifiers" : {
+      "http://familysearch.org/v1/ChildAndParentsRelationship" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0"
+    },
+    "type" : "http://gedcomx.org/ParentChild",
+    "person1" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/PW8J-MZ1",
+      "resourceId" : "PW8J-MZ1"
+    },
+    "person2" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/KJTW-NML",
+      "resourceId" : "KJTW-NML"
+    }
+  }, {
+    "id" : "MPPPX-PP0",
+    "links" : {
+      "person1" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PW8J-GZ2",
+        "title" : "Person"
+      },
+      "person2" : {
+        "href" : "https://familysearch.org/platform/tree/persons/KJTW-NML",
+        "title" : "Person"
+      }
+    },
+    "identifiers" : {
+      "http://familysearch.org/v1/ChildAndParentsRelationship" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0"
+    },
+    "type" : "http://gedcomx.org/ParentChild",
+    "person1" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/PW8J-GZ2",
+      "resourceId" : "PW8J-GZ2"
+    },
+    "person2" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/KJTW-NML",
+      "resourceId" : "KJTW-NML"
+    }
+  }, {
+    "id" : "FPPPY-PP0",
+    "links" : {
+      "person1" : {
+        "href" : "https://familysearch.org/platform/tree/persons/KJTW-NML",
+        "title" : "Person"
+      },
+      "person2" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PS78-MH4",
+        "title" : "Person"
+      }
+    },
+    "identifiers" : {
+      "http://familysearch.org/v1/ChildAndParentsRelationship" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPY-PP0"
+    },
+    "type" : "http://gedcomx.org/ParentChild",
+    "person1" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/KJTW-NML",
+      "resourceId" : "KJTW-NML"
+    },
+    "person2" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/PS78-MH4",
+      "resourceId" : "PS78-MH4"
+    }
+  }, {
+    "id" : "MPPPY-PP0",
+    "links" : {
+      "person1" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PA65-HG3",
+        "title" : "Person"
+      },
+      "person2" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PS78-MH4",
+        "title" : "Person"
+      }
+    },
+    "identifiers" : {
+      "http://familysearch.org/v1/ChildAndParentsRelationship" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPY-PP0"
+    },
+    "type" : "http://gedcomx.org/ParentChild",
+    "person1" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/PA65-HG3",
+      "resourceId" : "PA65-HG3"
+    },
+    "person2" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/PS78-MH4",
+      "resourceId" : "PS78-MH4"
+    }
+  } ],
+  "places" : [ {
+    "id" : "-1276974106",
+    "names" : [ {
+      "value" : "Moskva, Moscow, Russia"
+    } ],
+    "latitude" : 37.613983,
+    "longitude" : 55.784296
+  } ],
+  "childAndParentsRelationships" : [ {
+    "id" : "PPPX-PP0",
+    "links" : {
+      "relationship" : {
+        "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0",
+        "title" : "Child-and-Parents Relationship"
+      },
+      "child" : {
+        "href" : "https://familysearch.org/platform/tree/persons/KJTW-NML",
+        "title" : "Person"
+      },
+      "mother" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PW8J-GZ2",
+        "title" : "Person"
+      },
+      "father" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PW8J-MZ1",
+        "title" : "Person"
+      }
+    },
+    "father" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/PW8J-MZ1",
+      "resourceId" : "PW8J-MZ1"
+    },
+    "mother" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/PW8J-GZ2",
+      "resourceId" : "PW8J-GZ2"
+    },
+    "child" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/KJTW-NML",
+      "resourceId" : "KJTW-NML"
+    },
+    "fatherFacts" : [ {
+      "id" : "C.1",
+      "type" : "http://gedcomx.org/AdoptiveParent"
+    } ],
+    "motherFacts" : [ {
+      "id" : "C.2",
+      "type" : "http://gedcomx.org/BiologicalParent"
+    } ]
+  }, {
+    "id" : "PPPY-PP0",
+    "links" : {
+      "relationship" : {
+        "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPY-PP0",
+        "title" : "Child-and-Parents Relationship"
+      },
+      "child" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PS78-MH4",
+        "title" : "Person"
+      },
+      "mother" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PA65-HG3",
+        "title" : "Person"
+      },
+      "father" : {
+        "href" : "https://familysearch.org/platform/tree/persons/KJTW-NML",
+        "title" : "Person"
+      }
+    },
+    "father" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/KJTW-NML",
+      "resourceId" : "KJTW-NML"
+    },
+    "mother" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/PA65-HG3",
+      "resourceId" : "PA65-HG3"
+    },
+    "child" : {
+      "resource" : "https://familysearch.org/platform/tree/persons/PS78-MH4",
+      "resourceId" : "PS78-MH4"
+    },
+    "fatherFacts" : [ {
+      "id" : "C.1",
+      "type" : "http://gedcomx.org/AdoptiveParent"
+    } ],
+    "motherFacts" : [ {
+      "id" : "C.2",
+      "type" : "http://gedcomx.org/BiologicalParent"
+    } ]
+  } ]
+}

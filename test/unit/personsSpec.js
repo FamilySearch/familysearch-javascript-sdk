@@ -155,6 +155,13 @@ describe('A person', function() {
       done();
     });
   });
+  
+  it('redirects are properly handled from getPersonWithRelationships', function(done){
+    FS.getPersonWithRelationships('DYHJ-R84').then(function(response){
+      expect(response.getPrimaryId()).toBe('KJTW-NML');
+      done();
+    });
+  });
 
 //    it('change summary is returned from getPersonChangeSummary', function(done) {
 //      FS.getPersonChangeSummary('PID').then(function(response) {
