@@ -8718,7 +8718,16 @@ var FS = require('../FamilySearch'),
 
 // Functions to extract various pieces of the response
 var personWithRelationshipsConvenienceFunctions = {
-  getPerson:     function(id) { return utils.find(this.persons, {id: id}); },
+  getPrimaryId: function() {
+    var sourceDescriptionId = this.description.substring(1),
+        sourceDescription = utils.find(this.sourceDescriptions, function(sourceDescription){
+          return sourceDescription.id === sourceDescriptionId;
+        });
+    if(sourceDescription){
+      return sourceDescription.about.substring(1);
+    }
+  },
+  getPerson: function(id) { return utils.find(this.persons, {id: id}); },
   getPrimaryPerson: function() { return this.getPerson(this.getPrimaryId()); },
   getParentRelationships: function() {
     var primaryId = this.getPrimaryId();
@@ -8726,12 +8735,12 @@ var personWithRelationshipsConvenienceFunctions = {
       return maybe(r.child).resourceId === primaryId;
     });
   },
-  getSpouseRelationships:  function() {
+  getSpouseRelationships: function() {
     return utils.filter(this.relationships, function(r) {
       return r.type === 'http://gedcomx.org/Couple';
     });
   },
-  getSpouseRelationship:  function(spouseId) {
+  getSpouseRelationship: function(spouseId) {
     var primaryId = this.getPrimaryId();
     return utils.find(this.relationships, function(r) {
       return r.type === 'http://gedcomx.org/Couple' &&
@@ -8947,7 +8956,6 @@ FS.prototype.getPersonWithRelationships = function(pid, params, opts) {
     function(url) {
       return self.plumbing.get(url, utils.extend({'person': pid}, params), {}, opts,
         utils.compose(
-          utils.objectExtender({getPrimaryId: function() { return pid; }}), // Make the primary person's id available
           self._personsAndRelationshipsMapper(),
           utils.objectExtender(personWithRelationshipsConvenienceFunctions),
           function(response, promise) {
