@@ -8976,41 +8976,6 @@ FS.prototype.getPersonWithRelationships = function(pid, params, opts) {
     });
 };
 
-// TODO check if person change summary has been fixed (last checked 14 July 14)
-// also check if the entries really contain changeInfo and contributors attributes
-// can't get any data from this resource as of 12 Feb 2015
-// needs to be adapted to new sdk structure when fixed
-//  /**
-//   * @ngdoc function
-//   * @name person.functions:getPersonChangeSummary
-//   * @function
-//   *
-//   * @description
-//   * Get the change summary for a person. For detailed change information see functions in the changeHistory module
-//   * The response includes the following convenience function
-//   *
-//   * - `getChanges()` - get the array of {@link changeHistory.types:constructor.Change Changes} from the response
-//   *
-//   * {@link https://familysearch.org/developers/docs/api/tree/Person_Change_Summary_resource FamilySearch API Docs}
-//   *
-//   * {@link http://jsfiddle.net/DallanQ/ga37h/ editable example}
-//   *
-//   * @param {String} pid id of the person or full URL of the person-change-summary endpoint
-//   * @param {Object=} params currently unused
-//   * @param {Object=} opts options to pass to the http function specified during init
-//   * @return {Object} promise for the response
-//   */
-//  exports.getPersonChangeSummary = function(pid, params, opts) {
-//    return helpers.chainHttpPromises(
-//      plumbing.getUrl('person-change-summary-template', pid, {pid: pid}),
-//      function(url) {
-//        return plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-//          helpers.compose(
-//            helpers.objectExtender({getChanges: function() { return this.entries || []; }}),
-//            helpers.constructorSetter(changeHistory.Change, 'entries')));
-//      });
-//  };
-
 /**
  * @ngdoc function
  * @name person.functions:getSpouses
