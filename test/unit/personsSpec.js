@@ -169,15 +169,6 @@ describe('A person', function() {
     });
   });
 
-//    it('change summary is returned from getPersonChangeSummary', function(done) {
-//      FS.getPersonChangeSummary('PID').then(function(response) {
-//        expect(response.getChanges()[0].id).toBe('12345');
-//        expect(response.getChanges()[0].published).toBe(1386006311124);
-//        expect(response.getChanges()[0].title).toBe('Change Summary 1');
-//        expect(response.getChanges()[0].updated).toBe(1386006311124);
-//      });
-//    });
-
   it('spouse relationships are returned from getSpouses', function(done) {
     FS.getSpouses('FJP-M4RK').then(function(response) {
       expect(response.getCoupleRelationships().length).toBe(1);
