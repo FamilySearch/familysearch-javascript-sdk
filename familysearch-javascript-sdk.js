@@ -34,6 +34,9 @@ var instanceId = 0;
  * - `auto_signin` - set to true if you want the user to be prompted to sign in whenever you call an API function
  * without an access token; must be false for node.js, and may result in a blocked pop-up if the API call is
  * not in direct response to a user-initiated action; because of the blocked pop-up issue, you may want to use `expire_callback` instead
+ * - `redirect_auth` - set to true if you want authentication to redirect rather than offer a popup. It will take the current page as
+ * a state, and redirect the user back to that page. Just be sure your callback URL has the FamilySearch object initialized or redirect
+ * will not occur. This helps make applications work for mobile out of the box.
  * - `expire_callback` - pass in a function that will be called when the access token expires
  * - `save_access_token` - set to true if you want the access token to be saved and re-read in future init calls
  * (uses a session cookie, must be false for node.js) - *setting `save_access_token` along with `auto_signin` and
@@ -121,6 +124,8 @@ var FS = module.exports = function(opts){
 
   self.settings.autoSignin = opts['auto_signin'];
 
+  self.settings.redirectAuth = opts['redirect_auth'];
+
   self.settings.autoExpire = opts['auto_expire'];
 
   self.settings.expireCallback = opts['expire_callback'];
@@ -141,6 +146,14 @@ var FS = module.exports = function(opts){
   self.settings.discoveryPromise.then(function(discoveryResource) {
     self.settings.discoveryResource = discoveryResource;
   });
+
+  //var params = self.helpers.decodeQueryString( document.URL );
+  //if (self.settings.redirectAuth && params['code'] && params['state']) {
+  //  self.helpers.eraseAccessToken(true);
+  //  self.getAccessToken(params['code']).then(function () {
+  //    window.location = decodeURIComponent(params['state']);
+  //  });
+  //}
 
 };
     
@@ -6007,6 +6020,7 @@ module.exports = {
   clearTimeout: null,
   redirectUri: null,
   autoSignin: false,
+  redirectAuth: false,
   autoExpire: false,
   accessToken: null,
   saveAccessToken: false,
@@ -6706,7 +6720,8 @@ var FS = require('./../FamilySearch'),
  * @function
  *
  * @description
- * Open a popup window to allow the user to authenticate and authorize this application.
+ * Either Open a popup window to allow the user to authenticate and authorize this application, or redirect the
+ * user to the FamilySearch authentication endpoint with the current URL as a state that will redirect on success.
  * You do not have to call this function. If you call `getAccessToken` without passing in an authorization code,
  * that function will call this function to get one.
  *
@@ -6716,7 +6731,8 @@ var FS = require('./../FamilySearch'),
  */
 FS.prototype.getAuthCode = function() {
   var self = this,
-      settings = self.settings;
+      settings = self.settings,
+      helpers = self.helpers;
       
   if (typeof window === 'undefined') {
     var d = settings.deferredWrapper();
@@ -6724,12 +6740,23 @@ FS.prototype.getAuthCode = function() {
     return d.promise;
   } else {
     return self.plumbing.getUrl('http://oauth.net/core/2.0/endpoint/authorize').then(function(url) {
-      var popup = self.openPopup(url, {
-        'response_type' : 'code',
-        'client_id'     : settings.clientId,
-        'redirect_uri'  : settings.redirectUri
-      });
-      return self._pollForAuthCode(popup);
+      if (settings.redirectAuth) {
+        window.location = helpers.appendQueryParameters(url, {
+          'response_type' : 'code',
+          'client_id'     : settings.clientId,
+          'redirect_uri'  : settings.redirectUri,
+          'state': window.location
+        });
+        d = self.settings.deferredWrapper();
+        return d.promise;
+      } else {
+        var popup = self.openPopup(url, {
+          'response_type' : 'code',
+          'client_id'     : settings.clientId,
+          'redirect_uri'  : settings.redirectUri
+        });
+        return self._pollForAuthCode(popup);
+      }
     });
   }
 };
@@ -6962,6 +6989,25 @@ FS.prototype._pollForAuthCode = function(popup) {
   }
   else {
     d.reject('Popup blocked');
+  }
+  return d.promise;
+};
+
+/**
+ * Polls the popup window location for the auth code
+ *
+ * @private
+ * @param {window} popup window to poll
+ * @return a promise of the auth code
+ */
+FS.prototype._checkForAuthCode = function() {
+  var self = this,
+      d = self.settings.deferredWrapper();
+  var params = self.helpers.decodeQueryString( window.location.href );
+  if (params['code'] && params['state']) {
+    self.getCode( window.location.href, d);
+  } else {
+    d.reject('No auth code');
   }
   return d.promise;
 };

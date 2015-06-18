@@ -22,6 +22,9 @@ however, it must exist for mobile safari - see the Overview section of the docum
 <li><code>auto_signin</code> - set to true if you want the user to be prompted to sign in whenever you call an API function
 without an access token; must be false for node.js, and may result in a blocked pop-up if the API call is
 not in direct response to a user-initiated action; because of the blocked pop-up issue, you may want to use <code>expire_callback</code> instead</li>
+<li><code>redirect_auth</code> - set to true if you want authentication to redirect rather than offer a popup. It will take the current page as
+a state, and redirect the user back to that page. Just be sure your callback URL has the FamilySearch object initialized or redirect
+will not occur. This helps make applications work for mobile out of the box.</li>
 <li><code>expire_callback</code> - pass in a function that will be called when the access token expires</li>
 <li><code>save_access_token</code> - set to true if you want the access token to be saved and re-read in future init calls
 (uses a session cookie, must be false for node.js) - <em>setting <code>save_access_token</code> along with <code>auto_signin</code> and
