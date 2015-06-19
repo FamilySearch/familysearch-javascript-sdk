@@ -7,6 +7,7 @@ var utils = require('./utils'),
 
 var Helpers = function(client){
   this.settings = client.settings;
+  this.client = client;
   this.accessTokenInactiveTimer = null;
   this.accessTokenCreationTimer = null;
 };
@@ -265,7 +266,7 @@ Helpers.prototype.eraseAccessToken = function(omitCallback) {
     this.eraseCookie(this.getAccessTokenCookieName());
   }
   if (!!this.settings.expireCallback && !omitCallback) {
-    this.settings.expireCallback(this);
+    this.settings.expireCallback(this.client);
   }
 };
 
