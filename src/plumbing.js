@@ -261,7 +261,7 @@ Plumbing.prototype.http = function(method, url, headers, data, opts, responseMap
       this.settings.autoSignin &&
       !this.helpers.isOAuthServerUrl(absoluteUrl) &&
       url !== this.settings.discoveryUrl) {
-    accessTokenPromise = this.settings.getAccessToken();
+    accessTokenPromise = this.client.getAccessToken();
   }
   else {
     accessTokenPromise = this.helpers.refPromise(this.settings.accessToken);
