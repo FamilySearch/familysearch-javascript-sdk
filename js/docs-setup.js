@@ -72,8 +72,17 @@ NG_DOCS={
       "shortName": "getAuthCode",
       "type": "function",
       "moduleName": "authentication",
-      "shortDescription": "Either Open a popup window to allow the user to authenticate and authorize this application, or redirect the",
-      "keywords": "allow api application authenticate authentication authorization authorize call code current docs endpoint familysearch function functions getaccesstoken https open org passing popup promise redirect success url user window"
+      "shortDescription": "Open a popup window to allow the user to authenticate and authorize this application.",
+      "keywords": "allow api application authenticate authentication authorization authorize call code docs familysearch function functions getaccesstoken https open org passing popup promise user window"
+    },
+    {
+      "section": "api",
+      "id": "authentication.functions:getOAuth2AuthorizeURL",
+      "shortName": "getOAuth2AuthorizeURL",
+      "type": "function",
+      "moduleName": "authentication",
+      "shortDescription": "Get the URL that a user should be redirected to to begin",
+      "keywords": "api authentication authorize function functions oauth2 optional parameter promise redirected resolved url user"
     },
     {
       "section": "api",
@@ -388,7 +397,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "familysearch",
       "shortDescription": "Initialize the FamilySearch object",
-      "keywords": "$http $q $timeout access access_token action ajax angular api applications authentication auto_expire auto_signin blocked box call callback called calls clear client_id console convenient cookie creating current debug defaults defer deferred deferred_function developer development direct documentation environment exist expire_callback expired expires false familysearch function future global helps host hour hours http http_function inactivity init initialize initialized issue issuing jquery js key library logging mobile node oauth2 object occur offer optional opts overview pass pop-up popup port production prompted re-read received redirect redirect_auth redirect_uri registered requests response result running safari sandbox save_access_token saved script server session set settimeout sign staging system timeout timeout_function token true turn types uri url user user-initiated users whichever work"
+      "keywords": "$http $q $timeout access access_token action ajax angular api auto_expire auto_signin blocked call called calls clear client_id console convenient cookie creating debug defaults defer deferred deferred_function developer development direct documentation environment exist expire_callback expired expires false familysearch function future global host hour hours http http_function inactivity init initialize issue issuing jquery js key library logging mobile node oauth2 object optional opts overview pass pop-up port production prompted re-read received redirect redirect_uri registered requests response result running safari sandbox save_access_token saved script server session set settimeout sign staging system timeout timeout_function token true turn types uri user user-initiated users whichever"
     },
     {
       "section": "api",
