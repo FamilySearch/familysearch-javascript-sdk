@@ -251,6 +251,7 @@ Plumbing.prototype.http = function(method, url, headers, data, opts, responseMap
   var d = this.settings.deferredWrapper();
   var returnedPromise = d.promise;
   var self = this;
+  
   // prepend the server
   var absoluteUrl = this.helpers.getAPIServerUrl(url);
   headers = headers || {};
@@ -258,10 +259,20 @@ Plumbing.prototype.http = function(method, url, headers, data, opts, responseMap
   // do we need to request an access token?
   var accessTokenPromise;
   if (!this.settings.accessToken &&
-      this.settings.autoSignin &&
       !this.helpers.isOAuthServerUrl(absoluteUrl) &&
       url !== this.settings.discoveryUrl) {
-    accessTokenPromise = this.client.getAccessToken();
+        
+    // auto signin
+    if(this.settings.autoSignin){
+      accessTokenPromise = this.client.getAccessToken();
+    } 
+    
+    // fire expire callback if its set and we're not doing auto signin
+    else if(!!this.settings.expireCallback){
+      this.settings.expireCallback();
+      d.reject();
+      return;
+    }
   }
   else {
     accessTokenPromise = this.helpers.refPromise(this.settings.accessToken);
