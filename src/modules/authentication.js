@@ -33,6 +33,11 @@ FS.prototype.getAuthCode = function() {
     var d = settings.deferredWrapper();
     d.reject();
     return d.promise;
+  } else if(!!settings.expireCallback && !settings.autoSignin) {
+    settings.expireCallback(this);
+    var dW = settings.deferredWrapper();
+    dW.reject();
+    return dW.promise;
   } else {
     return self.plumbing.getUrl('http://oauth.net/core/2.0/endpoint/authorize').then(function(url) {
       var popup = self.openPopup(url, {

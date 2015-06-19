@@ -265,7 +265,7 @@ Helpers.prototype.eraseAccessToken = function(omitCallback) {
     this.eraseCookie(this.getAccessTokenCookieName());
   }
   if (!!this.settings.expireCallback && !omitCallback) {
-    this.settings.expireCallback();
+    this.settings.expireCallback(this);
   }
 };
 

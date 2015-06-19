@@ -122,7 +122,7 @@ var FS = module.exports = function(opts){
 
   self.settings.autoExpire = opts['auto_expire'];
 
-  self.settings.expireCallback = opts['expire_callback'];
+
 
   if (opts['save_access_token']) {
     self.settings.saveAccessToken = true;
@@ -140,6 +140,8 @@ var FS = module.exports = function(opts){
   self.settings.discoveryPromise.then(function(discoveryResource) {
     self.settings.discoveryResource = discoveryResource;
   });
+
+  self.settings.expireCallback = opts['expire_callback'];
 
 };
     
