@@ -136,7 +136,8 @@ beforeEach(function() {
     'environment': 'sandbox',
     'http_function': httpMock,
     'deferred_function': q.defer,
-    'access_token': 'mock'
+    'access_token': 'mock',
+    'redirect_uri': 'http://example.com/foo'
   });
   
   global.FS.getHttpRequests = function() {

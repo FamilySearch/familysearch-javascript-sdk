@@ -173,6 +173,34 @@ FS.prototype.getAccessTokenForMobile = function(userName, password) {
 
 /**
  * @ngdoc function
+ * @name authentication.functions:getOAuth2AuthorizeURL
+ * @function
+ * 
+ * @description
+ * Get the URL that a user should be redirected to to begin
+ * OAuth2 authentication.
+ * 
+ * @param {String=} Optional state parameter
+ * @return {Object} Promise that is resolved with the OAuth2 authorize URL the user should be sent to
+ */
+FS.prototype.getOAuth2AuthorizeURL = function(state){
+  var self = this,
+      settings = self.settings;
+  return this.plumbing.getUrl('http://oauth.net/core/2.0/endpoint/authorize').then(function(url){
+    var queryParams = {
+      'response_type': 'code',
+      'client_id': settings.clientId,
+      'redirect_uri': settings.redirectUri
+    };
+    if(state){
+      queryParams.state = state;
+    }
+    return self.helpers.appendQueryParameters(url, queryParams);
+  });
+};
+
+/**
+ * @ngdoc function
  * @name authentication.functions:hasAccessToken
  * @function
  *
