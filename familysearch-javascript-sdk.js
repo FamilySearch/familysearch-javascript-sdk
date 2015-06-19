@@ -123,7 +123,7 @@ var FS = module.exports = function(opts){
 
   self.settings.autoExpire = opts['auto_expire'];
 
-  self.settings.expireCallback = opts['expire_callback'];
+
 
   if (opts['save_access_token']) {
     self.settings.saveAccessToken = true;
@@ -141,6 +141,8 @@ var FS = module.exports = function(opts){
   self.settings.discoveryPromise.then(function(discoveryResource) {
     self.settings.discoveryResource = discoveryResource;
   });
+
+  self.settings.expireCallback = opts['expire_callback'];
 
 };
     
@@ -6307,7 +6309,7 @@ Helpers.prototype.eraseAccessToken = function(omitCallback) {
     this.eraseCookie(this.getAccessTokenCookieName());
   }
   if (!!this.settings.expireCallback && !omitCallback) {
-    this.settings.expireCallback();
+    this.settings.expireCallback(this);
   }
 };
 
@@ -6722,6 +6724,11 @@ FS.prototype.getAuthCode = function() {
     var d = settings.deferredWrapper();
     d.reject();
     return d.promise;
+  } else if(!!settings.expireCallback && !settings.autoSignin) {
+    settings.expireCallback(this);
+    var dW = settings.deferredWrapper();
+    dW.reject();
+    return dW.promise;
   } else {
     return self.plumbing.getUrl('http://oauth.net/core/2.0/endpoint/authorize').then(function(url) {
       var popup = self.openPopup(url, {
@@ -10814,11 +10821,11 @@ Plumbing.prototype.getUrl = function(resourceName, possibleUrl, params) {
  */
 Plumbing.prototype.get = function(url, params, headers, opts, responseMapper) {
   return this.http('GET',
-    this.helpers.appendQueryParameters(url, params),
-    utils.extend({'Accept': 'application/x-gedcomx-v1+json'}, headers),
-    null,
-    opts,
-    responseMapper);
+      this.helpers.appendQueryParameters(url, params),
+      utils.extend({'Accept': 'application/x-gedcomx-v1+json'}, headers),
+      null,
+      opts,
+      responseMapper);
 };
 
 /**
@@ -10838,11 +10845,11 @@ Plumbing.prototype.get = function(url, params, headers, opts, responseMapper) {
  */
 Plumbing.prototype.post = function(url, data, headers, opts, responseMapper) {
   return this.http('POST',
-    url,
-    utils.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers),
-    data,
-    opts,
-    responseMapper);
+      url,
+      utils.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers),
+      data,
+      opts,
+      responseMapper);
 };
 
 /**
@@ -10862,11 +10869,11 @@ Plumbing.prototype.post = function(url, data, headers, opts, responseMapper) {
  */
 Plumbing.prototype.put = function(url, data, headers, opts, responseMapper) {
   return this.http('PUT',
-    url,
-    utils.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers),
-    data,
-    opts,
-    responseMapper);
+      url,
+      utils.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers),
+      data,
+      opts,
+      responseMapper);
 };
 
 /**
@@ -10885,11 +10892,11 @@ Plumbing.prototype.put = function(url, data, headers, opts, responseMapper) {
  */
 Plumbing.prototype.del = function(url, headers, opts, responseMapper) {
   return this.http('DELETE',
-    url,
-    utils.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers),
-    null,
-    opts,
-    responseMapper);
+      url,
+      utils.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers),
+      null,
+      opts,
+      responseMapper);
 };
 
 /**
@@ -10979,106 +10986,94 @@ Plumbing.prototype.http = function(method, url, headers, data, opts, responseMap
   var d = this.settings.deferredWrapper();
   var returnedPromise = d.promise;
   var self = this;
-  
   // prepend the server
   var absoluteUrl = this.helpers.getAPIServerUrl(url);
   headers = headers || {};
-    
+
   // do we need to request an access token?
   var accessTokenPromise;
   if (!this.settings.accessToken &&
+      this.settings.autoSignin &&
       !this.helpers.isOAuthServerUrl(absoluteUrl) &&
       url !== this.settings.discoveryUrl) {
-        
-    // auto signin
-    if(this.settings.autoSignin){
-      accessTokenPromise = this.client.getAccessToken();
-    } 
-    
-    // fire expire callback if its set and we're not doing auto signin
-    else if(!!this.settings.expireCallback){
-      this.settings.expireCallback();
-      d.reject();
-      return;
-    }
+    accessTokenPromise = this.client.getAccessToken();
   }
   else {
     accessTokenPromise = this.helpers.refPromise(this.settings.accessToken);
   }
   accessTokenPromise.then(function() {
-    // append the access token as a query parameter to avoid cors pre-flight
-    // this is detrimental to browser caching across sessions, which seems less bad than cors pre-flight requests
-    var accessTokenName = self.helpers.isAuthoritiesServerUrl(absoluteUrl) ? 'sessionId' : 'access_token';
-    if (self.settings.accessToken && absoluteUrl.indexOf(accessTokenName+'=') === -1) {
-      var accessTokenParam = {};
-      accessTokenParam[accessTokenName] = self.settings.accessToken;
-      absoluteUrl = self.helpers.appendQueryParameters(absoluteUrl, accessTokenParam);
-    }
-
-    // default retries
-    if (retries == null) { // also catches undefined
-      retries = self.settings.maxHttpRequestRetries;
-    }
-
-    // call the http wrapper
-    var promise = self.settings.httpWrapper(method,
-      absoluteUrl,
-      headers,
-      self.transformData(data, headers['Content-Type']),
-      opts || {});
-
-    // process the response
-    self.helpers.extendHttpPromise(returnedPromise, promise);
-    promise.then(
-      function(data) {
-        if (method === 'GET' && promise.getStatusCode() === 204) {
-          data = {}; // an empty GET response should become an empty json object
+        // append the access token as a query parameter to avoid cors pre-flight
+        // this is detrimental to browser caching across sessions, which seems less bad than cors pre-flight requests
+        var accessTokenName = self.helpers.isAuthoritiesServerUrl(absoluteUrl) ? 'sessionId' : 'access_token';
+        if (self.settings.accessToken && absoluteUrl.indexOf(accessTokenName+'=') === -1) {
+          var accessTokenParam = {};
+          accessTokenParam[accessTokenName] = self.settings.accessToken;
+          absoluteUrl = self.helpers.appendQueryParameters(absoluteUrl, accessTokenParam);
         }
-        self.helpers.refreshAccessToken();
-        var processingTime = promise.getResponseHeader('X-PROCESSING-TIME');
-        if (processingTime) {
-          self.totalProcessingTime += parseInt(processingTime,10);
+
+        // default retries
+        if (retries == null) { // also catches undefined
+          retries = self.settings.maxHttpRequestRetries;
         }
-        if (responseMapper) {
-          data = responseMapper(data, promise);
-        }
-        d.resolve(data);
+
+        // call the http wrapper
+        var promise = self.settings.httpWrapper(method,
+            absoluteUrl,
+            headers,
+            self.transformData(data, headers['Content-Type']),
+            opts || {});
+
+        // process the response
+        self.helpers.extendHttpPromise(returnedPromise, promise);
+        promise.then(
+            function(data) {
+              if (method === 'GET' && promise.getStatusCode() === 204) {
+                data = {}; // an empty GET response should become an empty json object
+              }
+              self.helpers.refreshAccessToken();
+              var processingTime = promise.getResponseHeader('X-PROCESSING-TIME');
+              if (processingTime) {
+                self.totalProcessingTime += parseInt(processingTime,10);
+              }
+              if (responseMapper) {
+                data = responseMapper(data, promise);
+              }
+              d.resolve(data);
+            },
+            function() {
+              var statusCode = promise.getStatusCode();
+              self.helpers.log('http failure', statusCode, retries, promise.getAllResponseHeaders());
+              if (statusCode === 401) {
+                self.helpers.eraseAccessToken();
+              }
+              if ((method === 'GET' && statusCode >= 500 && retries > 0) || statusCode === 429) {
+                var retryAfterHeader = promise.getResponseHeader('Retry-After');
+                var retryAfter = retryAfterHeader ? parseInt(retryAfterHeader,10) : self.settings.defaultThrottleRetryAfter;
+                self.settings.setTimeout(function() {
+                  promise = self.http(method, url, headers, data, opts, responseMapper, retries-1);
+                  self.helpers.extendHttpPromise(returnedPromise, promise);
+                  promise.then(
+                      function(data) {
+                        d.resolve(data);
+                      },
+                      function() {
+                        d.reject.apply(d, arguments);
+                      });
+                }, retryAfter);
+              }
+              else {
+                d.reject.apply(d, arguments);
+              }
+            });
       },
       function() {
-        var statusCode = promise.getStatusCode();
-        self.helpers.log('http failure', statusCode, retries, promise.getAllResponseHeaders());
-        if (statusCode === 401) {
-          self.helpers.eraseAccessToken();
-        }
-        if ((method === 'GET' && statusCode >= 500 && retries > 0) || statusCode === 429) {
-          var retryAfterHeader = promise.getResponseHeader('Retry-After');
-          var retryAfter = retryAfterHeader ? parseInt(retryAfterHeader,10) : self.settings.defaultThrottleRetryAfter;
-          self.settings.setTimeout(function() {
-            promise = self.http(method, url, headers, data, opts, responseMapper, retries-1);
-            self.helpers.extendHttpPromise(returnedPromise, promise);
-            promise.then(
-              function(data) {
-                d.resolve(data);
-              },
-              function() {
-                d.reject.apply(d, arguments);
-              });
-          }, retryAfter);
-        }
-        else {
-          d.reject.apply(d, arguments);
-        }
+        d.reject.apply(d, arguments);
       });
-  },
-  function() {
-    d.reject.apply(d, arguments);
-  });
 
   return returnedPromise;
 };
 
 module.exports = Plumbing;
-
 },{"./utils":48}],47:[function(require,module,exports){
 var FS = require('./FamilySearch'),
     utils = require('./utils'),
