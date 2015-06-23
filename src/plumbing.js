@@ -267,73 +267,71 @@ Plumbing.prototype.http = function(method, url, headers, data, opts, responseMap
     accessTokenPromise = this.helpers.refPromise(this.settings.accessToken);
   }
   accessTokenPromise.then(function() {
-        // append the access token as a query parameter to avoid cors pre-flight
-        // this is detrimental to browser caching across sessions, which seems less bad than cors pre-flight requests
-        var accessTokenName = self.helpers.isAuthoritiesServerUrl(absoluteUrl) ? 'sessionId' : 'access_token';
-        if (self.settings.accessToken && absoluteUrl.indexOf(accessTokenName+'=') === -1) {
-          var accessTokenParam = {};
-          accessTokenParam[accessTokenName] = self.settings.accessToken;
-          absoluteUrl = self.helpers.appendQueryParameters(absoluteUrl, accessTokenParam);
-        }
+    // append the access token as a query parameter to avoid cors pre-flight
+    // this is detrimental to browser caching across sessions, which seems less bad than cors pre-flight requests
+    var accessTokenName = self.helpers.isAuthoritiesServerUrl(absoluteUrl) ? 'sessionId' : 'access_token';
+    if (self.settings.accessToken && absoluteUrl.indexOf(accessTokenName+'=') === -1) {
+      var accessTokenParam = {};
+      accessTokenParam[accessTokenName] = self.settings.accessToken;
+      absoluteUrl = self.helpers.appendQueryParameters(absoluteUrl, accessTokenParam);
+    }
 
-        // default retries
-        if (retries == null) { // also catches undefined
-          retries = self.settings.maxHttpRequestRetries;
-        }
+    // default retries
+    if (retries == null) { // also catches undefined
+      retries = self.settings.maxHttpRequestRetries;
+    }
 
-        // call the http wrapper
-        var promise = self.settings.httpWrapper(method,
-            absoluteUrl,
-            headers,
-            self.transformData(data, headers['Content-Type']),
-            opts || {});
+    // call the http wrapper
+    var promise = self.settings.httpWrapper(method,
+        absoluteUrl,
+        headers,
+        self.transformData(data, headers['Content-Type']),
+        opts || {});
 
-        // process the response
-        self.helpers.extendHttpPromise(returnedPromise, promise);
-        promise.then(
-            function(data) {
-              if (method === 'GET' && promise.getStatusCode() === 204) {
-                data = {}; // an empty GET response should become an empty json object
-              }
-              self.helpers.refreshAccessToken();
-              var processingTime = promise.getResponseHeader('X-PROCESSING-TIME');
-              if (processingTime) {
-                self.totalProcessingTime += parseInt(processingTime,10);
-              }
-              if (responseMapper) {
-                data = responseMapper(data, promise);
-              }
-              d.resolve(data);
-            },
-            function() {
-              var statusCode = promise.getStatusCode();
-              self.helpers.log('http failure', statusCode, retries, promise.getAllResponseHeaders());
-              if (statusCode === 401) {
-                self.helpers.eraseAccessToken();
-              }
-              if ((method === 'GET' && statusCode >= 500 && retries > 0) || statusCode === 429) {
-                var retryAfterHeader = promise.getResponseHeader('Retry-After');
-                var retryAfter = retryAfterHeader ? parseInt(retryAfterHeader,10) : self.settings.defaultThrottleRetryAfter;
-                self.settings.setTimeout(function() {
-                  promise = self.http(method, url, headers, data, opts, responseMapper, retries-1);
-                  self.helpers.extendHttpPromise(returnedPromise, promise);
-                  promise.then(
-                      function(data) {
-                        d.resolve(data);
-                      },
-                      function() {
-                        d.reject.apply(d, arguments);
-                      });
-                }, retryAfter);
-              }
-              else {
-                d.reject.apply(d, arguments);
-              }
-            });
-      },
-      function() {
+    // process the response
+    self.helpers.extendHttpPromise(returnedPromise, promise);
+    promise.then(function(data) {
+      if (method === 'GET' && promise.getStatusCode() === 204) {
+        data = {}; // an empty GET response should become an empty json object
+      }
+      self.helpers.refreshAccessToken();
+      var processingTime = promise.getResponseHeader('X-PROCESSING-TIME');
+      if (processingTime) {
+        self.totalProcessingTime += parseInt(processingTime,10);
+      }
+      if (responseMapper) {
+        data = responseMapper(data, promise);
+      }
+      d.resolve(data);
+    },
+    function() {
+      var statusCode = promise.getStatusCode();
+      self.helpers.log('http failure', statusCode, retries, promise.getAllResponseHeaders());
+      if (statusCode === 401) {
+        self.helpers.eraseAccessToken();
+      }
+      if ((method === 'GET' && statusCode >= 500 && retries > 0) || statusCode === 429) {
+        var retryAfterHeader = promise.getResponseHeader('Retry-After');
+        var retryAfter = retryAfterHeader ? parseInt(retryAfterHeader,10) : self.settings.defaultThrottleRetryAfter;
+        self.settings.setTimeout(function() {
+          promise = self.http(method, url, headers, data, opts, responseMapper, retries-1);
+          self.helpers.extendHttpPromise(returnedPromise, promise);
+          promise.then(function(data) {
+            d.resolve(data);
+          },
+          function() {
+            d.reject.apply(d, arguments);
+          });
+        }, retryAfter);
+      }
+      else {
         d.reject.apply(d, arguments);
-      });
+      }
+    });
+  },
+  function() {
+    d.reject.apply(d, arguments);
+  });
 
   return returnedPromise;
 };

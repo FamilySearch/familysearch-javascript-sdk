@@ -27,17 +27,16 @@ var FS = require('./../FamilySearch'),
  */
 FS.prototype.getAuthCode = function() {
   var self = this,
-      settings = self.settings;
+      settings = self.settings,
+      d = settings.deferredWrapper();
       
   if (typeof window === 'undefined') {
-    var d = settings.deferredWrapper();
     d.reject();
     return d.promise;
   } else if(!!settings.expireCallback && !settings.autoSignin) {
     settings.expireCallback(this);
-    var dW = settings.deferredWrapper();
-    dW.reject();
-    return dW.promise;
+    d.reject();
+    return d.promise;
   } else {
     return self.plumbing.getUrl('http://oauth.net/core/2.0/endpoint/authorize').then(function(url) {
       var popup = self.openPopup(url, {
