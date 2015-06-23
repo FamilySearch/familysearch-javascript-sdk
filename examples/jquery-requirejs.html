@@ -9,21 +9,25 @@
 <body>
 <script>
   require(['FamilySearch'], function(FamilySearch) {
-    window.run = function() {
-      FamilySearch.getCurrentUser().then(function(response) {
-        $('#output').append('Hello '+response.getUser().contactName+'!');
-      });
-    };
-
-    FamilySearch.init({
+    
+    var fsClient = new FamilySearch({
       client_id: 'YOUR_CLIENT_ID_GOES_HERE',
       environment: 'sandbox',
       redirect_uri: 'YOUR_REDIRECT_URI_GOES_HERE',
       http_function: $.ajax,
       deferred_function: $.Deferred,
       save_access_token: true,
-      auto_expire: true
+      auto_expire: true,
+      auto_signin: true
     });
+    
+    window.run = function() {
+      fsClient.getCurrentUser().then(function(response) {
+        $('#output').append('Hello '+response.getUser().contactName+'!');
+      });
+    };
+
+    
   });
 </script>
 

@@ -7,7 +7,7 @@
   <script>
     function DemoCntl($scope, $location, $http, $q, $timeout) {
       $scope.run = function() {
-        FamilySearch.init({
+        var fsClient = new FamilySearch({
           client_id: 'YOUR_CLIENT_ID_GOES_HERE',
           environment: 'sandbox',
           redirect_uri: 'YOUR_REDIRECT_URI_GOES_HERE',
@@ -15,10 +15,11 @@
           deferred_function: $q.defer,
           timeout_function: $timeout,
           save_access_token: true,
-          auto_expire: true
+          auto_expire: true,
+          auto_signin: true
         });
 
-        FamilySearch.getCurrentUser().then(function(response) {
+        fsClient.getCurrentUser().then(function(response) {
           // since the SDK is using AngularJS functions for http, deferred, and timeout, you don't have to call $scope.$apply!
           $scope.contactName = response.getUser().contactName;
         });
