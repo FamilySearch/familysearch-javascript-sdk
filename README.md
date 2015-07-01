@@ -1,7 +1,7 @@
 A high-level JavaScript wrapper around the FamilySearch REST API.
 
 [![Build Status](https://travis-ci.org/FamilySearch/familysearch-javascript-sdk.png)](https://travis-ci.org/FamilySearch/familysearch-javascript-sdk)
-[![Coverage Status](https://coveralls.io/repos/rootsdev/familysearch-javascript-sdk/badge.svg?branch=master)](https://coveralls.io/r/rootsdev/familysearch-javascript-sdk?branch=master)
+[![Coverage Status](https://coveralls.io/repos/FamilySearch/familysearch-javascript-sdk/badge.svg?branch=master)](https://coveralls.io/r/FamilySearch/familysearch-javascript-sdk?branch=master)
 
 Overview
 ========
