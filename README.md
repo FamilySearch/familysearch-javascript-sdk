@@ -26,12 +26,12 @@ For example, the following logs the name of a person along with their spouses an
 
 * Asynchronous functions (like the one above) return promises to make it easy for you to refer to their results from anywhere in your code.
 
-* Each function is [well-documented](http://rootsdev.org/familysearch-javascript-sdk)
+* Each function is [well-documented](http://familysearch.github.io/familysearch-javascript-sdk)
 and has an editable jsFiddle to demonstrate its functionality and allow you to experiment.
 
 * In the browser, authentication is handled using a popup window.  You do not need to create an OAuth redirect page.
 All you need to do is register a callback URI that shares the same hostname and port as your code.
-Check out the [jsFiddle](http://jsfiddle.net/DallanQ/MpUg7/) to see it in action (requires you to have a sandbox account).
+Check out the [jsFiddle](http://jsfiddle.net/MpUg7/60/) to see it in action (requires you to have a sandbox account).
 
 * Option to store access token in a session cookie.
 
@@ -61,7 +61,7 @@ We are still on major version 0, so the API is subject to some change.
    may catch the code in an unstable mid-release state.
    
    ```
-   "familysearch-javascript-sdk": "https://github.com/rootsdev/familysearch-javascript-sdk.git#v0.9.15"
+   "familysearch-javascript-sdk": "https://github.com/FamilySearch/familysearch-javascript-sdk.git#v0.9.15"
    ```
 
 1. Download
@@ -70,15 +70,15 @@ We are still on major version 0, so the API is subject to some change.
     release you want to download or get the most up-to-date version by downloading one 
     of the following files:
 
-    * [familysearch-javascript-sdk.js](http://rootsdev.org/familysearch-javascript-sdk/familysearch-javascript-sdk.js)
-    * [familysearch-javascript-sdk.min.js](http://rootsdev.org/familysearch-javascript-sdk/familysearch-javascript-sdk.min.js)
+    * [familysearch-javascript-sdk.js](http://familysearch.github.io/familysearch-javascript-sdk/familysearch-javascript-sdk.js)
+    * [familysearch-javascript-sdk.min.js](http://familysearch.github.io/familysearch-javascript-sdk/familysearch-javascript-sdk.min.js)
 
 In the future, if we can get 100 people watching the repo, [cdnJS](http://cdnjs.com/) will host it.
 
 Documentation
 =============
 
-* [API docs](http://rootsdev.org/familysearch-javascript-sdk).
+* [API docs](http://familysearch.github.io/familysearch-javascript-sdk).
 * [Slides from 2014 RootsTech talk](http://dallanq.github.io/rootstech-2014-fs-js-sdk-slides).
 * [Comprehensive example application](https://github.com/rootsdev/familysearch-reference-client) showing how to use the SDK.
 
@@ -91,7 +91,7 @@ Backward-incompatible changes don't happen very often, but they do happen occasi
 Once we hit version 1.0.0 later this Fall, I will make sure that changes are backwards-compatible.
 
 You can check out a specific release by clicking on the github 
-[Releases link](https://github.com/rootsdev/familysearch-javascript-sdk/releases)
+[Releases link](https://github.com/FamilySearch/familysearch-javascript-sdk/releases)
 or by specifying the release number in your `bower.json` file; e.g., `"familysearch-javascript-sdk": "~0.9.15"`. 
 The _Releases_ link also serves as a _Change Log_, so it's worth looking at even if you plan to work off the master branch. 
 
@@ -103,7 +103,7 @@ Roadmap
 * Make the SDK work with jQuery and AngularJS
 
 ####Milestone 2 - complete
-* Create an [example application](https://github.com/rootsdev/familysearch-reference-client) showing how to use the SDK.
+* Create an [example application](https://github.com/FamilySearch/familysearch-reference-client) showing how to use the SDK.
 
 ####Milestone 3 - complete
 * Create functions for the basic create, update, and delete operations - everything that you're likely to use
