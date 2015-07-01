@@ -20,7 +20,7 @@ var FS = require('./../FamilySearch'),
  *
  * - `getDate()` - get the {@link authorities.types:constructor.Date Date} from the response
  *
- * {@link https://familysearch.org/developers/docs/guides/authorities/date-authority FamilySearch API Docs}
+ * {@link https://familysearch.org/developers/docs/api/dates/Date_resource}
  *
  * {@link http://jsfiddle.net/mL906m82/ editable example}
  *
@@ -31,16 +31,18 @@ var FS = require('./../FamilySearch'),
 FS.prototype.getDate = function(date, opts) {
   var self = this,
       params = {
-        date: date,
-        dataFormat: 'application/json'
+        date: date
       };
-  return self.plumbing.get(self.helpers.getAuthoritiesServerUrl('/authorities/v1/date'), params, {'Accept': 'application/json'}, opts,
+  return self.plumbing.get(self.helpers.getAPIServerUrl('/platform/dates'), params, {}, opts,
     utils.compose(
-      utils.objectExtender({getDate: function() { return utils.maybe(utils.maybe(this.dates).date)[0]; }}),
-      function(response){
-        utils.forEach(response.dates.date, function(date, index, obj){
-          obj[index] = self.createDate(date);
-        });
+      utils.objectExtender({getDate: function() { return utils.maybe(this.date); }}),
+      function(body){
+        var response = {};
+        if(body){
+          response.date = self.createDate({
+            normalized: body
+          });
+        }
         return response;
       }
     ));

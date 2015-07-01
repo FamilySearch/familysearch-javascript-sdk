@@ -82,13 +82,23 @@ function httpMock(opts, callback) {
     status = data.status;
   }
   var returnedData = {};
-  for (var key in data) {
-    if (data.hasOwnProperty(key)) {
-      if (key !== 'headers' && key !== 'status') {
-        returnedData[key] = data[key];
+  
+  // Account for non-JSON responses such as the date authority.
+  // In those cases we put the response body in the body attribute.
+  if(data.body){
+    returnedData = data.body;
+  }
+  
+  else {
+    for (var key in data) {
+      if (data.hasOwnProperty(key)) {
+        if (key !== 'headers' && key !== 'status') {
+          returnedData[key] = data[key];
+        }
       }
     }
   }
+  
   if (opts.method === 'POST' && isEmpty(returnedData)) {
     returnedData = null;
   }
