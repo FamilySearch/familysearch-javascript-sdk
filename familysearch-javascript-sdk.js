@@ -220,7 +220,7 @@ exports.httpWrapper = function(http, client) {
     var config = utils.extend({
       method: method,
       url: url,
-      responseType: 'json',
+      responseType: headers['Accept'] === 'text/plain' ? 'text' : 'json',
       data: data,
       transformRequest: function(obj) {
         return obj;
@@ -6624,7 +6624,7 @@ exports.httpWrapper = function(ajax, client) {
     opts = utils.extend({
       url: url,
       type: method,
-      dataType: 'json',
+      dataType: headers['Accept'] === 'text/plain' ? 'text' : 'json',
       data: data,
       processData: false
     }, opts);
@@ -10668,6 +10668,10 @@ exports.httpWrapper = function(http, client) {
       opts.formData = opts.body;
       delete opts.body;
       delete opts.headers['Content-Type'];
+      delete opts.json;
+    }
+    
+    if (opts.headers['Accept'] === 'text/plain') {
       delete opts.json;
     }
     
