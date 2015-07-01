@@ -136,7 +136,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "authorities",
       "shortDescription": "Get the standardized date",
-      "keywords": "api authorities docs editable example familysearch function functions getdate http https init net options opts org pass promise response standardize standardized text types"
+      "keywords": "api authorities editable example function functions getdate http https init net options opts org pass promise response standardize standardized text types"
     },
     {
       "section": "api",
