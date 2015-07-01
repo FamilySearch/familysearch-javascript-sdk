@@ -26,6 +26,10 @@ exports.httpWrapper = function(http, client) {
       delete opts.json;
     }
     
+    if (opts.headers['Accept'] === 'text/plain') {
+      delete opts.json;
+    }
+    
     // process the response
     var d = client.settings.deferredWrapper();
     var returnedPromise = d.promise;

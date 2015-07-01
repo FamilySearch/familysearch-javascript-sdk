@@ -12,7 +12,7 @@ exports.httpWrapper = function(ajax, client) {
     opts = utils.extend({
       url: url,
       type: method,
-      dataType: 'json',
+      dataType: headers['Accept'] === 'text/plain' ? 'text' : 'json',
       data: data,
       processData: false
     }, opts);

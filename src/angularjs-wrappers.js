@@ -12,7 +12,7 @@ exports.httpWrapper = function(http, client) {
     var config = utils.extend({
       method: method,
       url: url,
-      responseType: 'json',
+      responseType: headers['Accept'] === 'text/plain' ? 'text' : 'json',
       data: data,
       transformRequest: function(obj) {
         return obj;
