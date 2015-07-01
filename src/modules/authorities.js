@@ -33,7 +33,7 @@ FS.prototype.getDate = function(date, opts) {
       params = {
         date: date
       };
-  return self.plumbing.get(self.helpers.getAPIServerUrl('/platform/dates'), params, {}, opts,
+  return self.plumbing.get(self.helpers.getAPIServerUrl('/platform/dates'), params, {'Accept': 'text/plain'}, opts,
     utils.compose(
       utils.objectExtender({getDate: function() { return utils.maybe(this.date); }}),
       function(body){
