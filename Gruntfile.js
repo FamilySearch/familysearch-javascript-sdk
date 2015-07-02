@@ -38,9 +38,6 @@ module.exports = function(grunt) {
         base: 'dist',
         message: 'Update docs and files to distribute'
       },
-      dev: {
-        src: ['**/*']
-      },
       travis: {
         options: {
           repo: 'https://' + process.env.GH_TOKEN + '@github.com/FamilySearch/familysearch-javascript-sdk.git',
@@ -94,8 +91,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-ngdocs');
   grunt.loadNpmTasks('grunt-run');
 
-  // We test the built and minified version so that
-  // we also verify a proper build process
   grunt.registerTask('test', [
     'jshint',
     'run:jasmine'
@@ -110,21 +105,9 @@ module.exports = function(grunt) {
     'copy:dist'
   ]);
 
-  grunt.registerTask('publish', [
-    'build',
-    'gh-pages:dev'
-  ]);
-
-  grunt.registerTask('travis-pr', [
-    'build',
-    'ngdocs' // build the docs to make sure there aren't errors
-  ]);
-
   grunt.registerTask('travis', [
-    'travis-pr',
+    'build',
     'run:coveralls',
-    'run:browserify',
-    'copy:dist',
     'gh-pages:travis'
   ]);
 
