@@ -10,4 +10,4 @@ cache:
 before_script:
 - npm install -g grunt-cli
 script:
-- 'if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then npm run travis; else npm run travis-pr; fi;'
+- 'if [[ $TRAVIS_PULL_REQUEST == false && $TRAVIS_BRANCH == master ]]; then npm run travis; else npm run travis-pr; fi;'
