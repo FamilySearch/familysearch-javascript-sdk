@@ -6,3 +6,4 @@ dist/*
 index.html
 angularjs.html
 npm-debug.log
+coverage

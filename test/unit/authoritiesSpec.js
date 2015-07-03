@@ -24,12 +24,4 @@ describe('Authorities', function() {
     expect(date.$getFormalDate()).toBe('-0206-03-08');
   });
 
-  it('standardizes places', function(done) {
-    FS.getPlaceSearch('MN').then(function(response) {
-      expect(response.getPlaces().length).toBe(5);
-      expect(response.getPlaces()[1].$getNormalizedPlace()).toBe('Minnesota, United States');
-      done();
-    });
-  });
-
 });

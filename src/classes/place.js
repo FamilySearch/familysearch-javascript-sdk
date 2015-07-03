@@ -5,7 +5,7 @@ var FS = require('./../FamilySearch');
  * @name authorities.types:constructor.Place
  * @description
  *
- * Standardized place
+ * Place reference used in conclusions in the tree.
  */
 var Place = FS.Place = function(client, data){ 
   FS.BaseClass.call(this, client, data);

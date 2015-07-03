@@ -156,6 +156,7 @@ require('./modules/notes');
 require('./modules/parentsAndChildren');
 require('./modules/pedigree');
 require('./modules/persons');
+require('./modules/places');
 require('./modules/redirect');
 require('./modules/searchAndMatch');
 require('./modules/sourceBox');
@@ -184,9 +185,11 @@ require('./classes/name');
 require('./classes/note');
 require('./classes/person');
 require('./classes/place');
+require('./classes/placeDescription');
 require('./classes/searchResult');
 require('./classes/sourceDescription');
 require('./classes/sourceRef');
+require('./classes/textValue');
 require('./classes/user');
 
 // Plumbing
