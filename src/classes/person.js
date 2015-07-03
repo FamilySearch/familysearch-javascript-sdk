@@ -91,9 +91,9 @@ Person.prototype = {
 
   /**
    * @ngdoc property
-   * @name person.types:constructor.Person#identifers
+   * @name person.types:constructor.Person#identifiers
    * @propertyOf person.types:constructor.Person
-   * @return {Object} map of identifers to arrays of values
+   * @return {Object} map of identifiers to arrays of values
    */
 
   /**

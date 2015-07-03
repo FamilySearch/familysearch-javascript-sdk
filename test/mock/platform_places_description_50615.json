@@ -1,0 +1,55 @@
+{
+  "places" : [ {
+    "id" : "50615",
+    "links" : {
+      "description" : {
+        "href" : "https://familysearch.org/platform/places/description/50615"
+      },
+      "children" : {
+        "href" : "https://familysearch.org/platform/places/description/50615/children"
+      },
+      "place" : {
+        "href" : "https://familysearch.org/platform/places/2557657"
+      }
+    },
+    "lang" : "en",
+    "identifiers" : {
+      "http://gedcomx.org/Primary" : [ "https://familysearch.org/platform/places/2557657" ]
+    },
+    "names" : [ {
+      "lang" : "en",
+      "value" : "Nohabuna Island"
+    } ],
+    "type" : "https://familysearch.org/platform/places/types/56",
+    "latitude" : -7.35,
+    "longitude" : 158.0666667,
+    "jurisdiction" : {
+      "resource" : "#213"
+    },
+    "display" : {
+      "name" : "Nohabuna Island",
+      "fullName" : "Nohabuna Island, Solomon Islands",
+      "type" : "Island"
+    }
+  }, {
+    "id" : "213",
+    "links" : {
+      "description" : {
+        "href" : "https://familysearch.org/platform/places/description/213"
+      },
+      "children" : {
+        "href" : "https://familysearch.org/platform/places/description/213/children"
+      },
+      "place" : {
+        "href" : "https://familysearch.org/platform/places/1927081"
+      }
+    },
+    "lang" : "en",
+    "identifiers" : {
+      "http://gedcomx.org/Primary" : [ "https://familysearch.org/platform/places/1927081" ]
+    },
+    "names" : [ {
+      "value" : "Solomon Islands"
+    } ]
+  } ]
+}

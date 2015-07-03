@@ -1,0 +1,38 @@
+{
+  "places" : [ {
+    "id" : "213",
+    "links" : {
+      "description" : {
+        "href" : "https://familysearch.org/platform/places/description/213"
+      },
+      "children" : {
+        "href" : "https://familysearch.org/platform/places/description/213/children"
+      },
+      "place" : {
+        "href" : "https://familysearch.org/platform/places/1927081"
+      }
+    },
+    "lang" : "en",
+    "identifiers" : {
+      "http://gedcomx.org/Primary" : [ "https://familysearch.org/platform/places/1927081" ]
+    },
+    "names" : [ {
+      "lang" : "kbd-Cyrl",
+      "value" : "Соломон островхэр"
+    }, {
+      "lang" : "nn",
+      "value" : "Salomonøyane"
+    }, {
+      "lang" : "fy",
+      "value" : "Salomonseilannen"
+    } ],
+    "type" : "https://familysearch.org/platform/places/types/200",
+    "latitude" : -8.0,
+    "longitude" : 159.0,
+    "display" : {
+      "name" : "Solomon Islands",
+      "fullName" : "Solomon Islands",
+      "type" : "Commonwealth Nation"
+    }
+  } ]
+}
