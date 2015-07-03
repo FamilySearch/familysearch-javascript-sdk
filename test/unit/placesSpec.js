@@ -40,5 +40,32 @@ describe('Places', function() {
       });
     });
   });
+  
+  fit('getPlacesSearch', function(done){
+    FS.getPlacesSearch({
+      name: 'Paris',
+      parentId: '+442102'
+    }).then(function(response){
+      var results = response.getSearchResults();
+      expect(results.length).toBe(2);
+      
+      var firstResult = results[0],
+          firstPlace = firstResult.$getPlace(),
+          secondResult = results[1],
+          secondPlace = secondResult.$getPlace();
+          
+      expect(firstResult.id).toBe('7344697');
+      expect(firstPlace.id).toBe('7344697');
+      expect(firstPlace.$getFullName()).toBe('Paris, Ville-de-Paris, District of the Paris Region, France');
+      expect(firstPlace.$getType()).toBe('Populated Place');
+      
+      expect(secondResult.id).toBe('5953651');
+      expect(secondPlace.id).toBe('5953651');
+      expect(secondPlace.$getFullName()).toBe('Paris, Ville-de-Paris, District of the Paris Region, France');
+      expect(secondPlace.$getType()).toBe('District');
+      
+      done();
+    });
+  });
 
 });

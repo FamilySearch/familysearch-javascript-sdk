@@ -495,3 +495,27 @@ exports.wrapFunctions = function(dest, source, fns) {
   });
   return dest;
 };
+
+/**
+ * Search utilities
+ */
+
+var nonQueryParams = {start: true, count: true, context: true};
+
+function quoteSearchParam(value) {
+  if(!exports.isString(value)){
+    return value;
+  }
+  value = value.replace(/[:"]/g, '').trim();
+  return value.indexOf(' ') >= 0 ? '"' + value + '"' : value;
+}
+
+/**
+ * Given an map of parameters, filter out non-search parameters.
+ * This allows us to accept all search params in one object instead
+ * of asking the user to nest the actual search query in the `q` attribute.
+ */
+exports.searchParamsFilter = function(params) {
+  return exports.map(exports.filter(exports.keys(params), function(key) { return !nonQueryParams[key]; }),
+    function(key) { return key+':'+quoteSearchParam(params[key]); }).join(' ');
+};

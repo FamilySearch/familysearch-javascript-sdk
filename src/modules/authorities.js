@@ -20,7 +20,7 @@ var FS = require('./../FamilySearch'),
  *
  * - `getDate()` - get the {@link authorities.types:constructor.Date Date} from the response
  *
- * {@link https://familysearch.org/developers/docs/api/dates/Date_resource}
+ * {@link https://familysearch.org/developers/docs/api/dates/Date_resource FamilySearch API Docs}
  *
  * {@link http://jsfiddle.net/mL906m82/ editable example}
  *

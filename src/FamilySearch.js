@@ -186,6 +186,7 @@ require('./classes/note');
 require('./classes/person');
 require('./classes/place');
 require('./classes/placeDescription');
+require('./classes/placesSearchResult');
 require('./classes/searchResult');
 require('./classes/sourceDescription');
 require('./classes/sourceRef');

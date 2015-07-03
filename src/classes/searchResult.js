@@ -7,7 +7,7 @@ var FS = require('./../FamilySearch'),
  * @name searchAndMatch.types:constructor.SearchResult
  * @description
  *
- * Reference from a person or relationship to a source
+ * A person search result entry.
  */
 var SearchResult = FS.SearchResult = function(client, data) {
   FS.BaseClass.call(this, client, data);

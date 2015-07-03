@@ -10,21 +10,6 @@ var FS = require('./../FamilySearch'),
  * {@link https://familysearch.org/developers/docs/api/resources#search-and-match FamilySearch API Docs}
  */
 
-var nonQueryParams = {start: true, count: true, context: true};
-
-function quote(value) {
-  if(!utils.isString(value)){
-    return value;
-  }
-  value = value.replace(/[:"]/g, '').trim();
-  return value.indexOf(' ') >= 0 ? '"' + value + '"' : value;
-}
-
-function getQuery(params) {
-  return utils.map(utils.filter(utils.keys(params), function(key) { return !nonQueryParams[key]; }),
-    function(key) { return key+':'+quote(params[key]); }).join(' ');
-}
-
 var searchMatchResponseConvenienceFunctions = {
   getSearchResults: function() { return this.entries || []; },
   getResultsCount: function() { return this.results || 0; },
@@ -100,7 +85,7 @@ FS.prototype.getPersonSearch = function(params, opts) {
     self.plumbing.getUrl('person-search'),
     function(url) {
       return self.plumbing.get(url, utils.removeEmptyProperties({
-          q: getQuery(utils.removeEmptyProperties(utils.extend({}, params))),
+          q: utils.searchParamsFilter(utils.removeEmptyProperties(utils.extend({}, params))),
           start: params.start,
           count: params.count,
           context: params.context
@@ -180,15 +165,11 @@ FS.prototype.getPersonMatchesQuery = function(params, opts) {
   return self.helpers.chainHttpPromises(
     self.plumbing.getUrl('person-matches-query'),
     function(url) {
-      try {
       return self.plumbing.get(url, utils.removeEmptyProperties({
-          q: getQuery(utils.removeEmptyProperties(utils.extend({}, params))),
+          q: utils.searchParamsFilter(utils.removeEmptyProperties(utils.extend({}, params))),
           start: params.start,
           count: params.count
         }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
         self._getSearchMatchResponseMapper());
-      } catch(e) {
-        console.log(e.stack);
-      }
     });
 };

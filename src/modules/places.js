@@ -90,3 +90,56 @@ FS.prototype.getPlaceDescription = function(placeId, opts) {
       }
     ));
 };
+
+/**
+ * @ngdoc function
+ * @name places.functions:getPlaceSearch
+ * @function
+ *
+ * @description
+ * Search for a place.
+ *
+ * - `getSearchResults()` - get an array of {@link places.types:constructor.PlacesSearchResult PlacesSearchResults} from the response.
+ * 
+ * __Search Parameters__
+ * 
+ * * `start` - The index of the first search result for this page of results.
+ * * `count` - The number of search results per page.
+ * * `name`
+ * * `partialName`
+ * * `date`
+ * * `typeId`
+ * * `typeGroupId`
+ * * `parentId`
+ * * `latitude`
+ * * `longitude`
+ * * `distance`
+ * 
+ * Read the {@link https://familysearch.org/developers/docs/api/places/Places_Search_resource API Docs} for more details on how to use the parameters.
+ *
+ * @param {String} id of the place description
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the response
+ */
+FS.prototype.getPlacesSearch = function(params, opts) {
+  var self = this,
+      url = self.helpers.getAPIServerUrl('/platform/places/search');
+  return self.plumbing.get(url, utils.removeEmptyProperties({
+    q: utils.searchParamsFilter(utils.removeEmptyProperties(utils.extend({}, params))),
+    start: params.start,
+    count: params.count
+  }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+    utils.compose(
+      utils.objectExtender({
+        getSearchResults: function() { 
+          return utils.maybe(this.entries); 
+        }
+      }),
+      function(response){
+        utils.forEach(response.entries, function(entry, i, obj){
+          obj[i] = self.createPlacesSearchResult(entry);
+        });
+        return response;
+      }
+    ));
+};

@@ -45,14 +45,14 @@ PlaceDescription.prototype = {
    */
   
   /**
-   * @ngdoc names
+   * @ngdoc property
    * @name places.types:constructor.PlaceDescription#names
    * @propertyOf places.types:constructor.PlaceDescription
    * @return {TextValue[]} An array of names. The preferred value is first.
    */
   
   /**
-   * @ngdoc lang
+   * @ngdoc property
    * @name places.types:constructor.PlaceDescription#lang
    * @propertyOf places.types:constructor.PlaceDescription
    * @return {string} The language of the Place Description. See [http://www.w3.org/International/articles/language-tags/](http://www.w3.org/International/articles/language-tags/)
@@ -66,31 +66,31 @@ PlaceDescription.prototype = {
    */
   
   /**
-   * @ngdoc type
+   * @ngdoc property
    * @name places.types:constructor.PlaceDescription#type
    * @propertyOf places.types:constructor.PlaceDescription
    * @return {string} A URI used to identify the type of a place.
    */
   
   /**
-   * @ngdoc type
-   * @name places.types:constructor.PlaceDescription#type
-   * @propertyOf places.types:constructor.PlaceDescription
-   * @return {string} A URI used to identify the type of a place.
-   */
-  
-  /**
-   * @ngdoc latitude
+   * @ngdoc property
    * @name places.types:constructor.PlaceDescription#latitude
    * @propertyOf places.types:constructor.PlaceDescription
    * @return {number} Degrees north or south of the Equator (0.0 degrees). Values range from −90.0 degrees (south) to 90.0 degrees (north).
    */
   
   /**
-   * @ngdoc longitude
+   * @ngdoc property
    * @name places.types:constructor.PlaceDescription#longitude
    * @propertyOf places.types:constructor.PlaceDescription
    * @return {number} Angular distance in degrees, relative to the Prime Meridian. Values range from −180.0 degrees (west of the Meridian) to 180.0 degrees (east of the Meridian).
+   */
+  
+  /**
+   * @ngdoc property
+   * @name places.types:constructor.PlaceDescription#temporalDescription
+   * @propertyOf places.types:constructor.PlaceDescription
+   * @return {Object} A description of the time period to which this place description is relevant.
    */
 
   /**
@@ -175,7 +175,7 @@ PlaceDescription.prototype = {
    * @name places.types:constructor.PlaceDescription#$setJurisdiction
    * @methodOf places.types:constructor.PlaceDescription
    * @function
-   * @param {Object,PlaceDescription=}
+   * @param {Object,PlaceDescription}
    */
   $setJurisdiction: function(jurisdiction){
     if(!(jurisdiction instanceof FS.PlaceDescription)){

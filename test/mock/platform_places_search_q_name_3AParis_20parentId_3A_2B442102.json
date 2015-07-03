@@ -1,0 +1,177 @@
+{
+  "subtitle" : "Results of searching for places.",
+  "title" : "Place Search Results",
+  "entries" : [ {
+    "content" : {
+      "gedcomx" : {
+        "places" : [ {
+          "id" : "7344697",
+          "links" : {
+            "description" : {
+              "href" : "https://familysearch.org/platform/places/description/7344697.json"
+            }
+          },
+          "lang" : "fr",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "https://familysearch.org/platform/places/5061509" ]
+          },
+          "type" : "https://familysearch.org/platform/places/types/140",
+          "temporalDescription" : {
+            "formal" : "+1968/"
+          },
+          "latitude" : 48.86024,
+          "longitude" : 2.341109,
+          "jurisdiction" : {
+            "resource" : "#442102"
+          },
+          "display" : {
+            "name" : "Paris",
+            "fullName" : "Paris, Ville-de-Paris, District of the Paris Region, France",
+            "type" : "Populated Place"
+          }
+        }, {
+          "id" : "442102",
+          "links" : {
+            "description" : {
+              "href" : "https://familysearch.org/platform/places/description/442102.json"
+            }
+          },
+          "lang" : "fr",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "https://familysearch.org/platform/places/1937541" ]
+          },
+          "names" : [ {
+            "value" : "Ville-de-Paris"
+          } ],
+          "jurisdiction" : {
+            "resource" : "#2746"
+          }
+        }, {
+          "id" : "2746",
+          "links" : {
+            "description" : {
+              "href" : "https://familysearch.org/platform/places/description/2746.json"
+            }
+          },
+          "lang" : "en",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "https://familysearch.org/platform/places/1928971" ]
+          },
+          "names" : [ {
+            "value" : "District of the Paris Region"
+          } ],
+          "jurisdiction" : {
+            "resource" : "#204"
+          }
+        }, {
+          "id" : "204",
+          "links" : {
+            "description" : {
+              "href" : "https://familysearch.org/platform/places/description/204.json"
+            }
+          },
+          "lang" : "en",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "https://familysearch.org/platform/places/1927089" ]
+          },
+          "names" : [ {
+            "value" : "France"
+          } ]
+        } ]
+      }
+    },
+    "id" : "7344697",
+    "score" : 75.0,
+    "links" : {
+      "description" : {
+        "href" : "https://familysearch.org/platform/places/description/7344697.json"
+      }
+    }
+  }, {
+    "content" : {
+      "gedcomx" : {
+        "places" : [ {
+          "id" : "5953651",
+          "links" : {
+            "description" : {
+              "href" : "https://familysearch.org/platform/places/description/5953651.json"
+            }
+          },
+          "lang" : "fr",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "https://familysearch.org/platform/places/1948811" ]
+          },
+          "type" : "https://familysearch.org/platform/places/types/221",
+          "temporalDescription" : {
+            "formal" : "+1968/"
+          },
+          "latitude" : 48.8333333,
+          "longitude" : 2.3333333,
+          "jurisdiction" : {
+            "resource" : "#442102"
+          },
+          "display" : {
+            "name" : "Paris",
+            "fullName" : "Paris, Ville-de-Paris, District of the Paris Region, France",
+            "type" : "District"
+          }
+        }, {
+          "id" : "442102",
+          "links" : {
+            "description" : {
+              "href" : "https://familysearch.org/platform/places/description/442102.json"
+            }
+          },
+          "lang" : "fr",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "https://familysearch.org/platform/places/1937541" ]
+          },
+          "names" : [ {
+            "value" : "Ville-de-Paris"
+          } ],
+          "jurisdiction" : {
+            "resource" : "#2746"
+          }
+        }, {
+          "id" : "2746",
+          "links" : {
+            "description" : {
+              "href" : "https://familysearch.org/platform/places/description/2746.json"
+            }
+          },
+          "lang" : "en",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "https://familysearch.org/platform/places/1928971" ]
+          },
+          "names" : [ {
+            "value" : "District of the Paris Region"
+          } ],
+          "jurisdiction" : {
+            "resource" : "#204"
+          }
+        }, {
+          "id" : "204",
+          "links" : {
+            "description" : {
+              "href" : "https://familysearch.org/platform/places/description/204.json"
+            }
+          },
+          "lang" : "en",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "https://familysearch.org/platform/places/1927089" ]
+          },
+          "names" : [ {
+            "value" : "France"
+          } ]
+        } ]
+      }
+    },
+    "id" : "5953651",
+    "score" : 52.0,
+    "links" : {
+      "description" : {
+        "href" : "https://familysearch.org/platform/places/description/5953651.json"
+      }
+    }
+  } ]
+}
