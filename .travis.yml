@@ -11,3 +11,7 @@ before_script:
 - npm install -g grunt-cli
 script:
 - 'if [[ $TRAVIS_PULL_REQUEST == false && $TRAVIS_BRANCH == master ]]; then npm run travis; else npm test; fi;'
+notifications:
+  email:
+    on_success: never
+    on_failure: always
