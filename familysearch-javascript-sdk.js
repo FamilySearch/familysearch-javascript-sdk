@@ -7374,7 +7374,7 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/dates/Date_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/mL906m82/ editable example}
+ * {@link http://jsfiddle.net/mL906m82/1/ editable example}
  *
  * @param {String} date text to standardize
  * @param {Object=} opts options to pass to the http function specified during init
@@ -9709,6 +9709,8 @@ var FS = require('./../FamilySearch'),
  * - `getPlace()` - get the {@link places.types:constructor.PlaceDescription PlaceDescription} from the response
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_resource API Docs}
+ * 
+ * {@link http://jsfiddle.net/sq78dutL/ Editable Example}
  *
  * @param {String} id of the place
  * @param {Object=} opts options to pass to the http function specified during init
@@ -9744,6 +9746,8 @@ FS.prototype.getPlace = function(placeId, opts) {
  * - `getPlaceDescription()` - get the {@link places.types:constructor.PlaceDescription PlaceDescription} from the response
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Description_resource API Docs}
+ * 
+ * {@link http://jsfiddle.net/edhbx4L1/1/ Editable Example}
  *
  * @param {String} id of the place description
  * @param {Object=} opts options to pass to the http function specified during init
@@ -9804,6 +9808,8 @@ FS.prototype.getPlaceDescription = function(placeId, opts) {
  * * `distance`
  * 
  * Read the {@link https://familysearch.org/developers/docs/api/places/Places_Search_resource API Docs} for more details on how to use the parameters.
+ * 
+ * {@link http://jsfiddle.net/80xcpfps/2/ Editable Example}
  *
  * @param {String} id of the place description
  * @param {Object=} opts options to pass to the http function specified during init
@@ -9843,6 +9849,8 @@ FS.prototype.getPlacesSearch = function(params, opts) {
  * - `getChildren()` - get an array of the {@link places.types:constructor.PlaceDescription PlaceDescriptions} (children) from the response
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Description_Children_resource API Docs}
+ * 
+ * {@link http://jsfiddle.net/xwpsLm46/ Editable Example}
  *
  * @param {String} id of the place description
  * @param {Object=} opts options to pass to the http function specified during init
@@ -9878,6 +9886,8 @@ FS.prototype.getPlaceDescriptionChildren = function(placeId, opts) {
  * - `getPlaceType()` - get the {@link vocabularies.types:constructor.VocabularyElement VocabularyElement} from the response
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Type_resource API Docs}
+ * 
+ * {@link http://jsfiddle.net/gry2tgna/ Editable Example}
  *
  * @param {String} id of the place
  * @param {Object=} opts options to pass to the http function specified during init
@@ -9908,6 +9918,8 @@ FS.prototype.getPlaceType = function(typeId, opts) {
  * - `getPlaceTypes()` - get an array of the {@link vocabularies.types:constructor.VocabularyElement VocabularyElements} from the response
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Types_resource API Docs}
+ * 
+ * {@link http://jsfiddle.net/tjyf4xk8/1/ Editable Example}
  *
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
@@ -9940,6 +9952,8 @@ FS.prototype.getPlaceTypes = function(opts) {
  * - `getPlaceTypes()` - get an array of the {@link vocabularies.types:constructor.VocabularyElement VocabularyElements} (Place Types) in the group
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Types_resource API Docs}
+ * 
+ * {@link http://jsfiddle.net/85sn2dbv/1/ Editable Example}
  *
  * @param {String} id of the place type group
  * @param {Object=} opts options to pass to the http function specified during init
@@ -9973,6 +9987,8 @@ FS.prototype.getPlaceTypeGroup = function(groupId, opts) {
  * - `getPlaceTypeGroups()` - get an array of the {@link vocabularies.types:constructor.VocabularyElement VocabularyElements} from the response
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Type_Groups_resource API Docs}
+ * 
+ * {@link http://jsfiddle.net/zawzfh82/1/ Editable Example}
  *
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response

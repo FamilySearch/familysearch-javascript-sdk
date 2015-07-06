@@ -973,7 +973,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "places",
       "shortDescription": "Get a place.",
-      "keywords": "api docs function functions getplace http https init options opts org pass place placedescription places promise response types"
+      "keywords": "api docs editable example function functions getplace http https init net options opts org pass place placedescription places promise response types"
     },
     {
       "section": "api",
@@ -982,7 +982,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "places",
       "shortDescription": "Get a place.",
-      "keywords": "api description docs function functions getplacedescription http https init options opts org pass place placedescription places promise response types"
+      "keywords": "api description docs editable example function functions getplacedescription http https init net options opts org pass place placedescription places promise response types"
     },
     {
       "section": "api",
@@ -991,7 +991,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "places",
       "shortDescription": "Get the children of a Place Description. Use getPlacesSearch() to filter by type, date, and more.",
-      "keywords": "api array children description docs filter function functions getchildren getplacessearch http https init options opts org pass place placedescription placedescriptions places promise response type types"
+      "keywords": "api array children description docs editable example filter function functions getchildren getplacessearch http https init net options opts org pass place placedescription placedescriptions places promise response type types"
     },
     {
       "section": "api",
@@ -1000,7 +1000,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "places",
       "shortDescription": "Search for a place.",
-      "keywords": "__search api array count description details distance docs function functions getsearchresults http https init latitude longitude number options opts org parameters parameters__ parentid partialname pass place places placessearchresult placessearchresults promise read response result search start typegroupid typeid types"
+      "keywords": "__search api array count description details distance docs editable example function functions getsearchresults http https init latitude longitude net number options opts org parameters parameters__ parentid partialname pass place places placessearchresult placessearchresults promise read response result search start typegroupid typeid types"
     },
     {
       "section": "api",
@@ -1009,7 +1009,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "places",
       "shortDescription": "Get a place.",
-      "keywords": "api docs function functions getplacetype http https init options opts org pass place places promise response types vocabularies vocabularyelement"
+      "keywords": "api docs editable example function functions getplacetype http https init net options opts org pass place places promise response types vocabularies vocabularyelement"
     },
     {
       "section": "api",
@@ -1018,7 +1018,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "places",
       "shortDescription": "Get a Place Type Group which includes a list of Places Types in the group.",
-      "keywords": "api array docs function functions getlist getplacetypes group http https includes init list options opts org pass place places promise response type types vocabularies vocabularyelement vocabularyelements vocabularylist"
+      "keywords": "api array docs editable example function functions getlist getplacetypes group http https includes init list net options opts org pass place places promise response type types vocabularies vocabularyelement vocabularyelements vocabularylist"
     },
     {
       "section": "api",
@@ -1027,7 +1027,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "places",
       "shortDescription": "Get a list of all available Place Types.",
-      "keywords": "api array docs function functions getlist getplacetypegroups http https init list options opts org pass place places promise response types vocabularies vocabularyelement vocabularyelements vocabularylist"
+      "keywords": "api array docs editable example function functions getlist getplacetypegroups http https init list net options opts org pass place places promise response types vocabularies vocabularyelement vocabularyelements vocabularylist"
     },
     {
       "section": "api",
@@ -1036,7 +1036,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "places",
       "shortDescription": "Get a list of all available Place Types.",
-      "keywords": "api array docs function functions getlist getplacetypes http https init list options opts org pass place places promise response types vocabularies vocabularyelement vocabularyelements vocabularylist"
+      "keywords": "api array docs editable example function functions getlist getplacetypes http https init list net options opts org pass place places promise response types vocabularies vocabularyelement vocabularyelements vocabularylist"
     },
     {
       "section": "api",
