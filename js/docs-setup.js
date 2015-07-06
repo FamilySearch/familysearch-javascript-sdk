@@ -122,30 +122,12 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "authorities.functions:createPlace",
-      "shortName": "createPlace",
-      "type": "function",
-      "moduleName": "authorities",
-      "shortDescription": "Create a Place object. Use this method instead of calling the constructor directly.",
-      "keywords": "api authorities calling create data directly function functions method object org place types"
-    },
-    {
-      "section": "api",
       "id": "authorities.functions:getDate",
       "shortName": "getDate",
       "type": "function",
       "moduleName": "authorities",
       "shortDescription": "Get the standardized date",
-      "keywords": "api authorities editable example function functions getdate http https init net options opts org pass promise response standardize standardized text types"
-    },
-    {
-      "section": "api",
-      "id": "authorities.functions:getPlaceSearch",
-      "shortName": "getPlaceSearch",
-      "type": "function",
-      "moduleName": "authorities",
-      "shortDescription": "Get the standardized place",
-      "keywords": "api array authorities docs editable example familysearch function functions getplaces http https init net options opts org pass place places promise response standardize standardized text types"
+      "keywords": "api authorities docs editable example familysearch function functions getdate http https init net options opts org pass promise response standardize standardized text types"
     },
     {
       "section": "api",
@@ -155,15 +137,6 @@ NG_DOCS={
       "moduleName": "authorities",
       "shortDescription": "Standardized date",
       "keywords": "$getformaldate ambiguous api astro authorities earliest formal format function gedcom-x latest normalized numeric original property range requested standardize standardized true types valid"
-    },
-    {
-      "section": "api",
-      "id": "authorities.types:constructor.Place",
-      "shortName": "constructor.Place",
-      "type": "function",
-      "moduleName": "authorities",
-      "shortDescription": "Standardized place",
-      "keywords": "$getnormalizedplace administrative api array authorities convenience culture division element first-order fully-normalized function idea iso minnesota names normalized official original place property requestedid return standardize standardized type types united us-mn"
     },
     {
       "section": "api",
@@ -388,7 +361,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "fact",
       "shortDescription": "Fact",
-      "keywords": "$changemessage $date $formaldate $getdate $getformaldate $getnormalizeddate $getnormalizedplace $getnormalizedplaceid $getplace $iscustomnonevent $normalizedplace $place $setchangemessage $setcustomnonevent $setdate $setformaldate $setnormalizeddate $setnormalizedplace $setplace $settype api april attributes attribution authorities authority call case change changemessage custom data declares description descriptions event fact facts form formal formaldate format forms function gedcomx http isnonevent item message non-event normalized normalizeddate normalizedplace object optional org original place property server set sets standard string text true type types update user written"
+      "keywords": "$changemessage $date $formaldate $getdate $getformaldate $getnormalizeddate $getnormalizedplace $getnormalizedplaceid $getplace $iscustomnonevent $normalizedplace $place $setchangemessage $setcustomnonevent $setdate $setformaldate $setnormalizeddate $setnormalizedplace $setplace $settype api april attributes attribution authorities authority call case change changemessage custom data declares description descriptions event fact facts form formal formaldate format forms function gedcomx http isnonevent item message non-event normalized normalizeddate normalizedplace object optional org original place placedescription places property server set sets standard string text true type types update user written"
     },
     {
       "section": "api",
@@ -955,7 +928,160 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Person",
-      "keywords": "$addfact $addname $delete $deletefact $deletename $getancestry $getbirth $getbirthdate $getbirthplace $getburial $getburialdate $getburialplace $getchanges $getchildren $getchristening $getchristeningdate $getchristeningplace $getdeath $getdeathdate $getdeathplace $getdescendancy $getdiscussionrefs $getdisplaybirthdate $getdisplaybirthplace $getdisplaydeathdate $getdisplaydeathplace $getdisplaygender $getdisplaylifespan $getdisplayname $getfact $getfacts $getgivenname $getmatches $getmemorypersonarefs $getnames $getnotes $getparents $getpersistentidentifier $getpersonportraiturl $getpersonurl $getpreferredname $getsourcerefs $getsources $getspouses $getsurname $isreadonly $save $setfacts $setgender $setnames _facts_ _names_ add ancestor ancestry api array arrays attributes attribution birth birthdate birthplace burial change changehistory changemessage changes christening christning conclusion count create data death deathdate deathplace default delete deleted deleteperson descendency discussions display docs doesn editable element entries example exist existing fact facts false familysearch female final follow followredirect fulfilled full function functions gender generations getancestry getchildren getdescendancy getmemorypersonarefs getparents getperson getpersonchanges getpersondiscussionrefs getpersonmatches getpersonnotes getpersonportraiturl getpersonsourcerefs getpersonsourcesquery getpersonwithrelationships getspouses http https identifers identifier includes init lifespan living male map max memories message methods names net note notes number object objects optional options opts org params pass passed pedigree persistent persists person persondetails place portrait preferred promise property read read-only redirect refresh remove removes response retrieve return searchandmatch set sources spouse string strings surname true type types update updated updating url values year"
+      "keywords": "$addfact $addname $delete $deletefact $deletename $getancestry $getbirth $getbirthdate $getbirthplace $getburial $getburialdate $getburialplace $getchanges $getchildren $getchristening $getchristeningdate $getchristeningplace $getdeath $getdeathdate $getdeathplace $getdescendancy $getdiscussionrefs $getdisplaybirthdate $getdisplaybirthplace $getdisplaydeathdate $getdisplaydeathplace $getdisplaygender $getdisplaylifespan $getdisplayname $getfact $getfacts $getgivenname $getmatches $getmemorypersonarefs $getnames $getnotes $getparents $getpersistentidentifier $getpersonportraiturl $getpersonurl $getpreferredname $getsourcerefs $getsources $getspouses $getsurname $isreadonly $save $setfacts $setgender $setnames _facts_ _names_ add ancestor ancestry api array arrays attributes attribution birth birthdate birthplace burial change changehistory changemessage changes christening christning conclusion count create data death deathdate deathplace default delete deleted deleteperson descendency discussions display docs doesn editable element entries example exist existing fact facts false familysearch female final follow followredirect fulfilled full function functions gender generations getancestry getchildren getdescendancy getmemorypersonarefs getparents getperson getpersonchanges getpersondiscussionrefs getpersonmatches getpersonnotes getpersonportraiturl getpersonsourcerefs getpersonsourcesquery getpersonwithrelationships getspouses http https identifier identifiers includes init lifespan living male map max memories message methods names net note notes number object objects optional options opts org params pass passed pedigree persistent persists person persondetails place portrait preferred promise property read read-only redirect refresh remove removes response retrieve return searchandmatch set sources spouse string strings surname true type types update updated updating url values year"
+    },
+    {
+      "section": "api",
+      "id": "places",
+      "shortName": "places",
+      "type": "overview",
+      "moduleName": "places",
+      "shortDescription": "Functions for interacting with the FamilySearch Place Authority",
+      "keywords": "api authority docs familysearch functions https interacting org overview place places"
+    },
+    {
+      "section": "api",
+      "id": "places.functions:createPlaceDescription",
+      "shortName": "createPlaceDescription",
+      "type": "function",
+      "moduleName": "places",
+      "shortDescription": "Create a PlacesSearchResult object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly function functions method object org places placessearchresult types"
+    },
+    {
+      "section": "api",
+      "id": "places.functions:createPlaceDescription",
+      "shortName": "createPlaceDescription",
+      "type": "function",
+      "moduleName": "places",
+      "shortDescription": "Create a PlaceDescription object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly function functions method object org placedescription places types"
+    },
+    {
+      "section": "api",
+      "id": "places.functions:createTextValue",
+      "shortName": "createTextValue",
+      "type": "function",
+      "moduleName": "places",
+      "shortDescription": "Create a TextValue object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly function functions method object org places textvalue types"
+    },
+    {
+      "section": "api",
+      "id": "places.functions:createVocabularyElement",
+      "shortName": "createVocabularyElement",
+      "type": "function",
+      "moduleName": "places",
+      "shortDescription": "Create a VocabularyElement object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly element function functions method object places types vocabularies vocabulary vocabularyelement"
+    },
+    {
+      "section": "api",
+      "id": "places.functions:createVocabularyList",
+      "shortName": "createVocabularyList",
+      "type": "function",
+      "moduleName": "places",
+      "shortDescription": "Create a VocabularyList object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly function functions list method object places types vocabularies vocabulary vocabularylist"
+    },
+    {
+      "section": "api",
+      "id": "places.functions:getPlace",
+      "shortName": "getPlace",
+      "type": "function",
+      "moduleName": "places",
+      "shortDescription": "Get a place.",
+      "keywords": "api docs function functions getplace http https init options opts org pass place placedescription places promise response types"
+    },
+    {
+      "section": "api",
+      "id": "places.functions:getPlaceDescription",
+      "shortName": "getPlaceDescription",
+      "type": "function",
+      "moduleName": "places",
+      "shortDescription": "Get a place.",
+      "keywords": "api description docs function functions getplacedescription http https init options opts org pass place placedescription places promise response types"
+    },
+    {
+      "section": "api",
+      "id": "places.functions:getPlaceDescriptionChildren",
+      "shortName": "getPlaceDescriptionChildren",
+      "type": "function",
+      "moduleName": "places",
+      "shortDescription": "Get the children of a Place Description. Use getPlacesSearch() to filter by type, date, and more.",
+      "keywords": "api array children description docs filter function functions getchildren getplacessearch http https init options opts org pass place placedescription placedescriptions places promise response type types"
+    },
+    {
+      "section": "api",
+      "id": "places.functions:getPlaceSearch",
+      "shortName": "getPlaceSearch",
+      "type": "function",
+      "moduleName": "places",
+      "shortDescription": "Search for a place.",
+      "keywords": "__search api array count description details distance docs function functions getsearchresults http https init latitude longitude number options opts org parameters parameters__ parentid partialname pass place places placessearchresult placessearchresults promise read response result search start typegroupid typeid types"
+    },
+    {
+      "section": "api",
+      "id": "places.functions:getPlaceType",
+      "shortName": "getPlaceType",
+      "type": "function",
+      "moduleName": "places",
+      "shortDescription": "Get a place.",
+      "keywords": "api docs function functions getplacetype http https init options opts org pass place places promise response types vocabularies vocabularyelement"
+    },
+    {
+      "section": "api",
+      "id": "places.functions:getPlaceTypeGroup",
+      "shortName": "getPlaceTypeGroup",
+      "type": "function",
+      "moduleName": "places",
+      "shortDescription": "Get a Place Type Group which includes a list of Places Types in the group.",
+      "keywords": "api array docs function functions getlist getplacetypes group http https includes init list options opts org pass place places promise response type types vocabularies vocabularyelement vocabularyelements vocabularylist"
+    },
+    {
+      "section": "api",
+      "id": "places.functions:getPlaceTypeGroups",
+      "shortName": "getPlaceTypeGroups",
+      "type": "function",
+      "moduleName": "places",
+      "shortDescription": "Get a list of all available Place Types.",
+      "keywords": "api array docs function functions getlist getplacetypegroups http https init list options opts org pass place places promise response types vocabularies vocabularyelement vocabularyelements vocabularylist"
+    },
+    {
+      "section": "api",
+      "id": "places.functions:getPlaceTypes",
+      "shortName": "getPlaceTypes",
+      "type": "function",
+      "moduleName": "places",
+      "shortDescription": "Get a list of all available Place Types.",
+      "keywords": "api array docs function functions getlist getplacetypes http https init list options opts org pass place places promise response types vocabularies vocabularyelement vocabularyelements vocabularylist"
+    },
+    {
+      "section": "api",
+      "id": "places.types:constructor.PlaceDescription",
+      "shortName": "constructor.PlaceDescription",
+      "type": "function",
+      "moduleName": "places",
+      "shortDescription": "Place description returned by the Place Authority.",
+      "keywords": "$getfullname $getjurisdictiondetails $getjurisdictionsummary $getname $gettype $setjurisdiction angular api array arrays attributes authority chain data degrees description descriptions details display distance equator fail full fullname fully function functions identifiers identify ids includes json jurisdiction jursdiction jursdictions jursidication lang language latitude listed longitude map meridian names north object org parent period place placedescription places preferred prime promise properties property qualified range relative relevant representing response retrieving returned south summary temporaldescription time type types uri values w3"
+    },
+    {
+      "section": "api",
+      "id": "places.types:constructor.PlacesSearchResult",
+      "shortName": "constructor.PlacesSearchResult",
+      "type": "function",
+      "moduleName": "places",
+      "shortDescription": "A places search result entry.",
+      "keywords": "$getplace api better description entry function higher place placedescription places placessearchresult property result score search types"
+    },
+    {
+      "section": "api",
+      "id": "places.types:constructor.TextValue",
+      "shortName": "constructor.TextValue",
+      "type": "function",
+      "moduleName": "places",
+      "shortDescription": "Place description returned by the Place Authority.",
+      "keywords": "api authority description function lang language org place places property returned text textvalue types w3"
     },
     {
       "section": "api",
@@ -1107,8 +1233,8 @@ NG_DOCS={
       "shortName": "constructor.SearchResult",
       "type": "function",
       "moduleName": "searchAndMatch",
-      "shortDescription": "Reference from a person or relationship to a source",
-      "keywords": "$getchildids $getchildren $getfatherids $getfathers $getfullprimaryperson $getmotherids $getmothers $getperson $getprimaryperson $getspouseids $getspouses api array aware better child father function functions getperson higher mother objects pedigree person persons pid primary promise property reference relationship response result returned score search searchandmatch searchresult searchresults source spouse title types"
+      "shortDescription": "A person search result entry.",
+      "keywords": "$getchildids $getchildren $getfatherids $getfathers $getfullprimaryperson $getmotherids $getmothers $getperson $getprimaryperson $getspouseids $getspouses api array aware better child entry father function functions getperson higher mother objects pedigree person persons pid primary promise property response result returned score search searchandmatch searchresult searchresults spouse title types"
     },
     {
       "section": "api",
@@ -1469,6 +1595,24 @@ NG_DOCS={
       "moduleName": "user",
       "shortDescription": "User - a user is returned from getCurrentUser;",
       "keywords": "address agent api contact contactname contributor display displayname email en family familyname female full function functions gender getcurrentuser givenname ids male person personid preferredlanguage property returned treeuserid types user"
+    },
+    {
+      "section": "api",
+      "id": "vocabularies.types:constructor.VocabularyElement",
+      "shortName": "constructor.VocabularyElement",
+      "type": "function",
+      "moduleName": "vocabularies",
+      "shortDescription": "An element in a vocabulary list.",
+      "keywords": "$getdescription $getlabel api description element function label list place property types vocabularies vocabulary vocabularyelement"
+    },
+    {
+      "section": "api",
+      "id": "vocabularies.types:constructor.VocabularyList",
+      "shortName": "constructor.VocabularyList",
+      "type": "function",
+      "moduleName": "vocabularies",
+      "shortDescription": "A vocabulary list.",
+      "keywords": "$getdescription $getelements $gettitle api array description element function label list types vocabularies vocabulary vocabularyelement vocabularyelements vocabularylist"
     }
   ],
   "apis": {

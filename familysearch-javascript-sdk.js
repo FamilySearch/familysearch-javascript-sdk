@@ -157,6 +157,7 @@ require('./modules/notes');
 require('./modules/parentsAndChildren');
 require('./modules/pedigree');
 require('./modules/persons');
+require('./modules/places');
 require('./modules/redirect');
 require('./modules/searchAndMatch');
 require('./modules/sourceBox');
@@ -184,11 +185,15 @@ require('./classes/memory');
 require('./classes/name');
 require('./classes/note');
 require('./classes/person');
-require('./classes/place');
+require('./classes/placeDescription');
+require('./classes/placesSearchResult');
 require('./classes/searchResult');
 require('./classes/sourceDescription');
 require('./classes/sourceRef');
+require('./classes/textValue');
 require('./classes/user');
+require('./classes/vocabularyElement');
+require('./classes/vocabularyList');
 
 // Plumbing
 extendFSPrototype('plumbing', 'del');
@@ -205,7 +210,7 @@ function extendFSPrototype(moduleName, functionName){
     return this[moduleName][functionName].apply(this[moduleName], arguments);
   };
 }
-},{"./angularjs-wrappers":2,"./classes/agent":3,"./classes/attribution":4,"./classes/base":5,"./classes/change":6,"./classes/childAndParents":7,"./classes/collection":8,"./classes/comment":9,"./classes/couple":10,"./classes/date":11,"./classes/discussion":12,"./classes/discussionRef":13,"./classes/fact":14,"./classes/memory":15,"./classes/memoryArtifactRef":16,"./classes/memoryPersona":17,"./classes/memoryPersonaRef":18,"./classes/name":19,"./classes/note":20,"./classes/person":21,"./classes/place":22,"./classes/searchResult":23,"./classes/sourceDescription":24,"./classes/sourceRef":25,"./classes/user":26,"./globals":27,"./helpers":28,"./jquery-wrappers":29,"./modules/authentication":30,"./modules/authorities":31,"./modules/changeHistory":32,"./modules/discussions":33,"./modules/memories":34,"./modules/notes":35,"./modules/parentsAndChildren":36,"./modules/pedigree":37,"./modules/persons":38,"./modules/redirect":39,"./modules/searchAndMatch":40,"./modules/sourceBox":41,"./modules/sources":42,"./modules/spouses":43,"./modules/users":44,"./nodejs-wrappers":45,"./plumbing":46,"./utils":48}],2:[function(require,module,exports){
+},{"./angularjs-wrappers":2,"./classes/agent":3,"./classes/attribution":4,"./classes/base":5,"./classes/change":6,"./classes/childAndParents":7,"./classes/collection":8,"./classes/comment":9,"./classes/couple":10,"./classes/date":11,"./classes/discussion":12,"./classes/discussionRef":13,"./classes/fact":14,"./classes/memory":15,"./classes/memoryArtifactRef":16,"./classes/memoryPersona":17,"./classes/memoryPersonaRef":18,"./classes/name":19,"./classes/note":20,"./classes/person":21,"./classes/placeDescription":22,"./classes/placesSearchResult":23,"./classes/searchResult":24,"./classes/sourceDescription":25,"./classes/sourceRef":26,"./classes/textValue":27,"./classes/user":28,"./classes/vocabularyElement":29,"./classes/vocabularyList":30,"./globals":31,"./helpers":32,"./jquery-wrappers":33,"./modules/authentication":34,"./modules/authorities":35,"./modules/changeHistory":36,"./modules/discussions":37,"./modules/memories":38,"./modules/notes":39,"./modules/parentsAndChildren":40,"./modules/pedigree":41,"./modules/persons":42,"./modules/places":43,"./modules/redirect":44,"./modules/searchAndMatch":45,"./modules/sourceBox":46,"./modules/sources":47,"./modules/spouses":48,"./modules/users":49,"./nodejs-wrappers":50,"./plumbing":51,"./utils":53}],2:[function(require,module,exports){
 var utils = require('./utils'),
     exports = {};
 
@@ -286,7 +291,7 @@ exports.deferredWrapper = function(deferred) {
 };
 
 module.exports = exports;
-},{"./utils":48}],3:[function(require,module,exports){
+},{"./utils":53}],3:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -376,7 +381,7 @@ Agent.prototype = {
     return maybe(maybe(this.addresses)[0]).value;
   }
 };
-},{"./../FamilySearch":1,"./../utils":48}],4:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],4:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -458,7 +463,7 @@ Attribution.prototype = {
   $getAgent: function() { return this.$client.getAgent(this.$getAgentUrl() || this.$getAgentId()); }
 };
 
-},{"./../FamilySearch":1,"./../utils":48}],5:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],5:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -493,7 +498,7 @@ FS.BaseClass = function(client, data){
     });
   };
 };
-},{"./../FamilySearch":1,"./../utils":48}],6:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],6:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -594,7 +599,7 @@ Change.prototype = {
   }
 
 };
-},{"./../FamilySearch":1,"./../utils":48}],7:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],7:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     relHelpers = require('../relationshipHelpers'),
     utils = require('../utils'),
@@ -1123,7 +1128,7 @@ ChildAndParents.prototype = {
     return this.$client.deleteChildAndParents(this.$getChildAndParentsUrl() || this.id, changeMessage, opts);
   }
 };
-},{"../FamilySearch":1,"../relationshipHelpers":47,"../utils":48}],8:[function(require,module,exports){
+},{"../FamilySearch":1,"../relationshipHelpers":52,"../utils":53}],8:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -1267,7 +1272,7 @@ Collection.prototype = {
   }
 
 };
-},{"./../FamilySearch":1,"./../utils":48}],9:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],9:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -1430,7 +1435,7 @@ Comment.prototype = {
   }
 
 };
-},{"./../FamilySearch":1,"./../utils":48}],10:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],10:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     relHelpers = require('../relationshipHelpers'),
     utils = require('../utils'),
@@ -1843,7 +1848,7 @@ Couple.prototype = {
     return this.$client.deleteCouple(this.$getCoupleUrl() || this.id, changeMessage, opts);
   }
 };
-},{"../FamilySearch":1,"../relationshipHelpers":47,"../utils":48}],11:[function(require,module,exports){
+},{"../FamilySearch":1,"../relationshipHelpers":52,"../utils":53}],11:[function(require,module,exports){
 var FS = require('./../FamilySearch');
 
 // construct formal date from [about|after|before] [[day] month] year [BC]
@@ -2198,7 +2203,7 @@ Discussion.prototype = {
   }
 
 };
-},{"./../FamilySearch":1,"./../utils":48}],13:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],13:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -2394,7 +2399,7 @@ DiscussionRef.prototype = {
   }
 
 };
-},{"./../FamilySearch":1,"./../utils":48}],14:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],14:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -2712,7 +2717,7 @@ Fact.prototype = {
    * @function
    * @description sets the place; original and normalized forms must be set
    * @param {String|Object|Date} place either a place string as written by the user (in which case you must also call $setNormalizedPlace()),
-   * or a {original, normalized} object, or a {@link authorities.types:constructor.Place Place} object
+   * or a {original, normalized} object, or a {@link places.types:constructor.PlaceDescription PlaceDescription} object
    * @return {Fact} this fact
    */
   $setPlace: function(place) {
@@ -2721,10 +2726,10 @@ Fact.prototype = {
     if (utils.isString(place) || place == null) {
       originalPlace = place;
     }
-    else if (place instanceof FS.Place) {
-      originalPlace = place.original;
+    else if (place instanceof FS.PlaceDescription) {
+      originalPlace = place.$getFullName();
       //noinspection JSUnresolvedFunction
-      this.$setNormalizedPlace(place.$getNormalizedPlace());
+      this.$setNormalizedPlace(originalPlace);
     }
     else if (utils.isObject(place)) {
       originalPlace = place.$original;
@@ -2783,7 +2788,7 @@ Fact.prototype = {
   }
 };
 
-},{"./../FamilySearch":1,"./../utils":48}],15:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],15:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -3106,7 +3111,7 @@ Memory.prototype = {
   }
 
 };
-},{"./../FamilySearch":1,"./../utils":48}],16:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],16:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -3208,7 +3213,7 @@ MemoryArtifactRef.prototype = {
   }
 
 };
-},{"./../FamilySearch":1,"./../utils":48}],17:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],17:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -3414,7 +3419,7 @@ MemoryPersona.prototype = {
   }
 
 };
-},{"./../FamilySearch":1,"./../utils":48}],18:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],18:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -3605,7 +3610,7 @@ MemoryPersonaRef.prototype = {
   }
 
 };
-},{"./../FamilySearch":1,"./../utils":48}],19:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],19:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -3998,7 +4003,7 @@ Name.prototype = {
   }
 };
 
-},{"./../FamilySearch":1,"./../utils":48}],20:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],20:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -4185,7 +4190,7 @@ Note.prototype = {
   }
 
 };
-},{"./../FamilySearch":1,"./../utils":48}],21:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],21:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     utils = require('../utils'),
     maybe = utils.maybe;
@@ -4279,9 +4284,9 @@ Person.prototype = {
 
   /**
    * @ngdoc property
-   * @name person.types:constructor.Person#identifers
+   * @name person.types:constructor.Person#identifiers
    * @propertyOf person.types:constructor.Person
-   * @return {Object} map of identifers to arrays of values
+   * @return {Object} map of identifiers to arrays of values
    */
 
   /**
@@ -5059,102 +5064,273 @@ Person.prototype = {
     return this.$client.deletePerson(this.$getPersonUrl() || this.id, changeMessage, opts);
   }
 };
-},{"../FamilySearch":1,"../utils":48}],22:[function(require,module,exports){
-var FS = require('./../FamilySearch');
+},{"../FamilySearch":1,"../utils":53}],22:[function(require,module,exports){
+var FS = require('./../FamilySearch'),
+    utils = require('./../utils');
 
 /**
  * @ngdoc function
- * @name authorities.types:constructor.Place
+ * @name places.types:constructor.PlaceDescription
  * @description
  *
- * Standardized place
+ * Place description returned by the Place Authority.
  */
-var Place = FS.Place = function(client, data){ 
+var PlaceDescription = FS.PlaceDescription = function(client, data){ 
   FS.BaseClass.call(this, client, data);
+  
+  if(data){
+    if(data.names){
+      utils.forEach(this.names, function(name, i){
+        if(!(name instanceof FS.TextValue)){
+          this.names[i] = client.createTextValue(name);
+        }
+        this.names[i] = client.createTextValue(name);
+      }, this);
+    }
+  }
 };
 
 /**
  * @ngdoc function
- * @name authorities.functions:createPlace
- * @param {Object} data [PlaceReference](https://familysearch.org/developers/docs/api/gx/PlaceReference_json) data
- * @return {Object} {@link authorities.types:constructor.Place Place}
- * @description Create a {@link authorities.types:constructor.Place Place} object. Use this method instead of calling the constructor directly.
+ * @name places.functions:createPlaceDescription
+ * @param {Object} data [PlaceDescription](https://familysearch.org/developers/docs/api/gx/PlaceDescription_json) data
+ * @return {Object} {@link places.types:constructor.PlaceDescription PlaceDescription}
+ * @description Create a {@link places.types:constructor.PlaceDescription PlaceDescription} object. Use this method instead of calling the constructor directly.
  */
-FS.prototype.createPlace = function(data){
-  return new Place(this, data);
+FS.prototype.createPlaceDescription = function(data){
+  return new PlaceDescription(this, data);
 };
 
-Place.prototype = {
-  constructor: Place,
-
+PlaceDescription.prototype = {
+  constructor: PlaceDescription,
+  
   /**
    * @ngdoc property
-   * @name authorities.types:constructor.Place#official
-   * @propertyOf authorities.types:constructor.Place
-   * @return {string} normalized place name; e.g., Minnesota
-   */
-
-  /**
-   * @ngdoc property
-   * @name authorities.types:constructor.Place#normalized
-   * @propertyOf authorities.types:constructor.Place
-   * @return {string[]} array of fully-normalized place names; e.g., ["Minnesota, United States"]
-   */
-
-  /**
-   * @ngdoc property
-   * @name authorities.types:constructor.Place#original
-   * @propertyOf authorities.types:constructor.Place
-   * @return {string} original place to standardize
-   */
-
-  /**
-   * @ngdoc property
-   * @name authorities.types:constructor.Place#id
-   * @propertyOf authorities.types:constructor.Place
+   * @name places.types:constructor.PlaceDescription#id
+   * @propertyOf places.types:constructor.PlaceDescription
    * @return {string} place id
    */
-
+  
   /**
    * @ngdoc property
-   * @name authorities.types:constructor.Place#requestedId
-   * @propertyOf authorities.types:constructor.Place
-   * @return {string} no idea
+   * @name places.types:constructor.PlaceDescription#names
+   * @propertyOf places.types:constructor.PlaceDescription
+   * @return {TextValue[]} An array of names. The preferred value is first.
+   */
+  
+  /**
+   * @ngdoc property
+   * @name places.types:constructor.PlaceDescription#lang
+   * @propertyOf places.types:constructor.PlaceDescription
+   * @return {string} The language of the Place Description. See [http://www.w3.org/International/articles/language-tags/](http://www.w3.org/International/articles/language-tags/)
    */
 
   /**
    * @ngdoc property
-   * @name authorities.types:constructor.Place#type
-   * @propertyOf authorities.types:constructor.Place
-   * @return {string} type of the place; e.g., First-Order Administrative Division
+   * @name places.types:constructor.PlaceDescription#identifiers
+   * @propertyOf places.types:constructor.PlaceDescription
+   * @return {Object} map of identifiers to arrays of values
+   */
+  
+  /**
+   * @ngdoc property
+   * @name places.types:constructor.PlaceDescription#type
+   * @propertyOf places.types:constructor.PlaceDescription
+   * @return {string} A URI used to identify the type of a place.
+   */
+  
+  /**
+   * @ngdoc property
+   * @name places.types:constructor.PlaceDescription#latitude
+   * @propertyOf places.types:constructor.PlaceDescription
+   * @return {number} Degrees north or south of the Equator (0.0 degrees). Values range from −90.0 degrees (south) to 90.0 degrees (north).
+   */
+  
+  /**
+   * @ngdoc property
+   * @name places.types:constructor.PlaceDescription#longitude
+   * @propertyOf places.types:constructor.PlaceDescription
+   * @return {number} Angular distance in degrees, relative to the Prime Meridian. Values range from −180.0 degrees (west of the Meridian) to 180.0 degrees (east of the Meridian).
+   */
+  
+  /**
+   * @ngdoc property
+   * @name places.types:constructor.PlaceDescription#temporalDescription
+   * @propertyOf places.types:constructor.PlaceDescription
+   * @return {Object} A description of the time period to which this place description is relevant.
    */
 
   /**
    * @ngdoc property
-   * @name authorities.types:constructor.Place#culture
-   * @propertyOf authorities.types:constructor.Place
-   * @return {string} id of the culture
+   * @name places.types:constructor.PlaceDescription#display
+   * @propertyOf places.types:constructor.PlaceDescription
+   * @return {Object} includes `name`, `fullName`, and `type` attributes
    */
-
-  /**
-   * @ngdoc property
-   * @name authorities.types:constructor.Place#iso
-   * @propertyOf authorities.types:constructor.Place
-   * @return {string} ISO place id; e.g., US-MN
-   */
-
+  
   /**
    * @ngdoc function
-   * @name authorities.types:constructor.Date#$getNormalizedPlace
-   * @methodOf authorities.types:constructor.Place
+   * @name places.types:constructor.PlaceDescription#$getName
+   * @methodOf places.types:constructor.PlaceDescription
    * @function
-   * @return {string} convenience function to return the first element of the normalized array
+   * @return {String} The name of this place as listed in the display properties.
    */
-  $getNormalizedPlace: function() {
-    return this.normalized ? this.normalized[0] : undefined;
+  $getName: function(){
+    return utils.maybe(this.display).name;
+  },
+  
+  /**
+   * @ngdoc function
+   * @name places.types:constructor.PlaceDescription#$getFullName
+   * @methodOf places.types:constructor.PlaceDescription
+   * @function
+   * @return {String} The fully qualified name (e.g. includes the name of parent jursdictions) of this place as listed in the display properties
+   */
+  $getFullName: function(){
+    return utils.maybe(this.display).fullName;
+  },
+  
+  /**
+   * @ngdoc function
+   * @name places.types:constructor.PlaceDescription#$getType
+   * @methodOf places.types:constructor.PlaceDescription
+   * @function
+   * @return {String} The type as listed in the display properties.
+   */
+  $getType: function(){
+    return utils.maybe(this.display).type;
+  },
+   
+  /**
+   * @ngdoc function
+   * @name places.types:constructor.PlaceDescription#$getJurisdictionSummary
+   * @methodOf places.types:constructor.PlaceDescription
+   * @function
+   * @description Get a summary of the jurisdiction's place description, when available. Useful
+   * for place descriptions returned by {@link places.functions:getPlaceDescription} if you just
+   * want the names and ids of all place descriptions in the jurisdiction chain. If you want
+   * more details then use {@link places.types:constructor.PlaceDescription#$getJurisdictionDetails}.
+   * @return {PlaceDescription} A summary PlaceDescription for this PlaceDescription's jurisdiction.
+   */
+  $getJurisdictionSummary: function() {
+    if(this.jurisdiction instanceof FS.PlaceDescription){
+      return this.jurisdiction;
+    }
+  },
+   
+  /**
+   * @ngdoc function
+   * @name places.types:constructor.PlaceDescription#$getJurisdictionDetails
+   * @methodOf places.types:constructor.PlaceDescription
+   * @function
+   * @description Get the full details of the jurisdiction's PlaceDescription. The promise
+   * will fail if no jurisdiction is available.
+   * @return {Object} A promise for the response of retrieving the details for the jursdiction
+   */
+  $getJurisdictionDetails: function() {
+    if(this.jurisdiction instanceof FS.PlaceDescription){
+      return this.$client.getPlaceDescription(this.jurisdiction.id);
+    } else {
+      var d = this.$client.settings.deferredWrapper(),
+          promise = d.promise;
+      d.reject(new Error('No jurisdiction available'));
+      return promise;
+    }
+  },
+  
+  /**
+   * @ngdoc function
+   * @name places.types:constructor.PlaceDescription#$setJurisdiction
+   * @methodOf places.types:constructor.PlaceDescription
+   * @function
+   * @param {Object} A json object representing the new jursidication data, or a PlaceDescription object.
+   */
+  $setJurisdiction: function(jurisdiction){
+    if(!(jurisdiction instanceof FS.PlaceDescription)){
+      jurisdiction = this.client.createPlaceDescription(jurisdiction);
+    }
+    this.jurisdiction = jurisdiction;
   }
+
 };
-},{"./../FamilySearch":1}],23:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],23:[function(require,module,exports){
+var FS = require('./../FamilySearch'),
+    utils = require('./../utils');
+
+/**
+ * @ngdoc function
+ * @name places.types:constructor.PlacesSearchResult
+ * @description
+ *
+ * A places search result entry.
+ */
+var PlacesSearchResult = FS.PlacesSearchResult = function(client, data){ 
+  FS.BaseClass.call(this, client, data);
+  
+  if(data){
+    if(data.content && data.content.gedcomx && data.content.gedcomx.places){
+      var places = data.content.gedcomx.places,
+          placesMap = {};
+        
+      utils.forEach(places, function(place, index, obj){
+        obj[index] = placesMap[place.id] = client.createPlaceDescription(place);
+      });
+      
+      utils.forEach(places, function(place){
+        if(place.jurisdiction && place.jurisdiction.resource){
+          var jurisdictionId = place.jurisdiction.resource.substring(1);
+          if(placesMap[jurisdictionId]){
+            place.$setJurisdiction(placesMap[jurisdictionId]);
+          }
+        }
+      });
+    }
+  }
+  
+  
+};
+
+/**
+ * @ngdoc function
+ * @name places.functions:createPlaceDescription
+ * @param {Object} data [Entry](https://familysearch.org/developers/docs/api/atom/Entry_json) data
+ * @return {Object} {@link places.types:constructor.PlacesSearchResult PlacesSearchResult}
+ * @description Create a {@link places.types:constructor.PlacesSearchResult PlacesSearchResult} object. Use this method instead of calling the constructor directly.
+ */
+FS.prototype.createPlacesSearchResult = function(data){
+  return new PlacesSearchResult(this, data);
+};
+
+PlacesSearchResult.prototype = {
+  constructor: PlacesSearchResult,
+  
+  /**
+   * @ngdoc property
+   * @name places.types:constructor.PlacesSearchResult#id
+   * @propertyOf places.types:constructor.PlacesSearchResult
+   * @return {string} place id
+   */
+   
+  /**
+   * @ngdoc property
+   * @name places.types:constructor.PlacesSearchResult#score
+   * @propertyOf places.types:constructor.PlacesSearchResult
+   * @return {number} higher is better
+   */
+   
+  /**
+   * @ngdoc function
+   * @name places.types:constructor.PlacesSearchResult#$getPlace
+   * @methodOf places.types:constructor.PlacesSearchResult
+   * @function
+   * @return {PlaceDescription} The {@link places.types:constructor.PlaceDescription Place Description}.
+   */
+  $getPlace: function(){
+    var maybe = utils.maybe;
+    return maybe(maybe(maybe(this.content).gedcomx).places)[0];
+  }
+   
+};
+},{"./../FamilySearch":1,"./../utils":53}],24:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -5164,7 +5340,7 @@ var FS = require('./../FamilySearch'),
  * @name searchAndMatch.types:constructor.SearchResult
  * @description
  *
- * Reference from a person or relationship to a source
+ * A person search result entry.
  */
 var SearchResult = FS.SearchResult = function(client, data) {
   FS.BaseClass.call(this, client, data);
@@ -5358,7 +5534,7 @@ SearchResult.prototype = {
    */
   $getChildren: function() { return utils.map(this.$getChildIds(), this.$getPerson, this); }
 };
-},{"./../FamilySearch":1,"./../utils":48}],24:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],25:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -5584,7 +5760,7 @@ SourceDescription.prototype = {
   }
 
 };
-},{"./../FamilySearch":1,"./../utils":48}],25:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],26:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -5895,7 +6071,49 @@ SourceRef.prototype = {
   }
 
 };
-},{"./../FamilySearch":1,"./../utils":48}],26:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],27:[function(require,module,exports){
+var FS = require('./../FamilySearch');
+
+/**
+ * @ngdoc function
+ * @name places.types:constructor.TextValue
+ * @description
+ *
+ * Place description returned by the Place Authority.
+ */
+var TextValue = FS.TextValue = function(client, data){ 
+  FS.BaseClass.call(this, client, data);
+};
+
+/**
+ * @ngdoc function
+ * @name places.functions:createTextValue
+ * @param {Object} data [PlaceDescription](https://familysearch.org/developers/docs/api/gx/TextValue_json) data
+ * @return {Object} {@link places.types:constructor.TextValue TextValue}
+ * @description Create a {@link places.types:constructor.TextValue TextValue} object. Use this method instead of calling the constructor directly.
+ */
+FS.prototype.createTextValue = function(data){
+  return new TextValue(this, data);
+};
+
+TextValue.prototype = {
+  constructor: TextValue
+  
+  /**
+   * @ngdoc property
+   * @name places.types:constructor.TextValue#lang
+   * @propertyOf places.types:constructor.TextValue
+   * @return {string} The language of the text value. See [http://www.w3.org/International/articles/language-tags/](http://www.w3.org/International/articles/language-tags/)
+   */
+   
+  /**
+   * @ngdoc property
+   * @name places.types:constructor.TextValue#value
+   * @propertyOf places.types:constructor.TextValue
+   * @return {string} The text value.
+   */ 
+};
+},{"./../FamilySearch":1}],28:[function(require,module,exports){
 var FS = require('../FamilySearch');
 
 /**
@@ -5993,7 +6211,137 @@ User.prototype = {
    * @return {String} e.g., en
    */
 };
-},{"../FamilySearch":1}],27:[function(require,module,exports){
+},{"../FamilySearch":1}],29:[function(require,module,exports){
+var FS = require('./../FamilySearch'),
+    utils = require('./../utils');
+
+/**
+ * @ngdoc function
+ * @name vocabularies.types:constructor.VocabularyElement
+ * @description
+ *
+ * An element in a vocabulary list.
+ */
+var VocabularyElement = FS.VocabularyElement = function(client, data){ 
+  FS.BaseClass.call(this, client, data);
+};
+
+/**
+ * @ngdoc function
+ * @name places.functions:createVocabularyElement
+ * @param {Object} data object with vocabulary element data
+ * @return {Object} {@link vocabularies.types:constructor.VocabularyElement VocabularyElement}
+ * @description Create a {@link vocabularies.types:constructor.VocabularyElement VocabularyElement} object. Use this method instead of calling the constructor directly.
+ */
+FS.prototype.createVocabularyElement = function(data){
+  return new VocabularyElement(this, data);
+};
+
+VocabularyElement.prototype = {
+  constructor: VocabularyElement,
+  
+  /**
+   * @ngdoc property
+   * @name vocabularies.types:constructor.VocabularyElement#id
+   * @propertyOf vocabularies.types:constructor.VocabularyElement
+   * @return {string} place id
+   */
+   
+  /**
+   * @ngdoc function
+   * @name vocabularies.types:constructor.VocabularyElement#$getLabel
+   * @methodOf vocabularies.types:constructor.VocabularyElement
+   * @function
+   * @return {String} The label of this element.
+   */
+  $getLabel: function(){
+    return utils.maybe(utils.maybe(this.labels)[0])['@value'];
+  },
+  
+  /**
+   * @ngdoc function
+   * @name vocabularies.types:constructor.VocabularyElement#$getDescription
+   * @methodOf vocabularies.types:constructor.VocabularyElement
+   * @function
+   * @return {String} The description of this element.
+   */
+  $getDescription: function(){
+    return utils.maybe(utils.maybe(this.descriptions)[0])['@value'];
+  }
+   
+};
+},{"./../FamilySearch":1,"./../utils":53}],30:[function(require,module,exports){
+var FS = require('./../FamilySearch'),
+    utils = require('./../utils');
+
+/**
+ * @ngdoc function
+ * @name vocabularies.types:constructor.VocabularyList
+ * @description
+ *
+ * A vocabulary list.
+ */
+var VocabularyList = FS.VocabularyList = function(client, data){ 
+  FS.BaseClass.call(this, client, data);
+  
+  if(data){
+    if(data.elements){
+      utils.forEach(this.elements, function(element, i, list){
+        list[i] = client.createVocabularyElement(element);
+      });
+    }
+  }
+};
+
+/**
+ * @ngdoc function
+ * @name places.functions:createVocabularyList
+ * @param {Object} data object with vocabulary list data
+ * @return {Object} {@link vocabularies.types:constructor.VocabularyList VocabularyList}
+ * @description Create a {@link vocabularies.types:constructor.VocabularyList VocabularyList} object. Use this method instead of calling the constructor directly.
+ */
+FS.prototype.createVocabularyList = function(data){
+  return new VocabularyList(this, data);
+};
+
+VocabularyList.prototype = {
+  constructor: VocabularyList,
+   
+  /**
+   * @ngdoc function
+   * @name vocabularies.types:constructor.VocabularyList#$getTitle
+   * @methodOf vocabularies.types:constructor.VocabularyList
+   * @function
+   * @return {String} The label of this element.
+   */
+  $getTitle: function(){
+    return utils.maybe(this.title);
+  },
+  
+  /**
+   * @ngdoc function
+   * @name vocabularies.types:constructor.VocabularyList#$getDescription
+   * @methodOf vocabularies.types:constructor.VocabularyList
+   * @function
+   * @return {String} The description of this element.
+   */
+  $getDescription: function(){
+    return utils.maybe(this.description);
+  },
+  
+  /**
+   * @ngdoc function
+   * @name vocabularies.types:constructor.VocabularyList#$getElements
+   * @methodOf vocabularies.types:constructor.VocabularyList
+   * @function
+   * @return {Array} An array of {@link vocabularies.types:constructor.VocabularyElement VocabularyElements}.
+   */
+  $getElements: function(){
+    return utils.maybe(this.elements);
+  }
+   
+};
+},{"./../FamilySearch":1,"./../utils":53}],31:[function(require,module,exports){
 /**
  * TODO: Add interface for modifying these so that you
  * don't have to pass the same config options
@@ -6041,7 +6389,7 @@ module.exports = {
   discoveryUrl: '/.well-known/app-meta'
 };
 
-},{}],28:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 var utils = require('./utils'),
     forEach = utils.forEach;
 
@@ -6609,7 +6957,7 @@ Helpers.prototype.eraseCookie = function(name) {
 };
 
 module.exports = Helpers;
-},{"./utils":48}],29:[function(require,module,exports){
+},{"./utils":53}],33:[function(require,module,exports){
 var utils = require('./utils'),
     exports = {};
 
@@ -6689,7 +7037,7 @@ exports.deferredWrapper = function(deferred) {
 
 module.exports = exports;
 
-},{"./utils":48}],30:[function(require,module,exports){
+},{"./utils":53}],34:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -7001,7 +7349,7 @@ FS.prototype._pollForAuthCode = function(popup) {
   return d.promise;
 };
 
-},{"./../FamilySearch":1,"./../utils":48}],31:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],35:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -7024,7 +7372,7 @@ var FS = require('./../FamilySearch'),
  *
  * - `getDate()` - get the {@link authorities.types:constructor.Date Date} from the response
  *
- * {@link https://familysearch.org/developers/docs/api/dates/Date_resource}
+ * {@link https://familysearch.org/developers/docs/api/dates/Date_resource FamilySearch API Docs}
  *
  * {@link http://jsfiddle.net/mL906m82/ editable example}
  *
@@ -7052,48 +7400,7 @@ FS.prototype.getDate = function(date, opts) {
     ));
 };
 
-/**
- * @ngdoc function
- * @name authorities.functions:getPlaceSearch
- * @function
- *
- * @description
- * Get the standardized place
- *
- * - `getPlaces()` - get the array of {@link authorities.types:constructor.Place Places} from the response
- *
- * {@link https://familysearch.org/developers/docs/guides/authorities/place-authority FamilySearch API Docs}
- *
- * {@link http://jsfiddle.net/1hjbpzgs/ editable example}
- *
- * @param {String} place text to standardize
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the response
- */
-FS.prototype.getPlaceSearch = function(place, opts) {
-  var self = this,
-      params = {
-        place: place,
-        view: 'simple',
-        dataFormat: 'application/json'
-      };
-  return self.plumbing.get(self.helpers.getAuthoritiesServerUrl('/authorities/v1/place'), params, {'Accept': 'application/json'}, opts,
-    utils.compose(
-      utils.objectExtender({getPlaces: function() { return utils.maybe(this.places).place; }}),
-      function(response){
-        utils.forEach(response.places.place, function(place, index, obj){
-          obj[index] = self.createPlace(place);
-        });
-        return response;
-      }
-    ));
-};
-
-// TODO authorities properties
-// TODO name authority
-// TODO culture authority
-
-},{"./../FamilySearch":1,"./../utils":48}],32:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],36:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -7236,7 +7543,7 @@ FS.prototype.restoreChange = function(chid, opts) {
     });
 };
 
-},{"./../FamilySearch":1,"./../utils":48}],33:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],37:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -7559,7 +7866,7 @@ FS.prototype.deleteMemoryComment = function(mid, cmid, changeMessage, opts) {
   );
 };
 
-},{"./../FamilySearch":1,"./../utils":48}],34:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],38:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -8022,7 +8329,7 @@ FS.prototype.deleteMemoryPersonaRef = function(pid, mprid, changeMessage, opts) 
   );
 };
 
-},{"./../FamilySearch":1,"./../utils":48}],35:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],39:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -8494,7 +8801,7 @@ FS.prototype.deleteChildAndParentsNote = function(caprid, nid, changeMessage, op
   );
 };
 
-},{"./../FamilySearch":1,"./../utils":48}],36:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],40:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     utils = require('../utils'),
     maybe = utils.maybe;
@@ -8590,7 +8897,7 @@ FS.prototype.deleteChildAndParents = function(caprid, changeMessage, opts) {
   );
 };
 
-},{"../FamilySearch":1,"../utils":48}],37:[function(require,module,exports){
+},{"../FamilySearch":1,"../utils":53}],41:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -8739,7 +9046,7 @@ FS.prototype.getDescendancy = function(pid, params, opts) {
     });
 };
 
-},{"./../FamilySearch":1,"./../utils":48}],38:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],42:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     utils = require('../utils'),
     maybe = utils.maybe;
@@ -9378,7 +9685,314 @@ FS.prototype.deletePreferredParents = function(pid, opts) {
 // TODO person not a match
 // TODO restore person
 
-},{"../FamilySearch":1,"../utils":48}],39:[function(require,module,exports){
+},{"../FamilySearch":1,"../utils":53}],43:[function(require,module,exports){
+var FS = require('./../FamilySearch'),
+    utils = require('./../utils');
+
+/**
+ * @ngdoc overview
+ * @name places
+ * @description
+ * Functions for interacting with the FamilySearch Place Authority
+ *
+ * {@link https://familysearch.org/developers/docs/api/resources#places FamilySearch API Docs}
+ */
+ 
+/**
+ * @ngdoc function
+ * @name places.functions:getPlace
+ * @function
+ *
+ * @description
+ * Get a place.
+ *
+ * - `getPlace()` - get the {@link places.types:constructor.PlaceDescription PlaceDescription} from the response
+ *
+ * {@link https://familysearch.org/developers/docs/api/places/Place_resource API Docs}
+ *
+ * @param {String} id of the place
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the response
+ */
+FS.prototype.getPlace = function(placeId, opts) {
+  var self = this,
+      url = self.helpers.getAPIServerUrl(self.helpers.populateUriTemplate('/platform/places/{id}', {id: placeId}));
+  return self.plumbing.get(url, {}, {}, opts,
+    utils.compose(
+      utils.objectExtender({
+        getPlace: function() { 
+          return utils.maybe(this.places)[0]; 
+        }
+      }),
+      function(response){
+        utils.forEach(response.places, function(place, index, obj){
+          obj[index] = self.createPlaceDescription(place);
+        });
+        return response;
+      }
+    ));
+};
+
+/**
+ * @ngdoc function
+ * @name places.functions:getPlaceDescription
+ * @function
+ *
+ * @description
+ * Get a place.
+ *
+ * - `getPlaceDescription()` - get the {@link places.types:constructor.PlaceDescription PlaceDescription} from the response
+ *
+ * {@link https://familysearch.org/developers/docs/api/places/Place_Description_resource API Docs}
+ *
+ * @param {String} id of the place description
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the response
+ */
+FS.prototype.getPlaceDescription = function(placeId, opts) {
+  var self = this,
+      url = self.helpers.getAPIServerUrl(self.helpers.populateUriTemplate('/platform/places/description/{id}', {id: placeId}));
+  return self.plumbing.get(url, {}, {}, opts,
+    utils.compose(
+      utils.objectExtender({
+        getPlaceDescription: function() { 
+          return utils.maybe(this.places)[0]; 
+        }
+      }),
+      function(response){
+        var placesMap = {};
+        
+        utils.forEach(response.places, function(place, index, obj){
+          obj[index] = placesMap[place.id] = self.createPlaceDescription(place);
+        });
+        utils.forEach(response.places, function(place){
+          if(place.jurisdiction && place.jurisdiction.resource){
+            var jurisdictionId = place.jurisdiction.resource.substring(1);
+            if(placesMap[jurisdictionId]){
+              place.$setJurisdiction(placesMap[jurisdictionId]);
+            }
+          }
+        });
+        
+        return response;
+      }
+    ));
+};
+
+/**
+ * @ngdoc function
+ * @name places.functions:getPlaceSearch
+ * @function
+ *
+ * @description
+ * Search for a place.
+ *
+ * - `getSearchResults()` - get an array of {@link places.types:constructor.PlacesSearchResult PlacesSearchResults} from the response.
+ * 
+ * __Search Parameters__
+ * 
+ * * `start` - The index of the first search result for this page of results.
+ * * `count` - The number of search results per page.
+ * * `name`
+ * * `partialName`
+ * * `date`
+ * * `typeId`
+ * * `typeGroupId`
+ * * `parentId`
+ * * `latitude`
+ * * `longitude`
+ * * `distance`
+ * 
+ * Read the {@link https://familysearch.org/developers/docs/api/places/Places_Search_resource API Docs} for more details on how to use the parameters.
+ *
+ * @param {String} id of the place description
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the response
+ */
+FS.prototype.getPlacesSearch = function(params, opts) {
+  var self = this,
+      url = self.helpers.getAPIServerUrl('/platform/places/search');
+  return self.plumbing.get(url, utils.removeEmptyProperties({
+    q: utils.searchParamsFilter(utils.removeEmptyProperties(utils.extend({}, params))),
+    start: params.start,
+    count: params.count
+  }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+    utils.compose(
+      utils.objectExtender({
+        getSearchResults: function() { 
+          return utils.maybe(this.entries); 
+        }
+      }),
+      function(response){
+        utils.forEach(response.entries, function(entry, i, obj){
+          obj[i] = self.createPlacesSearchResult(entry);
+        });
+        return response;
+      }
+    ));
+};
+
+/**
+ * @ngdoc function
+ * @name places.functions:getPlaceDescriptionChildren
+ * @function
+ *
+ * @description
+ * Get the children of a Place Description. Use {@link places.functions:getPlaceSearch getPlacesSearch()} to filter by type, date, and more.
+ *
+ * - `getChildren()` - get an array of the {@link places.types:constructor.PlaceDescription PlaceDescriptions} (children) from the response
+ *
+ * {@link https://familysearch.org/developers/docs/api/places/Place_Description_Children_resource API Docs}
+ *
+ * @param {String} id of the place description
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the response
+ */
+FS.prototype.getPlaceDescriptionChildren = function(placeId, opts) {
+  var self = this,
+      url = self.helpers.getAPIServerUrl(self.helpers.populateUriTemplate('/platform/places/description/{id}/children', {id: placeId}));
+  return self.plumbing.get(url, {}, {}, opts,
+    utils.compose(
+      utils.objectExtender({
+        getChildren: function() { 
+          return utils.maybe(this.places); 
+        }
+      }),
+      function(response){
+        utils.forEach(response.places, function(place, index, obj){
+          obj[index] = self.createPlaceDescription(place);
+        });
+        return response;
+      }
+    ));
+};
+
+/**
+ * @ngdoc function
+ * @name places.functions:getPlaceType
+ * @function
+ *
+ * @description
+ * Get a place.
+ *
+ * - `getPlaceType()` - get the {@link vocabularies.types:constructor.VocabularyElement VocabularyElement} from the response
+ *
+ * {@link https://familysearch.org/developers/docs/api/places/Place_Type_resource API Docs}
+ *
+ * @param {String} id of the place
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the response
+ */
+FS.prototype.getPlaceType = function(typeId, opts) {
+  var self = this,
+      url = self.helpers.getAPIServerUrl(self.helpers.populateUriTemplate('/platform/places/types/{id}', {id: typeId}));
+  return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
+    utils.compose(
+      utils.objectExtender({
+        getPlaceType: function() { 
+          return self.createVocabularyElement(this); 
+        }
+      })
+    ));
+};
+
+/**
+ * @ngdoc function
+ * @name places.functions:getPlaceTypes
+ * @function
+ *
+ * @description
+ * Get a list of all available Place Types.
+ *
+ * - `getList()` - get the {@link vocabularies.types:constructor.VocabularyList VocabularyList} from the response
+ * - `getPlaceTypes()` - get an array of the {@link vocabularies.types:constructor.VocabularyElement VocabularyElements} from the response
+ *
+ * {@link https://familysearch.org/developers/docs/api/places/Place_Types_resource API Docs}
+ *
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the response
+ */
+FS.prototype.getPlaceTypes = function(opts) {
+  var self = this,
+      url = self.helpers.getAPIServerUrl('/platform/places/types');
+  return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
+    utils.compose(
+      utils.objectExtender({
+        getList: function() {
+          return self.createVocabularyList(this);
+        },
+        getPlaceTypes: function() { 
+          return this.getList().$getElements(); 
+        }
+      })
+    ));
+};
+
+/**
+ * @ngdoc function
+ * @name places.functions:getPlaceTypeGroup
+ * @function
+ *
+ * @description
+ * Get a Place Type Group which includes a list of Places Types in the group.
+ *
+ * - `getList()` - get the {@link vocabularies.types:constructor.VocabularyList VocabularyList} (Place Type Group) from the response
+ * - `getPlaceTypes()` - get an array of the {@link vocabularies.types:constructor.VocabularyElement VocabularyElements} (Place Types) in the group
+ *
+ * {@link https://familysearch.org/developers/docs/api/places/Place_Types_resource API Docs}
+ *
+ * @param {String} id of the place type group
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the response
+ */
+FS.prototype.getPlaceTypeGroup = function(groupId, opts) {
+  var self = this,
+      url = self.helpers.getAPIServerUrl(self.helpers.populateUriTemplate('/platform/places/type-groups/{id}', {id: groupId}));
+  return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
+    utils.compose(
+      utils.objectExtender({
+        getList: function() {
+          return self.createVocabularyList(this);
+        },
+        getPlaceTypes: function() { 
+          return this.getList().$getElements(); 
+        }
+      })
+    ));
+};
+
+/**
+ * @ngdoc function
+ * @name places.functions:getPlaceTypeGroups
+ * @function
+ *
+ * @description
+ * Get a list of all available Place Types.
+ *
+ * - `getList()` - get the {@link vocabularies.types:constructor.VocabularyList VocabularyList} from the response
+ * - `getPlaceTypeGroups()` - get an array of the {@link vocabularies.types:constructor.VocabularyElement VocabularyElements} from the response
+ *
+ * {@link https://familysearch.org/developers/docs/api/places/Place_Type_Groups_resource API Docs}
+ *
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the response
+ */
+FS.prototype.getPlaceTypeGroups = function(opts) {
+  var self = this,
+      url = self.helpers.getAPIServerUrl('/platform/places/type-groups');
+  return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
+    utils.compose(
+      utils.objectExtender({
+        getList: function() {
+          return self.createVocabularyList(this);
+        },
+        getPlaceTypeGroups: function() { 
+          return this.getList().$getElements(); 
+        }
+      })
+    ));
+};
+},{"./../FamilySearch":1,"./../utils":53}],44:[function(require,module,exports){
 var FS = require('./../FamilySearch');
 
 /**
@@ -9405,7 +10019,7 @@ var FS = require('./../FamilySearch');
 FS.prototype.getRedirectUrl = function(params) {
   return this.helpers.appendAccessToken(this.helpers.appendQueryParameters(this.helpers.getAPIServerUrl('/platform/redirect'), params));
 };
-},{"./../FamilySearch":1}],40:[function(require,module,exports){
+},{"./../FamilySearch":1}],45:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -9417,21 +10031,6 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/resources#search-and-match FamilySearch API Docs}
  */
-
-var nonQueryParams = {start: true, count: true, context: true};
-
-function quote(value) {
-  if(!utils.isString(value)){
-    return value;
-  }
-  value = value.replace(/[:"]/g, '').trim();
-  return value.indexOf(' ') >= 0 ? '"' + value + '"' : value;
-}
-
-function getQuery(params) {
-  return utils.map(utils.filter(utils.keys(params), function(key) { return !nonQueryParams[key]; }),
-    function(key) { return key+':'+quote(params[key]); }).join(' ');
-}
 
 var searchMatchResponseConvenienceFunctions = {
   getSearchResults: function() { return this.entries || []; },
@@ -9508,7 +10107,7 @@ FS.prototype.getPersonSearch = function(params, opts) {
     self.plumbing.getUrl('person-search'),
     function(url) {
       return self.plumbing.get(url, utils.removeEmptyProperties({
-          q: getQuery(utils.removeEmptyProperties(utils.extend({}, params))),
+          q: utils.searchParamsFilter(utils.removeEmptyProperties(utils.extend({}, params))),
           start: params.start,
           count: params.count,
           context: params.context
@@ -9588,20 +10187,16 @@ FS.prototype.getPersonMatchesQuery = function(params, opts) {
   return self.helpers.chainHttpPromises(
     self.plumbing.getUrl('person-matches-query'),
     function(url) {
-      try {
       return self.plumbing.get(url, utils.removeEmptyProperties({
-          q: getQuery(utils.removeEmptyProperties(utils.extend({}, params))),
+          q: utils.searchParamsFilter(utils.removeEmptyProperties(utils.extend({}, params))),
           start: params.start,
           count: params.count
         }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
         self._getSearchMatchResponseMapper());
-      } catch(e) {
-        console.log(e.stack);
-      }
     });
 };
 
-},{"./../FamilySearch":1,"./../utils":48}],41:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],46:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -9853,7 +10448,7 @@ FS.prototype.deleteCollection = function(udcid, opts) {
   );
 };
 
-},{"./../FamilySearch":1,"./../utils":48}],42:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],47:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -10436,7 +11031,7 @@ FS.prototype.deleteChildAndParentsSourceRef = function(caprid, srid, changeMessa
   );
 };
 
-},{"./../FamilySearch":1,"./../utils":48}],43:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],48:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     utils = require('../utils'),
     maybe = utils.maybe;
@@ -10528,7 +11123,7 @@ FS.prototype.deleteCouple = function(crid, changeMessage, opts) {
   );
 };
 
-},{"../FamilySearch":1,"../utils":48}],44:[function(require,module,exports){
+},{"../FamilySearch":1,"../utils":53}],49:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -10642,7 +11237,7 @@ FS.prototype.getMultiAgent = function(aids, params, opts) {
   return self.helpers.promiseAll(promises);
 };
 
-},{"./../FamilySearch":1,"./../utils":48}],45:[function(require,module,exports){
+},{"./../FamilySearch":1,"./../utils":53}],50:[function(require,module,exports){
 var utils = require('./utils'),
     exports = {};
 
@@ -10738,7 +11333,7 @@ exports.deferredWrapper = function(defer) {
 };
 
 module.exports = exports;
-},{"./utils":48}],46:[function(require,module,exports){
+},{"./utils":53}],51:[function(require,module,exports){
 var utils = require('./utils');
 
 /**
@@ -11078,7 +11673,7 @@ Plumbing.prototype.http = function(method, url, headers, data, opts, responseMap
 };
 
 module.exports = Plumbing;
-},{"./utils":48}],47:[function(require,module,exports){
+},{"./utils":53}],52:[function(require,module,exports){
 var FS = require('./FamilySearch'),
     utils = require('./utils'),
     maybe = utils.maybe,
@@ -11163,7 +11758,7 @@ exports.deleteFact = function(prop, value, changeMessage) {
 };
 
 module.exports = exports;
-},{"./FamilySearch":1,"./utils":48}],48:[function(require,module,exports){
+},{"./FamilySearch":1,"./utils":53}],53:[function(require,module,exports){
 var exports = module.exports;
 
  // Object.create polyfill
@@ -11660,6 +12255,30 @@ exports.wrapFunctions = function(dest, source, fns) {
     };
   });
   return dest;
+};
+
+/**
+ * Search utilities
+ */
+
+var nonQueryParams = {start: true, count: true, context: true};
+
+function quoteSearchParam(value) {
+  if(!exports.isString(value)){
+    return value;
+  }
+  value = value.replace(/[:"]/g, '').trim();
+  return value.indexOf(' ') >= 0 ? '"' + value + '"' : value;
+}
+
+/**
+ * Given an map of parameters, filter out non-search parameters.
+ * This allows us to accept all search params in one object instead
+ * of asking the user to nest the actual search query in the `q` attribute.
+ */
+exports.searchParamsFilter = function(params) {
+  return exports.map(exports.filter(exports.keys(params), function(key) { return !nonQueryParams[key]; }),
+    function(key) { return key+':'+quoteSearchParam(params[key]); }).join(' ');
 };
 },{}]},{},[1])(1)
 });
