@@ -143,3 +143,38 @@ FS.prototype.getPlacesSearch = function(params, opts) {
       }
     ));
 };
+
+/**
+ * @ngdoc function
+ * @name places.functions:getPlaceDescriptionChildren
+ * @function
+ *
+ * @description
+ * Get the children of a Place Description.
+ *
+ * - `getChildren()` - get an array of the {@link places.types:constructor.PlaceDescription PlaceDescriptions} (children) from the response
+ *
+ * {@link https://familysearch.org/developers/docs/api/places/Place_Description_Children_resource}
+ *
+ * @param {String} id of the place description
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the response
+ */
+FS.prototype.getPlaceDescriptionChildren = function(placeId, opts) {
+  var self = this,
+      url = self.helpers.getAPIServerUrl(self.helpers.populateUriTemplate('/platform/places/description/{id}/children', {id: placeId}));
+  return self.plumbing.get(url, {}, {}, opts,
+    utils.compose(
+      utils.objectExtender({
+        getChildren: function() { 
+          return utils.maybe(this.places); 
+        }
+      }),
+      function(response){
+        utils.forEach(response.places, function(place, index, obj){
+          obj[index] = self.createPlaceDescription(place);
+        });
+        return response;
+      }
+    ));
+};

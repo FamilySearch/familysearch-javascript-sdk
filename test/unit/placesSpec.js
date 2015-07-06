@@ -41,7 +41,7 @@ describe('Places', function() {
     });
   });
   
-  fit('getPlacesSearch', function(done){
+  it('getPlacesSearch', function(done){
     FS.getPlacesSearch({
       name: 'Paris',
       parentId: '+442102'
@@ -65,6 +65,20 @@ describe('Places', function() {
       expect(secondPlace.$getType()).toBe('District');
       
       done();
+    });
+  });
+  
+  it('getPlaceDescriptionChildren', function(done){
+    FS.getPlaceDescriptionChildren(1054).then(function(response){
+      try {
+      var children = response.getChildren();
+      expect(children.length).toBe(6);
+      expect(children[0].id).toBe('432379');
+      expect(children[0].names[2].value).toBe('榛原郡');
+      done();
+      } catch(e) {
+        console.error(e.stack);
+      }
     });
   });
 

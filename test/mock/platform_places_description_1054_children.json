@@ -1,0 +1,231 @@
+{
+  "places" : [ {
+    "id" : "432379",
+    "links" : {
+      "description" : {
+        "href" : "https://familysearch.org/platform/places/description/432379.json"
+      }
+    },
+    "lang" : "ja-Latn-x-nga",
+    "identifiers" : {
+      "http://gedcomx.org/Primary" : [ "https://familysearch.org/platform/places/1942425" ]
+    },
+    "names" : [ {
+      "lang" : "ja-Latn-x-nga",
+      "value" : "Haibara-gun"
+    }, {
+      "lang" : "ja-Latn-hepburn",
+      "value" : "Haibaragun"
+    }, {
+      "lang" : "ja-Hani",
+      "value" : "榛原郡"
+    }, {
+      "lang" : "ja-Hira",
+      "value" : "はいばらぐん"
+    } ],
+    "type" : "https://familysearch.org/platform/places/types/209",
+    "temporalDescription" : {
+      "formal" : "/+1871"
+    },
+    "latitude" : 35.0,
+    "longitude" : 138.1666667,
+    "jurisdiction" : {
+      "resource" : "#1054"
+    },
+    "display" : {
+      "name" : "Haibara-gun",
+      "fullName" : "Haibara-gun, Tōtōmi-no kuni, Japan",
+      "type" : "County"
+    }
+  }, {
+    "id" : "432388",
+    "links" : {
+      "description" : {
+        "href" : "https://familysearch.org/platform/places/description/432388.json"
+      }
+    },
+    "lang" : "ja-Latn-x-nga",
+    "identifiers" : {
+      "http://gedcomx.org/Primary" : [ "https://familysearch.org/platform/places/1942419" ]
+    },
+    "names" : [ {
+      "lang" : "ja-Latn-x-nga",
+      "value" : "Hamana-gun"
+    }, {
+      "lang" : "ja-Latn-hepburn",
+      "value" : "Hamanagun"
+    }, {
+      "lang" : "ja-Hani",
+      "value" : "浜名郡"
+    }, {
+      "lang" : "ja-Hira",
+      "value" : "はまなぐん"
+    } ],
+    "type" : "https://familysearch.org/platform/places/types/209",
+    "temporalDescription" : {
+      "formal" : "/+1871"
+    },
+    "latitude" : 34.75,
+    "longitude" : 137.6666667,
+    "jurisdiction" : {
+      "resource" : "#1054"
+    },
+    "display" : {
+      "name" : "Hamana-gun",
+      "fullName" : "Hamana-gun, Tōtōmi-no kuni, Japan",
+      "type" : "County"
+    }
+  }, {
+    "id" : "432500",
+    "links" : {
+      "description" : {
+        "href" : "https://familysearch.org/platform/places/description/432500.json"
+      }
+    },
+    "lang" : "ja-Latn-x-nga",
+    "identifiers" : {
+      "http://gedcomx.org/Primary" : [ "https://familysearch.org/platform/places/1942322" ]
+    },
+    "names" : [ {
+      "lang" : "ja-Latn-x-nga",
+      "value" : "Inasa-gun"
+    }, {
+      "lang" : "ja-Latn-hepburn",
+      "value" : "Inasagun"
+    }, {
+      "lang" : "ja-Hani",
+      "value" : "引佐郡"
+    }, {
+      "lang" : "ja-Hira",
+      "value" : "いなさぐん"
+    } ],
+    "type" : "https://familysearch.org/platform/places/types/209",
+    "temporalDescription" : {
+      "formal" : "/+1871"
+    },
+    "latitude" : 34.8666667,
+    "longitude" : 137.5833333,
+    "jurisdiction" : {
+      "resource" : "#1054"
+    },
+    "display" : {
+      "name" : "Inasa-gun",
+      "fullName" : "Inasa-gun, Tōtōmi-no kuni, Japan",
+      "type" : "County"
+    }
+  }, {
+    "id" : "432546",
+    "links" : {
+      "description" : {
+        "href" : "https://familysearch.org/platform/places/description/432546.json"
+      }
+    },
+    "lang" : "ja-Latn-x-nga",
+    "identifiers" : {
+      "http://gedcomx.org/Primary" : [ "https://familysearch.org/platform/places/1942294" ]
+    },
+    "names" : [ {
+      "lang" : "ja-Latn-x-nga",
+      "value" : "Iwata-gun"
+    }, {
+      "lang" : "ja-Latn-hepburn",
+      "value" : "Iwatagun"
+    }, {
+      "lang" : "ja-Hani",
+      "value" : "磐田郡"
+    }, {
+      "lang" : "ja-Hira",
+      "value" : "いわたぐん"
+    } ],
+    "type" : "https://familysearch.org/platform/places/types/209",
+    "temporalDescription" : {
+      "formal" : "/+1871"
+    },
+    "latitude" : 34.9166667,
+    "longitude" : 137.75,
+    "jurisdiction" : {
+      "resource" : "#1054"
+    },
+    "display" : {
+      "name" : "Iwata-gun",
+      "fullName" : "Iwata-gun, Tōtōmi-no kuni, Japan",
+      "type" : "County"
+    }
+  }, {
+    "id" : "431684",
+    "links" : {
+      "description" : {
+        "href" : "https://familysearch.org/platform/places/description/431684.json"
+      }
+    },
+    "lang" : "ja-Latn-x-nga",
+    "identifiers" : {
+      "http://gedcomx.org/Primary" : [ "https://familysearch.org/platform/places/1941942" ]
+    },
+    "names" : [ {
+      "lang" : "ja-Latn-x-nga",
+      "value" : "Ogasa-gun"
+    }, {
+      "lang" : "ja-Latn-hepburn",
+      "value" : "Ogasagun"
+    }, {
+      "lang" : "ja-Hani",
+      "value" : "小笠郡"
+    }, {
+      "lang" : "ja-Hira",
+      "value" : "おがさぐん"
+    } ],
+    "type" : "https://familysearch.org/platform/places/types/209",
+    "temporalDescription" : {
+      "formal" : "/+1871"
+    },
+    "latitude" : 34.75,
+    "longitude" : 138.0833333,
+    "jurisdiction" : {
+      "resource" : "#1054"
+    },
+    "display" : {
+      "name" : "Ogasa-gun",
+      "fullName" : "Ogasa-gun, Tōtōmi-no kuni, Japan",
+      "type" : "County"
+    }
+  }, {
+    "id" : "2977719",
+    "links" : {
+      "description" : {
+        "href" : "https://familysearch.org/platform/places/description/2977719.json"
+      }
+    },
+    "lang" : "ja-Latn-x-nga",
+    "identifiers" : {
+      "http://gedcomx.org/Primary" : [ "https://familysearch.org/platform/places/6132890" ]
+    },
+    "names" : [ {
+      "lang" : "ja-Latn-x-nga",
+      "value" : "Shūchi-gun"
+    }, {
+      "lang" : "ja-Latn-hepburn",
+      "value" : "Shūchigun"
+    }, {
+      "lang" : "ja-Hani",
+      "value" : "周智郡"
+    }, {
+      "lang" : "ja-Hira",
+      "value" : "しゅうちぐん"
+    } ],
+    "type" : "https://familysearch.org/platform/places/types/209",
+    "temporalDescription" : {
+      "formal" : "/+1871"
+    },
+    "latitude" : 34.87616,
+    "longitude" : 137.96109,
+    "jurisdiction" : {
+      "resource" : "#1054"
+    },
+    "display" : {
+      "name" : "Shūchi-gun",
+      "fullName" : "Shūchi-gun, Tōtōmi-no kuni, Japan",
+      "type" : "County"
+    }
+  } ]
+}
