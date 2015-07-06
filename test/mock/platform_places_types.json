@@ -1,0 +1,131 @@
+{
+    "@id": "https://familysearch.org/platform/places/types",
+    "title": "Place Types",
+    "description": "List of available place types.",
+    "elements": [
+        {
+            "id": "143",
+            "@id": "https://familysearch.org/platform/places/types/143",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Aboriginal Council"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "A political jurisdiction in countries with native populations such as Australia."
+                }
+            ]
+        },
+        {
+            "id": "144",
+            "@id": "https://familysearch.org/platform/places/types/144",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Administrative Area"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "A high level political jurisdiction in some small countries such as Saint Helena."
+                }
+            ]
+        },
+        {
+            "id": "145",
+            "@id": "https://familysearch.org/platform/places/types/145",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Administrative District (German Kreishauptmannschaft)"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "A high level political jurisdiction in historic areas of Germany such as Saxony."
+                }
+            ]
+        },
+        {
+            "id": "395",
+            "@id": "https://familysearch.org/platform/places/types/395",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Administrative District (German Oberamt)"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "A high level political jurisdiction in historic areas of Germany such as Württemberg."
+                }
+            ]
+        },
+        {
+            "id": "146",
+            "@id": "https://familysearch.org/platform/places/types/146",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Administrative District (German Regierungsbezirk)"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "A high level political jurisdiction in historic areas of Germany such as Prussia."
+                }
+            ]
+        }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1": {
+        "@id": "https://familysearch.org/platform/places/types/143"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2": {
+        "@id": "https://familysearch.org/platform/places/types/144"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_3": {
+        "@id": "https://familysearch.org/platform/places/types/145"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_4": {
+        "@id": "https://familysearch.org/platform/places/types/395"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_5": {
+        "@id": "https://familysearch.org/platform/places/types/146"
+    },
+    "@context": {
+        "title": "http://purl.org/dc/terms/title",
+        "description": "http://purl.org/dc/terms/description",
+        "elements": {
+            "@id": "http://purl.org/dc/terms/hasPart",
+            "@container": "@list"
+        },
+        "id": {
+            "@id": "http://purl.org/dc/terms/identifier"
+        },
+        "subclassOf": {
+            "@id": "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+            "@type": "@id"
+        },
+        "references": {
+            "@id": "http://purl.org/dc/terms/references",
+            "@type": "@id"
+        },
+        "type": {
+            "@id": "http://purl.org/dc/terms/type",
+            "@type": "@id"
+        },
+        "labels": {
+            "@id": "http://www.w3.org/2000/01/rdf-schema#label"
+        },
+        "descriptions": {
+            "@id": "http://www.w3.org/2000/01/rdf-schema#comment"
+        }
+    }
+}

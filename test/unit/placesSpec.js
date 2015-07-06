@@ -1,4 +1,4 @@
-fdescribe('Places', function() {
+describe('Places', function() {
   
   it('getPlace', function(done){
     FS.getPlace(2557657).then(function(response) {
@@ -80,15 +80,23 @@ fdescribe('Places', function() {
   
   it('getPlaceType', function(done){
     FS.getPlaceType(103).then(function(response){
-      try {
       var type = response.getPlaceType();
       expect(type.id).toBe('103');
       expect(type.$getLabel()).toBe('Recreation Area');
       expect(type.$getDescription()).toBe('A recreation area; amphitheater, athletic track or field, racetrack, golf course, fishing area, etc.');
       done();
-      } catch(e) {
-        console.error(e.stack);
-      }
+    });
+  });
+  
+  it('getPlaceTypes', function(done){
+    FS.getPlaceTypes().then(function(response){
+      var types = response.getPlaceTypes(),
+          type = types[0];
+      expect(types.length).toBe(5);
+      expect(type.id).toBe('143');
+      expect(type.$getLabel()).toBe('Aboriginal Council');
+      expect(type.$getDescription()).toBe('A political jurisdiction in countries with native populations such as Australia.');
+      done();
     });
   });
 

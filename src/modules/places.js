@@ -198,12 +198,46 @@ FS.prototype.getPlaceDescriptionChildren = function(placeId, opts) {
 FS.prototype.getPlaceType = function(typeId, opts) {
   var self = this,
       url = self.helpers.getAPIServerUrl(self.helpers.populateUriTemplate('/platform/places/types/{id}', {id: typeId}));
-  return self.plumbing.get(url, {}, {}, opts,
+  return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
     utils.compose(
       utils.objectExtender({
         getPlaceType: function() { 
           return self.createPlaceType(this); 
         }
       })
+    ));
+};
+
+/**
+ * @ngdoc function
+ * @name places.functions:getPlaceTypes
+ * @function
+ *
+ * @description
+ * Get a list of all available Place Types.
+ *
+ * - `getPlaceTypes()` - get an array of the {@link places.types:constructor.PlaceType PlaceTypes} from the response
+ *
+ * {@link https://familysearch.org/developers/docs/api/places/Place_Type_resource}
+ *
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the response
+ */
+FS.prototype.getPlaceTypes = function(opts) {
+  var self = this,
+      url = self.helpers.getAPIServerUrl('/platform/places/types');
+  return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
+    utils.compose(
+      utils.objectExtender({
+        getPlaceTypes: function() { 
+          return utils.maybe(this.elements); 
+        }
+      }),
+      function(response){
+        utils.forEach(response.elements, function(element, index, obj){
+          obj[index] = self.createPlaceType(element);
+        });
+        return response;
+      }
     ));
 };
