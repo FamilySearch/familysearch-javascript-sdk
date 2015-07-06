@@ -315,7 +315,7 @@ Fact.prototype = {
    * @function
    * @description sets the place; original and normalized forms must be set
    * @param {String|Object|Date} place either a place string as written by the user (in which case you must also call $setNormalizedPlace()),
-   * or a {original, normalized} object, or a {@link authorities.types:constructor.Place Place} object
+   * or a {original, normalized} object, or a {@link places.types:constructor.PlaceDescription PlaceDescription} object
    * @return {Fact} this fact
    */
   $setPlace: function(place) {
@@ -324,10 +324,10 @@ Fact.prototype = {
     if (utils.isString(place) || place == null) {
       originalPlace = place;
     }
-    else if (place instanceof FS.Place) {
-      originalPlace = place.original;
+    else if (place instanceof FS.PlaceDescription) {
+      originalPlace = place.$getFullName();
       //noinspection JSUnresolvedFunction
-      this.$setNormalizedPlace(place.$getNormalizedPlace());
+      this.$setNormalizedPlace(originalPlace);
     }
     else if (utils.isObject(place)) {
       originalPlace = place.$original;

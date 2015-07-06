@@ -1,4 +1,4 @@
-fdescribe('Places', function() {
+describe('Places', function() {
   
   it('getPlace', function(done){
     FS.getPlace(2557657).then(function(response) {

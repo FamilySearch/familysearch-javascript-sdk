@@ -51,14 +51,21 @@ describe('A Fact', function() {
     expect(fact.$changed).toBe(true);
 
     fact = FS.createFact();
-    var place = FS.createPlace({
-      original: 'place',
-      id: 'normalizedPlaceId',
-      normalized: ['normalizedPlace']
+    var place = FS.createPlaceDescription({
+      'id' : '50615',
+      'names' : [ {
+        'lang' : 'en',
+        'value' : 'Nohabuna Island'
+      } ],
+      'display' : {
+        'name' : 'Nohabuna Island',
+        'fullName' : 'Nohabuna Island, Solomon Islands',
+        'type' : 'Island'
+      }
     });
     fact.$setPlace(place);
-    expect(fact.$getPlace()).toBe('place');
-    expect(fact.$getNormalizedPlace()).toBe('normalizedPlace');
+    expect(fact.$getPlace()).toBe('Nohabuna Island, Solomon Islands');
+    expect(fact.$getNormalizedPlace()).toBe('Nohabuna Island, Solomon Islands');
     expect(fact.$changed).toBe(true);
 
     fact = FS.createFact();
