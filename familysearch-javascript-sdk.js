@@ -5291,7 +5291,7 @@ var PlacesSearchResult = FS.PlacesSearchResult = function(client, data){
 
 /**
  * @ngdoc function
- * @name places.functions:createPlaceDescription
+ * @name places.functions:createPlacesSearchResult
  * @param {Object} data [Entry](https://familysearch.org/developers/docs/api/atom/Entry_json) data
  * @return {Object} {@link places.types:constructor.PlacesSearchResult PlacesSearchResult}
  * @description Create a {@link places.types:constructor.PlacesSearchResult PlacesSearchResult} object. Use this method instead of calling the constructor directly.
@@ -6228,7 +6228,7 @@ var VocabularyElement = FS.VocabularyElement = function(client, data){
 
 /**
  * @ngdoc function
- * @name places.functions:createVocabularyElement
+ * @name vocabularies.functions:createVocabularyElement
  * @param {Object} data object with vocabulary element data
  * @return {Object} {@link vocabularies.types:constructor.VocabularyElement VocabularyElement}
  * @description Create a {@link vocabularies.types:constructor.VocabularyElement VocabularyElement} object. Use this method instead of calling the constructor directly.
@@ -6295,7 +6295,7 @@ var VocabularyList = FS.VocabularyList = function(client, data){
 
 /**
  * @ngdoc function
- * @name places.functions:createVocabularyList
+ * @name vocabularies.functions:createVocabularyList
  * @param {Object} data object with vocabulary list data
  * @return {Object} {@link vocabularies.types:constructor.VocabularyList VocabularyList}
  * @description Create a {@link vocabularies.types:constructor.VocabularyList VocabularyList} object. Use this method instead of calling the constructor directly.

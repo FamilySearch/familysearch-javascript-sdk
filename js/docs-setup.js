@@ -945,17 +945,17 @@ NG_DOCS={
       "shortName": "createPlaceDescription",
       "type": "function",
       "moduleName": "places",
-      "shortDescription": "Create a PlacesSearchResult object. Use this method instead of calling the constructor directly.",
-      "keywords": "api calling create data directly function functions method object org places placessearchresult types"
+      "shortDescription": "Create a PlaceDescription object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly function functions method object org placedescription places types"
     },
     {
       "section": "api",
-      "id": "places.functions:createPlaceDescription",
-      "shortName": "createPlaceDescription",
+      "id": "places.functions:createPlacesSearchResult",
+      "shortName": "createPlacesSearchResult",
       "type": "function",
       "moduleName": "places",
-      "shortDescription": "Create a PlaceDescription object. Use this method instead of calling the constructor directly.",
-      "keywords": "api calling create data directly function functions method object org placedescription places types"
+      "shortDescription": "Create a PlacesSearchResult object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly function functions method object org places placessearchresult types"
     },
     {
       "section": "api",
@@ -965,24 +965,6 @@ NG_DOCS={
       "moduleName": "places",
       "shortDescription": "Create a TextValue object. Use this method instead of calling the constructor directly.",
       "keywords": "api calling create data directly function functions method object org places textvalue types"
-    },
-    {
-      "section": "api",
-      "id": "places.functions:createVocabularyElement",
-      "shortName": "createVocabularyElement",
-      "type": "function",
-      "moduleName": "places",
-      "shortDescription": "Create a VocabularyElement object. Use this method instead of calling the constructor directly.",
-      "keywords": "api calling create data directly element function functions method object places types vocabularies vocabulary vocabularyelement"
-    },
-    {
-      "section": "api",
-      "id": "places.functions:createVocabularyList",
-      "shortName": "createVocabularyList",
-      "type": "function",
-      "moduleName": "places",
-      "shortDescription": "Create a VocabularyList object. Use this method instead of calling the constructor directly.",
-      "keywords": "api calling create data directly function functions list method object places types vocabularies vocabulary vocabularylist"
     },
     {
       "section": "api",
@@ -1595,6 +1577,24 @@ NG_DOCS={
       "moduleName": "user",
       "shortDescription": "User - a user is returned from getCurrentUser;",
       "keywords": "address agent api contact contactname contributor display displayname email en family familyname female full function functions gender getcurrentuser givenname ids male person personid preferredlanguage property returned treeuserid types user"
+    },
+    {
+      "section": "api",
+      "id": "vocabularies.functions:createVocabularyElement",
+      "shortName": "createVocabularyElement",
+      "type": "function",
+      "moduleName": "vocabularies",
+      "shortDescription": "Create a VocabularyElement object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly element function functions method object types vocabularies vocabulary vocabularyelement"
+    },
+    {
+      "section": "api",
+      "id": "vocabularies.functions:createVocabularyList",
+      "shortName": "createVocabularyList",
+      "type": "function",
+      "moduleName": "vocabularies",
+      "shortDescription": "Create a VocabularyList object. Use this method instead of calling the constructor directly.",
+      "keywords": "api calling create data directly function functions list method object types vocabularies vocabulary vocabularylist"
     },
     {
       "section": "api",
