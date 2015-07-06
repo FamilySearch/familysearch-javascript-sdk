@@ -22,7 +22,7 @@ var VocabularyList = FS.VocabularyList = function(client, data){
 
 /**
  * @ngdoc function
- * @name places.functions:createVocabularyList
+ * @name vocabularies.functions:createVocabularyList
  * @param {Object} data object with vocabulary list data
  * @return {Object} {@link vocabularies.types:constructor.VocabularyList VocabularyList}
  * @description Create a {@link vocabularies.types:constructor.VocabularyList VocabularyList} object. Use this method instead of calling the constructor directly.

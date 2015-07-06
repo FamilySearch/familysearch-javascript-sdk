@@ -36,7 +36,7 @@ var PlacesSearchResult = FS.PlacesSearchResult = function(client, data){
 
 /**
  * @ngdoc function
- * @name places.functions:createPlaceDescription
+ * @name places.functions:createPlacesSearchResult
  * @param {Object} data [Entry](https://familysearch.org/developers/docs/api/atom/Entry_json) data
  * @return {Object} {@link places.types:constructor.PlacesSearchResult PlacesSearchResult}
  * @description Create a {@link places.types:constructor.PlacesSearchResult PlacesSearchResult} object. Use this method instead of calling the constructor directly.
