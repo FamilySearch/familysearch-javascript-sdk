@@ -99,5 +99,17 @@ describe('Places', function() {
       done();
     });
   });
+  
+  it('getPlaceTypeGroups', function(done){
+    FS.getPlaceTypeGroups().then(function(response){
+      var groups = response.getPlaceTypeGroups(),
+          group = groups[0];
+      expect(groups.length).toBe(18);
+      expect(group.id).toBe('4');
+      expect(group.$getLabel()).toBe('Geographic (Continents)');
+      expect(group.$getDescription()).toBe('Geographic feature type');
+      done();
+    });
+  });
 
 });

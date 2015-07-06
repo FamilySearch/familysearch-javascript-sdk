@@ -20,7 +20,7 @@ var FS = require('./../FamilySearch'),
  *
  * - `getPlace()` - get the {@link places.types:constructor.PlaceDescription PlaceDescription} from the response
  *
- * {@link https://familysearch.org/developers/docs/api/places/Place_resource}
+ * {@link https://familysearch.org/developers/docs/api/places/Place_resource API Docs}
  *
  * @param {String} id of the place
  * @param {Object=} opts options to pass to the http function specified during init
@@ -55,7 +55,7 @@ FS.prototype.getPlace = function(placeId, opts) {
  *
  * - `getPlaceDescription()` - get the {@link places.types:constructor.PlaceDescription PlaceDescription} from the response
  *
- * {@link https://familysearch.org/developers/docs/api/places/Place_Description_resource}
+ * {@link https://familysearch.org/developers/docs/api/places/Place_Description_resource API Docs}
  *
  * @param {String} id of the place description
  * @param {Object=} opts options to pass to the http function specified during init
@@ -154,7 +154,7 @@ FS.prototype.getPlacesSearch = function(params, opts) {
  *
  * - `getChildren()` - get an array of the {@link places.types:constructor.PlaceDescription PlaceDescriptions} (children) from the response
  *
- * {@link https://familysearch.org/developers/docs/api/places/Place_Description_Children_resource}
+ * {@link https://familysearch.org/developers/docs/api/places/Place_Description_Children_resource API Docs}
  *
  * @param {String} id of the place description
  * @param {Object=} opts options to pass to the http function specified during init
@@ -187,9 +187,9 @@ FS.prototype.getPlaceDescriptionChildren = function(placeId, opts) {
  * @description
  * Get a place.
  *
- * - `getPlaceType()` - get the {@link places.types:constructor.PlaceType PlaceType} from the response
+ * - `getPlaceType()` - get the {@link places.types:constructor.Element Element} from the response
  *
- * {@link https://familysearch.org/developers/docs/api/places/Place_Type_resource}
+ * {@link https://familysearch.org/developers/docs/api/places/Place_Type_resource API Docs}
  *
  * @param {String} id of the place
  * @param {Object=} opts options to pass to the http function specified during init
@@ -202,7 +202,7 @@ FS.prototype.getPlaceType = function(typeId, opts) {
     utils.compose(
       utils.objectExtender({
         getPlaceType: function() { 
-          return self.createPlaceType(this); 
+          return self.createElement(this); 
         }
       })
     ));
@@ -216,9 +216,9 @@ FS.prototype.getPlaceType = function(typeId, opts) {
  * @description
  * Get a list of all available Place Types.
  *
- * - `getPlaceTypes()` - get an array of the {@link places.types:constructor.PlaceType PlaceTypes} from the response
+ * - `getPlaceTypes()` - get an array of the {@link places.types:constructor.Element Elements} from the response
  *
- * {@link https://familysearch.org/developers/docs/api/places/Place_Type_resource}
+ * {@link https://familysearch.org/developers/docs/api/places/Place_Types_resource API Docs}
  *
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
@@ -235,7 +235,41 @@ FS.prototype.getPlaceTypes = function(opts) {
       }),
       function(response){
         utils.forEach(response.elements, function(element, index, obj){
-          obj[index] = self.createPlaceType(element);
+          obj[index] = self.createElement(element);
+        });
+        return response;
+      }
+    ));
+};
+
+/**
+ * @ngdoc function
+ * @name places.functions:getPlaceTypeGroups
+ * @function
+ *
+ * @description
+ * Get a list of all available Place Types.
+ *
+ * - `getPlaceTypeGroups()` - get an array of the {@link places.types:constructor.Element Elements} from the response
+ *
+ * {@link https://familysearch.org/developers/docs/api/places/Place_Type_Groups_resource API Docs}
+ *
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the response
+ */
+FS.prototype.getPlaceTypeGroups = function(opts) {
+  var self = this,
+      url = self.helpers.getAPIServerUrl('/platform/places/type-groups');
+  return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
+    utils.compose(
+      utils.objectExtender({
+        getPlaceTypeGroups: function() { 
+          return utils.maybe(this.elements); 
+        }
+      }),
+      function(response){
+        utils.forEach(response.elements, function(element, index, obj){
+          obj[index] = self.createElement(element);
         });
         return response;
       }

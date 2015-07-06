@@ -1,0 +1,311 @@
+{
+  "@id" : "https://familysearch.org/platform/places/type-groups",
+  "title" : "Place Type Groups",
+  "description" : "List of available place type groups.",
+  "elements" : [ {
+    "id" : "4",
+    "@id" : "https://familysearch.org/platform/places/type-groups/4",
+    "type" : "http://familysearch.org/v1/PlaceTypeGroup",
+    "labels" : [ {
+      "@language" : "en",
+      "@value" : "Geographic (Continents)"
+    } ],
+    "descriptions" : [ {
+      "@language" : "en",
+      "@value" : "Geographic feature type"
+    } ]
+  }, {
+    "id" : "28",
+    "@id" : "https://familysearch.org/platform/places/type-groups/28",
+    "type" : "http://familysearch.org/v1/PlaceTypeGroup",
+    "labels" : [ {
+      "@language" : "en",
+      "@value" : "County-Like"
+    } ],
+    "descriptions" : [ {
+      "@language" : "en",
+      "@value" : "Counties and comparable level administrative places (ADM2)"
+    } ]
+  }, {
+    "id" : "27",
+    "@id" : "https://familysearch.org/platform/places/type-groups/27",
+    "type" : "http://familysearch.org/v1/PlaceTypeGroup",
+    "labels" : [ {
+      "@language" : "en",
+      "@value" : "State/Province-Like"
+    } ],
+    "descriptions" : [ {
+      "@language" : "en",
+      "@value" : "States, Provinces and comparable level administrative places (ADM1)"
+    } ]
+  }, {
+    "id" : "8",
+    "@id" : "https://familysearch.org/platform/places/type-groups/8",
+    "type" : "http://familysearch.org/v1/PlaceTypeGroup",
+    "labels" : [ {
+      "@language" : "en",
+      "@value" : "Populated Places"
+    }, {
+      "@language" : "cs",
+      "@value" : "základní sidelní jednotky"
+    } ],
+    "descriptions" : [ {
+      "@language" : "en",
+      "@value" : "Includes various types of settlements, in which people permanently reside."
+    }, {
+      "@language" : "cs",
+      "@value" : "Skupina obsahuje jednotlivé druhy sidelních jednotek, jinými slovy: místa, kde lidé bydlí."
+    } ]
+  }, {
+    "id" : "10",
+    "@id" : "https://familysearch.org/platform/places/type-groups/10",
+    "type" : "http://familysearch.org/v1/PlaceTypeGroup",
+    "labels" : [ {
+      "@language" : "en",
+      "@value" : "Spot Features (Building)"
+    } ],
+    "descriptions" : [ {
+      "@language" : "en",
+      "@value" : "Spot feature type"
+    } ]
+  }, {
+    "id" : "1",
+    "@id" : "https://familysearch.org/platform/places/type-groups/1",
+    "type" : "http://familysearch.org/v1/PlaceTypeGroup",
+    "labels" : [ {
+      "@language" : "en",
+      "@value" : "Administrative"
+    } ],
+    "descriptions" : [ {
+      "@language" : "en",
+      "@value" : "Administrative place types"
+    } ]
+  }, {
+    "id" : "12",
+    "@id" : "https://familysearch.org/platform/places/type-groups/12",
+    "type" : "http://familysearch.org/v1/PlaceTypeGroup",
+    "labels" : [ {
+      "@language" : "en",
+      "@value" : "Vegetation (Forest, Grassland)"
+    } ],
+    "descriptions" : [ {
+      "@language" : "en",
+      "@value" : "Vegetation feature type "
+    } ]
+  }, {
+    "id" : "2",
+    "@id" : "https://familysearch.org/platform/places/type-groups/2",
+    "type" : "http://familysearch.org/v1/PlaceTypeGroup",
+    "labels" : [ {
+      "@language" : "en",
+      "@value" : "Civil Registration"
+    } ],
+    "descriptions" : [ {
+      "@language" : "en",
+      "@value" : "Civil registration feature type, government jurisdictions for the registration of vital events"
+    } ]
+  }, {
+    "id" : "29",
+    "@id" : "https://familysearch.org/platform/places/type-groups/29",
+    "type" : "http://familysearch.org/v1/PlaceTypeGroup",
+    "labels" : [ {
+      "@language" : "en",
+      "@value" : "City-Like"
+    } ],
+    "descriptions" : [ {
+      "@language" : "en",
+      "@value" : "Cities and lowest level administrative places (ADM3-5, PPL)"
+    } ]
+  }, {
+    "id" : "13",
+    "@id" : "https://familysearch.org/platform/places/type-groups/13",
+    "type" : "http://familysearch.org/v1/PlaceTypeGroup",
+    "labels" : [ {
+      "@language" : "en",
+      "@value" : "Other or unknown"
+    } ],
+    "descriptions" : [ {
+      "@language" : "en",
+      "@value" : "Other or unknown feature type "
+    } ]
+  }, {
+    "id" : "6",
+    "@id" : "https://familysearch.org/platform/places/type-groups/6",
+    "type" : "http://familysearch.org/v1/PlaceTypeGroup",
+    "labels" : [ {
+      "@language" : "en",
+      "@value" : "Judicial (Court)"
+    } ],
+    "descriptions" : [ {
+      "@language" : "en",
+      "@value" : "Judicial (Court) feature type "
+    } ]
+  }, {
+    "id" : "9",
+    "@id" : "https://familysearch.org/platform/places/type-groups/9",
+    "type" : "http://familysearch.org/v1/PlaceTypeGroup",
+    "labels" : [ {
+      "@language" : "en",
+      "@value" : "Roads or Railroads"
+    } ],
+    "descriptions" : [ {
+      "@language" : "en",
+      "@value" : "Streets, highways, roads, or railroad feature type "
+    } ]
+  }, {
+    "id" : "32",
+    "@id" : "https://familysearch.org/platform/places/type-groups/32",
+    "type" : "http://familysearch.org/v1/PlaceTypeGroup",
+    "labels" : [ {
+      "@language" : "en",
+      "@value" : "USMCD"
+    } ],
+    "descriptions" : [ {
+      "@language" : "en",
+      "@value" : "Minor Civil Divisions used in the United States Censuses"
+    } ]
+  }, {
+    "id" : "3",
+    "@id" : "https://familysearch.org/platform/places/type-groups/3",
+    "type" : "http://familysearch.org/v1/PlaceTypeGroup",
+    "labels" : [ {
+      "@language" : "en",
+      "@value" : "Ecclesiastic (Church)"
+    } ],
+    "descriptions" : [ {
+      "@language" : "en",
+      "@value" : "Ecclesiastic (Church) types from various religious denominations."
+    } ]
+  }, {
+    "id" : "26",
+    "@id" : "https://familysearch.org/platform/places/type-groups/26",
+    "type" : "http://familysearch.org/v1/PlaceTypeGroup",
+    "labels" : [ {
+      "@language" : "en",
+      "@value" : "Country-Like"
+    } ],
+    "descriptions" : [ {
+      "@language" : "en",
+      "@value" : "Countries and highest level administrative places (ADM0)"
+    } ]
+  }, {
+    "id" : "11",
+    "@id" : "https://familysearch.org/platform/places/type-groups/11",
+    "type" : "http://familysearch.org/v1/PlaceTypeGroup",
+    "labels" : [ {
+      "@language" : "en",
+      "@value" : "Topographic (Mountain, Island)"
+    } ],
+    "descriptions" : [ {
+      "@language" : "en",
+      "@value" : "Hypsographic (Topographic) feature type "
+    } ]
+  }, {
+    "id" : "5",
+    "@id" : "https://familysearch.org/platform/places/type-groups/5",
+    "type" : "http://familysearch.org/v1/PlaceTypeGroup",
+    "labels" : [ {
+      "@language" : "en",
+      "@value" : "Hydrographic (Water)"
+    } ],
+    "descriptions" : [ {
+      "@language" : "en",
+      "@value" : "Includes all hydrographic (water-related) place types. Bay, gulf, sea, etc."
+    } ]
+  }, {
+    "id" : "7",
+    "@id" : "https://familysearch.org/platform/places/type-groups/7",
+    "type" : "http://familysearch.org/v1/PlaceTypeGroup",
+    "labels" : [ {
+      "@language" : "en",
+      "@value" : "Locality (Battlefield, Oasis)"
+    } ],
+    "descriptions" : [ {
+      "@language" : "en",
+      "@value" : "Locality or area feature type "
+    } ]
+  } ],
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1" : {
+    "@id" : "https://familysearch.org/platform/places/type-groups/4"
+  },
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2" : {
+    "@id" : "https://familysearch.org/platform/places/type-groups/28"
+  },
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#_3" : {
+    "@id" : "https://familysearch.org/platform/places/type-groups/27"
+  },
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#_4" : {
+    "@id" : "https://familysearch.org/platform/places/type-groups/8"
+  },
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#_5" : {
+    "@id" : "https://familysearch.org/platform/places/type-groups/10"
+  },
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#_6" : {
+    "@id" : "https://familysearch.org/platform/places/type-groups/1"
+  },
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#_7" : {
+    "@id" : "https://familysearch.org/platform/places/type-groups/12"
+  },
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#_8" : {
+    "@id" : "https://familysearch.org/platform/places/type-groups/2"
+  },
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#_9" : {
+    "@id" : "https://familysearch.org/platform/places/type-groups/29"
+  },
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#_10" : {
+    "@id" : "https://familysearch.org/platform/places/type-groups/13"
+  },
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#_11" : {
+    "@id" : "https://familysearch.org/platform/places/type-groups/6"
+  },
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#_12" : {
+    "@id" : "https://familysearch.org/platform/places/type-groups/9"
+  },
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#_13" : {
+    "@id" : "https://familysearch.org/platform/places/type-groups/32"
+  },
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#_14" : {
+    "@id" : "https://familysearch.org/platform/places/type-groups/3"
+  },
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#_15" : {
+    "@id" : "https://familysearch.org/platform/places/type-groups/26"
+  },
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#_16" : {
+    "@id" : "https://familysearch.org/platform/places/type-groups/11"
+  },
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#_17" : {
+    "@id" : "https://familysearch.org/platform/places/type-groups/5"
+  },
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#_18" : {
+    "@id" : "https://familysearch.org/platform/places/type-groups/7"
+  },
+  "@context" : {
+    "title" : "http://purl.org/dc/terms/title",
+    "description" : "http://purl.org/dc/terms/description",
+    "elements" : {
+      "@id" : "http://purl.org/dc/terms/hasPart",
+      "@container" : "@list"
+    },
+    "id" : {
+      "@id" : "http://purl.org/dc/terms/identifier"
+    },
+    "subclassOf" : {
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+      "@type" : "@id"
+    },
+    "references" : {
+      "@id" : "http://purl.org/dc/terms/references",
+      "@type" : "@id"
+    },
+    "type" : {
+      "@id" : "http://purl.org/dc/terms/type",
+      "@type" : "@id"
+    },
+    "labels" : {
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#label"
+    },
+    "descriptions" : {
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#comment"
+    }
+  }
+}
