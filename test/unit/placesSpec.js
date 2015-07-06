@@ -1,4 +1,4 @@
-describe('Places', function() {
+fdescribe('Places', function() {
   
   it('getPlace', function(done){
     FS.getPlace(2557657).then(function(response) {
@@ -90,8 +90,11 @@ describe('Places', function() {
   
   it('getPlaceTypes', function(done){
     FS.getPlaceTypes().then(function(response){
-      var types = response.getPlaceTypes(),
+      var list = response.getList(),
+          types = response.getPlaceTypes(),
           type = types[0];
+      expect(list.$getTitle()).toBe('Place Types');
+      expect(list.$getDescription()).toBe('List of available place types.');
       expect(types.length).toBe(5);
       expect(type.id).toBe('143');
       expect(type.$getLabel()).toBe('Aboriginal Council');
@@ -102,8 +105,11 @@ describe('Places', function() {
   
   it('getPlaceTypeGroups', function(done){
     FS.getPlaceTypeGroups().then(function(response){
-      var groups = response.getPlaceTypeGroups(),
+      var list = response.getList(),
+          groups = response.getPlaceTypeGroups(),
           group = groups[0];
+      expect(list.$getTitle()).toBe('Place Type Groups');
+      expect(list.$getDescription()).toBe('List of available place type groups.');
       expect(groups.length).toBe(18);
       expect(group.id).toBe('4');
       expect(group.$getLabel()).toBe('Geographic (Continents)');

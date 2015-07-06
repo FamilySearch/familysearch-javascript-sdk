@@ -176,7 +176,6 @@ require('./classes/couple');
 require('./classes/date');
 require('./classes/discussion');
 require('./classes/discussionRef');
-require('./classes/element');
 require('./classes/fact');
 require('./classes/memoryArtifactRef');
 require('./classes/memoryPersona');
@@ -193,6 +192,8 @@ require('./classes/sourceDescription');
 require('./classes/sourceRef');
 require('./classes/textValue');
 require('./classes/user');
+require('./classes/vocabularyElement');
+require('./classes/vocabularyList');
 
 // Plumbing
 extendFSPrototype('plumbing', 'del');

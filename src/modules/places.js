@@ -187,7 +187,7 @@ FS.prototype.getPlaceDescriptionChildren = function(placeId, opts) {
  * @description
  * Get a place.
  *
- * - `getPlaceType()` - get the {@link places.types:constructor.Element Element} from the response
+ * - `getPlaceType()` - get the {@link vocabularies.types:constructor.VocabularyElement VocabularyElement} from the response
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Type_resource API Docs}
  *
@@ -202,7 +202,7 @@ FS.prototype.getPlaceType = function(typeId, opts) {
     utils.compose(
       utils.objectExtender({
         getPlaceType: function() { 
-          return self.createElement(this); 
+          return self.createVocabularyElement(this); 
         }
       })
     ));
@@ -216,7 +216,8 @@ FS.prototype.getPlaceType = function(typeId, opts) {
  * @description
  * Get a list of all available Place Types.
  *
- * - `getPlaceTypes()` - get an array of the {@link places.types:constructor.Element Elements} from the response
+ * - `getList()` - get the {@link vocabularies.types:constructor.VocabularyList VocabularyList} from the response
+ * - `getPlaceTypes()` - get an array of the {@link vocabularies.types:constructor.VocabularyElement VocabularyElements} from the response
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Types_resource API Docs}
  *
@@ -229,16 +230,13 @@ FS.prototype.getPlaceTypes = function(opts) {
   return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
     utils.compose(
       utils.objectExtender({
+        getList: function() {
+          return self.createVocabularyList(this);
+        },
         getPlaceTypes: function() { 
-          return utils.maybe(this.elements); 
+          return this.getList().$getElements(); 
         }
-      }),
-      function(response){
-        utils.forEach(response.elements, function(element, index, obj){
-          obj[index] = self.createElement(element);
-        });
-        return response;
-      }
+      })
     ));
 };
 
@@ -250,7 +248,8 @@ FS.prototype.getPlaceTypes = function(opts) {
  * @description
  * Get a list of all available Place Types.
  *
- * - `getPlaceTypeGroups()` - get an array of the {@link places.types:constructor.Element Elements} from the response
+ * - `getList()` - get the {@link vocabularies.types:constructor.VocabularyList VocabularyList} from the response
+ * - `getPlaceTypeGroups()` - get an array of the {@link vocabularies.types:constructor.VocabularyElement VocabularyElements} from the response
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Type_Groups_resource API Docs}
  *
@@ -263,15 +262,12 @@ FS.prototype.getPlaceTypeGroups = function(opts) {
   return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
     utils.compose(
       utils.objectExtender({
+        getList: function() {
+          return self.createVocabularyList(this);
+        },
         getPlaceTypeGroups: function() { 
-          return utils.maybe(this.elements); 
+          return this.getList().$getElements(); 
         }
-      }),
-      function(response){
-        utils.forEach(response.elements, function(element, index, obj){
-          obj[index] = self.createElement(element);
-        });
-        return response;
-      }
+      })
     ));
 };
