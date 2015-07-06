@@ -15,7 +15,7 @@ var VocabularyElement = FS.VocabularyElement = function(client, data){
 /**
  * @ngdoc function
  * @name places.functions:createVocabularyElement
- * @param {Object} data
+ * @param {Object} data object with vocabulary element data
  * @return {Object} {@link vocabularies.types:constructor.VocabularyElement VocabularyElement}
  * @description Create a {@link vocabularies.types:constructor.VocabularyElement VocabularyElement} object. Use this method instead of calling the constructor directly.
  */

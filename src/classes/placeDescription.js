@@ -175,7 +175,7 @@ PlaceDescription.prototype = {
    * @name places.types:constructor.PlaceDescription#$setJurisdiction
    * @methodOf places.types:constructor.PlaceDescription
    * @function
-   * @param {Object,PlaceDescription}
+   * @param {Object} A json object representing the new jursidication data, or a PlaceDescription object.
    */
   $setJurisdiction: function(jurisdiction){
     if(!(jurisdiction instanceof FS.PlaceDescription)){
