@@ -150,7 +150,7 @@ FS.prototype.getPlacesSearch = function(params, opts) {
  * @function
  *
  * @description
- * Get the children of a Place Description.
+ * Get the children of a Place Description. Use {@link places.functions:getPlaceSearch getPlacesSearch()} to filter by type, date, and more.
  *
  * - `getChildren()` - get an array of the {@link places.types:constructor.PlaceDescription PlaceDescriptions} (children) from the response
  *
@@ -176,5 +176,34 @@ FS.prototype.getPlaceDescriptionChildren = function(placeId, opts) {
         });
         return response;
       }
+    ));
+};
+
+/**
+ * @ngdoc function
+ * @name places.functions:getPlaceType
+ * @function
+ *
+ * @description
+ * Get a place.
+ *
+ * - `getPlaceType()` - get the {@link places.types:constructor.PlaceType PlaceType} from the response
+ *
+ * {@link https://familysearch.org/developers/docs/api/places/Place_Type_resource}
+ *
+ * @param {String} id of the place
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the response
+ */
+FS.prototype.getPlaceType = function(typeId, opts) {
+  var self = this,
+      url = self.helpers.getAPIServerUrl(self.helpers.populateUriTemplate('/platform/places/types/{id}', {id: typeId}));
+  return self.plumbing.get(url, {}, {}, opts,
+    utils.compose(
+      utils.objectExtender({
+        getPlaceType: function() { 
+          return self.createPlaceType(this); 
+        }
+      })
     ));
 };

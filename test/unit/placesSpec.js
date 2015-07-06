@@ -1,4 +1,4 @@
-describe('Places', function() {
+fdescribe('Places', function() {
   
   it('getPlace', function(done){
     FS.getPlace(2557657).then(function(response) {
@@ -70,11 +70,21 @@ describe('Places', function() {
   
   it('getPlaceDescriptionChildren', function(done){
     FS.getPlaceDescriptionChildren(1054).then(function(response){
-      try {
       var children = response.getChildren();
       expect(children.length).toBe(6);
       expect(children[0].id).toBe('432379');
       expect(children[0].names[2].value).toBe('榛原郡');
+      done();
+    });
+  });
+  
+  it('getPlaceType', function(done){
+    FS.getPlaceType(103).then(function(response){
+      try {
+      var type = response.getPlaceType();
+      expect(type.id).toBe('103');
+      expect(type.$getLabel()).toBe('Recreation Area');
+      expect(type.$getDescription()).toBe('A recreation area; amphitheater, athletic track or field, racetrack, golf course, fishing area, etc.');
       done();
       } catch(e) {
         console.error(e.stack);

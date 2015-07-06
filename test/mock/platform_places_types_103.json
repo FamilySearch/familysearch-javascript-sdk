@@ -1,0 +1,35 @@
+{
+  "id" : "103",
+  "@id" : "https://familysearch.org/platform/places/types/103",
+  "labels" : [ {
+    "@language" : "en",
+    "@value" : "Recreation Area"
+  } ],
+  "descriptions" : [ {
+    "@language" : "en",
+    "@value" : "A recreation area; amphitheater, athletic track or field, racetrack, golf course, fishing area, etc."
+  } ],
+  "@context" : {
+    "id" : {
+      "@id" : "http://purl.org/dc/terms/identifier"
+    },
+    "subclassOf" : {
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+      "@type" : "@id"
+    },
+    "references" : {
+      "@id" : "http://purl.org/dc/terms/references",
+      "@type" : "@id"
+    },
+    "type" : {
+      "@id" : "http://purl.org/dc/terms/type",
+      "@type" : "@id"
+    },
+    "labels" : {
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#label"
+    },
+    "descriptions" : {
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#comment"
+    }
+  }
+}
