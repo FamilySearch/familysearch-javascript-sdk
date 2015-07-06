@@ -44,7 +44,7 @@ describe('Places', function() {
   it('getPlacesSearch', function(done){
     FS.getPlacesSearch({
       name: 'Paris',
-      parentId: '+442102'
+      '+parentId': '442102'
     }).then(function(response){
       var results = response.getSearchResults();
       expect(results.length).toBe(2);
