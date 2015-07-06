@@ -103,6 +103,21 @@ fdescribe('Places', function() {
     });
   });
   
+  it('getPlaceTypeGroup', function(done){
+    FS.getPlaceTypeGroup(26).then(function(response){
+      var list = response.getList(),
+          types = response.getPlaceTypes(),
+          type = types[0];
+      expect(list.$getTitle()).toBe('Country-Like');
+      expect(list.$getDescription()).toBe('Countries and highest level administrative places (ADM0)');
+      expect(types.length).toBe(18);
+      expect(type.id).toBe('343');
+      expect(type.$getLabel()).toBe('Republic');
+      expect(type.$getDescription()).toBe('A country whose government is a representative democracy in which the people\'s elected deputies (representatives), not the people themselves, vote on legislation.');
+      done();
+    });
+  });
+  
   it('getPlaceTypeGroups', function(done){
     FS.getPlaceTypeGroups().then(function(response){
       var list = response.getList(),

@@ -242,6 +242,39 @@ FS.prototype.getPlaceTypes = function(opts) {
 
 /**
  * @ngdoc function
+ * @name places.functions:getPlaceTypeGroup
+ * @function
+ *
+ * @description
+ * Get a Place Type Group which includes a list of Places Types in the group.
+ *
+ * - `getList()` - get the {@link vocabularies.types:constructor.VocabularyList VocabularyList} (Place Type Group) from the response
+ * - `getPlaceTypes()` - get an array of the {@link vocabularies.types:constructor.VocabularyElement VocabularyElements} (Place Types) in the group
+ *
+ * {@link https://familysearch.org/developers/docs/api/places/Place_Types_resource API Docs}
+ *
+ * @param {String} id of the place type group
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the response
+ */
+FS.prototype.getPlaceTypeGroup = function(groupId, opts) {
+  var self = this,
+      url = self.helpers.getAPIServerUrl(self.helpers.populateUriTemplate('/platform/places/type-groups/{id}', {id: groupId}));
+  return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
+    utils.compose(
+      utils.objectExtender({
+        getList: function() {
+          return self.createVocabularyList(this);
+        },
+        getPlaceTypes: function() { 
+          return this.getList().$getElements(); 
+        }
+      })
+    ));
+};
+
+/**
+ * @ngdoc function
  * @name places.functions:getPlaceTypeGroups
  * @function
  *

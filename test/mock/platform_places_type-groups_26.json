@@ -1,0 +1,397 @@
+{
+    "id": "26",
+    "@id": "https://familysearch.org/platform/places/type-groups/26",
+    "title": "Country-Like",
+    "description": "Countries and highest level administrative places (ADM0)",
+    "elements": [
+        {
+            "id": "343",
+            "@id": "https://familysearch.org/platform/places/types/343",
+            "type": "http://familysearch.org/v1/PlaceType",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Republic"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "A country whose government is a representative democracy in which the people's elected deputies (representatives), not the people themselves, vote on legislation."
+                }
+            ]
+        },
+        {
+            "id": "204",
+            "@id": "https://familysearch.org/platform/places/types/204",
+            "type": "http://familysearch.org/v1/PlaceType",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Confederation"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "A union between states, provinces, or territories, such as Switzerland, that creates a central government with limited powers.  The constituent states retain supreme authority."
+                }
+            ]
+        },
+        {
+            "id": "200",
+            "@id": "https://familysearch.org/platform/places/types/200",
+            "type": "http://familysearch.org/v1/PlaceType",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Commonwealth Nation"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "A nation or republic united by a compact of the people for the common good, used primarily in British Commonwealth nations."
+                }
+            ]
+        },
+        {
+            "id": "278",
+            "@id": "https://familysearch.org/platform/places/types/278",
+            "type": "http://familysearch.org/v1/PlaceType",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Kingdom"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "An area ruled by a king or queen."
+                }
+            ]
+        },
+        {
+            "id": "371",
+            "@id": "https://familysearch.org/platform/places/types/371",
+            "type": "http://familysearch.org/v1/PlaceType",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Sultanate"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "A country governed by a sultan (the head of a Muslim state); the sultan may be an absolute ruler or a sovereign with constitutionally limited authority."
+                }
+            ]
+        },
+        {
+            "id": "468",
+            "@id": "https://familysearch.org/platform/places/types/468",
+            "type": "http://familysearch.org/v1/PlaceType",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Nation State"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "A high level administrative jurisdiction in the Middle East and Europe, \"State\" used as a nation."
+                }
+            ]
+        },
+        {
+            "id": "281",
+            "@id": "https://familysearch.org/platform/places/types/281",
+            "type": "http://familysearch.org/v1/PlaceType",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Land"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "The administrative type used for the country of Palestine."
+                }
+            ]
+        },
+        {
+            "id": "198",
+            "@id": "https://familysearch.org/platform/places/types/198",
+            "type": "http://familysearch.org/v1/PlaceType",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Commonwealth"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "A nation, state, republic or other political entity founded on law and united by a compact of the people for the common good."
+                }
+            ]
+        },
+        {
+            "id": "254",
+            "@id": "https://familysearch.org/platform/places/types/254",
+            "type": "http://familysearch.org/v1/PlaceType",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Federal Republic"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "A country such as the United States, Germany, and Mexico, in which the powers of the central government are limited, and the states provide representation, and retain powers specified in the constitution."
+                }
+            ]
+        },
+        {
+            "id": "220",
+            "@id": "https://familysearch.org/platform/places/types/220",
+            "type": "http://familysearch.org/v1/PlaceType",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Disputed Territory"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "An area claimed by more than one country such as the Western Sahara, the West Bank, the Paracel Islands, and Gaza Strip."
+                }
+            ]
+        },
+        {
+            "id": "256",
+            "@id": "https://familysearch.org/platform/places/types/256",
+            "type": "http://familysearch.org/v1/PlaceType",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Federation"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "A country in which sovereignty is divided between a central authority and constituent regions, states, colonies, or provinces, such as in Russia, Bosnia and Herzegovina, and Micronesia."
+                }
+            ]
+        },
+        {
+            "id": "262",
+            "@id": "https://familysearch.org/platform/places/types/262",
+            "type": "http://familysearch.org/v1/PlaceType",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Grand Duchy"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "An administrative jurisdiction governed by a grand duke or grand duchess in countries such as Luxembourg, and historically Germany and other parts the world."
+                }
+            ]
+        },
+        {
+            "id": "217",
+            "@id": "https://familysearch.org/platform/places/types/217",
+            "type": "http://familysearch.org/v1/PlaceType",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Dependency"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "An otherwise autonomous country that is dependent upon another country for military or economic support, such as the Netherlands Antilles, Aruba, Saint Helena, and Fiji."
+                }
+            ]
+        },
+        {
+            "id": "321",
+            "@id": "https://familysearch.org/platform/places/types/321",
+            "type": "http://familysearch.org/v1/PlaceType",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Principality"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "A monarchical sovereign state ruled by a prince as in Liechtenstein, Andorra, and Monaco, and historically in Germany and other countries."
+                }
+            ]
+        },
+        {
+            "id": "246",
+            "@id": "https://familysearch.org/platform/places/types/246",
+            "type": "http://familysearch.org/v1/PlaceType",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Empire"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "A geographically extensive group of states and peoples united and ruled by a monarch or an oligarchy."
+                }
+            ]
+        },
+        {
+            "id": "212",
+            "@id": "https://familysearch.org/platform/places/types/212",
+            "type": "http://familysearch.org/v1/PlaceType",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Crown Dependency"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "An otherwise autonomous country whose only dependency is to the British crown such as the Isle of Man, Guernsey and Jersey."
+                }
+            ]
+        },
+        {
+            "id": "301",
+            "@id": "https://familysearch.org/platform/places/types/301",
+            "type": "http://familysearch.org/v1/PlaceType",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "Monarchy"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "An administrative designation for countries governed by a supreme ruler over subjects, laws and administration, or by constitutional limitation. Includes such countries as Japan, the United Kingdom, Brunei and Tuvalu."
+                }
+            ]
+        },
+        {
+            "id": "362",
+            "@id": "https://familysearch.org/platform/places/types/362",
+            "type": "http://familysearch.org/v1/PlaceType",
+            "labels": [
+                {
+                    "@language": "en",
+                    "@value": "State"
+                }
+            ],
+            "descriptions": [
+                {
+                    "@language": "en",
+                    "@value": "A high level administrative designation, an organized community living under one government. States may be sovereign or federated (members of a federal union)."
+                }
+            ]
+        }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1": {
+        "@id": "https://familysearch.org/platform/places/types/343"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2": {
+        "@id": "https://familysearch.org/platform/places/types/204"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_3": {
+        "@id": "https://familysearch.org/platform/places/types/200"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_4": {
+        "@id": "https://familysearch.org/platform/places/types/278"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_5": {
+        "@id": "https://familysearch.org/platform/places/types/371"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_6": {
+        "@id": "https://familysearch.org/platform/places/types/468"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_7": {
+        "@id": "https://familysearch.org/platform/places/types/281"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_8": {
+        "@id": "https://familysearch.org/platform/places/types/198"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_9": {
+        "@id": "https://familysearch.org/platform/places/types/254"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_10": {
+        "@id": "https://familysearch.org/platform/places/types/220"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_11": {
+        "@id": "https://familysearch.org/platform/places/types/256"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_12": {
+        "@id": "https://familysearch.org/platform/places/types/262"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_13": {
+        "@id": "https://familysearch.org/platform/places/types/217"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_14": {
+        "@id": "https://familysearch.org/platform/places/types/321"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_15": {
+        "@id": "https://familysearch.org/platform/places/types/246"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_16": {
+        "@id": "https://familysearch.org/platform/places/types/212"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_17": {
+        "@id": "https://familysearch.org/platform/places/types/301"
+    },
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_18": {
+        "@id": "https://familysearch.org/platform/places/types/362"
+    },
+    "@context": {
+        "title": "http://purl.org/dc/terms/title",
+        "description": "http://purl.org/dc/terms/description",
+        "elements": {
+            "@id": "http://purl.org/dc/terms/hasPart",
+            "@container": "@list"
+        },
+        "id": {
+            "@id": "http://purl.org/dc/terms/identifier"
+        },
+        "subclassOf": {
+            "@id": "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+            "@type": "@id"
+        },
+        "references": {
+            "@id": "http://purl.org/dc/terms/references",
+            "@type": "@id"
+        },
+        "type": {
+            "@id": "http://purl.org/dc/terms/type",
+            "@type": "@id"
+        },
+        "labels": {
+            "@id": "http://www.w3.org/2000/01/rdf-schema#label"
+        },
+        "descriptions": {
+            "@id": "http://www.w3.org/2000/01/rdf-schema#comment"
+        }
+    }
+}
