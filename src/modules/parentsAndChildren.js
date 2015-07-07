@@ -102,6 +102,8 @@ FS.prototype.deleteChildAndParents = function(caprid, changeMessage, opts) {
  * Restore a deleted child and parents relationship
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Restore_resource FamilySearch API Docs}
+ * 
+ * {@link http://jsfiddle.net/3n4ro8jd/1/ editable example}
  *
  * @param {string} caprid id or full URL of the child-and-parents relationship
  * @param {string} changeMessage reason for the deletion

@@ -98,6 +98,8 @@ FS.prototype.deleteCouple = function(crid, changeMessage, opts) {
  * Restore a deleted couple relationship
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Restore_resource FamilySearch API Docs}
+ * 
+ * {@link http://jsfiddle.net/zhbvsrs0/2/ editable example}
  *
  * @param {string} crid id or full URL of the couple relationship
  * @param {Object=} opts options to pass to the http function specified during init
