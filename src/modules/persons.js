@@ -412,7 +412,7 @@ FS.prototype.restorePerson = function(pid, opts) {
   return self.helpers.chainHttpPromises(
     self.plumbing.getUrl('person-restore-template', pid, {pid: pid}),
     function(url) {
-      return self.plumbing.post(url, null, {}, opts, function() {
+      return self.plumbing.post(url, null, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
         return pid;
       });
     }

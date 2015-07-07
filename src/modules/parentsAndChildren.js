@@ -113,7 +113,7 @@ FS.prototype.restoreChildAndParents = function(caprid, opts) {
   return self.helpers.chainHttpPromises(
     self.plumbing.getUrl('child-and-parents-relationship-restore-template', caprid, {caprid: caprid}),
     function(url) {
-      return self.plumbing.post(url, null, {}, opts, function() {
+      return self.plumbing.post(url, null, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
         return caprid;
       });
     }

@@ -108,7 +108,7 @@ FS.prototype.restoreCouple = function(crid, opts) {
   return self.helpers.chainHttpPromises(
     self.plumbing.getUrl('couple-relationship-restore-template', crid, {crid: crid}),
     function(url) {
-      return self.plumbing.post(url, null, {}, opts, function() {
+      return self.plumbing.post(url, null, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
         return crid;
       });
     }
