@@ -221,5 +221,14 @@ describe('Spouses relationship', function() {
     });
     expect(couple.facts.length).toBe(1);
   });
+  
+  it('is restored', function(done){
+    var promise = createMockRelationship('12345', 'fid').$restore();
+    promise.then(function(response) {
+      expect(promise.getStatusCode()).toBe(204);
+      expect(response).toBe('12345');
+      done();
+    });
+  });
 
 });

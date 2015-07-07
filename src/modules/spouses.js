@@ -88,3 +88,29 @@ FS.prototype.deleteCouple = function(crid, changeMessage, opts) {
     }
   );
 };
+
+/**
+ * @ngdoc function
+ * @name spouses.functions:restoreCouple
+ * @function
+ *
+ * @description
+ * Restore a deleted couple relationship
+ *
+ * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Restore_resource FamilySearch API Docs}
+ *
+ * @param {string} crid id or full URL of the couple relationship
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the relationship id/URL
+ */
+FS.prototype.restoreCouple = function(crid, opts) {
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getUrl('couple-relationship-restore-template', crid, {crid: crid}),
+    function(url) {
+      return self.plumbing.post(url, null, {}, opts, function() {
+        return crid;
+      });
+    }
+  );
+};

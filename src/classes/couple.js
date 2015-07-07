@@ -408,5 +408,18 @@ Couple.prototype = {
    */
   $delete: function(changeMessage, opts) {
     return this.$client.deleteCouple(this.$getCoupleUrl() || this.id, changeMessage, opts);
+  },
+
+  /**
+   * @ngdoc function
+   * @name spouses.types:constructor.Couple#$restore
+   * @methodOf spouses.types:constructor.Couple
+   * @function
+   * @description restore this relationship - see {@link spouses.functions:restoreCouple restoreCouple}
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the relationship URL
+   */
+  $restore: function(opts) {
+    return this.$client.restoreCouple(this.$getCoupleUrl() || this.id, opts);
   }
 };
