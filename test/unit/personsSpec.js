@@ -483,5 +483,15 @@ describe('A person', function() {
     expect(person.names.length).toBe(1);
     expect(person.facts.length).toBe(1);
   });
+  
+  it('restore person', function(done){
+    var person = FS.createPerson({id: 'PPPJ-MYZ'}),
+        promise = person.$restore();
+    promise.then(function(response){
+      expect(promise.getStatusCode()).toBe(204);
+      expect(response).toBe('PPPJ-MYZ');
+      done();
+    });
+  });
 
 });

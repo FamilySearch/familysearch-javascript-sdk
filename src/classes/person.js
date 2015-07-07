@@ -869,5 +869,18 @@ Person.prototype = {
    */
   $delete: function(changeMessage, opts) {
     return this.$client.deletePerson(this.$getPersonUrl() || this.id, changeMessage, opts);
+  },
+
+  /**
+   * @ngdoc function
+   * @name person.types:constructor.Person#$restore
+   * @methodOf person.types:constructor.Person
+   * @function
+   * @description restore this person - see {@link person.functions:restorePerson restorePerson}
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the person URL
+   */
+  $restore: function(opts) {
+    return this.$client.restorePerson(this.$getPersonUrl() || this.id, opts);
   }
 };

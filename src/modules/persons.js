@@ -395,6 +395,32 @@ FS.prototype.deletePerson = function(pid, changeMessage, opts) {
 
 /**
  * @ngdoc function
+ * @name person.functions:restorePerson
+ * @function
+ *
+ * @description
+ * Restore a person that was deleted.
+ *
+ * {@link https://familysearch.org/developers/docs/api/tree/Person_Restore_resource FamilySearch API Docs}
+ *
+ * @param {string} pid id or full URL of the person
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the person id/URL
+ */
+FS.prototype.restorePerson = function(pid, opts) {
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getUrl('person-restore-template', pid, {pid: pid}),
+    function(url) {
+      return self.plumbing.post(url, null, {}, opts, function() {
+        return pid;
+      });
+    }
+  );
+};
+
+/**
+ * @ngdoc function
  * @name person.functions:getPreferredSpouse
  * @function
  *
