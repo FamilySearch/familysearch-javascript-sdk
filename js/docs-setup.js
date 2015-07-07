@@ -752,12 +752,21 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "parentsAndChildren.functions:restoreChildAndParents",
+      "shortName": "restoreChildAndParents",
+      "type": "function",
+      "moduleName": "parentsAndChildren",
+      "shortDescription": "Restore a deleted child and parents relationship",
+      "keywords": "api caprid changemessage child child-and-parents deleted deletion docs familysearch full function functions http https init options opts org parents parentsandchildren pass promise reason relationship restore url"
+    },
+    {
+      "section": "api",
       "id": "parentsAndChildren.types:constructor.ChildAndParents",
       "shortName": "constructor.ChildAndParents",
       "type": "function",
       "moduleName": "parentsAndChildren",
       "shortDescription": "Child and parents relationship",
-      "keywords": "$addfatherfact $addmotherfact $child $delete $deletefather $deletefatherfact $deletemother $deletemotherfact $getchanges $getchild $getchildandparentsurl $getchildid $getchildurl $getfather $getfatherfacts $getfatherid $getfatherurl $getmother $getmotherfacts $getmotherid $getmotherurl $getnotes $getsourcerefs $getsources $mother $save $setchild $setfather $setfatherfacts $setmother $setmotherfacts __broken__ _fatherfacts_ _motherfacts_ add api array arrays attributes biologicalparent change changed changehistory changemessage changes child child-and-parents childandparents create data dates default delete deletechildandparents deleted docs editable element example existing fact facts familysearch father fatherfacts fulfilled function functions getchildandparentschanges getchildandparentsnotes getchildandparentssourcerefs getchildandparentssourcesquery getperson http https ids init longer message methods mother motherfacts net note notes object objects optional options opts org parent-relationship parents parentsandchildren pass passed persists person places promise property read refresh relationship remove removes response saved set sources supported true type types update updated updating url urls"
+      "keywords": "$addfatherfact $addmotherfact $child $delete $deletefather $deletefatherfact $deletemother $deletemotherfact $getchanges $getchild $getchildandparentsurl $getchildid $getchildurl $getfather $getfatherfacts $getfatherid $getfatherurl $getmother $getmotherfacts $getmotherid $getmotherurl $getnotes $getsourcerefs $getsources $mother $restore $save $setchild $setfather $setfatherfacts $setmother $setmotherfacts __broken__ _fatherfacts_ _motherfacts_ add api array arrays attributes biologicalparent change changed changehistory changemessage changes child child-and-parents childandparents create data dates default delete deletechildandparents deleted docs editable element example existing fact facts familysearch father fatherfacts fulfilled function functions getchildandparentschanges getchildandparentsnotes getchildandparentssourcerefs getchildandparentssourcesquery getperson http https ids init longer message methods mother motherfacts net note notes object objects optional options opts org parent-relationship parents parentsandchildren pass passed persists person places promise property read refresh relationship remove removes response restore restorechildandparents saved set sources supported true type types update updated updating url urls"
     },
     {
       "section": "api",
@@ -905,6 +914,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "person.functions:restorePerson",
+      "shortName": "restorePerson",
+      "type": "function",
+      "moduleName": "person",
+      "shortDescription": "Restore a person that was deleted.",
+      "keywords": "api deleted docs familysearch full function functions http https init options opts org pass person pid promise restore url"
+    },
+    {
+      "section": "api",
       "id": "person.functions:setPreferredParents",
       "shortName": "setPreferredParents",
       "type": "function",
@@ -928,7 +946,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Person",
-      "keywords": "$addfact $addname $delete $deletefact $deletename $getancestry $getbirth $getbirthdate $getbirthplace $getburial $getburialdate $getburialplace $getchanges $getchildren $getchristening $getchristeningdate $getchristeningplace $getdeath $getdeathdate $getdeathplace $getdescendancy $getdiscussionrefs $getdisplaybirthdate $getdisplaybirthplace $getdisplaydeathdate $getdisplaydeathplace $getdisplaygender $getdisplaylifespan $getdisplayname $getfact $getfacts $getgivenname $getmatches $getmemorypersonarefs $getnames $getnotes $getparents $getpersistentidentifier $getpersonportraiturl $getpersonurl $getpreferredname $getsourcerefs $getsources $getspouses $getsurname $isreadonly $save $setfacts $setgender $setnames _facts_ _names_ add ancestor ancestry api array arrays attributes attribution birth birthdate birthplace burial change changehistory changemessage changes christening christning conclusion count create data death deathdate deathplace default delete deleted deleteperson descendency discussions display docs doesn editable element entries example exist existing fact facts false familysearch female final follow followredirect fulfilled full function functions gender generations getancestry getchildren getdescendancy getmemorypersonarefs getparents getperson getpersonchanges getpersondiscussionrefs getpersonmatches getpersonnotes getpersonportraiturl getpersonsourcerefs getpersonsourcesquery getpersonwithrelationships getspouses http https identifier identifiers includes init lifespan living male map max memories message methods names net note notes number object objects optional options opts org params pass passed pedigree persistent persists person persondetails place portrait preferred promise property read read-only redirect refresh remove removes response retrieve return searchandmatch set sources spouse string strings surname true type types update updated updating url values year"
+      "keywords": "$addfact $addname $delete $deletefact $deletename $getancestry $getbirth $getbirthdate $getbirthplace $getburial $getburialdate $getburialplace $getchanges $getchildren $getchristening $getchristeningdate $getchristeningplace $getdeath $getdeathdate $getdeathplace $getdescendancy $getdiscussionrefs $getdisplaybirthdate $getdisplaybirthplace $getdisplaydeathdate $getdisplaydeathplace $getdisplaygender $getdisplaylifespan $getdisplayname $getfact $getfacts $getgivenname $getmatches $getmemorypersonarefs $getnames $getnotes $getparents $getpersistentidentifier $getpersonportraiturl $getpersonurl $getpreferredname $getsourcerefs $getsources $getspouses $getsurname $isreadonly $restore $save $setfacts $setgender $setnames _facts_ _names_ add ancestor ancestry api array arrays attributes attribution birth birthdate birthplace burial change changehistory changemessage changes christening christning conclusion count create data death deathdate deathplace default delete deleted deleteperson descendency discussions display docs doesn editable element entries example exist existing fact facts false familysearch female final follow followredirect fulfilled full function functions gender generations getancestry getchildren getdescendancy getmemorypersonarefs getparents getperson getpersonchanges getpersondiscussionrefs getpersonmatches getpersonnotes getpersonportraiturl getpersonsourcerefs getpersonsourcesquery getpersonwithrelationships getspouses http https identifier identifiers includes init lifespan living male map max memories message methods names net note notes number object objects optional options opts org params pass passed pedigree persistent persists person persondetails place portrait preferred promise property read read-only redirect refresh remove removes response restore restoreperson retrieve return searchandmatch set sources spouse string strings surname true type types update updated updating url values year"
     },
     {
       "section": "api",
@@ -1499,12 +1517,21 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "spouses.functions:restoreCouple",
+      "shortName": "restoreCouple",
+      "type": "function",
+      "moduleName": "spouses",
+      "shortDescription": "Restore a deleted couple relationship",
+      "keywords": "api couple crid deleted docs familysearch full function functions http https init options opts org pass promise relationship restore spouses url"
+    },
+    {
+      "section": "api",
       "id": "spouses.types:constructor.Couple",
       "shortName": "constructor.Couple",
       "type": "function",
       "moduleName": "spouses",
       "shortDescription": "Couple relationship",
-      "keywords": "$addfact $delete $deletefact $getchanges $getcoupleurl $getfacts $gethusband $gethusbandid $gethusbandurl $getmarriagefact $getnotes $getsourcerefs $getsources $getspouse $getspouseid $getspouseurl $getwife $getwifeid $getwifeurl $save $setfacts $sethusband $setwife $wife _facts_ add api array attributes call change changemessage changes couple create data default delete deletecouple deleted editable elements example existing exports fact facts fetch fulfilled function functions getcouplechanges getcouplenotes getcouplesourcerefs getcouplesourcesquery getperson http husband ids init initializing marriage message method methods multiple net note notes object objects optional options opts org pass passed persists person plan promise property read refresh relationship remove removes response sdk seconds set sources spouse spouses true type types update updated updating url urls wife"
+      "keywords": "$addfact $delete $deletefact $getchanges $getcoupleurl $getfacts $gethusband $gethusbandid $gethusbandurl $getmarriagefact $getnotes $getsourcerefs $getsources $getspouse $getspouseid $getspouseurl $getwife $getwifeid $getwifeurl $restore $save $setfacts $sethusband $setwife $wife _facts_ add api array attributes call change changemessage changes couple create data default delete deletecouple deleted editable elements example existing exports fact facts fetch fulfilled function functions getcouplechanges getcouplenotes getcouplesourcerefs getcouplesourcesquery getperson http husband ids init initializing marriage message method methods multiple net note notes object objects optional options opts org pass passed persists person plan promise property read refresh relationship remove removes response restore restorecouple sdk seconds set sources spouse spouses true type types update updated updating url urls wife"
     },
     {
       "section": "api",

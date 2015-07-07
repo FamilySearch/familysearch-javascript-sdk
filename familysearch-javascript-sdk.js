@@ -1126,6 +1126,19 @@ ChildAndParents.prototype = {
    */
   $delete: function(changeMessage, opts) {
     return this.$client.deleteChildAndParents(this.$getChildAndParentsUrl() || this.id, changeMessage, opts);
+  },
+
+  /**
+   * @ngdoc function
+   * @name parentsAndChildren.types:constructor.ChildAndParents#$restore
+   * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+   * @function
+   * @description restore this relationship - see {@link parentsAndChildren.functions:restoreChildAndPArents restoreChildAndPArents}
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the relationship URL
+   */
+  $restore: function(opts) {
+    return this.$client.restoreChildAndParents(this.$getChildAndParentsUrl() || this.id, opts);
   }
 };
 },{"../FamilySearch":1,"../relationshipHelpers":52,"../utils":53}],8:[function(require,module,exports){
@@ -1846,6 +1859,19 @@ Couple.prototype = {
    */
   $delete: function(changeMessage, opts) {
     return this.$client.deleteCouple(this.$getCoupleUrl() || this.id, changeMessage, opts);
+  },
+
+  /**
+   * @ngdoc function
+   * @name spouses.types:constructor.Couple#$restore
+   * @methodOf spouses.types:constructor.Couple
+   * @function
+   * @description restore this relationship - see {@link spouses.functions:restoreCouple restoreCouple}
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the relationship URL
+   */
+  $restore: function(opts) {
+    return this.$client.restoreCouple(this.$getCoupleUrl() || this.id, opts);
   }
 };
 },{"../FamilySearch":1,"../relationshipHelpers":52,"../utils":53}],11:[function(require,module,exports){
@@ -5062,6 +5088,19 @@ Person.prototype = {
    */
   $delete: function(changeMessage, opts) {
     return this.$client.deletePerson(this.$getPersonUrl() || this.id, changeMessage, opts);
+  },
+
+  /**
+   * @ngdoc function
+   * @name person.types:constructor.Person#$restore
+   * @methodOf person.types:constructor.Person
+   * @function
+   * @description restore this person - see {@link person.functions:restorePerson restorePerson}
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the person URL
+   */
+  $restore: function(opts) {
+    return this.$client.restorePerson(this.$getPersonUrl() || this.id, opts);
   }
 };
 },{"../FamilySearch":1,"../utils":53}],22:[function(require,module,exports){
@@ -8897,6 +8936,33 @@ FS.prototype.deleteChildAndParents = function(caprid, changeMessage, opts) {
   );
 };
 
+/**
+ * @ngdoc function
+ * @name parentsAndChildren.functions:restoreChildAndParents
+ * @function
+ *
+ * @description
+ * Restore a deleted child and parents relationship
+ *
+ * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Restore_resource FamilySearch API Docs}
+ *
+ * @param {string} caprid id or full URL of the child-and-parents relationship
+ * @param {string} changeMessage reason for the deletion
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the relationship id/URL
+ */
+FS.prototype.restoreChildAndParents = function(caprid, opts) {
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getUrl('child-and-parents-relationship-restore-template', caprid, {caprid: caprid}),
+    function(url) {
+      return self.plumbing.post(url, null, {}, opts, function() {
+        return caprid;
+      });
+    }
+  );
+};
+
 },{"../FamilySearch":1,"../utils":53}],41:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
@@ -9436,6 +9502,32 @@ FS.prototype.deletePerson = function(pid, changeMessage, opts) {
     self.plumbing.getUrl('person-template', pid, {pid: pid}),
     function(url) {
       return self.plumbing.del(url, changeMessage ? {'X-Reason': changeMessage} : {}, opts, function() {
+        return pid;
+      });
+    }
+  );
+};
+
+/**
+ * @ngdoc function
+ * @name person.functions:restorePerson
+ * @function
+ *
+ * @description
+ * Restore a person that was deleted.
+ *
+ * {@link https://familysearch.org/developers/docs/api/tree/Person_Restore_resource FamilySearch API Docs}
+ *
+ * @param {string} pid id or full URL of the person
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the person id/URL
+ */
+FS.prototype.restorePerson = function(pid, opts) {
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getUrl('person-restore-template', pid, {pid: pid}),
+    function(url) {
+      return self.plumbing.post(url, null, {}, opts, function() {
         return pid;
       });
     }
@@ -11133,6 +11225,32 @@ FS.prototype.deleteCouple = function(crid, changeMessage, opts) {
     self.plumbing.getUrl('couple-relationship-template', crid, {crid: crid}),
     function(url) {
       return self.plumbing.del(url, changeMessage ? {'X-Reason' : changeMessage} : {}, opts, function() {
+        return crid;
+      });
+    }
+  );
+};
+
+/**
+ * @ngdoc function
+ * @name spouses.functions:restoreCouple
+ * @function
+ *
+ * @description
+ * Restore a deleted couple relationship
+ *
+ * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Restore_resource FamilySearch API Docs}
+ *
+ * @param {string} crid id or full URL of the couple relationship
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the relationship id/URL
+ */
+FS.prototype.restoreCouple = function(crid, opts) {
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getUrl('couple-relationship-restore-template', crid, {crid: crid}),
+    function(url) {
+      return self.plumbing.post(url, null, {}, opts, function() {
         return crid;
       });
     }
