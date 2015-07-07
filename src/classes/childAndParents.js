@@ -524,5 +524,18 @@ ChildAndParents.prototype = {
    */
   $delete: function(changeMessage, opts) {
     return this.$client.deleteChildAndParents(this.$getChildAndParentsUrl() || this.id, changeMessage, opts);
+  },
+
+  /**
+   * @ngdoc function
+   * @name parentsAndChildren.types:constructor.ChildAndParents#$restore
+   * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+   * @function
+   * @description restore this relationship - see {@link parentsAndChildren.functions:restoreChildAndPArents restoreChildAndPArents}
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the relationship URL
+   */
+  $restore: function(opts) {
+    return this.$client.restoreChildAndParents(this.$getChildAndParentsUrl() || this.id, opts);
   }
 };

@@ -212,4 +212,13 @@ describe('Parents and Children relationship', function() {
     expect(rel.motherFacts.length).toBe(1);
   });
 
+  it('is restored', function(done) {
+    var promise = createMockRelationship('PPPX-PP0','fid').$restore();
+    promise.then(function(response) {
+      expect(promise.getStatusCode()).toBe(204);
+      expect(response).toBe('PPPX-PP0');
+      done();
+    });
+  });
+
 });

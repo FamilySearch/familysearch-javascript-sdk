@@ -92,3 +92,30 @@ FS.prototype.deleteChildAndParents = function(caprid, changeMessage, opts) {
     }
   );
 };
+
+/**
+ * @ngdoc function
+ * @name parentsAndChildren.functions:restoreChildAndParents
+ * @function
+ *
+ * @description
+ * Restore a deleted child and parents relationship
+ *
+ * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Restore_resource FamilySearch API Docs}
+ *
+ * @param {string} caprid id or full URL of the child-and-parents relationship
+ * @param {string} changeMessage reason for the deletion
+ * @param {Object=} opts options to pass to the http function specified during init
+ * @return {Object} promise for the relationship id/URL
+ */
+FS.prototype.restoreChildAndParents = function(caprid, opts) {
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getUrl('child-and-parents-relationship-restore-template', caprid, {caprid: caprid}),
+    function(url) {
+      return self.plumbing.post(url, null, {}, opts, function() {
+        return caprid;
+      });
+    }
+  );
+};
