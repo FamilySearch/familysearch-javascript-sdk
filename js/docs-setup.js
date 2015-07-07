@@ -757,7 +757,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "parentsAndChildren",
       "shortDescription": "Restore a deleted child and parents relationship",
-      "keywords": "api caprid changemessage child child-and-parents deleted deletion docs familysearch full function functions http https init options opts org parents parentsandchildren pass promise reason relationship restore url"
+      "keywords": "api caprid changemessage child child-and-parents deleted deletion docs editable example familysearch full function functions http https init net options opts org parents parentsandchildren pass promise reason relationship restore url"
     },
     {
       "section": "api",
@@ -919,7 +919,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Restore a person that was deleted.",
-      "keywords": "api deleted docs familysearch full function functions http https init options opts org pass person pid promise restore url"
+      "keywords": "api deleted docs editable example familysearch full function functions http https init net options opts org pass person pid promise restore url"
     },
     {
       "section": "api",
@@ -1522,7 +1522,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "spouses",
       "shortDescription": "Restore a deleted couple relationship",
-      "keywords": "api couple crid deleted docs familysearch full function functions http https init options opts org pass promise relationship restore spouses url"
+      "keywords": "api couple crid deleted docs editable example familysearch full function functions http https init net options opts org pass promise relationship restore spouses url"
     },
     {
       "section": "api",
