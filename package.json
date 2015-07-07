@@ -1,6 +1,6 @@
 {
   "name": "familysearch-javascript-sdk",
-  "version": "1.0.0-beta",
+  "version": "1.0.0-beta3",
   "description": "Javascript SDK for FamilySearch",
   "main": "src/FamilySearch.js",
   "devDependencies": {
