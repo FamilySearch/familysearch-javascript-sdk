@@ -120,7 +120,7 @@ var personWithRelationshipsConvenienceFunctions = {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/m2y1qwm3/ editable example}
+ * {@link http://jsfiddle.net/m2y1qwm3/110/ Editable Example}
  *
  * @param {String} pid id or full URL of the person
  * @param {Object=} params currently unused
@@ -162,7 +162,7 @@ FS.prototype.getPerson = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/ukvu1dqs/ editable example}
+ * {@link http://jsfiddle.net/ukvu1dqs/1/ Editable Example}
  *
  * @param {Array} pids of the people to read
  * @param {Object=} params to pass to getPerson currently unused
@@ -243,7 +243,7 @@ FS.prototype._personsAndRelationshipsMapper = function(){
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/6vpk7asr/ editable example}
+ * {@link http://jsfiddle.net/6vpk7asr/51/ Editable Example}
  *
  * @param {String} pid id of the person
  * @param {Object=} params set `persons` to true to retrieve full person objects for each relative
@@ -287,7 +287,7 @@ FS.prototype.getPersonWithRelationships = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Spouses_of_a_Person_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/1311jcz8/ editable example}
+ * {@link http://jsfiddle.net/1311jcz8/18/ Editable Example}
  *
  * @param {String} pid id of the person or full URL of the spouses endpoint
  * @param {Object=} params currently unused
@@ -318,7 +318,7 @@ FS.prototype.getSpouses = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Parents_of_a_person_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/Lf9fe61r/ editable example}
+ * {@link http://jsfiddle.net/Lf9fe61r/5/ Editable Example}
  *
  * @param {String} pid id of the person or full URL of the parents endpoint
  * @param {Object=} params currently unused
@@ -348,7 +348,7 @@ FS.prototype.getParents = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Children_of_a_person_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/fownteLe/ editable example}
+ * {@link http://jsfiddle.net/fownteLe/1/ Editable Example}
  *
  * @param {String} pid id of the person or full URL of the children endpoint
  * @param {Object=} params currently unused
@@ -374,7 +374,7 @@ FS.prototype.getChildren = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/cv5wravg/ editable example}
+ * {@link http://jsfiddle.net/cv5wravg/2/ Editable Example}
  *
  * @param {string} pid id or full URL of the person
  * @param {string} changeMessage reason for the deletion
@@ -403,7 +403,7 @@ FS.prototype.deletePerson = function(pid, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Restore_resource FamilySearch API Docs}
  * 
- * {@link http://jsfiddle.net/0mxLgb1w/1/ editable example}
+ * {@link http://jsfiddle.net/0mxLgb1w/1/ Editable Example}
  *
  * @param {string} pid id or full URL of the person
  * @param {Object=} opts options to pass to the http function specified during init
@@ -431,7 +431,7 @@ FS.prototype.restorePerson = function(pid, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Spouse_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/fh5jxsre/ editable example}
+ * {@link http://jsfiddle.net/fh5jxsre/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {Object=} params currently unused
@@ -476,7 +476,7 @@ FS.prototype.getPreferredSpouse = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Spouse_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/j8kws5n3/ editable example}
+ * {@link http://jsfiddle.net/j8kws5n3/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {string} crid id or URL of the preferred Couple relationship, or null to set the unknown spouse
@@ -532,7 +532,7 @@ FS.prototype.setPreferredSpouse = function(pid, crid, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Spouse_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/2cxup42f/ editable example}
+ * {@link http://jsfiddle.net/2cxup42f/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {Object=} opts options to pass to the http function specified during init
@@ -564,7 +564,7 @@ FS.prototype.deletePreferredSpouse = function(pid, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Parent_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/rarpqLb6/ editable example}
+ * {@link http://jsfiddle.net/rarpqLb6/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {Object=} params currently unused
@@ -600,7 +600,7 @@ FS.prototype.getPreferredParents = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Parent_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/swfsnarb/ editable example}
+ * {@link http://jsfiddle.net/swfsnarb/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {string} caprid id or URL of the preferred ChildAndParents relationship
@@ -638,7 +638,7 @@ FS.prototype.setPreferredParents = function(pid, caprid, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Parent_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/r5erwvft/ editable example}
+ * {@link http://jsfiddle.net/r5erwvft/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {Object=} opts options to pass to the http function specified during init
@@ -662,4 +662,3 @@ FS.prototype.deletePreferredParents = function(pid, opts) {
 
 // TODO person merge
 // TODO person not a match
-// TODO restore person

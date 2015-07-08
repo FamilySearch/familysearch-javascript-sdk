@@ -36,7 +36,7 @@ FS.prototype._changeHistoryResponseMapper = function(){
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Change_History_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/s90nqqLs/ editable example}
+ * {@link http://jsfiddle.net/s90nqqLs/1/ Editable Example}
  *
  * @param {String} pid id of the person or full URL of the person changes endpoint
  * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
@@ -66,7 +66,7 @@ FS.prototype.getPersonChanges = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Change_History_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/v6e1yjsz/ editable example}
+ * {@link http://jsfiddle.net/v6e1yjsz/1/ Editable Example}
  *
  * @param {String} caprid id of the child and parents relationship or full URL of the child and parents relationship changes endpoint
  * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
@@ -96,7 +96,7 @@ FS.prototype.getChildAndParentsChanges = function(caprid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Change_History_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/940x4gux/ editable example}
+ * {@link http://jsfiddle.net/940x4gux/1/ Editable Example}
  *
  * @param {String} crid id of the couple relationship to read or full URL of the couple relationship changes endpoint
  * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
@@ -123,7 +123,7 @@ FS.prototype.getCoupleChanges = function(crid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Restore_Change_resource}
  *
- * {@link http://jsfiddle.net/xL50x20d/ editable example}
+ * {@link http://jsfiddle.net/xL50x20d/1/ Editable Example}
  *
  * @param {string} chid change id or full URL of the restore changes endpoint
  * @param {Object=} opts options to pass to the http function specified during init

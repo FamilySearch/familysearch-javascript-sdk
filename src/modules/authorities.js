@@ -22,7 +22,7 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/dates/Date_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/mL906m82/1/ editable example}
+ * {@link http://jsfiddle.net/mL906m82/2/ Editable Example}
  *
  * @param {String} date text to standardize
  * @param {Object=} opts options to pass to the http function specified during init

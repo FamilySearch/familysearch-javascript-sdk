@@ -15,7 +15,7 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_for_a_User_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/a0eLkwtb/ editable example}
+ * {@link http://jsfiddle.net/a0eLkwtb/2/ Editable Example}
  *
  * @param {String} uid of the user or full URL of the collections-for-user endpoint
  * @param {Object=} params currently unused
@@ -53,7 +53,7 @@ FS.prototype.getCollectionsForUser = function(uid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/rn5hd0cd/ editable example}
+ * {@link http://jsfiddle.net/rn5hd0cd/1/ Editable Example}
  *
  * @param {String} udcid id or full URL of the collection
  * @param {Object=} params currently unused
@@ -91,7 +91,7 @@ FS.prototype.getCollection = function(udcid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_Source_Descriptions_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/a73eysbs/ editable example}
+ * {@link http://jsfiddle.net/a73eysbs/1/ Editable Example}
  *
  * @param {String} udcid id of the collection or full URL of the collection-source-descriptions endpoint
  * @param {Object=} params `count` maximum to return (defaults to 25), `start` zero-based index of first source to return
@@ -129,7 +129,7 @@ FS.prototype.getCollectionSourceDescriptions = function(udcid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_Source_Descriptions_for_a_User_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/pse56a1f/ editable example}
+ * {@link http://jsfiddle.net/pse56a1f/1/ Editable Example}
  *
  * @param {String} uid of the user or full URL of the collection-source-descriptions-for-user endpoint
  * @param {Object=} params `count` maximum to return (defaults to 25), `start` zero-based index of first source to return
@@ -164,7 +164,7 @@ FS.prototype.getCollectionSourceDescriptionsForUser = function(uid, params, opts
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_Source_Descriptions_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/5mva0why/ editable example}
+ * {@link http://jsfiddle.net/5mva0why/1/ Editable Example}
  *
  * @param {string} udcid id of the collection or full URL of the collection descriptions endpoint
  * @param {SourceDescription[]|string[]} srcDescs array of source descriptions - may be objects or id's
@@ -196,7 +196,7 @@ FS.prototype.moveSourceDescriptionsToCollection = function(udcid, srcDescs, opts
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_Source_Descriptions_for_a_User_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/k39uo7zk/ editable example}
+ * {@link http://jsfiddle.net/k39uo7zk/1/ Editable Example}
  *
  * @param {SourceDescription[]|string[]} srcDescs array of source descriptions - may be objects or id's
  * @param {Object=} opts options to pass to the http function specified during init
@@ -231,7 +231,7 @@ FS.prototype.removeSourceDescriptionsFromCollections = function(srcDescs, opts) 
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/yhdznLu0/ editable example}
+ * {@link http://jsfiddle.net/yhdznLu0/1/ Editable Example}
  *
  * @param {string} udcid id or full URL of the collection
  * @param {Object=} opts options to pass to the http function specified during init

@@ -23,7 +23,7 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/users/Current_User_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/u7esw4u3/ editable example}
+ * {@link http://jsfiddle.net/u7esw4u3/169/ Editable Example}
  *
  * @param {Object=} params currently unused
  * @param {Object=} opts options to pass to the http function specified during init
@@ -60,7 +60,7 @@ FS.prototype.getCurrentUser = function(params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/users/Agent_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/dcxy9a59/ editable example}
+ * {@link http://jsfiddle.net/dcxy9a59/2/ Editable Example}
  *
  * @param {String} aid id or full URL of the agent (contributor)
  * @param {Object=} params currently unused
@@ -94,7 +94,7 @@ FS.prototype.getAgent = function(aid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/users/Agent_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/88gbgae5/ editable example}
+ * {@link http://jsfiddle.net/88gbgae5/1/ Editable Example}
  *
  * @param {Array} aids Ids or full URLs of the agents (contributors) to read
  * @param {Object=} params pass to getAgent currently unused

@@ -31,7 +31,7 @@ var coupleConvenienceFunctions = {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/x1v6vxoy/ editable example}
+ * {@link http://jsfiddle.net/x1v6vxoy/4/ Editable Example}
  *
  * @param {String} crid id or full URL of the couple relationship
  * @param {Object=} params set `persons` true to return a person object for each person in the relationship,
@@ -70,7 +70,7 @@ FS.prototype.getCouple = function(crid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/1hsj5b59/ editable example}
+ * {@link http://jsfiddle.net/1hsj5b59/1/ Editable Example}
  *
  * @param {string} crid id or full URL of the couple relationship
  * @param {string} changeMessage reason for the deletion
@@ -99,7 +99,7 @@ FS.prototype.deleteCouple = function(crid, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Restore_resource FamilySearch API Docs}
  * 
- * {@link http://jsfiddle.net/zhbvsrs0/2/ editable example}
+ * {@link http://jsfiddle.net/zhbvsrs0/2/ Editable Example}
  *
  * @param {string} crid id or full URL of the couple relationship
  * @param {Object=} opts options to pass to the http function specified during init
