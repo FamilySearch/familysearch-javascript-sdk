@@ -7166,7 +7166,7 @@ FS.prototype.handleAccessTokenResponse = function(promise, accessTokenDeferred) 
  *
  * {@link https://familysearch.org/developers/docs/api/authentication/Access_Token_resource FamilySearch API docs}
  *
- * {@link http://jsfiddle.net/fqn6j7fs/ editable example}
+ * {@link http://jsfiddle.net/fqn6j7fs/ Editable Example}
  *
  * @param {String=} authCode auth code from getAuthCode; if not passed in, this function will call getAuthCode
  * @return {Object} a promise of the (string) access token.
@@ -7413,7 +7413,7 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/dates/Date_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/mL906m82/1/ editable example}
+ * {@link http://jsfiddle.net/mL906m82/2/ Editable Example}
  *
  * @param {String} date text to standardize
  * @param {Object=} opts options to pass to the http function specified during init
@@ -7478,7 +7478,7 @@ FS.prototype._changeHistoryResponseMapper = function(){
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Change_History_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/s90nqqLs/ editable example}
+ * {@link http://jsfiddle.net/s90nqqLs/1/ Editable Example}
  *
  * @param {String} pid id of the person or full URL of the person changes endpoint
  * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
@@ -7508,7 +7508,7 @@ FS.prototype.getPersonChanges = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Change_History_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/v6e1yjsz/ editable example}
+ * {@link http://jsfiddle.net/v6e1yjsz/1/ Editable Example}
  *
  * @param {String} caprid id of the child and parents relationship or full URL of the child and parents relationship changes endpoint
  * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
@@ -7538,7 +7538,7 @@ FS.prototype.getChildAndParentsChanges = function(caprid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Change_History_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/940x4gux/ editable example}
+ * {@link http://jsfiddle.net/940x4gux/1/ Editable Example}
  *
  * @param {String} crid id of the couple relationship to read or full URL of the couple relationship changes endpoint
  * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
@@ -7565,7 +7565,7 @@ FS.prototype.getCoupleChanges = function(crid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Restore_Change_resource}
  *
- * {@link http://jsfiddle.net/xL50x20d/ editable example}
+ * {@link http://jsfiddle.net/xL50x20d/1/ Editable Example}
  *
  * @param {string} chid change id or full URL of the restore changes endpoint
  * @param {Object=} opts options to pass to the http function specified during init
@@ -7609,7 +7609,7 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/gb1y9jdj/ editable example}
+ * {@link http://jsfiddle.net/gb1y9jdj/1/ Editable Example}
  *
  * @param {String} did id or full URL of the discussion to read
  * @param {Object=} params currently unused
@@ -7646,7 +7646,7 @@ FS.prototype.getDiscussion = function(did, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/9je6gfp5/ editable example}
+ * {@link http://jsfiddle.net/9je6gfp5/1/ Editable Example}
  *
  * @param {string[]|DiscussionRef[]} dids id's, full URLs, or {@link discussions.types:constructor.DiscussionRef DiscussionRefs} of the discussions
  * @param {Object=} params pass to getDiscussion currently unused
@@ -7686,7 +7686,7 @@ FS.prototype.getMultiDiscussion = function(dids, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Discussion_References_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/rx9wd0nz/ editable example}
+ * {@link http://jsfiddle.net/rx9wd0nz/1/ Editable Example}
  *
  * @param {String} pid id of the person to read or full URL of the person-discussion-references endpoint
  * @param {Object=} params currently unused
@@ -7753,7 +7753,7 @@ FS.prototype._commentsResponseMapper = function(){
  *
  * {@link https://familysearch.org/developers/docs/api/discussions/Comments_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/3wfxrkj0/ editable example}
+ * {@link http://jsfiddle.net/3wfxrkj0/1/ Editable Example}
  *
  * @param {String} did of the discussion or full URL of the discussion-comments endpoint
  * @param {Object=} params currently unused
@@ -7792,7 +7792,7 @@ FS.prototype.getDiscussionComments = function(did, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/quj3enjs/ editable example}
+ * {@link http://jsfiddle.net/quj3enjs/1/ Editable Example}
  *
  * @param {string} did id or full URL of the discussion
  * @param {string=} changeMessage change message (currently ignored)
@@ -7821,7 +7821,7 @@ FS.prototype.deleteDiscussion = function(did, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Discussion_Reference_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/p2sjn4ob/ editable example}
+ * {@link http://jsfiddle.net/p2sjn4ob/1/ Editable Example}
  *
  * @param {string} pid person id or full URL of the discussion reference
  * @param {string=} drid id of the discussion reference (must be set if pid is a person id and not the full URL)
@@ -7855,7 +7855,7 @@ FS.prototype.deleteDiscussionRef = function(pid, drid, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/discussions/Comment_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/fwnjq1nq/ editable example}
+ * {@link http://jsfiddle.net/fwnjq1nq/1/ Editable Example}
  *
  * @param {string} did discussion id or full URL of the comment
  * @param {string=} cmid id of the comment (must be set if did is a comment id and not the full URL)
@@ -7885,7 +7885,7 @@ FS.prototype.deleteDiscussionComment = function(did, cmid, changeMessage, opts) 
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Comment_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/Lxcy6pcz/ editable example}
+ * {@link http://jsfiddle.net/Lxcy6pcz/1/ Editable Example}
  *
  * @param {string} mid memory id or full URL of the comment
  * @param {string=} cmid id of the comment (must be set if mid is a memory id and not the full URL)
@@ -8451,7 +8451,7 @@ FS.prototype._getMultiNote = function(id, nids, params, opts, getNoteFn) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Note_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/rcud84ur/ editable example}
+ * {@link http://jsfiddle.net/rcud84ur/1/ Editable Example}
  *
  * @param {string} pid id of the person or full URL of the note
  * @param {string=} nid id of the note (required if pid is the id of the person)
@@ -8479,7 +8479,7 @@ FS.prototype.getPersonNote = function(pid, nid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Note_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/4d1wLp8a/ editable example}
+ * {@link http://jsfiddle.net/4d1wLp8a/1/ Editable Example}
  *
  * @param {string|string[]} pid id of the person, or full URLs of the notes
  * @param {string[]=} nids ids of the notes (required if pid is the id of the person)
@@ -8506,7 +8506,7 @@ FS.prototype.getMultiPersonNote = function(pid, nids, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/khbxwa0u/ editable example}
+ * {@link http://jsfiddle.net/khbxwa0u/1/ Editable Example}
  *
  * @param {string} crid id of the couple relationship or full URL of the note
  * @param {string=} nid id of the note (required if crid is the id of the couple relationship)
@@ -8533,7 +8533,7 @@ FS.prototype.getCoupleNote = function(crid, nid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/1Lch860h/ editable example}
+ * {@link http://jsfiddle.net/1Lch860h/1/ Editable Example}
  *
  * @param {string|string[]} crid id of the couple relationship, or full URLs of the notes
  * @param {string[]=} nids ids of the notes (required if crid is the id of the couple relationship)
@@ -8560,7 +8560,7 @@ FS.prototype.getMultiCoupleNote = function(crid, nids, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/1t1uzgq6/ editable example}
+ * {@link http://jsfiddle.net/1t1uzgq6/1/ Editable Example}
  *
  * @param {string} caprid id of the child and parents relationship or full URL of the note
  * @param {string=} nid id of the note (required if caprid is the id of the child and parents relationship)
@@ -8587,7 +8587,7 @@ FS.prototype.getChildAndParentsNote = function(caprid, nid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/wp4hecco/ editable example}
+ * {@link http://jsfiddle.net/wp4hecco/1/ Editable Example}
  *
  * @param {string|string[]} caprid id of the child and parents relationship, or full URLs of the notes
  * @param {string[]=} nids ids of the notes (required if caprid is the id of the child and parents relationship)
@@ -8614,7 +8614,7 @@ FS.prototype.getMultiChildAndParentsNote = function(caprid, nids, params, opts) 
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Notes_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/rcud84ur/ editable example}
+ * {@link http://jsfiddle.net/rcud84ur/2/ Editable Example}
  *
  * @param {String} pid id of the person or full URL of the person-notes endpoint
  * @param {Object=} params currently unused
@@ -8660,7 +8660,7 @@ FS.prototype.getPersonNotes = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Notes_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/khbxwa0u/ editable example}
+ * {@link http://jsfiddle.net/khbxwa0u/2/ Editable Example}
  *
  * @param {String} crid id of the couple relationship or full URL of the couple-relationship-notes endpoint
  * @param {Object=} params currently unused
@@ -8706,7 +8706,7 @@ FS.prototype.getCoupleNotes = function(crid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Notes_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/1t1uzgq6/ editable example}
+ * {@link http://jsfiddle.net/1t1uzgq6/2/ Editable Example}
  *
  * @param {String} caprid id of the child and parents relationship or full URL of the child-and-parents-relationship-notes endpoint
  * @param {Object=} params currently unused
@@ -8750,7 +8750,7 @@ FS.prototype.getChildAndParentsNotes = function(caprid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Note_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/zxwsxzjr/ editable example}
+ * {@link http://jsfiddle.net/zxwsxzjr/1/ Editable Example}
  *
  * @param {string} pid person id or full URL of the note
  * @param {string=} nid id of the note (must be set if pid is an id and not the full URL of the note)
@@ -8874,7 +8874,7 @@ var childAndParentsConvenienceFunctions = {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/swk1pmo7/ editable example}
+ * {@link http://jsfiddle.net/swk1pmo7/10/ Editable Example}
  *
  * @param {String} caprid id or full URL of the child-and-parents relationship
  * @param {Object=} params set `persons` true to return a person object for each person in the relationship,
@@ -8913,7 +8913,7 @@ FS.prototype.getChildAndParents = function(caprid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/hguctxyv/ editable example}
+ * {@link http://jsfiddle.net/hguctxyv/1/ Editable Example}
  *
  * @param {string} caprid id or full URL of the child-and-parents relationship
  * @param {string} changeMessage reason for the deletion
@@ -8946,7 +8946,7 @@ FS.prototype.deleteChildAndParents = function(caprid, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Restore_resource FamilySearch API Docs}
  * 
- * {@link http://jsfiddle.net/3n4ro8jd/1/ editable example}
+ * {@link http://jsfiddle.net/3n4ro8jd/1/ Editable Example}
  *
  * @param {string} caprid id or full URL of the child-and-parents relationship
  * @param {string} changeMessage reason for the deletion
@@ -9023,7 +9023,7 @@ function matchPersonNum(numberLabel, num) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Ancestry_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/15z6fzkf/ editable example}
+ * {@link http://jsfiddle.net/15z6fzkf/6/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {Object=} params includes `generations` to retrieve (max 8),
@@ -9082,7 +9082,7 @@ FS.prototype.getAncestry = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Descendancy_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/fbcppezv/ editable example}
+ * {@link http://jsfiddle.net/fbcppezv/2/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {Object=} params includes
@@ -9237,7 +9237,7 @@ var personWithRelationshipsConvenienceFunctions = {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/m2y1qwm3/ editable example}
+ * {@link http://jsfiddle.net/m2y1qwm3/110/ Editable Example}
  *
  * @param {String} pid id or full URL of the person
  * @param {Object=} params currently unused
@@ -9279,7 +9279,7 @@ FS.prototype.getPerson = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/ukvu1dqs/ editable example}
+ * {@link http://jsfiddle.net/ukvu1dqs/1/ Editable Example}
  *
  * @param {Array} pids of the people to read
  * @param {Object=} params to pass to getPerson currently unused
@@ -9360,7 +9360,7 @@ FS.prototype._personsAndRelationshipsMapper = function(){
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/6vpk7asr/ editable example}
+ * {@link http://jsfiddle.net/6vpk7asr/51/ Editable Example}
  *
  * @param {String} pid id of the person
  * @param {Object=} params set `persons` to true to retrieve full person objects for each relative
@@ -9404,7 +9404,7 @@ FS.prototype.getPersonWithRelationships = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Spouses_of_a_Person_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/1311jcz8/ editable example}
+ * {@link http://jsfiddle.net/1311jcz8/18/ Editable Example}
  *
  * @param {String} pid id of the person or full URL of the spouses endpoint
  * @param {Object=} params currently unused
@@ -9435,7 +9435,7 @@ FS.prototype.getSpouses = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Parents_of_a_person_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/Lf9fe61r/ editable example}
+ * {@link http://jsfiddle.net/Lf9fe61r/5/ Editable Example}
  *
  * @param {String} pid id of the person or full URL of the parents endpoint
  * @param {Object=} params currently unused
@@ -9465,7 +9465,7 @@ FS.prototype.getParents = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Children_of_a_person_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/fownteLe/ editable example}
+ * {@link http://jsfiddle.net/fownteLe/1/ Editable Example}
  *
  * @param {String} pid id of the person or full URL of the children endpoint
  * @param {Object=} params currently unused
@@ -9491,7 +9491,7 @@ FS.prototype.getChildren = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/cv5wravg/ editable example}
+ * {@link http://jsfiddle.net/cv5wravg/2/ Editable Example}
  *
  * @param {string} pid id or full URL of the person
  * @param {string} changeMessage reason for the deletion
@@ -9520,7 +9520,7 @@ FS.prototype.deletePerson = function(pid, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Restore_resource FamilySearch API Docs}
  * 
- * {@link http://jsfiddle.net/0mxLgb1w/1/ editable example}
+ * {@link http://jsfiddle.net/0mxLgb1w/1/ Editable Example}
  *
  * @param {string} pid id or full URL of the person
  * @param {Object=} opts options to pass to the http function specified during init
@@ -9548,7 +9548,7 @@ FS.prototype.restorePerson = function(pid, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Spouse_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/fh5jxsre/ editable example}
+ * {@link http://jsfiddle.net/fh5jxsre/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {Object=} params currently unused
@@ -9593,7 +9593,7 @@ FS.prototype.getPreferredSpouse = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Spouse_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/j8kws5n3/ editable example}
+ * {@link http://jsfiddle.net/j8kws5n3/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {string} crid id or URL of the preferred Couple relationship, or null to set the unknown spouse
@@ -9649,7 +9649,7 @@ FS.prototype.setPreferredSpouse = function(pid, crid, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Spouse_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/2cxup42f/ editable example}
+ * {@link http://jsfiddle.net/2cxup42f/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {Object=} opts options to pass to the http function specified during init
@@ -9681,7 +9681,7 @@ FS.prototype.deletePreferredSpouse = function(pid, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Parent_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/rarpqLb6/ editable example}
+ * {@link http://jsfiddle.net/rarpqLb6/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {Object=} params currently unused
@@ -9717,7 +9717,7 @@ FS.prototype.getPreferredParents = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Parent_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/swfsnarb/ editable example}
+ * {@link http://jsfiddle.net/swfsnarb/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {string} caprid id or URL of the preferred ChildAndParents relationship
@@ -9755,7 +9755,7 @@ FS.prototype.setPreferredParents = function(pid, caprid, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Parent_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/r5erwvft/ editable example}
+ * {@link http://jsfiddle.net/r5erwvft/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {Object=} opts options to pass to the http function specified during init
@@ -9779,7 +9779,6 @@ FS.prototype.deletePreferredParents = function(pid, opts) {
 
 // TODO person merge
 // TODO person not a match
-// TODO restore person
 
 },{"../FamilySearch":1,"../utils":53}],43:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
@@ -10207,7 +10206,7 @@ FS.prototype._getSearchMatchResponseMapper = function() {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Search_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/ghsyjzLb/ editable example}
+ * {@link http://jsfiddle.net/ghsyjzLb/1/ Editable Example}
  *
  * @param {Object} params described above
  * @param {Object=} opts options to pass to the http function specified during init
@@ -10252,7 +10251,7 @@ FS.prototype.getPersonSearch = function(params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Matches_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/xb0ts69q/ editable example}
+ * {@link http://jsfiddle.net/xb0ts69q/1/ Editable Example}
  *
  * @param {String} pid id of the person or full URL of the person-matches endpoint
  * @param {Object=} params currently unused
@@ -10284,7 +10283,7 @@ FS.prototype.getPersonMatches = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Search_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/fdLrujkb/ editable example}
+ * {@link http://jsfiddle.net/fdLrujkb/1/ Editable Example}
  *
  * @param {Object} params generally the same parameters as described for
  * {@link searchAndMatch.functions:getPersonSearch getPersonSearch}, with the the following differences:
@@ -10326,7 +10325,7 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_for_a_User_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/a0eLkwtb/ editable example}
+ * {@link http://jsfiddle.net/a0eLkwtb/2/ Editable Example}
  *
  * @param {String} uid of the user or full URL of the collections-for-user endpoint
  * @param {Object=} params currently unused
@@ -10364,7 +10363,7 @@ FS.prototype.getCollectionsForUser = function(uid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/rn5hd0cd/ editable example}
+ * {@link http://jsfiddle.net/rn5hd0cd/1/ Editable Example}
  *
  * @param {String} udcid id or full URL of the collection
  * @param {Object=} params currently unused
@@ -10402,7 +10401,7 @@ FS.prototype.getCollection = function(udcid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_Source_Descriptions_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/a73eysbs/ editable example}
+ * {@link http://jsfiddle.net/a73eysbs/1/ Editable Example}
  *
  * @param {String} udcid id of the collection or full URL of the collection-source-descriptions endpoint
  * @param {Object=} params `count` maximum to return (defaults to 25), `start` zero-based index of first source to return
@@ -10440,7 +10439,7 @@ FS.prototype.getCollectionSourceDescriptions = function(udcid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_Source_Descriptions_for_a_User_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/pse56a1f/ editable example}
+ * {@link http://jsfiddle.net/pse56a1f/1/ Editable Example}
  *
  * @param {String} uid of the user or full URL of the collection-source-descriptions-for-user endpoint
  * @param {Object=} params `count` maximum to return (defaults to 25), `start` zero-based index of first source to return
@@ -10475,7 +10474,7 @@ FS.prototype.getCollectionSourceDescriptionsForUser = function(uid, params, opts
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_Source_Descriptions_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/5mva0why/ editable example}
+ * {@link http://jsfiddle.net/5mva0why/1/ Editable Example}
  *
  * @param {string} udcid id of the collection or full URL of the collection descriptions endpoint
  * @param {SourceDescription[]|string[]} srcDescs array of source descriptions - may be objects or id's
@@ -10507,7 +10506,7 @@ FS.prototype.moveSourceDescriptionsToCollection = function(udcid, srcDescs, opts
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_Source_Descriptions_for_a_User_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/k39uo7zk/ editable example}
+ * {@link http://jsfiddle.net/k39uo7zk/1/ Editable Example}
  *
  * @param {SourceDescription[]|string[]} srcDescs array of source descriptions - may be objects or id's
  * @param {Object=} opts options to pass to the http function specified during init
@@ -10542,7 +10541,7 @@ FS.prototype.removeSourceDescriptionsFromCollections = function(srcDescs, opts) 
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/yhdznLu0/ editable example}
+ * {@link http://jsfiddle.net/yhdznLu0/1/ Editable Example}
  *
  * @param {string} udcid id or full URL of the collection
  * @param {Object=} opts options to pass to the http function specified during init
@@ -10587,7 +10586,7 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/m4Lhab24/ editable example}
+ * {@link http://jsfiddle.net/m4Lhab24/1/ Editable Example}
  *
  * @param {String|SourceRef} sdid id or full URL or {@link sources.types:constructor.SourceRef SourceRef} of the source description
  * @param {Object=} params currently unused
@@ -10627,7 +10626,7 @@ FS.prototype.getSourceDescription = function(sdid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/jvvohktt/ editable example}
+ * {@link http://jsfiddle.net/jvvohktt/1/ Editable Example}
  *
  * @param {string[]|SourceRef[]} sdids ids or full URLs or {@link sources.types:constructor.SourceRef SourceRefs} of the source descriptions
  * @param {Object=} params pass to getSourceDescription currently unused
@@ -10668,7 +10667,7 @@ FS.prototype.getMultiSourceDescription = function(sdids, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Source_References_Query_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/gbusgbys/ editable example}
+ * {@link http://jsfiddle.net/gbusgbys/1/ Editable Example}
  *
  * @param {String} sdid id of the source description (cannot be the URL)
  * @param {Object=} params currently unused
@@ -10819,7 +10818,7 @@ FS.prototype._getSourcesResponseMapper = function(root, label, includeDescriptio
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Source_References_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/xdqcv2dn/ editable example}
+ * {@link http://jsfiddle.net/xdqcv2dn/1/ Editable Example}
  *
  * @param {String} pid person id or full URL of the source-references endpoint
  * @param {Object=} params currently unused
@@ -10851,7 +10850,7 @@ FS.prototype.getPersonSourceRefs = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Sources_Query_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/bxt10adm/ editable example}
+ * {@link http://jsfiddle.net/bxt10adm/2/ Editable Example}
  *
  * @param {String} pid person id or full URL of the person-sources-query endpoint
  * @param {Object=} params currently unused
@@ -10883,7 +10882,7 @@ FS.prototype.getPersonSourcesQuery = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Source_References_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/v8Lbxyu3/ editable example}
+ * {@link http://jsfiddle.net/v8Lbxyu3/1/ Editable Example}
  *
  * @param {String} crid couple relationship id or full URL of the couple-relationship-source-references endpoint
  * @param {Object=} params currently unused
@@ -10915,7 +10914,7 @@ FS.prototype.getCoupleSourceRefs = function(crid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Sources_Query_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/z1nv7dnc/ editable example}
+ * {@link http://jsfiddle.net/z1nv7dnc/1/ Editable Example}
  *
  * @param {String} crid couple relationship id or full URL of the couple-relationship-sources-query endpoint
  * @param {Object=} params currently unused
@@ -10947,7 +10946,7 @@ FS.prototype.getCoupleSourcesQuery = function(crid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/hoxqrLcy/ editable example}
+ * {@link http://jsfiddle.net/hoxqrLcy/1/ Editable Example}
  *
  * @param {String} caprid child-and-parents relationship id or full URL of the child-and-parents-relationship-sources-query endpoint
  * @param {Object=} params currently unused
@@ -10980,7 +10979,7 @@ FS.prototype.getChildAndParentsSourceRefs = function(caprid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/192zfzh3/ editable example}
+ * {@link http://jsfiddle.net/192zfzh3/1/ Editable Example}
  *
  * @param {String} caprid child-and-parents relationship id or full URL of the child-and-parents-relationship-sources-query endpoint
  * @param {Object=} params currently unused
@@ -11011,7 +11010,7 @@ FS.prototype.getChildAndParentsSourcesQuery = function(caprid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/fb2fzgsv/ editable example}
+ * {@link http://jsfiddle.net/fb2fzgsv/1/ Editable Example}
  *
  * @param {string} sdid id of the source description (cannot be the URL)
  * @param {string} changeMessage reason for the deletion
@@ -11059,7 +11058,7 @@ FS.prototype.deleteSourceDescription = function(sdid, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Source_Reference_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/nenz4de2/ editable example}
+ * {@link http://jsfiddle.net/nenz4de2/1/ Editable Example}
  *
  * @param {string} changeMessage reason for the deletion
  * @param {string} pid person id or full url of the source reference
@@ -11089,7 +11088,7 @@ FS.prototype.deletePersonSourceRef = function(pid, srid, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Source_Reference_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/txcf4ke3/ editable example}
+ * {@link http://jsfiddle.net/txcf4ke3/1/ Editable Example}
  *
  * @param {string} changeMessage reason for the deletion
  * @param {string} crid couple relationship id or full url of the source reference
@@ -11119,7 +11118,7 @@ FS.prototype.deleteCoupleSourceRef = function(crid, srid, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_Reference_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/hche691q/ editable example}
+ * {@link http://jsfiddle.net/hche691q/1/ Editable Example}
  *
  * @param {string} changeMessage reason for the deletion
  * @param {string} caprid child-and-parents relationship id or full url of the source reference
@@ -11177,7 +11176,7 @@ var coupleConvenienceFunctions = {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/x1v6vxoy/ editable example}
+ * {@link http://jsfiddle.net/x1v6vxoy/4/ Editable Example}
  *
  * @param {String} crid id or full URL of the couple relationship
  * @param {Object=} params set `persons` true to return a person object for each person in the relationship,
@@ -11216,7 +11215,7 @@ FS.prototype.getCouple = function(crid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/1hsj5b59/ editable example}
+ * {@link http://jsfiddle.net/1hsj5b59/1/ Editable Example}
  *
  * @param {string} crid id or full URL of the couple relationship
  * @param {string} changeMessage reason for the deletion
@@ -11245,7 +11244,7 @@ FS.prototype.deleteCouple = function(crid, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Restore_resource FamilySearch API Docs}
  * 
- * {@link http://jsfiddle.net/zhbvsrs0/2/ editable example}
+ * {@link http://jsfiddle.net/zhbvsrs0/2/ Editable Example}
  *
  * @param {string} crid id or full URL of the couple relationship
  * @param {Object=} opts options to pass to the http function specified during init
@@ -11289,7 +11288,7 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/users/Current_User_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/u7esw4u3/ editable example}
+ * {@link http://jsfiddle.net/u7esw4u3/169/ Editable Example}
  *
  * @param {Object=} params currently unused
  * @param {Object=} opts options to pass to the http function specified during init
@@ -11326,7 +11325,7 @@ FS.prototype.getCurrentUser = function(params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/users/Agent_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/dcxy9a59/ editable example}
+ * {@link http://jsfiddle.net/dcxy9a59/2/ Editable Example}
  *
  * @param {String} aid id or full URL of the agent (contributor)
  * @param {Object=} params currently unused
@@ -11360,7 +11359,7 @@ FS.prototype.getAgent = function(aid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/users/Agent_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/88gbgae5/ editable example}
+ * {@link http://jsfiddle.net/88gbgae5/1/ Editable Example}
  *
  * @param {Array} aids Ids or full URLs of the agents (contributors) to read
  * @param {Object=} params pass to getAgent currently unused
