@@ -22,5 +22,4 @@ deploy:
   api_key:
     secure: Okz5lNXjeqgiKHkEB/XEseglekEF8xPRVtOKJvJq5VjHuFekxaKep6cQDKnBTY1W5cm+2QUZB6sFjpdE0a5/En5aYOM9A2434gbxyg9diK7/2tGRJ+Jz0/b+jmWkb0KPg8pl8JwnLWH6QTS2rvCtiSiXj5JWUr2wP/1oCfdypRg=
   on:
-    tags: true
     repo: FamilySearch/familysearch-javascript-sdk
