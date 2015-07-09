@@ -78,13 +78,11 @@ Releases
 ========
 
 The Javascript SDK uses [semantic versioning](http://semver.org/) for releases. 
-We are currently in a pre-1.0 state, which means that occasionally there will be backwards-incompatible changes.
-Backward-incompatible changes don't happen very often, but they do happen occasionally. 
-Once we hit version 1.0.0 later this Fall, I will make sure that changes are backwards-compatible.
+Any breaking changes will cause the major version to be bumped; e.g., 1.0 -> 2.0.
 
 You can check out a specific release by clicking on the github 
 [Releases link](https://github.com/FamilySearch/familysearch-javascript-sdk/releases)
-or by specifying the release number in your `bower.json` file; e.g., `"familysearch-javascript-sdk": "~0.9.15"`. 
+or by specifying the release number in your `bower.json` or `package.json` file; e.g., `"familysearch-javascript-sdk": "~0.9.15"`. 
 The _Releases_ link also serves as a _Change Log_, so it's worth looking at even if you plan to work off the master branch. 
 
 Contributing
