@@ -149,7 +149,7 @@ MemoryPersonaRef.prototype = {
    * NOTE: there's no _refresh_ parameter because it's not possible to read individual memory persona references;
    * however, the memory persona ref's id and URL is set when creating a new memory persona ref
    *
-   * {@link http://jsfiddle.net/r3px0ork/ editable example}
+   * {@link http://jsfiddle.net/r3px0ork/1/ Editable Example}
    *
    * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init

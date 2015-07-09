@@ -394,7 +394,7 @@ ChildAndParents.prototype = {
    * @description
    * Create a new relationship if this relationship does not have an id, or update the existing relationship
    *
-   * {@link http://jsfiddle.net/6of3pzte/ editable example}
+   * {@link http://jsfiddle.net/6of3pzte/2/ Editable Example}
    *
    * @param {String=} changeMessage default change message to use when fact/deletion-specific changeMessage was not specified
    * @param {boolean=} refresh true to read the relationship after updating

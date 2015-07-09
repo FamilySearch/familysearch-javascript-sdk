@@ -148,7 +148,7 @@ MemoryPersona.prototype = {
    * Create a new memory persona (if this memory persona does not have an id) or update the existing memory persona.
    * Only the name can be updated, not the memory id or the memory artifact reference.
    *
-   * {@link http://jsfiddle.net/eeozaLkL/ editable example}
+   * {@link http://jsfiddle.net/eeozaLkL/1/ Editable Example}
    *
    * @param {string=} changeMessage change message (currently ignored)
    * @param {boolean=} refresh true to read the memory persona after updating

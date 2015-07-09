@@ -230,7 +230,7 @@ SourceRef.prototype = {
    * _NOTE_: the person/couple/childAndParents id and the source description are not updateable.
    * Only the tags are updateable.
    *
-   * {@link http://jsfiddle.net/sqsejsjq/ editable example}
+   * {@link http://jsfiddle.net/sqsejsjq/1/ Editable Example}
    *
    * @param {string} changeMessage change message
    * @param {Object=} opts options to pass to the http function specified during init

@@ -735,7 +735,7 @@ Person.prototype = {
    * @description
    * Create a new person (if this person does not have an id) or update the existing person
    *
-   * {@link http://jsfiddle.net/v4840hjt/ editable example}
+   * {@link http://jsfiddle.net/v4840hjt/1/ Editable Example}
    *
    * @param {String=} changeMessage default change message to use when name/fact/gender-specific changeMessage is not specified
    * @param {boolean=} refresh true to read the person after updating

@@ -139,7 +139,7 @@ DiscussionRef.prototype = {
    * NOTE: there's no _refresh_ parameter because it's not possible to read individual discussion references;
    * however, the discussion reference's URL is set when creating a new discussion reference
    *
-   * {@link http://jsfiddle.net/q7pwkc9k/ editable example}
+   * {@link http://jsfiddle.net/q7pwkc9k/1/ Editable Example}
    *
    * @param {string} changeMessage change message - unused - discussion reference attributions do not contain change messages
    * @param {Object=} opts options to pass to the http function specified during init
