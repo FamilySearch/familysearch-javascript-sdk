@@ -130,15 +130,8 @@
  * In node, we depend on the [request](https://github.com/request/request) for http and [Q](https://github.com/kriskowal/q) for promises.
  * These libraries are not loaded automatically; you need to add `require` them yourself.
  * 
- * 1. Add the sdk to your package.json file.
- * The SDK isn't published in npm yet. For now you'll have to point directly to the
- * repository from your package.json file. We ___strongly___ recommend using a tag (hash)
- * to point to a particular version. Without the hash you'll be pointing to master and
- * may catch the code in an unstable mid-release state.
- * <pre>
- * "familysearch-javascript-sdk": "https://github.com/rootsdev/familysearch-javascript-sdk.git#v0.9.15"
- * </pre>
- * 
+ * 1. `npm install familysearch-javascript-sdk`
+ *  
  * 2. Require the necessary modules:
  * <pre>
  * var FS = require('familysearch-javascript-sdk'),

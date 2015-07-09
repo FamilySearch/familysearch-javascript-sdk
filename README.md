@@ -51,29 +51,21 @@ We are still on major version 0, so the API is subject to some change.
 
 1. Bower
 
-        bower install familysearch-javascript-sdk
+  ```
+  bower install familysearch-javascript-sdk
+  ```
 
 1. Node
-
-   The SDK isn't published in npm yet. For now you'll have to point directly to the
-   repository from your package.json file. We ___strongly___ recommend using a tag (hash)
-   to point to a particular version. Without the hash you'll be pointing to master and
-   may catch the code in an unstable mid-release state.
    
-   ```
-   "familysearch-javascript-sdk": "https://github.com/FamilySearch/familysearch-javascript-sdk.git#v0.9.15"
-   ```
+  ```
+  npm install familysearch-javascript-sdk.git
+  ```
 
-1. Download
+1. CDN via [jsDelivr](http://www.jsdelivr.com/#!familysearch-javascript-sdk)
 
-    Click on the _Releases_ tab near the top of this github project page and select the
-    release you want to download or get the most up-to-date version by downloading one 
-    of the following files:
-
-    * [familysearch-javascript-sdk.js](http://familysearch.github.io/familysearch-javascript-sdk/familysearch-javascript-sdk.js)
-    * [familysearch-javascript-sdk.min.js](http://familysearch.github.io/familysearch-javascript-sdk/familysearch-javascript-sdk.min.js)
-
-In the future, if we can get 100 people watching the repo, [cdnJS](http://cdnjs.com/) will host it.
+  ```html
+  <script src="//cdn.jsdelivr.net/familysearch-javascript-sdk/1.0.0/familysearch-javascript-sdk.min.js"></script>
+  ```
 
 Documentation
 =============
@@ -95,35 +87,17 @@ You can check out a specific release by clicking on the github
 or by specifying the release number in your `bower.json` file; e.g., `"familysearch-javascript-sdk": "~0.9.15"`. 
 The _Releases_ link also serves as a _Change Log_, so it's worth looking at even if you plan to work off the master branch. 
 
-Roadmap
-=======
-
-####Milestone 1 - complete
-* Create functions for basic read operations
-* Make the SDK work with jQuery and AngularJS
-
-####Milestone 2 - complete
-* Create an [example application](https://github.com/FamilySearch/familysearch-reference-client) showing how to use the SDK.
-
-####Milestone 3 - complete
-* Create functions for the basic create, update, and delete operations - everything that you're likely to use
-
-####Milestone 4 - 2015
-* Version 1.0 -- all functions implemented, end-to-end tests in place, Node.js support, available in bower & npm repositories.
-
 Contributing
 ============
 
 Thank you for your interest in contributing! We love pull requests.
 
 Follow these steps to properly setup your development environment:
+
 * Fork this repo
-* Run `npm install` to install the build dependencies
-* [Install the grunt-cli ](http://gruntjs.com/getting-started#installing-the-cli)
-
-Run `npm test` to run the tests.
-
-Run `npm build` to build the project.
+* Run `npm install` to install the build dependencies.
+* Run `npm test` to run the tests.
+* Run `npm run build` to build the project.
 
 This project uses .editorconfig to help configure your editor for consistent code indentation and styling.
 Please follow the existing style in your changes.
@@ -142,8 +116,8 @@ Nearly a third of the code consists of comments that is turned into online docum
 Please comment your changes.
 
 Please create editable examples for your changes on jsFiddle.net.
-Many of the existing examples on jsFiddle are in the DallanQ namespace; put your examples in your own namespace.
-In the near future we will use Facebook's Huxley project to create end-to-end (integration) tests from the examples on jsFiddle,
+
+In the future we might use Facebook's Huxley project to create end-to-end (integration) tests from the examples on jsFiddle,
 so they will serve two purposes simultaneously: as human-readable examples and as end-to-end tests.
 (There is a proof-of-concept in the huxley directory.)
 
