@@ -120,14 +120,7 @@ client.getAccessToken().then(function(accessToken) {
 <p>In node, we depend on the <a href="https://github.com/request/request">request</a> for http and <a href="https://github.com/kriskowal/q">Q</a> for promises.
 These libraries are not loaded automatically; you need to add <code>require</code> them yourself.</p>
 <ol>
-<li><p>Add the sdk to your package.json file.
-The SDK isn&#39;t published in npm yet. For now you&#39;ll have to point directly to the
-repository from your package.json file. We <strong><em>strongly</em></strong> recommend using a tag (hash)
-to point to a particular version. Without the hash you&#39;ll be pointing to master and
-may catch the code in an unstable mid-release state.
-<pre class="prettyprint linenums">
-"familysearch-javascript-sdk": "https://github.com/rootsdev/familysearch-javascript-sdk.git#v0.9.15"
-</pre>
+<li><p><code>npm install familysearch-javascript-sdk</code></p>
 </li>
 <li><p>Require the necessary modules:
 <pre class="prettyprint linenums">
