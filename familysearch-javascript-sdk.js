@@ -996,7 +996,7 @@ ChildAndParents.prototype = {
    * @description
    * Create a new relationship if this relationship does not have an id, or update the existing relationship
    *
-   * {@link http://jsfiddle.net/6of3pzte/ editable example}
+   * {@link http://jsfiddle.net/6of3pzte/2/ Editable Example}
    *
    * @param {String=} changeMessage default change message to use when fact/deletion-specific changeMessage was not specified
    * @param {boolean=} refresh true to read the relationship after updating
@@ -1235,7 +1235,7 @@ Collection.prototype = {
    * @description
    * Create a new user-defined collection (folder)
    *
-   * {@link http://jsfiddle.net/ppm671s2/ editable example}
+   * {@link http://jsfiddle.net/ppm671s2/1/ Editable Example}
    *
    * @param {boolean=} refresh true to read the collection after updating
    * @param {Object=} opts options to pass to the http function specified during init
@@ -1401,7 +1401,7 @@ Comment.prototype = {
    * _NOTE_: there's no _refresh_ parameter because it's not possible to read individual comments;
    * however, the comment's id and URL is set when creating a new comment
    *
-   * {@link http://jsfiddle.net/yr9zv5fw/ editable example}
+   * {@link http://jsfiddle.net/yr9zv5fw/1/ Editable Example}
    *
    * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init
@@ -1758,7 +1758,7 @@ Couple.prototype = {
    * @description
    * Create a new relationship if this relationship does not have an id, or update the existing relationship
    *
-   * {@link http://jsfiddle.net/LtphkL51/ editable example}
+   * {@link http://jsfiddle.net/LtphkL51/1/ Editable Example}
    *
    * @param {String=} changeMessage default change message to use when fact/deletion-specific changeMessage was not specified
    * @param {boolean=} refresh true to read the relationship after updating
@@ -2173,7 +2173,7 @@ Discussion.prototype = {
    * @description
    * Create a new discussion (if this discussion does not have an id) or update the existing discussion
    *
-   * {@link http://jsfiddle.net/fsy9z6kx/ editable example}
+   * {@link http://jsfiddle.net/fsy9z6kx/1/ Editable Example}
    *
    * @param {string=} changeMessage change message (currently ignored)
    * @param {boolean=} refresh true to read the discussion after updating
@@ -2371,7 +2371,7 @@ DiscussionRef.prototype = {
    * NOTE: there's no _refresh_ parameter because it's not possible to read individual discussion references;
    * however, the discussion reference's URL is set when creating a new discussion reference
    *
-   * {@link http://jsfiddle.net/q7pwkc9k/ editable example}
+   * {@link http://jsfiddle.net/q7pwkc9k/1/ Editable Example}
    *
    * @param {string} changeMessage change message - unused - discussion reference attributions do not contain change messages
    * @param {Object=} opts options to pass to the http function specified during init
@@ -3069,7 +3069,7 @@ Memory.prototype = {
    * @description
    * Create a new memory (if this memory does not have an id) or update the existing memory
    *
-   * {@link http://jsfiddle.net/f2wrtgj0/ editable example}
+   * {@link http://jsfiddle.net/f2wrtgj0/1/ Editable Example}
    *
    * @param {string=} changeMessage change message (currently ignored)
    * @param {boolean=} refresh true to read the discussion after updating
@@ -3390,7 +3390,7 @@ MemoryPersona.prototype = {
    * Create a new memory persona (if this memory persona does not have an id) or update the existing memory persona.
    * Only the name can be updated, not the memory id or the memory artifact reference.
    *
-   * {@link http://jsfiddle.net/eeozaLkL/ editable example}
+   * {@link http://jsfiddle.net/eeozaLkL/1/ Editable Example}
    *
    * @param {string=} changeMessage change message (currently ignored)
    * @param {boolean=} refresh true to read the memory persona after updating
@@ -3597,7 +3597,7 @@ MemoryPersonaRef.prototype = {
    * NOTE: there's no _refresh_ parameter because it's not possible to read individual memory persona references;
    * however, the memory persona ref's id and URL is set when creating a new memory persona ref
    *
-   * {@link http://jsfiddle.net/r3px0ork/ editable example}
+   * {@link http://jsfiddle.net/r3px0ork/1/ Editable Example}
    *
    * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init
@@ -4131,7 +4131,7 @@ Note.prototype = {
    * @description
    * Create a new note (if this note does not have an id) or update the existing note
    *
-   * {@link http://jsfiddle.net/vg1kge0o/ editable example}
+   * {@link http://jsfiddle.net/vg1kge0o/1/ Editable Example}
    *
    * @param {string} changeMessage change message
    * @param {boolean=} refresh true to read the note after updating
@@ -4954,7 +4954,7 @@ Person.prototype = {
    * @description
    * Create a new person (if this person does not have an id) or update the existing person
    *
-   * {@link http://jsfiddle.net/v4840hjt/ editable example}
+   * {@link http://jsfiddle.net/v4840hjt/1/ Editable Example}
    *
    * @param {String=} changeMessage default change message to use when name/fact/gender-specific changeMessage is not specified
    * @param {boolean=} refresh true to read the person after updating
@@ -5743,7 +5743,7 @@ SourceDescription.prototype = {
    * @description
    * Create a new source description (if this source description does not have an id) or update the existing source description
    *
-   * {@link http://jsfiddle.net/mtets2sf/ editable example}
+   * {@link http://jsfiddle.net/mtets2sf/1/ Editable Example}
    *
    * @param {string=} changeMessage change message
    * @param {boolean=} refresh true to read the source description after updating
@@ -6032,7 +6032,7 @@ SourceRef.prototype = {
    * _NOTE_: the person/couple/childAndParents id and the source description are not updateable.
    * Only the tags are updateable.
    *
-   * {@link http://jsfiddle.net/sqsejsjq/ editable example}
+   * {@link http://jsfiddle.net/sqsejsjq/1/ Editable Example}
    *
    * @param {string} changeMessage change message
    * @param {Object=} opts options to pass to the http function specified during init
@@ -7950,7 +7950,7 @@ FS.prototype._memoriesResponseMapper = function(){
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memories_Query_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/48hw65vz/ editable example}
+ * {@link http://jsfiddle.net/48hw65vz/1/ Editable Example}
  *
  * @param {string} pid id of the person or full URL of the person-memories-query endpoint
  * @param {Object=} params `count` maximum number to return - defaults to 25, `start` defaults to 0,
@@ -7985,7 +7985,7 @@ FS.prototype.getPersonMemoriesQuery = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/User_Memories_Query_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/ywg2um4q/ editable example}
+ * {@link http://jsfiddle.net/ywg2um4q/1/ Editable Example}
  *
  * @param {string} uid user id or full URL of the user-memories-query endpoint - note this is a _user_ id, not an _agent_ id
  * @param {Object=} params `count` maximum number to return - defaults to 25, `start` defaults to 0
@@ -8019,7 +8019,7 @@ FS.prototype.getUserMemoriesQuery = function(uid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/k064qtLt/ editable example}
+ * {@link http://jsfiddle.net/k064qtLt/1/ Editable Example}
  *
  * @param {String} mid id or full URL of the memory
  * @param {Object=} params currently unused
@@ -8053,7 +8053,7 @@ FS.prototype.getMemory = function(mid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Comments_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/n4rtc6mo/ editable example}
+ * {@link http://jsfiddle.net/n4rtc6mo/1/ Editable Example}
  *
  * @param {String} mid of the memory or full URL of the memory-comments endpoint
  * @param {Object=} params currently unused
@@ -8131,7 +8131,7 @@ FS.prototype._memoryPersonasMapper = function(){
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Personas_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/ozybtk5v/ editable example}
+ * {@link http://jsfiddle.net/ozybtk5v/1/ Editable Example}
  *
  * @param {string} mid of the memory or full URL of the memory-personas endpoint
  * @param {Object=} params currently unused
@@ -8166,7 +8166,7 @@ FS.prototype.getMemoryPersonas = function(mid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Persona_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/180vfb1w/ editable example}
+ * {@link http://jsfiddle.net/180vfb1w/1/ Editable Example}
  *
  * @param {String} mid memory id or full URL of the memory persona
  * @param {string=} mpid id of the memory persona (must be set if mid is a memory id and not the full URL)
@@ -8200,7 +8200,7 @@ FS.prototype.getMemoryPersona = function(mid, mpid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_References_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/Ldveszee/ editable example}
+ * {@link http://jsfiddle.net/Ldveszee/1/ Editable Example}
  *
  * @param {String} pid id of the person or full URL of the person-memory-references endpoint
  * @param {Object=} params currently unused
@@ -8250,7 +8250,7 @@ FS.prototype.getMemoryPersonaRefs = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memories_Portrait_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/oc4g7334/ editable example}
+ * {@link http://jsfiddle.net/oc4g7334/2/ Editable Example}
  *
  * @param {String} pid of the person
  * @param {Object=} params `default` URL to redirect to if portrait doesn't exist;
@@ -8289,7 +8289,7 @@ FS.prototype.getPersonPortraitUrl = function(pid, params, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/r3bb6e0u/ editable example}
+ * {@link http://jsfiddle.net/r3bb6e0u/1/ Editable Example}
  *
  * @param {string} mid id or full URL of the memory
  * @param {string=} changeMessage change message (currently ignored)
@@ -8318,7 +8318,7 @@ FS.prototype.deleteMemory = function(mid, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Persona_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/77ba424q/ editable example}
+ * {@link http://jsfiddle.net/77ba424q/1/ Editable Example}
  *
  * @param {string} mid memory id or full URL of the memory persona
  * @param {string=} mpid id of the memory persona (must be set if mid is a memory id and not the full URL)
@@ -8348,7 +8348,7 @@ FS.prototype.deleteMemoryPersona = function(mid, mpid, changeMessage, opts) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_Reference_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/cbcs86s5/ editable example}
+ * {@link http://jsfiddle.net/cbcs86s5/1/ Editable Example}
  *
  * @param {string} pid person id or full URL of the memory persona reference
  * @param {string=} mprid id of the memory persona reference (must be set if pid is a person id and not the full URL)
