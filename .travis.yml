@@ -20,6 +20,6 @@ deploy:
   provider: npm
   email: devsupport@familysearch.org
   api_key:
-    secure: a3QcbEfMHMuiLYBzEje11m/zn73YSgGf7jvLRg7CNolMyMq0n90lQBGUcJLSu8cf7ZGy3jzySgvYDl269RkFlHJ82JCuSmQCgmX7u/46MR40z0p1upc6K2tNQen+YTUGpoyLp4PxugzWA91NImXRHkGCCI/GnfGMO57iuWb4X1I=
+    secure: ghK/nKkdR1VUkhQEIdrdjLnkYtJlTv+uMDnnvDmNdaGg4INdIKtL/c21PR0wr0Tp+7v1qvJOH/snwwdMVjUxuBDD8OYsSosxNQtvd3H49+Ao4vgKxl5lN7+0/LLM81YhuZq6+zZMHMrssGeyIzlPigccgJWACcWap78Elhp4Tpw=
   on:
     repo: FamilySearch/familysearch-javascript-sdk
