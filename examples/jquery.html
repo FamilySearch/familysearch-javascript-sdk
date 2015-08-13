@@ -1,35 +1,30 @@
 <!DOCTYPE html>
-
 <html>
-<head>
-  <script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
-  <script src="//rootsdev.org/familysearch-javascript-sdk/familysearch-javascript-sdk.js"></script>
-</head>
-
-<body>
-<script>
-  var fsClient = new FamilySearch({
-    client_id: 'YOUR_CLIENT_ID_GOES_HERE',
-    environment: 'sandbox',
-    redirect_uri: 'YOUR_REDIRECT_URI_GOES_HERE',
-    http_function: $.ajax,
-    deferred_function: $.Deferred,
-    save_access_token: true,
-    auto_expire: true,
-    auto_signin: true
-  });
-  
-  window.run = function() {
-    fsClient.getCurrentUser().then(function(response) {
-      $('#output').append('Hello '+response.getUser().contactName+'!');
-    });
-  };
-
-  
-</script>
-
-<a href="#" onclick="run()">Run</a>
-<div id="output"></div>
-</body>
-
+  <head>
+    <script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="//cdn.jsdelivr.net/familysearch-javascript-sdk/1.0.0/familysearch-javascript-sdk.min.js"></script>
+  </head>
+  <body>
+    <script>
+      var fsClient = new FamilySearch({
+        client_id: 'YOUR_CLIENT_ID_GOES_HERE',
+        environment: 'sandbox',
+        redirect_uri: 'YOUR_REDIRECT_URI_GOES_HERE',
+        http_function: $.ajax,
+        deferred_function: $.Deferred,
+        save_access_token: true,
+        auto_expire: true,
+        auto_signin: true
+      });
+      
+      window.run = function() {
+        fsClient.getCurrentUser().then(function(response) {
+          $('#output').append('Hello '+response.getUser().contactName+'!');
+        });
+      };
+    </script>
+    
+    <a href="#" onclick="run()">Run</a>
+    <div id="output"></div>
+  </body>
 </html>
