@@ -37,7 +37,7 @@ Check out the [jsFiddle](http://jsfiddle.net/MpUg7/60/) to see it in action (req
 
 * Retry in the case of throttled responses is handled for you.
 
-* Cross-platform: the SDK works with jQuery, AngularJS, or Node.js.
+* Cross-platform: the SDK works with jQuery, AngularJS, or Node.js. See the [examples](https://github.com/FamilySearch/familysearch-javascript-sdk/tree/master/examples).
 
 * Object-oriented: SDK functions return objects, which have convenience functions to make getting or setting data easy.
 
@@ -47,7 +47,6 @@ Installation
 ============
 
 The SDK is available as a versioned javascript file, following the [semantic versioning](http://semver.org/) guidelines.
-We are still on major version 0, so the API is subject to some change.
 
 1. Bower
 
@@ -82,7 +81,7 @@ Any breaking changes will cause the major version to be bumped; e.g., 1.0 -> 2.0
 
 You can check out a specific release by clicking on the github 
 [Releases link](https://github.com/FamilySearch/familysearch-javascript-sdk/releases)
-or by specifying the release number in your `bower.json` or `package.json` file; e.g., `"familysearch-javascript-sdk": "~0.9.15"`. 
+or by specifying the release number in your `bower.json` or `package.json` file; e.g., `"familysearch-javascript-sdk": "~1.0.0"`. 
 The _Releases_ link also serves as a _Change Log_, so it's worth looking at even if you plan to work off the master branch. 
 
 Contributing
