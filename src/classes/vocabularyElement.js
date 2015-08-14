@@ -23,7 +23,7 @@ FS.prototype.createVocabularyElement = function(data){
   return new VocabularyElement(this, data);
 };
 
-VocabularyElement.prototype = {
+VocabularyElement.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: VocabularyElement,
   
   /**
@@ -55,4 +55,4 @@ VocabularyElement.prototype = {
     return utils.maybe(utils.maybe(this.descriptions)[0])['@value'];
   }
    
-};
+});

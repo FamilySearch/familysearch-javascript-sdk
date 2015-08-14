@@ -24,13 +24,12 @@ var FS = require('./../FamilySearch'),
  * 
  * {@link http://jsfiddle.net/sq78dutL/ Editable Example}
  *
- * @param {String} id of the place
+ * @param {String} url full url of a place
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getPlace = function(placeId, opts) {
-  var self = this,
-      url = self.helpers.getAPIServerUrl(self.helpers.populateUriTemplate('/platform/places/{id}', {id: placeId}));
+FS.prototype.getPlace = function(url, opts) {
+  var self = this;
   return self.plumbing.get(url, {}, {}, opts,
     utils.compose(
       utils.objectExtender({
@@ -61,13 +60,12 @@ FS.prototype.getPlace = function(placeId, opts) {
  * 
  * {@link http://jsfiddle.net/edhbx4L1/1/ Editable Example}
  *
- * @param {String} id of the place description
+ * @param {String} url full url of the place description
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getPlaceDescription = function(placeId, opts) {
-  var self = this,
-      url = self.helpers.getAPIServerUrl(self.helpers.populateUriTemplate('/platform/places/description/{id}', {id: placeId}));
+FS.prototype.getPlaceDescription = function(url, opts) {
+  var self = this;
   return self.plumbing.get(url, {}, {}, opts,
     utils.compose(
       utils.objectExtender({
@@ -128,26 +126,31 @@ FS.prototype.getPlaceDescription = function(placeId, opts) {
  * @return {Object} promise for the response
  */
 FS.prototype.getPlacesSearch = function(params, opts) {
-  var self = this,
-      url = self.helpers.getAPIServerUrl('/platform/places/search');
-  return self.plumbing.get(url, utils.removeEmptyProperties({
-    q: utils.searchParamsFilter(utils.removeEmptyProperties(utils.extend({}, params))),
-    start: params.start,
-    count: params.count
-  }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-    utils.compose(
-      utils.objectExtender({
-        getSearchResults: function() { 
-          return utils.maybe(this.entries); 
-        }
-      }),
-      function(response){
-        utils.forEach(response.entries, function(entry, i, obj){
-          obj[i] = self.createPlacesSearchResult(entry);
-        });
-        return response;
-      }
-    ));
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getCollectionUrl('FSPA', 'place-search'),
+    function(url){
+      return self.plumbing.get(url, utils.removeEmptyProperties({
+        q: utils.searchParamsFilter(utils.removeEmptyProperties(utils.extend({}, params))),
+        start: params.start,
+        count: params.count
+      }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
+        utils.compose(
+          utils.objectExtender({
+            getSearchResults: function() { 
+              return utils.maybe(this.entries); 
+            }
+          }),
+          function(response){
+            utils.forEach(response.entries, function(entry, i, obj){
+              obj[i] = self.createPlacesSearchResult(entry);
+            });
+            return response;
+          }
+        )
+      );
+    }
+  );
 };
 
 /**
@@ -164,13 +167,12 @@ FS.prototype.getPlacesSearch = function(params, opts) {
  * 
  * {@link http://jsfiddle.net/xwpsLm46/ Editable Example}
  *
- * @param {String} id of the place description
+ * @param {String} url full url for the place descriptions children endpoint
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getPlaceDescriptionChildren = function(placeId, opts) {
-  var self = this,
-      url = self.helpers.getAPIServerUrl(self.helpers.populateUriTemplate('/platform/places/description/{id}/children', {id: placeId}));
+FS.prototype.getPlaceDescriptionChildren = function(url, opts) {
+  var self = this;
   return self.plumbing.get(url, {}, {}, opts,
     utils.compose(
       utils.objectExtender({
@@ -206,16 +208,21 @@ FS.prototype.getPlaceDescriptionChildren = function(placeId, opts) {
  * @return {Object} promise for the response
  */
 FS.prototype.getPlaceType = function(typeId, opts) {
-  var self = this,
-      url = self.helpers.getAPIServerUrl(self.helpers.populateUriTemplate('/platform/places/types/{id}', {id: typeId}));
-  return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
-    utils.compose(
-      utils.objectExtender({
-        getPlaceType: function() { 
-          return self.createVocabularyElement(this); 
-        }
-      })
-    ));
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getCollectionUrl('FSPA', 'place-type', {ptid: typeId}),
+    function(url){
+      return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
+        utils.compose(
+          utils.objectExtender({
+            getPlaceType: function() { 
+              return self.createVocabularyElement(this); 
+            }
+          })
+        )
+      );
+    }
+  );
 };
 
 /**
@@ -237,19 +244,24 @@ FS.prototype.getPlaceType = function(typeId, opts) {
  * @return {Object} promise for the response
  */
 FS.prototype.getPlaceTypes = function(opts) {
-  var self = this,
-      url = self.helpers.getAPIServerUrl('/platform/places/types');
-  return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
-    utils.compose(
-      utils.objectExtender({
-        getList: function() {
-          return self.createVocabularyList(this);
-        },
-        getPlaceTypes: function() { 
-          return this.getList().$getElements(); 
-        }
-      })
-    ));
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getCollectionUrl('FSPA', 'place-types'),
+    function(url){
+      return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
+        utils.compose(
+          utils.objectExtender({
+            getList: function() {
+              return self.createVocabularyList(this);
+            },
+            getPlaceTypes: function() { 
+              return this.getList().$getElements(); 
+            }
+          })
+        )
+      );
+    }
+  );
 };
 
 /**
@@ -272,19 +284,24 @@ FS.prototype.getPlaceTypes = function(opts) {
  * @return {Object} promise for the response
  */
 FS.prototype.getPlaceTypeGroup = function(groupId, opts) {
-  var self = this,
-      url = self.helpers.getAPIServerUrl(self.helpers.populateUriTemplate('/platform/places/type-groups/{id}', {id: groupId}));
-  return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
-    utils.compose(
-      utils.objectExtender({
-        getList: function() {
-          return self.createVocabularyList(this);
-        },
-        getPlaceTypes: function() { 
-          return this.getList().$getElements(); 
-        }
-      })
-    ));
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getCollectionUrl('FSPA', 'place-type-group', {ptgid: groupId}),
+    function(url){
+      return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
+        utils.compose(
+          utils.objectExtender({
+            getList: function() {
+              return self.createVocabularyList(this);
+            },
+            getPlaceTypes: function() { 
+              return this.getList().$getElements(); 
+            }
+          })
+        )
+      );
+    }
+  );
 };
 
 /**
@@ -306,17 +323,22 @@ FS.prototype.getPlaceTypeGroup = function(groupId, opts) {
  * @return {Object} promise for the response
  */
 FS.prototype.getPlaceTypeGroups = function(opts) {
-  var self = this,
-      url = self.helpers.getAPIServerUrl('/platform/places/type-groups');
-  return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
-    utils.compose(
-      utils.objectExtender({
-        getList: function() {
-          return self.createVocabularyList(this);
-        },
-        getPlaceTypeGroups: function() { 
-          return this.getList().$getElements(); 
-        }
-      })
-    ));
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getCollectionUrl('FSPA', 'place-type-groups'),
+    function(url){
+      return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
+        utils.compose(
+          utils.objectExtender({
+            getList: function() {
+              return self.createVocabularyList(this);
+            },
+            getPlaceTypeGroups: function() { 
+              return this.getList().$getElements(); 
+            }
+          })
+        )
+      );
+    }
+  );
 };

@@ -130,7 +130,7 @@ var personWithRelationshipsConvenienceFunctions = {
 FS.prototype.getPerson = function(pid, params, opts) {
   var self = this;
   return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('person-template', pid, {pid: pid}),
+    self.helpers.isAbsoluteUrl(pid) ? self.helpers.refPromise(pid) : self.plumbing.getCollectionUrl('FSFT', 'person', {pid: pid}),
     function(url) {
       return self.plumbing.get(url, params, {}, opts,
         utils.compose(
@@ -253,7 +253,7 @@ FS.prototype._personsAndRelationshipsMapper = function(){
 FS.prototype.getPersonWithRelationships = function(pid, params, opts) {
   var self = this;
   return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('person-with-relationships-query'),
+    self.plumbing.getCollectionUrl('FSFT', 'person-with-relationships'),
     function(url) {
       return self.plumbing.get(url, utils.extend({'person': pid}, params), {}, opts,
         utils.compose(
@@ -268,99 +268,6 @@ FS.prototype.getPersonWithRelationships = function(pid, params, opts) {
             return response;
           }
         ));
-    });
-};
-
-/**
- * @ngdoc function
- * @name person.functions:getSpouses
- * @function
- *
- * @description
- * Get the relationships to a person's spouses.
- * The response includes the following convenience functions
- *
- * - `getCoupleRelationships()` - an array of {@link spouses.types:constructor.Couple Couple} relationships
- * - `getChildAndParentsRelationships()` - an array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents}
- * relationships for children of the couples
- * - `getPerson(pid)` - a {@link person.types:constructor.Person Person} for any person id in a relationship except children
- *
- * {@link https://familysearch.org/developers/docs/api/tree/Spouses_of_a_Person_resource FamilySearch API Docs}
- *
- * {@link http://jsfiddle.net/1311jcz8/18/ Editable Example}
- *
- * @param {String} pid id of the person or full URL of the spouses endpoint
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the response
- */
-FS.prototype.getSpouses = function(pid, params, opts) {
-  var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('spouses-template', pid, {pid: pid}),
-    function(url) {
-      return self.plumbing.get(url, params, {}, opts, self._personsAndRelationshipsMapper());
-    });
-};
-
-/**
- * @ngdoc function
- * @name person.functions:getParents
- * @function
- *
- * @description
- * Get the relationships to a person's parents.
- * The response includes the following convenience functions
- *
- * - `getChildAndParentsRelationships()` - an array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationships
- * - `getCoupleRelationships()` - an array of {@link spouses.types:constructor.Couple Couple} relationships for parents
- * - `getPerson(pid)` - a {@link person.types:constructor.Person Person} for any person id in a relationship
- *
- * {@link https://familysearch.org/developers/docs/api/tree/Parents_of_a_person_resource FamilySearch API Docs}
- *
- * {@link http://jsfiddle.net/Lf9fe61r/5/ Editable Example}
- *
- * @param {String} pid id of the person or full URL of the parents endpoint
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the response
- */
-FS.prototype.getParents = function(pid, params, opts) {
-  var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('parents-template', pid, {pid: pid}),
-    function(url) {
-      return self.plumbing.get(url, params, {}, opts, self._personsAndRelationshipsMapper());
-    });
-};
-
-/**
- * @ngdoc function
- * @name person.functions:getChildren
- * @function
- *
- * @description
- * Get the relationships to a person's children
- * The response includes the following convenience functions
- *
- * - `getChildAndParentsRelationships()` - an array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationships
- * - `getPerson(pid)` - a {@link person.types:constructor.Person Person} for any person id in a relationship
- *
- * {@link https://familysearch.org/developers/docs/api/tree/Children_of_a_person_resource FamilySearch API Docs}
- *
- * {@link http://jsfiddle.net/fownteLe/1/ Editable Example}
- *
- * @param {String} pid id of the person or full URL of the children endpoint
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the response
- */
-FS.prototype.getChildren = function(pid, params, opts) {
-  var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('children-template', pid, {pid: pid}),
-    function(url) {
-      return self.plumbing.get(url, params, {}, opts, self._personsAndRelationshipsMapper());
     });
 };
 
@@ -384,37 +291,9 @@ FS.prototype.getChildren = function(pid, params, opts) {
 FS.prototype.deletePerson = function(pid, changeMessage, opts) {
   var self = this;
   return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('person-template', pid, {pid: pid}),
+    self.helpers.isAbsoluteUrl(pid) ? self.helpers.refPromise(pid) : self.plumbing.getCollectionUrl('FSFT', 'person', {pid: pid}),
     function(url) {
       return self.plumbing.del(url, changeMessage ? {'X-Reason': changeMessage} : {}, opts, function() {
-        return pid;
-      });
-    }
-  );
-};
-
-/**
- * @ngdoc function
- * @name person.functions:restorePerson
- * @function
- *
- * @description
- * Restore a person that was deleted.
- *
- * {@link https://familysearch.org/developers/docs/api/tree/Person_Restore_resource FamilySearch API Docs}
- * 
- * {@link http://jsfiddle.net/0mxLgb1w/1/ Editable Example}
- *
- * @param {string} pid id or full URL of the person
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the person id/URL
- */
-FS.prototype.restorePerson = function(pid, opts) {
-  var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('person-restore-template', pid, {pid: pid}),
-    function(url) {
-      return self.plumbing.post(url, null, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
         return pid;
       });
     }
@@ -446,7 +325,7 @@ FS.prototype.getPreferredSpouse = function(pid, params, opts) {
     self.getCurrentUser(),
     function(response) {
       var uid = response.getUser().treeUserId;
-      return self.plumbing.getUrl('preferred-spouse-relationship-template', null, {uid: uid, pid: pid});
+      return self.plumbing.getCollectionUrl('FSFT', 'preferred-spouse-relationship', {uid: uid, pid: pid});
     },
     function(url) {
       var promise = self.plumbing.get(url + '.json', params, { 'X-Expect-Override': '200-ok' }, opts);
@@ -479,39 +358,19 @@ FS.prototype.getPreferredSpouse = function(pid, params, opts) {
  * {@link http://jsfiddle.net/j8kws5n3/1/ Editable Example}
  *
  * @param {string} pid id of the person
- * @param {string} crid id or URL of the preferred Couple relationship, or null to set the unknown spouse
+ * @param {string} curl url of the preferred couple relationship. You may also pass in a child and parents relationship url
+ * if you want to set the preferred spouse as a missing/unknown spouse.
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the person id
  */
-FS.prototype.setPreferredSpouse = function(pid, crid, opts) {
-  var location,
-      promises = [],
+FS.prototype.setPreferredSpouse = function(pid, curl, opts) {
+  var location = curl,
       self = this;
-  if (crid === null) {
-    // grab the first child-and-parents relationship with an unknown parent
-    promises.push(
-      self.getChildren(pid),
-      function(response) {
-        var capr = utils.find(response.getChildAndParentsRelationships(), function(capr) {
-          return !capr.$getFatherId() || !capr.$getMotherId();
-        });
-        return self.plumbing.getUrl('child-and-parents-relationship-template', null, {caprid: capr.id});
-      }
-    );
-  }
-  else {
-    promises.push(
-      self.plumbing.getUrl('couple-relationship-template', crid, {crid: crid})
-    );
-  }
-  promises.push(
-    function(url) {
-      location = url;
-      return self.getCurrentUser();
-    },
+  return self.helpers.chainHttpPromises(
+    self.getCurrentUser(),
     function(response) {
       var uid = response.getUser().treeUserId;
-      return self.plumbing.getUrl('preferred-spouse-relationship-template', null, {uid: uid, pid: pid});
+      return self.plumbing.getCollectionUrl('FSFT', 'preferred-spouse-relationship', {uid: uid, pid: pid});
     },
     function(url) {
       return self.plumbing.put(url, null, {'Location': location}, opts, function() {
@@ -519,7 +378,6 @@ FS.prototype.setPreferredSpouse = function(pid, crid, opts) {
       });
     }
   );
-  return self.helpers.chainHttpPromises.apply(self.helpers, promises);
 };
 
 /**
@@ -544,7 +402,7 @@ FS.prototype.deletePreferredSpouse = function(pid, opts) {
     self.getCurrentUser(),
     function(response) {
       var uid = response.getUser().treeUserId;
-      return self.plumbing.getUrl('preferred-spouse-relationship-template', null, {uid: uid, pid: pid});
+      return self.plumbing.getCollectionUrl('FSFT', 'preferred-spouse-relationship', {uid: uid, pid: pid});
     },
     function(url) {
       return self.plumbing.del(url, {}, opts, function() {
@@ -577,7 +435,7 @@ FS.prototype.getPreferredParents = function(pid, params, opts) {
     self.getCurrentUser(),
     function(response) {
       var uid = response.getUser().treeUserId;
-      return self.plumbing.getUrl('preferred-parent-relationship-template', null, {uid: uid, pid: pid});
+      return self.plumbing.getCollectionUrl('FSFT', 'preferred-parent-relationship', {uid: uid, pid: pid});
     },
     function(url) {
       // TODO remove accept header when FS bug is fixed (last checked 4/2/14) - unable to check 14 July 14
@@ -603,22 +461,18 @@ FS.prototype.getPreferredParents = function(pid, params, opts) {
  * {@link http://jsfiddle.net/swfsnarb/1/ Editable Example}
  *
  * @param {string} pid id of the person
- * @param {string} caprid id or URL of the preferred ChildAndParents relationship
+ * @param {string} curl url of the preferred ChildAndParents relationship
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the person id
  */
-FS.prototype.setPreferredParents = function(pid, caprid, opts) {
-  var childAndParentsUrl,
+FS.prototype.setPreferredParents = function(pid, curl, opts) {
+  var childAndParentsUrl = curl,
       self = this;
   return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('child-and-parents-relationship-template', caprid, {caprid: caprid}),
-    function(url) {
-      childAndParentsUrl = url;
-      return self.getCurrentUser();
-    },
+    self.getCurrentUser(),
     function(response) {
       var uid = response.getUser().treeUserId;
-      return self.plumbing.getUrl('preferred-parent-relationship-template', null, {uid: uid, pid: pid});
+      return self.plumbing.getCollectionUrl('FSFT', 'preferred-parent-relationship', {uid: uid, pid: pid});
     },
     function(url) {
       return self.plumbing.put(url, null, {'Location': childAndParentsUrl}, opts, function() {
@@ -650,7 +504,7 @@ FS.prototype.deletePreferredParents = function(pid, opts) {
     self.getCurrentUser(),
     function(response) {
       var uid = response.getUser().treeUserId;
-      return self.plumbing.getUrl('preferred-parent-relationship-template', null, {uid: uid, pid: pid});
+      return self.plumbing.getCollectionUrl('FSFT', 'preferred-parent-relationship', {uid: uid, pid: pid});
     },
     function(url) {
       return self.plumbing.del(url, {}, opts, function() {

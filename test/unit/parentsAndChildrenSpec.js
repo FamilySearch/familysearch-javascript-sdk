@@ -1,9 +1,10 @@
 var q = require('q');
 
 describe('Parents and Children relationship', function() {
+  
   it('is returned from getChildAndParents', function(done) {
     var promises = [];
-    FS.getChildAndParents('PPPX-PP0').then(function(response) {
+    FS.getChildAndParents('https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0').then(function(response) {
       var rel = response.getRelationship();
       expect(rel.id).toBe('PPPX-PP0');
       expect(rel.$getFatherId()).toBe('PPPJ-MYY');
@@ -82,7 +83,7 @@ describe('Parents and Children relationship', function() {
         } ]
       });
       expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('PPPX-PP0');
+      expect(response).toBe('https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0');
       done();
     });
   });
@@ -90,6 +91,11 @@ describe('Parents and Children relationship', function() {
   it('conclusion is created', function(done) {
     var rel = FS.createChildAndParents();
     rel.id = '12345';
+    rel.links = {
+      relationship: {
+        href: 'https://familysearch.org/platform/tree/child-and-parents-relationships/12345'
+      }
+    };
     var promise = rel
       .$addMotherFact({type:'http://gedcomx.org/BiologicalParent', $changeMessage: '...change message...'})
       .$save();
@@ -107,7 +113,7 @@ describe('Parents and Children relationship', function() {
         } ]
       });
       expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('12345');
+      expect(response).toBe('https://familysearch.org/platform/tree/child-and-parents-relationships/12345');
       done();
     });
   });
@@ -115,6 +121,17 @@ describe('Parents and Children relationship', function() {
   function createMockRelationship(rid, fid) {
     var rel = FS.createChildAndParents();
     rel.id = rid;
+    rel.links = {
+      relationship: {
+        href: 'https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/' + rid
+      },
+      'mother-role': {
+        href: 'https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/' + rid + '/mother'
+      },
+      restore: {
+        href: 'https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/' + rid + '/restore'
+      }
+    };
     var fact = FS.createFact();
     fact.id = fid;
     fact.type = 'http://gedcomx.org/BiologicalParent';
@@ -160,7 +177,7 @@ describe('Parents and Children relationship', function() {
         } ]
       });
       expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('12345');
+      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/12345');
       done();
     });
   });
@@ -174,7 +191,7 @@ describe('Parents and Children relationship', function() {
     promise.then(function(response) {
       expect(promise.getStatusCode()).toBe(204);
       expect(promise.getRequest().headers['X-Reason']).toBe('Deleted for reason 1');
-      expect(response).toBe('R123-456');
+      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/R123-456');
       done();
     });
   });
@@ -187,8 +204,10 @@ describe('Parents and Children relationship', function() {
     promise.then(function(response) {
       expect(promise.getStatusCode()).toBe(204);
       expect(promise.getRequest().headers['X-Reason']).toBe('Deleted for reason 1');
-      expect(response).toBe('RRRX-RRX');
+      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/RRRX-RRX');
       done();
+    }, function(e){
+      console.error(e);
     });
   });
 
@@ -198,7 +217,7 @@ describe('Parents and Children relationship', function() {
     promise.then(function(response) {
       expect(promise.getStatusCode()).toBe(204);
       expect(promise.getRequest().headers['X-Reason']).toBe('Deleted for reason 1');
-      expect(response).toBe('PPPX-PP0');
+      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0');
       done();
     });
   });
@@ -216,7 +235,7 @@ describe('Parents and Children relationship', function() {
     var promise = createMockRelationship('PPPX-PP0','fid').$restore();
     promise.then(function(response) {
       expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('PPPX-PP0');
+      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0/restore');
       done();
     });
   });

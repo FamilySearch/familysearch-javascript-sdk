@@ -38,7 +38,7 @@ FS.prototype.getAuthCode = function() {
     d.reject();
     return d.promise;
   } else {
-    return self.plumbing.getUrl('http://oauth.net/core/2.0/endpoint/authorize').then(function(url) {
+    return self.plumbing.getCollectionUrl('FSFT', 'http://oauth.net/core/2.0/endpoint/authorize').then(function(url) {
       var popup = self.openPopup(url, {
         'response_type' : 'code',
         'client_id'     : settings.clientId,
@@ -115,7 +115,7 @@ FS.prototype.getAccessToken = function(authCode) {
     authCodePromise.then(
       function(authCode) {
         // get the access token given the auth code
-        plumbing.getUrl('http://oauth.net/core/2.0/endpoint/token').then(function(url) {
+        plumbing.getCollectionUrl('FSFT', 'http://oauth.net/core/2.0/endpoint/token').then(function(url) {
           var promise = plumbing.post(url, {
               'grant_type' : 'authorization_code',
               'code'       : authCode,
@@ -161,7 +161,7 @@ FS.prototype.getAccessTokenForMobile = function(userName, password) {
     });
   }
   else {
-    plumbing.getUrl('http://oauth.net/core/2.0/endpoint/token').then(function(url) {
+    plumbing.getCollectionUrl('FSFT', 'http://oauth.net/core/2.0/endpoint/token').then(function(url) {
       var promise = plumbing.post(url, {
           'grant_type': 'password',
           'client_id' : self.settings.clientId,
@@ -190,7 +190,7 @@ FS.prototype.getAccessTokenForMobile = function(userName, password) {
 FS.prototype.getOAuth2AuthorizeURL = function(state){
   var self = this,
       settings = self.settings;
-  return this.plumbing.getUrl('http://oauth.net/core/2.0/endpoint/authorize').then(function(url){
+  return this.plumbing.getCollectionUrl('FSFT', 'http://oauth.net/core/2.0/endpoint/authorize').then(function(url){
     var queryParams = {
       'response_type': 'code',
       'client_id': settings.clientId,
@@ -233,7 +233,7 @@ FS.prototype.invalidateAccessToken = function() {
   var self = this;
   self.helpers.eraseAccessToken(true);
   return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('http://oauth.net/core/2.0/endpoint/token'),
+    self.plumbing.getCollectionUrl('FSFT', 'http://oauth.net/core/2.0/endpoint/token'),
     function(url) {
       return self.plumbing.del(url);
     });

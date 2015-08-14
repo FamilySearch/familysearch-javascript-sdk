@@ -35,7 +35,7 @@ FS.prototype.createAttribution = function(message){
   return new Attribution(this, message);
 };
 
-Attribution.prototype = {
+Attribution.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: Attribution,
   /**
    * @ngdoc property
@@ -77,4 +77,4 @@ Attribution.prototype = {
    * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
    */
   $getAgent: function() { return this.$client.getAgent(this.$getAgentUrl() || this.$getAgentId()); }
-};
+});

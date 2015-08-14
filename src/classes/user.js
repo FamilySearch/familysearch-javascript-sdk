@@ -1,4 +1,5 @@
-var FS = require('../FamilySearch');
+var FS = require('../FamilySearch'),
+    utils = require('../utils');
 
 /**
  * @ngdoc function
@@ -23,7 +24,7 @@ FS.prototype.createUser = function(data){
   return new User(this, data);
 };
 
-User.prototype = {
+User.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: User
   /**
    * @ngdoc property
@@ -94,4 +95,4 @@ User.prototype = {
    * @propertyOf user.types:constructor.User
    * @return {String} e.g., en
    */
-};
+});

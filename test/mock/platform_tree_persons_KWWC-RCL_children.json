@@ -1,0 +1,325 @@
+{
+  "persons" : [ {
+    "id" : "KWWN-C28",
+    "links" : {
+      "person" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWN-C28"
+      }
+    },
+    "identifiers" : {
+      "http://gedcomx.org/Persistent" : [ "https://sandbox.familysearch.org/ark:/61903/4:1:KWWN-C28" ]
+    },
+    "living" : false,
+    "gender" : {
+      "id" : "V.777-7774",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+          "resourceId" : "MMDZ-8G7"
+        },
+        "modified" : 1412018975509
+      },
+      "type" : "http://gedcomx.org/Unknown"
+    },
+    "names" : [ {
+      "id" : "V.777-7771",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+          "resourceId" : "MMDZ-8G7"
+        },
+        "modified" : 1412018975509
+      },
+      "type" : "http://gedcomx.org/BirthName",
+      "nameForms" : [ {
+        "fullText" : "Unknown Gender",
+        "parts" : [ {
+          "type" : "http://gedcomx.org/Given",
+          "value" : "Unknown"
+        }, {
+          "type" : "http://gedcomx.org/Surname",
+          "value" : "Gender"
+        } ]
+      } ],
+      "preferred" : true
+    } ],
+    "facts" : [ {
+      "id" : "V.777-777P",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+          "resourceId" : "MMDZ-8G7"
+        },
+        "modified" : 1412018975509
+      },
+      "type" : "http://gedcomx.org/Death"
+    } ],
+    "display" : {
+      "name" : "Unknown Gender",
+      "gender" : "unknown",
+      "lifespan" : "Deceased"
+    }
+  }, {
+    "id" : "KW3B-N7F",
+    "links" : {
+      "person" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F"
+      }
+    },
+    "sortKey" : "0002433373",
+    "identifiers" : {
+      "http://gedcomx.org/Persistent" : [ "https://sandbox.familysearch.org/ark:/61903/4:1:KW3B-N7F" ]
+    },
+    "living" : true,
+    "gender" : {
+      "id" : "V.777-7774",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMMM-MMD",
+          "resourceId" : "MMMM-MMD"
+        }
+      },
+      "type" : "http://gedcomx.org/Male"
+    },
+    "names" : [ {
+      "id" : "V.777-777P",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMMM-MMD",
+          "resourceId" : "MMMM-MMD"
+        }
+      },
+      "type" : "http://gedcomx.org/BirthName",
+      "nameForms" : [ {
+        "fullText" : "API User 1372",
+        "parts" : [ {
+          "type" : "http://gedcomx.org/Given",
+          "value" : "API User"
+        }, {
+          "type" : "http://gedcomx.org/Surname",
+          "value" : "1372"
+        } ]
+      } ],
+      "preferred" : true
+    } ],
+    "facts" : [ {
+      "id" : "V.777-7771",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMMM-MMD",
+          "resourceId" : "MMMM-MMD"
+        }
+      },
+      "type" : "http://gedcomx.org/Birth",
+      "date" : {
+        "original" : "01 Apr 1950",
+        "formal" : "+1950-04-01",
+        "normalized" : [ {
+          "value" : "1 April 1950"
+        } ]
+      },
+      "place" : {
+        "original" : "Utah",
+        "description" : "#1013587259",
+        "normalized" : [ {
+          "value" : "Utah, United States"
+        } ]
+      }
+    } ],
+    "display" : {
+      "name" : "API User 1372",
+      "gender" : "Male",
+      "lifespan" : "1950-Living",
+      "birthDate" : "1 April 1950",
+      "birthPlace" : "Utah, United States"
+    }
+  } ],
+  "relationships" : [ {
+    "id" : "FMM9N-TGG",
+    "links" : {
+      "child" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F"
+      },
+      "person1" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL"
+      },
+      "person2" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F"
+      },
+      "parent" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL"
+      },
+      "father" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL"
+      }
+    },
+    "identifiers" : {
+      "http://familysearch.org/v1/ChildAndParentsRelationship" : "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MM9N-TGG"
+    },
+    "type" : "http://gedcomx.org/ParentChild",
+    "person1" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL",
+      "resourceId" : "KWWC-RCL"
+    },
+    "person2" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F",
+      "resourceId" : "KW3B-N7F"
+    }
+  }, {
+    "id" : "MMM9N-TGG",
+    "links" : {
+      "child" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F"
+      },
+      "person1" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG"
+      },
+      "person2" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F"
+      },
+      "mother" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG"
+      },
+      "parent" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG"
+      }
+    },
+    "identifiers" : {
+      "http://familysearch.org/v1/ChildAndParentsRelationship" : "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MM9N-TGG"
+    },
+    "type" : "http://gedcomx.org/ParentChild",
+    "person1" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG",
+      "resourceId" : "KWWC-RCG"
+    },
+    "person2" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F",
+      "resourceId" : "KW3B-N7F"
+    }
+  }, {
+    "id" : "FMMMG-TDT",
+    "links" : {
+      "child" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWN-C28"
+      },
+      "person1" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL"
+      },
+      "person2" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWN-C28"
+      },
+      "parent" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL"
+      },
+      "father" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL"
+      }
+    },
+    "identifiers" : {
+      "http://familysearch.org/v1/ChildAndParentsRelationship" : "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MMMG-TDT"
+    },
+    "type" : "http://gedcomx.org/ParentChild",
+    "person1" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL",
+      "resourceId" : "KWWC-RCL"
+    },
+    "person2" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWN-C28",
+      "resourceId" : "KWWN-C28"
+    }
+  }, {
+    "id" : "MMMMG-TDT",
+    "links" : {
+      "child" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWN-C28"
+      },
+      "person1" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG"
+      },
+      "person2" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWN-C28"
+      },
+      "mother" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG"
+      },
+      "parent" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG"
+      }
+    },
+    "identifiers" : {
+      "http://familysearch.org/v1/ChildAndParentsRelationship" : "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MMMG-TDT"
+    },
+    "type" : "http://gedcomx.org/ParentChild",
+    "person1" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG",
+      "resourceId" : "KWWC-RCG"
+    },
+    "person2" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWN-C28",
+      "resourceId" : "KWWN-C28"
+    }
+  } ],
+  "places" : [ {
+    "id" : "1013587259",
+    "names" : [ {
+      "value" : "Utah, United States"
+    } ]
+  } ],
+  "childAndParentsRelationships" : [ {
+    "id" : "MM9N-TGG",
+    "links" : {
+      "relationship" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MM9N-TGG"
+      },
+      "child" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F"
+      },
+      "mother" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG"
+      },
+      "father" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL"
+      }
+    },
+    "father" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL",
+      "resourceId" : "KWWC-RCL"
+    },
+    "mother" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG",
+      "resourceId" : "KWWC-RCG"
+    },
+    "child" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F",
+      "resourceId" : "KW3B-N7F"
+    }
+  }, {
+    "id" : "MMMG-TDT",
+    "links" : {
+      "relationship" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MMMG-TDT"
+      },
+      "child" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWN-C28"
+      },
+      "mother" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG"
+      },
+      "father" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL"
+      }
+    },
+    "father" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL",
+      "resourceId" : "KWWC-RCL"
+    },
+    "mother" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG",
+      "resourceId" : "KWWC-RCG"
+    },
+    "child" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWN-C28",
+      "resourceId" : "KWWN-C28"
+    }
+  } ]
+}

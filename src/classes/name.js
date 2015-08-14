@@ -92,7 +92,7 @@ function ensureNameForm(name, i) {
   return name.nameForms[pos];
 }
 
-Name.prototype = {
+Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: Name,
   /**
    * @ngdoc property
@@ -388,4 +388,4 @@ Name.prototype = {
     //noinspection JSValidateTypes
     return this;
   }
-};
+});

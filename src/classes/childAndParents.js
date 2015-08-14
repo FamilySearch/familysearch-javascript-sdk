@@ -67,7 +67,7 @@ FS.prototype.createChildAndParents = function(data){
   return new ChildAndParents(this, data);
 };
 
-ChildAndParents.prototype = {
+ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: ChildAndParents,
   /**
    * @ngdoc property
@@ -126,7 +126,7 @@ ChildAndParents.prototype = {
    * @function
    * @return {Object} promise for the {@link person.functions:getPerson getPerson} response
    */
-  $getFather: function() { return this.$client.getPerson(this.$getFatherUrl() || this.$getFatherId()); },
+  $getFather: function() { return this.$client.getPerson(this.$getFatherUrl()); },
 
   /**
    * @ngdoc function
@@ -153,7 +153,7 @@ ChildAndParents.prototype = {
    * @function
    * @return {Object} promise for the {@link person.functions:getPerson getPerson} response
    */
-  $getMother: function() { return this.$client.getPerson(this.$getMotherUrl() || this.$getMotherId()); },
+  $getMother: function() { return this.$client.getPerson(this.$getMotherUrl()); },
 
   /**
    * @ngdoc function
@@ -180,44 +180,89 @@ ChildAndParents.prototype = {
    * @function
    * @return {Object} promise for the {@link person.functions:getPerson getPerson} response
    */
-  $getChild: function() { return this.$client.getPerson(this.$getChildUrl() || this.$getChildId()); },
+  $getChild: function() { return this.$client.getPerson(this.$getChildUrl()); },
 
   /**
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#$getNotes
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
    * @function
-   * @return {Object} promise for the {@link notes.functions:getChildAndParentsNotes getChildAndParentsNotes} response
+   * @return {Object} promise for the {@link notes.functions:getNotes getNotes} response
    */
-  $getNotes: function() { return this.$client.getChildAndParentsNotes(this.$helpers.removeAccessToken(maybe(maybe(this.links).notes).href)); },
-
+  $getNotes: function() { 
+    var self = this;
+    return self.$helpers.chainHttpPromises(
+      self.$getLink('notes'),
+      function(link){
+        return self.$client.getNotes(link.href);
+      }
+    );
+  },
 
   /**
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#$getSourceRefs
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
    * @function
-   * @return {Object} promise for the {@link sources.functions:getChildAndParentsSourceRefs getChildAndParentsSourceRefs} response
+   * @return {Object} promise for the {@link sources.functions:getSourceRefs getSourceRefs} response
    */
-  $getSourceRefs: function() { return this.$client.getChildAndParentsSourceRefs(this.id); },
+  $getSourceRefs: function() { 
+    var self = this;
+    return self.$helpers.chainHttpPromises(
+      self.$getLink('source-references'),
+      function(link){
+        return self.$client.getSourceRefs(link.href);
+      }
+    );
+  },
 
   /**
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#$getSources
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
    * @function
-   * @return {Object} promise for the {@link sources.functions:getChildAndParentsSourcesQuery getChildAndParentsSourcesQuery} response
+   * @return {Object} promise for the {@link sources.functions:getSourcesQuery getSourcesQuery} response
    */
-  $getSources: function() { return this.$client.getChildAndParentsSourcesQuery(this.id); },
+  $getSources: function() { 
+    var self = this;
+    return self.$helpers.chainHttpPromises(
+      self.$getLink('source-descriptions'),
+      function(link){
+        return self.$client.getSourcesQuery(link.href);
+      }
+    );
+  },
 
   /**
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#$getChanges
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
    * @function
-   * @return {Object} __BROKEN__ promise for the {@link changeHistory.functions:getChildAndParentsChanges getChildAndParentsChanges} response
+   * 
+   * @description
+   * Get change history for a child and parents relationship
+   * The response includes the following convenience function
+   *
+   * - `getChanges()` - get the array of {@link changeHistory.types:constructor.Change Changes} from the response
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Change_History_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/v6e1yjsz/1/ Editable Example}
+   *
+   * @param {String} caprid id of the child and parents relationship or full URL of the child and parents relationship changes endpoint
+   * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
    */
-  $getChanges: function() { return this.$client.getChildAndParentsChanges(this.$helpers.removeAccessToken(maybe(this.links['change-history']).href)); },
+  $getChanges: function(params, opts) { 
+    var self = this;
+    return self.$helpers.chainHttpPromises(
+      self.$getLink('change-history'),
+      function(link) {
+        return self.$client.getChanges(link.href, params, opts);
+      }
+    );
+  },
 
   /**
    * @ngdoc function
@@ -402,7 +447,7 @@ ChildAndParents.prototype = {
    * @return {Object} promise of the relationship id, which is fulfilled after the relationship has been updated,
    * and if refresh is true, after the relationship has been read
    */
-  $save: function(changeMessage, refresh, opts) {
+  $save: function(changeMessage, opts) {
     var postData = this.$client.createChildAndParents();
     var isChanged = false;
     var caprid = this.id;
@@ -446,20 +491,20 @@ ChildAndParents.prototype = {
     // post update
     if (isChanged) {
       promises.push(self.$helpers.chainHttpPromises(
-        caprid ? self.$plumbing.getUrl('child-and-parents-relationship-template', null, {caprid: caprid}) :
-                 self.$plumbing.getUrl('relationships'),
+        self.$getChildAndParentsUrl() ? self.$helpers.refPromise(self.$getChildAndParentsUrl()) :
+                 self.$plumbing.getCollectionUrl('FSFT', 'relationships'),
         function(url) {
           // set url from id
           utils.forEach(['father', 'mother', 'child'], function(role) {
             if (postData[role] && !postData[role].resource && postData[role].resourceId) {
-              postData[role].resource =postData[role].resourceId;
+              postData[role].resource = postData[role].resourceId;
             }
           });
-          return self.$plumbing.post(url,
-            { childAndParentsRelationships: [ postData ] },
-            {'Content-Type': 'application/x-fs-v1+json'},
-            opts,
-            self.$helpers.getResponseEntityId);
+          var promise = self.$plumbing.post(url, { childAndParentsRelationships: [ postData ] },
+            {'Content-Type': 'application/x-fs-v1+json'}, opts, function(){
+              return self.$getChildAndParentsUrl() || promise.getResponseHeader('Location');
+            });
+          return promise;
         }));
     }
 
@@ -468,13 +513,13 @@ ChildAndParents.prototype = {
       if (self.id && self.$deletedMembers && self.$deletedMembers.hasOwnProperty(role) && !self[role]) {
         var msg = self.$deletedMembers[role] || changeMessage; // default to global change message
         promises.push(self.$helpers.chainHttpPromises(
-          self.$plumbing.getUrl('child-and-parents-relationship-parent-template', null, {caprid: caprid, role: role}),
-          function(url) {
+          self.$getLink(role + '-role'),
+          function(link) {
             var headers = {'Content-Type': 'application/x-fs-v1+json'};
             if (msg) {
               headers['X-Reason'] = msg;
             }
-            return self.$plumbing.del(url, headers, opts);
+            return self.$plumbing.del(link.href, headers, opts);
           }
         ));
       }
@@ -494,20 +539,9 @@ ChildAndParents.prototype = {
 
     // wait for all promises to be fulfilled
     var promise = self.$helpers.promiseAll(promises).then(function(results) {
-      var id = caprid ? caprid : results[0]; // if we're adding a new relationship, get id from the first (only) promise
+      var url = self.$getChildAndParentsUrl() || results[0]; // if we're adding a new relationship, get id from the first (only) promise
       self.$helpers.extendHttpPromise(promise, promises[0]); // extend the first promise into the returned promise
-
-      if (refresh) {
-        // re-read the relationship and set this object's properties from response
-        return self.$client.getChildAndParents(id, {}, opts).then(function(response) {
-          utils.deletePropertiesPartial(self, utils.appFieldRejector);
-          utils.extend(self, response.getRelationship());
-          return id;
-        });
-      }
-      else {
-        return id;
-      }
+      return url;
     });
     return promise;
   },
@@ -523,7 +557,7 @@ ChildAndParents.prototype = {
    * @return {Object} promise for the relationship URL
    */
   $delete: function(changeMessage, opts) {
-    return this.$client.deleteChildAndParents(this.$getChildAndParentsUrl() || this.id, changeMessage, opts);
+    return this.$client.deleteChildAndParents(this.$getChildAndParentsUrl(), changeMessage, opts);
   },
 
   /**
@@ -536,6 +570,40 @@ ChildAndParents.prototype = {
    * @return {Object} promise for the relationship URL
    */
   $restore: function(opts) {
-    return this.$client.restoreChildAndParents(this.$getChildAndParentsUrl() || this.id, opts);
+    var self = this;
+    return self.$helpers.chainHttpPromises(
+      self.$getLink('restore'),
+      function(link){
+        return self.$client.restoreChildAndParents(link.href, opts);
+      }
+    );
+  },
+  
+  /**
+   * @ngdoc function
+   * @name parentsAndChildren.types:constructor.ChildAndParents#$reload
+   * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+   * @function
+   * @description Reload the relationship. This is necessary when you need to access links
+   * that are only available when requesting the relationship directly such as change history, notes, and sources.
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for a new relationship object
+   */
+  $reload: function(opts){
+    var self = this;
+    return self.$helpers.chainHttpPromises(
+      self.$getLink('relationship'),
+      function(link){
+        return self.$client.get(link.href, {}, {}, opts, function(response){
+          if(response.childAndParentsRelationships){
+            response.childAndParentsRelationships[0] = self.$client.createChildAndParents(response.childAndParentsRelationships[0]);
+          }
+          response.getRelationship = function(){
+            return maybe(response.childAndParentsRelationships)[0];
+          };
+          return response;
+        });
+      }
+    );
   }
-};
+});

@@ -1,0 +1,75 @@
+{
+  "collections" : [ {
+    "id" : "FSFT",
+    "links" : {
+      "self" : {
+        "href" : "https://sandbox.familysearch.org/platform/collections/tree"
+      }
+    },
+    "title" : "FamilySearch Family Tree"
+  }, {
+    "id" : "FSHRA",
+    "links" : {
+      "self" : {
+        "href" : "https://sandbox.familysearch.org/platform/collections/records"
+      }
+    },
+    "title" : "FamilySearch Historical Records Archive"
+  }, {
+    "id" : "FSUDS",
+    "links" : {
+      "self" : {
+        "href" : "https://sandbox.familysearch.org/platform/collections/sources"
+      }
+    },
+    "title" : "FamilySearch User-Defined Sources"
+  }, {
+    "id" : "FSMEM",
+    "links" : {
+      "self" : {
+        "href" : "https://sandbox.familysearch.org/platform/collections/memories"
+      }
+    },
+    "title" : "FamilySearch Memories"
+  }, {
+    "id" : "FSDF",
+    "links" : {
+      "self" : {
+        "href" : "https://sandbox.familysearch.org/platform/collections/discussions"
+      }
+    },
+    "title" : "FamilySearch Discussions"
+  }, {
+    "id" : "FSPA",
+    "links" : {
+      "self" : {
+        "href" : "https://sandbox.familysearch.org/platform/collections/places"
+      }
+    },
+    "title" : "FamilySearch Place Authority"
+  }, {
+    "id" : "FSDA",
+    "links" : {
+      "self" : {
+        "href" : "https://sandbox.familysearch.org/platform/collections/dates"
+      }
+    },
+    "title" : "FamilySearch Date Authority"
+  }, {
+    "id" : "FSCV",
+    "links" : {
+      "self" : {
+        "href" : "https://sandbox.familysearch.org/platform/collections/vocab"
+      }
+    },
+    "title" : "FamilySearch Controlled Vocabulary"
+  }, {
+    "id" : "LDSO",
+    "links" : {
+      "self" : {
+        "href" : "https://sandbox.familysearch.org/platform/ordinances/ordinances"
+      }
+    },
+    "title" : "LDS Ordinances"
+  } ]
+}

@@ -1,0 +1,171 @@
+{
+  "persons" : [ {
+    "id" : "P12-345",
+    "links" : {
+      "ancestry" : {
+        "href" : "https://familysearch.org/platform/tree/ancestry?person=P12-345",
+        "title" : "Ancestry"
+      },
+      "fs-child-relationships" : {
+        "href" : "https://familysearch.org/platform/tree/persons/P12-345/fs-child-relationships",
+        "title" : "Relationships to Children (Child-and-Parents)"
+      },
+      "person" : {
+        "href" : "https://familysearch.org/platform/tree/persons/P12-345",
+        "title" : "Person"
+      },
+      "descendancy" : {
+        "href" : "https://familysearch.org/platform/tree/descendancy?person=P12-345",
+        "title" : "Descendancy"
+      },
+      "discussion-references" : {
+        "href" : "https://familysearch.org/platform/tree/persons/P12-345/discussion-references",
+        "title" : "Person Discussion References"
+      },
+      "person-with-relationships" : {
+        "href" : "https://familysearch.org/platform/tree/persons-with-relationships?person=P12-345",
+        "title" : "Person With Relationships"
+      },
+      "change-history" : {
+        "href" : "https://familysearch.org/platform/tree/persons/P12-345/changes",
+        "title" : "Person Change History"
+      },
+      "fs-parent-relationships" : {
+        "href" : "https://familysearch.org/platform/tree/persons/P12-345/fs-parent-relationships",
+        "title" : "Relationships to Parents (Child-and-Parents)"
+      },
+      "spouse-relationships" : {
+        "href" : "https://familysearch.org/platform/tree/persons/P12-345/spouse-relationships",
+        "title" : "Person Relationships to Spouses"
+      },
+      "child-relationships" : {
+        "href" : "https://familysearch.org/platform/tree/persons/P12-345/child-relationships",
+        "title" : "Relationships to Children"
+      },
+      "parent-relationships" : {
+        "href" : "https://familysearch.org/platform/tree/persons/P12-345/parent-relationships",
+        "title" : "Relationships to Parents"
+      },
+      "portrait" : {
+        "href" : "https://familysearch.org/platform/tree/persons/P12-345/portrait",
+        "title" : "Person Memories Portrait"
+      },
+      "source-references" : {
+        "href" : "https://familysearch.org/platform/tree/persons/P12-345/source-references",
+        "title" : "Person Source References"
+      },
+      "matches" : {
+        "href" : "https://familysearch.org/platform/tree/persons/P12-345/matches",
+        "title" : "Person Matches"
+      },
+      "notes" : {
+        "href" : "https://familysearch.org/platform/tree/persons/P12-345/notes",
+        "title" : "Person Notes"
+      }
+    },
+    "attribution" : {
+      "changeMessage" : "wikipedia knows"
+    },
+    "living" : true,
+    "gender" : {
+      "type" : "http://gedcomx.org/Female"
+    },
+    "names" : [ {
+      "id" : "name-id",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://familysearch.org/platform/tree/persons/P12-345/conclusions/name-id",
+          "title" : "Person Conclusion"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "urn:name-attribution",
+          "resourceId" : "KNCV-RMZ"
+        }
+      },
+      "type" : "http://gedcomx.org/BirthName",
+      "nameForms" : [ {
+        "fullText" : "Alexa Aleksandrova",
+        "parts" : [ {
+          "type" : "http://gedcomx.org/Given",
+          "value" : "Alexa"
+        }, {
+          "type" : "http://gedcomx.org/Surname",
+          "value" : "Aleksandrova"
+        } ]
+      }, {
+        "fullText" : "Анастасия Александрова",
+        "parts" : [ {
+          "type" : "http://gedcomx.org/Given",
+          "value" : "Анастасия"
+        }, {
+          "type" : "http://gedcomx.org/Surname",
+          "value" : "Александрова"
+        } ]
+      } ],
+      "preferred" : true
+    } ],
+    "facts" : [ {
+      "id" : "born",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://familysearch.org/platform/tree/persons/P12-345/conclusions/born",
+          "title" : "Person Conclusion"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "urn:fact-attribution",
+          "resourceId" : "RMQW-LPK"
+        }
+      },
+      "type" : "http://gedcomx.org/Birth",
+      "date" : {
+        "original" : "3 Apr 1836",
+        "formal" : "+1836"
+      },
+      "place" : {
+        "original" : "Moscow, Russia"
+      }
+    }, {
+      "id" : "res",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://familysearch.org/platform/tree/persons/P12-345/conclusions/res",
+          "title" : "Person Conclusion"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://familysearch.org/platform/users/agents/JNYR-KJP",
+          "resourceId" : "JNYR-KJP"
+        }
+      },
+      "type" : "http://gedcomx.org/Residence",
+      "date" : {
+        "original" : "13 Apr 1836",
+        "formal" : "+1836-04-13"
+      },
+      "place" : {
+        "original" : "Moscow, Russia",
+        "description" : "#-1276974106"
+      }
+    } ],
+    "display" : {
+      "name" : "Alexa Aleksandrova",
+      "gender" : "Female",
+      "lifespan" : "3 Apr 1836 - Dead",
+      "birthDate" : "3 Apr 1836",
+      "birthPlace" : "Moscow, Russia"
+    }
+  } ],
+  "places" : [ {
+    "id" : "-1276974106",
+    "names" : [ {
+      "value" : "Moskva, Moscow, Russia"
+    } ],
+    "latitude" : 37.613983,
+    "longitude" : 55.784296
+  } ]
+}

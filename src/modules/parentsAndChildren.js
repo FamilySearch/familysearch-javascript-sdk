@@ -33,31 +33,27 @@ var childAndParentsConvenienceFunctions = {
  *
  * {@link http://jsfiddle.net/swk1pmo7/10/ Editable Example}
  *
- * @param {String} caprid id or full URL of the child-and-parents relationship
+ * @param {String} url full URL of the child-and-parents relationship
  * @param {Object=} params set `persons` true to return a person object for each person in the relationship,
  * which you can access using the `getPerson(id)` convenience function.
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getChildAndParents = function(caprid, params, opts) {
+FS.prototype.getChildAndParents = function(url, params, opts) {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('child-and-parents-relationship-template', caprid, {caprid: caprid}),
-    function(url) {
-      return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-        utils.compose(
-          utils.objectExtender(childAndParentsConvenienceFunctions),
-          function(response){
-            utils.forEach(response.persons, function(person, index, obj){
-              obj[index] = self.createPerson(person);
-            });
-            utils.forEach(response.childAndParentsRelationships, function(rel, index, obj){
-              obj[index] = self.createChildAndParents(rel);
-            });
-            return response;
-          }
-        ));
-    });
+  return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
+    utils.compose(
+      utils.objectExtender(childAndParentsConvenienceFunctions),
+      function(response){
+        utils.forEach(response.persons, function(person, index, obj){
+          obj[index] = self.createPerson(person);
+        });
+        utils.forEach(response.childAndParentsRelationships, function(rel, index, obj){
+          obj[index] = self.createChildAndParents(rel);
+        });
+        return response;
+      }
+    ));
 };
 
 /**
@@ -72,25 +68,20 @@ FS.prototype.getChildAndParents = function(caprid, params, opts) {
  *
  * {@link http://jsfiddle.net/hguctxyv/1/ Editable Example}
  *
- * @param {string} caprid id or full URL of the child-and-parents relationship
+ * @param {string} url full URL of the child-and-parents relationship
  * @param {string} changeMessage reason for the deletion
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the relationship id/URL
  */
-FS.prototype.deleteChildAndParents = function(caprid, changeMessage, opts) {
+FS.prototype.deleteChildAndParents = function(url, changeMessage, opts) {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('child-and-parents-relationship-template', caprid, {caprid: caprid}),
-    function(url) {
-      var headers = {'Content-Type': 'application/x-fs-v1+json'};
-      if (changeMessage) {
-        headers['X-Reason'] = changeMessage;
-      }
-      return self.plumbing.del(url, headers, opts, function() {
-        return caprid;
-      });
-    }
-  );
+  var headers = {'Content-Type': 'application/x-fs-v1+json'};
+  if (changeMessage) {
+    headers['X-Reason'] = changeMessage;
+  }
+  return self.plumbing.del(url, headers, opts, function() {
+    return url;
+  });
 };
 
 /**
@@ -105,19 +96,13 @@ FS.prototype.deleteChildAndParents = function(caprid, changeMessage, opts) {
  * 
  * {@link http://jsfiddle.net/3n4ro8jd/1/ Editable Example}
  *
- * @param {string} caprid id or full URL of the child-and-parents relationship
+ * @param {string} url full URL of the child-and-parents relationship
  * @param {string} changeMessage reason for the deletion
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the relationship id/URL
  */
-FS.prototype.restoreChildAndParents = function(caprid, opts) {
-  var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('child-and-parents-relationship-restore-template', caprid, {caprid: caprid}),
-    function(url) {
-      return self.plumbing.post(url, null, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
-        return caprid;
-      });
-    }
-  );
+FS.prototype.restoreChildAndParents = function(url, opts) {
+  return this.plumbing.post(url, null, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
+    return url;
+  });
 };

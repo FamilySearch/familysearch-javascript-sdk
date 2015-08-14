@@ -2,17 +2,15 @@ var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
 
-/**********************************/
 /**
  * @ngdoc function
  * @name discussions.types:constructor.Comment
  * @description
  *
- * Comment on a discussion
- * To create or update a comment, you must set text and either $discussionId or $memoryId.
+ * Comment on a discussion or memory
  *
- * @param {Object=} data an object with optional attributes {text, $discussionId, $memoryId}
- **********************************/
+ * @param {Object=} data an object
+ */
 
 var Comment = FS.Comment = function(client, data) {
   FS.BaseClass.call(this, client, data);
@@ -29,7 +27,7 @@ FS.prototype.createComment = function(data){
   return new Comment(this, data);
 };
 
-Comment.prototype = {
+Comment.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: Comment,
   /**
    * @ngdoc property
@@ -50,20 +48,6 @@ Comment.prototype = {
    * @name discussions.types:constructor.Comment#created
    * @propertyOf discussions.types:constructor.Comment
    * @return {Number} timestamp
-   */
-
-  /**
-   * @ngdoc property
-   * @name discussions.types:constructor.Comment#$discussionId
-   * @propertyOf discussions.types:constructor.Comment
-   * @return {String} Id of the discussion if this is a discussion comment
-   */
-
-  /**
-   * @ngdoc property
-   * @name discussions.types:constructor.Comment#$memoryId
-   * @propertyOf discussions.types:constructor.Comment
-   * @return {String} Id of the memory if this is a memory comment
    */
 
   /**
@@ -115,27 +99,23 @@ Comment.prototype = {
    *
    * {@link http://jsfiddle.net/yr9zv5fw/1/ Editable Example}
    *
+   * @param {string} url url of the discussion or memory comments list; required for both creating and updating comments; updating is distinguished from creating by the presence of an id on the comment.
    * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise of the comment id
    */
-  $save: function(changeMessage, opts) {
+  $save: function(url, changeMessage, opts) {
     var self = this;
-    var template = this.$memoryId ? 'memory-comments-template' : 'discussion-comments-template';
-    return self.$helpers.chainHttpPromises(
-      self.$plumbing.getUrl(template, null, {did: self.$discussionId, mid: self.$memoryId}),
-      function(url) {
-        var payload = {discussions: [{ comments: [ self ] }] };
-        return self.$plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
-          if (!self.id) {
-            self.id = promise.getResponseHeader('X-ENTITY-ID');
-          }
-          if (!self.$getCommentUrl()) {
-            self.links = { comment: { href: promise.getResponseHeader('Location') } };
-          }
-          return self.id;
-        });
-      });
+    var payload = {discussions: [{ comments: [ self ] }] };
+    return self.$plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
+      if (!self.id) {
+        self.id = promise.getResponseHeader('X-ENTITY-ID');
+      }
+      if (!self.$getCommentUrl()) {
+        self.links = { comment: { href: promise.getResponseHeader('Location') } };
+      }
+      return self.id;
+    });
   },
 
   /**
@@ -150,13 +130,8 @@ Comment.prototype = {
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the comment url
    */
-  $delete: function(changeMessage, opts) {
-    if (this.$discussionId) {
-      return this.$client.deleteDiscussionComment(this.$getCommentUrl() || this.$discussionId, this.id, changeMessage, opts);
-    }
-    else {
-      return this.$client.deleteMemoryComment(this.$getCommentUrl() || this.$memoryId, this.id, changeMessage, opts);
-    }
+  $delete: function(url, changeMessage, opts) {
+    return this.$client.deleteComment(this.$getCommentUrl(), this.id, changeMessage, opts);
   }
 
-};
+});

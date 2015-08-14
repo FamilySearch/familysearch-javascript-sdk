@@ -64,7 +64,7 @@ FS.prototype.createFact = function(data){
   return new Fact(this, data);
 };
 
-Fact.prototype = {
+Fact.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: Fact,
   /**
    * @ngdoc property
@@ -384,4 +384,4 @@ Fact.prototype = {
     //noinspection JSValidateTypes
     return this;
   }
-};
+});

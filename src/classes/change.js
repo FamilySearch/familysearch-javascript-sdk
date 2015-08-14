@@ -24,7 +24,7 @@ FS.prototype.createChange = function(data){
   return new Change(this, data);
 };
 
-Change.prototype = {
+Change.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: Change,
   /**
    * @ngdoc property
@@ -90,11 +90,24 @@ Change.prototype = {
    * @name changeHistory.types:constructor.Change#$restore
    * @methodOf changeHistory.types:constructor.Change
    * @function
+   * 
+   * @description
+   * Restore the specified change
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Restore_Change_resource}
+   *
+   * {@link http://jsfiddle.net/xL50x20d/1/ Editable Example}
+   *
    * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the {@link changeHistory.functions:restoreChange restoreChange} response
+   * @return {Object} promise for the chid
    */
   $restore: function(opts) {
-    return this.$client.changeHistory.restoreChange(this.id, opts);
+    var self = this;
+    return self.$helpers.chainHttpPromises(
+      self.$getLink('restore'),
+      function(link) {
+        return self.$client.restoreChange(link.href, opts);
+      });
   }
 
-};
+});

@@ -1,7 +1,7 @@
 describe('Places', function() {
   
   it('getPlace', function(done){
-    FS.getPlace(2557657).then(function(response) {
+    FS.getPlace('https://familysearch.org/platform/places/2557657').then(function(response) {
       expect(response.getPlace().id).toBe('2557657');
       expect(response.getPlace().names[0].value).toBe('Nohabuna Island');
       expect(response.getPlace().names[0].lang).toBe('en');
@@ -10,7 +10,7 @@ describe('Places', function() {
   });
   
   it('getPlaceDescription', function(done){
-    FS.getPlaceDescription(50615).then(function(response){
+    FS.getPlaceDescription('https://familysearch.org/platform/places/description/50615').then(function(response){
       var place = response.getPlaceDescription(),
           jurisdiction = place.$getJurisdictionSummary();
       expect(place.id).toBe('50615');
@@ -69,7 +69,7 @@ describe('Places', function() {
   });
   
   it('getPlaceDescriptionChildren', function(done){
-    FS.getPlaceDescriptionChildren(1054).then(function(response){
+    FS.getPlaceDescriptionChildren('https://familysearch.org/platform/places/description/1054/children').then(function(response){
       var children = response.getChildren();
       expect(children.length).toBe(6);
       expect(children[0].id).toBe('432379');

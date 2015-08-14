@@ -28,7 +28,7 @@ FS.prototype.createSearchResult = function(data){
   return new SearchResult(this, data);
 };
 
-SearchResult.prototype = {
+SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: SearchResult,
   /**
    * @ngdoc property
@@ -200,4 +200,4 @@ SearchResult.prototype = {
    * @return {Person[]} array of spouse {@link person.types:constructor.Person Persons} for this search result
    */
   $getChildren: function() { return utils.map(this.$getChildIds(), this.$getPerson, this); }
-};
+});

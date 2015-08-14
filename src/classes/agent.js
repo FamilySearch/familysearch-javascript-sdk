@@ -25,7 +25,7 @@ FS.prototype.createAgent = function(data){
   return new Agent(this, data);
 };
 
-Agent.prototype = {
+Agent.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: Agent,
   /**
    * @ngdoc property
@@ -86,4 +86,4 @@ Agent.prototype = {
   $getAddress: function() {
     return maybe(maybe(this.addresses)[0]).value;
   }
-};
+});

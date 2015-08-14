@@ -1,0 +1,1687 @@
+{
+    "links": {
+        "person": {
+            "href": "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL"
+        },
+        "next": {
+            "href": "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/changes?from=M99P-V3K"
+        },
+        "self": {
+            "href": "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/changes"
+        }
+    },
+    "title": "Change History for Person KWWC-RCL",
+    "updated": 1439314564041,
+    "entries": [
+        {
+            "content": {
+                "gedcomx": {
+                    "persons": [
+                        {
+                            "id": "M9VM-D7C24231462.resulting",
+                            "identifiers": {
+                                "http://gedcomx.org/Primary": [
+                                    "KWWC-RCL"
+                                ]
+                            },
+                            "names": [
+                                {
+                                    "id": "V.777-777N",
+                                    "type": "http://gedcomx.org/BirthName",
+                                    "nameForms": [
+                                        {
+                                            "fullText": "George Allen Stewart",
+                                            "parts": [
+                                                {
+                                                    "type": "http://gedcomx.org/Given",
+                                                    "value": "George Allen"
+                                                },
+                                                {
+                                                    "type": "http://gedcomx.org/Surname",
+                                                    "value": "Stewart"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "preferred": true
+                                }
+                            ]
+                        },
+                        {
+                            "id": "M9VM-D7C24231462.original",
+                            "identifiers": {
+                                "http://gedcomx.org/Primary": [
+                                    "KWWC-RCL"
+                                ]
+                            },
+                            "names": [
+                                {
+                                    "id": "V.777-777N",
+                                    "type": "http://gedcomx.org/BirthName",
+                                    "nameForms": [
+                                        {
+                                            "fullText": "George A Stewart",
+                                            "parts": [
+                                                {
+                                                    "type": "http://gedcomx.org/Given",
+                                                    "value": "George A"
+                                                },
+                                                {
+                                                    "type": "http://gedcomx.org/Surname",
+                                                    "value": "Stewart"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "preferred": true
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "contributors": [
+                {
+                    "name": "API User 1372",
+                    "uri": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+                }
+            ],
+            "id": "M9VM-D7C",
+            "links": {
+                "agent": {
+                    "href": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+                }
+            },
+            "title": "Other Name Changed",
+            "updated": 1439314564041,
+            "changeInfo": [
+                {
+                    "operation": "http://familysearch.org/v1/Update",
+                    "objectType": "http://gedcomx.org/Name",
+                    "objectModifier": "http://gedcomx.org/Person",
+                    "resulting": {
+                        "resource": "#M9VM-D7C24231462.resulting",
+                        "resourceId": "M9VM-D7C24231462.resulting"
+                    },
+                    "original": {
+                        "resource": "#M9VM-D7C24231462.original",
+                        "resourceId": "M9VM-D7C24231462.original"
+                    }
+                }
+            ]
+        },
+        {
+            "content": {
+                "gedcomx": {
+                    "persons": [
+                        {
+                            "id": "M9VM-DQH24231462.resulting",
+                            "identifiers": {
+                                "http://gedcomx.org/Primary": [
+                                    "KWWC-RCL"
+                                ]
+                            },
+                            "names": [
+                                {
+                                    "id": "V.777-777N",
+                                    "type": "http://gedcomx.org/BirthName",
+                                    "nameForms": [
+                                        {
+                                            "fullText": "George A Stewart",
+                                            "parts": [
+                                                {
+                                                    "type": "http://gedcomx.org/Given",
+                                                    "value": "George A"
+                                                },
+                                                {
+                                                    "type": "http://gedcomx.org/Surname",
+                                                    "value": "Stewart"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "preferred": true
+                                }
+                            ]
+                        },
+                        {
+                            "id": "M9VM-DQH24231462.original",
+                            "identifiers": {
+                                "http://gedcomx.org/Primary": [
+                                    "KWWC-RCL"
+                                ]
+                            },
+                            "names": [
+                                {
+                                    "id": "V.777-777N",
+                                    "type": "http://gedcomx.org/BirthName",
+                                    "nameForms": [
+                                        {
+                                            "fullText": "George Stewart",
+                                            "parts": [
+                                                {
+                                                    "type": "http://gedcomx.org/Given",
+                                                    "value": "George"
+                                                },
+                                                {
+                                                    "type": "http://gedcomx.org/Surname",
+                                                    "value": "Stewart"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "preferred": true
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "contributors": [
+                {
+                    "name": "API User 1372",
+                    "uri": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+                }
+            ],
+            "id": "M9VM-DQH",
+            "links": {
+                "restore": {
+                    "href": "https://sandbox.familysearch.org/platform/tree/changes/M9VM-DQH/restore"
+                },
+                "agent": {
+                    "href": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+                }
+            },
+            "title": "Other Name Changed",
+            "updated": 1439314515948,
+            "changeInfo": [
+                {
+                    "operation": "http://familysearch.org/v1/Update",
+                    "objectType": "http://gedcomx.org/Name",
+                    "objectModifier": "http://gedcomx.org/Person",
+                    "resulting": {
+                        "resource": "#M9VM-DQH24231462.resulting",
+                        "resourceId": "M9VM-DQH24231462.resulting"
+                    },
+                    "original": {
+                        "resource": "#M9VM-DQH24231462.original",
+                        "resourceId": "M9VM-DQH24231462.original"
+                    }
+                }
+            ]
+        },
+        {
+            "content": {
+                "gedcomx": {
+                    "persons": [
+                        {
+                            "id": "KW3B-N7F",
+                            "sortKey": "0002433373",
+                            "identifiers": {
+                                "http://gedcomx.org/Persistent": [
+                                    "https://sandbox.familysearch.org/ark:/61903/4:1:KW3B-N7F"
+                                ],
+                                "http://gedcomx.org/Primary": [
+                                    "KW3B-N7F"
+                                ]
+                            },
+                            "living": true,
+                            "gender": {
+                                "id": "V.777-7774",
+                                "attribution": {
+                                    "contributor": {
+                                        "resource": "https://sandbox.familysearch.org/platform/users/agents/MMMM-MMD",
+                                        "resourceId": "MMMM-MMD"
+                                    }
+                                },
+                                "type": "http://gedcomx.org/Male"
+                            },
+                            "names": [
+                                {
+                                    "id": "V.777-777P",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMMM-MMD",
+                                            "resourceId": "MMMM-MMD"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/BirthName",
+                                    "nameForms": [
+                                        {
+                                            "fullText": "API User 1372",
+                                            "parts": [
+                                                {
+                                                    "type": "http://gedcomx.org/Given",
+                                                    "value": "API User"
+                                                },
+                                                {
+                                                    "type": "http://gedcomx.org/Surname",
+                                                    "value": "1372"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "preferred": true
+                                }
+                            ],
+                            "facts": [
+                                {
+                                    "id": "V.777-7771",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMMM-MMD",
+                                            "resourceId": "MMMM-MMD"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/Birth",
+                                    "date": {
+                                        "original": "01 Apr 1950",
+                                        "formal": "+1950-04-01",
+                                        "normalized": [
+                                            {
+                                                "value": "1 April 1950"
+                                            }
+                                        ]
+                                    },
+                                    "place": {
+                                        "original": "Utah",
+                                        "description": "#1013587259",
+                                        "normalized": [
+                                            {
+                                                "value": "Utah, United States"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "display": {
+                                "name": "API User 1372",
+                                "gender": "Male",
+                                "lifespan": "1950-Living",
+                                "birthDate": "1 April 1950",
+                                "birthPlace": "Utah, United States"
+                            }
+                        },
+                        {
+                            "id": "KWWC-RCL",
+                            "sortKey": "0002427988",
+                            "identifiers": {
+                                "http://gedcomx.org/Persistent": [
+                                    "https://sandbox.familysearch.org/ark:/61903/4:1:KWWC-RCL"
+                                ],
+                                "http://gedcomx.org/Primary": [
+                                    "KWWC-RCL"
+                                ]
+                            },
+                            "living": false,
+                            "gender": {
+                                "id": "V.777-7771",
+                                "attribution": {
+                                    "contributor": {
+                                        "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                                        "resourceId": "MMDZ-8G7"
+                                    },
+                                    "modified": 1409062695947
+                                },
+                                "type": "http://gedcomx.org/Male"
+                            },
+                            "names": [
+                                {
+                                    "id": "V.777-777N",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                                            "resourceId": "MMDZ-8G7"
+                                        },
+                                        "modified": 1439314564041
+                                    },
+                                    "type": "http://gedcomx.org/BirthName",
+                                    "nameForms": [
+                                        {
+                                            "fullText": "George Allen Stewart",
+                                            "parts": [
+                                                {
+                                                    "type": "http://gedcomx.org/Given",
+                                                    "value": "George Allen"
+                                                },
+                                                {
+                                                    "type": "http://gedcomx.org/Surname",
+                                                    "value": "Stewart"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "preferred": true
+                                }
+                            ],
+                            "facts": [
+                                {
+                                    "id": "V.777-7774",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                                            "resourceId": "MMDZ-8G7"
+                                        },
+                                        "modified": 1409062695947
+                                    },
+                                    "type": "http://gedcomx.org/Birth",
+                                    "date": {
+                                        "original": "4 July 1935",
+                                        "formal": "+1935-07-04",
+                                        "normalized": [
+                                            {
+                                                "value": "4 July 1935"
+                                            }
+                                        ]
+                                    },
+                                    "place": {
+                                        "original": "San Juan, New Mexico, United States",
+                                        "description": "#1806582422",
+                                        "normalized": [
+                                            {
+                                                "value": "San Juan, New Mexico, United States"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "V.777-777P",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                                            "resourceId": "MMDZ-8G7"
+                                        },
+                                        "modified": 1409062695947
+                                    },
+                                    "type": "http://gedcomx.org/Death"
+                                }
+                            ],
+                            "display": {
+                                "name": "George Allen Stewart",
+                                "gender": "Male",
+                                "lifespan": "1935-Deceased",
+                                "birthDate": "4 July 1935",
+                                "birthPlace": "San Juan, New Mexico, United States"
+                            }
+                        },
+                        {
+                            "id": "KWWC-RCG",
+                            "sortKey": "0002378648",
+                            "identifiers": {
+                                "http://gedcomx.org/Persistent": [
+                                    "https://sandbox.familysearch.org/ark:/61903/4:1:KWWC-RCG"
+                                ],
+                                "http://gedcomx.org/Primary": [
+                                    "KWWC-RCG"
+                                ]
+                            },
+                            "living": false,
+                            "gender": {
+                                "id": "V.777-7774",
+                                "attribution": {
+                                    "contributor": {
+                                        "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                                        "resourceId": "MMDZ-8G7"
+                                    },
+                                    "modified": 1409062750207
+                                },
+                                "type": "http://gedcomx.org/Female"
+                            },
+                            "names": [
+                                {
+                                    "id": "V.777-7771",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                                            "resourceId": "MMDZ-8G7"
+                                        },
+                                        "modified": 1409062750207
+                                    },
+                                    "type": "http://gedcomx.org/BirthName",
+                                    "nameForms": [
+                                        {
+                                            "fullText": "Sarah Jane",
+                                            "parts": [
+                                                {
+                                                    "type": "http://gedcomx.org/Given",
+                                                    "value": "Sarah"
+                                                },
+                                                {
+                                                    "type": "http://gedcomx.org/Surname",
+                                                    "value": "Jane"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "preferred": true
+                                }
+                            ],
+                            "facts": [
+                                {
+                                    "id": "V.777-777N",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                                            "resourceId": "MMDZ-8G7"
+                                        },
+                                        "modified": 1409063767819
+                                    },
+                                    "type": "http://gedcomx.org/Birth",
+                                    "date": {
+                                        "original": "1 June 1800",
+                                        "formal": "+1800-06-01"
+                                    }
+                                },
+                                {
+                                    "id": "V.777-777P",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                                            "resourceId": "MMDZ-8G7"
+                                        },
+                                        "modified": 1409063767819
+                                    },
+                                    "type": "http://gedcomx.org/Death",
+                                    "date": {
+                                        "original": "2 June 1800",
+                                        "formal": "+1800-06-02",
+                                        "normalized": [
+                                            {
+                                                "value": "2 June 1800"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "display": {
+                                "name": "Sarah Jane",
+                                "gender": "Female",
+                                "lifespan": "1800-1800",
+                                "birthDate": "1 June 1800",
+                                "deathDate": "2 June 1800"
+                            }
+                        }
+                    ],
+                    "places": [
+                        {
+                            "id": "1013587259",
+                            "names": [
+                                {
+                                    "value": "Utah, United States"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "1806582422",
+                            "names": [
+                                {
+                                    "value": "San Juan, New Mexico, United States"
+                                }
+                            ]
+                        }
+                    ],
+                    "child-and-parents-relationships": [
+                        {
+                            "id": "M9JY-65T-1918931140.resulting",
+                            "identifiers": {
+                                "http://gedcomx.org/Primary": [
+                                    "MM9N-TGG"
+                                ]
+                            },
+                            "father": {
+                                "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL",
+                                "resourceId": "KWWC-RCL"
+                            },
+                            "mother": {
+                                "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG",
+                                "resourceId": "KWWC-RCG"
+                            },
+                            "child": {
+                                "resource": "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F",
+                                "resourceId": "KW3B-N7F"
+                            }
+                        },
+                        {
+                            "id": "M9JY-65T-1918931140.original",
+                            "identifiers": {
+                                "http://gedcomx.org/Primary": [
+                                    "MM9N-TGG"
+                                ]
+                            },
+                            "mother": {
+                                "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG",
+                                "resourceId": "KWWC-RCG"
+                            },
+                            "child": {
+                                "resource": "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F",
+                                "resourceId": "KW3B-N7F"
+                            }
+                        }
+                    ]
+                }
+            },
+            "contributors": [
+                {
+                    "name": "API User 1372",
+                    "uri": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+                }
+            ],
+            "id": "M9JY-65T",
+            "links": {
+                "agent": {
+                    "href": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+                }
+            },
+            "title": "Father Added",
+            "updated": 1439225541440,
+            "changeInfo": [
+                {
+                    "operation": "http://familysearch.org/v1/Create",
+                    "objectType": "http://familysearch.org/v1/Father",
+                    "objectModifier": "http://familysearch.org/v1/ChildAndParentsRelationship",
+                    "resulting": {
+                        "resource": "#M9JY-65T-1918931140.resulting",
+                        "resourceId": "M9JY-65T-1918931140.resulting"
+                    },
+                    "original": {
+                        "resource": "#M9JY-65T-1918931140.original",
+                        "resourceId": "M9JY-65T-1918931140.original"
+                    }
+                }
+            ]
+        },
+        {
+            "content": {
+                "gedcomx": {
+                    "child-and-parents-relationships": [
+                        {
+                            "id": "M9D5-4J1-1919870902.resulting",
+                            "identifiers": {
+                                "http://gedcomx.org/Primary": [
+                                    "MM9M-CJJ"
+                                ]
+                            },
+                            "fatherFacts": [
+                                {
+                                    "id": "R.777-7771",
+                                    "type": "http://gedcomx.org/BiologicalParent"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "contributors": [
+                {
+                    "name": "API User 1372",
+                    "uri": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+                }
+            ],
+            "id": "M9D5-4J1",
+            "links": {
+                "agent": {
+                    "href": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+                }
+            },
+            "title": "Lineage Added",
+            "updated": 1436282244107,
+            "changeInfo": [
+                {
+                    "operation": "http://familysearch.org/v1/Create",
+                    "objectType": "http://gedcomx.org/Fact",
+                    "objectModifier": "http://familysearch.org/v1/ChildAndParentsRelationship",
+                    "reason": "jsfiddle",
+                    "parent": {
+                        "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/changes?from=M9D5-4JR#M9D5-4JR",
+                        "resourceId": "M9D5-4JR"
+                    },
+                    "resulting": {
+                        "resource": "#M9D5-4J1-1919870902.resulting",
+                        "resourceId": "M9D5-4J1-1919870902.resulting"
+                    }
+                }
+            ]
+        },
+        {
+            "content": {
+                "gedcomx": {
+                    "persons": [
+                        {
+                            "id": "KWWC-RCL",
+                            "sortKey": "0002427988",
+                            "identifiers": {
+                                "http://gedcomx.org/Persistent": [
+                                    "https://sandbox.familysearch.org/ark:/61903/4:1:KWWC-RCL"
+                                ],
+                                "http://gedcomx.org/Primary": [
+                                    "KWWC-RCL"
+                                ]
+                            },
+                            "living": false,
+                            "gender": {
+                                "id": "V.777-7771",
+                                "attribution": {
+                                    "contributor": {
+                                        "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                                        "resourceId": "MMDZ-8G7"
+                                    },
+                                    "modified": 1409062695947
+                                },
+                                "type": "http://gedcomx.org/Male"
+                            },
+                            "names": [
+                                {
+                                    "id": "V.777-777N",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                                            "resourceId": "MMDZ-8G7"
+                                        },
+                                        "modified": 1439314564041
+                                    },
+                                    "type": "http://gedcomx.org/BirthName",
+                                    "nameForms": [
+                                        {
+                                            "fullText": "George Allen Stewart",
+                                            "parts": [
+                                                {
+                                                    "type": "http://gedcomx.org/Given",
+                                                    "value": "George Allen"
+                                                },
+                                                {
+                                                    "type": "http://gedcomx.org/Surname",
+                                                    "value": "Stewart"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "preferred": true
+                                }
+                            ],
+                            "facts": [
+                                {
+                                    "id": "V.777-7774",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                                            "resourceId": "MMDZ-8G7"
+                                        },
+                                        "modified": 1409062695947
+                                    },
+                                    "type": "http://gedcomx.org/Birth",
+                                    "date": {
+                                        "original": "4 July 1935",
+                                        "formal": "+1935-07-04",
+                                        "normalized": [
+                                            {
+                                                "value": "4 July 1935"
+                                            }
+                                        ]
+                                    },
+                                    "place": {
+                                        "original": "San Juan, New Mexico, United States",
+                                        "description": "#1806582422",
+                                        "normalized": [
+                                            {
+                                                "value": "San Juan, New Mexico, United States"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "V.777-777P",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                                            "resourceId": "MMDZ-8G7"
+                                        },
+                                        "modified": 1409062695947
+                                    },
+                                    "type": "http://gedcomx.org/Death"
+                                }
+                            ],
+                            "display": {
+                                "name": "George Allen Stewart",
+                                "gender": "Male",
+                                "lifespan": "1935-Deceased",
+                                "birthDate": "4 July 1935",
+                                "birthPlace": "San Juan, New Mexico, United States"
+                            }
+                        },
+                        {
+                            "id": "KWQM-16Y",
+                            "sortKey": "0002408615",
+                            "identifiers": {
+                                "http://gedcomx.org/Persistent": [
+                                    "https://sandbox.familysearch.org/ark:/61903/4:1:KWQM-16Y"
+                                ],
+                                "http://gedcomx.org/Primary": [
+                                    "KWQM-16Y"
+                                ]
+                            },
+                            "living": false,
+                            "gender": {
+                                "id": "V.777-777P",
+                                "attribution": {
+                                    "contributor": {
+                                        "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                        "resourceId": "MMDZ-8WM"
+                                    }
+                                },
+                                "type": "http://gedcomx.org/Male"
+                            },
+                            "names": [
+                                {
+                                    "id": "V.777-7771",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                            "resourceId": "MMDZ-8WM"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/BirthName",
+                                    "nameForms": [
+                                        {
+                                            "fullText": "George Allen Hill",
+                                            "parts": [
+                                                {
+                                                    "type": "http://gedcomx.org/Given",
+                                                    "value": "George Allen"
+                                                },
+                                                {
+                                                    "type": "http://gedcomx.org/Surname",
+                                                    "value": "Hill"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "preferred": true
+                                }
+                            ],
+                            "facts": [
+                                {
+                                    "id": "V.777-777N",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                            "resourceId": "MMDZ-8WM"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/Birth",
+                                    "date": {
+                                        "original": "18 Jun 1882",
+                                        "formal": "+1882-06-18",
+                                        "normalized": [
+                                            {
+                                                "value": "18 June 1882"
+                                            }
+                                        ]
+                                    },
+                                    "place": {
+                                        "original": "Fayette, Sanpete, Utah, United States",
+                                        "description": "#723067907",
+                                        "normalized": [
+                                            {
+                                                "value": "Fayette, Sanpete, Utah, United States"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "V.777-777H",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                            "resourceId": "MMDZ-8WM"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/Christening",
+                                    "date": {
+                                        "original": "9 Jul 1882",
+                                        "formal": "+1882-07-09",
+                                        "normalized": [
+                                            {
+                                                "value": "9 July 1882"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "V.777-777L",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                            "resourceId": "MMDZ-8WM"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/Death",
+                                    "date": {
+                                        "original": "8 Apr 1959",
+                                        "formal": "+1959-04-08",
+                                        "normalized": [
+                                            {
+                                                "value": "8 April 1959"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "V.777-777Z",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                            "resourceId": "MMDZ-8WM"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/Burial",
+                                    "date": {
+                                        "original": "10 Apr 1959",
+                                        "formal": "+1959-04-10",
+                                        "normalized": [
+                                            {
+                                                "value": "10 April 1959"
+                                            }
+                                        ]
+                                    },
+                                    "place": {
+                                        "original": "Payson, Utah, Utah, United States",
+                                        "description": "#1339115565",
+                                        "normalized": [
+                                            {
+                                                "value": "Payson, Utah, Utah, United States"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "display": {
+                                "name": "George Allen Hill",
+                                "gender": "Male",
+                                "lifespan": "1882-1959",
+                                "birthDate": "18 June 1882",
+                                "birthPlace": "Fayette, Sanpete, Utah, United States",
+                                "deathDate": "8 April 1959"
+                            }
+                        },
+                        {
+                            "id": "KWQM-1XT",
+                            "sortKey": "0002408664",
+                            "identifiers": {
+                                "http://gedcomx.org/Persistent": [
+                                    "https://sandbox.familysearch.org/ark:/61903/4:1:KWQM-1XT"
+                                ],
+                                "http://gedcomx.org/Primary": [
+                                    "KWQM-1XT"
+                                ]
+                            },
+                            "living": false,
+                            "gender": {
+                                "id": "V.777-777P",
+                                "attribution": {
+                                    "contributor": {
+                                        "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                        "resourceId": "MMDZ-8WM"
+                                    }
+                                },
+                                "type": "http://gedcomx.org/Female"
+                            },
+                            "names": [
+                                {
+                                    "id": "V.777-777H",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                            "resourceId": "MMDZ-8WM"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/BirthName",
+                                    "nameForms": [
+                                        {
+                                            "fullText": "Bertha Jackson",
+                                            "parts": [
+                                                {
+                                                    "type": "http://gedcomx.org/Given",
+                                                    "value": "Bertha"
+                                                },
+                                                {
+                                                    "type": "http://gedcomx.org/Surname",
+                                                    "value": "Jackson"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "preferred": true
+                                }
+                            ],
+                            "facts": [
+                                {
+                                    "id": "V.777-7774",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                            "resourceId": "MMDZ-8WM"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/Birth",
+                                    "date": {
+                                        "original": "6 Aug 1882",
+                                        "formal": "+1882-08-06",
+                                        "normalized": [
+                                            {
+                                                "value": "6 August 1882"
+                                            }
+                                        ]
+                                    },
+                                    "place": {
+                                        "original": "Glenwood, Sevier, Utah, United States",
+                                        "description": "#335169488",
+                                        "normalized": [
+                                            {
+                                                "value": "Glenwood, Sevier, Utah, United States"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "V.777-777N",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                            "resourceId": "MMDZ-8WM"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/Death",
+                                    "date": {
+                                        "original": "1 Apr 1931",
+                                        "formal": "+1931-04-01",
+                                        "normalized": [
+                                            {
+                                                "value": "1 April 1931"
+                                            }
+                                        ]
+                                    },
+                                    "place": {
+                                        "original": "Payson, Utah, Utah, United States",
+                                        "description": "#1339115565",
+                                        "normalized": [
+                                            {
+                                                "value": "Payson, Utah, Utah, United States"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "V.777-7771",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                            "resourceId": "MMDZ-8WM"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/Burial",
+                                    "date": {
+                                        "original": "3 Apr 1931",
+                                        "formal": "+1931-04-03",
+                                        "normalized": [
+                                            {
+                                                "value": "3 April 1931"
+                                            }
+                                        ]
+                                    },
+                                    "place": {
+                                        "original": "Payson, Utah, Utah, United States",
+                                        "description": "#1339115565",
+                                        "normalized": [
+                                            {
+                                                "value": "Payson, Utah, Utah, United States"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "display": {
+                                "name": "Bertha Jackson",
+                                "gender": "Female",
+                                "lifespan": "1882-1931",
+                                "birthDate": "6 August 1882",
+                                "birthPlace": "Glenwood, Sevier, Utah, United States",
+                                "deathDate": "1 April 1931",
+                                "deathPlace": "Payson, Utah, Utah, United States"
+                            }
+                        }
+                    ],
+                    "places": [
+                        {
+                            "id": "723067907",
+                            "names": [
+                                {
+                                    "value": "Fayette, Sanpete, Utah, United States"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "1339115565",
+                            "names": [
+                                {
+                                    "value": "Payson, Utah, Utah, United States"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "335169488",
+                            "names": [
+                                {
+                                    "value": "Glenwood, Sevier, Utah, United States"
+                                }
+                            ]
+                        }
+                    ],
+                    "child-and-parents-relationships": [
+                        {
+                            "id": "M9D5-4JB-1919870902.resulting",
+                            "identifiers": {
+                                "http://gedcomx.org/Primary": [
+                                    "MM9M-CJJ"
+                                ]
+                            },
+                            "father": {
+                                "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWQM-16Y",
+                                "resourceId": "KWQM-16Y"
+                            },
+                            "mother": {
+                                "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWQM-1XT",
+                                "resourceId": "KWQM-1XT"
+                            },
+                            "child": {
+                                "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL",
+                                "resourceId": "KWWC-RCL"
+                            }
+                        },
+                        {
+                            "id": "M9D5-4JB-1919870902.original",
+                            "identifiers": {
+                                "http://gedcomx.org/Primary": [
+                                    "MM9M-CJJ"
+                                ]
+                            },
+                            "mother": {
+                                "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWQM-1XT",
+                                "resourceId": "KWQM-1XT"
+                            },
+                            "child": {
+                                "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL",
+                                "resourceId": "KWWC-RCL"
+                            }
+                        }
+                    ]
+                }
+            },
+            "contributors": [
+                {
+                    "name": "API User 1372",
+                    "uri": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+                }
+            ],
+            "id": "M9D5-4JB",
+            "links": {
+                "agent": {
+                    "href": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+                }
+            },
+            "title": "Father Added",
+            "updated": 1436282244107,
+            "changeInfo": [
+                {
+                    "operation": "http://familysearch.org/v1/Create",
+                    "objectType": "http://familysearch.org/v1/Father",
+                    "objectModifier": "http://familysearch.org/v1/ChildAndParentsRelationship",
+                    "parent": {
+                        "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/changes?from=M9D5-4JR#M9D5-4JR",
+                        "resourceId": "M9D5-4JR"
+                    },
+                    "resulting": {
+                        "resource": "#M9D5-4JB-1919870902.resulting",
+                        "resourceId": "M9D5-4JB-1919870902.resulting"
+                    },
+                    "original": {
+                        "resource": "#M9D5-4JB-1919870902.original",
+                        "resourceId": "M9D5-4JB-1919870902.original"
+                    }
+                }
+            ]
+        },
+        {
+            "content": {
+                "gedcomx": {
+                    "persons": [
+                        {
+                            "id": "KWWC-RCL",
+                            "sortKey": "0002427988",
+                            "identifiers": {
+                                "http://gedcomx.org/Persistent": [
+                                    "https://sandbox.familysearch.org/ark:/61903/4:1:KWWC-RCL"
+                                ],
+                                "http://gedcomx.org/Primary": [
+                                    "KWWC-RCL"
+                                ]
+                            },
+                            "living": false,
+                            "gender": {
+                                "id": "V.777-7771",
+                                "attribution": {
+                                    "contributor": {
+                                        "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                                        "resourceId": "MMDZ-8G7"
+                                    },
+                                    "modified": 1409062695947
+                                },
+                                "type": "http://gedcomx.org/Male"
+                            },
+                            "names": [
+                                {
+                                    "id": "V.777-777N",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                                            "resourceId": "MMDZ-8G7"
+                                        },
+                                        "modified": 1439314564041
+                                    },
+                                    "type": "http://gedcomx.org/BirthName",
+                                    "nameForms": [
+                                        {
+                                            "fullText": "George Allen Stewart",
+                                            "parts": [
+                                                {
+                                                    "type": "http://gedcomx.org/Given",
+                                                    "value": "George Allen"
+                                                },
+                                                {
+                                                    "type": "http://gedcomx.org/Surname",
+                                                    "value": "Stewart"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "preferred": true
+                                }
+                            ],
+                            "facts": [
+                                {
+                                    "id": "V.777-7774",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                                            "resourceId": "MMDZ-8G7"
+                                        },
+                                        "modified": 1409062695947
+                                    },
+                                    "type": "http://gedcomx.org/Birth",
+                                    "date": {
+                                        "original": "4 July 1935",
+                                        "formal": "+1935-07-04",
+                                        "normalized": [
+                                            {
+                                                "value": "4 July 1935"
+                                            }
+                                        ]
+                                    },
+                                    "place": {
+                                        "original": "San Juan, New Mexico, United States",
+                                        "description": "#1806582422",
+                                        "normalized": [
+                                            {
+                                                "value": "San Juan, New Mexico, United States"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "V.777-777P",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                                            "resourceId": "MMDZ-8G7"
+                                        },
+                                        "modified": 1409062695947
+                                    },
+                                    "type": "http://gedcomx.org/Death"
+                                }
+                            ],
+                            "display": {
+                                "name": "George Allen Stewart",
+                                "gender": "Male",
+                                "lifespan": "1935-Deceased",
+                                "birthDate": "4 July 1935",
+                                "birthPlace": "San Juan, New Mexico, United States"
+                            }
+                        },
+                        {
+                            "id": "KWQM-16Y",
+                            "sortKey": "0002408615",
+                            "identifiers": {
+                                "http://gedcomx.org/Persistent": [
+                                    "https://sandbox.familysearch.org/ark:/61903/4:1:KWQM-16Y"
+                                ],
+                                "http://gedcomx.org/Primary": [
+                                    "KWQM-16Y"
+                                ]
+                            },
+                            "living": false,
+                            "gender": {
+                                "id": "V.777-777P",
+                                "attribution": {
+                                    "contributor": {
+                                        "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                        "resourceId": "MMDZ-8WM"
+                                    }
+                                },
+                                "type": "http://gedcomx.org/Male"
+                            },
+                            "names": [
+                                {
+                                    "id": "V.777-7771",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                            "resourceId": "MMDZ-8WM"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/BirthName",
+                                    "nameForms": [
+                                        {
+                                            "fullText": "George Allen Hill",
+                                            "parts": [
+                                                {
+                                                    "type": "http://gedcomx.org/Given",
+                                                    "value": "George Allen"
+                                                },
+                                                {
+                                                    "type": "http://gedcomx.org/Surname",
+                                                    "value": "Hill"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "preferred": true
+                                }
+                            ],
+                            "facts": [
+                                {
+                                    "id": "V.777-777N",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                            "resourceId": "MMDZ-8WM"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/Birth",
+                                    "date": {
+                                        "original": "18 Jun 1882",
+                                        "formal": "+1882-06-18",
+                                        "normalized": [
+                                            {
+                                                "value": "18 June 1882"
+                                            }
+                                        ]
+                                    },
+                                    "place": {
+                                        "original": "Fayette, Sanpete, Utah, United States",
+                                        "description": "#723067907",
+                                        "normalized": [
+                                            {
+                                                "value": "Fayette, Sanpete, Utah, United States"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "V.777-777H",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                            "resourceId": "MMDZ-8WM"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/Christening",
+                                    "date": {
+                                        "original": "9 Jul 1882",
+                                        "formal": "+1882-07-09",
+                                        "normalized": [
+                                            {
+                                                "value": "9 July 1882"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "V.777-777L",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                            "resourceId": "MMDZ-8WM"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/Death",
+                                    "date": {
+                                        "original": "8 Apr 1959",
+                                        "formal": "+1959-04-08",
+                                        "normalized": [
+                                            {
+                                                "value": "8 April 1959"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "V.777-777Z",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                            "resourceId": "MMDZ-8WM"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/Burial",
+                                    "date": {
+                                        "original": "10 Apr 1959",
+                                        "formal": "+1959-04-10",
+                                        "normalized": [
+                                            {
+                                                "value": "10 April 1959"
+                                            }
+                                        ]
+                                    },
+                                    "place": {
+                                        "original": "Payson, Utah, Utah, United States",
+                                        "description": "#1339115565",
+                                        "normalized": [
+                                            {
+                                                "value": "Payson, Utah, Utah, United States"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "display": {
+                                "name": "George Allen Hill",
+                                "gender": "Male",
+                                "lifespan": "1882-1959",
+                                "birthDate": "18 June 1882",
+                                "birthPlace": "Fayette, Sanpete, Utah, United States",
+                                "deathDate": "8 April 1959"
+                            }
+                        },
+                        {
+                            "id": "KWQM-1XT",
+                            "sortKey": "0002408664",
+                            "identifiers": {
+                                "http://gedcomx.org/Persistent": [
+                                    "https://sandbox.familysearch.org/ark:/61903/4:1:KWQM-1XT"
+                                ],
+                                "http://gedcomx.org/Primary": [
+                                    "KWQM-1XT"
+                                ]
+                            },
+                            "living": false,
+                            "gender": {
+                                "id": "V.777-777P",
+                                "attribution": {
+                                    "contributor": {
+                                        "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                        "resourceId": "MMDZ-8WM"
+                                    }
+                                },
+                                "type": "http://gedcomx.org/Female"
+                            },
+                            "names": [
+                                {
+                                    "id": "V.777-777H",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                            "resourceId": "MMDZ-8WM"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/BirthName",
+                                    "nameForms": [
+                                        {
+                                            "fullText": "Bertha Jackson",
+                                            "parts": [
+                                                {
+                                                    "type": "http://gedcomx.org/Given",
+                                                    "value": "Bertha"
+                                                },
+                                                {
+                                                    "type": "http://gedcomx.org/Surname",
+                                                    "value": "Jackson"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "preferred": true
+                                }
+                            ],
+                            "facts": [
+                                {
+                                    "id": "V.777-7774",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                            "resourceId": "MMDZ-8WM"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/Birth",
+                                    "date": {
+                                        "original": "6 Aug 1882",
+                                        "formal": "+1882-08-06",
+                                        "normalized": [
+                                            {
+                                                "value": "6 August 1882"
+                                            }
+                                        ]
+                                    },
+                                    "place": {
+                                        "original": "Glenwood, Sevier, Utah, United States",
+                                        "description": "#335169488",
+                                        "normalized": [
+                                            {
+                                                "value": "Glenwood, Sevier, Utah, United States"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "V.777-777N",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                            "resourceId": "MMDZ-8WM"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/Death",
+                                    "date": {
+                                        "original": "1 Apr 1931",
+                                        "formal": "+1931-04-01",
+                                        "normalized": [
+                                            {
+                                                "value": "1 April 1931"
+                                            }
+                                        ]
+                                    },
+                                    "place": {
+                                        "original": "Payson, Utah, Utah, United States",
+                                        "description": "#1339115565",
+                                        "normalized": [
+                                            {
+                                                "value": "Payson, Utah, Utah, United States"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "V.777-7771",
+                                    "attribution": {
+                                        "contributor": {
+                                            "resource": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8WM",
+                                            "resourceId": "MMDZ-8WM"
+                                        }
+                                    },
+                                    "type": "http://gedcomx.org/Burial",
+                                    "date": {
+                                        "original": "3 Apr 1931",
+                                        "formal": "+1931-04-03",
+                                        "normalized": [
+                                            {
+                                                "value": "3 April 1931"
+                                            }
+                                        ]
+                                    },
+                                    "place": {
+                                        "original": "Payson, Utah, Utah, United States",
+                                        "description": "#1339115565",
+                                        "normalized": [
+                                            {
+                                                "value": "Payson, Utah, Utah, United States"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "display": {
+                                "name": "Bertha Jackson",
+                                "gender": "Female",
+                                "lifespan": "1882-1931",
+                                "birthDate": "6 August 1882",
+                                "birthPlace": "Glenwood, Sevier, Utah, United States",
+                                "deathDate": "1 April 1931",
+                                "deathPlace": "Payson, Utah, Utah, United States"
+                            }
+                        }
+                    ],
+                    "child-and-parents-relationships": [
+                        {
+                            "id": "M9D5-4JL-1919870902.resulting",
+                            "identifiers": {
+                                "http://gedcomx.org/Primary": [
+                                    "MM9M-CJJ"
+                                ]
+                            },
+                            "mother": {
+                                "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWQM-1XT",
+                                "resourceId": "KWQM-1XT"
+                            },
+                            "child": {
+                                "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL",
+                                "resourceId": "KWWC-RCL"
+                            }
+                        },
+                        {
+                            "id": "M9D5-4JL-1919870902.original",
+                            "identifiers": {
+                                "http://gedcomx.org/Primary": [
+                                    "MM9M-CJJ"
+                                ]
+                            },
+                            "father": {
+                                "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWQM-16Y",
+                                "resourceId": "KWQM-16Y"
+                            },
+                            "mother": {
+                                "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWQM-1XT",
+                                "resourceId": "KWQM-1XT"
+                            },
+                            "child": {
+                                "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL",
+                                "resourceId": "KWWC-RCL"
+                            }
+                        }
+                    ]
+                }
+            },
+            "contributors": [
+                {
+                    "name": "API User 1372",
+                    "uri": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+                }
+            ],
+            "id": "M9D5-4JL",
+            "links": {
+                "agent": {
+                    "href": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+                }
+            },
+            "title": "Father Removed",
+            "updated": 1436282227719,
+            "changeInfo": [
+                {
+                    "operation": "http://familysearch.org/v1/Delete",
+                    "objectType": "http://familysearch.org/v1/Father",
+                    "objectModifier": "http://familysearch.org/v1/ChildAndParentsRelationship",
+                    "parent": {
+                        "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/changes?from=M9D5-4JJ#M9D5-4JJ",
+                        "resourceId": "M9D5-4JJ"
+                    },
+                    "resulting": {
+                        "resource": "#M9D5-4JL-1919870902.resulting",
+                        "resourceId": "M9D5-4JL-1919870902.resulting"
+                    },
+                    "original": {
+                        "resource": "#M9D5-4JL-1919870902.original",
+                        "resourceId": "M9D5-4JL-1919870902.original"
+                    }
+                }
+            ]
+        },
+        {
+            "content": {
+                "gedcomx": {
+                    "child-and-parents-relationships": [
+                        {
+                            "id": "M9D5-4J2-1919870902.removed",
+                            "identifiers": {
+                                "http://gedcomx.org/Primary": [
+                                    "MM9M-CJJ"
+                                ]
+                            },
+                            "fatherFacts": [
+                                {
+                                    "id": "R.777-777P",
+                                    "type": "http://gedcomx.org/BiologicalParent"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "contributors": [
+                {
+                    "name": "API User 1372",
+                    "uri": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+                }
+            ],
+            "id": "M9D5-4J2",
+            "links": {
+                "agent": {
+                    "href": "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+                }
+            },
+            "title": "Lineage Removed",
+            "updated": 1436282227719,
+            "changeInfo": [
+                {
+                    "operation": "http://familysearch.org/v1/Delete",
+                    "objectType": "http://gedcomx.org/Fact",
+                    "objectModifier": "http://familysearch.org/v1/ChildAndParentsRelationship",
+                    "parent": {
+                        "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/changes?from=M9D5-4JJ#M9D5-4JJ",
+                        "resourceId": "M9D5-4JJ"
+                    },
+                    "removed": {
+                        "resource": "#M9D5-4J2-1919870902.removed",
+                        "resourceId": "M9D5-4J2-1919870902.removed"
+                    }
+                }
+            ]
+        }
+    ]
+}

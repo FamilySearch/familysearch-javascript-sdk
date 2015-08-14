@@ -1,4 +1,5 @@
-var FS = require('./../FamilySearch');
+var FS = require('./../FamilySearch'),
+    utils = require('../utils');
 
 // construct formal date from [about|after|before] [[day] month] year [BC]
 var constructFormalDate = function(fields, ignoreModifiers) {
@@ -69,7 +70,7 @@ FS.prototype.createDate = function(data){
   return new FSDate(this, data);
 };
 
-FSDate.prototype = {
+FSDate.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: FSDate,
 
   /**
@@ -157,4 +158,4 @@ FSDate.prototype = {
     }
     return formalDate;
   }
-};
+});

@@ -66,7 +66,7 @@ function spacePrefix(namePiece) {
   return namePiece ? ' ' + namePiece : '';
 }
 
-Person.prototype = {
+Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: Person,
   /**
    * @ngdoc property
@@ -118,7 +118,8 @@ Person.prototype = {
    * This function is available only if the person is read with `getPerson` or `getPersonWithRelationships`.
    * @returns {Boolean} true if the person is read-only
    */
-  // this function is added in the getPerson() function below
+  // this function is added when an api response is processed because the information
+  // is contained in the http headers
 
   /**
    * @ngdoc function
@@ -420,12 +421,30 @@ Person.prototype = {
    * @ngdoc function
    * @name person.types:constructor.Person#$getChanges
    * @methodOf person.types:constructor.Person
-   * @function
-   * @param {Object=} params `count` is the number of change entries to return, `from` to return changes following this id
-   * @return {Object} promise for the {@link changeHistory.functions:getPersonChanges getPersonChanges} response
+   * 
+   * @description
+   * Get change history for a person
+   * The response includes the following convenience function
+   *
+   * - `getChanges()` - get the array of {@link changeHistory.types:constructor.Change Changes} from the response
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Change_History_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/s90nqqLs/1/ Editable Example}
+   *
+   * @param {String} pid id of the person or full URL of the person changes endpoint
+   * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the responseturn {Object} promise for the {@link changeHistory.functions:getPersonChanges getPersonChanges} response
    */
-  $getChanges: function(params) {
-    return this.$client.getPersonChanges(this.$helpers.removeAccessToken(this.links['change-history'].href), params);
+  $getChanges: function(params, opts) {
+    var self = this;
+    return self.$helpers.chainHttpPromises(
+      self.$getLink('change-history'),
+      function(link) {
+        return self.$client.getChanges(link.href, params, opts);
+      }
+    );
   },
 
   /**
@@ -488,10 +507,30 @@ Person.prototype = {
    * @name person.types:constructor.Person#$getSpouses
    * @methodOf person.types:constructor.Person
    * @function
-   * @return {Object} promise for the {@link person.functions:getSpouses getSpouses} response
+   * 
+   * @description
+   * Get the relationships to a person's spouses.
+   * The response includes the following convenience functions
+   *
+   * - `getCoupleRelationships()` - an array of {@link spouses.types:constructor.Couple Couple} relationships
+   * - `getChildAndParentsRelationships()` - an array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents}
+   * relationships for children of the couples
+   * - `getPerson(pid)` - a {@link person.types:constructor.Person Person} for any person id in a relationship except children
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Spouses_of_a_Person_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/1311jcz8/18/ Editable Example}
+   *
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
    */
-  $getSpouses: function() {
-    return this.$client.getSpouses(this.id);
+  $getSpouses: function(opts) {
+    var self = this;
+    return self.$helpers.chainHttpPromises(
+      self.$getLink('spouses'),
+      function(link) {
+        return self.$plumbing.get(link.href, {}, {}, opts, self.$client._personsAndRelationshipsMapper());
+      });
   },
 
   /**
@@ -499,10 +538,30 @@ Person.prototype = {
    * @name person.types:constructor.Person#$getParents
    * @methodOf person.types:constructor.Person
    * @function
-   * @return {Object} promise for the {@link person.functions:getParents getParents} response
+   * 
+   * @description
+   * Get the relationships to a person's parents.
+   * The response includes the following convenience functions
+   *
+   * - `getChildAndParentsRelationships()` - an array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationships
+   * - `getCoupleRelationships()` - an array of {@link spouses.types:constructor.Couple Couple} relationships for parents
+   * - `getPerson(pid)` - a {@link person.types:constructor.Person Person} for any person id in a relationship
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Parents_of_a_person_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/Lf9fe61r/5/ Editable Example}
+   *
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
    */
-  $getParents: function() {
-    return this.$client.getParents(this.id);
+  $getParents: function(opts) {
+    var self = this;
+    return self.$helpers.chainHttpPromises(
+      self.$getLink('parents'),
+      function(link) {
+        return self.$plumbing.get(link.href, {}, {}, opts, self.$client._personsAndRelationshipsMapper());
+      }
+    );
   },
 
   /**
@@ -510,10 +569,28 @@ Person.prototype = {
    * @name person.types:constructor.Person#$getChildren
    * @methodOf person.types:constructor.Person
    * @function
-   * @return {Object} promise for the {@link person.functions:getChildren getChildren} response
+   * 
+   * @description
+   * Get the relationships to a person's children
+   * The response includes the following convenience functions
+   *
+   * - `getChildAndParentsRelationships()` - an array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationships
+   * - `getPerson(pid)` - a {@link person.types:constructor.Person Person} for any person id in a relationship
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Children_of_a_person_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/fownteLe/1/ Editable Example}
+   *
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
    */
-  $getChildren: function() {
-    return this.$client.getChildren(this.id);
+  $getChildren: function(opts) {
+    var self = this;
+    return self.$helpers.chainHttpPromises(
+      self.$getLink('children'),
+      function(link) {
+        return self.$plumbing.get(link.href, {}, {}, opts, self.$client._personsAndRelationshipsMapper());
+      });
   },
   
   /**
@@ -738,12 +815,11 @@ Person.prototype = {
    * {@link http://jsfiddle.net/v4840hjt/1/ Editable Example}
    *
    * @param {String=} changeMessage default change message to use when name/fact/gender-specific changeMessage is not specified
-   * @param {boolean=} refresh true to read the person after updating
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise of the person id, which is fulfilled after person has been updated,
    * and if refresh is true, after the person has been read
    */
-  $save: function(changeMessage, refresh, opts) {
+  $save: function(changeMessage, opts) {
     var postData = this.$client.createPerson();
     var isChanged = false;
     if (this.id) {
@@ -817,9 +893,12 @@ Person.prototype = {
     // post update
     if (isChanged) {
       promises.push(self.$helpers.chainHttpPromises(
-        postData.id ? self.$plumbing.getUrl('person-template', null, {pid: postData.id}) : self.$plumbing.getUrl('persons'),
+        postData.id ? self.$plumbing.getCollectionUrl('FSFT', 'person', {pid: postData.id}) : self.$plumbing.getCollectionUrl('FSFT', 'persons'),
         function(url) {
-          return self.$plumbing.post(url, { persons: [ postData ] }, {}, opts, self.$helpers.getResponseEntityId);
+          var promise = self.$plumbing.post(url, { persons: [ postData ] }, {}, opts, function(){
+            return self.$getPersonUrl() || promise.getResponseHeader('Location');
+          });
+          return promise;
         }));
     }
 
@@ -828,31 +907,19 @@ Person.prototype = {
       utils.forEach(this.$deletedConclusions, function(value, key) {
         value = value || changeMessage; // default to global change message
         promises.push(self.$helpers.chainHttpPromises(
-          self.$plumbing.getUrl('person-conclusion-template', null, {pid: postData.id, cid: key}),
-          function(url) {
-            return self.$plumbing.del(url, value ? {'X-Reason': value} : {}, opts);
+          self.$plumbing.getCollectionUrl('FSFT', 'person', {pid: postData.id}),
+          function(personUrl) {
+            return self.$plumbing.del(personUrl + '/conclusions/' + key, value ? {'X-Reason': value} : {}, opts);
           }
         ));
       });
     }
 
-    var person = this;
     // wait for all promises to be fulfilled
     var promise = self.$helpers.promiseAll(promises).then(function(results) {
-      var id = postData.id ? postData.id : results[0]; // if we're adding a new person, get id from the first (only) promise
+      var url = self.$getPersonUrl() ? self.$getPersonUrl() : results[0]; // if we're adding a new person, get id from the first (only) promise
       self.$helpers.extendHttpPromise(promise, promises[0]); // extend the first promise into the returned promise
-
-      if (refresh) {
-        // re-read the person and set this object's properties from response
-        return self.$client.getPerson(id, {}, opts).then(function(response) {
-          utils.deletePropertiesPartial(person, utils.appFieldRejector);
-          utils.extend(person, response.getPerson());
-          return id;
-        });
-      }
-      else {
-        return id;
-      }
+      return url;
     });
     return promise;
   },
@@ -868,7 +935,7 @@ Person.prototype = {
    * @return {Object} promise for the person URL
    */
   $delete: function(changeMessage, opts) {
-    return this.$client.deletePerson(this.$getPersonUrl() || this.id, changeMessage, opts);
+    return this.$client.deletePerson(this.$getPersonUrl(), changeMessage, opts);
   },
 
   /**
@@ -876,11 +943,26 @@ Person.prototype = {
    * @name person.types:constructor.Person#$restore
    * @methodOf person.types:constructor.Person
    * @function
-   * @description restore this person - see {@link person.functions:restorePerson restorePerson}
+   *
+   * @description
+   * Restore a person that was deleted.
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Person_Restore_resource FamilySearch API Docs}
+   * 
+   * {@link http://jsfiddle.net/0mxLgb1w/1/ Editable Example}
+   *
    * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the person URL
+   * @return {Object} promise for the person id/URL
    */
   $restore: function(opts) {
-    return this.$client.restorePerson(this.$getPersonUrl() || this.id, opts);
+    var self = this;
+    return self.$helpers.chainHttpPromises(
+      self.$getLink('restore'),
+      function(link){
+        return self.$plumbing.post(link.href, null, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
+          return self.id;
+        });
+      }
+    );
   }
-};
+});

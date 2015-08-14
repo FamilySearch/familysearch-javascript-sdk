@@ -1,3 +1,8 @@
+/**
+ * Collection of utility functions. Only put functions in here that aren't
+ * specific to the FamilySearch API (those go in helpers.js)
+ */
+
 var exports = module.exports;
 
  // Object.create polyfill

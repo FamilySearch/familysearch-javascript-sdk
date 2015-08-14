@@ -1,4 +1,5 @@
 describe('A user', function() {
+  
   it('is returned from getCurrentUser', function(done) {
     FS.getCurrentUser().then(function(response) {
       var user = response.getUser();
@@ -11,7 +12,7 @@ describe('A user', function() {
   });
 
   it('agent is returned from getAgent', function(done) {
-    FS.getAgent('12345').then(function(response) {
+    FS.getAgent('https://sandbox.familysearch.org/platform/users/agents/12345').then(function(response) {
       var agent = response.getAgent();
       expect(agent.id).toBe('12345');
       expect(agent.$getName()).toBe('John Smith');
@@ -22,8 +23,8 @@ describe('A user', function() {
   });
 
   it('agents is returned from getMultiAgent', function(done) {
-    FS.getMultiAgent(['12345']).then(function(response) {
-      var agent = response['12345'].getAgent();
+    FS.getMultiAgent(['https://sandbox.familysearch.org/platform/users/agents/12345']).then(function(response) {
+      var agent = response['https://sandbox.familysearch.org/platform/users/agents/12345'].getAgent();
       expect(agent.id).toBe('12345');
       expect(agent.$getName()).toBe('John Smith');
       expect(agent.$getAccountName()).toBe('account');

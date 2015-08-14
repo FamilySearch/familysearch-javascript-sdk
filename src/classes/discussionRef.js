@@ -33,7 +33,7 @@ FS.prototype.createDiscussionRef = function(data){
   return new DiscussionRef(this, data);
 };
 
-DiscussionRef.prototype = {
+DiscussionRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: DiscussionRef,
 
   /**
@@ -141,41 +141,41 @@ DiscussionRef.prototype = {
    *
    * {@link http://jsfiddle.net/q7pwkc9k/1/ Editable Example}
    *
+   * @param {string} url url of the discussions references list. this is only need for new discussion refs. you can set it to null (or anything else) for existing refs that you are updating
    * @param {string} changeMessage change message - unused - discussion reference attributions do not contain change messages
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise of the discussion reference url
    * (note however that individual discussion references cannot be read).
    */
-  $save: function(changeMessage, opts) {
+  $save: function(url, changeMessage, opts) {
     var self = this;
-    return self.$helpers.chainHttpPromises(
-      self.$plumbing.getUrl('person-discussion-references-template', null, {pid: self.$personId}),
-      function(url) {
-        if (!self.resource && self.resourceId) {
-          self.resource = self.resourceId;
-        }
-        var payload = {
-          persons: [{
-            id: self.$personId,
-            'discussion-references' : [ { resource: self.resource } ]
-          }]
-        };
-        if (changeMessage) {
-          payload.persons[0].attribution = self.$client.createAttribution(changeMessage);
-        }
-        var headers = {'Content-Type': 'application/x-fs-v1+json'};
-        return self.$plumbing.post(url, payload, headers, opts, function(data, promise) {
-          if (!self.$getDiscussionRefUrl()) {
-            self.links = {
-              'discussion-reference': {
-                href: promise.getResponseHeader('Location'),
-                title: 'Discussion Reference'
-              }
-            };
+    if (self.$getDiscussionRefUrl()) {
+      url = self.$getDiscussionRefUrl();
+    }
+    if (!self.resource && self.resourceId) {
+      self.resource = self.resourceId;
+    }
+    var payload = {
+      persons: [{
+        id: self.$personId,
+        'discussion-references' : [ { resource: self.resource } ]
+      }]
+    };
+    if (changeMessage) {
+      payload.persons[0].attribution = self.$client.createAttribution(changeMessage);
+    }
+    var headers = {'Content-Type': 'application/x-fs-v1+json'};
+    return self.$plumbing.post(url, payload, headers, opts, function(data, promise) {
+      if (!self.$getDiscussionRefUrl()) {
+        self.links = {
+          'discussion-reference': {
+            href: promise.getResponseHeader('Location'),
+            title: 'Discussion Reference'
           }
-          return self.$getDiscussionRefUrl();
-        });
-      });
+        };
+      }
+      return self.$getDiscussionRefUrl();
+    });
   },
 
   /**
@@ -189,7 +189,7 @@ DiscussionRef.prototype = {
    * @return {Object} promise for the discussion reference url
    */
   $delete: function(changeMessage, opts) {
-    return this.$client.deleteDiscussionRef(this.$getDiscussionRefUrl() || this.$personId, this.id, changeMessage, opts);
+    return this.$client.deleteDiscussionRef(this.$getDiscussionRefUrl(), this.id, changeMessage, opts);
   }
 
-};
+});

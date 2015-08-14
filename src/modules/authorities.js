@@ -29,21 +29,22 @@ var FS = require('./../FamilySearch'),
  * @return {Object} promise for the response
  */
 FS.prototype.getDate = function(date, opts) {
-  var self = this,
-      params = {
-        date: date
-      };
-  return self.plumbing.get(self.helpers.getAPIServerUrl('/platform/dates'), params, {'Accept': 'text/plain'}, opts,
-    utils.compose(
-      utils.objectExtender({getDate: function() { return utils.maybe(this.date); }}),
-      function(body){
-        var response = {};
-        if(body){
-          response.date = self.createDate({
-            normalized: body
-          });
+  var self = this;
+  return self.helpers.chainHttpPromises(
+    self.plumbing.getCollectionUrl('FSDA', 'normalized-date'),
+    function(url){
+      return self.plumbing.get(url, {date: date}, {'Accept': 'text/plain'}, opts,
+      utils.compose(
+        utils.objectExtender({getDate: function() { return utils.maybe(this.date); }}),
+        function(body){
+          var response = {};
+          if(body){
+            response.date = self.createDate({
+              normalized: body
+            });
+          }
+          return response;
         }
-        return response;
-      }
-    ));
+      ));
+    });
 };

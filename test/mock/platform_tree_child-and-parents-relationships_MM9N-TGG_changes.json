@@ -1,0 +1,670 @@
+{
+  "links" : {
+    "relationship" : {
+      "href" : "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MM9N-TGG"
+    },
+    "self" : {
+      "href" : "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MM9N-TGG/changes"
+    }
+  },
+  "title" : "Change History for Parent-Child Relationship MM9N-TGG",
+  "updated" : 1439225541440,
+  "entries" : [ {
+    "content" : {
+      "gedcomx" : {
+        "persons" : [ {
+          "id" : "KW3B-N7F",
+          "sortKey" : "0002433373",
+          "identifiers" : {
+            "http://gedcomx.org/Persistent" : [ "https://sandbox.familysearch.org/ark:/61903/4:1:KW3B-N7F" ],
+            "http://gedcomx.org/Primary" : [ "KW3B-N7F" ]
+          },
+          "living" : true,
+          "gender" : {
+            "id" : "V.777-7774",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMMM-MMD",
+                "resourceId" : "MMMM-MMD"
+              }
+            },
+            "type" : "http://gedcomx.org/Male"
+          },
+          "names" : [ {
+            "id" : "V.777-777P",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMMM-MMD",
+                "resourceId" : "MMMM-MMD"
+              }
+            },
+            "type" : "http://gedcomx.org/BirthName",
+            "nameForms" : [ {
+              "fullText" : "API User 1372",
+              "parts" : [ {
+                "type" : "http://gedcomx.org/Given",
+                "value" : "API User"
+              }, {
+                "type" : "http://gedcomx.org/Surname",
+                "value" : "1372"
+              } ]
+            } ],
+            "preferred" : true
+          } ],
+          "facts" : [ {
+            "id" : "V.777-7771",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMMM-MMD",
+                "resourceId" : "MMMM-MMD"
+              }
+            },
+            "type" : "http://gedcomx.org/Birth",
+            "date" : {
+              "original" : "01 Apr 1950",
+              "formal" : "+1950-04-01",
+              "normalized" : [ {
+                "value" : "1 April 1950"
+              } ]
+            },
+            "place" : {
+              "original" : "Utah",
+              "description" : "#1013587259",
+              "normalized" : [ {
+                "value" : "Utah, United States"
+              } ]
+            }
+          } ],
+          "display" : {
+            "name" : "API User 1372",
+            "gender" : "Male",
+            "lifespan" : "1950-Living",
+            "birthDate" : "1 April 1950",
+            "birthPlace" : "Utah, United States"
+          }
+        }, {
+          "id" : "KWWC-RCL",
+          "sortKey" : "0002427988",
+          "identifiers" : {
+            "http://gedcomx.org/Persistent" : [ "https://sandbox.familysearch.org/ark:/61903/4:1:KWWC-RCL" ],
+            "http://gedcomx.org/Primary" : [ "KWWC-RCL" ]
+          },
+          "living" : false,
+          "gender" : {
+            "id" : "V.777-7771",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409062695947
+            },
+            "type" : "http://gedcomx.org/Male"
+          },
+          "names" : [ {
+            "id" : "V.777-777N",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409062695947
+            },
+            "type" : "http://gedcomx.org/BirthName",
+            "nameForms" : [ {
+              "fullText" : "George Stewart",
+              "parts" : [ {
+                "type" : "http://gedcomx.org/Given",
+                "value" : "George"
+              }, {
+                "type" : "http://gedcomx.org/Surname",
+                "value" : "Stewart"
+              } ]
+            } ],
+            "preferred" : true
+          } ],
+          "facts" : [ {
+            "id" : "V.777-7774",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409062695947
+            },
+            "type" : "http://gedcomx.org/Birth",
+            "date" : {
+              "original" : "4 July 1935",
+              "formal" : "+1935-07-04",
+              "normalized" : [ {
+                "value" : "4 July 1935"
+              } ]
+            },
+            "place" : {
+              "original" : "San Juan, New Mexico, United States",
+              "description" : "#1806582422",
+              "normalized" : [ {
+                "value" : "San Juan, New Mexico, United States"
+              } ]
+            }
+          }, {
+            "id" : "V.777-777P",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409062695947
+            },
+            "type" : "http://gedcomx.org/Death"
+          } ],
+          "display" : {
+            "name" : "George Stewart",
+            "gender" : "Male",
+            "lifespan" : "1935-Deceased",
+            "birthDate" : "4 July 1935",
+            "birthPlace" : "San Juan, New Mexico, United States"
+          }
+        }, {
+          "id" : "KWWC-RCG",
+          "sortKey" : "0002378648",
+          "identifiers" : {
+            "http://gedcomx.org/Persistent" : [ "https://sandbox.familysearch.org/ark:/61903/4:1:KWWC-RCG" ],
+            "http://gedcomx.org/Primary" : [ "KWWC-RCG" ]
+          },
+          "living" : false,
+          "gender" : {
+            "id" : "V.777-7774",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409062750207
+            },
+            "type" : "http://gedcomx.org/Female"
+          },
+          "names" : [ {
+            "id" : "V.777-7771",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409062750207
+            },
+            "type" : "http://gedcomx.org/BirthName",
+            "nameForms" : [ {
+              "fullText" : "Sarah Jane",
+              "parts" : [ {
+                "type" : "http://gedcomx.org/Given",
+                "value" : "Sarah"
+              }, {
+                "type" : "http://gedcomx.org/Surname",
+                "value" : "Jane"
+              } ]
+            } ],
+            "preferred" : true
+          } ],
+          "facts" : [ {
+            "id" : "V.777-777N",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409063767819
+            },
+            "type" : "http://gedcomx.org/Birth",
+            "date" : {
+              "original" : "1 June 1800",
+              "formal" : "+1800-06-01"
+            }
+          }, {
+            "id" : "V.777-777P",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409063767819
+            },
+            "type" : "http://gedcomx.org/Death",
+            "date" : {
+              "original" : "2 June 1800",
+              "formal" : "+1800-06-02",
+              "normalized" : [ {
+                "value" : "2 June 1800"
+              } ]
+            }
+          } ],
+          "display" : {
+            "name" : "Sarah Jane",
+            "gender" : "Female",
+            "lifespan" : "1800-1800",
+            "birthDate" : "1 June 1800",
+            "deathDate" : "2 June 1800"
+          }
+        } ],
+        "places" : [ {
+          "id" : "1013587259",
+          "names" : [ {
+            "value" : "Utah, United States"
+          } ]
+        }, {
+          "id" : "1806582422",
+          "names" : [ {
+            "value" : "San Juan, New Mexico, United States"
+          } ]
+        } ],
+        "child-and-parents-relationships" : [ {
+          "id" : "M9JY-65T-1918931140.resulting",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "MM9N-TGG" ]
+          },
+          "father" : {
+            "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL",
+            "resourceId" : "KWWC-RCL"
+          },
+          "mother" : {
+            "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG",
+            "resourceId" : "KWWC-RCG"
+          },
+          "child" : {
+            "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F",
+            "resourceId" : "KW3B-N7F"
+          }
+        }, {
+          "id" : "M9JY-65T-1918931140.original",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "MM9N-TGG" ]
+          },
+          "mother" : {
+            "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG",
+            "resourceId" : "KWWC-RCG"
+          },
+          "child" : {
+            "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F",
+            "resourceId" : "KW3B-N7F"
+          }
+        } ]
+      }
+    },
+    "contributors" : [ {
+      "name" : "API User 1372",
+      "uri" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+    } ],
+    "id" : "M9JY-65T",
+    "links" : {
+      "agent" : {
+        "href" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+      }
+    },
+    "title" : "Father Added",
+    "updated" : 1439225541440,
+    "changeInfo" : [ {
+      "operation" : "http://familysearch.org/v1/Create",
+      "objectType" : "http://familysearch.org/v1/Father",
+      "objectModifier" : "http://familysearch.org/v1/ChildAndParentsRelationship",
+      "resulting" : {
+        "resource" : "#M9JY-65T-1918931140.resulting",
+        "resourceId" : "M9JY-65T-1918931140.resulting"
+      },
+      "original" : {
+        "resource" : "#M9JY-65T-1918931140.original",
+        "resourceId" : "M9JY-65T-1918931140.original"
+      }
+    } ]
+  }, {
+    "content" : {
+      "gedcomx" : {
+        "persons" : [ {
+          "id" : "KW3B-N7F",
+          "sortKey" : "0002433373",
+          "identifiers" : {
+            "http://gedcomx.org/Persistent" : [ "https://sandbox.familysearch.org/ark:/61903/4:1:KW3B-N7F" ],
+            "http://gedcomx.org/Primary" : [ "KW3B-N7F" ]
+          },
+          "living" : true,
+          "gender" : {
+            "id" : "V.777-7774",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMMM-MMD",
+                "resourceId" : "MMMM-MMD"
+              }
+            },
+            "type" : "http://gedcomx.org/Male"
+          },
+          "names" : [ {
+            "id" : "V.777-777P",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMMM-MMD",
+                "resourceId" : "MMMM-MMD"
+              }
+            },
+            "type" : "http://gedcomx.org/BirthName",
+            "nameForms" : [ {
+              "fullText" : "API User 1372",
+              "parts" : [ {
+                "type" : "http://gedcomx.org/Given",
+                "value" : "API User"
+              }, {
+                "type" : "http://gedcomx.org/Surname",
+                "value" : "1372"
+              } ]
+            } ],
+            "preferred" : true
+          } ],
+          "facts" : [ {
+            "id" : "V.777-7771",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMMM-MMD",
+                "resourceId" : "MMMM-MMD"
+              }
+            },
+            "type" : "http://gedcomx.org/Birth",
+            "date" : {
+              "original" : "01 Apr 1950",
+              "formal" : "+1950-04-01",
+              "normalized" : [ {
+                "value" : "1 April 1950"
+              } ]
+            },
+            "place" : {
+              "original" : "Utah",
+              "description" : "#1013587259",
+              "normalized" : [ {
+                "value" : "Utah, United States"
+              } ]
+            }
+          } ],
+          "display" : {
+            "name" : "API User 1372",
+            "gender" : "Male",
+            "lifespan" : "1950-Living",
+            "birthDate" : "1 April 1950",
+            "birthPlace" : "Utah, United States"
+          }
+        }, {
+          "id" : "KWWC-RCG",
+          "sortKey" : "0002378648",
+          "identifiers" : {
+            "http://gedcomx.org/Persistent" : [ "https://sandbox.familysearch.org/ark:/61903/4:1:KWWC-RCG" ],
+            "http://gedcomx.org/Primary" : [ "KWWC-RCG" ]
+          },
+          "living" : false,
+          "gender" : {
+            "id" : "V.777-7774",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409062750207
+            },
+            "type" : "http://gedcomx.org/Female"
+          },
+          "names" : [ {
+            "id" : "V.777-7771",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409062750207
+            },
+            "type" : "http://gedcomx.org/BirthName",
+            "nameForms" : [ {
+              "fullText" : "Sarah Jane",
+              "parts" : [ {
+                "type" : "http://gedcomx.org/Given",
+                "value" : "Sarah"
+              }, {
+                "type" : "http://gedcomx.org/Surname",
+                "value" : "Jane"
+              } ]
+            } ],
+            "preferred" : true
+          } ],
+          "facts" : [ {
+            "id" : "V.777-777N",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409063767819
+            },
+            "type" : "http://gedcomx.org/Birth",
+            "date" : {
+              "original" : "1 June 1800",
+              "formal" : "+1800-06-01"
+            }
+          }, {
+            "id" : "V.777-777P",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409063767819
+            },
+            "type" : "http://gedcomx.org/Death",
+            "date" : {
+              "original" : "2 June 1800",
+              "formal" : "+1800-06-02",
+              "normalized" : [ {
+                "value" : "2 June 1800"
+              } ]
+            }
+          } ],
+          "display" : {
+            "name" : "Sarah Jane",
+            "gender" : "Female",
+            "lifespan" : "1800-1800",
+            "birthDate" : "1 June 1800",
+            "deathDate" : "2 June 1800"
+          }
+        } ],
+        "child-and-parents-relationships" : [ {
+          "id" : "M9JY-65R-1918931140.resulting",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "MM9N-TGG" ]
+          },
+          "mother" : {
+            "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG",
+            "resourceId" : "KWWC-RCG"
+          },
+          "child" : {
+            "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F",
+            "resourceId" : "KW3B-N7F"
+          }
+        }, {
+          "id" : "M9JY-65R-1918931140.original",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "MM9N-TGG" ]
+          },
+          "child" : {
+            "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F",
+            "resourceId" : "KW3B-N7F"
+          }
+        } ]
+      }
+    },
+    "contributors" : [ {
+      "name" : "API User 1372",
+      "uri" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+    } ],
+    "id" : "M9JY-65R",
+    "links" : {
+      "agent" : {
+        "href" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+      }
+    },
+    "title" : "Mother Added",
+    "updated" : 1439225541440,
+    "changeInfo" : [ {
+      "operation" : "http://familysearch.org/v1/Create",
+      "objectType" : "http://familysearch.org/v1/Mother",
+      "objectModifier" : "http://familysearch.org/v1/ChildAndParentsRelationship",
+      "resulting" : {
+        "resource" : "#M9JY-65R-1918931140.resulting",
+        "resourceId" : "M9JY-65R-1918931140.resulting"
+      },
+      "original" : {
+        "resource" : "#M9JY-65R-1918931140.original",
+        "resourceId" : "M9JY-65R-1918931140.original"
+      }
+    } ]
+  }, {
+    "content" : {
+      "gedcomx" : {
+        "persons" : [ {
+          "id" : "KW3B-N7F",
+          "sortKey" : "0002433373",
+          "identifiers" : {
+            "http://gedcomx.org/Persistent" : [ "https://sandbox.familysearch.org/ark:/61903/4:1:KW3B-N7F" ],
+            "http://gedcomx.org/Primary" : [ "KW3B-N7F" ]
+          },
+          "living" : true,
+          "gender" : {
+            "id" : "V.777-7774",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMMM-MMD",
+                "resourceId" : "MMMM-MMD"
+              }
+            },
+            "type" : "http://gedcomx.org/Male"
+          },
+          "names" : [ {
+            "id" : "V.777-777P",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMMM-MMD",
+                "resourceId" : "MMMM-MMD"
+              }
+            },
+            "type" : "http://gedcomx.org/BirthName",
+            "nameForms" : [ {
+              "fullText" : "API User 1372",
+              "parts" : [ {
+                "type" : "http://gedcomx.org/Given",
+                "value" : "API User"
+              }, {
+                "type" : "http://gedcomx.org/Surname",
+                "value" : "1372"
+              } ]
+            } ],
+            "preferred" : true
+          } ],
+          "facts" : [ {
+            "id" : "V.777-7771",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMMM-MMD",
+                "resourceId" : "MMMM-MMD"
+              }
+            },
+            "type" : "http://gedcomx.org/Birth",
+            "date" : {
+              "original" : "01 Apr 1950",
+              "formal" : "+1950-04-01",
+              "normalized" : [ {
+                "value" : "1 April 1950"
+              } ]
+            },
+            "place" : {
+              "original" : "Utah",
+              "description" : "#1013587259",
+              "normalized" : [ {
+                "value" : "Utah, United States"
+              } ]
+            }
+          } ],
+          "display" : {
+            "name" : "API User 1372",
+            "gender" : "Male",
+            "lifespan" : "1950-Living",
+            "birthDate" : "1 April 1950",
+            "birthPlace" : "Utah, United States"
+          }
+        } ],
+        "child-and-parents-relationships" : [ {
+          "id" : "M9JY-655-1918931140.resulting",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "MM9N-TGG" ]
+          },
+          "child" : {
+            "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F",
+            "resourceId" : "KW3B-N7F"
+          }
+        }, {
+          "id" : "M9JY-655-1918931140.original",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "MM9N-TGG" ]
+          }
+        } ]
+      }
+    },
+    "contributors" : [ {
+      "name" : "API User 1372",
+      "uri" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+    } ],
+    "id" : "M9JY-655",
+    "links" : {
+      "agent" : {
+        "href" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+      }
+    },
+    "title" : "Child Added",
+    "updated" : 1439225541440,
+    "changeInfo" : [ {
+      "operation" : "http://familysearch.org/v1/Create",
+      "objectType" : "http://familysearch.org/v1/Child",
+      "objectModifier" : "http://familysearch.org/v1/ChildAndParentsRelationship",
+      "resulting" : {
+        "resource" : "#M9JY-655-1918931140.resulting",
+        "resourceId" : "M9JY-655-1918931140.resulting"
+      },
+      "original" : {
+        "resource" : "#M9JY-655-1918931140.original",
+        "resourceId" : "M9JY-655-1918931140.original"
+      }
+    } ]
+  }, {
+    "content" : {
+      "gedcomx" : {
+        "child-and-parents-relationships" : [ {
+          "id" : "M9JY-65P-1918931140.resulting",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "MM9N-TGG" ]
+          }
+        } ]
+      }
+    },
+    "contributors" : [ {
+      "name" : "API User 1372",
+      "uri" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+    } ],
+    "id" : "M9JY-65P",
+    "links" : {
+      "agent" : {
+        "href" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+      }
+    },
+    "title" : "Child and Parents Relationship Created",
+    "updated" : 1439225541440,
+    "changeInfo" : [ {
+      "operation" : "http://familysearch.org/v1/Create",
+      "objectType" : "http://familysearch.org/v1/ChildAndParentsRelationship",
+      "resulting" : {
+        "resource" : "#M9JY-65P-1918931140.resulting",
+        "resourceId" : "M9JY-65P-1918931140.resulting"
+      }
+    } ]
+  } ]
+}

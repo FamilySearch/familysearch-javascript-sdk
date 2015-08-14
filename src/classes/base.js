@@ -22,13 +22,31 @@ FS.BaseClass = function(client, data){
   this.$client = client;
   this.$helpers = client.helpers;
   this.$plumbing = client.plumbing;
-  
-  this.$serialize = function(){
-    return JSON.stringify(this, function(key, value){
-      if(key.indexOf('$') === 0){
-        return;
-      }
-      return value;
-    });
-  };
+};
+
+/**
+ * Return JSON string of object data.
+ */
+FS.BaseClass.prototype.$serialize = function(){
+  return JSON.stringify(this, function(key, value){
+    if(key.indexOf('$') === 0){
+      return;
+    }
+    return value;
+  });
+};
+
+/**
+ * Return a promise for the specified link object, if it exists.
+ * This isn't an asynchronous operation but we use promises anyway
+ * so that API methods can easily return this when rejected.
+ */
+FS.BaseClass.prototype.$getLink = function(name){
+  var d = this.$client.settings.deferredWrapper();
+  if(this.links && this.links[name]){
+    d.resolve(this.links[name]);
+  } else {
+    d.reject(new Error('Missing link: ' + name));
+  }
+  return d.promise;
 };

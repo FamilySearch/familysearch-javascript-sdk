@@ -1,6 +1,7 @@
 {
   "status": 201,
   "headers": {
-    "X-ENTITY-ID": "12345"
+    "X-ENTITY-ID": "12345",
+    "Location": "https://familysearch.org/platform/tree/persons/12345"
   }
 }

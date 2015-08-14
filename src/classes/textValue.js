@@ -1,4 +1,5 @@
-var FS = require('./../FamilySearch');
+var FS = require('./../FamilySearch'),
+    utils = require('../utils');
 
 /**
  * @ngdoc function
@@ -22,7 +23,7 @@ FS.prototype.createTextValue = function(data){
   return new TextValue(this, data);
 };
 
-TextValue.prototype = {
+TextValue.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: TextValue
   
   /**
@@ -38,4 +39,4 @@ TextValue.prototype = {
    * @propertyOf places.types:constructor.TextValue
    * @return {string} The text value.
    */ 
-};
+});

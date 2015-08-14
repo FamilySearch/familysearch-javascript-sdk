@@ -31,7 +31,7 @@ FS.prototype.createVocabularyList = function(data){
   return new VocabularyList(this, data);
 };
 
-VocabularyList.prototype = {
+VocabularyList.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: VocabularyList,
    
   /**
@@ -67,4 +67,4 @@ VocabularyList.prototype = {
     return utils.maybe(this.elements);
   }
    
-};
+});

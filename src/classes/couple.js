@@ -51,7 +51,7 @@ FS.prototype.createCouple = function(data){
   return new Couple(this, data);
 };
 
-Couple.prototype = {
+Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: Couple,
   /**
    * @ngdoc property
@@ -110,7 +110,7 @@ Couple.prototype = {
    * @function
    * @return {Object} promise for the {@link exports.functions:getPerson getPerson} response
    */
-  $getHusband: function() { return this.$client.getPerson(this.$getHusbandUrl() || this.$getHusbandId()); },
+  $getHusband: function() { return this.$client.getPerson(this.$getHusbandUrl()); },
 
   /**
    * @ngdoc function
@@ -137,7 +137,7 @@ Couple.prototype = {
    * @function
    * @return {Object} promise for the {@link exports.functions:getPerson getPerson} response
    */
-  $getWife: function() { return this.$client.getPerson(this.$getWifeUrl() || this.$getWifeId()); },
+  $getWife: function() { return this.$client.getPerson(this.$getWifeUrl()); },
 
   /**
    * @ngdoc function
@@ -183,7 +183,7 @@ Couple.prototype = {
    * @return {Object} promise for the {@link exports.functions:getPerson getPerson} response
    */
   $getSpouse: function(knownSpouseId) { 
-    return this.$client.getPerson(this.$getSpouseUrl(knownSpouseId) || this.$getSpouseId(knownSpouseId));
+    return this.$client.getPerson(this.$getSpouseUrl(knownSpouseId));
   },
   
   /**
@@ -191,9 +191,17 @@ Couple.prototype = {
    * @name spouses.types:constructor.Couple#$getNotes
    * @methodOf spouses.types:constructor.Couple
    * @function
-   * @return {Object} promise for the {@link notes.functions:getCoupleNotes getCoupleNotes} response
+   * @return {Object} promise for the {@link notes.functions:getNotes getNotes} response
    */
-  $getNotes: function() { return this.$client.getCoupleNotes(this.$helpers.removeAccessToken(maybe(maybe(this.links).notes).href)); },
+  $getNotes: function() { 
+    var self = this;
+    return self.$helpers.chainHttpPromises(
+      self.$getLink('notes'),
+      function(link){
+        return self.$client.getNotes(link.href);
+      }
+    );
+  },
 
 
   /**
@@ -203,25 +211,61 @@ Couple.prototype = {
    * @function
    * @return {Object} promise for the {@link sources.functions:getCoupleSourceRefs getCoupleSourceRefs} response
    */
-  $getSourceRefs: function() { return this.$client.getCoupleSourceRefs(this.id); },
+  $getSourceRefs: function() { 
+    var self = this;
+    return self.$helpers.chainHttpPromises(
+      self.$getLink('source-references'),
+      function(link){
+        return self.$client.getSourceRefs(link.href);
+      }
+    );
+  },
 
   /**
    * @ngdoc function
    * @name spouses.types:constructor.Couple#$getSources
    * @methodOf spouses.types:constructor.Couple
    * @function
-   * @return {Object} promise for the {@link sources.functions:getCoupleSourcesQuery getCoupleSourcesQuery} response
+   * @return {Object} promise for the {@link sources.functions:getSourcesQuery getSourcesQuery} response
    */
-  $getSources: function() { return this.$client.getCoupleSourcesQuery(this.id); },
+  $getSources: function() { 
+    var self = this;
+    return self.$helpers.chainHttpPromises(
+      self.$getLink('source-descriptions'),
+      function(link){
+        return self.$client.getSourcesQuery(link.href);
+      }
+    );
+  },
 
   /**
    * @ngdoc function
    * @name spouses.types:constructor.Couple#$getChanges
    * @methodOf spouses.types:constructor.Couple
    * @function
-   * @return {Object} promise for the {@link sources.functions:getCoupleChanges getCoupleChanges} response
+   * 
+   * @description
+   * Get change history for a couple relationship
+   * The response includes the following convenience function
+   *
+   * - `getChanges()` - get the array of {@link changeHistory.types:constructor.Change Changes} from the response
+   *
+   * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Change_History_resource FamilySearch API Docs}
+   *
+   * {@link http://jsfiddle.net/940x4gux/1/ Editable Example}
+   *
+   * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
+   * @param {Object=} opts options to pass to the http function specified during init
+   * @return {Object} promise for the response
    */
-  $getChanges: function() { return this.$client.getCoupleChanges(this.$helpers.removeAccessToken(maybe(this.links['change-history']).href)); },
+  $getChanges: function(params, opts) { 
+    var self = this;
+    return self.$helpers.chainHttpPromises(
+      self.$getLink('change-history'),
+      function(link) {
+        return self.$client.getChanges(link.href, params, opts);
+      });
+  },
 
   /**
    * @ngdoc function
@@ -310,12 +354,11 @@ Couple.prototype = {
    * {@link http://jsfiddle.net/LtphkL51/1/ Editable Example}
    *
    * @param {String=} changeMessage default change message to use when fact/deletion-specific changeMessage was not specified
-   * @param {boolean=} refresh true to read the relationship after updating
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise of the relationship id, which is fulfilled after the relationship has been updated,
    * and if refresh is true, after the relationship has been read
    */
-  $save: function(changeMessage, refresh, opts) {
+  $save: function(changeMessage, opts) {
     var postData = this.$client.createCouple();
     var isChanged = false;
     var crid = this.id;
@@ -350,8 +393,7 @@ Couple.prototype = {
       // as of 9 July 2014 it's possible to update relationships using the relationships endpoint,
       // but the way we're doing it is fine as well
       promises.push(self.$helpers.chainHttpPromises(
-        crid ? self.$plumbing.getUrl('couple-relationship-template', null, {crid: crid}) :
-          self.$plumbing.getUrl('relationships'),
+        self.$getCoupleUrl() ? self.$helpers.refPromise(self.$getCoupleUrl()) : self.$plumbing.getCollectionUrl('FSFT', 'relationships'),
         function(url) {
           // set url from id
           utils.forEach(['person1', 'person2'], function(role) {
@@ -359,11 +401,11 @@ Couple.prototype = {
               postData[role].resource = postData[role].resourceId;
             }
           });
-          return self.$plumbing.post(url,
-            { relationships: [ postData ] },
-            {},
-            opts,
-            self.$helpers.getResponseEntityId);
+          var promise = self.$plumbing.post(url, { relationships: [ postData ] },
+            {}, opts, function(){
+              return self.$getCoupleUrl() || promise.getResponseHeader('Location');
+            });
+          return promise;
         }));
     }
 
@@ -375,23 +417,11 @@ Couple.prototype = {
       });
     }
 
-    var relationship = this;
     // wait for all promises to be fulfilled
     var promise = self.$helpers.promiseAll(promises).then(function(results) {
-      var id = crid ? crid : results[0]; // if we're adding a new relationship, get id from the first (only) promise
+      var url = self.$getCoupleUrl() ? self.$getCoupleUrl() : results[0]; // if we're adding a new relationship, get id from the first (only) promise
       self.$helpers.extendHttpPromise(promise, promises[0]); // extend the first promise into the returned promise
-
-      if (refresh) {
-        // re-read the relationship and set this object's properties from response
-        return self.$client.getCouple(id, {}, opts).then(function(response) {
-          utils.deletePropertiesPartial(relationship, utils.appFieldRejector);
-          utils.extend(relationship, response.getRelationship());
-          return id;
-        });
-      }
-      else {
-        return id;
-      }
+      return url;
     });
     return promise;
   },
@@ -407,7 +437,7 @@ Couple.prototype = {
    * @return {Object} promise for the relationship URL
    */
   $delete: function(changeMessage, opts) {
-    return this.$client.deleteCouple(this.$getCoupleUrl() || this.id, changeMessage, opts);
+    return this.$client.deleteCouple(this.$getCoupleUrl(), changeMessage, opts);
   },
 
   /**
@@ -420,6 +450,12 @@ Couple.prototype = {
    * @return {Object} promise for the relationship URL
    */
   $restore: function(opts) {
-    return this.$client.restoreCouple(this.$getCoupleUrl() || this.id, opts);
+    var self = this;
+    return self.$helpers.chainHttpPromises(
+      self.$getLink('restore'),
+      function(link){
+        return self.$client.restoreCouple(link.href, opts);
+      }
+    );
   }
-};
+});

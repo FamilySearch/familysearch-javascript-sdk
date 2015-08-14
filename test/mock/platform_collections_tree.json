@@ -1,0 +1,121 @@
+{
+  "links" : {
+    "source-references-query" : {
+      "template" : "https://sandbox.familysearch.org/platform/tree/source-references{?source,description,access_token}",
+      "type" : "application/json,application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml,application/xml,text/html",
+      "accept" : "*/*",
+      "allow" : "GET",
+      "title" : "Source References Query"
+    }
+  },
+  "sourceDescriptions" : [ {
+    "id" : "SD-FSFT",
+    "about" : "#FSFT",
+    "componentOf" : {
+      "description" : "https://sandbox.familysearch.org/platform/collection"
+    },
+    "titles" : [ {
+      "value" : "FamilySearch Family Tree"
+    } ],
+    "resourceType" : "http://gedcomx.org/Collection"
+  } ],
+  "collections" : [ {
+    "id" : "FSFT",
+    "links" : {
+      "person" : {
+        "template" : "https://sandbox.familysearch.org/platform/tree/persons/{pid}{?access_token}",
+        "type" : "application/json,application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml,application/xml,text/html",
+        "accept" : "application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml",
+        "allow" : "HEAD,GET,POST,DELETE",
+        "title" : "Person"
+      },
+      "person-with-relationships" : {
+        "template" : "https://sandbox.familysearch.org/platform/tree/persons-with-relationships{?persons,person,access_token}",
+        "type" : "application/json,application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml,application/xml,text/html",
+        "accept" : "*/*",
+        "allow" : "GET,POST,DELETE",
+        "title" : "Person With Relationships"
+      },
+      "self" : {
+        "href" : "https://sandbox.familysearch.org/platform/collections/tree"
+      },
+      "collection" : {
+        "href" : "https://sandbox.familysearch.org/platform/collection"
+      },
+      "person-matches-query" : {
+        "template" : "https://sandbox.familysearch.org/platform/tree/matches{?count,q,candidateId,access_token}",
+        "type" : "application/atom+xml,application/json,application/x-gedcomx-atom+json,application/xml,text/html",
+        "accept" : "*/*",
+        "allow" : "GET",
+        "title" : "Person Matches Query"
+      },
+      "persons" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons"
+      },
+      "person-search" : {
+        "template" : "https://sandbox.familysearch.org/platform/tree/search{?count,start,q,context,access_token}",
+        "type" : "application/atom+xml,application/json,application/x-gedcomx-atom+json,application/xml,text/html",
+        "accept" : "*/*",
+        "allow" : "GET",
+        "title" : "Person Search"
+      },
+      "artifacts" : {
+        "href" : "https://sandbox.familysearch.org/platform/memories/memories"
+      },
+      "discussions" : {
+        "href" : "https://sandbox.familysearch.org/platform/discussions/discussions"
+      },
+      "preferred-spouse-relationship" : {
+        "template" : "https://sandbox.familysearch.org/platform/tree/users/{uid}/preferred-spouse-relationships/{pid}{?access_token}",
+        "type" : "application/json,application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml,application/xml,text/html",
+        "accept" : "application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml",
+        "allow" : "HEAD,GET,PUT,DELETE",
+        "title" : "Preferred Spouse Relationship"
+      },
+      "matches" : {
+        "template" : "https://sandbox.familysearch.org/platform/tree/persons/{pid}/matches{?count,status,includeNotAMatchDeclarations,confidence,collection,access_token}",
+        "type" : "application/atom+xml,application/json,application/x-gedcomx-atom+json,application/xml,text/html",
+        "accept" : "application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml",
+        "allow" : "GET,POST",
+        "title" : "Person Matches"
+      },
+      "http://oauth.net/core/2.0/endpoint/token" : {
+        "href" : "https://integration.familysearch.org/cis-web/oauth2/v3/token"
+      },
+      "current-user-history" : {
+        "href" : "https://sandbox.familysearch.org/platform/users/current/history"
+      },
+      "http://oauth.net/core/2.0/endpoint/authorize" : {
+        "href" : "https://integration.familysearch.org/cis-web/oauth2/v3/authorization"
+      },
+      "ancestry-query" : {
+        "template" : "https://sandbox.familysearch.org/platform/tree/ancestry{?spouse,personDetails,generations,descendants,marriageDetails,person,access_token}",
+        "type" : "application/json,application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml,application/xml,text/html",
+        "accept" : "*/*",
+        "allow" : "GET",
+        "title" : "Ancestry"
+      },
+      "current-user" : {
+        "href" : "https://sandbox.familysearch.org/platform/users/current"
+      },
+      "source-descriptions" : {
+        "href" : "https://sandbox.familysearch.org/platform/sources/descriptions"
+      },
+      "relationships" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/relationships"
+      },
+      "preferred-parent-relationship" : {
+        "template" : "https://sandbox.familysearch.org/platform/tree/users/{uid}/preferred-parent-relationships/{pid}{?access_token}",
+        "type" : "application/json,application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml,application/xml,text/html",
+        "accept" : "application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml",
+        "allow" : "HEAD,GET,PUT,DELETE",
+        "title" : "Preferred Parent Relationship"
+      },
+      "current-user-person" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/current-person"
+      }
+    },
+    "title" : "FamilySearch Family Tree"
+  } ],
+  "description" : "#SD-FSFT"
+}

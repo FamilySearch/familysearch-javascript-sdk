@@ -26,4 +26,34 @@ describe('base class', function() {
     });
   });
   
+  it('$getLink success', function(done){
+    var person = FS.createPerson({
+      links: {
+        test: {
+          href: 'foobaz'
+        }
+      }
+    });
+    person.testMethod = function(){
+      this.$getLink('test').then(function(link){
+        expect(link.href).toEqual('foobaz');
+        done();
+      });
+    };
+    person.testMethod();
+  });
+  
+  it('$getLink failure', function(done){
+    var person = FS.createPerson();
+    person.testMethod = function(){
+      return this.$getLink('test').then(function(link){
+        return link;
+      });
+    };
+    person.testMethod().then(null, function(error){
+      expect(error.message).toEqual('Missing link: test');
+      done();
+    });
+  });
+  
 });

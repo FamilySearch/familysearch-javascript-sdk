@@ -42,5 +42,5 @@ module.exports = {
     'beta'      : 'https://apibeta.familysearch.org',
     'production': 'https://api.familysearch.org'
   },
-  discoveryUrl: '/.well-known/app-meta'
+  collectionsUrl: '/platform/collections'
 };

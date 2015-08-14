@@ -1,9 +1,10 @@
 var q = require('q');
 
 describe('Spouses relationship', function() {
+  
   it('is returned from getCouple', function(done) {
     var promises = [];
-    FS.getCouple('12345').then(function(response) {
+    FS.getCouple('https://familysearch.org/platform/tree/couple-relationships/12345').then(function(response) {
       var rel = response.getRelationship();
       expect(rel.id).toBe('12345');
       expect(rel.$getHusbandId()).toBe('PPPJ-MYY');
@@ -56,7 +57,7 @@ describe('Spouses relationship', function() {
       .$setHusband('FJP-M4RK')
       .$setWife('JRW-NMSD')
       .$save('...change message...');
-    promise.then(function(response) {
+    promise.then(function() {
       var request = promise.getRequest();
       //noinspection JSUnresolvedFunction
       expect(request.body).toEqualJson({
@@ -86,7 +87,6 @@ describe('Spouses relationship', function() {
         } ]
       });
       expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('PPPX-PP0'); // same endpoint as create child-and-parents, so has the same response
       done();
     });
   });
@@ -94,6 +94,11 @@ describe('Spouses relationship', function() {
   it('conclusion is created', function(done) {
     var rel = FS.createCouple();
     rel.id = 'R123-456';
+    rel.links = {
+      relationship: {
+        href: 'https://familysearch.org/platform/tree/couple-relationships/R123-456'
+      }
+    };
     var promise = rel
       .$addFact({type:'http://gedcomx.org/Marriage', $changeMessage: '...change message...'})
       .$save();
@@ -111,7 +116,7 @@ describe('Spouses relationship', function() {
         } ]
       });
       expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('R123-456');
+      expect(response).toBe('https://familysearch.org/platform/tree/couple-relationships/R123-456');
       done();
     });
   });
@@ -119,6 +124,14 @@ describe('Spouses relationship', function() {
   function createMockRelationship(rid, fid) {
     var rel = FS.createCouple();
     rel.id = rid;
+    rel.links = {
+      relationship: {
+        href: 'https://sandbox.familysearch.org/platform/tree/couple-relationships/' + rid
+      },
+      restore: {
+        href: 'https://sandbox.familysearch.org/platform/tree/couple-relationships/' + rid + '/restore'
+      }
+    };
     var fact = FS.createFact();
     fact.id = fid;
     fact.type = 'http://gedcomx.org/Marriage';
@@ -160,7 +173,7 @@ describe('Spouses relationship', function() {
         } ]
       });
       expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('cid');
+      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/cid');
       done();
     });
   });
@@ -185,7 +198,7 @@ describe('Spouses relationship', function() {
         } ]
       });
       expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('cid');
+      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/cid');
       done();
     });
   });
@@ -199,7 +212,7 @@ describe('Spouses relationship', function() {
     promise.then(function(response) {
       expect(promise.getStatusCode()).toBe(204);
       expect(promise.getRequest().headers['X-Reason']).toBe('...change message...');
-      expect(response).toBe('R123-456');
+      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/R123-456');
       done();
     });
   });
@@ -210,7 +223,7 @@ describe('Spouses relationship', function() {
     promise.then(function(response) {
       expect(promise.getStatusCode()).toBe(204);
       expect(promise.getRequest().headers['X-Reason']).toBe('...change message...');
-      expect(response).toBe('12345');
+      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/12345');
       done();
     });
   });
@@ -226,7 +239,7 @@ describe('Spouses relationship', function() {
     var promise = createMockRelationship('12345', 'fid').$restore();
     promise.then(function(response) {
       expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('12345');
+      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/12345/restore');
       done();
     });
   });

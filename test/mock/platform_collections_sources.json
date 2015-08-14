@@ -1,0 +1,38 @@
+{
+  "sourceDescriptions" : [ {
+    "id" : "SD-FSUDS",
+    "about" : "#FSUDS",
+    "componentOf" : {
+      "description" : "https://sandbox.familysearch.org/platform/collection"
+    },
+    "titles" : [ {
+      "value" : "FamilySearch User-Defined Sources"
+    } ],
+    "resourceType" : "http://gedcomx.org/Collection"
+  } ],
+  "collections" : [ {
+    "id" : "FSUDS",
+    "links" : {
+      "http://oauth.net/core/2.0/endpoint/token" : {
+        "href" : "https://integration.familysearch.org/cis-web/oauth2/v3/token"
+      },
+      "http://oauth.net/core/2.0/endpoint/authorize" : {
+        "href" : "https://integration.familysearch.org/cis-web/oauth2/v3/authorization"
+      },
+      "subcollections" : {
+        "href" : "https://sandbox.familysearch.org/platform/sources/collections"
+      },
+      "self" : {
+        "href" : "https://sandbox.familysearch.org/platform/collections/sources"
+      },
+      "collection" : {
+        "href" : "https://sandbox.familysearch.org/platform/collection"
+      },
+      "source-descriptions" : {
+        "href" : "https://sandbox.familysearch.org/platform/sources/descriptions"
+      }
+    },
+    "title" : "FamilySearch User-Defined Sources"
+  } ],
+  "description" : "#SD-FSUDS"
+}

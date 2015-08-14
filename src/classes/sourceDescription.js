@@ -47,7 +47,7 @@ FS.prototype.createSourceDescription = function(data){
   return new SourceDescription(this, data);
 };
 
-SourceDescription.prototype = {
+SourceDescription.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: SourceDescription,
   /**
    * @ngdoc property
@@ -114,7 +114,7 @@ SourceDescription.prototype = {
    * @return {Object} promise for the {@link sources.functions:getSourceRefsQuery getSourceRefsQuery} response
    */
   $getSourceRefsQuery: function() {
-    return this.$client.getSourceRefsQuery(this.id);
+    return this.$client.getSourceRefsQuery(maybe(maybe(this.links)['source-references-query']).href);
   },
 
   /**
@@ -172,8 +172,7 @@ SourceDescription.prototype = {
    * @param {string=} changeMessage change message
    * @param {boolean=} refresh true to read the source description after updating
    * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise of the source description id, which is fulfilled after the source description has been updated,
-   * and if refresh is true, after the source description has been read.
+   * @return {Object} promise of the source description url
    */
   $save: function(changeMessage, refresh, opts) {
     var self = this;
@@ -181,28 +180,15 @@ SourceDescription.prototype = {
       self.attribution = self.$client.createAttribution(changeMessage);
     }
     var promise = self.$helpers.chainHttpPromises(
-      self.id ? self.$plumbing.getUrl('source-description-template', null, {sdid: self.id}) : self.$plumbing.getUrl('source-descriptions'),
-      function(url) {
+      self.$getSourceDescriptionUrl() ? self.$helpers.refPromise(self.$getSourceDescriptionUrl()) : self.$plumbing.getCollectionUrl('FSUDS', 'source-descriptions'),
+      function(url){
         return self.$plumbing.post(url, { sourceDescriptions: [ self ] }, {}, opts, function(data, promise) {
           // x-entity-id and location headers are not set on update, only on create
-          return self.id || promise.getResponseHeader('X-ENTITY-ID');
-        });
-      });
-    var returnedPromise = promise.then(function(sdid) {
-      self.$helpers.extendHttpPromise(returnedPromise, promise); // extend the first promise into the returned promise
-      if (refresh) {
-        // re-read the SourceDescription and set this object's properties from response
-        return self.$client.getSourceDescription(sdid, {}, opts).then(function(response) {
-          utils.deletePropertiesPartial(self, utils.appFieldRejector);
-          utils.extend(self, response.getSourceDescription());
-          return sdid;
+          return self.$getSourceDescriptionUrl() || promise.getResponseHeader('Location');
         });
       }
-      else {
-        return sdid;
-      }
-    });
-    return returnedPromise;
+    );
+    return promise;
   },
 
   /**
@@ -219,7 +205,7 @@ SourceDescription.prototype = {
    */
   $delete: function(changeMessage, opts) {
     // must use the id, not the full url, here
-    return this.$client.deleteSourceDescription(this.id, changeMessage, opts);
+    return this.$client.deleteSourceDescription(this.$getSourceDescriptionUrl(), changeMessage, opts);
   }
 
-};
+});

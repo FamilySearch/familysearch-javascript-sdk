@@ -25,7 +25,7 @@ describe('Search', function() {
   });
 
   it('match results are returned from getPersonMatches', function(done) {
-    FS.getPersonMatches('12345').then(function(response) {
+    FS.getPersonMatches('https://familysearch.org/platform/tree/persons/12345/matches').then(function(response) {
       var results = response.getSearchResults();
       expect(results.length).toBe(2);
       expect(results[0].id).toBe('98765');
@@ -65,7 +65,7 @@ describe('Search', function() {
   });
   
   it('getResultsCounts returns 0 for empty matches response', function(done){
-    var promise = FS.getPersonMatches('PPPP-PPP');
+    var promise = FS.getPersonMatches('https://familysearch.org/platform/tree/persons/PPPP-PPP/matches');
     promise.then(function(response){
       expect(response.getResultsCount()).toBe(0);
       expect(promise.getStatusCode()).toBe(204);

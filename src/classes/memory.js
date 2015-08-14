@@ -34,7 +34,7 @@ FS.prototype.createMemory = function(data){
   return new Memory(this, data);
 };
 
-Memory.prototype = {
+Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: Memory,
   /**
    * @ngdoc property
@@ -255,20 +255,18 @@ Memory.prototype = {
    * {@link http://jsfiddle.net/f2wrtgj0/1/ Editable Example}
    *
    * @param {string=} changeMessage change message (currently ignored)
-   * @param {boolean=} refresh true to read the discussion after updating
    * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise of the memory id, which is fulfilled after the memory has been updated,
-   * and if refresh is true, after the memory has been read.
+   * @return {Object} promise of the memory url which is fulfilled after the memory has been created or updated
    */
-  $save: function(changeMessage, refresh, opts) {
+  $save: function(changeMessage, opts) {
     var self = this;
-    var promise = self.$helpers.chainHttpPromises(
-      self.id ? self.$plumbing.getUrl('memory-template', null, {mid: self.id}) : self.$plumbing.getUrl('memories'),
+    return self.$helpers.chainHttpPromises(
+      self.$getMemoryUrl() ? self.$helpers.refPromise(self.$getMemoryUrl()) : self.$plumbing.getCollectionUrl('FSMEM', 'artifacts'),
       function(url) {
         if (self.id) {
           // update memory
           return self.$plumbing.post(url, { sourceDescriptions: [ self ] }, {}, opts, function() {
-            return self.id;
+            return url;
           });
         }
         else {
@@ -285,24 +283,12 @@ Memory.prototype = {
           }
           return self.$plumbing.post(self.$helpers.appendQueryParameters(url, params),
             self.$data, { 'Content-Type': utils.isString(self.$data) ? 'text/plain' : 'multipart/form-data' }, opts,
-            self.$helpers.getResponseEntityId);
+            function(data, promise){
+              return self.$helpers.getResponseLocation(data, promise);
+            });
         }
-      });
-    var returnedPromise = promise.then(function(mid) {
-      self.$helpers.extendHttpPromise(returnedPromise, promise); // extend the first promise into the returned promise
-      if (refresh) {
-        // re-read the person and set this object's properties from response
-        return self.$client.getMemory(mid, {}, opts).then(function(response) {
-          utils.deletePropertiesPartial(self, utils.appFieldRejector);
-          utils.extend(self, response.getMemory());
-          return mid;
-        });
       }
-      else {
-        return mid;
-      }
-    });
-    return returnedPromise;
+    );
   },
 
   /**
@@ -316,7 +302,7 @@ Memory.prototype = {
    * @return {Object} promise for the memory URL
    */
   $delete: function(changeMessage, opts) {
-    return this.$client.deleteMemory(this.$getMemoryUrl() || this.id, changeMessage, opts);
+    return this.$client.deleteMemory(this.$getMemoryUrl(), changeMessage, opts);
   }
 
-};
+});

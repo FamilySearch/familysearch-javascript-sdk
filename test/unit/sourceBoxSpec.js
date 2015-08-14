@@ -1,8 +1,9 @@
 var utils = require('../../src/utils');
 
 describe('Source Box', function() {
+  
   it('user collections are returned from getCollectionsForUser', function(done) {
-    FS.getCollectionsForUser('UID').then(function(response) {
+    FS.getCollectionsForUser().then(function(response) {
       var collections = response.getCollections();
       expect(collections.length).toBe(1);
       expect(collections[0].id).toEqual('MMMM-MMM');
@@ -19,7 +20,7 @@ describe('Source Box', function() {
   });
 
   it('user collection is returned from getCollection', function(done) {
-    FS.getCollection('sf-MMMM-MMM').then(function(response) {
+    FS.getCollection('https://familysearch.org/platform/sources/collections/sf-MMMM-MMM').then(function(response) {
       var collection = response.getCollection();
       expect(collection.id).toEqual('sf-MMMM-MMM');
       expect(collection.title).toBe('Name');
@@ -30,7 +31,7 @@ describe('Source Box', function() {
   });
 
   it('source descriptions are returned from getCollectionSourceDescriptions', function(done) {
-    FS.getCollectionSourceDescriptions('CMMM-MMM', {start:2, count:1}).then(function(response) {
+    FS.getCollectionSourceDescriptions('https://familysearch.org/platform/sources/collections/CMMM-MMM/descriptions', {start:2, count:1}).then(function(response) {
       var sourceDescriptions = response.getSourceDescriptions();
       expect(sourceDescriptions.length).toBe(1);
       expect(sourceDescriptions[0].id).toBe('MMMM-CCC');
@@ -43,7 +44,7 @@ describe('Source Box', function() {
   });
 
   it('source descriptions for a user are returned from getCollectionSourceDescriptionsForUser', function(done) {
-    FS.getCollectionSourceDescriptionsForUser('CCCC-CCC', {start:2, count:1}).then(function(response) {
+    FS.getCollectionSourceDescriptionsForUser({start:2, count:1}).then(function(response) {
       var sourceDescriptions = response.getSourceDescriptions();
       expect(sourceDescriptions.length).toBe(1);
       expect(sourceDescriptions[0].id).toBe('MMMM-CCC');
@@ -57,7 +58,7 @@ describe('Source Box', function() {
 
   it('collection is created', function(done) {
     var coll = FS.createCollection({title: 'Title'});
-    var promise = coll.$save(true);
+    var promise = coll.$save();
     promise.then(function(response) {
       var request = promise.getRequest();
       //noinspection JSUnresolvedFunction
@@ -67,8 +68,7 @@ describe('Source Box', function() {
         }]
       });
       expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('sf-MMMM-MMM');
-      expect(coll.id).toBe('sf-MMMM-MMM');  // re-read from database
+      expect(response).toBe('https://familysearch.org/platform/sources/collections/sf-MMMM-MMM');
       done();
     });
   });
@@ -76,6 +76,11 @@ describe('Source Box', function() {
   it('collection is updated', function(done) {
     var coll = FS.createCollection({title: 'Title'});
     coll.id = 'sf-MMMM-MMM';
+    coll.links = {
+      self: {
+        href: 'https://familysearch.org/platform/sources/collections/sf-MMMM-MMM'
+      }
+    };
     var promise = coll.$save();
     promise.then(function(response) {
       var request = promise.getRequest();
@@ -83,26 +88,31 @@ describe('Source Box', function() {
       expect(request.body).toEqualJson({
         collections: [{
           id : 'sf-MMMM-MMM',
-          title : 'Title'
+          title : 'Title',
+          links: {
+            self: {
+              href: 'https://familysearch.org/platform/sources/collections/sf-MMMM-MMM'
+            }
+          }
         }]
       });
       expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('sf-MMMM-MMM');
+      expect(response).toBe('https://familysearch.org/platform/sources/collections/sf-MMMM-MMM');
       done();
     });
   });
 
   it('collection is deleted', function(done) {
-    var promise = FS.deleteCollection('sf-MMMM-MMM');
+    var promise = FS.deleteCollection('https://familysearch.org/platform/sources/collections/sf-MMMM-MMM');
     promise.then(function(response) {
       expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('sf-MMMM-MMM');
+      expect(response).toBe('https://familysearch.org/platform/sources/collections/sf-MMMM-MMM');
       done();
     });
   });
 
   it('source descriptions are moved', function(done) {
-    var promise = FS.moveSourceDescriptionsToCollection('sf-MMMM-123', ['MMMM-MMM', 'MMMM-MMX']);
+    var promise = FS.moveSourceDescriptionsToCollection('https://familysearch.org/platform/sources/collections/sf-MMMM-123/descriptions', ['MMMM-MMM', 'MMMM-MMX']);
     promise.then(function(response) {
       var request = promise.getRequest();
       //noinspection JSUnresolvedFunction
@@ -114,18 +124,18 @@ describe('Source Box', function() {
         }]
       });
       expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('sf-MMMM-123');
+      expect(response).toBe('https://familysearch.org/platform/sources/collections/sf-MMMM-123/descriptions');
       done();
     });
   });
 
-  it ('source descriptions are removed', function(done) {
+  it('source descriptions are removed', function(done) {
     var promise = FS.removeSourceDescriptionsFromCollections(['MMMM-MMM', 'MMMM-MMX']);
     promise.then(function() {
       var requests = FS.getHttpRequests();
       expect(utils.find(requests, {
         method: 'DELETE',
-        url:'https://sandbox.familysearch.org/platform/sources/PXRQ-FMXT/collections/descriptions?id=MMMM-MMM&id=MMMM-MMX&access_token=mock'})
+        url:'https://familysearch.org/platform/sources/CCCC-CCC/collections/descriptions?id=MMMM-MMM&id=MMMM-MMX&access_token=mock'})
       ).toBeTruthy();
       expect(promise.getStatusCode()).toBe(204);
       done();

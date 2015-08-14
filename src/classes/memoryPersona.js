@@ -11,13 +11,25 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Personas_resource FamilySearch API Docs}
  *
- * @param {Object=} data an object with optional attributes {$memoryId, name, memoryArtifactRef}.
- * To create a new memory persona, you must set $memoryId and name.
+ * @param {Object=} data an object with optional attributes {$name, $memoryArtifactRef}.
+ * To create a new memory persona, you must set $memoryArtifactRef and $name.
  * _name_ can be a {@link name.types:constructor.Name Name} object or a fullText string.
  * _NOTE_ memory persona names don't have given or surname parts, only fullText
  */
 var MemoryPersona = FS.MemoryPersona = function(client, data) {
   FS.BaseClass.call(this, client, data);
+  
+  if(data){
+    
+    if(data.$name){
+      this.$setName(data.$name);
+    }
+    
+    if(data.$memoryArtifactRef){
+      this.$setMemoryArtifactRef(data.$memoryArtifactRef);
+    }
+    
+  }
 };
 
 /**
@@ -31,7 +43,8 @@ FS.prototype.createMemoryPersona = function(data){
   return new MemoryPersona(this, data);
 };
 
-MemoryPersona.prototype = {
+MemoryPersona.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
+  
   constructor: MemoryPersona,
   /**
    * @ngdoc property
@@ -45,13 +58,6 @@ MemoryPersona.prototype = {
    * @name memories.types:constructor.MemoryPersona#extracted
    * @propertyOf memories.types:constructor.MemoryPersona
    * @return {String} not sure what this means
-   */
-
-  /**
-   * @ngdoc property
-   * @name memories.types:constructor.MemoryPersona#$memoryId
-   * @propertyOf memories.types:constructor.MemoryPersona
-   * @return {String} Id of the memory to which this persona is attached
    */
 
   /**
@@ -105,7 +111,7 @@ MemoryPersona.prototype = {
    * @return {Object} promise for the {@link memories.functions:getMemory getMemory} response
    */
   $getMemory:  function() {
-    return this.$client.getMemory(this.$getMemoryUrl() || this.$memoryId);
+    return this.$client.getMemory(this.$getMemoryUrl());
   },
 
   /**
@@ -150,42 +156,22 @@ MemoryPersona.prototype = {
    *
    * {@link http://jsfiddle.net/eeozaLkL/1/ Editable Example}
    *
+   * @param {string} url full url of the memory personas endpoint
    * @param {string=} changeMessage change message (currently ignored)
-   * @param {boolean=} refresh true to read the memory persona after updating
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise of the memory persona URL, which is fulfilled after the memory persona has been updated,
    * and if refresh is true, after the memory persona has been read.
    */
-  $save: function(changeMessage, refresh, opts) {
+  $save: function(url, changeMessage, opts) {
     var self = this;
-    var promise = self.$helpers.chainHttpPromises(
-      self.$plumbing.getUrl((self.id ? 'memory-persona-template' : 'memory-personas-template'), null, {mid: self.$memoryId, pid: self.id}),
-      function(url) {
-        if (!self.$getMemoryArtifactRef()) {
-          // default the media artifact reference to point to the memory
-          // the discovery resource is guaranteed to be set due to the getUrl statement
-          var memoryUrl = self.$helpers.getUrlFromDiscoveryResource(self.$client.settings.discoveryResource, 'memory-template', {mid: self.$memoryId});
-          self.$setMemoryArtifactRef(self.$client.createMemoryArtifactRef({description: memoryUrl}));
-        }
+    return self.$helpers.chainHttpPromises(
+      self.$helpers.refPromise(url ? url : self.$getMemoryPersonaUrl()),
+      function(url){
         return self.$plumbing.post(url, { persons: [ self ] }, {}, opts, function(data, promise) {
           return self.$getMemoryPersonaUrl() || self.$helpers.removeAccessToken(promise.getResponseHeader('Location'));
         });
-      });
-    var returnedPromise = promise.then(function(url) {
-      self.$helpers.extendHttpPromise(returnedPromise, promise); // extend the first promise into the returned promise
-      if (refresh) {
-        // re-read the person and set this object's properties from response
-        return self.$client.getMemoryPersona(url, null, {}, opts).then(function(response) {
-          utils.deletePropertiesPartial(self, utils.appFieldRejector);
-          utils.extend(self, response.getMemoryPersona());
-          return url;
-        });
       }
-      else {
-        return url;
-      }
-    });
-    return returnedPromise;
+    );
   },
 
   /**
@@ -199,7 +185,7 @@ MemoryPersona.prototype = {
    * @return {Object} promise for the memory persona URL
    */
   $delete: function(changeMessage, opts) {
-    return this.$client.deleteMemoryPersona(this.$getMemoryPersonaUrl() || this.$memoryId, this.id, changeMessage, opts);
+    return this.$client.deleteMemoryPersona(this.$getMemoryPersonaUrl(), this.id, changeMessage, opts);
   }
 
-};
+});

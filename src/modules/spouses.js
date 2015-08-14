@@ -33,31 +33,27 @@ var coupleConvenienceFunctions = {
  *
  * {@link http://jsfiddle.net/x1v6vxoy/4/ Editable Example}
  *
- * @param {String} crid id or full URL of the couple relationship
+ * @param {String} url full URL of the couple relationship
  * @param {Object=} params set `persons` true to return a person object for each person in the relationship,
  * which you can access using the `getPerson(id)` convenience function.
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getCouple = function(crid, params, opts) {
+FS.prototype.getCouple = function(url, params, opts) {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('couple-relationship-template', crid, {crid: crid}),
-    function(url) {
-      return self.plumbing.get(url, params, {}, opts,
-        utils.compose(
-          utils.objectExtender(coupleConvenienceFunctions),
-          function(response){
-            utils.forEach(response.persons, function(person, index, obj){
-              obj[index] = self.createPerson(person);
-            });
-            utils.forEach(response.relationships, function(rel, index, obj){
-              obj[index] = self.createCouple(rel);
-            });
-            return response;
-          }
-        ));
-    });
+  return self.plumbing.get(url, params, {}, opts,
+    utils.compose(
+      utils.objectExtender(coupleConvenienceFunctions),
+      function(response){
+        utils.forEach(response.persons, function(person, index, obj){
+          obj[index] = self.createPerson(person);
+        });
+        utils.forEach(response.relationships, function(rel, index, obj){
+          obj[index] = self.createCouple(rel);
+        });
+        return response;
+      }
+    ));
 };
 
 /**
@@ -72,21 +68,15 @@ FS.prototype.getCouple = function(crid, params, opts) {
  *
  * {@link http://jsfiddle.net/1hsj5b59/1/ Editable Example}
  *
- * @param {string} crid id or full URL of the couple relationship
+ * @param {string} url full URL of the couple relationship
  * @param {string} changeMessage reason for the deletion
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the relationship id/URL
  */
-FS.prototype.deleteCouple = function(crid, changeMessage, opts) {
-  var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('couple-relationship-template', crid, {crid: crid}),
-    function(url) {
-      return self.plumbing.del(url, changeMessage ? {'X-Reason' : changeMessage} : {}, opts, function() {
-        return crid;
-      });
-    }
-  );
+FS.prototype.deleteCouple = function(url, changeMessage, opts) {
+  return this.plumbing.del(url, changeMessage ? {'X-Reason' : changeMessage} : {}, opts, function() {
+    return url;
+  });
 };
 
 /**
@@ -105,14 +95,8 @@ FS.prototype.deleteCouple = function(crid, changeMessage, opts) {
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the relationship id/URL
  */
-FS.prototype.restoreCouple = function(crid, opts) {
-  var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('couple-relationship-restore-template', crid, {crid: crid}),
-    function(url) {
-      return self.plumbing.post(url, null, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
-        return crid;
-      });
-    }
-  );
+FS.prototype.restoreCouple = function(url, opts) {
+  return this.plumbing.post(url, null, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
+    return url;
+  });
 };

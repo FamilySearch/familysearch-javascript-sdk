@@ -30,7 +30,7 @@ FS.prototype.createMemoryArtifactRef = function(data){
   return new MemoryArtifactRef(this, data);
 };
 
-MemoryArtifactRef.prototype = {
+MemoryArtifactRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: MemoryArtifactRef,
   /**
    * @ngdoc property
@@ -98,4 +98,4 @@ MemoryArtifactRef.prototype = {
     return this;
   }
 
-};
+});

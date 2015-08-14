@@ -2,7 +2,8 @@ var utils = require('./utils'),
     forEach = utils.forEach;
 
 /**
- * Internal utility functions
+ * Internal utility functions. This differs from utils.js in that it contains
+ * functions which are specific to FamilySearch or need access to a client instance.
  */
 
 var Helpers = function(client){
@@ -298,7 +299,7 @@ Helpers.prototype.chainHttpPromises = function() {
   var self = this;
   forEach(Array.prototype.slice.call(arguments, 1), function(fn) {
     promise = promise.then(function() {
-     var result = fn.apply(null, arguments);
+      var result = fn.apply(null, arguments);
       if (result && result.then) {
         // the bridge object is extended with the functions from each promise-generating function,
         // but the final functions will be those from the last promise-generating function
@@ -322,16 +323,6 @@ Helpers.prototype.getLastUrlSegment = function(url) {
     url = url.replace(/^.*\//, '').replace(/\?.*$/, '');
   }
   return url;
-};
-
-/**
- * Response mapper that returns the X-ENTITY-ID header
- * @param data ignored
- * @param promise http promise
- * @returns {string} the X-ENTITY-ID response header
- */
-Helpers.prototype.getResponseEntityId = function(data, promise) {
-  return promise.getResponseHeader('X-ENTITY-ID');
 };
 
 /**
@@ -487,15 +478,16 @@ Helpers.prototype.populateUriTemplate = function(template, params) {
 };
 
 /**
- * get a URL from the provided discoveryResource by combining resourceName with params
- * @param discoveryResource discovery resource
+ * get a URL from the provided collection by combining resourceName with params
+ * 
+ * @param collection collection
  * @param resourceName resource name
  * @param params object of params to populate in template
  * @returns {string} url
  */
-Helpers.prototype.getUrlFromDiscoveryResource = function(discoveryResource, resourceName, params) {
+Helpers.prototype.getUrlFromCollection = function(collection, resourceName, params) {
   var url = '';
-  var resource = discoveryResource.links[resourceName];
+  var resource = collection.links[resourceName];
   if (resource['href']) {
     url = this.removeAccessToken(resource['href']);
   }
@@ -504,6 +496,29 @@ Helpers.prototype.getUrlFromDiscoveryResource = function(discoveryResource, reso
     url = this.populateUriTemplate(template, params || {});
   }
   return url;
+};
+
+/**
+ * Return the entity type for a given url. For example, /platform/tree/child-and-parents-relationships/DDD/notes
+ * will return childAndParentsRelationships. This is used by notes and sources to
+ * determine where in a gedcomx document the data should go.
+ * 
+ * @param {string} url
+ * @returns {string} entity type: persons, relationships, or childAndParentsRelationships
+ */
+Helpers.prototype.getEntityType = function(url){
+  var matches = url.match(/platform\/tree\/([^\/]+)/);
+  if(matches && matches[1]){
+    if (matches[1] === 'persons') {
+      return 'persons';
+    }
+    else if (matches[1] === 'couple-relationships') {
+      return 'relationships';
+    }
+    else if (matches[1] === 'child-and-parents-relationships') {
+      return 'childAndParentsRelationships';
+    }
+  }
 };
 
 /**

@@ -1,0 +1,211 @@
+{
+  "persons" : [ {
+    "id" : "PPP0-MP1",
+    "links" : {
+      "spouses" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/spouses"
+      },
+      "ancestry" : {
+        "href" : "https://familysearch.org/platform/tree/ancestry?person=PPP0-MP1"
+      },
+      "person" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1"
+      },
+      "parents" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/parents"
+      },
+      "person-with-relationships" : {
+        "href" : "https://familysearch.org/platform/tree/persons-with-relationships?person=PPP0-MP1"
+      },
+      "descendancy" : {
+        "href" : "https://familysearch.org/platform/tree/descendancy?person=PPP0-MP1"
+      },
+      "discussion-references" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/discussion-references"
+      },
+      "merge" : {
+        "template" : "https://familysearch.org/platform/tree/persons/{pid}/merges/{dpid}{?filter,access_token}",
+        "type" : "application/json,application/x-fs-v1+json,application/x-fs-v1+xml,application/xml,text/html",
+        "accept" : "application/x-fs-v1+json,application/x-fs-v1+xml",
+        "allow" : "GET,OPTIONS,POST",
+        "title" : "Person Merge"
+      },
+      "change-history" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/changes"
+      },
+      "children" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/children"
+      },
+      "evidence-references" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/memory-references"
+      },
+      "spouse-relationships" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/spouse-relationships"
+      },
+      "child-relationships" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/child-relationships"
+      },
+      "collection" : {
+        "href" : "https://familysearch.org/platform/collections/tree"
+      },
+      "portrait" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/portrait"
+      },
+      "parent-relationships" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/parent-relationships"
+      },
+      "artifacts" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/memories"
+      },
+      "source-references" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/source-references"
+      },
+      "matches" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/matches"
+      },
+      "non-matches" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/not-a-match"
+      },
+      "portraits" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/portraits"
+      },
+      "notes" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/notes"
+      },
+      "source-descriptions" : {
+        "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/sources"
+      }
+    },
+    "attribution" : {
+      "changeMessage" : "wikipedia knows"
+    },
+    "identifiers" : {
+      "http://gedcomx.org/Persistent" : [ "https://familysearch.org/ark:/61903/4:1:PPP0-MP1" ]
+    },
+    "living" : true,
+    "gender" : {
+      "type" : "http://gedcomx.org/Male"
+    },
+    "names" : [ {
+      "id" : "name-id",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/conclusions/name-id"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "urn:name-attribution",
+          "resourceId" : "KNCV-RMZ"
+        }
+      },
+      "type" : "http://gedcomx.org/BirthName",
+      "nameForms" : [ {
+        "fullText" : "Alex Aleksandrova",
+        "parts" : [ {
+          "type" : "http://gedcomx.org/Given",
+          "value" : "Alex"
+        }, {
+          "type" : "http://gedcomx.org/Surname",
+          "value" : "Aleksandrova"
+        } ]
+      }, {
+        "fullText" : "Анастасия Александрова",
+        "parts" : [ {
+          "type" : "http://gedcomx.org/Given",
+          "value" : "Анастасия"
+        }, {
+          "type" : "http://gedcomx.org/Surname",
+          "value" : "Александрова"
+        } ]
+      } ],
+      "preferred" : true
+    } ],
+    "facts" : [ {
+      "id" : "born",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/conclusions/born"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "urn:fact-attribution",
+          "resourceId" : "RMQW-LPK"
+        }
+      },
+      "type" : "http://gedcomx.org/Birth",
+      "date" : {
+        "original" : "3 Apr 1836",
+        "formal" : "+1836"
+      },
+      "place" : {
+        "original" : "Moscow, Russia",
+        "normalized" : [ {
+          "lang" : "en",
+          "value" : "Moscow, Moskva, Russia"
+        } ]
+      }
+    }, {
+      "id" : "res",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://familysearch.org/platform/tree/persons/PPP0-MP1/conclusions/res"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://familysearch.org/platform/users/agents/JNYR-KJP",
+          "resourceId" : "JNYR-KJP"
+        }
+      },
+      "type" : "http://gedcomx.org/Residence",
+      "date" : {
+        "original" : "13 Apr 1836",
+        "formal" : "+1836-04-13"
+      },
+      "place" : {
+        "original" : "Moscow, Russia",
+        "description" : "#1276974106",
+        "normalized" : [ {
+          "value" : "Moskva, Moscow, Russia"
+        } ]
+      }
+    } ],
+    "display" : {
+      "name" : "Alex Aleksandrova",
+      "gender" : "Male",
+      "lifespan" : "3 Apr 1836 - Dead",
+      "birthDate" : "3 Apr 1836",
+      "birthPlace" : "Moscow, Russia"
+    }
+  } ],
+  "sourceDescriptions" : [ {
+    "id" : "SD-PPP0-MP1",
+    "citations" : [ {
+      "lang" : "en",
+      "value" : "\"Family Tree,\" database, <i>FamilySearch</i> (http://familysearch.org : modified 07 August 2015, 14:40), entry for Alex Aleksandrova(PID https://familysearch.org/ark:/61903/4:1:PPP0-MP1); contributed by various users."
+    } ],
+    "about" : "#PPP0-MP1",
+    "componentOf" : {
+      "description" : "https://familysearch.org/platform/collections/tree"
+    },
+    "titles" : [ {
+      "value" : "Alex Aleksandrova"
+    } ],
+    "resourceType" : "http://gedcomx.org/Person",
+    "identifiers" : {
+      "http://gedcomx.org/Persistent" : [ "https://familysearch.org/ark:/61903/4:1:PPP0-MP1" ]
+    },
+    "modified" : 1438980035000
+  } ],
+  "places" : [ {
+    "id" : "1276974106",
+    "names" : [ {
+      "value" : "Moskva, Moscow, Russia"
+    } ],
+    "latitude" : 37.613983,
+    "longitude" : 55.784296
+  } ],
+  "description" : "#SD-PPP0-MP1"
+}

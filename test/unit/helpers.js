@@ -73,6 +73,8 @@ function httpMock(opts, callback) {
   requests.push(opts);
   var filename = getFilename(opts);
   var data = loadFile(filename);
+  //console.log(filename);
+  //console.log(data);
   var headers = {};
   if (data.headers) {
     headers = data.headers;
@@ -81,6 +83,11 @@ function httpMock(opts, callback) {
   if (data.status) {
     status = data.status;
   }
+  if (data.status >= 300 && data.status < 400){
+    opts.url = headers.Location;
+    return httpMock(opts, callback);
+  }
+  
   var returnedData = {};
   
   // Account for non-JSON responses such as the date authority.

@@ -8,13 +8,13 @@ var FS = require('./../FamilySearch'),
  * @description
  *
  * Reference from a person to a memory persona
- * To create a new memory persona reference, you must set both $personId and memoryPersona
+ * To create a new memory persona reference you must set $memoryPersona
  *
  * _NOTE_: memory persona references cannot be updated. They can only be created or deleted.
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_References_resource FamilySearch API Docs}
  *
- * @param {Object=} data an object with optional attributes {$personId, $memoryPersona}.
+ * @param {Object=} data an object with optional attributes {$memoryPersona}.
  * _$memoryPersona_ can be a {@link memories.types:constructor.MemoryPersona MemoryPersona} or a memory persona url
  */
 var MemoryPersonaRef = FS.MemoryPersonaRef = function(client, data) {
@@ -36,8 +36,10 @@ FS.prototype.createMemoryPersonaRef = function(data){
   return new MemoryPersonaRef(this, data);
 };
 
-MemoryPersonaRef.prototype = {
+MemoryPersonaRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
+  
   constructor: MemoryPersonaRef,
+  
   /**
    * @ngdoc property
    * @name memories.types:constructor.MemoryPersonaRef#id
@@ -57,13 +59,6 @@ MemoryPersonaRef.prototype = {
    * @name memories.types:constructor.MemoryPersonaRef#resourceId
    * @propertyOf memories.types:constructor.MemoryPersonaRef
    * @return {String} Id of the Memory Persona
-   */
-
-  /**
-   * @ngdoc property
-   * @name memories.types:constructor.MemoryPersonaRef#$personId
-   * @propertyOf memories.types:constructor.MemoryPersonaRef
-   * @return {String} Id of the person to which this persona is attached
    */
 
   /**
@@ -151,26 +146,23 @@ MemoryPersonaRef.prototype = {
    *
    * {@link http://jsfiddle.net/r3px0ork/1/ Editable Example}
    *
+   * @param {string} url full url for the person memory persona references endpoint
    * @param {string=} changeMessage change message (currently ignored)
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise of the memory persona ref URL, which is fulfilled after the memory persona ref has been created
    * (note however that individual memory persona references cannot be read).
    */
-  $save: function(changeMessage, opts) {
+  $save: function(url, changeMessage, opts) {
     var self = this;
-    return self.$helpers.chainHttpPromises(
-      self.$plumbing.getUrl('person-memory-persona-references-template', null, {pid: self.$personId}),
-      function(url) {
-        return self.$plumbing.post(url, { persons: [{ evidence: [ self ] }] }, {}, opts, function(data, promise) {
-          if (!self.id) {
-            self.id = promise.getResponseHeader('X-ENTITY-ID');
-          }
-          if (!self.$getMemoryPersonaRefUrl()) {
-            self.links = { 'evidence-reference' : { href: promise.getResponseHeader('Location') } };
-          }
-          return self.$getMemoryPersonaRefUrl();
-        });
-      });
+    return self.$plumbing.post(url, { persons: [{ evidence: [ self ] }] }, {}, opts, function(data, promise) {
+      if (!self.id) {
+        self.id = promise.getResponseHeader('X-ENTITY-ID');
+      }
+      if (!self.$getMemoryPersonaRefUrl()) {
+        self.links = { 'evidence-reference' : { href: promise.getResponseHeader('Location') } };
+      }
+      return self.$getMemoryPersonaRefUrl();
+    });
   },
 
   /**
@@ -184,7 +176,7 @@ MemoryPersonaRef.prototype = {
    * @return {Object} promise for the memory persona ref URL
    */
   $delete: function(changeMessage, opts) {
-    return this.$client.deleteMemoryPersonaRef(this.$getMemoryPersonaRefUrl() || this.$personId, this.id, changeMessage, opts);
+    return this.$client.deleteMemoryPersonaRef(this.$getMemoryPersonaRefUrl(), this.id, changeMessage, opts);
   }
 
-};
+});

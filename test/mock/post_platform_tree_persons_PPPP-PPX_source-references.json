@@ -1,3 +1,6 @@
 {
-  "status": 204
+  "status": 204,
+  "headers": {
+    "Location": "https://familysearch.org/platform/tree/persons/PPPP-PPX/source-references/SRSR-R01"
+  }
 }

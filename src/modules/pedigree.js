@@ -68,7 +68,7 @@ function matchPersonNum(numberLabel, num) {
 FS.prototype.getAncestry = function(pid, params, opts) {
   var self = this;
   return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('ancestry-query'),
+    self.plumbing.getCollectionUrl('FSFT', 'ancestry-query'),
     function(url) {
       return self.plumbing.get(url, utils.extend({'person': pid}, params), {}, opts,
         utils.compose(
@@ -128,7 +128,9 @@ FS.prototype.getAncestry = function(pid, params, opts) {
 FS.prototype.getDescendancy = function(pid, params, opts) {
   var self = this;
   return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('descendancy-query'),
+    // self.plumbing.getCollectionUrl('FSFT', 'descendancy-query'),
+    // descendancy query is not yet available (14 August 2015) so it's hard-coded for now
+    self.helpers.refPromise(self.helpers.getAPIServerUrl('/platform/tree/descendancy')),
     function(url) {
       return self.plumbing.get(url, utils.extend({'person': pid}, params), {}, opts,
         utils.compose(

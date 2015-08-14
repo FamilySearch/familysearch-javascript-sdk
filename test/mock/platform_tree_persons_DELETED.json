@@ -1,0 +1,167 @@
+{
+  "persons" : [ {
+    "id" : "DELETED",
+    "links" : {
+      "spouses" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/spouses"
+      },
+      "ancestry" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/ancestry?person=DELETED"
+      },
+      "person" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED"
+      },
+      "parents" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/parents"
+      },
+      "person-with-relationships" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons-with-relationships?person=DELETED"
+      },
+      "descendancy" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/descendancy?person=DELETED"
+      },
+      "discussion-references" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/discussion-references"
+      },
+      "merge" : {
+        "template" : "https://sandbox.familysearch.org/platform/tree/persons/{pid}/merges/{dpid}{?filter,access_token}",
+        "type" : "application/json,application/x-fs-v1+json,application/x-fs-v1+xml,application/xml,text/html",
+        "accept" : "application/x-fs-v1+json,application/x-fs-v1+xml",
+        "allow" : "OPTIONS,GET,POST",
+        "title" : "Person Merge"
+      },
+      "change-history" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/changes"
+      },
+      "children" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/children"
+      },
+      "evidence-references" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/memory-references"
+      },
+      "spouse-relationships" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/spouse-relationships"
+      },
+      "child-relationships" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/child-relationships"
+      },
+      "collection" : {
+        "href" : "https://sandbox.familysearch.org/platform/collections/tree"
+      },
+      "portrait" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/portrait"
+      },
+      "parent-relationships" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/parent-relationships"
+      },
+      "artifacts" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/memories"
+      },
+      "source-references" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/source-references"
+      },
+      "matches" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/matches"
+      },
+      "restore" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/restore"
+      },
+      "non-matches" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/not-a-match"
+      },
+      "portraits" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/portraits"
+      },
+      "notes" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/notes"
+      },
+      "source-descriptions" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/sources"
+      }
+    },
+    "identifiers" : {
+      "http://gedcomx.org/Persistent" : [ "https://sandbox.familysearch.org/ark:/61903/4:1:DELETED" ]
+    },
+    "living" : false,
+    "gender" : {
+      "id" : "V.777-777P",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/conclusions/V.777-777P"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+          "resourceId" : "MMDZ-8G7"
+        },
+        "modified" : 1439229805350
+      },
+      "type" : "http://gedcomx.org/Male"
+    },
+    "names" : [ {
+      "id" : "V.777-7771",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/conclusions/V.777-7771"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+          "resourceId" : "MMDZ-8G7"
+        },
+        "modified" : 1439229805350
+      },
+      "type" : "http://gedcomx.org/BirthName",
+      "nameForms" : [ {
+        "fullText" : "Jacob",
+        "parts" : [ {
+          "type" : "http://gedcomx.org/Given",
+          "value" : "Jacob"
+        } ]
+      } ],
+      "preferred" : true
+    } ],
+    "facts" : [ {
+      "id" : "V.777-777N",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://sandbox.familysearch.org/platform/tree/persons/DELETED/conclusions/V.777-777N"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+          "resourceId" : "MMDZ-8G7"
+        },
+        "modified" : 1439229805350
+      },
+      "type" : "http://gedcomx.org/Death"
+    } ],
+    "display" : {
+      "name" : "Jacob",
+      "gender" : "Male",
+      "lifespan" : "Deceased"
+    }
+  } ],
+  "sourceDescriptions" : [ {
+    "id" : "SD-DELETED",
+    "citations" : [ {
+      "lang" : "en",
+      "value" : "\"Family Tree,\" database, <i>FamilySearch</i> (http://familysearch.org), entry for Jacob(PID https://sandbox.familysearch.org/ark:/61903/4:1:DELETED); contributed by various users."
+    } ],
+    "about" : "#DELETED",
+    "componentOf" : {
+      "description" : "https://sandbox.familysearch.org/platform/collections/tree"
+    },
+    "titles" : [ {
+      "value" : "Jacob"
+    } ],
+    "resourceType" : "http://gedcomx.org/Person",
+    "identifiers" : {
+      "http://gedcomx.org/Persistent" : [ "https://sandbox.familysearch.org/ark:/61903/4:1:DELETED" ]
+    }
+  } ],
+  "description" : "#SD-DELETED"
+}

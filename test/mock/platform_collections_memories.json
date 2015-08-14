@@ -1,0 +1,35 @@
+{
+  "sourceDescriptions" : [ {
+    "id" : "SD-FSMEM",
+    "about" : "#FSMEM",
+    "componentOf" : {
+      "description" : "https://sandbox.familysearch.org/platform/collection"
+    },
+    "titles" : [ {
+      "value" : "FamilySearch Memories"
+    } ],
+    "resourceType" : "http://gedcomx.org/Collection"
+  } ],
+  "collections" : [ {
+    "id" : "FSMEM",
+    "links" : {
+      "http://oauth.net/core/2.0/endpoint/token" : {
+        "href" : "https://integration.familysearch.org/cis-web/oauth2/v3/token"
+      },
+      "http://oauth.net/core/2.0/endpoint/authorize" : {
+        "href" : "https://integration.familysearch.org/cis-web/oauth2/v3/authorization"
+      },
+      "self" : {
+        "href" : "https://sandbox.familysearch.org/platform/collections/memories"
+      },
+      "collection" : {
+        "href" : "https://sandbox.familysearch.org/platform/collection"
+      },
+      "artifacts" : {
+        "href" : "https://sandbox.familysearch.org/platform/memories/memories"
+      }
+    },
+    "title" : "FamilySearch Memories"
+  } ],
+  "description" : "#SD-FSMEM"
+}

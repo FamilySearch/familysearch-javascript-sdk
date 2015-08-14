@@ -15,7 +15,7 @@ FS.prototype._changeHistoryResponseMapper = function(){
   return utils.compose(
     utils.objectExtender({getChanges: function() { return this.entries || []; }}),
     function(response){
-      for(var i = 0; i < response.entries.length; i++){
+      for(var i = 0; i < utils.maybe(response.entries).length; i++){
         response.entries[i] = self.createChange(response.entries[i]);
       }
       return response;
@@ -34,83 +34,19 @@ FS.prototype._changeHistoryResponseMapper = function(){
  *
  * - `getChanges()` - get the array of {@link changeHistory.types:constructor.Change Changes} from the response
  *
- * {@link https://familysearch.org/developers/docs/api/tree/Person_Change_History_resource FamilySearch API Docs}
+ * {@link https://familysearch.org/developers/docs/api/tree/Person_Change_History_resource Person Changes API Docs}
+ * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Change_History_resource Child and Parents Changes API Docs}
+ * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Change_History_resource Couple Changes API Docs}
  *
  * {@link http://jsfiddle.net/s90nqqLs/1/ Editable Example}
  *
- * @param {String} pid id of the person or full URL of the person changes endpoint
+ * @param {String} url full URL of the person changes. child and parent changes, or couple changes endpoint
  * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getPersonChanges = function(pid, params, opts) {
-  var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('person-changes-template', pid, {pid: pid}),
-    function(url) {
-      return self.plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-        self._changeHistoryResponseMapper());
-    });
-};
-
-/**
- * @ngdoc function
- * @name changeHistory.functions:getChildAndParentsChanges
- * @function
- *
- * @description
- * Get change history for a child and parents relationship
- * The response includes the following convenience function
- *
- * - `getChanges()` - get the array of {@link changeHistory.types:constructor.Change Changes} from the response
- *
- * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Change_History_resource FamilySearch API Docs}
- *
- * {@link http://jsfiddle.net/v6e1yjsz/1/ Editable Example}
- *
- * @param {String} caprid id of the child and parents relationship or full URL of the child and parents relationship changes endpoint
- * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the response
- */
-FS.prototype.getChildAndParentsChanges = function(caprid, params, opts) {
-  var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('child-and-parents-relationship-changes-template', caprid, {caprid: caprid}),
-    function(url) {
-      return self.plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-        self._changeHistoryResponseMapper());
-    });
-};
-
-/**
- * @ngdoc function
- * @name changeHistory.functions:getCoupleChanges
- * @function
- *
- * @description
- * Get change history for a couple relationship
- * The response includes the following convenience function
- *
- * - `getChanges()` - get the array of {@link changeHistory.types:constructor.Change Changes} from the response
- *
- * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Change_History_resource FamilySearch API Docs}
- *
- * {@link http://jsfiddle.net/940x4gux/1/ Editable Example}
- *
- * @param {String} crid id of the couple relationship to read or full URL of the couple relationship changes endpoint
- * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the response
- */
-FS.prototype.getCoupleChanges = function(crid, params, opts) {
-  var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('couple-relationship-changes-template', crid, {crid: crid}),
-    function(url) {
-      return self.plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-        self._changeHistoryResponseMapper());
-    });
+FS.prototype.getChanges = function(url, params, opts) {
+  return this.plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts, this._changeHistoryResponseMapper());
 };
 
 /**
@@ -125,17 +61,13 @@ FS.prototype.getCoupleChanges = function(crid, params, opts) {
  *
  * {@link http://jsfiddle.net/xL50x20d/1/ Editable Example}
  *
- * @param {string} chid change id or full URL of the restore changes endpoint
+ * @param {string} url full URL of the restore changes endpoint
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the chid
  */
-FS.prototype.restoreChange = function(chid, opts) {
+FS.prototype.restoreChange = function(url, opts) {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('change-restore-template', chid, {chid: chid}),
-    function(url) {
-      return self.plumbing.post(url, null, {'Content-Type': void 0}, opts, function() { // don't send a Content-Type header
-        return chid;
-      });
-    });
+  return self.plumbing.post(url, null, {'Content-Type': void 0}, opts, function() { // don't send a Content-Type header
+    return url;
+  });
 };

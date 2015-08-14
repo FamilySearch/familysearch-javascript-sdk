@@ -45,7 +45,7 @@ FS.prototype.createPlacesSearchResult = function(data){
   return new PlacesSearchResult(this, data);
 };
 
-PlacesSearchResult.prototype = {
+PlacesSearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: PlacesSearchResult,
   
   /**
@@ -74,4 +74,4 @@ PlacesSearchResult.prototype = {
     return maybe(maybe(maybe(this.content).gedcomx).places)[0];
   }
    
-};
+});

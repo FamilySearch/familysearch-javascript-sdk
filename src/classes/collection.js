@@ -32,7 +32,7 @@ FS.prototype.createCollection = function(data){
   return new Collection(this, data);
 };
 
-Collection.prototype = {
+Collection.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: Collection,
   /**
    * @ngdoc property
@@ -93,36 +93,21 @@ Collection.prototype = {
    *
    * {@link http://jsfiddle.net/ppm671s2/1/ Editable Example}
    *
-   * @param {boolean=} refresh true to read the collection after updating
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise of the collection id, which is fulfilled after the collection has been updated,
    * and if refresh is true, after the collection has been read.
    */
-  $save: function(refresh, opts) {
+  $save: function(opts) {
     var self = this;
-    var promise = self.$helpers.chainHttpPromises(
-      self.id ? self.$plumbing.getUrl('user-collection-template', null, {udcid: self.id}) : self.$plumbing.getUrl('user-collections'),
+    return self.$helpers.chainHttpPromises(
+      self.$getCollectionUrl() ? self.$helpers.refPromise(self.$getCollectionUrl()) : self.$plumbing.getCollectionUrl('FSUDS', 'subcollections'),
       function(url) {
-        return self.$plumbing.post(url, { collections: [ self ] }, {}, opts, function(data, promise) {
-          // x-entity-id and location headers are not set on update, only on create
-          return self.id || promise.getResponseHeader('X-ENTITY-ID');
+        var promise = self.$plumbing.post(url, { collections: [ self ] }, {}, opts, function(data, promise) {
+          return self.$getCollectionUrl() || promise.getResponseHeader('Location');
         });
-      });
-    var returnedPromise = promise.then(function(udcid) {
-      self.$helpers.extendHttpPromise(returnedPromise, promise); // extend the first promise into the returned promise
-      if (refresh) {
-        // re-read the collection and set this object's properties from response
-        return self.$client.getCollection(udcid, {}, opts).then(function(response) {
-          utils.deletePropertiesPartial(self, utils.appFieldRejector);
-          utils.extend(self, response.getCollection());
-          return udcid;
-        });
+        return promise;
       }
-      else {
-        return udcid;
-      }
-    });
-    return returnedPromise;
+    );
   },
 
   /**
@@ -137,7 +122,7 @@ Collection.prototype = {
    * @return {Object} promise for the collection id
    */
   $delete: function(opts) {
-    return this.$client.deleteCollection(this.$getCollectionUrl() || this.id, opts);
+    return this.$client.deleteCollection(this.$getCollectionUrl(), opts);
   }
 
-};
+});

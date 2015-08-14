@@ -1,0 +1,54 @@
+{
+    "childAndParentsRelationships": [
+        {
+            "id": "MM9N-TGG",
+            "links": {
+                "source-references": {
+                    "href": "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MM9N-TGG/source-references"
+                },
+                "relationship": {
+                    "href": "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MM9N-TGG"
+                },
+                "child": {
+                    "href": "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F"
+                },
+                "mother": {
+                    "href": "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG"
+                },
+                "change-history": {
+                    "href": "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MM9N-TGG/changes"
+                },
+                "collection": {
+                    "href": "https://sandbox.familysearch.org/platform/collections/tree"
+                },
+                "notes": {
+                    "href": "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MM9N-TGG/notes"
+                },
+                "source-descriptions": {
+                    "href": "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MM9N-TGG/sources"
+                },
+                "mother-role": {
+                    "href": "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MM9N-TGG/mother"
+                },
+                "father": {
+                    "href": "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL"
+                },
+                "father-role": {
+                    "href": "https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MM9N-TGG/father"
+                }
+            },
+            "father": {
+                "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL",
+                "resourceId": "KWWC-RCL"
+            },
+            "mother": {
+                "resource": "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG",
+                "resourceId": "KWWC-RCG"
+            },
+            "child": {
+                "resource": "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F",
+                "resourceId": "KW3B-N7F"
+            }
+        }
+    ]
+}

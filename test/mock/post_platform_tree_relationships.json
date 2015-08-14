@@ -1,6 +1,7 @@
 {
   "status": 201,
   "headers": {
-    "X-ENTITY-ID": "PPPX-PP0"
+    "X-ENTITY-ID": "PPPX-PP0",
+    "Location": "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0"
   }
 }

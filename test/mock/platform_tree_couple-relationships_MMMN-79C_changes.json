@@ -1,0 +1,552 @@
+{
+  "links" : {
+    "relationship" : {
+      "href" : "https://sandbox.familysearch.org/platform/tree/couple-relationships/MMMN-79C"
+    },
+    "self" : {
+      "href" : "https://sandbox.familysearch.org/platform/tree/couple-relationships/MMMN-79C/changes"
+    }
+  },
+  "title" : "Change History for Couple Relationship MMMN-79C",
+  "updated" : 1424729000697,
+  "entries" : [ {
+    "content" : {
+      "gedcomx" : {
+        "relationships" : [ {
+          "id" : "M99G-Y2X-1346376427.resulting",
+          "notes" : [ {
+            "id" : "MMMS-7KD",
+            "subject" : "A couple's note",
+            "text" : "Note description stuff text"
+          } ],
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "MMMN-79C" ]
+          }
+        } ]
+      }
+    },
+    "contributors" : [ {
+      "name" : "API User 1372",
+      "uri" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+    } ],
+    "id" : "M99G-Y2X",
+    "links" : {
+      "agent" : {
+        "href" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+      }
+    },
+    "title" : "Couple Note Added",
+    "updated" : 1424729000697,
+    "changeInfo" : [ {
+      "operation" : "http://familysearch.org/v1/Create",
+      "objectType" : "http://gedcomx.org/Note",
+      "objectModifier" : "http://gedcomx.org/Couple",
+      "resulting" : {
+        "resource" : "#M99G-Y2X-1346376427.resulting",
+        "resourceId" : "M99G-Y2X-1346376427.resulting"
+      }
+    } ]
+  }, {
+    "content" : {
+      "gedcomx" : {
+        "relationships" : [ {
+          "id" : "M99L-B7J-1346376427.resulting",
+          "sources" : [ {
+            "id" : "MMM9-14C",
+            "description" : "https://sandbox.familysearch.org/platform/sources/descriptions/MMCS-LLF"
+          } ],
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "MMMN-79C" ]
+          }
+        } ]
+      }
+    },
+    "contributors" : [ {
+      "name" : "API User 1372",
+      "uri" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+    } ],
+    "id" : "M99L-B7J",
+    "links" : {
+      "agent" : {
+        "href" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+      }
+    },
+    "title" : "Couple Source Reference Added",
+    "updated" : 1424712823507,
+    "changeInfo" : [ {
+      "operation" : "http://familysearch.org/v1/Create",
+      "objectType" : "http://gedcomx.org/SourceReference",
+      "objectModifier" : "http://gedcomx.org/Couple",
+      "reason" : "because because",
+      "resulting" : {
+        "resource" : "#M99L-B7J-1346376427.resulting",
+        "resourceId" : "M99L-B7J-1346376427.resulting"
+      }
+    } ]
+  }, {
+    "content" : {
+      "gedcomx" : {
+        "relationships" : [ {
+          "id" : "MMKL-BRK-1346376427.resulting",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "MMMN-79C" ]
+          },
+          "facts" : [ {
+            "id" : "R.777-7774",
+            "type" : "http://gedcomx.org/Marriage",
+            "date" : {
+              "original" : "2 June 1800",
+              "normalized" : [ {
+                "value" : "2 June 1800"
+              } ]
+            }
+          } ]
+        } ]
+      }
+    },
+    "contributors" : [ {
+      "name" : "API User 1372",
+      "uri" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+    } ],
+    "id" : "MMKL-BRK",
+    "links" : {
+      "agent" : {
+        "href" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+      }
+    },
+    "title" : "Marriage Added",
+    "updated" : 1409063601330,
+    "changeInfo" : [ {
+      "operation" : "http://familysearch.org/v1/Create",
+      "objectType" : "http://gedcomx.org/Marriage",
+      "objectModifier" : "http://gedcomx.org/Couple",
+      "resulting" : {
+        "resource" : "#MMKL-BRK-1346376427.resulting",
+        "resourceId" : "MMKL-BRK-1346376427.resulting"
+      }
+    } ]
+  }, {
+    "content" : {
+      "gedcomx" : {
+        "relationships" : [ {
+          "id" : "MMKL-BQQ-1346376427.resulting",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "MMMN-79C" ]
+          },
+          "facts" : [ {
+            "id" : "R.777-777P",
+            "type" : "http://gedcomx.org/Marriage",
+            "date" : {
+              "original" : "June 1800",
+              "formal" : "+1800-06"
+            }
+          } ]
+        } ]
+      }
+    },
+    "contributors" : [ {
+      "name" : "API User 1372",
+      "uri" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+    } ],
+    "id" : "MMKL-BQQ",
+    "links" : {
+      "agent" : {
+        "href" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+      }
+    },
+    "title" : "Marriage Added",
+    "updated" : 1409063388378,
+    "changeInfo" : [ {
+      "operation" : "http://familysearch.org/v1/Create",
+      "objectType" : "http://gedcomx.org/Marriage",
+      "objectModifier" : "http://gedcomx.org/Couple",
+      "resulting" : {
+        "resource" : "#MMKL-BQQ-1346376427.resulting",
+        "resourceId" : "MMKL-BQQ-1346376427.resulting"
+      }
+    } ]
+  }, {
+    "content" : {
+      "gedcomx" : {
+        "persons" : [ {
+          "id" : "KWWC-RCL",
+          "sortKey" : "0002427988",
+          "identifiers" : {
+            "http://gedcomx.org/Persistent" : [ "https://sandbox.familysearch.org/ark:/61903/4:1:KWWC-RCL" ],
+            "http://gedcomx.org/Primary" : [ "KWWC-RCL" ]
+          },
+          "living" : false,
+          "gender" : {
+            "id" : "V.777-7771",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409062695947
+            },
+            "type" : "http://gedcomx.org/Male"
+          },
+          "names" : [ {
+            "id" : "V.777-777N",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409062695947
+            },
+            "type" : "http://gedcomx.org/BirthName",
+            "nameForms" : [ {
+              "fullText" : "George Stewart",
+              "parts" : [ {
+                "type" : "http://gedcomx.org/Given",
+                "value" : "George"
+              }, {
+                "type" : "http://gedcomx.org/Surname",
+                "value" : "Stewart"
+              } ]
+            } ],
+            "preferred" : true
+          } ],
+          "facts" : [ {
+            "id" : "V.777-7774",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409062695947
+            },
+            "type" : "http://gedcomx.org/Birth",
+            "date" : {
+              "original" : "4 July 1935",
+              "formal" : "+1935-07-04",
+              "normalized" : [ {
+                "value" : "4 July 1935"
+              } ]
+            },
+            "place" : {
+              "original" : "San Juan, New Mexico, United States",
+              "description" : "#1806582422",
+              "normalized" : [ {
+                "value" : "San Juan, New Mexico, United States"
+              } ]
+            }
+          }, {
+            "id" : "V.777-777P",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409062695947
+            },
+            "type" : "http://gedcomx.org/Death"
+          } ],
+          "display" : {
+            "name" : "George Stewart",
+            "gender" : "Male",
+            "lifespan" : "1935-Deceased",
+            "birthDate" : "4 July 1935",
+            "birthPlace" : "San Juan, New Mexico, United States"
+          }
+        }, {
+          "id" : "KWWC-RCG",
+          "sortKey" : "0002378648",
+          "identifiers" : {
+            "http://gedcomx.org/Persistent" : [ "https://sandbox.familysearch.org/ark:/61903/4:1:KWWC-RCG" ],
+            "http://gedcomx.org/Primary" : [ "KWWC-RCG" ]
+          },
+          "living" : false,
+          "gender" : {
+            "id" : "V.777-7774",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409062750207
+            },
+            "type" : "http://gedcomx.org/Female"
+          },
+          "names" : [ {
+            "id" : "V.777-7771",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409062750207
+            },
+            "type" : "http://gedcomx.org/BirthName",
+            "nameForms" : [ {
+              "fullText" : "Sarah Jane",
+              "parts" : [ {
+                "type" : "http://gedcomx.org/Given",
+                "value" : "Sarah"
+              }, {
+                "type" : "http://gedcomx.org/Surname",
+                "value" : "Jane"
+              } ]
+            } ],
+            "preferred" : true
+          } ],
+          "facts" : [ {
+            "id" : "V.777-777N",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409063767819
+            },
+            "type" : "http://gedcomx.org/Birth",
+            "date" : {
+              "original" : "1 June 1800",
+              "formal" : "+1800-06-01"
+            }
+          }, {
+            "id" : "V.777-777P",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409063767819
+            },
+            "type" : "http://gedcomx.org/Death",
+            "date" : {
+              "original" : "2 June 1800",
+              "formal" : "+1800-06-02",
+              "normalized" : [ {
+                "value" : "2 June 1800"
+              } ]
+            }
+          } ],
+          "display" : {
+            "name" : "Sarah Jane",
+            "gender" : "Female",
+            "lifespan" : "1800-1800",
+            "birthDate" : "1 June 1800",
+            "deathDate" : "2 June 1800"
+          }
+        } ],
+        "relationships" : [ {
+          "id" : "MMKL-BQ3-1346376427.resulting",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "MMMN-79C" ]
+          },
+          "person1" : {
+            "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL",
+            "resourceId" : "KWWC-RCL"
+          },
+          "person2" : {
+            "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG",
+            "resourceId" : "KWWC-RCG"
+          }
+        }, {
+          "id" : "MMKL-BQ3-1346376427.original",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "MMMN-79C" ]
+          },
+          "person1" : {
+            "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL",
+            "resourceId" : "KWWC-RCL"
+          }
+        } ],
+        "places" : [ {
+          "id" : "1806582422",
+          "names" : [ {
+            "value" : "San Juan, New Mexico, United States"
+          } ]
+        } ]
+      }
+    },
+    "contributors" : [ {
+      "name" : "API User 1372",
+      "uri" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+    } ],
+    "id" : "MMKL-BQ3",
+    "links" : {
+      "agent" : {
+        "href" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+      }
+    },
+    "title" : "Woman Added",
+    "updated" : 1409062753443,
+    "changeInfo" : [ {
+      "operation" : "http://familysearch.org/v1/Create",
+      "objectType" : "http://familysearch.org/v1/Woman",
+      "objectModifier" : "http://gedcomx.org/Couple",
+      "resulting" : {
+        "resource" : "#MMKL-BQ3-1346376427.resulting",
+        "resourceId" : "MMKL-BQ3-1346376427.resulting"
+      },
+      "original" : {
+        "resource" : "#MMKL-BQ3-1346376427.original",
+        "resourceId" : "MMKL-BQ3-1346376427.original"
+      }
+    } ]
+  }, {
+    "content" : {
+      "gedcomx" : {
+        "persons" : [ {
+          "id" : "KWWC-RCL",
+          "sortKey" : "0002427988",
+          "identifiers" : {
+            "http://gedcomx.org/Persistent" : [ "https://sandbox.familysearch.org/ark:/61903/4:1:KWWC-RCL" ],
+            "http://gedcomx.org/Primary" : [ "KWWC-RCL" ]
+          },
+          "living" : false,
+          "gender" : {
+            "id" : "V.777-7771",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409062695947
+            },
+            "type" : "http://gedcomx.org/Male"
+          },
+          "names" : [ {
+            "id" : "V.777-777N",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409062695947
+            },
+            "type" : "http://gedcomx.org/BirthName",
+            "nameForms" : [ {
+              "fullText" : "George Stewart",
+              "parts" : [ {
+                "type" : "http://gedcomx.org/Given",
+                "value" : "George"
+              }, {
+                "type" : "http://gedcomx.org/Surname",
+                "value" : "Stewart"
+              } ]
+            } ],
+            "preferred" : true
+          } ],
+          "facts" : [ {
+            "id" : "V.777-7774",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409062695947
+            },
+            "type" : "http://gedcomx.org/Birth",
+            "date" : {
+              "original" : "4 July 1935",
+              "formal" : "+1935-07-04",
+              "normalized" : [ {
+                "value" : "4 July 1935"
+              } ]
+            },
+            "place" : {
+              "original" : "San Juan, New Mexico, United States",
+              "description" : "#1806582422",
+              "normalized" : [ {
+                "value" : "San Juan, New Mexico, United States"
+              } ]
+            }
+          }, {
+            "id" : "V.777-777P",
+            "attribution" : {
+              "contributor" : {
+                "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+                "resourceId" : "MMDZ-8G7"
+              },
+              "modified" : 1409062695947
+            },
+            "type" : "http://gedcomx.org/Death"
+          } ],
+          "display" : {
+            "name" : "George Stewart",
+            "gender" : "Male",
+            "lifespan" : "1935-Deceased",
+            "birthDate" : "4 July 1935",
+            "birthPlace" : "San Juan, New Mexico, United States"
+          }
+        } ],
+        "relationships" : [ {
+          "id" : "MMKL-BQS-1346376427.resulting",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "MMMN-79C" ]
+          },
+          "person1" : {
+            "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL",
+            "resourceId" : "KWWC-RCL"
+          }
+        }, {
+          "id" : "MMKL-BQS-1346376427.original",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "MMMN-79C" ]
+          }
+        } ]
+      }
+    },
+    "contributors" : [ {
+      "name" : "API User 1372",
+      "uri" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+    } ],
+    "id" : "MMKL-BQS",
+    "links" : {
+      "agent" : {
+        "href" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+      }
+    },
+    "title" : "Man Added",
+    "updated" : 1409062753443,
+    "changeInfo" : [ {
+      "operation" : "http://familysearch.org/v1/Create",
+      "objectType" : "http://familysearch.org/v1/Man",
+      "objectModifier" : "http://gedcomx.org/Couple",
+      "resulting" : {
+        "resource" : "#MMKL-BQS-1346376427.resulting",
+        "resourceId" : "MMKL-BQS-1346376427.resulting"
+      },
+      "original" : {
+        "resource" : "#MMKL-BQS-1346376427.original",
+        "resourceId" : "MMKL-BQS-1346376427.original"
+      }
+    } ]
+  }, {
+    "content" : {
+      "gedcomx" : {
+        "relationships" : [ {
+          "id" : "MMKL-BQ9-1346376427.resulting",
+          "identifiers" : {
+            "http://gedcomx.org/Primary" : [ "MMMN-79C" ]
+          }
+        } ]
+      }
+    },
+    "contributors" : [ {
+      "name" : "API User 1372",
+      "uri" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+    } ],
+    "id" : "MMKL-BQ9",
+    "links" : {
+      "agent" : {
+        "href" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7"
+      }
+    },
+    "title" : "Couple Relationship Created",
+    "updated" : 1409062753443,
+    "changeInfo" : [ {
+      "operation" : "http://familysearch.org/v1/Create",
+      "objectType" : "http://gedcomx.org/Couple",
+      "resulting" : {
+        "resource" : "#MMKL-BQ9-1346376427.resulting",
+        "resourceId" : "MMKL-BQ9-1346376427.resulting"
+      }
+    } ]
+  } ]
+}

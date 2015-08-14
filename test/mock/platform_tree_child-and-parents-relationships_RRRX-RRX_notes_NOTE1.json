@@ -2,6 +2,7 @@
   "childAndParentsRelationships" : [ {
     "id" : "RRRX-RRX",
     "notes" : [ {
+      "id": "NOTE1",
       "links" : {
         "notes" : {
           "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/RRRX-RRX/notes",

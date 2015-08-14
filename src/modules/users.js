@@ -32,7 +32,7 @@ var FS = require('./../FamilySearch'),
 FS.prototype.getCurrentUser = function(params, opts) {
   var self = this;
   return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('current-user'),
+    self.plumbing.getCollectionUrl('FSFT', 'current-user'),
     function(url) {
       return self.plumbing.get(url, params, {}, opts,
         utils.compose(
@@ -62,26 +62,22 @@ FS.prototype.getCurrentUser = function(params, opts) {
  *
  * {@link http://jsfiddle.net/dcxy9a59/2/ Editable Example}
  *
- * @param {String} aid id or full URL of the agent (contributor)
+ * @param {String} url full URL of the agent (contributor)
  * @param {Object=} params currently unused
  * @param {Object=} opts options to pass to the http function specified during init
  */
-FS.prototype.getAgent = function(aid, params, opts) {
+FS.prototype.getAgent = function(url, params, opts) {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('agent-template', aid, {uid: aid}),
-    function(url) {
-      return self.plumbing.get(url, params, {}, opts,
-        utils.compose(
-          utils.objectExtender({getAgent: function() { return maybe(this.agents)[0]; }}),
-          function(response){
-            utils.forEach(response.agents, function(agent, index, obj){
-              obj[index] = self.createAgent(agent);
-            });
-            return response;
-          }
-        ));
-    });
+  return self.plumbing.get(url, params, {}, opts,
+    utils.compose(
+      utils.objectExtender({getAgent: function() { return maybe(this.agents)[0]; }}),
+      function(response){
+        utils.forEach(response.agents, function(agent, index, obj){
+          obj[index] = self.createAgent(agent);
+        });
+        return response;
+      }
+    ));
 };
 
 /**
@@ -96,17 +92,17 @@ FS.prototype.getAgent = function(aid, params, opts) {
  *
  * {@link http://jsfiddle.net/88gbgae5/1/ Editable Example}
  *
- * @param {Array} aids Ids or full URLs of the agents (contributors) to read
+ * @param {Array} urls an array of full URLs of the agents (contributors) to read
  * @param {Object=} params pass to getAgent currently unused
  * @param {Object=} opts pass to the http function specified during init
  * @return {Object} promise that is fulfilled when all of the agents have been read,
  * returning a map of agent id to {@link user.functions:getAgent getAgent} response
  */
-FS.prototype.getMultiAgent = function(aids, params, opts) {
+FS.prototype.getMultiAgent = function(urls, params, opts) {
   var self = this,
       promises = {};
-  utils.forEach(aids, function(aid) {
-    promises[aid] = self.getAgent(aid, params, opts);
+  utils.forEach(urls, function(url) {
+    promises[url] = self.getAgent(url, params, opts);
   });
   return self.helpers.promiseAll(promises);
 };

@@ -28,7 +28,7 @@ FS.prototype.createDiscussion = function(data){
 
 // TODO consider disallowing $save()'ing or $delete()'ing discussions
 
-Discussion.prototype = {
+Discussion.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: Discussion,
   /**
    * @ngdoc property
@@ -124,7 +124,7 @@ Discussion.prototype = {
    * @function
    * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
    */
-  $getAgent: function() { return this.$client.getAgent(this.$getAgentUrl() || this.$getAgentId()); },
+  $getAgent: function() { return this.$client.getAgent(this.$getAgentUrl()); },
 
   /**
    * @ngdoc function
@@ -137,36 +137,21 @@ Discussion.prototype = {
    * {@link http://jsfiddle.net/fsy9z6kx/1/ Editable Example}
    *
    * @param {string=} changeMessage change message (currently ignored)
-   * @param {boolean=} refresh true to read the discussion after updating
    * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise of the discussion id, which is fulfilled after the discussion has been updated,
-   * and if refresh is true, after the discussion has been read.
+   * @return {Object} promise of the discussion id, which is fulfilled after the discussion has been updated or,
+   * if refresh is true, after the discussion has been read.
    */
-  $save: function(changeMessage, refresh, opts) {
+  $save: function(changeMessage, opts) {
     var self = this;
-    var promise = self.$helpers.chainHttpPromises(
-      self.id ? self.$plumbing.getUrl('discussion-template', null, {did: self.id}) : self.$plumbing.getUrl('discussions'),
-      function(url) {
+    return self.$helpers.chainHttpPromises(
+      self.$getDiscussionUrl() ? self.$helpers.refPromise(self.$getDiscussionUrl()) : self.$plumbing.getCollectionUrl('FSDF', 'discussions'),
+      function(url){
         return self.$plumbing.post(url, { discussions: [ self ] }, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
           // x-entity-id and location headers are not set on update, only on create
           return self.id || promise.getResponseHeader('X-ENTITY-ID');
         });
-      });
-    var returnedPromise = promise.then(function(did) {
-      self.$helpers.extendHttpPromise(returnedPromise, promise); // extend the first promise into the returned promise
-      if (refresh) {
-        // re-read the discussion and set this object's properties from response
-        return self.$client.getDiscussion(did, {}, opts).then(function(response) {
-          utils.deletePropertiesPartial(self, utils.appFieldRejector);
-          utils.extend(self, response.getDiscussion());
-          return did;
-        });
       }
-      else {
-        return did;
-      }
-    });
-    return returnedPromise;
+    );
   },
 
   /**
@@ -186,7 +171,7 @@ Discussion.prototype = {
    * @return {Object} promise for the discussion id
    */
   $delete: function(changeMessage, opts) {
-    return this.$client.deleteDiscussion(this.$getDiscussionUrl() || this.id, changeMessage, opts);
+    return this.$client.deleteDiscussion(this.$getDiscussionUrl(), changeMessage, opts);
   }
 
-};
+});

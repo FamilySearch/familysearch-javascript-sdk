@@ -1,8 +1,7 @@
-var utils = require('../../src/utils');
-
 describe('Source', function() {
+  
   it('description is returned from getSourceDescription', function(done) {
-    FS.getSourceDescription('MMMM-MMM').then(function(response) {
+    FS.getSourceDescription('https://sandbox.familysearch.org/platform/sources/descriptions/MMMM-MMM').then(function(response) {
       var sourceDesc = response.getSourceDescription();
       expect(sourceDesc.id).toBe('MMMM-MMM');
       expect(sourceDesc.about).toBe('https://familysearch.org/pal:/MM9.1.1/M9PJ-2JJ');
@@ -15,21 +14,19 @@ describe('Source', function() {
   });
 
   it('descriptions are returned from getMultiSourceDescription', function(done) {
-    FS.getMultiSourceDescription(['MMMM-MMM']).then(function(response) {
-      var sourceDesc = response['MMMM-MMM'].getSourceDescription();
+    FS.getMultiSourceDescription(['https://sandbox.familysearch.org/platform/sources/descriptions/MMMM-MMM']).then(function(response) {
+      var sourceDesc = response['https://sandbox.familysearch.org/platform/sources/descriptions/MMMM-MMM'].getSourceDescription();
       expect(sourceDesc.id).toBe('MMMM-MMM');
       expect(sourceDesc.$getTitle()).toBe('1900 US Census, Ethel Hollivet');
       done();
     });
   });
   
-  it('references are returned from getPersonSourceRefs', function(done) {
-    FS.getPersonSourceRefs('PPPP-PPP').then(function(response) {
+  it('references are returned from getSourceRefs for a person', function(done) {
+    FS.getSourceRefs('https://familysearch.org/platform/tree/persons/PPPP-PPP/source-references').then(function(response) {
       var sourceRefs = response.getSourceRefs();
       expect(sourceRefs[0].$getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
-      expect(sourceRefs[0].$personId).toBe('PPPP-PPP');
-      expect(sourceRefs[0].$sourceDescriptionId).toBe('SSSS-SS1');
-      expect(sourceRefs[0].$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/SSSS-SS1');
+      expect(sourceRefs[0].$getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/SSSS-SS1');
       expect(sourceRefs[1].attribution.$getAgentId()).toBe('UUUU-UUU');
       expect(sourceRefs[1].attribution.modified).toBe(987654321);
       expect(sourceRefs[1].attribution.changeMessage).toBe('Dates and location match with other sources.');
@@ -37,17 +34,15 @@ describe('Source', function() {
     });
   });
 
-  it('references and descriptions are returned from getPersonSourcesQuery', function(done) {
-    FS.getPersonSourcesQuery('PPPP-PPP').then(function(response) {
+  it('references and descriptions are returned from getSourcesQuery for a person', function(done) {
+    FS.getSourcesQuery('https://familysearch.org/platform/tree/persons/PPPP-PPP/sources').then(function(response) {
       var sourceRefs = response.getSourceRefs();
       expect(sourceRefs[0].$getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
-      expect(sourceRefs[0].$personId).toBe('PPPP-PPP');
-      expect(sourceRefs[0].$sourceDescriptionId).toBe('SSSS-SS1');
-      expect(sourceRefs[0].$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/SSSS-SS1');
+      expect(sourceRefs[0].$getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/SSSS-SS1');
       expect(sourceRefs[1].attribution.$getAgentId()).toBe('UUUU-UUU');
       expect(sourceRefs[1].attribution.modified).toBe(987654321);
       expect(sourceRefs[1].attribution.changeMessage).toBe('Dates and location match with other sources.');
-      var sourceDesc = response.getSourceDescription(sourceRefs[0].$sourceDescriptionId);
+      var sourceDesc = response.getSourceDescription(sourceRefs[0].$getSourceDescriptionId());
       expect(sourceDesc.id).toBe('SSSS-SS1');
       expect(sourceDesc.attribution.$getAgentId()).toBe('123');
       expect(sourceDesc.$getTitle()).toBe('1900 US Census, Ethel Hollivet');
@@ -55,13 +50,11 @@ describe('Source', function() {
     });
   });
   
-  it('references are returned from getCoupleSourceRefs', function(done) {
-    FS.getCoupleSourceRefs('12345').then(function(response) {
+  it('references are returned from getSourceRefs for a couple', function(done) {
+    FS.getSourceRefs('https://familysearch.org/platform/tree/couple-relationships/12345/source-references').then(function(response) {
       var sourceRefs = response.getSourceRefs();
       expect(sourceRefs[0].$getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
-      expect(sourceRefs[0].$coupleId).toBe('12345');
-      expect(sourceRefs[0].$sourceDescriptionId).toBe('SSSS-SS1');
-      expect(sourceRefs[0].$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/SSSS-SS1');
+      expect(sourceRefs[0].$getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/SSSS-SS1');
       expect(sourceRefs[1].$getTags().length).toBe(0);
       expect(sourceRefs[1].attribution.$getAgentId()).toBe('UUUU-UUU');
       expect(sourceRefs[1].attribution.modified).toBe(987654321);
@@ -70,18 +63,16 @@ describe('Source', function() {
     });
   });
 
-  it('references and descriptions are returned from getCoupleSourcesQuery', function(done) {
-    FS.getCoupleSourcesQuery('12345').then(function(response) {
+  it('references and descriptions are returned from getSourcesQuery for a couple', function(done) {
+    FS.getSourcesQuery('https://familysearch.org/platform/tree/couple-relationships/12345/sources').then(function(response) {
       var sourceRefs = response.getSourceRefs();
       expect(sourceRefs[0].$getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
-      expect(sourceRefs[0].$coupleId).toBe('12345');
-      expect(sourceRefs[0].$sourceDescriptionId).toBe('SSSS-SS1');
-      expect(sourceRefs[0].$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/SSSS-SS1');
+      expect(sourceRefs[0].$getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/SSSS-SS1');
       expect(sourceRefs[1].$getTags().length).toBe(0);
       expect(sourceRefs[1].attribution.$getAgentId()).toBe('UUUU-UUU');
       expect(sourceRefs[1].attribution.modified).toBe(987654321);
       expect(sourceRefs[1].attribution.changeMessage).toBe('Dates and location match with other sources.');
-      var sourceDesc = response.getSourceDescription(sourceRefs[0].$sourceDescriptionId);
+      var sourceDesc = response.getSourceDescription(sourceRefs[0].$getSourceDescriptionId());
       expect(sourceDesc.id).toBe('SSSS-SS1');
       expect(sourceDesc.attribution.$getAgentId()).toBe('123');
       expect(sourceDesc.$getTitle()).toBe('1900 US Census, Ethel Hollivet');
@@ -89,14 +80,12 @@ describe('Source', function() {
     });
   });
 
-  it('references are returned from getChildAndParentsSourceRefs', function(done) {
-    FS.getChildAndParentsSourceRefs('PPPX-PP0').then(function(response) {
+  it('references are returned from getSourceRefs for a child and parents', function(done) {
+    FS.getSourceRefs('https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0/source-references').then(function(response) {
       var sourceRefs = response.getSourceRefs();
       expect(sourceRefs[0].$getTags().length).toBe(0);
       expect(sourceRefs[0].attribution.modified).toBe(987654321);
-      expect(sourceRefs[0].$childAndParentsId).toBe('PPPX-PP0');
-      expect(sourceRefs[0].$sourceDescriptionId).toBe('SSSS-SS2');
-      expect(sourceRefs[0].$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/SSSS-SS2');
+      expect(sourceRefs[0].$getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/SSSS-SS2');
       expect(sourceRefs[0].attribution.changeMessage).toBe('Dates and location match with other sources.');
       expect(sourceRefs[1].$getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
       expect(sourceRefs[1].attribution.$getAgentId()).toBe('UUUU-UUU');
@@ -105,19 +94,17 @@ describe('Source', function() {
     });
   });
   
-  it('references and descriptions are returned from getChildAndParentsSourcesQuery', function(done) {
-    FS.getChildAndParentsSourcesQuery('PPPX-PP0').then(function(response) {
+  it('references and descriptions are returned from getSourcesQuery for a child and parents', function(done) {
+    FS.getSourcesQuery('https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0/sources').then(function(response) {
       var sourceRefs = response.getSourceRefs();
       expect(sourceRefs[0].$getTags().length).toBe(0);
       expect(sourceRefs[0].attribution.modified).toBe(987654321);
-      expect(sourceRefs[0].$childAndParentsId).toBe('PPPX-PP0');
-      expect(sourceRefs[0].$sourceDescriptionId).toBe('SSSS-SS2');
-      expect(sourceRefs[0].$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/SSSS-SS2');
+      expect(sourceRefs[0].$getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/SSSS-SS2');
       expect(sourceRefs[0].attribution.changeMessage).toBe('Dates and location match with other sources.');
       expect(sourceRefs[1].$getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
       expect(sourceRefs[1].attribution.$getAgentId()).toBe('UUUU-UUU');
       expect(sourceRefs[1].attribution.modified).toBe(123456789);
-      var sourceDesc = response.getSourceDescription(sourceRefs[0].$sourceDescriptionId);
+      var sourceDesc = response.getSourceDescription(sourceRefs[0].$getSourceDescriptionId());
       expect(sourceDesc.id).toBe('SSSS-SS2');
       expect(sourceDesc.attribution.$getAgentId()).toBe('123');
       expect(sourceDesc.$getTitle()).toBe('1900 US Census, Ethel Hollivet');
@@ -126,27 +113,24 @@ describe('Source', function() {
   });
 
   it('references are returned from getSourceRefsQuery', function(done) {
-    FS.getSourceRefsQuery('MM93-JFK').then(function(response) {
+    FS.getSourceRefsQuery('https://familysearch.org/platform/tree/source-references?description=MM93-JFK').then(function(response) {
       var personSourceRef = response.getPersonSourceRefs()[0];
       expect(personSourceRef.id).toBe('MMM9-NNG');
       expect(personSourceRef.$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/MM93-JFK');
       expect(personSourceRef.attribution.$getAgentId()).toBe('MMD8-3NT');
-      expect(personSourceRef.$personId).toBe('KW7V-Y32');
-      expect(personSourceRef.$sourceDescriptionId).toBe('MM93-JFK');
+      expect(personSourceRef.$getSourceDescriptionId()).toBe('MM93-JFK');
 
       var coupleSourceRef = response.getCoupleSourceRefs()[0];
       expect(coupleSourceRef.id).toBe('MMMM-S3D');
       expect(coupleSourceRef.$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/MM93-JFK');
       expect(coupleSourceRef.attribution.$getAgentId()).toBe('MMD8-3NT');
-      expect(coupleSourceRef.$coupleId).toBe('MMM7-12S');
-      expect(coupleSourceRef.$sourceDescriptionId).toBe('MM93-JFK');
+      expect(coupleSourceRef.$getSourceDescriptionId()).toBe('MM93-JFK');
 
       var childAndParentsSourceRef = response.getChildAndParentsSourceRefs()[0];
       expect(childAndParentsSourceRef.id).toBe('MMMM-S36');
       expect(childAndParentsSourceRef.$getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/MM93-JFK');
       expect(childAndParentsSourceRef.attribution.$getAgentId()).toBe('MMD8-3NT');
-      expect(childAndParentsSourceRef.$childAndParentsId).toBe('MMMP-KN5');
-      expect(childAndParentsSourceRef.$sourceDescriptionId).toBe('MM93-JFK');
+      expect(childAndParentsSourceRef.$getSourceDescriptionId()).toBe('MM93-JFK');
       done();
     });
   });
@@ -158,7 +142,7 @@ describe('Source', function() {
       $title: '1900 US Census, Ethel Hollivet',
       $text: 'Ethel Hollivet (line 75) with husband Albert Hollivet (line 74)'
     });
-    var promise = srcDesc.$save('This is the change message', true);
+    var promise = srcDesc.$save('This is the change message');
     promise.then(function(response) {
       var request = promise.getRequest();
       //noinspection JSUnresolvedFunction
@@ -180,8 +164,7 @@ describe('Source', function() {
         }]
       });
       expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('MMMM-MMM');
-      expect(srcDesc.id).toBe('MMMM-MMM');  // re-read from database
+      expect(response).toBe('https://familysearch.org/platform/sources/descriptions/MMMM-MMM');
       done();
     });
   });
@@ -194,6 +177,11 @@ describe('Source', function() {
       $text: 'Ethel Hollivet (line 75) with husband Albert Hollivet (line 74)'
     });
     srcDesc.id = 'MMMM-MMM';
+    srcDesc.links = {
+      description: {
+        href: 'https://familysearch.org/platform/sources/descriptions/MMMM-MMM' 
+      }
+    };
     var promise = srcDesc.$save('This is the change message');
     promise.then(function(response) {
       var request = promise.getRequest();
@@ -213,44 +201,35 @@ describe('Source', function() {
           }],
           attribution: {
             changeMessage: 'This is the change message'
+          },
+          links: {
+            description: {
+              href: 'https://familysearch.org/platform/sources/descriptions/MMMM-MMM' 
+            }
           }
         }]
       });
       expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('MMMM-MMM');
+      expect(response).toBe('https://familysearch.org/platform/sources/descriptions/MMMM-MMM');
       done();
     });
   });
 
   it('description is deleted', function(done) {
-    var promise = FS.deleteSourceDescription('MM93-JFK');
+    var promise = FS.deleteSourceDescription('https://familysearch.org/platform/sources/descriptions/MM93-JFK');
     promise.then(function(response) {
-      var requests = FS.getHttpRequests();
-      expect(utils.find(requests, {
-        method: 'DELETE',
-        url:'https://sandbox.familysearch.org/platform/tree/persons/KW7V-Y32/source-references/MMM9-NNG?access_token=mock'})
-      ).toBeTruthy();
-      expect(utils.find(requests, {
-        method: 'DELETE',
-        url:'https://sandbox.familysearch.org/platform/tree/couple-relationships/MMM7-12S/source-references/MMMM-S3D?access_token=mock'})
-      ).toBeTruthy();
-      expect(utils.find(requests, {
-        method: 'DELETE',
-        url:'https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MMMP-KN5/source-references/MMMM-S36?access_token=mock'})
-      ).toBeTruthy();
       expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('MM93-JFK');
+      expect(response).toBe('https://familysearch.org/platform/sources/descriptions/MM93-JFK');
       done();
     });
   });
 
   it('reference is created', function(done) {
     var srcRef = FS.createSourceRef({
-      $personId: 'PPPP-PPP',
-      $sourceDescription: 'MMMM-MMM',
+      $sourceDescription: 'https://familysearch.org/platform/sources/descriptions/MMMM-MMM',
       $tags: ['http://gedcomx.org/Name']
     });
-    var promise = srcRef.$save('This is the change message');
+    var promise = srcRef.$save('https://familysearch.org/platform/tree/persons/PPPP-PPP/source-references', 'This is the change message');
     promise.then(function(response) {
       var request = promise.getRequest();
       //noinspection JSUnresolvedFunction
@@ -263,25 +242,23 @@ describe('Source', function() {
             attribution: {
               changeMessage: 'This is the change message'
             },
-            description: 'https://sandbox.familysearch.org/platform/sources/descriptions/MMMM-MMM'
+            description: 'https://familysearch.org/platform/sources/descriptions/MMMM-MMM'
           }]
         }]
       });
       expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('SRSR-R01');
-      expect(srcRef.id).toBe('SRSR-R01');  // updated
+      expect(response).toBe('https://familysearch.org/platform/tree/persons/PPPP-PPP/source-references/SRSR-R01');
       done();
     });
   });
 
   it('reference is updated', function(done) {
     var srcRef = FS.createSourceRef({
-      $personId: 'PPPP-PPX',
-      $sourceDescription: 'MMMM-MMM',
+      $sourceDescription: 'https://familysearch.org/platform/sources/descriptions/MMMM-MMM',
       $tags: ['http://gedcomx.org/Name']
     });
     srcRef.id = 'SRSR-R01';
-    var promise = srcRef.$save('This is the change message');
+    var promise = srcRef.$save('https://familysearch.org/platform/tree/persons/PPPP-PPX/source-references', 'This is the change message');
     promise.then(function(response) {
       var request = promise.getRequest();
       //noinspection JSUnresolvedFunction
@@ -295,42 +272,42 @@ describe('Source', function() {
             attribution: {
               changeMessage: 'This is the change message'
             },
-            description: 'https://sandbox.familysearch.org/platform/sources/descriptions/MMMM-MMM'
+            description: 'https://familysearch.org/platform/sources/descriptions/MMMM-MMM'
           }]
         }]
       });
       expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('SRSR-R01');
+      expect(response).toBe('https://familysearch.org/platform/tree/persons/PPPP-PPX/source-references/SRSR-R01');
       done();
     });
   });
 
   it('reference is deleted from a person', function(done) {
-    var promise = FS.deletePersonSourceRef('PPPP-PPP', 'SRSR-R01', 'testDelete use case 1 reason');
+    var promise = FS.deleteSourceRef('https://familysearch.org/platform/tree/persons/PPPP-PPP/source-references/SRSR-R01', 'testDelete use case 1 reason');
     promise.then(function(response) {
       expect(promise.getStatusCode()).toBe(204);
       expect(promise.getRequest().headers['X-Reason']).toBe('testDelete use case 1 reason');
-      expect(response).toBe('PPPP-PPP');
+      expect(response).toBe('https://familysearch.org/platform/tree/persons/PPPP-PPP/source-references/SRSR-R01');
       done();
     });
   });
 
   it('reference is deleted from a couple', function(done) {
-    var promise = FS.deleteCoupleSourceRef('RRRR-RRR', 'SRSR-R01', 'testDelete use case 1 reason');
+    var promise = FS.deleteSourceRef('https://familysearch.org/platform/tree/couple-relationships/RRRR-RRR/source-references/SRSR-R01', 'testDelete use case 1 reason');
     promise.then(function(response) {
       expect(promise.getStatusCode()).toBe(204);
       expect(promise.getRequest().headers['X-Reason']).toBe('testDelete use case 1 reason');
-      expect(response).toBe('RRRR-RRR');
+      expect(response).toBe('https://familysearch.org/platform/tree/couple-relationships/RRRR-RRR/source-references/SRSR-R01');
       done();
     });
   });
 
   it('reference is deleted from a child-and-parents', function(done) {
-    var promise = FS.deleteChildAndParentsSourceRef('RRRR-RRX', 'SRSR-R01', 'testDelete use case 1 reason');
+    var promise = FS.deleteSourceRef('https://familysearch.org/platform/tree/child-and-parents-relationships/RRRR-RRX/source-references/SRSR-R01', 'testDelete use case 1 reason');
     promise.then(function(response) {
       expect(promise.getStatusCode()).toBe(204);
       expect(promise.getRequest().headers['X-Reason']).toBe('testDelete use case 1 reason');
-      expect(response).toBe('RRRR-RRX');
+      expect(response).toBe('https://familysearch.org/platform/tree/child-and-parents-relationships/RRRR-RRX/source-references/SRSR-R01');
       done();
     });
   });

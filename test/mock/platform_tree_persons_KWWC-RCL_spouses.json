@@ -1,0 +1,196 @@
+{
+  "persons" : [ {
+    "id" : "KWWC-RCG",
+    "links" : {
+      "person" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG"
+      }
+    },
+    "sortKey" : "0002378648",
+    "identifiers" : {
+      "http://gedcomx.org/Persistent" : [ "https://sandbox.familysearch.org/ark:/61903/4:1:KWWC-RCG" ]
+    },
+    "living" : false,
+    "gender" : {
+      "id" : "V.777-7774",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+          "resourceId" : "MMDZ-8G7"
+        },
+        "modified" : 1409062750207
+      },
+      "type" : "http://gedcomx.org/Female"
+    },
+    "names" : [ {
+      "id" : "V.777-7771",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+          "resourceId" : "MMDZ-8G7"
+        },
+        "modified" : 1409062750207
+      },
+      "type" : "http://gedcomx.org/BirthName",
+      "nameForms" : [ {
+        "fullText" : "Sarah Jane",
+        "parts" : [ {
+          "type" : "http://gedcomx.org/Given",
+          "value" : "Sarah"
+        }, {
+          "type" : "http://gedcomx.org/Surname",
+          "value" : "Jane"
+        } ]
+      } ],
+      "preferred" : true
+    } ],
+    "facts" : [ {
+      "id" : "V.777-777N",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+          "resourceId" : "MMDZ-8G7"
+        },
+        "modified" : 1409063767819
+      },
+      "type" : "http://gedcomx.org/Birth",
+      "date" : {
+        "original" : "1 June 1800",
+        "formal" : "+1800-06-01"
+      }
+    }, {
+      "id" : "V.777-777P",
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+          "resourceId" : "MMDZ-8G7"
+        },
+        "modified" : 1409063767819
+      },
+      "type" : "http://gedcomx.org/Death",
+      "date" : {
+        "original" : "2 June 1800",
+        "formal" : "+1800-06-02",
+        "normalized" : [ {
+          "value" : "2 June 1800"
+        } ]
+      }
+    } ],
+    "display" : {
+      "name" : "Sarah Jane",
+      "gender" : "Female",
+      "lifespan" : "1800-1800",
+      "birthDate" : "1 June 1800",
+      "deathDate" : "2 June 1800"
+    }
+  } ],
+  "relationships" : [ {
+    "id" : "MMMN-79C",
+    "links" : {
+      "source-references" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/couple-relationships/MMMN-79C/source-references"
+      },
+      "relationship" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/couple-relationships/MMMN-79C"
+      },
+      "person1" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL"
+      },
+      "person2" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG"
+      },
+      "woman" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCG"
+      },
+      "change-history" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/couple-relationships/MMMN-79C/changes"
+      },
+      "notes" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/couple-relationships/MMMN-79C/notes"
+      },
+      "man" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL"
+      }
+    },
+    "sortKey" : "0002378648",
+    "type" : "http://gedcomx.org/Couple",
+    "person1" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL",
+      "resourceId" : "KWWC-RCL"
+    },
+    "person2" : {
+      "resource" : "#KWWC-RCG",
+      "resourceId" : "KWWC-RCG"
+    },
+    "facts" : [ {
+      "id" : "R.777-777P",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://sandbox.familysearch.org/platform/tree/couple-relationships/MMMN-79C/conclusions/R.777-777P"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+          "resourceId" : "MMDZ-8G7"
+        },
+        "modified" : 1409063388378
+      },
+      "type" : "http://gedcomx.org/Marriage",
+      "date" : {
+        "original" : "June 1800",
+        "formal" : "+1800-06"
+      }
+    }, {
+      "id" : "R.777-7774",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://sandbox.familysearch.org/platform/tree/couple-relationships/MMMN-79C/conclusions/R.777-7774"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+          "resourceId" : "MMDZ-8G7"
+        },
+        "modified" : 1409063601330
+      },
+      "type" : "http://gedcomx.org/Marriage",
+      "date" : {
+        "original" : "2 June 1800",
+        "normalized" : [ {
+          "value" : "2 June 1800"
+        } ]
+      }
+    } ]
+  } ],
+  "childAndParentsRelationships" : [ {
+    "id" : "MM9N-TGG",
+    "father" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL",
+      "resourceId" : "KWWC-RCL"
+    },
+    "mother" : {
+      "resource" : "#KWWC-RCG",
+      "resourceId" : "KWWC-RCG"
+    },
+    "child" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KW3B-N7F",
+      "resourceId" : "KW3B-N7F"
+    }
+  }, {
+    "id" : "MMMG-TDT",
+    "father" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL",
+      "resourceId" : "KWWC-RCL"
+    },
+    "mother" : {
+      "resource" : "#KWWC-RCG",
+      "resourceId" : "KWWC-RCG"
+    },
+    "child" : {
+      "resource" : "https://sandbox.familysearch.org/platform/tree/persons/KWWN-C28",
+      "resourceId" : "KWWN-C28"
+    }
+  } ]
+}

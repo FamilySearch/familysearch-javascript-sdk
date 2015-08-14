@@ -1,4 +1,5 @@
 describe('A person', function() {
+  
   it('is updated in memory', function() {
     var person = FS.createPerson();
     person.$addName('fulltext');
@@ -170,58 +171,64 @@ describe('A person', function() {
   });
 
   it('spouse relationships are returned from getSpouses', function(done) {
-    FS.getSpouses('FJP-M4RK').then(function(response) {
-      expect(response.getCoupleRelationships().length).toBe(1);
-      var rel = response.getCoupleRelationships()[0];
-      expect(rel.id).toBe('cid');
-      expect(rel.$getHusbandId()).toBe('FJP-M4RK');
-      expect(rel.$getWifeId()).toBe('JRW-NMSD');
-      expect(rel.$getFacts().length).toBe(1);
-      expect(rel.$getFacts()[0].$getDate()).toBe('June 1800');
-      expect(response.getChildAndParentsRelationships().length).toBe(1);
-      rel = response.getChildAndParentsRelationships()[0];
-      expect(rel.id).toBe('PPPX-PP0');
-      expect(rel.$getFatherFacts().length).toBe(1);
-      expect(rel.$getFatherFacts()[0].type).toBe('http://gedcomx.org/AdoptiveParent');
-      expect(rel.$getFatherFacts()[0] instanceof FamilySearch.Fact).toBeTruthy();
-      done();
+    FS.getPerson('FJP-M4RK').then(function(personResponse){
+      personResponse.getPerson().$getSpouses().then(function(spousesResponse){
+        expect(spousesResponse.getCoupleRelationships().length).toBe(1);
+        var rel = spousesResponse.getCoupleRelationships()[0];
+        expect(rel.id).toBe('cid');
+        expect(rel.$getHusbandId()).toBe('FJP-M4RK');
+        expect(rel.$getWifeId()).toBe('JRW-NMSD');
+        expect(rel.$getFacts().length).toBe(1);
+        expect(rel.$getFacts()[0].$getDate()).toBe('June 1800');
+        expect(spousesResponse.getChildAndParentsRelationships().length).toBe(1);
+        rel = spousesResponse.getChildAndParentsRelationships()[0];
+        expect(rel.id).toBe('PPPX-PP0');
+        expect(rel.$getFatherFacts().length).toBe(1);
+        expect(rel.$getFatherFacts()[0].type).toBe('http://gedcomx.org/AdoptiveParent');
+        expect(rel.$getFatherFacts()[0] instanceof FamilySearch.Fact).toBeTruthy();
+        done();
+      });
     });
   });
 
   it('parent relationships are returned from getParents', function(done) {
-    FS.getParents('KW31-H9P').then(function(response) {
-      expect(response.getChildAndParentsRelationships().length).toBe(1);
-      var rel = response.getChildAndParentsRelationships()[0];
-      expect(rel.id).toBe('MMMP-KWL');
-      expect(rel.$getFatherId()).toBe('KW7V-Y32');
-      expect(rel.$getMotherId()).toBe('KW72-8QM');
-      expect(rel.$getChildId()).toBe('KW31-H9P');
-      expect(rel.$getFatherFacts().length).toBe(1);
-      expect(rel.$getFatherFacts()[0].$getDate()).toBe('1955');
-      expect(rel.$getFatherFacts()[0].attribution.$getAgentId()).toBe('MMD8-3NT');
-      expect(response.getCoupleRelationships().length).toBe(1);
-      rel = response.getCoupleRelationships()[0];
-      expect(rel.id).toBe('MMM7-129');
-      expect(rel.facts.length).toBe(1);
-      expect(rel.facts[0].$getPlace()).toBe('Minnesota, United States');
-      expect(rel.facts[0].attribution.$getAgentId()).toBe('MMD8-3NT');
-      done();
+    FS.getPerson('KW31-H9P').then(function(personResponse){
+      personResponse.getPerson().$getParents().then(function(parentsResponse){
+        expect(parentsResponse.getChildAndParentsRelationships().length).toBe(1);
+        var rel = parentsResponse.getChildAndParentsRelationships()[0];
+        expect(rel.id).toBe('MMMP-KWL');
+        expect(rel.$getFatherId()).toBe('KW7V-Y32');
+        expect(rel.$getMotherId()).toBe('KW72-8QM');
+        expect(rel.$getChildId()).toBe('KW31-H9P');
+        expect(rel.$getFatherFacts().length).toBe(1);
+        expect(rel.$getFatherFacts()[0].$getDate()).toBe('1955');
+        expect(rel.$getFatherFacts()[0].attribution.$getAgentId()).toBe('MMD8-3NT');
+        expect(parentsResponse.getCoupleRelationships().length).toBe(1);
+        rel = parentsResponse.getCoupleRelationships()[0];
+        expect(rel.id).toBe('MMM7-129');
+        expect(rel.facts.length).toBe(1);
+        expect(rel.facts[0].$getPlace()).toBe('Minnesota, United States');
+        expect(rel.facts[0].attribution.$getAgentId()).toBe('MMD8-3NT');
+        done();
+      });
     });
   });
 
   it('child relationships are returned from getChildren', function(done) {
-    FS.getChildren('PPP0-MP1').then(function(response) {
-      expect(response.getChildAndParentsRelationships().length).toBe(2);
-      var rel = response.getChildAndParentsRelationships()[0];
-      expect(rel.id).toBe('PPP0-PP0');
-      expect(rel.$getFatherId()).toBe('PPP0-MP1');
-      expect(rel.$getChildId()).toBe('PPP0-PP3');
-      expect(rel.$getFatherFacts().length).toBe(1);
-      expect(rel.$getFatherFacts()[0].type).toBe('http://gedcomx.org/AdoptiveParent');
-      expect(rel.$getFatherFacts()[0] instanceof FamilySearch.Fact).toBeTruthy();
-      expect(rel.$getMotherFacts().length).toBe(0);
-      expect(response.getPerson(rel.$getChildId()).$getPreferredName().$getFullText()).toBe('Anastasia Aleksandrova');
-      done();
+    FS.getPerson('PPP0-MP1').then(function(personResponse) {
+      personResponse.getPerson().$getChildren().then(function(childrenResponse){
+        expect(childrenResponse.getChildAndParentsRelationships().length).toBe(2);
+        var rel = childrenResponse.getChildAndParentsRelationships()[0];
+        expect(rel.id).toBe('PPP0-PP0');
+        expect(rel.$getFatherId()).toBe('PPP0-MP1');
+        expect(rel.$getChildId()).toBe('PPP0-PP3');
+        expect(rel.$getFatherFacts().length).toBe(1);
+        expect(rel.$getFatherFacts()[0].type).toBe('http://gedcomx.org/AdoptiveParent');
+        expect(rel.$getFatherFacts()[0] instanceof FamilySearch.Fact).toBeTruthy();
+        expect(rel.$getMotherFacts().length).toBe(0);
+        expect(childrenResponse.getPerson(rel.$getChildId()).$getPreferredName().$getFullText()).toBe('Anastasia Aleksandrova');
+        done();
+      });
     });
   });
 
@@ -275,7 +282,7 @@ describe('A person', function() {
         } ]
       });
       expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('12345');
+      expect(response).toBe('https://familysearch.org/platform/tree/persons/12345');
       done();
     });
   });
@@ -308,7 +315,7 @@ describe('A person', function() {
         } ]
       });
       expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('12345');
+      expect(response).toBe('https://familysearch.org/platform/tree/persons/12345');
       done();
     });
   });
@@ -316,6 +323,11 @@ describe('A person', function() {
   it('conclusion is added', function(done) {
     var person = FS.createPerson();
     person.id = '12345';
+    person.links = {
+      person: {
+        href: 'https://familysearch.org/platform/tree/persons/12345'
+      }
+    };
     var promise = person
       .$addFact({type: 'http://gedcomx.org/Birth', $date: '3 Apr 1836', $formalDate: '+1836-04-03', $place: 'Moscow, Russia', $changeMessage: '...change message...'})
       .$save();
@@ -341,7 +353,7 @@ describe('A person', function() {
         } ]
       });
       expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('12345');
+      expect(response).toBe('https://familysearch.org/platform/tree/persons/12345');
       done();
     });
   });
@@ -349,6 +361,11 @@ describe('A person', function() {
   function createMockPerson(pid, fid) {
     var person = FS.createPerson();
     person.id = pid;
+    person.links = {
+      person: {
+        href: 'https://familysearch.org/platform/tree/persons/' + pid
+      }
+    };
     var fact = FS.createFact({type: 'http://gedcomx.org/Birth', $date: '3 Apr 1836', $formalDate: '+1836-04-03'});
     fact.id = fid;
     fact.$changed = false;
@@ -384,7 +401,7 @@ describe('A person', function() {
         } ]
       });
       expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('12345');
+      expect(response).toBe('https://familysearch.org/platform/tree/persons/12345');
       done();
     });
   });
@@ -398,7 +415,7 @@ describe('A person', function() {
     promise.then(function(response) {
       expect(promise.getStatusCode()).toBe(204);
       expect(promise.getRequest().headers['X-Reason']).toBe('...change message...');
-      expect(response).toBe('12345');
+      expect(response).toBe('https://familysearch.org/platform/tree/persons/12345');
       done();
     });
   });
@@ -409,7 +426,7 @@ describe('A person', function() {
     promise.then(function(response) {
       expect(promise.getStatusCode()).toBe(204);
       expect(promise.getRequest().headers['X-Reason']).toBe('Reason for delete');
-      expect(response).toBe('PPPJ-MYZ');
+      expect(response).toBe('https://familysearch.org/platform/tree/persons/PPPJ-MYZ');
       done();
     });
   });
@@ -422,7 +439,7 @@ describe('A person', function() {
   });
 
   it('preferred spouse is set', function(done) {
-    var promise = FS.setPreferredSpouse('PPPJ-MYY', '12345');
+    var promise = FS.setPreferredSpouse('PPPJ-MYY', 'https://sandbox.familysearch.org/platform/tree/couple-relationships/12345');
     promise.then(function(response) {
       var request = promise.getRequest();
       expect(request.headers['Location']).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/12345');
@@ -449,7 +466,7 @@ describe('A person', function() {
   });
 
   it('preferred parents are set', function(done) {
-    var promise = FS.setPreferredParents('PPPJ-MYY', '12345');
+    var promise = FS.setPreferredParents('PPPJ-MYY', 'https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/12345');
     promise.then(function(response) {
       var request = promise.getRequest();
       expect(request.headers['Location']).toBe('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/12345');
@@ -485,12 +502,13 @@ describe('A person', function() {
   });
   
   it('restore person', function(done){
-    var person = FS.createPerson({id: 'PPPJ-MYZ'}),
-        promise = person.$restore();
-    promise.then(function(response){
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('PPPJ-MYZ');
-      done();
+    FS.getPerson('DELETED').then(function(response){
+      var promise = response.getPerson().$restore();
+      promise.then(function(response){
+        expect(promise.getStatusCode()).toBe(204);
+        expect(response).toBe('DELETED');
+        done();
+      });
     });
   });
 

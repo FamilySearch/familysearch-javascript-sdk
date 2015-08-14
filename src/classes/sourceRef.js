@@ -5,27 +5,20 @@ var FS = require('./../FamilySearch'),
 /**
  * @ngdoc function
  * @name sources.types:constructor.SourceRef
- * @description
- * Reference from a person or relationship to a source.
- * To create a new SourceRef you must set sourceDescription and either $personId, $coupleId, or $childAndParentsId
+ * @description Reference from a person or relationship to a source.
  *
  * FamilySearch API Docs:
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Source_References_resource Person SourceRef},
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Source_References_resource Couple SourceRef}, and
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource ChildAndParents SourceRef}
  *
- * @param {Object=} data an object with optional attributes {$personId, $coupleId, $childAndParentsId, $sourceDescription, $tags}.
- * _$sourceDescription_ can be a {@link sources.types:constructor.SourceDescription SourceDescription},
- * a source description id, or a source description URL.
+ * @param {Object=} data an object with optional attributes {$tags. $sourceDescription}.
  * _$tags_ is an array (string[]) of tag names
  */
 var SourceRef = FS.SourceRef = function(client, data) {
   FS.BaseClass.call(this, client, data);
   
   if (data) {
-    this.$personId = data.$personId;
-    this.$coupleId = data.$coupleId;
-    this.$childAndParentsId = data.$childAndParentsId;
     if (data.$sourceDescription) {
       //noinspection JSUnresolvedFunction
       this.$setSourceDescription(data.$sourceDescription);
@@ -51,7 +44,7 @@ FS.prototype.createSourceRef = function(data){
   return new SourceRef(this, data);
 };
 
-SourceRef.prototype = {
+SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: SourceRef,
   /**
    * @ngdoc property
@@ -65,34 +58,6 @@ SourceRef.prototype = {
    * @name sources.types:constructor.SourceRef#attribution
    * @propertyOf sources.types:constructor.SourceRef
    * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
-   */
-
-  /**
-   * @ngdoc property
-   * @name sources.types:constructor.SourceRef#$personId
-   * @propertyOf sources.types:constructor.SourceRef
-   * @return {String} Id of the person to which this source is attached if it is attached to a person
-   */
-
-  /**
-   * @ngdoc property
-   * @name sources.types:constructor.SourceRef#$childAndParentsId
-   * @propertyOf sources.types:constructor.SourceRef
-   * @return {String} Id of the child and parents relationship to which this source is attached if it is attached to child and parents
-   */
-
-  /**
-   * @ngdoc property
-   * @name sources.types:constructor.SourceRef#$coupleId
-   * @propertyOf sources.types:constructor.SourceRef
-   * @return {String} Id of the couple relationship to which this source is attached if it is attached to a couple
-   */
-
-  /**
-   * @ngdoc property
-   * @name sources.types:constructor.SourceRef#$sourceDescriptionId
-   * @propertyOf sources.types:constructor.SourceRef
-   * @return {string} Id of the source description
    */
 
   /**
@@ -115,6 +80,17 @@ SourceRef.prototype = {
    */
   $getSourceDescriptionUrl: function() {
     return this.$helpers.removeAccessToken(this.description);
+  },
+  
+  /**
+   * @ngdoc function
+   * @name sources.types:constructor.SourceRef#$getSourceDescriptionId
+   * @methodOf sources.types:constructor.SourceRef
+   * @function
+   * @return {string} Id of the source description
+   */
+  $getSourceDescriptionId: function() {
+    return this.$getSourceDescriptionUrl().split('/').pop();
   },
 
   /**
@@ -146,21 +122,15 @@ SourceRef.prototype = {
    * @name sources.types:constructor.SourceRef#$setSourceDescription
    * @methodOf sources.types:constructor.SourceRef
    * @function
-   * @param {SourceDescription|string} srcDesc SourceDescription object, or id or URL of the source description
+   * @param {SourceDescription|string} srcDesc SourceDescription object or URL of the source description
    * @return {SourceRef} this source reference
    */
   $setSourceDescription: function(srcDesc) {
     if (srcDesc instanceof FS.SourceDescription) {
-      this.$sourceDescriptionId = srcDesc.id;
       this.description = srcDesc.$getSourceDescriptionUrl();
     }
-    else if (this.$helpers.isAbsoluteUrl(srcDesc)) {
-      delete this.$sourceDescriptionId;
-      this.description = this.$sourceDescriptionUrl;
-    }
     else {
-      this.$sourceDescriptionId = srcDesc;
-      delete this.description;
+      this.description = srcDesc;
     }
     //noinspection JSValidateTypes
     return this;
@@ -232,53 +202,34 @@ SourceRef.prototype = {
    *
    * {@link http://jsfiddle.net/sqsejsjq/1/ Editable Example}
    *
+   * @param {string} url url for a person, couple, or child and parents source references endpoint
    * @param {string} changeMessage change message
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise of the source reference id, which is fulfilled after the source reference has been updated
    */
-  $save: function(changeMessage, opts) {
+  $save: function(url, changeMessage, opts) {
     var self = this;
     if (changeMessage) {
       self.attribution = self.$client.createAttribution(changeMessage);
     }
-    var template, label;
+    var entityType = self.$helpers.getEntityType(url);
     var headers = {};
-    if (self.$personId) {
-      template = 'person-source-references-template';
-      label = 'persons';
-    }
-    else if (self.$coupleId) {
-      template = 'couple-relationship-source-references-template';
-      label = 'relationships';
-    }
-    else if (self.$childAndParentsId) {
-      template = 'child-and-parents-relationship-source-references-template';
-      template = 'child-and-parents-relationship-source-references-template';
-      label = 'childAndParentsRelationships';
+    if (entityType === 'childAndParentsRelationships') {
       headers['Content-Type'] = 'application/x-fs-v1+json';
     }
-    return self.$helpers.chainHttpPromises(
-      self.$plumbing.getUrl(template, null, {pid: self.$personId, crid: self.$coupleId, caprid: self.$childAndParentsId, srid: self.id}),
-      function(url) {
-        if (!self.description && !!self.$sourceDescriptionId) {
-          // the discovery resource is guaranteed to be set due to the getUrl statement
-          self.description = self.$helpers.getUrlFromDiscoveryResource(self.$client.settings.discoveryResource, 'source-description-template',
-                                                                 {sdid: self.$sourceDescriptionId});
-        }
-        self.description = self.$helpers.removeAccessToken(self.description);
-        var payload = {};
-        payload[label] = [ { sources: [ self ] } ];
-        return self.$plumbing.post(url, payload, headers, opts, function(data, promise) {
-          // x-entity-id and location headers are not set on update, only on create
-          if (!self.id) {
-            self.id = promise.getResponseHeader('X-ENTITY-ID');
-          }
-          if (!self.$getSourceRefUrl()) {
-            self.links = { 'source-reference' : { href: self.$helpers.removeAccessToken(promise.getResponseHeader('Location')) } };
-          }
-          return self.id;
-        });
-      });
+    self.description = self.$helpers.removeAccessToken(self.description);
+    var payload = {};
+    payload[entityType] = [ { sources: [ self ] } ];
+    return self.$plumbing.post(url, payload, headers, opts, function(data, promise) {
+      // x-entity-id and location headers are not set on update, only on create
+      if (!self.id) {
+        self.id = promise.getResponseHeader('X-ENTITY-ID');
+      }
+      if (!self.$getSourceRefUrl()) {
+        self.links = { 'source-reference' : { href: self.$helpers.removeAccessToken(promise.getResponseHeader('Location')) } };
+      }
+      return self.$getSourceRefUrl();
+    });
   },
 
   /**
@@ -296,15 +247,7 @@ SourceRef.prototype = {
    * @return {Object} promise for the source reference URL
    */
   $delete: function(changeMessage, opts) {
-    if (this.$personId) {
-      return this.$client.deletePersonSourceRef(this.$getSourceRefUrl() || this.$personID, this.id, changeMessage, opts);
-    }
-    else if (this.$coupleId) {
-      return this.$client.deleteCoupleSourceRef(this.$getSourceRefUrl() || this.$coupleId, this.id, changeMessage, opts);
-    }
-    else {
-      return this.$client.deleteChildAndParentsSourceRef(this.$getSourceRefUrl() || this.$childAndParentsId, this.id, changeMessage, opts);
-    }
+    return this.$client.deleteSourceRef(this.$getSourceRefUrl(), changeMessage, opts);
   }
 
-};
+});

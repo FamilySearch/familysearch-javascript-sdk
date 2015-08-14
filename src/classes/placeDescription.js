@@ -34,7 +34,7 @@ FS.prototype.createPlaceDescription = function(data){
   return new PlaceDescription(this, data);
 };
 
-PlaceDescription.prototype = {
+PlaceDescription.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   constructor: PlaceDescription,
   
   /**
@@ -132,6 +132,17 @@ PlaceDescription.prototype = {
   $getType: function(){
     return utils.maybe(this.display).type;
   },
+  
+  /**
+   * @ngdoc function
+   * @name places.types:constructor.PlaceDescription#$getPlaceDescriptionUrl
+   * @methodOf places.types:constructor.PlaceDescription
+   * @function
+   * @return {String} The place description's url without the access token
+   */
+  $getPlaceDescriptionUrl: function(){
+    return this.$helpers.removeAccessToken(utils.maybe(utils.maybe(this.links).description).href);
+  },
    
   /**
    * @ngdoc function
@@ -161,7 +172,7 @@ PlaceDescription.prototype = {
    */
   $getJurisdictionDetails: function() {
     if(this.jurisdiction instanceof FS.PlaceDescription){
-      return this.$client.getPlaceDescription(this.jurisdiction.id);
+      return this.$client.getPlaceDescription(this.jurisdiction.$getPlaceDescriptionUrl());
     } else {
       var d = this.$client.settings.deferredWrapper(),
           promise = d.promise;
@@ -184,4 +195,4 @@ PlaceDescription.prototype = {
     this.jurisdiction = jurisdiction;
   }
 
-};
+});

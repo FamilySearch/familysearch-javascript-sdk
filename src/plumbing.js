@@ -42,31 +42,46 @@ Plumbing.prototype.setTotalProcessingTime = function(time) {
 };
 
 /**
- * @ngdoc function
- * @name plumbing.functions:getUrl
- * @function
+ * Get a URL from a collection
  *
- * @description
- * Low-level call to get a  URL from the discovery resource given a resource name, an possible-url, and a set of parameters
+ * @param {string} collectionId ID of the collection (FSFT, FSHRA, etc)
+ * @param {string} resourceName resource name
+ * @param {Object=} params parameters
+ * @return {Object} promise for the url
+ */
+Plumbing.prototype.getCollectionUrl = function(collectionId, resourceName, params){
+  var self = this;
+  return self.getCollectionPromise(collectionId).then(function(collectionResponse){
+    return self.helpers.getUrlFromCollection(collectionResponse.collections[0], resourceName, params);
+  });
+};
+
+/**
+ * Get the promise for a collection
  *
+ * @param {string} collectionId ID of the collection (FSFT, FSHRA, etc)
  * @param {string} resourceName resource name
  * @param {string=} possibleUrl possible url - return this if it is an absolute url
  * @param {Object=} params parameters
  * @return {Object} promise for the url
  */
-Plumbing.prototype.getUrl = function(resourceName, possibleUrl, params) {
+Plumbing.prototype.getCollectionPromise = function(collectionId){
   var self = this;
-  return this.settings.discoveryPromise.then(function(discoveryResource) {
-    var url = '';
-
-    if (self.helpers.isAbsoluteUrl(possibleUrl)) {
-      url = possibleUrl;
-    }
-    else {
-      url = self.helpers.getUrlFromDiscoveryResource(discoveryResource, resourceName, params);
-    }
-    return url;
-  });
+  if(!self.settings.collectionsPromises[collectionId]){
+    return self.settings.collectionsPromises['collections'].then(function(response){
+      for(var i = 0; i < response.collections.length; i++){
+        if(response.collections[i].id === collectionId){
+          self.settings.collectionsPromises[collectionId] = self.get(response.collections[i].links.self.href);
+          return self.settings.collectionsPromises[collectionId];
+        }
+      }
+      var d = self.settings.deferredWrapper();
+      d.reject(new Error('Collection ' + collectionId + ' does not exist'));
+      return d.promise;
+    });
+  } else {
+    return self.settings.collectionsPromises[collectionId];
+  }
 };
 
 /**

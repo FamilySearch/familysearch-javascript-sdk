@@ -82,7 +82,7 @@ FS.prototype._getSearchMatchResponseMapper = function() {
 FS.prototype.getPersonSearch = function(params, opts) {
   var self = this;
   return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('person-search'),
+    self.plumbing.getCollectionUrl('FSFT', 'person-search'),
     function(url) {
       return self.plumbing.get(url, utils.removeEmptyProperties({
           q: utils.searchParamsFilter(utils.removeEmptyProperties(utils.extend({}, params))),
@@ -120,19 +120,13 @@ FS.prototype.getPersonSearch = function(params, opts) {
  *
  * {@link http://jsfiddle.net/xb0ts69q/1/ Editable Example}
  *
- * @param {String} pid id of the person or full URL of the person-matches endpoint
+ * @param {String} url full URL of the person-matches endpoint
  * @param {Object=} params currently unused
  * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getPersonMatches = function(pid, params, opts) {
-  var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('person-matches-template', pid, {pid: pid}),
-    function(url) {
-      return self.plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-        self._getSearchMatchResponseMapper());
-    });
+FS.prototype.getPersonMatches = function(url, params, opts) {
+  return this.plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts, this._getSearchMatchResponseMapper());
 };
 
 /**
@@ -163,7 +157,7 @@ FS.prototype.getPersonMatches = function(pid, params, opts) {
 FS.prototype.getPersonMatchesQuery = function(params, opts) {
   var self = this;
   return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('person-matches-query'),
+    self.plumbing.getCollectionUrl('FSFT', 'person-matches-query'),
     function(url) {
       return self.plumbing.get(url, utils.removeEmptyProperties({
           q: utils.searchParamsFilter(utils.removeEmptyProperties(utils.extend({}, params))),

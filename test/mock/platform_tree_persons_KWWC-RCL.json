@@ -1,0 +1,206 @@
+{
+  "persons" : [ {
+    "id" : "KWWC-RCL",
+    "links" : {
+      "spouses" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/spouses"
+      },
+      "ancestry" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/ancestry?person=KWWC-RCL"
+      },
+      "person" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL"
+      },
+      "parents" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/parents"
+      },
+      "person-with-relationships" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons-with-relationships?person=KWWC-RCL"
+      },
+      "descendancy" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/descendancy?person=KWWC-RCL"
+      },
+      "discussion-references" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/discussion-references"
+      },
+      "merge" : {
+        "template" : "https://sandbox.familysearch.org/platform/tree/persons/{pid}/merges/{dpid}{?filter,access_token}",
+        "type" : "application/json,application/x-fs-v1+json,application/x-fs-v1+xml,application/xml,text/html",
+        "accept" : "application/x-fs-v1+json,application/x-fs-v1+xml",
+        "allow" : "OPTIONS,GET,POST",
+        "title" : "Person Merge"
+      },
+      "change-history" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/changes"
+      },
+      "children" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/children"
+      },
+      "evidence-references" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/memory-references"
+      },
+      "spouse-relationships" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/spouse-relationships"
+      },
+      "child-relationships" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/child-relationships"
+      },
+      "collection" : {
+        "href" : "https://sandbox.familysearch.org/platform/collections/tree"
+      },
+      "portrait" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/portrait"
+      },
+      "parent-relationships" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/parent-relationships"
+      },
+      "artifacts" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/memories"
+      },
+      "source-references" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/source-references"
+      },
+      "matches" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/matches"
+      },
+      "non-matches" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/not-a-match"
+      },
+      "portraits" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/portraits"
+      },
+      "notes" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/notes"
+      },
+      "source-descriptions" : {
+        "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/sources"
+      }
+    },
+    "sortKey" : "0002427988",
+    "identifiers" : {
+      "http://gedcomx.org/Persistent" : [ "https://sandbox.familysearch.org/ark:/61903/4:1:KWWC-RCL" ]
+    },
+    "living" : false,
+    "gender" : {
+      "id" : "V.777-7771",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/conclusions/V.777-7771"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+          "resourceId" : "MMDZ-8G7"
+        },
+        "modified" : 1409062695947
+      },
+      "type" : "http://gedcomx.org/Male"
+    },
+    "names" : [ {
+      "id" : "V.777-777N",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/conclusions/V.777-777N"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+          "resourceId" : "MMDZ-8G7"
+        },
+        "modified" : 1409062695947
+      },
+      "type" : "http://gedcomx.org/BirthName",
+      "nameForms" : [ {
+        "fullText" : "George Stewart",
+        "parts" : [ {
+          "type" : "http://gedcomx.org/Given",
+          "value" : "George"
+        }, {
+          "type" : "http://gedcomx.org/Surname",
+          "value" : "Stewart"
+        } ]
+      } ],
+      "preferred" : true
+    } ],
+    "facts" : [ {
+      "id" : "V.777-7774",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/conclusions/V.777-7774"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+          "resourceId" : "MMDZ-8G7"
+        },
+        "modified" : 1409062695947
+      },
+      "type" : "http://gedcomx.org/Birth",
+      "date" : {
+        "original" : "4 July 1935",
+        "formal" : "+1935-07-04",
+        "normalized" : [ {
+          "value" : "4 July 1935"
+        } ]
+      },
+      "place" : {
+        "original" : "San Juan, New Mexico, United States",
+        "description" : "#1806582422",
+        "normalized" : [ {
+          "value" : "San Juan, New Mexico, United States"
+        } ]
+      }
+    }, {
+      "id" : "V.777-777P",
+      "links" : {
+        "conclusion" : {
+          "href" : "https://sandbox.familysearch.org/platform/tree/persons/KWWC-RCL/conclusions/V.777-777P"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://sandbox.familysearch.org/platform/users/agents/MMDZ-8G7",
+          "resourceId" : "MMDZ-8G7"
+        },
+        "modified" : 1409062695947
+      },
+      "type" : "http://gedcomx.org/Death"
+    } ],
+    "display" : {
+      "name" : "George Stewart",
+      "gender" : "Male",
+      "lifespan" : "1935-Deceased",
+      "birthDate" : "4 July 1935",
+      "birthPlace" : "San Juan, New Mexico, United States"
+    }
+  } ],
+  "sourceDescriptions" : [ {
+    "id" : "SD-KWWC-RCL",
+    "citations" : [ {
+      "lang" : "en",
+      "value" : "\"Family Tree,\" database, <i>FamilySearch</i> (http://familysearch.org : modified 26 October 2014, 08:53), entry for George Stewart(PID https://sandbox.familysearch.org/ark:/61903/4:1:KWWC-RCL); contributed by various users."
+    } ],
+    "about" : "#KWWC-RCL",
+    "componentOf" : {
+      "description" : "https://sandbox.familysearch.org/platform/collections/tree"
+    },
+    "titles" : [ {
+      "value" : "George Stewart"
+    } ],
+    "resourceType" : "http://gedcomx.org/Person",
+    "identifiers" : {
+      "http://gedcomx.org/Persistent" : [ "https://sandbox.familysearch.org/ark:/61903/4:1:KWWC-RCL" ]
+    },
+    "modified" : 1414313638000
+  } ],
+  "places" : [ {
+    "id" : "1806582422",
+    "names" : [ {
+      "value" : "San Juan, New Mexico, United States"
+    } ]
+  } ],
+  "description" : "#SD-KWWC-RCL"
+}

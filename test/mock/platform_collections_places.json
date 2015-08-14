@@ -1,0 +1,74 @@
+{
+  "sourceDescriptions" : [ {
+    "id" : "SD-FSPA",
+    "about" : "#FSPA",
+    "componentOf" : {
+      "description" : "https://sandbox.familysearch.org/platform/collection"
+    },
+    "titles" : [ {
+      "value" : "FamilySearch Place Authority"
+    } ],
+    "resourceType" : "http://gedcomx.org/Collection"
+  } ],
+  "collections" : [ {
+    "id" : "FSPA",
+    "links" : {
+      "place-search" : {
+        "template" : "https://sandbox.familysearch.org/platform/places/search{?count,start,q,access_token}",
+        "type" : "application/atom+xml,application/json,application/x-gedcomx-atom+json,application/xml,text/html",
+        "accept" : "*/*",
+        "allow" : "GET,POST",
+        "title" : "Places Search"
+      },
+      "http://oauth.net/core/2.0/endpoint/token" : {
+        "href" : "https://integration.familysearch.org/cis-web/oauth2/v3/token"
+      },
+      "http://oauth.net/core/2.0/endpoint/authorize" : {
+        "href" : "https://integration.familysearch.org/cis-web/oauth2/v3/authorization"
+      },
+      "record-collection-regions" : {
+        "href" : "https://sandbox.familysearch.org/platform/places/groups/30"
+      },
+      "place-type" : {
+        "template" : "https://sandbox.familysearch.org/platform/places/types/{ptid}{?access_token}",
+        "type" : "application/json,application/ld+json,application/rdf+xml,application/xml",
+        "accept" : "*/*",
+        "allow" : "GET",
+        "title" : "Place Type"
+      },
+      "place-type-groups" : {
+        "template" : "https://sandbox.familysearch.org/platform/places/type-groups{?access_token}",
+        "type" : "application/json,application/ld+json,application/rdf+xml,application/xml",
+        "accept" : "*/*",
+        "allow" : "GET",
+        "title" : "Place Type Groups"
+      },
+      "place-types" : {
+        "template" : "https://sandbox.familysearch.org/platform/places/types{?access_token}",
+        "type" : "application/json,application/ld+json,application/rdf+xml,application/xml",
+        "accept" : "*/*",
+        "allow" : "GET",
+        "title" : "Place Types"
+      },
+      "self" : {
+        "href" : "https://sandbox.familysearch.org/platform/collections/places"
+      },
+      "place-type-group" : {
+        "template" : "https://sandbox.familysearch.org/platform/places/type-groups/{ptgid}{?access_token}",
+        "type" : "application/json,application/ld+json,application/rdf+xml,application/xml",
+        "accept" : "*/*",
+        "allow" : "GET",
+        "title" : "Place Type Group"
+      },
+      "place-group" : {
+        "template" : "https://sandbox.familysearch.org/platform/places/groups/{pgid}{?access_token}",
+        "type" : "application/json,application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml,application/xml,text/html",
+        "accept" : "*/*",
+        "allow" : "GET",
+        "title" : "Place Group"
+      }
+    },
+    "title" : "FamilySearch Place Authority"
+  } ],
+  "description" : "#SD-FSPA"
+}

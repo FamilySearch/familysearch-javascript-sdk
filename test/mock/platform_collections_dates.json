@@ -1,0 +1,36 @@
+{
+  "sourceDescriptions" : [ {
+    "id" : "SD-FSDA",
+    "about" : "#FSDA",
+    "componentOf" : {
+      "description" : "https://sandbox.familysearch.org/platform/collection"
+    },
+    "titles" : [ {
+      "value" : "FamilySearch Date Authority"
+    } ],
+    "resourceType" : "http://gedcomx.org/Collection"
+  } ],
+  "collections" : [ {
+    "id" : "FSDA",
+    "links" : {
+      "http://oauth.net/core/2.0/endpoint/token" : {
+        "href" : "https://integration.familysearch.org/cis-web/oauth2/v3/token"
+      },
+      "http://oauth.net/core/2.0/endpoint/authorize" : {
+        "href" : "https://integration.familysearch.org/cis-web/oauth2/v3/authorization"
+      },
+      "self" : {
+        "href" : "https://sandbox.familysearch.org/platform/collections/dates"
+      },
+      "normalized-date" : {
+        "template" : "https://sandbox.familysearch.org/platform/dates{?date,access_token}",
+        "type" : "text/plain",
+        "accept" : "*/*",
+        "allow" : "GET",
+        "title" : "Date"
+      }
+    },
+    "title" : "FamilySearch Date Authority"
+  } ],
+  "description" : "#SD-FSDA"
+}
