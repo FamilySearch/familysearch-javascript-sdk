@@ -12,13 +12,13 @@ For example, the following logs the name of a person along with their spouses an
 
     ```javascript
     client.getPersonWithRelationships('KW7S-VQJ', {persons:true}).then(function(response) {
-      console.log(response.getPrimaryPerson().getName());
+      console.log(response.getPrimaryPerson().$getGivenName());
       var spouses = response.getSpouses();
       for (var s = 0, spousesLen = spouses.length; s < spousesLen; s++) {
-        console.log(spouses[s].getName());
+        console.log(spouses[s].$getGivenName());
         var children = response.getChildren(spouses[s].getId());
         for (var c = 0, childrenLen = children.length; c < childrenLen; c++) {
-          console.log(children[c].getName());
+          console.log(children[c].$getGivenName());
         }
       }
     });
