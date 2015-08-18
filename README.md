@@ -14,10 +14,10 @@ For example, the following logs the name of a person along with their spouses an
     client.getPersonWithRelationships('KW7S-VQJ', {persons:true}).then(function(response) {
       console.log(response.getPrimaryPerson().getName());
       var spouses = response.getSpouses();
-      for (var s = 0; spousesLen = spouses.length; s &lt; spousesLen; s++) {
+      for (var s = 0, spousesLen = spouses.length; s < spousesLen; s++) {
         console.log(spouses[s].getName());
         var children = response.getChildren(spouses[s].getId());
-        for (var c = 0; childrenLen = children.length; c &lt; childrenLen; c++) {
+        for (var c = 0, childrenLen = children.length; c < childrenLen; c++) {
           console.log(children[c].getName());
         }
       }
