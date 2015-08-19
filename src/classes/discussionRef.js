@@ -8,17 +8,19 @@ var FS = require('./../FamilySearch'),
  * @description
  *
  * Reference to a discussion on a person.
- * To create a new discussion reference, you must set $personId and discussion.
+ * To create a new discussion reference, you must set personId and discussion.
  * _NOTE_: discussion references cannot be updated. They can only be created or deleted.
  *
- * @param {Object=} data an object with optional attributes {$personId, discussion}
+ * @param {FamilySearch} client FamilySearch sdk client
+ * @param {Object=} data an object
  * _discussion_ can be a {@link discussions.types:constructor.Discussion Discussion} or a discussion URL or a discussion id
  */
 var DiscussionRef = FS.DiscussionRef = function(client, data) {
   FS.BaseClass.call(this, client, data);
   if (data && data.discussion) {
     //noinspection JSUnresolvedFunction
-    this.$setDiscussion(data.discussion);
+    this.setDiscussion(data.discussion);
+    delete data.discussion;
   }
 };
 
@@ -34,95 +36,90 @@ FS.prototype.createDiscussionRef = function(data){
 };
 
 DiscussionRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
+  
   constructor: DiscussionRef,
 
   /**
-   * @ngdoc property
-   * @name discussions.types:constructor.DiscussionRef#id
-   * @propertyOf discussions.types:constructor.DiscussionRef
+   * @ngdoc function
+   * @name discussions.types:constructor.DiscussionRef#getId
+   * @methodOf discussions.types:constructor.DiscussionRef
    * @return {String} Discussion Ref Id
    */
 
   /**
-   * @ngdoc property
-   * @name discussions.types:constructor.DiscussionRef#resourceId
-   * @propertyOf discussions.types:constructor.DiscussionRef
+   * @ngdoc function
+   * @name discussions.types:constructor.DiscussionRef#getResourceId
+   * @methodOf discussions.types:constructor.DiscussionRef
    * @return {String} Discussion Id
    */
-
-  /**
-   * @ngdoc property
-   * @name discussions.types:constructor.DiscussionRef#resource
-   * @propertyOf discussions.types:constructor.DiscussionRef
-   * @return {String} Discussion URL
-   */
-
-  /**
-   * @ngdoc property
-   * @name discussions.types:constructor.DiscussionRef#attribution
-   * @propertyOf discussions.types:constructor.DiscussionRef
-   * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
-   */
-
-  /**
-   * @ngdoc property
-   * @name discussions.types:constructor.DiscussionRef#$personId
-   * @propertyOf discussions.types:constructor.DiscussionRef
-   * @return {String} Id of the person to whom this discussion is attached
-   */
+  getResourceId: function(){ return this.data.resourceId; },
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.DiscussionRef#$getDiscussionRefUrl
+   * @name discussions.types:constructor.DiscussionRef#getResource
+   * @methodOf discussions.types:constructor.DiscussionRef
+   * @return {String} Discussion URL
+   */
+  getResource: function(){ return this.data.resource; },
+
+  /**
+   * @ngdoc function
+   * @name discussions.types:constructor.DiscussionRef#getAttribution
+   * @methodOf discussions.types:constructor.DiscussionRef
+   * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
+
+  /**
+   * @ngdoc function
+   * @name discussions.types:constructor.DiscussionRef#getDiscussionRefUrl
    * @methodOf discussions.types:constructor.DiscussionRef
    * @function
    * @return {String} URL of this discussion reference; _NOTE_ however, that individual discussion references cannot be read
    */
-  $getDiscussionRefUrl: function() {
-    return this.$helpers.removeAccessToken(maybe(maybe(this.links)['discussion-reference']).href);
+  getDiscussionRefUrl: function() {
+    return this.helpers.removeAccessToken(maybe(this.getLink('discussion-reference')).href);
   },
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.DiscussionRef#$getDiscussionUrl
+   * @name discussions.types:constructor.DiscussionRef#getDiscussionUrl
    * @methodOf discussions.types:constructor.DiscussionRef
    * @function
    * @return {string} URL of the discussion (without the access token) -
    * pass into {@link discussions.functions:getDiscussion getDiscussion} for details
    */
-  $getDiscussionUrl: function() {
-    return this.$helpers.removeAccessToken(this.resource);
+  getDiscussionUrl: function() {
+    return this.helpers.removeAccessToken(this.data.resource);
   },
 
 /**
    * @ngdoc function
-   * @name discussions.types:constructor.DiscussionRef#$getDiscussion
+   * @name discussions.types:constructor.DiscussionRef#getDiscussion
    * @methodOf discussions.types:constructor.DiscussionRef
    * @function
    * @return {Object} promise for the {@link discussions.functions:getDiscussion getDiscussion} response
    */
-  $getDiscussion: function() {
-    return this.$client.getDiscussion(this.$getDiscussionUrl() || this.resourceId);
+  getDiscussion: function() {
+    return this.client.getDiscussion(this.getDiscussionUrl() || this.resourceId);
   },
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.DiscussionRef#$setDiscussion
+   * @name discussions.types:constructor.DiscussionRef#setDiscussion
    * @methodOf discussions.types:constructor.DiscussionRef
    * @function
    * @param {Discussion|string} discussion Discussion object or discussion url or discussion id
    * @return {DiscussionRef} this discussion ref
    */
-  $setDiscussion: function(discussion) {
+  setDiscussion: function(discussion) {
     if (discussion instanceof FS.Discussion) {
-      this.resource = discussion.$getDiscussionUrl();
-      this.resourceId = discussion.id;
+      this.data.resource = discussion.getDiscussionUrl();
+      this.data.resourceId = discussion.getId();
     }
-    else if (this.$helpers.isAbsoluteUrl(discussion)) {
-      this.resource = this.$helpers.removeAccessToken(discussion);
+    else if (this.helpers.isAbsoluteUrl(discussion)) {
+      this.data.resource = this.helpers.removeAccessToken(discussion);
     }
     else {
-      this.resourceId = discussion;
+      this.data.resourceId = discussion;
     }
     //noinspection JSValidateTypes
     return this;
@@ -130,7 +127,7 @@ DiscussionRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.DiscussionRef#$save
+   * @name discussions.types:constructor.DiscussionRef#save
    * @methodOf discussions.types:constructor.DiscussionRef
    * @function
    * @description
@@ -142,45 +139,44 @@ DiscussionRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * {@link http://jsfiddle.net/q7pwkc9k/1/ Editable Example}
    *
    * @param {string} url url of the discussions references list. this is only need for new discussion refs. you can set it to null (or anything else) for existing refs that you are updating
+   * @param {string} personId id of the person which the discussion ref will be attached to
    * @param {string} changeMessage change message - unused - discussion reference attributions do not contain change messages
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise of the discussion reference url
    * (note however that individual discussion references cannot be read).
    */
-  $save: function(url, changeMessage, opts) {
+  save: function(url, personId, changeMessage, opts) {
     var self = this;
-    if (self.$getDiscussionRefUrl()) {
-      url = self.$getDiscussionRefUrl();
+    if (self.getDiscussionRefUrl()) {
+      url = self.getDiscussionRefUrl();
     }
-    if (!self.resource && self.resourceId) {
-      self.resource = self.resourceId;
+    if (!self.data.resource && self.data.resourceId) {
+      self.data.resource = self.data.resourceId;
     }
     var payload = {
       persons: [{
-        id: self.$personId,
-        'discussion-references' : [ { resource: self.resource } ]
+        id: personId,
+        'discussion-references' : [ { resource: self.data.resource } ]
       }]
     };
     if (changeMessage) {
-      payload.persons[0].attribution = self.$client.createAttribution(changeMessage);
+      payload.persons[0].attribution = self.client.createAttribution(changeMessage);
     }
     var headers = {'Content-Type': 'application/x-fs-v1+json'};
-    return self.$plumbing.post(url, payload, headers, opts, function(data, promise) {
-      if (!self.$getDiscussionRefUrl()) {
-        self.links = {
-          'discussion-reference': {
-            href: promise.getResponseHeader('Location'),
-            title: 'Discussion Reference'
-          }
-        };
+    return self.plumbing.post(url, payload, headers, opts, function(data, promise) {
+      if (!self.getDiscussionRefUrl()) {
+        self.addLink('discussion-reference', {
+          href: promise.getResponseHeader('Location'),
+          title: 'Discussion Reference'
+        });
       }
-      return self.$getDiscussionRefUrl();
+      return self.getDiscussionRefUrl();
     });
   },
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.DiscussionRef#$delete
+   * @name discussions.types:constructor.DiscussionRef#delete
    * @methodOf discussions.types:constructor.DiscussionRef
    * @function
    * @description delete this discussion reference - see {@link discussions.functions:deleteDiscussionRef deleteDiscussionRef}
@@ -188,8 +184,8 @@ DiscussionRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the discussion reference url
    */
-  $delete: function(changeMessage, opts) {
-    return this.$client.deleteDiscussionRef(this.$getDiscussionRefUrl(), this.id, changeMessage, opts);
+  delete: function(changeMessage, opts) {
+    return this.client.deleteDiscussionRef(this.getDiscussionRefUrl(), this.id, changeMessage, opts);
   }
 
 });

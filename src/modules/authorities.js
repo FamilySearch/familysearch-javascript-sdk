@@ -33,18 +33,21 @@ FS.prototype.getDate = function(date, opts) {
   return self.helpers.chainHttpPromises(
     self.plumbing.getCollectionUrl('FSDA', 'normalized-date'),
     function(url){
-      return self.plumbing.get(url, {date: date}, {'Accept': 'text/plain'}, opts,
-      utils.compose(
-        utils.objectExtender({getDate: function() { return utils.maybe(this.date); }}),
-        function(body){
-          var response = {};
-          if(body){
-            response.date = self.createDate({
-              normalized: body
-            });
+      var promise = self.plumbing.get(url, {date: date}, {'Accept': 'text/plain'}, opts,
+        utils.compose(
+          utils.objectExtender({getDate: function() { return utils.maybe(this.date); }}),
+          function(body){
+            var response = {};
+            if(body){
+              response.date = self.createDate({
+                normalized: body,
+                formal: promise.getResponseHeader('Location').split(':')[1]
+              });
+            }
+            return response;
           }
-          return response;
-        }
-      ));
+        )
+      );
+      return promise;
     });
 };

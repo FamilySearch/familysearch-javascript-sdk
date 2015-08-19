@@ -7,6 +7,9 @@ var FS = require('./../FamilySearch'),
  * @description
  *
  * A places search result entry.
+ * 
+ * @param {FamilySearch} client FamilySearch sdk client
+ * @param {Object} data raw object data
  */
 var PlacesSearchResult = FS.PlacesSearchResult = function(client, data){ 
   FS.BaseClass.call(this, client, data);
@@ -17,14 +20,16 @@ var PlacesSearchResult = FS.PlacesSearchResult = function(client, data){
           placesMap = {};
         
       utils.forEach(places, function(place, index, obj){
-        obj[index] = placesMap[place.id] = client.createPlaceDescription(place);
+        if(!(place instanceof FS.PlaceDescription)){
+          obj[index] = placesMap[place.id] = client.createPlaceDescription(place);
+        }
       });
       
       utils.forEach(places, function(place){
-        if(place.jurisdiction && place.jurisdiction.resource){
-          var jurisdictionId = place.jurisdiction.resource.substring(1);
+        if(place.data.jurisdiction && place.data.jurisdiction.resource){
+          var jurisdictionId = place.data.jurisdiction.resource.substring(1);
           if(placesMap[jurisdictionId]){
-            place.$setJurisdiction(placesMap[jurisdictionId]);
+            place.setJurisdiction(placesMap[jurisdictionId]);
           }
         }
       });
@@ -49,29 +54,30 @@ PlacesSearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype
   constructor: PlacesSearchResult,
   
   /**
-   * @ngdoc property
-   * @name places.types:constructor.PlacesSearchResult#id
-   * @propertyOf places.types:constructor.PlacesSearchResult
+   * @ngdoc function
+   * @name places.types:constructor.PlacesSearchResult#getId
+   * @methodOf places.types:constructor.PlacesSearchResult
    * @return {string} place id
    */
    
   /**
-   * @ngdoc property
-   * @name places.types:constructor.PlacesSearchResult#score
-   * @propertyOf places.types:constructor.PlacesSearchResult
+   * @ngdoc function
+   * @name places.types:constructor.PlacesSearchResult#getScore
+   * @methodOf places.types:constructor.PlacesSearchResult
    * @return {number} higher is better
    */
+  getScore: function(){ return this.data.score; },
    
   /**
    * @ngdoc function
-   * @name places.types:constructor.PlacesSearchResult#$getPlace
+   * @name places.types:constructor.PlacesSearchResult#getPlace
    * @methodOf places.types:constructor.PlacesSearchResult
    * @function
    * @return {PlaceDescription} The {@link places.types:constructor.PlaceDescription Place Description}.
    */
-  $getPlace: function(){
+  getPlace: function(){
     var maybe = utils.maybe;
-    return maybe(maybe(maybe(this.content).gedcomx).places)[0];
+    return maybe(maybe(maybe(this.data.content).gedcomx).places)[0];
   }
    
 });

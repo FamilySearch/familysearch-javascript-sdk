@@ -2,14 +2,14 @@ describe('base class', function() {
   
   it('serializes', function(){
     var person = FS.createPerson({
-      $gender: 'Male',
+      gender: 'Male',
       names: [
         {
-          $givenName: 'Gustaf'
+          givenName: 'Gustaf'
         }
       ]
     });
-    var json = JSON.parse(person.$serialize());
+    var json = JSON.parse(JSON.stringify(person));
     expect(json).toEqualJson({
       names: [ {
         nameForms: [ {
@@ -21,12 +21,12 @@ describe('base class', function() {
         preferred: false
       } ],
       gender: {
-        type: 'Male'
+        type: 'Male',
       }
     });
   });
   
-  it('$getLink success', function(done){
+  it('getLinkPromise success', function(done){
     var person = FS.createPerson({
       links: {
         test: {
@@ -35,7 +35,7 @@ describe('base class', function() {
       }
     });
     person.testMethod = function(){
-      this.$getLink('test').then(function(link){
+      this.getLinkPromise('test').then(function(link){
         expect(link.href).toEqual('foobaz');
         done();
       });
@@ -43,10 +43,10 @@ describe('base class', function() {
     person.testMethod();
   });
   
-  it('$getLink failure', function(done){
+  it('getLinkPromise failure', function(done){
     var person = FS.createPerson();
     person.testMethod = function(){
-      return this.$getLink('test').then(function(link){
+      return this.getLinkPromise('test').then(function(link){
         return link;
       });
     };

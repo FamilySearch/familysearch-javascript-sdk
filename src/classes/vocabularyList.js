@@ -7,14 +7,19 @@ var FS = require('./../FamilySearch'),
  * @description
  *
  * A vocabulary list.
+ * 
+ * @param {FamilySearch} client FamilySearch sdk client
+ * @param {Object} data raw object data
  */
 var VocabularyList = FS.VocabularyList = function(client, data){ 
   FS.BaseClass.call(this, client, data);
   
   if(data){
     if(data.elements){
-      utils.forEach(this.elements, function(element, i, list){
-        list[i] = client.createVocabularyElement(element);
+      utils.forEach(this.data.elements, function(element, i, list){
+        if(!(element instanceof FS.VocabularyElement)){
+          list[i] = client.createVocabularyElement(element);
+        }
       });
     }
   }
@@ -32,39 +37,40 @@ FS.prototype.createVocabularyList = function(data){
 };
 
 VocabularyList.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
+  
   constructor: VocabularyList,
    
   /**
    * @ngdoc function
-   * @name vocabularies.types:constructor.VocabularyList#$getTitle
+   * @name vocabularies.types:constructor.VocabularyList#getTitle
    * @methodOf vocabularies.types:constructor.VocabularyList
    * @function
    * @return {String} The label of this element.
    */
-  $getTitle: function(){
-    return utils.maybe(this.title);
+  getTitle: function(){
+    return this.data.title;
   },
   
   /**
    * @ngdoc function
-   * @name vocabularies.types:constructor.VocabularyList#$getDescription
+   * @name vocabularies.types:constructor.VocabularyList#getDescription
    * @methodOf vocabularies.types:constructor.VocabularyList
    * @function
    * @return {String} The description of this element.
    */
-  $getDescription: function(){
-    return utils.maybe(this.description);
+  getDescription: function(){
+    return this.data.description;
   },
   
   /**
    * @ngdoc function
-   * @name vocabularies.types:constructor.VocabularyList#$getElements
+   * @name vocabularies.types:constructor.VocabularyList#getElements
    * @methodOf vocabularies.types:constructor.VocabularyList
    * @function
    * @return {Array} An array of {@link vocabularies.types:constructor.VocabularyElement VocabularyElements}.
    */
-  $getElements: function(){
-    return utils.maybe(this.elements);
+  getElements: function(){
+    return utils.maybe(this.data.elements);
   }
    
 });

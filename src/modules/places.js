@@ -79,11 +79,12 @@ FS.prototype.getPlaceDescription = function(url, opts) {
         utils.forEach(response.places, function(place, index, obj){
           obj[index] = placesMap[place.id] = self.createPlaceDescription(place);
         });
+        
         utils.forEach(response.places, function(place){
-          if(place.jurisdiction && place.jurisdiction.resource){
-            var jurisdictionId = place.jurisdiction.resource.substring(1);
+          if(place.data.jurisdiction && place.data.jurisdiction.resource){
+            var jurisdictionId = place.data.jurisdiction.resource.substring(1);
             if(placesMap[jurisdictionId]){
-              place.$setJurisdiction(placesMap[jurisdictionId]);
+              place.setJurisdiction(placesMap[jurisdictionId]);
             }
           }
         });
@@ -255,7 +256,7 @@ FS.prototype.getPlaceTypes = function(opts) {
               return self.createVocabularyList(this);
             },
             getPlaceTypes: function() { 
-              return this.getList().$getElements(); 
+              return this.getList().getElements(); 
             }
           })
         )
@@ -295,7 +296,7 @@ FS.prototype.getPlaceTypeGroup = function(groupId, opts) {
               return self.createVocabularyList(this);
             },
             getPlaceTypes: function() { 
-              return this.getList().$getElements(); 
+              return this.getList().getElements(); 
             }
           })
         )
@@ -334,7 +335,7 @@ FS.prototype.getPlaceTypeGroups = function(opts) {
               return self.createVocabularyList(this);
             },
             getPlaceTypeGroups: function() { 
-              return this.getList().$getElements(); 
+              return this.getList().getElements(); 
             }
           })
         )

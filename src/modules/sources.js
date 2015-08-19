@@ -139,7 +139,9 @@ FS.prototype._getSourcesResponseMapper = function(root, includeDescriptions) {
         return this.sourceDescriptions || [];
       } : null,
       getSourceDescription: includeDescriptions ? function(id) {
-        return utils.find(this.sourceDescriptions, {id: id});
+        return utils.find(this.sourceDescriptions, function(o){
+          return o.getId() === id;
+        });
       } : null
     })),
     function(response){
@@ -147,8 +149,8 @@ FS.prototype._getSourcesResponseMapper = function(root, includeDescriptions) {
         if(source.description.charAt(0) === '#'){
           var descriptionId = source.description.substr(1);
           utils.forEach(maybe(response.sourceDescriptions), function(description){
-            if(description.id === descriptionId){
-              source.description = description.$getSourceDescriptionUrl();
+            if(description.getId() === descriptionId){
+              source.description = description.getSourceDescriptionUrl();
             }
           });
         }

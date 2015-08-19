@@ -7,6 +7,9 @@ var FS = require('./../FamilySearch'),
  * @description
  *
  * An element in a vocabulary list.
+ * 
+ * @param {FamilySearch} client FamilySearch sdk client
+ * @param {Object} data raw object data
  */
 var VocabularyElement = FS.VocabularyElement = function(client, data){ 
   FS.BaseClass.call(this, client, data);
@@ -27,32 +30,32 @@ VocabularyElement.prototype = utils.extend(Object.create(FS.BaseClass.prototype)
   constructor: VocabularyElement,
   
   /**
-   * @ngdoc property
-   * @name vocabularies.types:constructor.VocabularyElement#id
-   * @propertyOf vocabularies.types:constructor.VocabularyElement
+   * @ngdoc function
+   * @name vocabularies.types:constructor.VocabularyElement#getId
+   * @methodOf vocabularies.types:constructor.VocabularyElement
    * @return {string} place id
    */
    
   /**
    * @ngdoc function
-   * @name vocabularies.types:constructor.VocabularyElement#$getLabel
+   * @name vocabularies.types:constructor.VocabularyElement#getLabel
    * @methodOf vocabularies.types:constructor.VocabularyElement
    * @function
    * @return {String} The label of this element.
    */
-  $getLabel: function(){
-    return utils.maybe(utils.maybe(this.labels)[0])['@value'];
+  getLabel: function(){
+    return utils.maybe(utils.maybe(this.data.labels)[0])['@value'];
   },
   
   /**
    * @ngdoc function
-   * @name vocabularies.types:constructor.VocabularyElement#$getDescription
+   * @name vocabularies.types:constructor.VocabularyElement#getDescription
    * @methodOf vocabularies.types:constructor.VocabularyElement
    * @function
    * @return {String} The description of this element.
    */
-  $getDescription: function(){
-    return utils.maybe(utils.maybe(this.descriptions)[0])['@value'];
+  getDescription: function(){
+    return utils.maybe(utils.maybe(this.data.descriptions)[0])['@value'];
   }
    
 });

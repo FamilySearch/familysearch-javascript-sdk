@@ -9,7 +9,8 @@ var FS = require('./../FamilySearch'),
  *
  * Comment on a discussion or memory
  *
- * @param {Object=} data an object
+ * @param {FamilySearch} client FamilySearch sdk client
+ * @param {Object} data raw object data
  */
 
 var Comment = FS.Comment = function(client, data) {
@@ -28,67 +29,71 @@ FS.prototype.createComment = function(data){
 };
 
 Comment.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
+  
   constructor: Comment,
+  
   /**
    * @ngdoc property
-   * @name discussions.types:constructor.Comment#id
-   * @propertyOf discussions.types:constructor.Comment
+   * @name discussions.types:constructor.Comment#getId
+   * @methodOf discussions.types:constructor.Comment
    * @return {String} Id of the comment
    */
 
   /**
    * @ngdoc property
-   * @name discussions.types:constructor.Comment#text
-   * @propertyOf discussions.types:constructor.Comment
+   * @name discussions.types:constructor.Comment#getText
+   * @methodOf discussions.types:constructor.Comment
    * @return {String} text of the comment
    */
+  getText: function(){ return this.data.text; },
 
   /**
    * @ngdoc property
-   * @name discussions.types:constructor.Comment#created
-   * @propertyOf discussions.types:constructor.Comment
+   * @name discussions.types:constructor.Comment#getCreatedTimestamp
+   * @methodOf discussions.types:constructor.Comment
    * @return {Number} timestamp
    */
+  getCreatedTimestamp: function(){ return this.data.created; },
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.Comment#$getCommentUrl
+   * @name discussions.types:constructor.Comment#getCommentUrl
    * @methodOf discussions.types:constructor.Comment
    * @function
    * @return {String} URL of this comment; _NOTE_ however, that individual comments cannot be read
    */
-  $getCommentUrl: function() { return this.$helpers.removeAccessToken(maybe(maybe(this.links).comment).href); },
+  getCommentUrl: function() { return this.helpers.removeAccessToken(maybe(this.getLink('comment')).href); },
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.Comment#$getAgentId
+   * @name discussions.types:constructor.Comment#getAgentId
    * @methodOf discussions.types:constructor.Comment
    * @function
    * @return {String} id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
    */
-  $getAgentId: function() { return maybe(this.contributor).resourceId; },
+  getAgentId: function() { return maybe(this.data.contributor).resourceId; },
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.Comment#$getAgentUrl
+   * @name discussions.types:constructor.Comment#getAgentUrl
    * @methodOf discussions.types:constructor.Comment
    * @function
    * @return {String} URL of the contributor - pass into {@link user.functions:getAgent getAgent} for details
    */
-  $getAgentUrl: function() { return this.$helpers.removeAccessToken(maybe(this.contributor).resource); },
+  getAgentUrl: function() { return this.helpers.removeAccessToken(maybe(this.data.contributor).resource); },
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.Comment#$getAgent
+   * @name discussions.types:constructor.Comment#getAgent
    * @methodOf discussions.types:constructor.Comment
    * @function
    * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
    */
-  $getAgent: function() { return this.$client.getAgent(this.$getAgentUrl() || this.$getAgentId()); },
+  getAgent: function() { return this.client.getAgent(this.getAgentUrl() || this.getAgentId()); },
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.Comment#$save
+   * @name discussions.types:constructor.Comment#save
    * @methodOf discussions.types:constructor.Comment
    * @function
    * @description
@@ -104,23 +109,23 @@ Comment.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise of the comment id
    */
-  $save: function(url, changeMessage, opts) {
+  save: function(url, changeMessage, opts) {
     var self = this;
     var payload = {discussions: [{ comments: [ self ] }] };
-    return self.$plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
-      if (!self.id) {
-        self.id = promise.getResponseHeader('X-ENTITY-ID');
+    return self.plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
+      if (!self.getId()) {
+        self.data.id = promise.getResponseHeader('X-ENTITY-ID');
       }
-      if (!self.$getCommentUrl()) {
-        self.links = { comment: { href: promise.getResponseHeader('Location') } };
+      if (!self.getCommentUrl()) {
+        self.data.links = { comment: { href: promise.getResponseHeader('Location') } };
       }
-      return self.id;
+      return self.getId();
     });
   },
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.Comment#$delete
+   * @name discussions.types:constructor.Comment#delete
    * @methodOf discussions.types:constructor.Comment
    * @function
    * @description delete this comment
@@ -130,8 +135,8 @@ Comment.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the comment url
    */
-  $delete: function(url, changeMessage, opts) {
-    return this.$client.deleteComment(this.$getCommentUrl(), this.id, changeMessage, opts);
+  delete: function(url, changeMessage, opts) {
+    return this.client.deleteComment(this.getCommentUrl(), changeMessage, opts);
   }
 
 });

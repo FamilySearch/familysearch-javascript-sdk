@@ -10,9 +10,10 @@ var FS = require('./../FamilySearch'),
  * Memory Persona (not a true persona; can only contain a name and a media artifact reference)
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Personas_resource FamilySearch API Docs}
- *
- * @param {Object=} data an object with optional attributes {$name, $memoryArtifactRef}.
- * To create a new memory persona, you must set $memoryArtifactRef and $name.
+ * 
+ * @param {FamilySearch} client FamilySearch sdk client
+ * @param {Object=} data an object with optional attributes {name, memoryArtifactRef}.
+ * To create a new memory persona, you must set memoryArtifactRef and name.
  * _name_ can be a {@link name.types:constructor.Name Name} object or a fullText string.
  * _NOTE_ memory persona names don't have given or surname parts, only fullText
  */
@@ -21,12 +22,12 @@ var MemoryPersona = FS.MemoryPersona = function(client, data) {
   
   if(data){
     
-    if(data.$name){
-      this.$setName(data.$name);
+    if(data.name){
+      this.setName(data.name);
     }
     
-    if(data.$memoryArtifactRef){
-      this.$setMemoryArtifactRef(data.$memoryArtifactRef);
+    if(data.memoryArtifactRef){
+      this.setMemoryArtifactRef(data.memoryArtifactRef);
     }
     
   }
@@ -46,108 +47,110 @@ FS.prototype.createMemoryPersona = function(data){
 MemoryPersona.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   
   constructor: MemoryPersona,
+  
   /**
-   * @ngdoc property
-   * @name memories.types:constructor.MemoryPersona#id
-   * @propertyOf memories.types:constructor.MemoryPersona
+   * @ngdoc function
+   * @name memories.types:constructor.MemoryPersona#getId
+   * @methodOf memories.types:constructor.MemoryPersona
    * @return {String} Id of the Memory Persona
    */
 
   /**
-   * @ngdoc property
-   * @name memories.types:constructor.MemoryPersona#extracted
-   * @propertyOf memories.types:constructor.MemoryPersona
-   * @return {String} not sure what this means
+   * @ngdoc function
+   * @name memories.types:constructor.MemoryPersona#isExtracted
+   * @methodOf memories.types:constructor.MemoryPersona
+   * @return {Boolean} should always be true; probably useless
    */
+  isExtracted: function(){ return this.data.extracted; },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.MemoryPersona#$getMemoryPersonaUrl
+   * @name memories.types:constructor.MemoryPersona#getMemoryPersonaUrl
    * @methodOf memories.types:constructor.MemoryPersona
    * @function
    * @return {String} memory persona URL
    */
-  $getMemoryPersonaUrl: function() { return this.$helpers.removeAccessToken(maybe(maybe(this.links).persona).href); },
+  getMemoryPersonaUrl: function() { return this.helpers.removeAccessToken(maybe(this.getLink('persona')).href); },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.MemoryPersona#$getMemoryArtifactRef
+   * @name memories.types:constructor.MemoryPersona#getMemoryArtifactRef
    * @methodOf memories.types:constructor.MemoryPersona
    * @return {MemoryArtifactRef} {@link memories.types:constructor.MemoryArtifactRef MemoryArtifactRef}
    */
-  $getMemoryArtifactRef: function() { return maybe(this.media)[0]; },
+  getMemoryArtifactRef: function() { return maybe(this.data.media)[0]; },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.MemoryPersona#$getNames
+   * @name memories.types:constructor.MemoryPersona#getNames
    * @methodOf memories.types:constructor.MemoryPersona
    * @return {Name} a {@link name.types:constructor.Name Name}
    */
-  $getName: function() { return maybe(this.names)[0]; },
+  getName: function() { return maybe(this.data.names)[0]; },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.MemoryPersona#$getDisplayName
+   * @name memories.types:constructor.MemoryPersona#getDisplayName
    * @methodOf memories.types:constructor.MemoryPersona
    * @function
    * @return {string} display name
    */
-  $getDisplayName: function() { return maybe(this.display).name; },
+  getDisplayName: function() { return maybe(this.data.display).name; },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.MemoryPersona#$getMemoryUrl
+   * @name memories.types:constructor.MemoryPersona#getMemoryUrl
    * @methodOf memories.types:constructor.MemoryPersona
    * @function
    * @return {string} url of the memory
    */
-  $getMemoryUrl: function() { return this.$helpers.removeAccessToken(maybe(this.$getMemoryArtifactRef()).description); },
+  getMemoryUrl: function() { return this.helpers.removeAccessToken(maybe(this.getMemoryArtifactRef()).description); },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.MemoryPersona#$getMemory
+   * @name memories.types:constructor.MemoryPersona#getMemory
    * @methodOf memories.types:constructor.MemoryPersona
    * @function
    * @return {Object} promise for the {@link memories.functions:getMemory getMemory} response
    */
-  $getMemory:  function() {
-    return this.$client.getMemory(this.$getMemoryUrl());
+  getMemory:  function() {
+    return this.client.getMemory(this.getMemoryUrl());
   },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.MemoryPersona#$setName
+   * @name memories.types:constructor.MemoryPersona#setName
    * @methodOf memories.types:constructor.MemoryPersona
    * @function
    * @param {Name|string} value name
    * @return {MemoryPersona} this memory persona
    */
-  $setName: function(value) {
+  setName: function(value) {
     if (!(value instanceof FS.Name)) {
-      value = this.$client.createName(value);
+      value = this.client.createName(value);
     }
-    this.names = [ value ];
+    this.data.names = [ value ];
     //noinspection JSValidateTypes
     return this;
   },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.MemoryPersona#$setMemoryArtifactRef
+   * @name memories.types:constructor.MemoryPersona#setMemoryArtifactRef
    * @methodOf memories.types:constructor.MemoryPersona
    * @function
    * @param {MemoryArtifactRef} value memory artifact ref
    * @return {MemoryPersona} this memory persona
    */
-  $setMemoryArtifactRef: function(value) {
-    this.media = [ value ];
+  setMemoryArtifactRef: function(value) {
+    this.data.media = [ value ];
     //noinspection JSValidateTypes
     return this;
   },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.MemoryPersona#$save
+   * @name memories.types:constructor.MemoryPersona#save
    * @methodOf memories.types:constructor.MemoryPersona
    * @function
    * @description
@@ -162,13 +165,13 @@ MemoryPersona.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @return {Object} promise of the memory persona URL, which is fulfilled after the memory persona has been updated,
    * and if refresh is true, after the memory persona has been read.
    */
-  $save: function(url, changeMessage, opts) {
+  save: function(url, changeMessage, opts) {
     var self = this;
-    return self.$helpers.chainHttpPromises(
-      self.$helpers.refPromise(url ? url : self.$getMemoryPersonaUrl()),
+    return self.helpers.chainHttpPromises(
+      self.helpers.refPromise(url ? url : self.getMemoryPersonaUrl()),
       function(url){
-        return self.$plumbing.post(url, { persons: [ self ] }, {}, opts, function(data, promise) {
-          return self.$getMemoryPersonaUrl() || self.$helpers.removeAccessToken(promise.getResponseHeader('Location'));
+        return self.plumbing.post(url, { persons: [ self ] }, {}, opts, function(data, promise) {
+          return self.getMemoryPersonaUrl() || self.helpers.removeAccessToken(promise.getResponseHeader('Location'));
         });
       }
     );
@@ -176,7 +179,7 @@ MemoryPersona.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.MemoryPersona#$delete
+   * @name memories.types:constructor.MemoryPersona#delete
    * @methodOf memories.types:constructor.MemoryPersona
    * @function
    * @description delete this memory persona - see {@link memories.functions:deleteMemoryPersona deleteMemoryPersona}
@@ -184,8 +187,8 @@ MemoryPersona.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the memory persona URL
    */
-  $delete: function(changeMessage, opts) {
-    return this.$client.deleteMemoryPersona(this.$getMemoryPersonaUrl(), this.id, changeMessage, opts);
+  delete: function(changeMessage, opts) {
+    return this.client.deleteMemoryPersona(this.getMemoryPersonaUrl(), changeMessage, opts);
   }
 
 });

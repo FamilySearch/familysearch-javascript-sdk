@@ -22,81 +22,85 @@ var personWithRelationshipsConvenienceFunctions = {
       return sourceDescription.about.substring(1);
     }
   },
-  getPerson: function(id) { return utils.find(this.persons, {id: id}); },
+  getPerson: function(id) { 
+    return utils.find(this.persons, function(person){
+      return person.getId() === id;
+    });
+  },
   getPrimaryPerson: function() { return this.getPerson(this.getPrimaryId()); },
   getParentRelationships: function() {
     var primaryId = this.getPrimaryId();
     return utils.filter(this.childAndParentsRelationships, function(r) {
-      return maybe(r.child).resourceId === primaryId;
+      return r.getChildId() === primaryId;
     });
   },
   getSpouseRelationships: function() {
     return utils.filter(this.relationships, function(r) {
-      return r.type === 'http://gedcomx.org/Couple';
+      return r.data.type === 'http://gedcomx.org/Couple';
     });
   },
   getSpouseRelationship: function(spouseId) {
     var primaryId = this.getPrimaryId();
     return utils.find(this.relationships, function(r) {
-      return r.type === 'http://gedcomx.org/Couple' &&
-        (primaryId === r.$getHusbandId() ? r.$getWifeId() : r.$getHusbandId()) === spouseId;
+      return r.data.type === 'http://gedcomx.org/Couple' &&
+        (primaryId === r.getHusbandId() ? r.getWifeId() : r.getHusbandId()) === spouseId;
     });
   },
   getChildRelationships: function() {
     var primaryId = this.getPrimaryId();
     return utils.filter(this.childAndParentsRelationships, function(r) {
-      return maybe(r.father).resourceId === primaryId || maybe(r.mother).resourceId === primaryId;
+      return r.getFatherId() === primaryId || r.getMotherId() === primaryId;
     });
   },
   getChildRelationshipsOf: function(spouseId) {
     var primaryId = this.getPrimaryId();
     return utils.filter(this.childAndParentsRelationships, function(r) {
       /*jshint eqeqeq:false */
-      return (maybe(r.father).resourceId === primaryId || maybe(r.mother).resourceId === primaryId) &&
-        (maybe(r.father).resourceId == spouseId || maybe(r.mother).resourceId == spouseId); // allow spouseId to be null or undefined
+      return (r.getFatherId() === primaryId || r.getMotherId() === primaryId) &&
+        (r.getFatherId() == spouseId || r.getMotherId() == spouseId); // allow spouseId to be null or undefined
     });
   },
   getFatherIds: function() {
     return utils.uniq(utils.map(
       utils.filter(this.getParentRelationships(), function(r) {
-        return !!r.$getFatherId();
+        return !!r.getFatherId();
       }),
       function(r) {
-        return r.$getFatherId();
+        return r.getFatherId();
       }, this));
   },
   getFathers: function() { return utils.map(this.getFatherIds(), this.getPerson, this); },
   getMotherIds: function() {
     return utils.uniq(utils.map(
       utils.filter(this.getParentRelationships(), function(r) {
-        return !!r.$getMotherId();
+        return !!r.getMotherId();
       }),
       function(r) {
-        return r.$getMotherId();
+        return r.getMotherId();
       }, this));
   },
   getMothers: function() { return utils.map(this.getMotherIds(), this.getPerson, this); },
   getSpouseIds: function() {
     return utils.uniq(utils.map(
       utils.filter(this.getSpouseRelationships(), function(r) {
-        return r.$getHusbandId() && r.$getWifeId(); // only consider couple relationships with both spouses
+        return r.getHusbandId() && r.getWifeId(); // only consider couple relationships with both spouses
       }),
       function(r) {
-        return this.getPrimaryId() === r.$getHusbandId() ? r.$getWifeId() : r.$getHusbandId();
+        return this.getPrimaryId() === r.getHusbandId() ? r.getWifeId() : r.getHusbandId();
       }, this));
   },
   getSpouses: function() { return utils.map(this.getSpouseIds(), this.getPerson, this); },
   getChildIds: function() {
     return utils.uniq(utils.map(this.getChildRelationships(),
       function(r) {
-        return r.$getChildId();
+        return r.getChildId();
       }, this));
   },
   getChildren: function() { return utils.map(this.getChildIds(), this.getPerson, this); },
   getChildIdsOf: function(spouseId) {
     return utils.uniq(utils.map(this.getChildRelationshipsOf(spouseId),
       function(r) {
-        return r.$getChildId();
+        return r.getChildId();
       }, this));
   },
   getChildrenOf: function(spouseId) { return utils.map(this.getChildIdsOf(spouseId), this.getPerson, this); },
@@ -105,7 +109,7 @@ var personWithRelationshipsConvenienceFunctions = {
   }
 };
 
-// TODO consider moving to another documentation generator so we can link to _methods_ like $save and $delete
+// TODO consider moving to another documentation generator so we can link to _methods_ like save and delete
 
 /**
  * @ngdoc function
@@ -142,7 +146,7 @@ FS.prototype.getPerson = function(pid, params, opts) {
             return response;
           },
           function(response, promise) {
-            response.persons[0].$isReadOnly = function() {
+            response.persons[0].isReadOnly = function() {
               var allowHeader = promise.getResponseHeader('Allow');
               return !!allowHeader && allowHeader.indexOf('POST') < 0;
             };
@@ -183,9 +187,19 @@ FS.prototype._personsAndRelationshipsMapper = function(){
   var self = this;
   return utils.compose(
     utils.objectExtender({
-      getCoupleRelationships: function() { return utils.filter(maybe(this).relationships, {type: 'http://gedcomx.org/Couple'}) || []; },
-      getChildAndParentsRelationships: function() { return maybe(this).childAndParentsRelationships || []; },
-      getPerson:    function(id) { return utils.find(this.persons, {id: id}); }
+      getCoupleRelationships: function() { 
+        return utils.filter(maybe(this).relationships, function(rel){
+          return rel.data.type === 'http://gedcomx.org/Couple';
+        }) || []; 
+      },
+      getChildAndParentsRelationships: function() { 
+        return maybe(this).childAndParentsRelationships || []; 
+      },
+      getPerson: function(id) { 
+        return utils.find(this.persons, function(person){
+          return person.getId() === id;
+        });
+      }
     }),
     function(response){
       utils.forEach(response.persons, function(person, index, obj){
@@ -261,7 +275,7 @@ FS.prototype.getPersonWithRelationships = function(pid, params, opts) {
           self._personsAndRelationshipsMapper(),
           utils.objectExtender(personWithRelationshipsConvenienceFunctions),
           function(response, promise) {
-            response.persons[0].$isReadOnly = function() {
+            response.persons[0].isReadOnly = function() {
               var allowHeader = promise.getResponseHeader('Allow');
               return !!allowHeader && allowHeader.indexOf('POST') < 0;
             };
@@ -324,7 +338,7 @@ FS.prototype.getPreferredSpouse = function(pid, params, opts) {
   return self.helpers.chainHttpPromises(
     self.getCurrentUser(),
     function(response) {
-      var uid = response.getUser().treeUserId;
+      var uid = response.getUser().getTreeUserId();
       return self.plumbing.getCollectionUrl('FSFT', 'preferred-spouse-relationship', {uid: uid, pid: pid});
     },
     function(url) {
@@ -369,7 +383,7 @@ FS.prototype.setPreferredSpouse = function(pid, curl, opts) {
   return self.helpers.chainHttpPromises(
     self.getCurrentUser(),
     function(response) {
-      var uid = response.getUser().treeUserId;
+      var uid = response.getUser().getTreeUserId();
       return self.plumbing.getCollectionUrl('FSFT', 'preferred-spouse-relationship', {uid: uid, pid: pid});
     },
     function(url) {
@@ -401,7 +415,7 @@ FS.prototype.deletePreferredSpouse = function(pid, opts) {
   return self.helpers.chainHttpPromises(
     self.getCurrentUser(),
     function(response) {
-      var uid = response.getUser().treeUserId;
+      var uid = response.getUser().getTreeUserId();
       return self.plumbing.getCollectionUrl('FSFT', 'preferred-spouse-relationship', {uid: uid, pid: pid});
     },
     function(url) {
@@ -434,7 +448,7 @@ FS.prototype.getPreferredParents = function(pid, params, opts) {
   return self.helpers.chainHttpPromises(
     self.getCurrentUser(),
     function(response) {
-      var uid = response.getUser().treeUserId;
+      var uid = response.getUser().getTreeUserId();
       return self.plumbing.getCollectionUrl('FSFT', 'preferred-parent-relationship', {uid: uid, pid: pid});
     },
     function(url) {
@@ -471,7 +485,7 @@ FS.prototype.setPreferredParents = function(pid, curl, opts) {
   return self.helpers.chainHttpPromises(
     self.getCurrentUser(),
     function(response) {
-      var uid = response.getUser().treeUserId;
+      var uid = response.getUser().getTreeUserId();
       return self.plumbing.getCollectionUrl('FSFT', 'preferred-parent-relationship', {uid: uid, pid: pid});
     },
     function(url) {
@@ -503,7 +517,7 @@ FS.prototype.deletePreferredParents = function(pid, opts) {
   return self.helpers.chainHttpPromises(
     self.getCurrentUser(),
     function(response) {
-      var uid = response.getUser().treeUserId;
+      var uid = response.getUser().getTreeUserId();
       return self.plumbing.getCollectionUrl('FSFT', 'preferred-parent-relationship', {uid: uid, pid: pid});
     },
     function(url) {

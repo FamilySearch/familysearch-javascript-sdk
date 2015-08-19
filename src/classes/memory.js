@@ -11,10 +11,12 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_resource FamilySearch API Docs}
  *
- * @param {Object=} data an object with optional attributes {title, description, artifactFilename, $data}.
- * _$data_ is a string for Stories, or a FormData for Images or Documents
+ * 
+ * @param {FamilySearch} client FamilySearch sdk client
+ * @param {Object=} data an object with optional attributes {title, description, artifactFilename, data}.
+ * data_ is a string for Stories, or a FormData for Images or Documents
  * - if FormData, the field name of the file to upload _must_ be `artifact`.
- * _$data_ is ignored when updating a memory.
+ * data_ is ignored when updating a memory.
  * _description_ doesn't appear to apply to stories.
  *
  * __NOTE__ it is not currently possible to update memory contents - not even for stories
@@ -35,218 +37,224 @@ FS.prototype.createMemory = function(data){
 };
 
 Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
+  
   constructor: Memory,
+  
   /**
-   * @ngdoc property
-   * @name memories.types:constructor.Memory#id
-   * @propertyOf memories.types:constructor.Memory
+   * @ngdoc function
+   * @name memories.types:constructor.Memory#getId
+   * @methodOf memories.types:constructor.Memory
    * @return {String} Id of the Memory
    */
 
   /**
-   * @ngdoc property
-   * @name memories.types:constructor.Memory#mediaType
-   * @propertyOf memories.types:constructor.Memory
+   * @ngdoc function
+   * @name memories.types:constructor.Memory#getMediaType
+   * @methodOf memories.types:constructor.Memory
    * @return {String} media type; e.g., image/jpeg
    */
+  getMediaType: function(){ return this.data.mediaType; },
 
   /**
-   * @ngdoc property
-   * @name memories.types:constructor.Memory#resourceType
-   * @propertyOf memories.types:constructor.Memory
+   * @ngdoc function
+   * @name memories.types:constructor.Memory#getResourceType
+   * @methodOf memories.types:constructor.Memory
    * @return {String} resource type; e.g., http://gedcomx.org/DigitalArtifact
    */
+  getResourceType: function(){ return this.data.resourceType; },
 
   /**
-   * @ngdoc property
-   * @name memories.types:constructor.Memory#about
-   * @propertyOf memories.types:constructor.Memory
+   * @ngdoc function
+   * @name memories.types:constructor.Memory#getAbout
+   * @methodOf memories.types:constructor.Memory
    * @return {String} memory artifact URL
    */
+  getAbout: function(){ return this.data.about; },
 
   /**
-   * @ngdoc property
-   * @name memories.types:constructor.Memory#artifactMetadata
-   * @propertyOf memories.types:constructor.Memory
+   * @ngdoc function
+   * @name memories.types:constructor.Memory#getArtifactMetadata
+   * @methodOf memories.types:constructor.Memory
    * @return {Object[]} array of { `artifactType`, `filename` }
    */
+  getArtifactMetadata: function(){ return maybe(this.data.artifactMetadata); },
 
   /**
-   * @ngdoc property
-   * @name memories.types:constructor.Memory#attribution
-   * @propertyOf memories.types:constructor.Memory
+   * @ngdoc function
+   * @name memories.types:constructor.Memory#getAttribution
+   * @methodOf memories.types:constructor.Memory
    * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
    */
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.Memory#$getTitle
+   * @name memories.types:constructor.Memory#getTitle
    * @methodOf memories.types:constructor.Memory
    * @function
    * @return {String} title
    */
-  $getTitle: function() { return maybe(maybe(this.titles)[0]).value; },
+  getTitle: function() { return maybe(maybe(this.data.titles)[0]).value; },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.Memory#$getDescription
+   * @name memories.types:constructor.Memory#getDescription
    * @methodOf memories.types:constructor.Memory
    * @function
    * @return {String} description (may not apply to story memories)
    */
-  $getDescription: function() { return maybe(maybe(this.description)[0]).value; },
+  getDescription: function() { return maybe(maybe(this.data.description)[0]).value; },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.Memory#$getIconUrl
+   * @name memories.types:constructor.Memory#getIconUrl
    * @methodOf memories.types:constructor.Memory
    * @function
    * @return {String} URL of the icon with access token
    */
-  $getIconUrl: function() { return this.$helpers.appendAccessToken(maybe(maybe(this.links)['image-icon']).href); },
+  getIconUrl: function() { return this.helpers.appendAccessToken(maybe(this.getLink('image-icon')).href); },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.Memory#$getThumbnailUrl
+   * @name memories.types:constructor.Memory#getThumbnailUrl
    * @methodOf memories.types:constructor.Memory
    * @function
    * @return {String} URL of the thumbnail with access token
    */
-  $getThumbnailUrl: function() { return this.$helpers.appendAccessToken(maybe(maybe(this.links)['image-thumbnail']).href); },
+  getThumbnailUrl: function() { return this.helpers.appendAccessToken(maybe(this.getLink('image-thumbnail')).href); },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.Memory#$getImageUrl
+   * @name memories.types:constructor.Memory#getImageUrl
    * @methodOf memories.types:constructor.Memory
    * @function
    * @return {String} URL of the full image with access token
    */
-  $getImageUrl: function() { return this.$helpers.appendAccessToken(maybe(maybe(this.links)['image']).href); },
+  getImageUrl: function() { return this.helpers.appendAccessToken(maybe(this.getLink('image')).href); },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.Memory#$getMemoryArtifactUrl
+   * @name memories.types:constructor.Memory#getMemoryArtifactUrl
    * @methodOf memories.types:constructor.Memory
    * @function
    * @return {String} URL of the memory artifact (image, story, or document) with access token
    */
-  $getMemoryArtifactUrl: function() {
+  getMemoryArtifactUrl: function() {
     // remove old access token and append a new one in case they are different
-    return this.$helpers.appendAccessToken(this.$helpers.removeAccessToken(this.about));
+    return this.helpers.appendAccessToken(this.helpers.removeAccessToken(this.data.about));
   },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.Memory#$getMemoryUrl
+   * @name memories.types:constructor.Memory#getMemoryUrl
    * @methodOf memories.types:constructor.Memory
    * @function
    * @return {String} memory URL (without the access token)
    */
-  $getMemoryUrl: function() { return this.$helpers.removeAccessToken(maybe(maybe(this.links)['description']).href); },
+  getMemoryUrl: function() { return this.helpers.removeAccessToken(maybe(this.getLink('description')).href); },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.Memory#$getArtifactFilename
+   * @name memories.types:constructor.Memory#getArtifactFilename
    * @methodOf memories.types:constructor.Memory
    * @function
    * @return {String} filename (provided by the user or a default name)
    */
-  $getArtifactFilename: function() { return maybe(maybe(this.artifactMetadata)[0]).filename; },
+  getArtifactFilename: function() { return maybe(maybe(this.data.artifactMetadata)[0]).filename; },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.Memory#$getArtifactType
+   * @name memories.types:constructor.Memory#getArtifactType
    * @methodOf memories.types:constructor.Memory
    * @function
    * @return {String} type; e.g., http://familysearch.org/v1/Image
    */
-  $getArtifactType: function() { return maybe(maybe(this.artifactMetadata)[0]).artifactType; },
+  getArtifactType: function() { return maybe(maybe(this.data.artifactMetadata)[0]).artifactType; },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.Memory#$getArtifactHeight
+   * @name memories.types:constructor.Memory#getArtifactHeight
    * @methodOf memories.types:constructor.Memory
    * @function
    * @return {number} image height
    */
-  $getArtifactHeight: function() { return maybe(maybe(this.artifactMetadata)[0]).height; },
+  getArtifactHeight: function() { return maybe(maybe(this.data.artifactMetadata)[0]).height; },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.Memory#$getArtifactWidth
+   * @name memories.types:constructor.Memory#getArtifactWidth
    * @methodOf memories.types:constructor.Memory
    * @function
    * @return {number} image width
    */
-  $getArtifactWidth: function() { return maybe(maybe(this.artifactMetadata)[0]).width; },
+  getArtifactWidth: function() { return maybe(maybe(this.data.artifactMetadata)[0]).width; },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.Memory#$getCommentsUrl
+   * @name memories.types:constructor.Memory#getCommentsUrl
    * @methodOf memories.types:constructor.Memory
    * @function
    * @return {String} URL of the comments endpoint
    * - pass into {@link memories.functions:getMemoryComments getMemoryComments} for details
    */
-  $getCommentsUrl: function() { return this.$helpers.removeAccessToken(maybe(maybe(this.links).comments).href); },
+  getCommentsUrl: function() { return this.helpers.removeAccessToken(maybe(this.getLink('comments')).href); },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.Memory#$getComments
+   * @name memories.types:constructor.Memory#getComments
    * @methodOf memories.types:constructor.Memory
    * @function
    * @return {Object} promise for the {@link memories.functions:getMemoryComments getMemoryComments} response
    */
-  $getComments: function() { return this.$client.getMemoryComments(this.$getCommentsUrl() || this.id); },
+  getComments: function() { return this.client.getMemoryComments(this.getCommentsUrl()); },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.Memory#$setTitle
+   * @name memories.types:constructor.Memory#setTitle
    * @methodOf memories.types:constructor.Memory
    * @function
    * @param {String} title memory title
    * @return {Memory} this memory
    */
-  $setTitle: function(title) {
-    this.titles = [ { value: title } ];
+  setTitle: function(title) {
+    this.data.titles = [ { value: title } ];
     //noinspection JSValidateTypes
     return this;
   },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.Memory#$setDescription
+   * @name memories.types:constructor.Memory#setDescription
    * @methodOf memories.types:constructor.Memory
    * @function
    * @param {String} description memory description (may not apply to story memories)
    * @return {Memory} this memory
    */
-  $setDescription: function(description) {
-    this.description = [ { value: description } ];
+  setDescription: function(description) {
+    this.data.description = [ { value: description } ];
     //noinspection JSValidateTypes
     return this;
   },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.Memory#$setArtifactFilename
+   * @name memories.types:constructor.Memory#setArtifactFilename
    * @methodOf memories.types:constructor.Memory
    * @function
    * @param {String} filename uploaded file
    * @return {Memory} this memory
    */
-  $setArtifactFilename: function(filename) {
-    if (!utils.isArray(this.artifactMetadata) || !this.artifactMetadata.length) {
-      this.artifactMetadata = [ {} ];
+  setArtifactFilename: function(filename) {
+    if (!utils.isArray(this.data.artifactMetadata) || !this.artifactMetadata.length) {
+      this.data.artifactMetadata = [ {} ];
     }
-    this.artifactMetadata[0].filename = filename;
+    this.data.artifactMetadata[0].filename = filename;
     //noinspection JSValidateTypes
     return this;
   },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.Memory#$save
+   * @name memories.types:constructor.Memory#save
    * @methodOf memories.types:constructor.Memory
    * @function
    * @description
@@ -258,33 +266,33 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise of the memory url which is fulfilled after the memory has been created or updated
    */
-  $save: function(changeMessage, opts) {
+  save: function(changeMessage, opts) {
     var self = this;
-    return self.$helpers.chainHttpPromises(
-      self.$getMemoryUrl() ? self.$helpers.refPromise(self.$getMemoryUrl()) : self.$plumbing.getCollectionUrl('FSMEM', 'artifacts'),
+    return self.helpers.chainHttpPromises(
+      self.getMemoryUrl() ? self.helpers.refPromise(self.getMemoryUrl()) : self.plumbing.getCollectionUrl('FSMEM', 'artifacts'),
       function(url) {
-        if (self.id) {
+        if (self.getId()) {
           // update memory
-          return self.$plumbing.post(url, { sourceDescriptions: [ self ] }, {}, opts, function() {
+          return self.plumbing.post(url, { sourceDescriptions: [ self ] }, {}, opts, function() {
             return url;
           });
         }
         else {
           // create memory
           var params = {};
-          if (self.$getTitle()) {
-            params.title = self.$getTitle();
+          if (self.getTitle()) {
+            params.title = self.getTitle();
           }
-          if (self.$getDescription()) {
-            params.description = self.$getDescription();
+          if (self.getDescription()) {
+            params.description = self.getDescription();
           }
-          if (self.$getArtifactFilename()) {
-            params.filename = self.$getArtifactFilename();
+          if (self.getArtifactFilename()) {
+            params.filename = self.getArtifactFilename();
           }
-          return self.$plumbing.post(self.$helpers.appendQueryParameters(url, params),
-            self.$data, { 'Content-Type': utils.isString(self.$data) ? 'text/plain' : 'multipart/form-data' }, opts,
+          return self.plumbing.post(self.helpers.appendQueryParameters(url, params),
+            self.data.data, { 'Content-Type': utils.isString(self.data.data) ? 'text/plain' : 'multipart/form-data' }, opts,
             function(data, promise){
-              return self.$helpers.getResponseLocation(data, promise);
+              return self.helpers.getResponseLocation(data, promise);
             });
         }
       }
@@ -293,7 +301,7 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.Memory#$delete
+   * @name memories.types:constructor.Memory#delete
    * @methodOf memories.types:constructor.Memory
    * @function
    * @description delete this memory - see {@link memories.functions:deleteMemory deleteMemory}
@@ -301,8 +309,8 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the memory URL
    */
-  $delete: function(changeMessage, opts) {
-    return this.$client.deleteMemory(this.$getMemoryUrl(), changeMessage, opts);
+  delete: function(changeMessage, opts) {
+    return this.client.deleteMemory(this.getMemoryUrl(), changeMessage, opts);
   }
 
 });

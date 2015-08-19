@@ -12,23 +12,17 @@ var FS = require('./../FamilySearch'),
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Source_References_resource Couple SourceRef}, and
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource ChildAndParents SourceRef}
  *
- * @param {Object=} data an object with optional attributes {$tags. $sourceDescription}.
- * _$tags_ is an array (string[]) of tag names
+ * @param {FamilySearch} client FamilySearch sdk client
+ * @param {Object} data raw object data
  */
 var SourceRef = FS.SourceRef = function(client, data) {
   FS.BaseClass.call(this, client, data);
   
-  if (data) {
-    if (data.$sourceDescription) {
+  if(data){
+    if (data.sourceDescription) {
       //noinspection JSUnresolvedFunction
-      this.$setSourceDescription(data.$sourceDescription);
-    }
-    if (data.$tags) {
-      //noinspection JSUnresolvedFunction
-      this.$setTags(data.$tags);
-    }
-    if (data.attribution && !(data.attribution instanceof FS.Attribution)) {
-      this.attribution = client.createAttribution(data.attribution);
+      this.setSourceDescription(data.sourceDescription);
+      delete data.sourceDescription;
     }
   }
 };
@@ -45,92 +39,102 @@ FS.prototype.createSourceRef = function(data){
 };
 
 SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
+  
   constructor: SourceRef,
+  
   /**
-   * @ngdoc property
-   * @name sources.types:constructor.SourceRef#id
-   * @propertyOf sources.types:constructor.SourceRef
+   * @ngdoc function
+   * @name sources.types:constructor.SourceRef#getId
+   * @methodOf sources.types:constructor.SourceRef
    * @return {string} Id of the source reference
    */
 
   /**
-   * @ngdoc property
-   * @name sources.types:constructor.SourceRef#attribution
-   * @propertyOf sources.types:constructor.SourceRef
+   * @ngdoc function
+   * @name sources.types:constructor.SourceRef#getAttribution
+   * @methodOf sources.types:constructor.SourceRef
    * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
    */
+   
+  /**
+   * @ngdoc function
+   * @name sources.types:constructor.SourceRef#getDescription
+   * @methodOf sources.types:constructor.SourceRef
+   * @returns {String} description
+   */
+  getDescription: function(){ return this.data.description; },
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceRef#$getSourceRefUrl
+   * @name sources.types:constructor.SourceRef#getSourceRefUrl
    * @methodOf sources.types:constructor.SourceRef
    * @function
    * @return {string} URL of this source reference - _NOTE_ however that you cannot read individual source references
    */
-  $getSourceRefUrl: function() {
-    return this.$helpers.removeAccessToken(maybe(maybe(this.links)['source-reference']).href);
+  getSourceRefUrl: function() {
+    return this.helpers.removeAccessToken(maybe(this.getLink('source-reference')).href);
   },
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceRef#$getSourceDescriptionUrl
+   * @name sources.types:constructor.SourceRef#getSourceDescriptionUrl
    * @methodOf sources.types:constructor.SourceRef
    * @function
    * @return {string} URL of the source description - pass into {@link sources.functions:getSourceDescription getSourceDescription} for details
    */
-  $getSourceDescriptionUrl: function() {
-    return this.$helpers.removeAccessToken(this.description);
+  getSourceDescriptionUrl: function() {
+    return this.helpers.removeAccessToken(this.getDescription());
   },
   
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceRef#$getSourceDescriptionId
+   * @name sources.types:constructor.SourceRef#getSourceDescriptionId
    * @methodOf sources.types:constructor.SourceRef
    * @function
    * @return {string} Id of the source description
    */
-  $getSourceDescriptionId: function() {
-    return this.$getSourceDescriptionUrl().split('/').pop();
+  getSourceDescriptionId: function() {
+    return this.getSourceDescriptionUrl().split('/').pop();
   },
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceRef#$getSourceDescription
+   * @name sources.types:constructor.SourceRef#getSourceDescription
    * @methodOf sources.types:constructor.SourceRef
    * @function
    * @return {Object} promise for the {@link sources.functions:getSourceDescription getSourceDescription} response
    */
-  $getSourceDescription: function() {
-    return this.$client.getSourceDescription(this.$getSourceDescriptionUrl());
+  getSourceDescription: function() {
+    return this.client.getSourceDescription(this.getSourceDescriptionUrl());
   },
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceRef#$getTags
+   * @name sources.types:constructor.SourceRef#getTags
    * @methodOf sources.types:constructor.SourceRef
    * @function
    * @return {string[]} an array of tags; e.g., http://gedcomx.org/Name or http://gedcomx.org/Birth
    */
-  $getTags: function() { 
-    return utils.map(this.tags, function(tag) {
+  getTags: function() { 
+    return utils.map(this.data.tags, function(tag) {
       return tag.resource;
     });
   },
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceRef#$setSourceDescription
+   * @name sources.types:constructor.SourceRef#setSourceDescription
    * @methodOf sources.types:constructor.SourceRef
    * @function
    * @param {SourceDescription|string} srcDesc SourceDescription object or URL of the source description
    * @return {SourceRef} this source reference
    */
-  $setSourceDescription: function(srcDesc) {
+  setSourceDescription: function(srcDesc) {
     if (srcDesc instanceof FS.SourceDescription) {
-      this.description = srcDesc.$getSourceDescriptionUrl();
+      this.data.description = srcDesc.getSourceDescriptionUrl();
     }
     else {
-      this.description = srcDesc;
+      this.data.description = this.helpers.removeAccessToken(srcDesc);
     }
     //noinspection JSValidateTypes
     return this;
@@ -138,14 +142,14 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceRef#$setTags
+   * @name sources.types:constructor.SourceRef#setTags
    * @methodOf sources.types:constructor.SourceRef
    * @function
    * @param {string[]} tags an array of tags; e.g., http://gedcomx.org/Name or http://gedcomx.org/Birth
    * @return {SourceRef} this source reference
    */
-  $setTags: function(tags) {
-    this.tags = utils.map(tags, function(tag) {
+  setTags: function(tags) {
+    this.data.tags = utils.map(tags, function(tag) {
       return {resource: tag};
     });
     //noinspection JSValidateTypes
@@ -154,33 +158,33 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceRef#$addTag
+   * @name sources.types:constructor.SourceRef#addTag
    * @methodOf sources.types:constructor.SourceRef
    * @function
    * @param {string} tag tag to add
    * @return {SourceRef} this source reference
    */
-  $addTag: function(tag) {
-    if (!utils.isArray(this.tags)) {
+  addTag: function(tag) {
+    if (!utils.isArray(this.data.tags)) {
       this.tags = [];
     }
-    this.tags.push({resource: tag});
+    this.data.tags.push({resource: tag});
     //noinspection JSValidateTypes
     return this;
   },
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceRef#$removeTag
+   * @name sources.types:constructor.SourceRef#removeTag
    * @methodOf sources.types:constructor.SourceRef
    * @function
    * @param {string} tag tag to remove
    * @return {SourceRef} this source reference
    */
-  $removeTag: function(tag) {
-    tag = utils.find(this.tags, {resource: tag});
+  removeTag: function(tag) {
+    tag = utils.find(this.data.tags, {resource: tag});
     if (tag) {
-      this.tags.splice(utils.indexOf(this.tags, tag), 1);
+      this.data.tags.splice(utils.indexOf(this.data.tags, tag), 1);
     }
     //noinspection JSValidateTypes
     return this;
@@ -188,7 +192,7 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceRef#$save
+   * @name sources.types:constructor.SourceRef#save
    * @methodOf sources.types:constructor.SourceRef
    * @function
    * @description
@@ -207,34 +211,34 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise of the source reference id, which is fulfilled after the source reference has been updated
    */
-  $save: function(url, changeMessage, opts) {
+  save: function(url, changeMessage, opts) {
     var self = this;
     if (changeMessage) {
-      self.attribution = self.$client.createAttribution(changeMessage);
+      self.setAttribution(self.client.createAttribution(changeMessage));
     }
-    var entityType = self.$helpers.getEntityType(url);
+    var entityType = self.helpers.getEntityType(url);
     var headers = {};
     if (entityType === 'childAndParentsRelationships') {
       headers['Content-Type'] = 'application/x-fs-v1+json';
     }
-    self.description = self.$helpers.removeAccessToken(self.description);
+
     var payload = {};
     payload[entityType] = [ { sources: [ self ] } ];
-    return self.$plumbing.post(url, payload, headers, opts, function(data, promise) {
+    return self.plumbing.post(url, payload, headers, opts, function(data, promise) {
       // x-entity-id and location headers are not set on update, only on create
-      if (!self.id) {
-        self.id = promise.getResponseHeader('X-ENTITY-ID');
+      if (!self.getId()) {
+        self.setId(promise.getResponseHeader('X-ENTITY-ID'));
       }
-      if (!self.$getSourceRefUrl()) {
-        self.links = { 'source-reference' : { href: self.$helpers.removeAccessToken(promise.getResponseHeader('Location')) } };
+      if (!self.getSourceRefUrl()) {
+        self.addLink('source-reference', { href: self.helpers.removeAccessToken(promise.getResponseHeader('Location')) });
       }
-      return self.$getSourceRefUrl();
+      return self.getSourceRefUrl();
     });
   },
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceRef#$delete
+   * @name sources.types:constructor.SourceRef#delete
    * @methodOf sources.types:constructor.SourceRef
    * @function
    * @description delete this source reference
@@ -246,8 +250,8 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the source reference URL
    */
-  $delete: function(changeMessage, opts) {
-    return this.$client.deleteSourceRef(this.$getSourceRefUrl(), changeMessage, opts);
+  delete: function(changeMessage, opts) {
+    return this.client.deleteSourceRef(this.getSourceRefUrl(), changeMessage, opts);
   }
 
 });

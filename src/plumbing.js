@@ -231,10 +231,6 @@ function formEncode(obj)
  */
 Plumbing.prototype.transformData = function(data, contentType) {
   if (data && utils.isObject(data) && String(data) !== '[object FormData]') {
-    // remove $... and _... attrs from data
-    data = utils.clonePartial(data, function(key) {
-      return (!(utils.isString(key) && (key.charAt(0) === '$' || key.charAt(0) === '_')));
-    });
     if (contentType === 'application/x-www-form-urlencoded') {
       return formEncode(data);
     }

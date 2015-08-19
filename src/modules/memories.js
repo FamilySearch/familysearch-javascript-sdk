@@ -19,9 +19,6 @@ FS.prototype._memoriesResponseMapper = function(){
   return function(response){
     if(response && utils.isArray(response.sourceDescriptions)){
       for(var i = 0; i < response.sourceDescriptions.length; i++){
-        if(response.sourceDescriptions[i].attribution){
-          response.sourceDescriptions[i].attribution = self.createAttribution(response.sourceDescriptions[i].attribution);
-        }
         response.sourceDescriptions[i] = self.createMemory(response.sourceDescriptions[i]);
       }
     }
@@ -151,15 +148,7 @@ FS.prototype.getMemory = function(url, params, opts) {
  */
 FS.prototype.getMemoryComments = function(url, params, opts) {
   var self = this;
-  return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-    utils.compose(
-      self._commentsResponseMapper(),
-      utils.objectExtender(function(response) {
-        return { $memoryId: maybe(maybe(maybe(response).sourceDescriptions)[0]).id };
-      }, function(response) {
-        return maybe(maybe(maybe(response).discussions)[0])['comments'];
-      })
-    ));
+  return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts, self._commentsResponseMapper());
 };
 
 FS.prototype._memoryPersonasMapper = function(){
@@ -188,18 +177,15 @@ FS.prototype._memoryPersonasMapper = function(){
     function(response){
       if(response && utils.isArray(response.persons)){
         for(var i = 0; i < response.persons.length; i++){
-          if(response.persons[i].media){
-            response.persons[i].media = self.createMemoryArtifactRef(response.persons[i].media);
+          if(response.persons[i].media && utils.isArray(response.persons[i].media)){
+            for(var j = 0; j < response.persons[i].media.length; j++){
+              response.persons[i].media[j] = self.createMemoryArtifactRef(response.persons[i].media[j]);
+            }
           }
         }
       }
       return response;
-    },
-    utils.objectExtender(function(response) {
-      return { $memoryId: maybe(maybe(response.sourceDescriptions)[0]).id };
-    }, function(response) {
-      return maybe(response).persons;
-    })
+    }
   );
 };
 
@@ -291,7 +277,6 @@ FS.prototype.getMemoryPersonaRefs = function(url, params, opts) {
         return maybe(maybe(this.persons)[0]).evidence || [];
       }}),
       function(response){
-        try {
         if(response && utils.isArray(response.persons) && response.persons[0]){
           var person = response.persons[0];
           if(person.evidence && utils.isArray(person.evidence)){
@@ -300,14 +285,8 @@ FS.prototype.getMemoryPersonaRefs = function(url, params, opts) {
             }
           }
         }
-        } catch(e) { console.error(e.stack); }
         return response;
-      },
-      utils.objectExtender(function(response) {
-        return { $personId: maybe(maybe(maybe(response).persons)[0]).id };
-      }, function(response) {
-        return maybe(maybe(maybe(response).persons)[0]).evidence;
-      })
+      }
     ));
 };
 

@@ -8,12 +8,17 @@ var FS = require('./../FamilySearch'),
  * @description
  *
  * A person search result entry.
+ * 
+ * @param {FamilySearch} client FamilySearch sdk client
+ * @param {Object} data raw object data
  */
 var SearchResult = FS.SearchResult = function(client, data) {
   FS.BaseClass.call(this, client, data);
   
   utils.forEach(maybe(maybe(maybe(data).content).gedcomx).persons, function(person, index, obj){
-    obj[index] = client.createPerson(person);
+    if(!(person instanceof FS.Person)){
+      obj[index] = client.createPerson(person);
+    }
   });
 };
 
@@ -29,31 +34,35 @@ FS.prototype.createSearchResult = function(data){
 };
 
 SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
+  
   constructor: SearchResult,
+  
   /**
-   * @ngdoc property
-   * @name searchAndMatch.types:constructor.SearchResult#id
-   * @propertyOf searchAndMatch.types:constructor.SearchResult
+   * @ngdoc function
+   * @name searchAndMatch.types:constructor.SearchResult#getId
+   * @methodOf searchAndMatch.types:constructor.SearchResult
    * @return {String} Id of the person for this search result
    */
 
   /**
-   * @ngdoc property
-   * @name searchAndMatch.types:constructor.SearchResult#title
-   * @propertyOf searchAndMatch.types:constructor.SearchResult
+   * @ngdoc function
+   * @name searchAndMatch.types:constructor.SearchResult#getTitle
+   * @methodOf searchAndMatch.types:constructor.SearchResult
    * @return {String} Id and name
    */
-
-  /**
-   * @ngdoc property
-   * @name searchAndMatch.types:constructor.SearchResult#score
-   * @propertyOf searchAndMatch.types:constructor.SearchResult
-   * @return {Number} higher is better
-   */
+  getTitle: function(){ return this.data.title; },
 
   /**
    * @ngdoc function
-   * @name searchAndMatch.types:constructor.SearchResult#$getPerson
+   * @name searchAndMatch.types:constructor.SearchResult#getScore
+   * @methodOf searchAndMatch.types:constructor.SearchResult
+   * @return {Number} higher is better
+   */
+  getScore: function(){ return this.data.score; },
+
+  /**
+   * @ngdoc function
+   * @name searchAndMatch.types:constructor.SearchResult#getPerson
    * @methodOf searchAndMatch.types:constructor.SearchResult
    * @function
    * @description
@@ -64,45 +73,47 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @param {string} pid id of the person
    * @return {Person} the {@link person.types:constructor.Person Person} for this Id in this search result
    */
-  $getPerson: function(pid) {
-    return utils.find(maybe(maybe(this.content).gedcomx).persons, {id: pid});
+  getPerson: function(pid) {
+    return utils.find(maybe(maybe(this.data.content).gedcomx).persons, function(person){
+      return person.getId() === pid;
+    });
   },
 
   /**
    * @ngdoc function
-   * @name searchAndMatch.types:constructor.SearchResult#$getPrimaryPerson
+   * @name searchAndMatch.types:constructor.SearchResult#getPrimaryPerson
    * @methodOf searchAndMatch.types:constructor.SearchResult
    * @function
    * @return {Person} the primary {@link person.types:constructor.Person Person} for this search result
    */
-  $getPrimaryPerson: function() {
-    return this.$getPerson(this.id);
+  getPrimaryPerson: function() {
+    return this.getPerson(this.getId());
   },
 
   /**
    * @ngdoc function
-   * @name searchAndMatch.types:constructor.SearchResult#$getFullPrimaryPerson
+   * @name searchAndMatch.types:constructor.SearchResult#getFullPrimaryPerson
    * @methodOf searchAndMatch.types:constructor.SearchResult
    * @function
    * @return {Object} promise for the {@link person.functions:getPerson getPerson} response
    */
-  $getFullPrimaryPerson: function() { return this.$client.getPerson(this.id); },
+  getFullPrimaryPerson: function() { return this.client.getPerson(this.getId()); },
 
   /**
    * @ngdoc function
-   * @name searchAndMatch.types:constructor.SearchResult#$getFatherIds
+   * @name searchAndMatch.types:constructor.SearchResult#getFatherIds
    * @methodOf searchAndMatch.types:constructor.SearchResult
    * @function
    * @return {String[]} array of father Id's for this search result
    */
-  $getFatherIds: function() {
-    var primaryId = this.id, self = this;
+  getFatherIds: function() {
+    var primaryId = this.getId(), self = this;
     return utils.uniq(utils.map(
-      utils.filter(maybe(maybe(this.content).gedcomx).relationships, function(r) {
+      utils.filter(maybe(maybe(this.data.content).gedcomx).relationships, function(r) {
         return r.type === 'http://gedcomx.org/ParentChild' &&
           r.person2.resourceId === primaryId &&
           r.person1 &&
-          maybe(self.$getPerson(r.person1.resourceId).gender).type === 'http://gedcomx.org/Male';
+          self.getPerson(r.person1.resourceId).getGender().getType() === 'http://gedcomx.org/Male';
       }),
       function(r) { return r.person1.resourceId; }
     ));
@@ -110,28 +121,28 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
 
   /**
    * @ngdoc function
-   * @name searchAndMatch.types:constructor.SearchResult#$getFathers
+   * @name searchAndMatch.types:constructor.SearchResult#getFathers
    * @methodOf searchAndMatch.types:constructor.SearchResult
    * @function
    * @return {Person[]} array of father {@link person.types:constructor.Person Persons} for this search result
    */
-  $getFathers: function() { return utils.map(this.$getFatherIds(), this.$getPerson, this); },
+  getFathers: function() { return utils.map(this.getFatherIds(), this.getPerson, this); },
 
   /**
    * @ngdoc function
-   * @name searchAndMatch.types:constructor.SearchResult#$getMotherIds
+   * @name searchAndMatch.types:constructor.SearchResult#getMotherIds
    * @methodOf searchAndMatch.types:constructor.SearchResult
    * @function
    * @return {String[]} array of mother Id's for this search result
    */
-  $getMotherIds: function() {
-    var primaryId = this.id, self = this;
+  getMotherIds: function() {
+    var primaryId = this.getId(), self = this;
     return utils.uniq(utils.map(
-      utils.filter(maybe(maybe(this.content).gedcomx).relationships, function(r) {
+      utils.filter(maybe(maybe(this.data.content).gedcomx).relationships, function(r) {
         return r.type === 'http://gedcomx.org/ParentChild' &&
           r.person2.resourceId === primaryId &&
           r.person1 &&
-          maybe(self.$getPerson(r.person1.resourceId).gender).type !== 'http://gedcomx.org/Male';
+          self.getPerson(r.person1.resourceId).getGender().getType() !== 'http://gedcomx.org/Male';
       }),
       function(r) { return r.person1.resourceId; }
     ));
@@ -139,24 +150,24 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
 
   /**
    * @ngdoc function
-   * @name searchAndMatch.types:constructor.SearchResult#$getMothers
+   * @name searchAndMatch.types:constructor.SearchResult#getMothers
    * @methodOf searchAndMatch.types:constructor.SearchResult
    * @function
    * @return {Person[]} array of mother {@link person.types:constructor.Person Persons} for this search result
    */
-  $getMothers: function() { return utils.map(this.$getMotherIds(), this.$getPerson, this); },
+  getMothers: function() { return utils.map(this.getMotherIds(), this.getPerson, this); },
 
   /**
    * @ngdoc function
-   * @name searchAndMatch.types:constructor.SearchResult#$getSpouseIds
+   * @name searchAndMatch.types:constructor.SearchResult#getSpouseIds
    * @methodOf searchAndMatch.types:constructor.SearchResult
    * @function
    * @return {String[]} array of spouse Id's for this search result
    */
-  $getSpouseIds:  function() {
-    var primaryId = this.id;
+  getSpouseIds:  function() {
+    var primaryId = this.getId();
     return utils.uniq(utils.map(
-      utils.filter(maybe(maybe(this.content).gedcomx).relationships, function(r) {
+      utils.filter(maybe(maybe(this.data.content).gedcomx).relationships, function(r) {
         return r.type === 'http://gedcomx.org/Couple' &&
           (r.person1.resourceId === primaryId || r.person2.resourceId === primaryId);
       }),
@@ -166,24 +177,24 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
 
   /**
    * @ngdoc function
-   * @name searchAndMatch.types:constructor.SearchResult#$getSpouses
+   * @name searchAndMatch.types:constructor.SearchResult#getSpouses
    * @methodOf searchAndMatch.types:constructor.SearchResult
    * @function
    * @return {Person[]} array of spouse {@link person.types:constructor.Person Persons} for this search result
    */
-  $getSpouses: function() { return utils.map(this.$getSpouseIds(), this.$getPerson, this); },
+  getSpouses: function() { return utils.map(this.getSpouseIds(), this.getPerson, this); },
 
   /**
    * @ngdoc function
-   * @name searchAndMatch.types:constructor.SearchResult#$getChildIds
+   * @name searchAndMatch.types:constructor.SearchResult#getChildIds
    * @methodOf searchAndMatch.types:constructor.SearchResult
    * @function
    * @return {String[]} array of child Id's for this search result
    */
-  $getChildIds:  function() {
-    var primaryId = this.id;
+  getChildIds:  function() {
+    var primaryId = this.getId();
     return utils.uniq(utils.map(
-      utils.filter(maybe(maybe(this.content).gedcomx).relationships, function(r) {
+      utils.filter(maybe(maybe(this.data.content).gedcomx).relationships, function(r) {
         return r.type === 'http://gedcomx.org/ParentChild' &&
           r.person1.resourceId === primaryId &&
           r.person2;
@@ -194,10 +205,10 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
 
   /**
    * @ngdoc function
-   * @name searchAndMatch.types:constructor.SearchResult#$getChildren
+   * @name searchAndMatch.types:constructor.SearchResult#getChildren
    * @methodOf searchAndMatch.types:constructor.SearchResult
    * @function
    * @return {Person[]} array of spouse {@link person.types:constructor.Person Persons} for this search result
    */
-  $getChildren: function() { return utils.map(this.$getChildIds(), this.$getPerson, this); }
+  getChildren: function() { return utils.map(this.getChildIds(), this.getPerson, this); }
 });

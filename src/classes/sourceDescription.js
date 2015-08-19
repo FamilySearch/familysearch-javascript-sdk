@@ -11,27 +11,25 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/sources/Source_Descriptions_resource FamilySearch API Docs}
  *
- * @param {Object=} data an object with optional attributes {about, $citation, $title, $text}.
+ * @param {FamilySearch} client FamilySearch sdk client
+ * @param {Object=} data an object
  * _about_ is a URL (link to the record) it can be a memory URL.
  */
 var SourceDescription = FS.SourceDescription = function(client, data) {
   FS.BaseClass.call(this, client, data);
   
   if (data) {
-    if (data.$citation) {
-      //noinspection JSUnresolvedFunction
-      this.$setCitation(data.$citation);
+    if (data.citation) {
+      this.setCitation(data.citation);
+      delete data.citation;
     }
-    if (data.$title) {
-      //noinspection JSUnresolvedFunction
-      this.$setTitle(data.$title);
+    if (data.title) {
+      this.setTitle(data.title);
+      delete data.title;
     }
-    if (data.$text) {
-      //noinspection JSUnresolvedFunction
-      this.$setText(data.$text);
-    }
-    if (data.attribution && !(data.attribution instanceof FS.Attribution)) {
-      this.attribution = client.createAttribution(data.attribution);
+    if (data.text) {
+      this.setText(data.text);
+      delete data.text;
     }
   }
 };
@@ -48,120 +46,123 @@ FS.prototype.createSourceDescription = function(data){
 };
 
 SourceDescription.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
+  
   constructor: SourceDescription,
+  
   /**
-   * @ngdoc property
-   * @name sources.types:constructor.SourceDescription#id
-   * @propertyOf sources.types:constructor.SourceDescription
+   * @ngdoc function
+   * @name sources.types:constructor.SourceDescription#getId
+   * @methodOf sources.types:constructor.SourceDescription
    * @return {String} Id of the source description
    */
 
   /**
-   * @ngdoc property
-   * @name sources.types:constructor.SourceDescription#about
-   * @propertyOf sources.types:constructor.SourceDescription
+   * @ngdoc function
+   * @name sources.types:constructor.SourceDescription#getAbout
+   * @methodOf sources.types:constructor.SourceDescription
    * @return {String} URL (link to the record)
    */
+  getAbout: function(){ return this.data.about; },
 
   /**
-   * @ngdoc property
-   * @name sources.types:constructor.SourceDescription#attribution
-   * @propertyOf sources.types:constructor.SourceDescription
+   * @ngdoc function
+   * @name sources.types:constructor.SourceDescription#getAttribution
+   * @methodOf sources.types:constructor.SourceDescription
    * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
    */
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceDescription#$getCitation
+   * @name sources.types:constructor.SourceDescription#getCitation
    * @methodOf sources.types:constructor.SourceDescription
    * @function
    * @return {String} source citation
    */
-  $getCitation: function() { return maybe(maybe(this.citations)[0]).value; },
+  getCitation: function() { return maybe(maybe(this.data.citations)[0]).value; },
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceDescription#$getTitle
+   * @name sources.types:constructor.SourceDescription#getTitle
    * @methodOf sources.types:constructor.SourceDescription
    * @function
    * @return {String} title of the source description
    */
-  $getTitle: function() { return maybe(maybe(this.titles)[0]).value; },
+  getTitle: function() { return maybe(maybe(this.data.titles)[0]).value; },
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceDescription#$getText
+   * @name sources.types:constructor.SourceDescription#getText
    * @methodOf sources.types:constructor.SourceDescription
    * @function
    * @return {String} Text / Description of the source
    */
-  $getText: function() { return maybe(maybe(this.notes)[0]).text; },
+  getText: function() { return maybe(maybe(this.data.notes)[0]).text; },
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceDescription#$getSourceDescriptionUrl
+   * @name sources.types:constructor.SourceDescription#getSourceDescriptionUrl
    * @methodOf sources.types:constructor.SourceDescription
    * @function
    * @return {String} Url of the of this source description
    */
-  $getSourceDescriptionUrl: function() { return this.$helpers.removeAccessToken(maybe(maybe(this.links).description).href); },
+  getSourceDescriptionUrl: function() { return this.helpers.removeAccessToken(maybe(this.getLink('description')).href); },
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceDescription#$getSourceRefsQuery
+   * @name sources.types:constructor.SourceDescription#getSourceRefsQuery
    * @methodOf sources.types:constructor.SourceDescription
    * @function
    * @return {Object} promise for the {@link sources.functions:getSourceRefsQuery getSourceRefsQuery} response
    */
-  $getSourceRefsQuery: function() {
-    return this.$client.getSourceRefsQuery(maybe(maybe(this.links)['source-references-query']).href);
+  getSourceRefsQuery: function() {
+    return this.client.getSourceRefsQuery(maybe(this.getLink('source-references-query')).href);
   },
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceDescription#$setCitation
+   * @name sources.types:constructor.SourceDescription#setCitation
    * @methodOf sources.types:constructor.SourceDescription
    * @function
    * @param {String} citation source description citation
    * @return {SourceDescription} this source description
    */
-  $setCitation: function(citation) {
-    this.citations = [ { value: citation } ];
+  setCitation: function(citation) {
+    this.data.citations = [ { value: citation } ];
     //noinspection JSValidateTypes
     return this;
   },
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceDescription#$setTitle
+   * @name sources.types:constructor.SourceDescription#setTitle
    * @methodOf sources.types:constructor.SourceDescription
    * @function
    * @param {String} title source description title
    * @return {SourceDescription} this source description
    */
-  $setTitle: function(title) {
-    this.titles = [ { value: title } ];
+  setTitle: function(title) {
+    this.data.titles = [ { value: title } ];
     //noinspection JSValidateTypes
     return this;
   },
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceDescription#$setText
+   * @name sources.types:constructor.SourceDescription#setText
    * @methodOf sources.types:constructor.SourceDescription
    * @function
    * @param {String} text source description text
    * @return {SourceDescription} this source description
    */
-  $setText: function(text) {
-    this.notes = [ { text: text } ];
+  setText: function(text) {
+    this.data.notes = [ { text: text } ];
     //noinspection JSValidateTypes
     return this;
   },
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceDescription#$save
+   * @name sources.types:constructor.SourceDescription#save
    * @methodOf sources.types:constructor.SourceDescription
    * @function
    * @description
@@ -174,17 +175,17 @@ SourceDescription.prototype = utils.extend(Object.create(FS.BaseClass.prototype)
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise of the source description url
    */
-  $save: function(changeMessage, refresh, opts) {
+  save: function(changeMessage, refresh, opts) {
     var self = this;
     if (changeMessage) {
-      self.attribution = self.$client.createAttribution(changeMessage);
+      self.setAttribution(self.client.createAttribution(changeMessage));
     }
-    var promise = self.$helpers.chainHttpPromises(
-      self.$getSourceDescriptionUrl() ? self.$helpers.refPromise(self.$getSourceDescriptionUrl()) : self.$plumbing.getCollectionUrl('FSUDS', 'source-descriptions'),
+    var promise = self.helpers.chainHttpPromises(
+      self.getSourceDescriptionUrl() ? self.helpers.refPromise(self.getSourceDescriptionUrl()) : self.plumbing.getCollectionUrl('FSUDS', 'source-descriptions'),
       function(url){
-        return self.$plumbing.post(url, { sourceDescriptions: [ self ] }, {}, opts, function(data, promise) {
+        return self.plumbing.post(url, { sourceDescriptions: [ self ] }, {}, opts, function(data, promise) {
           // x-entity-id and location headers are not set on update, only on create
-          return self.$getSourceDescriptionUrl() || promise.getResponseHeader('Location');
+          return self.getSourceDescriptionUrl() || promise.getResponseHeader('Location');
         });
       }
     );
@@ -193,7 +194,7 @@ SourceDescription.prototype = utils.extend(Object.create(FS.BaseClass.prototype)
 
   /**
    * @ngdoc function
-   * @name sources.types:constructor.SourceDescription#$delete
+   * @name sources.types:constructor.SourceDescription#delete
    * @methodOf sources.types:constructor.SourceDescription
    * @function
    * @description delete this source description as well as all source references that refer to this source description
@@ -203,9 +204,9 @@ SourceDescription.prototype = utils.extend(Object.create(FS.BaseClass.prototype)
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the source description id
    */
-  $delete: function(changeMessage, opts) {
+  delete: function(changeMessage, opts) {
     // must use the id, not the full url, here
-    return this.$client.deleteSourceDescription(this.$getSourceDescriptionUrl(), changeMessage, opts);
+    return this.client.deleteSourceDescription(this.getSourceDescriptionUrl(), changeMessage, opts);
   }
 
 });

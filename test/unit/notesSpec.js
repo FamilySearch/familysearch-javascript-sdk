@@ -13,13 +13,13 @@ describe('Note', function() {
     FS.getNotes('https://familysearch.org/platform/tree/persons/P12-3456/notes').then(function(response) {
       var notes = response.getNotes();
       expect(notes.length).toBe(2);
-      expect(notes[0].id).toBe('1804317705');
-      expect(notes[0].subject).toBe('note 0');
-      expect(notes[0].$getNoteUrl()).toBe('https://familysearch.org/platform/tree/persons/P12-3456/notes/1804317705');
-      expect(notes[0].text).toBe('Sample note text');
-      expect(notes[0].attribution.$getAgentId()).toBe('MMD8-3NT');
-      expect(notes[1].id).toBe('1805241226');
-      expect(notes[1].subject).toBe('note 1');
+      expect(notes[0].getId()).toBe('1804317705');
+      expect(notes[0].getSubject()).toBe('note 0');
+      expect(notes[0].getNoteUrl()).toBe('https://familysearch.org/platform/tree/persons/P12-3456/notes/1804317705');
+      expect(notes[0].getText()).toBe('Sample note text');
+      expect(notes[0].getAttribution().getAgentId()).toBe('MMD8-3NT');
+      expect(notes[1].getId()).toBe('1805241226');
+      expect(notes[1].getSubject()).toBe('note 1');
       done();
     });
   });
@@ -27,10 +27,10 @@ describe('Note', function() {
   it('is returned from getNote for a person', function(done) {
     FS.getNote('https://familysearch.org/platform/tree/persons/P12-3456/notes/1804317705').then(function(response) {
       var note = response.getNote();
-      expect(note.id).toBe('1804317705');
-      expect(note.subject).toBe('Sample');
-      expect(note.text).toBe('Sample note text');
-      expect(note.attribution).toBeUndefined();
+      expect(note.getId()).toBe('1804317705');
+      expect(note.getSubject()).toBe('Sample');
+      expect(note.getText()).toBe('Sample note text');
+      expect(note.getAttribution()).toBeUndefined();
       done();
     });
   });
@@ -38,7 +38,7 @@ describe('Note', function() {
   it('are returned from getMultiNote for a person', function(done) {
     FS.getMultiNote(['https://familysearch.org/platform/tree/persons/P12-3456/notes/1804317705']).then(function(response) {
       var note = response['https://familysearch.org/platform/tree/persons/P12-3456/notes/1804317705'].getNote();
-      expect(note.id).toBe('1804317705');
+      expect(note.getId()).toBe('1804317705');
       done();
     });
   });
@@ -56,11 +56,11 @@ describe('Note', function() {
     FS.getNotes('https://familysearch.org/platform/tree/couple-relationships/12345/notes').then(function(response) {
       var notes = response.getNotes();
       expect(notes.length).toBe(2);
-      expect(notes[0].id).toBe('1804317705');
-      expect(notes[0].subject).toBe('note 0');
-      expect(notes[0].attribution.$getAgentId()).toBe('MMD8-3NT');
-      expect(notes[1].id).toBe('1805241226');
-      expect(notes[1].subject).toBe('note 1');
+      expect(notes[0].getId()).toBe('1804317705');
+      expect(notes[0].getSubject()).toBe('note 0');
+      expect(notes[0].getAttribution().getAgentId()).toBe('MMD8-3NT');
+      expect(notes[1].getId()).toBe('1805241226');
+      expect(notes[1].getSubject()).toBe('note 1');
       done();
     });
   });
@@ -68,11 +68,11 @@ describe('Note', function() {
   it('is returned from getNote for a couple', function(done) {
     FS.getNote('https://familysearch.org/platform/tree/couple-relationships/12345/notes/MMMM-ZP8').then(function(response) {
       var note = response.getNote();
-      expect(note.id).toBe('MMMM-ZP8');
-      expect(note.subject).toBe('Couple Relationship Note Title');
-      expect(note.text).toBe('Couple Relationship Note Text');
-      expect(note.attribution.$getAgentId()).toBe('MMD8-3NT');
-      expect(note.attribution.modified).toBe(1387223690000);
+      expect(note.getId()).toBe('MMMM-ZP8');
+      expect(note.getSubject()).toBe('Couple Relationship Note Title');
+      expect(note.getText()).toBe('Couple Relationship Note Text');
+      expect(note.getAttribution().getAgentId()).toBe('MMD8-3NT');
+      expect(note.getAttribution().getModifiedTimestamp()).toBe(1387223690000);
       done();
     });
   });
@@ -80,7 +80,7 @@ describe('Note', function() {
   it('are returned from getMultiNote for a couple', function(done) {
     FS.getMultiNote(['https://familysearch.org/platform/tree/couple-relationships/12345/notes/MMMM-ZP8']).then(function(response) {
       var note = response['https://familysearch.org/platform/tree/couple-relationships/12345/notes/MMMM-ZP8'].getNote();
-      expect(note.id).toBe('MMMM-ZP8');
+      expect(note.getId()).toBe('MMMM-ZP8');
       done();
     });
   });
@@ -98,11 +98,11 @@ describe('Note', function() {
     FS.getNotes('https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0/notes').then(function(response) {
       var notes = response.getNotes();
       expect(notes.length).toBe(2);
-      expect(notes[0].id).toBe('1804317705');
-      expect(notes[0].subject).toBe('note 0');
-      expect(notes[0].attribution.$getAgentId()).toBe('MMD8-3NT');
-      expect(notes[1].id).toBe('1805241226');
-      expect(notes[1].subject).toBe('note 1');
+      expect(notes[0].getId()).toBe('1804317705');
+      expect(notes[0].getSubject()).toBe('note 0');
+      expect(notes[0].getAttribution().getAgentId()).toBe('MMD8-3NT');
+      expect(notes[1].getId()).toBe('1805241226');
+      expect(notes[1].getSubject()).toBe('note 1');
       done();
     });
   });
@@ -110,10 +110,10 @@ describe('Note', function() {
   it('is returned from getNote for a child and parents', function(done) {
     FS.getNote('https://familysearch.org/platform/tree/child-and-parents-relationships/RRRX-RRX/notes/NOTE1').then(function(response) {
       var note = response.getNote();
-      expect(note.id).toBe('NOTE1');
-      expect(note.subject).toBe('Sample');
-      expect(note.text).toBe('Sample note text');
-      expect(note.attribution).toBeUndefined();
+      expect(note.getId()).toBe('NOTE1');
+      expect(note.getSubject()).toBe('Sample');
+      expect(note.getText()).toBe('Sample note text');
+      expect(note.getAttribution()).toBeUndefined();
       done();
     });
   });
@@ -121,14 +121,14 @@ describe('Note', function() {
   it('are returned from getMultiNote for a child and parents', function(done) {
     FS.getMultiNote(['https://familysearch.org/platform/tree/child-and-parents-relationships/RRRX-RRX/notes/NOTE1']).then(function(response) {
       var note = response['https://familysearch.org/platform/tree/child-and-parents-relationships/RRRX-RRX/notes/NOTE1'].getNote();
-      expect(note.subject).toBe('Sample');
+      expect(note.getSubject()).toBe('Sample');
       done();
     });
   });
 
   it('is created (person note)', function(done) {
     var promise = FS.createNote({subject: 'Sample', text: 'Sample note text.'})
-      .$save('https://familysearch.org/platform/tree/persons/P12-3456/notes', 'change message');
+      .save('https://familysearch.org/platform/tree/persons/P12-3456/notes', 'change message');
     promise.then(function(response) {
       var request = promise.getRequest();
       //noinspection JSUnresolvedFunction
@@ -151,9 +151,9 @@ describe('Note', function() {
 
   it('is updated (person note)', function(done) {
     var note = FS.createNote({subject: 'Sample', text: 'Sample note text'});
-    note.id = '1804317705';
-    note.links = {note: {href: 'https://sandbox.familysearch.org/platform/tree/persons/P12-3456/notes/1804317705'}};
-    var promise = note.$save(null, 'change message');
+    note.setId('1804317705');
+    note.addLink('note', {href: 'https://sandbox.familysearch.org/platform/tree/persons/P12-3456/notes/1804317705'});
+    var promise = note.save(null, 'change message');
     promise.then(function(response) {
       var request = promise.getRequest();
       //noinspection JSUnresolvedFunction
@@ -191,7 +191,7 @@ describe('Note', function() {
 
   it('is created (couple note)', function(done) {
     var promise = FS.createNote({subject: 'Sample', text: 'Sample note text.'})
-      .$save('https://familysearch.org/platform/tree/couple-relationships/R12-3456/notes', 'change message');
+      .save('https://familysearch.org/platform/tree/couple-relationships/R12-3456/notes', 'change message');
     promise.then(function(response) {
       var request = promise.getRequest();
       //noinspection JSUnresolvedFunction
@@ -214,9 +214,9 @@ describe('Note', function() {
 
   it('is updated (couple note)', function(done) {
     var note = FS.createNote({subject: 'Sample', text: 'Sample note text'});
-    note.id = 'MMMM-ZP8';
-    note.links = {note: {href: 'https://sandbox.familysearch.org/platform/tree/couple-relationships/12345/notes/MMMM-ZP8'}};
-    var promise = note.$save(null, 'change message');
+    note.setId('MMMM-ZP8');
+    note.addLink('note', {href: 'https://sandbox.familysearch.org/platform/tree/couple-relationships/12345/notes/MMMM-ZP8'});
+    var promise = note.save(null, 'change message');
     promise.then(function(response) {
       var request = promise.getRequest();
       //noinspection JSUnresolvedFunction
@@ -254,7 +254,7 @@ describe('Note', function() {
 
   it('is created (child-and-parents note)', function(done) {
     var promise = FS.createNote({subject: 'Sample', text: 'Sample note text.'})
-      .$save('https://familysearch.org/platform/tree/child-and-parents-relationships/R12-3456/notes', 'change message');
+      .save('https://familysearch.org/platform/tree/child-and-parents-relationships/R12-3456/notes', 'change message');
     promise.then(function(response) {
       var request = promise.getRequest();
       //noinspection JSUnresolvedFunction
@@ -277,9 +277,9 @@ describe('Note', function() {
 
   it('is updated (cihld-and-parents note)', function(done) {
     var note = FS.createNote({subject: 'Sample', text: 'Sample note text'});
-    note.id = 'NOTE1';
-    note.links = {note: {href: 'https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/RRRX-RRX/notes/NOTE1'}};
-    var promise = note.$save(null, 'change message');
+    note.setId('NOTE1');
+    note.addLink('note', {href: 'https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/RRRX-RRX/notes/NOTE1'});
+    var promise = note.save(null, 'change message');
     promise.then(function(response) {
       var request = promise.getRequest();
       //noinspection JSUnresolvedFunction

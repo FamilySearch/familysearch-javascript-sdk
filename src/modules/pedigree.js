@@ -20,7 +20,7 @@ var FS = require('./../FamilySearch'),
 function pedigreeConvenienceFunctionGenerator(numberLabel) {
   return {
     getPersons:    function()    { return this.persons; },
-    exists:        function(num) { return !!maybe(utils.find(this.persons, matchPersonNum(numberLabel, num))).id; },
+    exists:        function(num) { return !!maybe(maybe(utils.find(this.persons, matchPersonNum(numberLabel, num))).data).id; },
     getPerson:     function(num) { return utils.find(this.persons, matchPersonNum(numberLabel, num)); }
   };
 }
@@ -28,7 +28,7 @@ function pedigreeConvenienceFunctionGenerator(numberLabel) {
 function matchPersonNum(numberLabel, num) {
   return function(p) {
     /*jshint eqeqeq:false */
-    return p.display[numberLabel] == num; // == so users can pass in either numbers or strings for ascendancy numbers
+    return p.getDisplay()[numberLabel] == num; // == so users can pass in either numbers or strings for ascendancy numbers
   };
 }
 
@@ -48,8 +48,8 @@ function matchPersonNum(numberLabel, num) {
  *
  * ### Notes
  *
- * * Each Person object has an additional `$getAscendancyNumber()` function that returns the person's ascendancy number,
- * and if the descendants parameter is true, a $getDescendancyNumber() function that returns the person's descendancy number
+ * * Each Person object has an additional `getAscendancyNumber()` function that returns the person's ascendancy number,
+ * and if the descendants parameter is true, a getDescendancyNumber() function that returns the person's descendancy number
  * * Some information on the Person objects is available only if `params` includes `personDetails`
  * * If `params` includes `marriageDetails`, then `person.display` includes `marriageDate` and `marriagePlace`.
  *
@@ -83,10 +83,10 @@ FS.prototype.getAncestry = function(pid, params, opts) {
             });
             return response;
           },
-          utils.objectExtender({$getAscendancyNumber: function() { return this.display.ascendancyNumber; }}, function(response) {
+          utils.objectExtender({getAscendancyNumber: function() { return this.data.display.ascendancyNumber; }}, function(response) {
             return maybe(response).persons;
           }),
-          !!params && !!params.descendants ? utils.objectExtender({$getDescendancyNumber: function() { return this.display.descendancyNumber; }}, function(response) {
+          !!params && !!params.descendants ? utils.objectExtender({getDescendancyNumber: function() { return this.data.display.descendancyNumber; }}, function(response) {
             return maybe(response).persons;
           }) : null
         ));
@@ -108,7 +108,7 @@ FS.prototype.getAncestry = function(pid, params, opts) {
  *
  * ### Notes
  *
- * * Each Person object has an additional `$getDescendancyNumber()` function that returns the person's descendancy number.
+ * * Each Person object has an additional `getDescendancyNumber()` function that returns the person's descendancy number.
  * * Some information on the Person objects is available only if `params` includes `personDetails`
  * * If `params` includes `marriageDetails`, then `person.display` includes `marriageDate` and `marriagePlace`.
  *
@@ -141,7 +141,7 @@ FS.prototype.getDescendancy = function(pid, params, opts) {
             });
             return response;
           },
-          utils.objectExtender({$getDescendancyNumber: function() { return this.display.descendancyNumber; }}, function(response) {
+          utils.objectExtender({getDescendancyNumber: function() { return this.data.display.descendancyNumber; }}, function(response) {
             return maybe(response).persons;
           })
         ));

@@ -2,9 +2,9 @@ describe('Places', function() {
   
   it('getPlace', function(done){
     FS.getPlace('https://familysearch.org/platform/places/2557657').then(function(response) {
-      expect(response.getPlace().id).toBe('2557657');
-      expect(response.getPlace().names[0].value).toBe('Nohabuna Island');
-      expect(response.getPlace().names[0].lang).toBe('en');
+      expect(response.getPlace().getId()).toBe('2557657');
+      expect(response.getPlace().getNames()[0].getValue()).toBe('Nohabuna Island');
+      expect(response.getPlace().getNames()[0].getLang()).toBe('en');
       done();
     });
   });
@@ -12,29 +12,29 @@ describe('Places', function() {
   it('getPlaceDescription', function(done){
     FS.getPlaceDescription('https://familysearch.org/platform/places/description/50615').then(function(response){
       var place = response.getPlaceDescription(),
-          jurisdiction = place.$getJurisdictionSummary();
-      expect(place.id).toBe('50615');
-      expect(place.lang).toBe('en');
-      expect(place.identifiers['http://gedcomx.org/Primary'][0]).toBe('https://familysearch.org/platform/places/2557657');
-      expect(place.names[0].lang).toBe('en');
-      expect(place.names[0].value).toBe('Nohabuna Island');
-      expect(place.type).toBe('https://familysearch.org/platform/places/types/56');
-      expect(place.latitude).toBe(-7.35);
-      expect(place.longitude).toBe(158.0666667);
-      expect(place.$getName()).toBe('Nohabuna Island');
-      expect(place.$getFullName()).toBe('Nohabuna Island, Solomon Islands');
-      expect(place.$getType()).toBe('Island');
-      expect(jurisdiction.id).toBe('213');
-      expect(jurisdiction.names[0].value).toBe('Solomon Islands');
+          jurisdiction = place.getJurisdictionSummary();
+      expect(place.getId()).toBe('50615');
+      expect(place.getLang()).toBe('en');
+      expect(place.getIdentifiers()['http://gedcomx.org/Primary'][0]).toBe('https://familysearch.org/platform/places/2557657');
+      expect(place.getNames()[0].getLang()).toBe('en');
+      expect(place.getNames()[0].getValue()).toBe('Nohabuna Island');
+      expect(place.getTypeUri()).toBe('https://familysearch.org/platform/places/types/56');
+      expect(place.getLatitude()).toBe(-7.35);
+      expect(place.getLongitude()).toBe(158.0666667);
+      expect(place.getName()).toBe('Nohabuna Island');
+      expect(place.getFullName()).toBe('Nohabuna Island, Solomon Islands');
+      expect(place.getType()).toBe('Island');
+      expect(jurisdiction.getId()).toBe('213');
+      expect(jurisdiction.getNames()[0].getValue()).toBe('Solomon Islands');
       
-      place.$getJurisdictionDetails().then(function(response){
+      place.getJurisdictionDetails().then(function(response){
         var place = response.getPlaceDescription();
-        expect(place.$getName()).toBe('Solomon Islands');
-        expect(place.$getFullName()).toBe('Solomon Islands');
-        expect(place.$getType()).toBe('Commonwealth Nation');
+        expect(place.getName()).toBe('Solomon Islands');
+        expect(place.getFullName()).toBe('Solomon Islands');
+        expect(place.getType()).toBe('Commonwealth Nation');
         
         // Verify that the promise fails when no jurisdiction is available
-        place.$getJurisdictionDetails().then(null, function(){
+        place.getJurisdictionDetails().then(null, function(){
           done();
         });
       });
@@ -50,19 +50,19 @@ describe('Places', function() {
       expect(results.length).toBe(2);
       
       var firstResult = results[0],
-          firstPlace = firstResult.$getPlace(),
+          firstPlace = firstResult.getPlace(),
           secondResult = results[1],
-          secondPlace = secondResult.$getPlace();
+          secondPlace = secondResult.getPlace();
           
-      expect(firstResult.id).toBe('7344697');
-      expect(firstPlace.id).toBe('7344697');
-      expect(firstPlace.$getFullName()).toBe('Paris, Ville-de-Paris, District of the Paris Region, France');
-      expect(firstPlace.$getType()).toBe('Populated Place');
+      expect(firstResult.getId()).toBe('7344697');
+      expect(firstPlace.getId()).toBe('7344697');
+      expect(firstPlace.getFullName()).toBe('Paris, Ville-de-Paris, District of the Paris Region, France');
+      expect(firstPlace.getType()).toBe('Populated Place');
       
-      expect(secondResult.id).toBe('5953651');
-      expect(secondPlace.id).toBe('5953651');
-      expect(secondPlace.$getFullName()).toBe('Paris, Ville-de-Paris, District of the Paris Region, France');
-      expect(secondPlace.$getType()).toBe('District');
+      expect(secondResult.getId()).toBe('5953651');
+      expect(secondPlace.getId()).toBe('5953651');
+      expect(secondPlace.getFullName()).toBe('Paris, Ville-de-Paris, District of the Paris Region, France');
+      expect(secondPlace.getType()).toBe('District');
       
       done();
     });
@@ -72,8 +72,8 @@ describe('Places', function() {
     FS.getPlaceDescriptionChildren('https://familysearch.org/platform/places/description/1054/children').then(function(response){
       var children = response.getChildren();
       expect(children.length).toBe(6);
-      expect(children[0].id).toBe('432379');
-      expect(children[0].names[2].value).toBe('榛原郡');
+      expect(children[0].getId()).toBe('432379');
+      expect(children[0].getNames()[2].getValue()).toBe('榛原郡');
       done();
     });
   });
@@ -81,9 +81,9 @@ describe('Places', function() {
   it('getPlaceType', function(done){
     FS.getPlaceType(103).then(function(response){
       var type = response.getPlaceType();
-      expect(type.id).toBe('103');
-      expect(type.$getLabel()).toBe('Recreation Area');
-      expect(type.$getDescription()).toBe('A recreation area; amphitheater, athletic track or field, racetrack, golf course, fishing area, etc.');
+      expect(type.getId()).toBe('103');
+      expect(type.getLabel()).toBe('Recreation Area');
+      expect(type.getDescription()).toBe('A recreation area; amphitheater, athletic track or field, racetrack, golf course, fishing area, etc.');
       done();
     });
   });
@@ -93,12 +93,12 @@ describe('Places', function() {
       var list = response.getList(),
           types = response.getPlaceTypes(),
           type = types[0];
-      expect(list.$getTitle()).toBe('Place Types');
-      expect(list.$getDescription()).toBe('List of available place types.');
+      expect(list.getTitle()).toBe('Place Types');
+      expect(list.getDescription()).toBe('List of available place types.');
       expect(types.length).toBe(5);
-      expect(type.id).toBe('143');
-      expect(type.$getLabel()).toBe('Aboriginal Council');
-      expect(type.$getDescription()).toBe('A political jurisdiction in countries with native populations such as Australia.');
+      expect(type.getId()).toBe('143');
+      expect(type.getLabel()).toBe('Aboriginal Council');
+      expect(type.getDescription()).toBe('A political jurisdiction in countries with native populations such as Australia.');
       done();
     });
   });
@@ -108,12 +108,12 @@ describe('Places', function() {
       var list = response.getList(),
           types = response.getPlaceTypes(),
           type = types[0];
-      expect(list.$getTitle()).toBe('Country-Like');
-      expect(list.$getDescription()).toBe('Countries and highest level administrative places (ADM0)');
+      expect(list.getTitle()).toBe('Country-Like');
+      expect(list.getDescription()).toBe('Countries and highest level administrative places (ADM0)');
       expect(types.length).toBe(18);
-      expect(type.id).toBe('343');
-      expect(type.$getLabel()).toBe('Republic');
-      expect(type.$getDescription()).toBe('A country whose government is a representative democracy in which the people\'s elected deputies (representatives), not the people themselves, vote on legislation.');
+      expect(type.getId()).toBe('343');
+      expect(type.getLabel()).toBe('Republic');
+      expect(type.getDescription()).toBe('A country whose government is a representative democracy in which the people\'s elected deputies (representatives), not the people themselves, vote on legislation.');
       done();
     });
   });
@@ -123,12 +123,12 @@ describe('Places', function() {
       var list = response.getList(),
           groups = response.getPlaceTypeGroups(),
           group = groups[0];
-      expect(list.$getTitle()).toBe('Place Type Groups');
-      expect(list.$getDescription()).toBe('List of available place type groups.');
+      expect(list.getTitle()).toBe('Place Type Groups');
+      expect(list.getDescription()).toBe('List of available place type groups.');
       expect(groups.length).toBe(18);
-      expect(group.id).toBe('4');
-      expect(group.$getLabel()).toBe('Geographic (Continents)');
-      expect(group.$getDescription()).toBe('Geographic feature type');
+      expect(group.getId()).toBe('4');
+      expect(group.getLabel()).toBe('Geographic (Continents)');
+      expect(group.getDescription()).toBe('Geographic feature type');
       done();
     });
   });

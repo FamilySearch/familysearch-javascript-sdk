@@ -3,10 +3,10 @@ describe('A user', function() {
   it('is returned from getCurrentUser', function(done) {
     FS.getCurrentUser().then(function(response) {
       var user = response.getUser();
-      expect(user.id).toBe('cis.MMM.RX9');
-      expect(user.contactName).toBe('Pete Townsend');
-      expect(user.email).toBe('peter@acme.org');
-      expect(user.treeUserId).toBe('PXRQ-FMXT');
+      expect(user.getId()).toBe('cis.MMM.RX9');
+      expect(user.getContactName()).toBe('Pete Townsend');
+      expect(user.getEmail()).toBe('peter@acme.org');
+      expect(user.getTreeUserId()).toBe('PXRQ-FMXT');
       done();
     });
   });
@@ -14,10 +14,10 @@ describe('A user', function() {
   it('agent is returned from getAgent', function(done) {
     FS.getAgent('https://sandbox.familysearch.org/platform/users/agents/12345').then(function(response) {
       var agent = response.getAgent();
-      expect(agent.id).toBe('12345');
-      expect(agent.$getName()).toBe('John Smith');
-      expect(agent.$getAccountName()).toBe('account');
-      expect(agent.$getEmail()).toBe('someone@somewhere.org');
+      expect(agent.getId()).toBe('12345');
+      expect(agent.getName()).toBe('John Smith');
+      expect(agent.getAccountName()).toBe('account');
+      expect(agent.getEmail()).toBe('someone@somewhere.org');
       done();
     });
   });
@@ -25,10 +25,10 @@ describe('A user', function() {
   it('agents is returned from getMultiAgent', function(done) {
     FS.getMultiAgent(['https://sandbox.familysearch.org/platform/users/agents/12345']).then(function(response) {
       var agent = response['https://sandbox.familysearch.org/platform/users/agents/12345'].getAgent();
-      expect(agent.id).toBe('12345');
-      expect(agent.$getName()).toBe('John Smith');
-      expect(agent.$getAccountName()).toBe('account');
-      expect(agent.$getEmail()).toBe('someone@somewhere.org');
+      expect(agent.getId()).toBe('12345');
+      expect(agent.getName()).toBe('John Smith');
+      expect(agent.getAccountName()).toBe('account');
+      expect(agent.getEmail()).toBe('someone@somewhere.org');
       done();
     });
   });

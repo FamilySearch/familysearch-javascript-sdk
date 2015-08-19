@@ -507,16 +507,18 @@ Helpers.prototype.getUrlFromCollection = function(collection, resourceName, para
  * @returns {string} entity type: persons, relationships, or childAndParentsRelationships
  */
 Helpers.prototype.getEntityType = function(url){
-  var matches = url.match(/platform\/tree\/([^\/]+)/);
-  if(matches && matches[1]){
-    if (matches[1] === 'persons') {
-      return 'persons';
-    }
-    else if (matches[1] === 'couple-relationships') {
-      return 'relationships';
-    }
-    else if (matches[1] === 'child-and-parents-relationships') {
-      return 'childAndParentsRelationships';
+  if(utils.isString(url)){
+    var matches = url.match(/platform\/tree\/([^\/]+)/);
+    if(matches && matches[1]){
+      if (matches[1] === 'persons') {
+        return 'persons';
+      }
+      else if (matches[1] === 'couple-relationships') {
+        return 'relationships';
+      }
+      else if (matches[1] === 'child-and-parents-relationships') {
+        return 'childAndParentsRelationships';
+      }
     }
   }
 };

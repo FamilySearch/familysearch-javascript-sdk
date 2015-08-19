@@ -7,17 +7,19 @@ var FS = require('./../FamilySearch'),
  * @description
  *
  * Place description returned by the Place Authority.
+ * 
+ * @param {FamilySearch} client FamilySearch sdk client
+ * @param {Object} data raw object data
  */
 var PlaceDescription = FS.PlaceDescription = function(client, data){ 
   FS.BaseClass.call(this, client, data);
   
   if(data){
     if(data.names){
-      utils.forEach(this.names, function(name, i){
+      utils.forEach(this.data.names, function(name, i){
         if(!(name instanceof FS.TextValue)){
-          this.names[i] = client.createTextValue(name);
+          this.data.names[i] = client.createTextValue(name);
         }
-        this.names[i] = client.createTextValue(name);
       }, this);
     }
   }
@@ -35,146 +37,149 @@ FS.prototype.createPlaceDescription = function(data){
 };
 
 PlaceDescription.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
+  
   constructor: PlaceDescription,
   
   /**
-   * @ngdoc property
-   * @name places.types:constructor.PlaceDescription#id
-   * @propertyOf places.types:constructor.PlaceDescription
+   * @ngdoc function
+   * @name places.types:constructor.PlaceDescription#getId
+   * @methodOf places.types:constructor.PlaceDescription
    * @return {string} place id
    */
   
   /**
-   * @ngdoc property
-   * @name places.types:constructor.PlaceDescription#names
-   * @propertyOf places.types:constructor.PlaceDescription
+   * @ngdoc function
+   * @name places.types:constructor.PlaceDescription#getNames
+   * @methodOf places.types:constructor.PlaceDescription
    * @return {TextValue[]} An array of names. The preferred value is first.
    */
+  getNames: function(){ return utils.maybe(this.data.names);  },
   
   /**
-   * @ngdoc property
-   * @name places.types:constructor.PlaceDescription#lang
-   * @propertyOf places.types:constructor.PlaceDescription
+   * @ngdoc function
+   * @name places.types:constructor.PlaceDescription#getLang
+   * @methodOf places.types:constructor.PlaceDescription
    * @return {string} The language of the Place Description. See [http://www.w3.org/International/articles/language-tags/](http://www.w3.org/International/articles/language-tags/)
    */
+  getLang: function(){ return this.data.lang; },
 
   /**
-   * @ngdoc property
-   * @name places.types:constructor.PlaceDescription#identifiers
-   * @propertyOf places.types:constructor.PlaceDescription
+   * @ngdoc function
+   * @name places.types:constructor.PlaceDescription#getIdentifiers
+   * @methodOf places.types:constructor.PlaceDescription
    * @return {Object} map of identifiers to arrays of values
    */
+  getIdentifiers: function(){ return utils.maybe(this.data.identifiers); },
   
   /**
-   * @ngdoc property
-   * @name places.types:constructor.PlaceDescription#type
-   * @propertyOf places.types:constructor.PlaceDescription
+   * @ngdoc function
+   * @name places.types:constructor.PlaceDescription#getTypeUri
+   * @methodOf places.types:constructor.PlaceDescription
    * @return {string} A URI used to identify the type of a place.
    */
+  getTypeUri: function(){ return this.data.type; },
   
   /**
-   * @ngdoc property
-   * @name places.types:constructor.PlaceDescription#latitude
-   * @propertyOf places.types:constructor.PlaceDescription
+   * @ngdoc function
+   * @name places.types:constructor.PlaceDescription#getLatitude
+   * @methodOf places.types:constructor.PlaceDescription
    * @return {number} Degrees north or south of the Equator (0.0 degrees). Values range from −90.0 degrees (south) to 90.0 degrees (north).
    */
+  getLatitude: function(){ return this.data.latitude; },
   
   /**
-   * @ngdoc property
-   * @name places.types:constructor.PlaceDescription#longitude
-   * @propertyOf places.types:constructor.PlaceDescription
+   * @ngdoc function
+   * @name places.types:constructor.PlaceDescription#getLongitude
+   * @methodOf places.types:constructor.PlaceDescription
    * @return {number} Angular distance in degrees, relative to the Prime Meridian. Values range from −180.0 degrees (west of the Meridian) to 180.0 degrees (east of the Meridian).
    */
+  getLongitude: function(){ return this.data.longitude; },
   
   /**
-   * @ngdoc property
-   * @name places.types:constructor.PlaceDescription#temporalDescription
-   * @propertyOf places.types:constructor.PlaceDescription
+   * @ngdoc function
+   * @name places.types:constructor.PlaceDescription#getTemporalDescription
+   * @methodOf places.types:constructor.PlaceDescription
    * @return {Object} A description of the time period to which this place description is relevant.
    */
+  getTemporalDescription: function(){ return utils.maybe(this.data.temporalDescription); },
 
   /**
-   * @ngdoc property
-   * @name places.types:constructor.PlaceDescription#display
-   * @propertyOf places.types:constructor.PlaceDescription
+   * @ngdoc function
+   * @name places.types:constructor.PlaceDescription#getDisplay
+   * @methodOf places.types:constructor.PlaceDescription
    * @return {Object} includes `name`, `fullName`, and `type` attributes
    */
+  getDisplay: function(){ return utils.maybe(this.data.display); },
   
   /**
    * @ngdoc function
-   * @name places.types:constructor.PlaceDescription#$getName
+   * @name places.types:constructor.PlaceDescription#getName
    * @methodOf places.types:constructor.PlaceDescription
-   * @function
    * @return {String} The name of this place as listed in the display properties.
    */
-  $getName: function(){
-    return utils.maybe(this.display).name;
+  getName: function(){
+    return this.getDisplay().name;
   },
   
   /**
    * @ngdoc function
-   * @name places.types:constructor.PlaceDescription#$getFullName
+   * @name places.types:constructor.PlaceDescription#getFullName
    * @methodOf places.types:constructor.PlaceDescription
-   * @function
    * @return {String} The fully qualified name (e.g. includes the name of parent jursdictions) of this place as listed in the display properties
    */
-  $getFullName: function(){
-    return utils.maybe(this.display).fullName;
+  getFullName: function(){
+    return this.getDisplay().fullName;
   },
   
   /**
    * @ngdoc function
-   * @name places.types:constructor.PlaceDescription#$getType
+   * @name places.types:constructor.PlaceDescription#getType
    * @methodOf places.types:constructor.PlaceDescription
-   * @function
    * @return {String} The type as listed in the display properties.
    */
-  $getType: function(){
-    return utils.maybe(this.display).type;
+  getType: function(){
+    return this.getDisplay().type;
   },
   
   /**
    * @ngdoc function
-   * @name places.types:constructor.PlaceDescription#$getPlaceDescriptionUrl
+   * @name places.types:constructor.PlaceDescription#getPlaceDescriptionUrl
    * @methodOf places.types:constructor.PlaceDescription
-   * @function
    * @return {String} The place description's url without the access token
    */
-  $getPlaceDescriptionUrl: function(){
-    return this.$helpers.removeAccessToken(utils.maybe(utils.maybe(this.links).description).href);
+  getPlaceDescriptionUrl: function(){
+    return this.helpers.removeAccessToken(utils.maybe(this.getLink('description')).href);
   },
    
   /**
    * @ngdoc function
-   * @name places.types:constructor.PlaceDescription#$getJurisdictionSummary
+   * @name places.types:constructor.PlaceDescription#getJurisdictionSummary
    * @methodOf places.types:constructor.PlaceDescription
-   * @function
    * @description Get a summary of the jurisdiction's place description, when available. Useful
    * for place descriptions returned by {@link places.functions:getPlaceDescription} if you just
    * want the names and ids of all place descriptions in the jurisdiction chain. If you want
-   * more details then use {@link places.types:constructor.PlaceDescription#$getJurisdictionDetails}.
+   * more details then use {@link places.types:constructor.PlaceDescription#getJurisdictionDetails}.
    * @return {PlaceDescription} A summary PlaceDescription for this PlaceDescription's jurisdiction.
    */
-  $getJurisdictionSummary: function() {
-    if(this.jurisdiction instanceof FS.PlaceDescription){
-      return this.jurisdiction;
+  getJurisdictionSummary: function() {
+    if(this.data.jurisdiction instanceof FS.PlaceDescription){
+      return this.data.jurisdiction;
     }
   },
    
   /**
    * @ngdoc function
-   * @name places.types:constructor.PlaceDescription#$getJurisdictionDetails
+   * @name places.types:constructor.PlaceDescription#getJurisdictionDetails
    * @methodOf places.types:constructor.PlaceDescription
-   * @function
    * @description Get the full details of the jurisdiction's PlaceDescription. The promise
    * will fail if no jurisdiction is available.
    * @return {Object} A promise for the response of retrieving the details for the jursdiction
    */
-  $getJurisdictionDetails: function() {
-    if(this.jurisdiction instanceof FS.PlaceDescription){
-      return this.$client.getPlaceDescription(this.jurisdiction.$getPlaceDescriptionUrl());
+  getJurisdictionDetails: function() {
+    if(this.data.jurisdiction instanceof FS.PlaceDescription){
+      return this.client.getPlaceDescription(this.data.jurisdiction.getPlaceDescriptionUrl());
     } else {
-      var d = this.$client.settings.deferredWrapper(),
+      var d = this.client.settings.deferredWrapper(),
           promise = d.promise;
       d.reject(new Error('No jurisdiction available'));
       return promise;
@@ -183,16 +188,17 @@ PlaceDescription.prototype = utils.extend(Object.create(FS.BaseClass.prototype),
   
   /**
    * @ngdoc function
-   * @name places.types:constructor.PlaceDescription#$setJurisdiction
+   * @name places.types:constructor.PlaceDescription#setJurisdiction
    * @methodOf places.types:constructor.PlaceDescription
-   * @function
    * @param {Object} A json object representing the new jursidication data, or a PlaceDescription object.
+   * @return {PlaceDescription} this object
    */
-  $setJurisdiction: function(jurisdiction){
+  setJurisdiction: function(jurisdiction){
     if(!(jurisdiction instanceof FS.PlaceDescription)){
       jurisdiction = this.client.createPlaceDescription(jurisdiction);
     }
-    this.jurisdiction = jurisdiction;
+    this.data.jurisdiction = jurisdiction;
+    return this;
   }
 
 });

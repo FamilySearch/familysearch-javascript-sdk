@@ -6,43 +6,43 @@ describe('Spouses relationship', function() {
     var promises = [];
     FS.getCouple('https://familysearch.org/platform/tree/couple-relationships/12345').then(function(response) {
       var rel = response.getRelationship();
-      expect(rel.id).toBe('12345');
-      expect(rel.$getHusbandId()).toBe('PPPJ-MYY');
-      promises.push(rel.$getHusband().then(function(response) {
+      expect(rel.getId()).toBe('12345');
+      expect(rel.getHusbandId()).toBe('PPPJ-MYY');
+      promises.push(rel.getHusband().then(function(response) {
         var person = response.getPerson();
-        expect(person.id).toBe('PPPJ-MYY');
+        expect(person.getId()).toBe('PPPJ-MYY');
       }));
-      expect(rel.$getWifeId()).toBe('PPPJ-MYZ');
-      promises.push(rel.$getWife().then(function(response) {
+      expect(rel.getWifeId()).toBe('PPPJ-MYZ');
+      promises.push(rel.getWife().then(function(response) {
         var person = response.getPerson();
-        expect(person.id).toBe('PPPJ-MYZ');
+        expect(person.getId()).toBe('PPPJ-MYZ');
       }));
-      expect(rel.$getSpouseId('PPPJ-MYY')).toBe('PPPJ-MYZ');
-      promises.push(rel.$getSpouse('PPPJ-MYY').then(function(response) {
+      expect(rel.getSpouseId('PPPJ-MYY')).toBe('PPPJ-MYZ');
+      promises.push(rel.getSpouse('PPPJ-MYY').then(function(response) {
         var person = response.getPerson();
-        expect(person.id).toBe('PPPJ-MYZ');
+        expect(person.getId()).toBe('PPPJ-MYZ');
       }));
-      expect(rel.$getFacts().length).toBe(1);
-      var fact = rel.$getFacts()[0];
-      expect(fact.type).toBe('http://gedcomx.org/Marriage');
-      expect(rel.$getMarriageFact().$getDate()).toBe('June 1800');
-      expect(fact.$getDate()).toBe('June 1800');
-      expect(fact.$getFormalDate()).toBe('+1800-06');
-      expect(fact.$getPlace()).toBe('Provo, Utah, Utah, United States');
-      promises.push(rel.$getSourceRefs().then(function(response) {
+      expect(rel.getFacts().length).toBe(1);
+      var fact = rel.getFacts()[0];
+      expect(fact.getType()).toBe('http://gedcomx.org/Marriage');
+      expect(rel.getMarriageFact().getOriginalDate()).toBe('June 1800');
+      expect(fact.getOriginalDate()).toBe('June 1800');
+      expect(fact.getFormalDate()).toBe('+1800-06');
+      expect(fact.getOriginalPlace()).toBe('Provo, Utah, Utah, United States');
+      promises.push(rel.getSourceRefs().then(function(response) {
         var sourceRefs = response.getSourceRefs();
         expect(sourceRefs.length).toBe(2);
-        expect(sourceRefs[0].attribution.modified).toBe(123456789);
+        expect(sourceRefs[0].getAttribution().getModifiedTimestamp()).toBe(123456789);
       }));
-      promises.push(rel.$getNotes().then(function(response) {
+      promises.push(rel.getNotes().then(function(response) {
         var notes = response.getNotes();
         expect(notes.length).toBe(2);
-        expect(notes[0].id).toBe('1804317705');
+        expect(notes[0].getId()).toBe('1804317705');
       }));
-      promises.push(rel.$getChanges().then(function(response) {
+      promises.push(rel.getChanges().then(function(response) {
         var changes = response.getChanges();
         expect(changes.length).toBe(3);
-        expect(changes[0].id).toBe('1386863423023');
+        expect(changes[0].getId()).toBe('1386863423023');
       }));
       q.all(promises).then(function(){
         done();
@@ -52,14 +52,13 @@ describe('Spouses relationship', function() {
 
   it('is created', function(done) {
     var promise = FS.createCouple({
-        facts: [{type:'http://gedcomx.org/Marriage', $date: 'June 1800', $formalDate: '+1800-06', $place: 'Provo, Utah, Utah, United States'}]
+        facts: [{type:'http://gedcomx.org/Marriage', date: {original: 'June 1800', formal: '+1800-06'}, place: {original: 'Provo, Utah, Utah, United States'}}]
       })
-      .$setHusband('FJP-M4RK')
-      .$setWife('JRW-NMSD')
-      .$save('...change message...');
+      .setHusband('FJP-M4RK')
+      .setWife('JRW-NMSD')
+      .save('...change message...');
     promise.then(function() {
       var request = promise.getRequest();
-      //noinspection JSUnresolvedFunction
       expect(request.body).toEqualJson({
         'relationships' : [ {
           'attribution' : {
@@ -93,18 +92,15 @@ describe('Spouses relationship', function() {
 
   it('conclusion is created', function(done) {
     var rel = FS.createCouple();
-    rel.id = 'R123-456';
-    rel.links = {
-      relationship: {
-        href: 'https://familysearch.org/platform/tree/couple-relationships/R123-456'
-      }
-    };
+    rel.setId('R123-456');
+    rel.addLink('relationship', {
+      href: 'https://familysearch.org/platform/tree/couple-relationships/R123-456'
+    });
     var promise = rel
-      .$addFact({type:'http://gedcomx.org/Marriage', $changeMessage: '...change message...'})
-      .$save();
+      .addFact({type:'http://gedcomx.org/Marriage', attribution: '...change message...'})
+      .save();
     promise.then(function(response) {
       var request = promise.getRequest();
-      //noinspection JSUnresolvedFunction
       expect(request.body).toEqualJson({
         'relationships' : [ {
           'facts' : [ {
@@ -123,28 +119,29 @@ describe('Spouses relationship', function() {
 
   function createMockRelationship(rid, fid) {
     var rel = FS.createCouple();
-    rel.id = rid;
-    rel.links = {
+    rel.setId(rid);
+    rel.addLinks({
       relationship: {
         href: 'https://sandbox.familysearch.org/platform/tree/couple-relationships/' + rid
       },
       restore: {
         href: 'https://sandbox.familysearch.org/platform/tree/couple-relationships/' + rid + '/restore'
       }
-    };
+    });
     var fact = FS.createFact();
-    fact.id = fid;
-    fact.type = 'http://gedcomx.org/Marriage';
-    fact.links = {
+    fact.setId(fid);
+    fact.setType('http://gedcomx.org/Marriage');
+    fact.addLinks({
       conclusion: {
         href: 'https://sandbox.familysearch.org/platform/tree/couple-relationships/'+rid+'/conclusions/'+fid
-      }};
-    delete fact.$changed;
-    rel.$setHusband('husband')
-      .$setWife('wife')
-      .$addFact(fact);
-    delete rel.$husbandChanged;
-    delete rel.$wifeChanged;
+      }
+    });
+    delete fact.changed;
+    rel.setHusband('husband')
+      .setWife('wife')
+      .addFact(fact);
+    delete rel.husbandChanged;
+    delete rel.wifeChanged;
     return rel;
   }
 
@@ -152,8 +149,8 @@ describe('Spouses relationship', function() {
     var rel = createMockRelationship('cid', 'C.1');
     // update husband
     var promise = rel
-      .$setHusband('FJP-M4RK')
-      .$save('...change message...');
+      .setHusband('FJP-M4RK')
+      .save('...change message...');
     promise.then(function(response) {
       var request = promise.getRequest();
       //noinspection JSUnresolvedFunction
@@ -182,11 +179,10 @@ describe('Spouses relationship', function() {
     var rel = createMockRelationship('cid', 'C.1');
     // update fact
     var promise = rel
-      .$addFact({type:'http://gedcomx.org/Divorce'})
-      .$save('...change message...');
+      .addFact({type:'http://gedcomx.org/Divorce'})
+      .save('...change message...');
     promise.then(function(response) {
       var request = promise.getRequest();
-      //noinspection JSUnresolvedFunction
       expect(request.body).toEqualJson({
         'relationships' : [ {
           'attribution' : {
@@ -207,8 +203,8 @@ describe('Spouses relationship', function() {
     var rel = createMockRelationship('R123-456', 'C123-456');
     // delete fact
     var promise = rel
-      .$deleteFact(rel.$getFacts()[0])
-      .$save('...change message...');
+      .deleteFact(rel.getFacts()[0])
+      .save('...change message...');
     promise.then(function(response) {
       expect(promise.getStatusCode()).toBe(204);
       expect(promise.getRequest().headers['X-Reason']).toBe('...change message...');
@@ -219,7 +215,7 @@ describe('Spouses relationship', function() {
 
   it('is deleted', function(done) {
     var promise = createMockRelationship('12345','fid')
-      .$delete('...change message...');
+      .delete('...change message...');
     promise.then(function(response) {
       expect(promise.getStatusCode()).toBe(204);
       expect(promise.getRequest().headers['X-Reason']).toBe('...change message...');
@@ -232,11 +228,11 @@ describe('Spouses relationship', function() {
     var couple = FS.createCouple({
       facts: [ FS.createFact() ]
     });
-    expect(couple.facts.length).toBe(1);
+    expect(couple.getFacts().length).toBe(1);
   });
   
   it('is restored', function(done){
-    var promise = createMockRelationship('12345', 'fid').$restore();
+    var promise = createMockRelationship('12345', 'fid').restore();
     promise.then(function(response) {
       expect(promise.getStatusCode()).toBe(204);
       expect(response).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/12345/restore');

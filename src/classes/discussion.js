@@ -8,8 +8,9 @@ var FS = require('./../FamilySearch'),
  * @description
  *
  * Discussion
- *
- * @param {Object=} data data
+ * 
+ * @param {FamilySearch} client FamilySearch sdk client
+ * @param {Object} data raw object data
  */ 
 var Discussion = FS.Discussion = function(client, data) {
   FS.BaseClass.call(this, client, data);
@@ -26,109 +27,116 @@ FS.prototype.createDiscussion = function(data){
   return new Discussion(this, data);
 };
 
-// TODO consider disallowing $save()'ing or $delete()'ing discussions
+// TODO consider disallowing save()'ing or delete()'ing discussions
 
 Discussion.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
+  
   constructor: Discussion,
+  
   /**
-   * @ngdoc property
-   * @name discussions.types:constructor.Discussion#id
-   * @propertyOf discussions.types:constructor.Discussion
+   * @ngdoc function
+   * @name discussions.types:constructor.Discussion#getId
+   * @methodOf discussions.types:constructor.Discussion
    * @return {String} Id of the discussion
    */
 
   /**
-   * @ngdoc property
-   * @name discussions.types:constructor.Discussion#title
-   * @propertyOf discussions.types:constructor.Discussion
+   * @ngdoc function
+   * @name discussions.types:constructor.Discussion#getTitle
+   * @methodOf discussions.types:constructor.Discussion
    * @return {String} title of the discussion
    */
-
-  /**
-   * @ngdoc property
-   * @name discussions.types:constructor.Discussion#details
-   * @propertyOf discussions.types:constructor.Discussion
-   * @return {String} description / text of the discussion
-   */
-
-  /**
-   * @ngdoc property
-   * @name discussions.types:constructor.Discussion#created
-   * @propertyOf discussions.types:constructor.Discussion
-   * @return {Number} timestamp in millis
-   */
-
-  /**
-   * @ngdoc property
-   * @name discussions.types:constructor.Discussion#modified
-   * @propertyOf discussions.types:constructor.Discussion
-   * @return {Number} timestamp in millis
-   */
-
-  /**
-   * @ngdoc property
-   * @name discussions.types:constructor.Discussion#numberOfComments
-   * @propertyOf discussions.types:constructor.Discussion
-   * @return {Number} number of comments
-   */
+  getTitle: function(){ return this.data.title; },
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.Discussion#$getDiscussionUrl
+   * @name discussions.types:constructor.Discussion#getDetails
+   * @methodOf discussions.types:constructor.Discussion
+   * @return {String} description / text of the discussion
+   */
+  getDetails: function(){ return this.data.details; },
+
+  /**
+   * @ngdoc function
+   * @name discussions.types:constructor.Discussion#getCreatedTimestamp
+   * @methodOf discussions.types:constructor.Discussion
+   * @return {Number} timestamp in millis
+   */
+  getCreatedTimestamp: function(){ return this.data.created; },
+
+  /**
+   * @ngdoc function
+   * @name discussions.types:constructor.Discussion#getModifiedTimestamp
+   * @methodOf discussions.types:constructor.Discussion
+   * @return {Number} timestamp in millis
+   */
+  getModifiedTimestamp: function(){ return this.data.modified; },
+
+  /**
+   * @ngdoc function
+   * @name discussions.types:constructor.Discussion#getNumberOfComments
+   * @methodOf discussions.types:constructor.Discussion
+   * @return {Number} number of comments
+   */
+  getNumberOfComments: function(){ return this.data.numberOfComments; },
+
+  /**
+   * @ngdoc function
+   * @name discussions.types:constructor.Discussion#getDiscussionUrl
    * @methodOf discussions.types:constructor.Discussion
    * @function
    * @return {String} URL of this discussion
    */
-  $getDiscussionUrl: function() { return this.$helpers.removeAccessToken(maybe(maybe(this.links).discussion).href); },
+  getDiscussionUrl: function() { return this.helpers.removeAccessToken(maybe(this.getLink('discussion')).href); },
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.Discussion#$getCommentsUrl
+   * @name discussions.types:constructor.Discussion#getCommentsUrl
    * @methodOf discussions.types:constructor.Discussion
    * @function
    * @return {String} URL of the comments endpoint - pass into {@link discussions.functions:getDiscussionComments getDiscussionComments} for details
    */
-  $getCommentsUrl: function() { return this.$helpers.removeAccessToken(maybe(maybe(this.links).comments).href); },
+  getCommentsUrl: function() { return this.helpers.removeAccessToken(maybe(this.getLink('comments')).href); },
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.Discussion#$getComments
+   * @name discussions.types:constructor.Discussion#getComments
    * @methodOf discussions.types:constructor.Discussion
    * @function
    * @return {Object} promise for the {@link discussions.functions:getDiscussionComments getDiscussionComments} response
    */
-  $getComments: function() { return this.$client.getDiscussionComments(this.$getCommentsUrl()); },
+  getComments: function() { return this.client.getDiscussionComments(this.getCommentsUrl()); },
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.Discussion#$getAgentId
+   * @name discussions.types:constructor.Discussion#getAgentId
    * @methodOf discussions.types:constructor.Discussion
    * @function
    * @return {String} id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
    */
-  $getAgentId: function() { return maybe(this.contributor).resourceId; },
+  getAgentId: function() { return maybe(this.data.contributor).resourceId; },
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.Discussion#$getAgentUrl
+   * @name discussions.types:constructor.Discussion#getAgentUrl
    * @methodOf discussions.types:constructor.Discussion
    * @function
    * @return {String} URL of the contributor - pass into {@link user.functions:getAgent getAgent} for details
    */
-  $getAgentUrl: function() { return this.$helpers.removeAccessToken(maybe(this.contributor).resource); },
+  getAgentUrl: function() { return this.helpers.removeAccessToken(maybe(this.data.contributor).resource); },
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.Discussion#$getAgent
+   * @name discussions.types:constructor.Discussion#getAgent
    * @methodOf discussions.types:constructor.Discussion
    * @function
    * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
    */
-  $getAgent: function() { return this.$client.getAgent(this.$getAgentUrl()); },
+  getAgent: function() { return this.client.getAgent(this.getAgentUrl()); },
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.Discussion#$save
+   * @name discussions.types:constructor.Discussion#save
    * @methodOf discussions.types:constructor.Discussion
    * @function
    * @description
@@ -141,14 +149,14 @@ Discussion.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @return {Object} promise of the discussion id, which is fulfilled after the discussion has been updated or,
    * if refresh is true, after the discussion has been read.
    */
-  $save: function(changeMessage, opts) {
+  save: function(changeMessage, opts) {
     var self = this;
-    return self.$helpers.chainHttpPromises(
-      self.$getDiscussionUrl() ? self.$helpers.refPromise(self.$getDiscussionUrl()) : self.$plumbing.getCollectionUrl('FSDF', 'discussions'),
+    return self.helpers.chainHttpPromises(
+      self.getDiscussionUrl() ? self.helpers.refPromise(self.getDiscussionUrl()) : self.plumbing.getCollectionUrl('FSDF', 'discussions'),
       function(url){
-        return self.$plumbing.post(url, { discussions: [ self ] }, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
+        return self.plumbing.post(url, { discussions: [ self ] }, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
           // x-entity-id and location headers are not set on update, only on create
-          return self.id || promise.getResponseHeader('X-ENTITY-ID');
+          return self.getId() || promise.getResponseHeader('X-ENTITY-ID');
         });
       }
     );
@@ -156,7 +164,7 @@ Discussion.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
 
   /**
    * @ngdoc function
-   * @name discussions.types:constructor.Discussion#$delete
+   * @name discussions.types:constructor.Discussion#delete
    * @methodOf discussions.types:constructor.Discussion
    * @function
    * @description delete this discussion - see {@link discussions.functions:deleteDiscussion deleteDiscussion}
@@ -170,8 +178,8 @@ Discussion.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the discussion id
    */
-  $delete: function(changeMessage, opts) {
-    return this.$client.deleteDiscussion(this.$getDiscussionUrl(), changeMessage, opts);
+  delete: function(changeMessage, opts) {
+    return this.client.deleteDiscussion(this.getDiscussionUrl(), changeMessage, opts);
   }
 
 });

@@ -11,14 +11,11 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_resource FamilySearch API Docs}
  *
- * @param {Object=} data data
+ * @param {FamilySearch} client FamilySearch sdk client
+ * @param {Object} data raw object data
  */
 var Collection = FS.Collection = function(client, data) {
   FS.BaseClass.call(this, client, data);
-  
-  if(data && data.attribution){
-    this.attribution = client.createAttribution(data.attribution);    
-  }
 };
 
 /**
@@ -33,59 +30,63 @@ FS.prototype.createCollection = function(data){
 };
 
 Collection.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
+  
   constructor: Collection,
+  
   /**
-   * @ngdoc property
-   * @name sourceBox.types:constructor.Collection#id
-   * @propertyOf sourceBox.types:constructor.Collection
+   * @ngdoc function
+   * @name sourceBox.types:constructor.Collection#getId
+   * @methodOf sourceBox.types:constructor.Collection
    * @return {String} Id of the collection
    */
 
   /**
-   * @ngdoc property
-   * @name sourceBox.types:constructor.Collection#title
-   * @propertyOf sourceBox.types:constructor.Collection
+   * @ngdoc function
+   * @name sourceBox.types:constructor.Collection#getTitle
+   * @methodOf sourceBox.types:constructor.Collection
    * @return {String} title of the collection
    */
+  getTitle: function(){ return this.data.title; },
 
   /**
-   * @ngdoc property
-   * @name sourceBox.types:constructor.Collection#size
-   * @propertyOf sourceBox.types:constructor.Collection
+   * @ngdoc function
+   * @name sourceBox.types:constructor.Collection#getSize
+   * @methodOf sourceBox.types:constructor.Collection
    * @return {Number} number of source descriptions in the collection
    */
+  getSize: function(){ return this.data.size; },
 
   /**
-   * @ngdoc property
-   * @name sourceBox.types:constructor.Collection#attribution
-   * @propertyOf sourceBox.types:constructor.Collection
+   * @ngdoc function
+   * @name sourceBox.types:constructor.Collection#getAttribution
+   * @methodOf sourceBox.types:constructor.Collection
    * @returns {Attribution} {@link attribution.types:constructor.Attribution Attribution} object
    */
 
   /**
    * @ngdoc function
-   * @name sourceBox.types:constructor.Collection#$getCollectionUrl
+   * @name sourceBox.types:constructor.Collection#getCollectionUrl
    * @methodOf sourceBox.types:constructor.Collection
    * @function
    * @return {String} Url of the person
    */
-  $getCollectionUrl: function() { return this.$helpers.removeAccessToken(maybe(maybe(this.links).self).href); },
+  getCollectionUrl: function() { return this.helpers.removeAccessToken(maybe(this.getLink('self')).href); },
 
   /**
    * @ngdoc function
-   * @name sourceBox.types:constructor.Collection#$getSourceDescriptions
+   * @name sourceBox.types:constructor.Collection#getSourceDescriptions
    * @methodOf sourceBox.types:constructor.Collection
    * @function
    * @param {Object=} params `count` maximum to return (defaults to 25), `start` zero-based index of first source to return
    * @return {Object} promise for the {@link sourceBox.functions:getCollectionSourceDescriptions getCollectionSourceDescriptions} response
    */
-  $getSourceDescriptions: function(params) {
-    return this.$client.getCollectionSourceDescriptions(this.$helpers.removeAccessToken(this.links['source-descriptions'].href), params);
+  getSourceDescriptions: function(params) {
+    return this.client.getCollectionSourceDescriptions(this.helpers.removeAccessToken(maybe(this.getLink('source-descriptions')).href), params);
   },
 
   /**
    * @ngdoc function
-   * @name sourceBox.types:constructor.Collection#$save
+   * @name sourceBox.types:constructor.Collection#save
    * @methodOf sourceBox.types:constructor.Collection
    * @function
    * @description
@@ -97,13 +98,13 @@ Collection.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @return {Object} promise of the collection id, which is fulfilled after the collection has been updated,
    * and if refresh is true, after the collection has been read.
    */
-  $save: function(opts) {
+  save: function(opts) {
     var self = this;
-    return self.$helpers.chainHttpPromises(
-      self.$getCollectionUrl() ? self.$helpers.refPromise(self.$getCollectionUrl()) : self.$plumbing.getCollectionUrl('FSUDS', 'subcollections'),
+    return self.helpers.chainHttpPromises(
+      self.getCollectionUrl() ? self.helpers.refPromise(self.getCollectionUrl()) : self.plumbing.getCollectionUrl('FSUDS', 'subcollections'),
       function(url) {
-        var promise = self.$plumbing.post(url, { collections: [ self ] }, {}, opts, function(data, promise) {
-          return self.$getCollectionUrl() || promise.getResponseHeader('Location');
+        var promise = self.plumbing.post(url, { collections: [ self ] }, {}, opts, function(data, promise) {
+          return self.getCollectionUrl() || promise.getResponseHeader('Location');
         });
         return promise;
       }
@@ -112,7 +113,7 @@ Collection.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
 
   /**
    * @ngdoc function
-   * @name sourceBox.types:constructor.Collection#$delete
+   * @name sourceBox.types:constructor.Collection#delete
    * @methodOf sourceBox.types:constructor.Collection
    * @function
    * @description delete this collection (must be empty)
@@ -121,8 +122,8 @@ Collection.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the collection id
    */
-  $delete: function(opts) {
-    return this.$client.deleteCollection(this.$getCollectionUrl(), opts);
+  delete: function(opts) {
+    return this.client.deleteCollection(this.getCollectionUrl(), opts);
   }
 
 });

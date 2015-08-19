@@ -8,7 +8,8 @@ var FS = require('./../FamilySearch'),
  * @description
  *
  * Memory Artifact Reference
- *
+ * 
+ * @param {FamilySearch} client FamilySearch sdk client
  * @param {Object=} data an object with optional attributes {description, qualifierValue, qualifierName}.
  * _description_ is required; it should be the memory URL
  * _qualifierValue_ is a comma-separated string of 4 numbers: "x-start,y-start,x-end,y-end".
@@ -17,6 +18,15 @@ var FS = require('./../FamilySearch'),
  */
 var MemoryArtifactRef = FS.MemoryArtifactRef = function(client, data) {
   FS.BaseClass.call(this, client, data);
+  
+  if(data){
+    if(data.qualifierName && data.qualifierValue){
+      this.setQualifierName(data.qualifierName);
+      this.setQualifierValue(data.qualifierValue);
+      delete data.qualifierName;
+      delete data.qualifierValue;
+    }
+  }
 };
 
 /**
@@ -31,69 +41,72 @@ FS.prototype.createMemoryArtifactRef = function(data){
 };
 
 MemoryArtifactRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
+  
   constructor: MemoryArtifactRef,
+  
   /**
-   * @ngdoc property
-   * @name memories.types:constructor.MemoryArtifactRef#id
-   * @propertyOf memories.types:constructor.MemoryArtifactRef
+   * @ngdoc function
+   * @name memories.types:constructor.MemoryArtifactRef#getId
+   * @methodOf memories.types:constructor.MemoryArtifactRef
    * @return {String} Id of the Memory Artifact
    */
 
   /**
-   * @ngdoc property
-   * @name memories.types:constructor.MemoryArtifactRef#description
-   * @propertyOf memories.types:constructor.MemoryArtifactRef
+   * @ngdoc function
+   * @name memories.types:constructor.MemoryArtifactRef#getDescription
+   * @methodOf memories.types:constructor.MemoryArtifactRef
    * @return {String} URL of the memory
    */
+  getDescription: function(){ return this.data.description; },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.MemoryArtifactRef#$getQualifierName
+   * @name memories.types:constructor.MemoryArtifactRef#getQualifierName
    * @methodOf memories.types:constructor.MemoryArtifactRef
    * @function
    * @return {String} qualifier name (http://gedcomx.org/RectangleRegion)
    */
-  $getQualifierName: function() { return maybe(maybe(this.qualifiers)[0]).name; },
+  getQualifierName: function() { return maybe(maybe(this.data.qualifiers)[0]).name; },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.MemoryArtifactRef#$getQualifierValue
+   * @name memories.types:constructor.MemoryArtifactRef#getQualifierValue
    * @methodOf memories.types:constructor.MemoryArtifactRef
    * @function
    * @return {String} qualifier value (e.g., 0.0,.25,.5,.75)
    */
-  $getQualifierValue: function() { return maybe(maybe(this.qualifiers)[0]).value; },
+  getQualifierValue: function() { return maybe(maybe(this.data.qualifiers)[0]).value; },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.MemoryArtifactRef#$setQualifierName
+   * @name memories.types:constructor.MemoryArtifactRef#setQualifierName
    * @methodOf memories.types:constructor.MemoryArtifactRef
    * @function
    * @param {string} qualifierName qualifier name
    * @return {MemoryArtifactRef} this memory artifact ref
    */
-  $setQualifierName: function(qualifierName) {
-    if (!utils.isArray(this.qualifiers) || !this.qualifiers.length) {
-      this.qualifiers = [{}];
+  setQualifierName: function(qualifierName) {
+    if (!utils.isArray(this.data.qualifiers) || !this.data.qualifiers.length) {
+      this.data.qualifiers = [{}];
     }
-    this.qualifiers[0].name = qualifierName;
+    this.data.qualifiers[0].name = qualifierName;
     //noinspection JSValidateTypes
     return this;
   },
 
   /**
    * @ngdoc function
-   * @name memories.types:constructor.MemoryArtifactRef#$setQualifierValue
+   * @name memories.types:constructor.MemoryArtifactRef#setQualifierValue
    * @methodOf memories.types:constructor.MemoryArtifactRef
    * @function
    * @param {string} qualifierValue qualifier value
    * @return {MemoryArtifactRef} this memory artifact ref
    */
-  $setQualifierValue: function(qualifierValue) {
-    if (!utils.isArray(this.qualifiers) || !this.qualifiers.length) {
-      this.qualifiers = [{}];
+  setQualifierValue: function(qualifierValue) {
+    if (!utils.isArray(this.data.qualifiers) || !this.data.qualifiers.length) {
+      this.data.qualifiers = [{}];
     }
-    this.qualifiers[0].value = qualifierValue;
+    this.data.qualifiers[0].value = qualifierValue;
     //noinspection JSValidateTypes
     return this;
   }

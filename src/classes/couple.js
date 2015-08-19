@@ -10,30 +10,33 @@ var FS = require('../FamilySearch'),
  *
  * Couple relationship
  *
- * Two methods to note below are _$save_ and _$delete_.
- * _$save_ persists the changes made to husband, wife, and facts;
- * _$delete_ removes the relationship.
+ * Two methods to note below are _save_ and _delete_.
+ * _save_ persists the changes made to husband, wife, and facts;
+ * _delete_ removes the relationship.
  *
- * @param {Object=} data an object with optional attributes {$husband, $wife, facts}.
- * _$husband_ and _$wife_ are Person objects, URLs, or ids.
+ * @param {FamilySearch} client FamilySearch sdk client
+ * @param {Object=} data an object with optional attributes {husband, wife, facts}.
+ * _husband_ and _wife_ are Person objects, URLs, or ids.
  * _facts_ is an array of Facts or objects to be passed into the Fact constructor.
  */
 var Couple = FS.Couple = function(client, data) {
   FS.BaseClass.call(this, client, data);
   
   if (data) {
-    if (data.$husband) {
+    if (data.husband) {
       //noinspection JSUnresolvedFunction
-      this.$setHusband(data.$husband);
+      this.setHusband(data.husband);
+      delete data.husband;
     }
-    if (data.$wife) {
+    if (data.wife) {
       //noinspection JSUnresolvedFunction
-      this.$setWife(data.$wife);
+      this.setWife(data.wife);
+      delete data.wife;
     }
     if (data.facts) {
-      utils.forEach(this.facts, function(fact, i){
+      utils.forEach(this.data.facts, function(fact, i){
         if(!(fact instanceof FS.Fact)){
-          this.facts[i] = client.createFact(fact);
+          this.data.facts[i] = client.createFact(fact);
         }
       }, this);
     }
@@ -52,153 +55,158 @@ FS.prototype.createCouple = function(data){
 };
 
 Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
+  
   constructor: Couple,
+  
   /**
-   * @ngdoc property
-   * @name spouses.types:constructor.Couple#id
-   * @propertyOf spouses.types:constructor.Couple
+   * @ngdoc function
+   * @name spouses.types:constructor.Couple#getId
+   * @methodOf spouses.types:constructor.Couple
    * @return {String} Id of the relationship
    */
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$getCoupleUrl
+   * @name spouses.types:constructor.Couple#getCoupleUrl
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @return {String} Url of this couple relationship
    */
-  $getCoupleUrl: function() { return this.$helpers.removeAccessToken(maybe(maybe(this.links).relationship).href); },
+  getCoupleUrl: function() { return this.helpers.removeAccessToken(maybe(this.getLink('relationship')).href); },
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$getFacts
+   * @name spouses.types:constructor.Couple#getFacts
    * @methodOf spouses.types:constructor.Couple
    * @return {Fact[]} array of {@link fact.types:constructor.Fact Facts}; e.g., marriage
    */
-  $getFacts: function() { return this.facts || []; },
+  getFacts: function() { return this.data.facts || []; },
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$getMarriageFact
+   * @name spouses.types:constructor.Couple#getMarriageFact
    * @methodOf spouses.types:constructor.Couple
    * @return {Fact} {@link fact.types:constructor.Fact Fact} of type http://gedcomx.org/Marriage (first one if multiple)
    */
-  $getMarriageFact: function() { return utils.find(this.facts, {type: 'http://gedcomx.org/Marriage'}); },
+  getMarriageFact: function() { return utils.find(this.data.facts, function(fact){
+      return fact.getType() === 'http://gedcomx.org/Marriage';
+    }); 
+  },
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$getHusbandId
+   * @name spouses.types:constructor.Couple#getHusbandId
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @return {String} Id of the husband
    */
-  $getHusbandId: function() { return maybe(this.person1).resourceId; },
+  getHusbandId: function() { return maybe(this.data.person1).resourceId; },
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$getHusbandUrl
+   * @name spouses.types:constructor.Couple#getHusbandUrl
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @return {String} URL of the husband
    */
-  $getHusbandUrl: function() { return this.$helpers.removeAccessToken(maybe(this.person1).resource); },
+  getHusbandUrl: function() { return this.helpers.removeAccessToken(maybe(this.data.person1).resource); },
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$getHusband
+   * @name spouses.types:constructor.Couple#getHusband
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @return {Object} promise for the {@link exports.functions:getPerson getPerson} response
    */
-  $getHusband: function() { return this.$client.getPerson(this.$getHusbandUrl()); },
+  getHusband: function() { return this.client.getPerson(this.getHusbandUrl()); },
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$getWifeId
+   * @name spouses.types:constructor.Couple#getWifeId
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @return {String} Id of the wife
    */
-  $getWifeId: function() { return maybe(this.person2).resourceId; },
+  getWifeId: function() { return maybe(this.data.person2).resourceId; },
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$getWifeUrl
+   * @name spouses.types:constructor.Couple#getWifeUrl
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @return {String} URL of the wife
    */
-  $getWifeUrl: function() { return this.$helpers.removeAccessToken(maybe(this.person2).resource); },
+  getWifeUrl: function() { return this.helpers.removeAccessToken(maybe(this.data.person2).resource); },
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$getWife
+   * @name spouses.types:constructor.Couple#getWife
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @return {Object} promise for the {@link exports.functions:getPerson getPerson} response
    */
-  $getWife: function() { return this.$client.getPerson(this.$getWifeUrl()); },
+  getWife: function() { return this.client.getPerson(this.getWifeUrl()); },
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$getSpouseId
+   * @name spouses.types:constructor.Couple#getSpouseId
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @description Use this method when you know the ID of one person in the relationship and you want to fetch the ID of the other person.
    * @param {string} ID of the spouse which you already know
    * @return {String} Id of the other spouse
    */
-  $getSpouseId: function(knownSpouseId) { 
-    if(maybe(this.person1).resourceId === knownSpouseId) {
-      return maybe(this.person2).resourceId;
+  getSpouseId: function(knownSpouseId) { 
+    if(maybe(this.data.person1).resourceId === knownSpouseId) {
+      return maybe(this.data.person2).resourceId;
     } else {
-      return maybe(this.person1).resourceId;
+      return maybe(this.data.person1).resourceId;
     }
   },
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$getSpouseUrl
+   * @name spouses.types:constructor.Couple#getSpouseUrl
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @description Use this method when you know the ID of one person in the relationship and you want to fetch the URL of the other person.
    * @param {string} ID of the spouse which you already know
    * @return {String} URL of the other spouse
    */
-  $getSpouseUrl: function(knownSpouseId) {
-    if(maybe(this.person1).resourceId === knownSpouseId) {
-      return this.$helpers.removeAccessToken(maybe(this.person2).resource);
+  getSpouseUrl: function(knownSpouseId) {
+    if(maybe(this.data.person1).resourceId === knownSpouseId) {
+      return this.helpers.removeAccessToken(maybe(this.data.person2).resource);
     } else {
-      return this.$helpers.removeAccessToken(maybe(this.person1).resource);
+      return this.helpers.removeAccessToken(maybe(this.data.person1).resource);
     }
   },
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$getSpouse
+   * @name spouses.types:constructor.Couple#getSpouse
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @description Use this method when you know the ID of one person in the relationship and you want to fetch the other person.
    * @param {string} ID of the spouse which you already know
    * @return {Object} promise for the {@link exports.functions:getPerson getPerson} response
    */
-  $getSpouse: function(knownSpouseId) { 
-    return this.$client.getPerson(this.$getSpouseUrl(knownSpouseId));
+  getSpouse: function(knownSpouseId) { 
+    return this.client.getPerson(this.getSpouseUrl(knownSpouseId));
   },
   
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$getNotes
+   * @name spouses.types:constructor.Couple#getNotes
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @return {Object} promise for the {@link notes.functions:getNotes getNotes} response
    */
-  $getNotes: function() { 
+  getNotes: function() { 
     var self = this;
-    return self.$helpers.chainHttpPromises(
-      self.$getLink('notes'),
+    return self.helpers.chainHttpPromises(
+      self.getLinkPromise('notes'),
       function(link){
-        return self.$client.getNotes(link.href);
+        return self.client.getNotes(link.href);
       }
     );
   },
@@ -206,41 +214,41 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$getSourceRefs
+   * @name spouses.types:constructor.Couple#getSourceRefs
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @return {Object} promise for the {@link sources.functions:getCoupleSourceRefs getCoupleSourceRefs} response
    */
-  $getSourceRefs: function() { 
+  getSourceRefs: function() { 
     var self = this;
-    return self.$helpers.chainHttpPromises(
-      self.$getLink('source-references'),
+    return self.helpers.chainHttpPromises(
+      self.getLinkPromise('source-references'),
       function(link){
-        return self.$client.getSourceRefs(link.href);
+        return self.client.getSourceRefs(link.href);
       }
     );
   },
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$getSources
+   * @name spouses.types:constructor.Couple#getSources
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @return {Object} promise for the {@link sources.functions:getSourcesQuery getSourcesQuery} response
    */
-  $getSources: function() { 
+  getSources: function() { 
     var self = this;
-    return self.$helpers.chainHttpPromises(
-      self.$getLink('source-descriptions'),
+    return self.helpers.chainHttpPromises(
+      self.getLinkPromise('source-descriptions'),
       function(link){
-        return self.$client.getSourcesQuery(link.href);
+        return self.client.getSourcesQuery(link.href);
       }
     );
   },
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$getChanges
+   * @name spouses.types:constructor.Couple#getChanges
    * @methodOf spouses.types:constructor.Couple
    * @function
    * 
@@ -258,57 +266,57 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  $getChanges: function(params, opts) { 
+  getChanges: function(params, opts) { 
     var self = this;
-    return self.$helpers.chainHttpPromises(
-      self.$getLink('change-history'),
+    return self.helpers.chainHttpPromises(
+      self.getLinkPromise('change-history'),
       function(link) {
-        return self.$client.getChanges(link.href, params, opts);
+        return self.client.getChanges(link.href, params, opts);
       });
   },
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$setHusband
+   * @name spouses.types:constructor.Couple#setHusband
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @description NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id
    * @param {Person|string} husband person or URL or id
    * @return {Couple} this relationship
    */
-  $setHusband: function(husband) {
+  setHusband: function(husband) {
     relHelpers.setMember.call(this, 'person1', husband);
-    this.$husbandChanged = true;
+    this.husbandChanged = true;
     //noinspection JSValidateTypes
     return this;
   },
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$setWife
+   * @name spouses.types:constructor.Couple#setWife
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @description NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id
    * @param {Person|string} wife person or URL or id
    * @return {Couple} this relationship
    */
-  $setWife: function(wife) {
+  setWife: function(wife) {
     relHelpers.setMember.call(this, 'person2', wife);
-    this.$wifeChanged = true;
+    this.wifeChanged = true;
     //noinspection JSValidateTypes
     return this;
   },
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$setFacts
+   * @name spouses.types:constructor.Couple#setFacts
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @param {Fact[]|Object[]} facts facts to set; if array elements are not Facts, they are passed into the Fact constructor
    * @param {string=} changeMessage change message to use for deleted facts if any
    * @return {Couple} this relationship
    */
-  $setFacts: function(facts, changeMessage) {
+  setFacts: function(facts, changeMessage) {
     relHelpers.setFacts.call(this, 'facts', facts, changeMessage);
     //noinspection JSValidateTypes
     return this;
@@ -316,13 +324,13 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$addFact
+   * @name spouses.types:constructor.Couple#addFact
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @param {Fact|Object} value fact to add; if value is not a Fact, it is passed into the Fact constructor
    * @return {Couple} this relationship
    */
-  $addFact: function(value) {
+  addFact: function(value) {
     relHelpers.addFact.call(this, 'facts', value);
     //noinspection JSValidateTypes
     return this;
@@ -330,14 +338,14 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$deleteFact
+   * @name spouses.types:constructor.Couple#deleteFact
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @param {Fact|string} value fact or fact id to remove
    * @param {String=} changeMessage change message
    * @return {Couple} this relationship
    */
-  $deleteFact: function(value, changeMessage) {
+  deleteFact: function(value, changeMessage) {
     relHelpers.deleteFact.call(this, 'facts', value, changeMessage);
     //noinspection JSValidateTypes
     return this;
@@ -345,7 +353,7 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$save
+   * @name spouses.types:constructor.Couple#save
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @description
@@ -358,26 +366,26 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @return {Object} promise of the relationship id, which is fulfilled after the relationship has been updated,
    * and if refresh is true, after the relationship has been read
    */
-  $save: function(changeMessage, opts) {
-    var postData = this.$client.createCouple();
+  save: function(changeMessage, opts) {
+    var postData = this.client.createCouple();
     var isChanged = false;
-    var crid = this.id;
+    var crid = this.getId();
     var self = this;
 
     // send husband and wife if new or either has changed
-    if (!this.id || this.$husbandChanged || this.$wifeChanged) {
-      postData.person1 = this.person1;
-      postData.person2 = this.person2;
+    if (!crid || this.husbandChanged || this.wifeChanged) {
+      postData.data.person1 = this.data.person1;
+      postData.data.person2 = this.data.person2;
       isChanged = true;
     }
 
     // set global changeMessage
     if (changeMessage) {
-      postData.attribution = self.$client.createAttribution(changeMessage);
+      postData.setAttribution(self.client.createAttribution(changeMessage));
     }
 
-    utils.forEach(this.facts, function(fact) {
-      if (!crid || !fact.id || fact.$changed) {
+    utils.forEach(this.data.facts, function(fact) {
+      if (!crid || !fact.getId() || fact.changed) {
         relHelpers.addFact.call(postData, 'facts', fact);
         isChanged = true;
       }
@@ -388,39 +396,39 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
     // post update
     if (isChanged) {
       if (!crid) {
-        postData.type = 'http://gedcomx.org/Couple'; // set type on new relationships
+        postData.data.type = 'http://gedcomx.org/Couple'; // set type on new relationships
       }
       // as of 9 July 2014 it's possible to update relationships using the relationships endpoint,
       // but the way we're doing it is fine as well
-      promises.push(self.$helpers.chainHttpPromises(
-        self.$getCoupleUrl() ? self.$helpers.refPromise(self.$getCoupleUrl()) : self.$plumbing.getCollectionUrl('FSFT', 'relationships'),
+      promises.push(self.helpers.chainHttpPromises(
+        self.getCoupleUrl() ? self.helpers.refPromise(self.getCoupleUrl()) : self.plumbing.getCollectionUrl('FSFT', 'relationships'),
         function(url) {
           // set url from id
           utils.forEach(['person1', 'person2'], function(role) {
-            if (postData[role] && !postData[role].resource && postData[role].resourceId) {
-              postData[role].resource = postData[role].resourceId;
+            if (postData.data[role] && !postData.data[role].resource && postData.data[role].resourceId) {
+              postData.data[role].resource = postData.data[role].resourceId;
             }
           });
-          var promise = self.$plumbing.post(url, { relationships: [ postData ] },
+          var promise = self.plumbing.post(url, { relationships: [ postData ] },
             {}, opts, function(){
-              return self.$getCoupleUrl() || promise.getResponseHeader('Location');
+              return self.getCoupleUrl() || promise.getResponseHeader('Location');
             });
           return promise;
         }));
     }
 
     // post deleted facts
-    if (crid && this.$deletedFacts) {
-      utils.forEach(this.$deletedFacts, function(value, key) {
+    if (crid && this.deletedFacts) {
+      utils.forEach(this.deletedFacts, function(value, key) {
         value = value || changeMessage; // default to global change message
-        promises.push(self.$plumbing.del(key, value ? {'X-Reason' : value} : {}, opts));
+        promises.push(self.plumbing.del(key, value ? {'X-Reason' : value} : {}, opts));
       });
     }
 
     // wait for all promises to be fulfilled
-    var promise = self.$helpers.promiseAll(promises).then(function(results) {
-      var url = self.$getCoupleUrl() ? self.$getCoupleUrl() : results[0]; // if we're adding a new relationship, get id from the first (only) promise
-      self.$helpers.extendHttpPromise(promise, promises[0]); // extend the first promise into the returned promise
+    var promise = self.helpers.promiseAll(promises).then(function(results) {
+      var url = self.getCoupleUrl() ? self.getCoupleUrl() : results[0]; // if we're adding a new relationship, get id from the first (only) promise
+      self.helpers.extendHttpPromise(promise, promises[0]); // extend the first promise into the returned promise
       return url;
     });
     return promise;
@@ -428,7 +436,7 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$delete
+   * @name spouses.types:constructor.Couple#delete
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @description delete this relationship - see {@link spouses.functions:deleteCouple deleteCouple}
@@ -436,25 +444,25 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the relationship URL
    */
-  $delete: function(changeMessage, opts) {
-    return this.$client.deleteCouple(this.$getCoupleUrl(), changeMessage, opts);
+  delete: function(changeMessage, opts) {
+    return this.client.deleteCouple(this.getCoupleUrl(), changeMessage, opts);
   },
 
   /**
    * @ngdoc function
-   * @name spouses.types:constructor.Couple#$restore
+   * @name spouses.types:constructor.Couple#restore
    * @methodOf spouses.types:constructor.Couple
    * @function
    * @description restore this relationship - see {@link spouses.functions:restoreCouple restoreCouple}
    * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the relationship URL
    */
-  $restore: function(opts) {
+  restore: function(opts) {
     var self = this;
-    return self.$helpers.chainHttpPromises(
-      self.$getLink('restore'),
+    return self.helpers.chainHttpPromises(
+      self.getLinkPromise('restore'),
       function(link){
-        return self.$client.restoreCouple(link.href, opts);
+        return self.client.restoreCouple(link.href, opts);
       }
     );
   }
