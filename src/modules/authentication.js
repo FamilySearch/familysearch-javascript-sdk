@@ -36,14 +36,13 @@ FS.prototype.getAuthCode = function() {
     // TODO: figure this out
     return Promise.reject(new Error('Not sure why we are rejecting here'));
   } else {
-    return self.plumbing.getCollectionUrl('FSFT', 'http://oauth.net/core/2.0/endpoint/authorize').then(function(url) {
-      var popup = self.openPopup(url, {
-        'response_type' : 'code',
-        'client_id'     : settings.clientId,
-        'redirect_uri'  : settings.redirectUri
-      });
-      return self._pollForAuthCode(popup);
+    var url = self.settings.oauthServer[self.settings.environment] + '/authorization';
+    var popup = self.openPopup(url, {
+      'response_type' : 'code',
+      'client_id'     : settings.clientId,
+      'redirect_uri'  : settings.redirectUri
     });
+    return self._pollForAuthCode(popup);
   }
 };
 
@@ -110,14 +109,14 @@ FS.prototype.getAccessToken = function(authCode) {
     }
     
     return authCodePromise.then(function(authCode) {
-      return plumbing.getCollectionUrl('FSFT', 'http://oauth.net/core/2.0/endpoint/token').then(function(url) {
-        return plumbing.post(url, {
+      var url = self.settings.oauthServer[self.settings.environment] + '/token';
+      return plumbing.post(url, {
             'grant_type' : 'authorization_code',
             'code'       : authCode,
             'client_id'  : settings.clientId
           },
-          {'Content-Type': 'application/x-www-form-urlencoded'}); // access token endpoint says it accepts json but it doesn't
-      }).then(function(response){
+          // access token endpoint says it accepts json but it doesn't
+          {'Content-Type': 'application/x-www-form-urlencoded'}).then(function(response){
         return self.handleAccessTokenResponse(response);
       });
     });
@@ -148,15 +147,15 @@ FS.prototype.getAccessTokenForMobile = function(userName, password) {
     return Promise.resolve(self.settings.accessToken);
   }
   else {
-    return self.plumbing.getCollectionUrl('FSFT', 'http://oauth.net/core/2.0/endpoint/token').then(function(url) {
-      return self.plumbing.post(url, {
+    var url = self.settings.oauthServer[self.settings.environment] + '/token';
+    return self.plumbing.post(url, {
           'grant_type': 'password',
           'client_id' : self.settings.clientId,
           'username'  : userName,
           'password'  : password
         },
-        {'Content-Type': 'application/x-www-form-urlencoded'}); // access token endpoint says it accepts json but it doesn't
-    }).then(function(response){
+        // access token endpoint says it accepts json but it doesn't
+        {'Content-Type': 'application/x-www-form-urlencoded'}).then(function(response){
       return self.handleAccessTokenResponse(response);
     });
   }
@@ -172,22 +171,21 @@ FS.prototype.getAccessTokenForMobile = function(userName, password) {
  * OAuth2 authentication.
  * 
  * @param {String=} Optional state parameter
- * @return {Object} Promise that is resolved with the OAuth2 authorize URL the user should be sent to
+ * @return {string} The OAuth2 authorize URL the user should be sent to
  */
 FS.prototype.getOAuth2AuthorizeURL = function(state){
   var self = this,
       settings = self.settings;
-  return this.plumbing.getCollectionUrl('FSFT', 'http://oauth.net/core/2.0/endpoint/authorize').then(function(url){
-    var queryParams = {
-      'response_type': 'code',
-      'client_id': settings.clientId,
-      'redirect_uri': settings.redirectUri
-    };
-    if(state){
-      queryParams.state = state;
-    }
-    return self.helpers.appendQueryParameters(url, queryParams);
-  });
+  var queryParams = {
+    'response_type': 'code',
+    'client_id': settings.clientId,
+    'redirect_uri': settings.redirectUri
+  };
+  if(state){
+    queryParams.state = state;
+  }
+  var url = settings.oauthServer[settings.environment] + '/authorization';
+  return self.helpers.appendQueryParameters(url, queryParams);
 };
 
 /**
@@ -247,13 +245,13 @@ FS.prototype.openPopup = function(url, params) {
   return window.open(this.helpers.appendQueryParameters(url, params),'',features);
 };
 
-FS.prototype.getCode = function(href, d) {
+FS.prototype.getCode = function(href) {
   var params = this.helpers.decodeQueryString(href);
   if (params['code']) {
-    d.resolve(params['code']);
+    return Promise.resolve(params['code']);
   }
   else {
-    d.reject(params['error']);
+    return Promise.reject(params['error']);
   }
 };
 
@@ -265,31 +263,39 @@ FS.prototype.getCode = function(href, d) {
  * @return a promise of the auth code
  */
 FS.prototype._pollForAuthCode = function(popup) {
-  var self = this,
-      d = self.settings.deferredWrapper();
+  var self = this;
 
   if (popup) {
-    var interval = setInterval(function() {
-      try {
-        if (popup.location.hostname === window.location.hostname) {
-          self.getCode(popup.location.href, d);
-          clearInterval(interval);
-          popup.close();
+    return new Promise(function(resolve, reject){
+      var interval = setInterval(function() {
+        try {
+          if (popup.location.hostname === window.location.hostname) {
+            self.getCode(popup.location.href).then(function(code){
+              resolve(code);
+            }, function(e){
+              reject(e);
+            });
+            clearInterval(interval);
+            popup.close();
+          }
         }
-      }
-      catch(err) {}
-    }, self.settings.authCodePollDelay);
-
-    // Mobile safari opens the popup window in a new tab and doesn't run javascript in background tabs
-    // The popup window needs to send us the href and close itself
-    // (I know this is ugly, but I can't think of a cleaner way to do this that isn't intrusive.)
-    window.FamilySearchOauthReceiver = function(href) {
-      self.getCode(href, d);
-      clearInterval(interval);
-    };
+        catch(err) {}
+      }, self.settings.authCodePollDelay);
+  
+      // Mobile safari opens the popup window in a new tab and doesn't run javascript in background tabs
+      // The popup window needs to send us the href and close itself
+      // (I know this is ugly, but I can't think of a cleaner way to do this that isn't intrusive.)
+      window.FamilySearchOauthReceiver = function(href) {
+        self.getCode(href).then(function(code){
+          resolve(code);
+        }, function(e){
+          reject(e);
+        });
+        clearInterval(interval);
+      };
+    });
   }
   else {
-    d.reject('Popup blocked');
+    return Promise.reject('Popup blocked');
   }
-  return d.promise;
 };

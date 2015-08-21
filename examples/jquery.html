@@ -2,24 +2,23 @@
 <html>
   <head>
     <script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
-    <script src="//cdn.jsdelivr.net/familysearch-javascript-sdk/1.0.0/familysearch-javascript-sdk.min.js"></script>
+    <!-- <script src="//cdn.jsdelivr.net/familysearch-javascript-sdk/1.0.0/familysearch-javascript-sdk.min.js"></script> -->
+    <script src="../dist/familysearch-javascript-sdk.js"></script>
   </head>
   <body>
     <script>
       var fsClient = new FamilySearch({
-        client_id: 'YOUR_CLIENT_ID_GOES_HERE',
+        client_id: 'a0T3000000C2NqqEAF',
         environment: 'sandbox',
-        redirect_uri: 'YOUR_REDIRECT_URI_GOES_HERE',
-        http_function: $.ajax,
-        deferred_function: $.Deferred,
-        save_access_token: true,
-        auto_expire: true,
-        auto_signin: true
+        redirect_uri: 'https://preview.c9.io/',
+        save_access_token: true
       });
       
       window.run = function() {
-        fsClient.getCurrentUser().then(function(response) {
-          $('#output').append('Hello '+response.getUser().contactName+'!');
+        fsClient.getAccessToken().then(function(){
+          return fsClient.getCurrentUser();
+        }).then(function(response) {
+          $('#output').append('Hello '+response.getUser().getContactName()+'!');
         });
       };
     </script>
