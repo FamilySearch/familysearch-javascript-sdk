@@ -11,16 +11,8 @@ The objects returned by the functions include convenience functions for extracti
 For example, the following logs the name of a person along with their spouses and chilren.
 
     ```javascript
-    client.getPersonWithRelationships('KW7S-VQJ', {persons:true}).then(function(response) {
-      console.log(response.getPrimaryPerson().$getGivenName());
-      var spouses = response.getSpouses();
-      for (var s = 0, spousesLen = spouses.length; s < spousesLen; s++) {
-        console.log(spouses[s].$getGivenName());
-        var children = response.getChildren(spouses[s].getId());
-        for (var c = 0, childrenLen = children.length; c < childrenLen; c++) {
-          console.log(children[c].$getGivenName());
-        }
-      }
+    client.getPerson('KW7S-VQJ', {persons:true}).then(function(response) {
+      console.log(response.getPrimaryPerson().getDisplayName());
     });
     ```
 
@@ -37,11 +29,11 @@ Check out the [jsFiddle](http://jsfiddle.net/MpUg7/60/) to see it in action (req
 
 * Retry in the case of throttled responses is handled for you.
 
-* Cross-platform: the SDK works with jQuery, AngularJS, or Node.js. See the [examples](https://github.com/FamilySearch/familysearch-javascript-sdk/tree/master/examples).
+* Cross-platform: Works both in the browser and in node. See the [examples](https://github.com/FamilySearch/familysearch-javascript-sdk/tree/master/examples).
 
 * Object-oriented: SDK functions return objects, which have convenience functions to make getting or setting data easy.
 
-* Consistent update API: each object has $save and $delete functions to persist changes or delete the object respectively.
+* Consistent update API: each object has save and delete functions to persist changes or delete the object respectively.
 
 Installation
 ============
