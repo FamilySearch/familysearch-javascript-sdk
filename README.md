@@ -12,13 +12,13 @@ For example, the following logs the name of a person along with their spouses an
 
     ```javascript
     client.getPersonWithRelationships('KW7S-VQJ', {persons:true}).then(function(response) {
-      console.log(response.getPrimaryPerson().getName());
+      console.log(response.getPrimaryPerson().$getGivenName());
       var spouses = response.getSpouses();
-      for (var s = 0; spousesLen = spouses.length; s &lt; spousesLen; s++) {
-        console.log(spouses[s].getName());
+      for (var s = 0, spousesLen = spouses.length; s < spousesLen; s++) {
+        console.log(spouses[s].$getGivenName());
         var children = response.getChildren(spouses[s].getId());
-        for (var c = 0; childrenLen = children.length; c &lt; childrenLen; c++) {
-          console.log(children[c].getName());
+        for (var c = 0, childrenLen = children.length; c < childrenLen; c++) {
+          console.log(children[c].$getGivenName());
         }
       }
     });
@@ -65,24 +65,6 @@ The SDK is available as a versioned javascript file, following the [semantic ver
   ```html
   <script src="//cdn.jsdelivr.net/familysearch-javascript-sdk/1.0.0/familysearch-javascript-sdk.min.js"></script>
   ```
-
-Documentation
-=============
-
-* [API docs](http://familysearch.github.io/familysearch-javascript-sdk).
-* [Slides from 2014 RootsTech talk](http://dallanq.github.io/rootstech-2014-fs-js-sdk-slides).
-* [Comprehensive example application](https://github.com/rootsdev/familysearch-reference-client) showing how to use the SDK.
-
-Releases
-========
-
-The Javascript SDK uses [semantic versioning](http://semver.org/) for releases. 
-Any breaking changes will cause the major version to be bumped; e.g., 1.0 -> 2.0.
-
-You can check out a specific release by clicking on the github 
-[Releases link](https://github.com/FamilySearch/familysearch-javascript-sdk/releases)
-or by specifying the release number in your `bower.json` or `package.json` file; e.g., `"familysearch-javascript-sdk": "~1.0.0"`. 
-The _Releases_ link also serves as a _Change Log_, so it's worth looking at even if you plan to work off the master branch. 
 
 Contributing
 ============
