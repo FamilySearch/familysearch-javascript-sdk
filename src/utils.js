@@ -311,15 +311,6 @@ exports.flatMap = function(arr, fn, context){
 };
 
 /**
- * borrowed from underscore
- * Union arrays, removing duplicates
- * @returns {Array} Unioned array
- */
-exports.union = function() {
-  return exports.uniq(exports.flatten(arguments));
-};
-
-/**
  * Return found match or first if none found
  * @param {Array} arr Array to search
  * @param {Object|function(elm)} objOrFn If object, look for matching object; otherwise look for function to return true
@@ -351,119 +342,12 @@ exports.extend = function(dest) {
 };
 
 /**
- * Create a new function which is the specified function with the right-most arguments pre-filled with arguments from this call
- * @param {function()} fn Function to wrap
- * @returns {Function} Wrapped function
- */
-exports.partialRight = function(fn) {
-  var args = Array.prototype.slice.call(arguments, 1);
-  return function() {
-    return fn.apply(this, Array.prototype.slice.call(arguments).concat(args));
-  };
-};
-
-/**
- * Create a new function which is the specified function with the left-most arguments pre-filled with arguments from this call
- * @param {function()} fn Function to wrap
- * @returns {Function} Wrapped function
- */
-exports.partial = function(fn) {
-  var args = Array.prototype.slice.call(arguments, 1);
-  return function() {
-    return fn.apply(this, args.concat(Array.prototype.slice.call(arguments)));
-  };
-};
-
-/**
  * Return an empty object if passed in a null or undefined, similar to the maybe monad
  * @param {*} value Value to test
  * @returns {*} Original value or empty object
  */
 exports.maybe = function(value) {
   return value != null ? value : {}; // != null also covers undefined
-};
-
-
-
-/**
- * clone with a filter function to limit which fields are cloned
- * borowed from http://stackoverflow.com/questions/728360/most-elegant-way-to-clone-a-javascript-object
- * doesn't handle cyclic objects, functions, may not handle regex's
- * @param {Object} obj Object to clone
- * @param {Function=} filter Function(key) returns true to clone the field; all fields are cloned if omitted
- * @returns {Object} cloned object
- */
-exports.clonePartial = function(obj, filter) {
-  var copy;
-  // Handle the 3 simple types, and null or undefined
-  if (null == obj || 'object' !== typeof(obj)) {
-    return obj;
-  }
-
-  // Handle Date
-  if (obj instanceof Date) {
-    copy = new Date();
-    copy.setTime(obj.getTime());
-    return copy;
-  }
-
-  // Handle Array
-  if (obj instanceof Array) {
-    copy = [];
-    for (var i = 0, len = obj.length; i < len; i++) {
-      if (!filter || filter(i)) {
-        copy.push(exports.clonePartial(obj[i], filter));
-      }
-    }
-    return copy;
-  }
-
-  // Handle Object
-  if (obj instanceof Object) {
-    // set the constructor on the cloned object
-    copy = Object.create(Object.getPrototypeOf(obj));
-    for (var attr in obj) {
-      if (obj.hasOwnProperty(attr) && (!filter || filter(attr))) {
-        copy[attr] = exports.clonePartial(obj[attr], filter);
-      }
-    }
-    return copy;
-  }
-
-  throw new Error('Unable to copy obj');
-};
-
-exports.appFieldRejector = function(key) {
-  return !(exports.isString(key) && key.charAt(0) === '_');
-};
-
-/**
- * delete properties of an object with a filter function to limit which fields are deleted
- * @param {Object} obj object to delete properties from
- * @param {Function=} filter Function(key) returns true to delete the field; all fields are deleted if omitted
- */
-exports.deletePropertiesPartial = function(obj, filter) {
-  for (var attr in obj) {
-    if (obj.hasOwnProperty(attr) && (!filter || filter(attr))) {
-      delete obj[attr];
-    }
-  }
-};
-
-/**
- * Copy functions from source to dest, binding them to source
- * @param {Object} dest Destination object
- * @param {Object} source Source object
- * @param {Array<string>} fns Names of functions to copy
- * @returns {Object} Destination object with functions
- */
-exports.wrapFunctions = function(dest, source, fns) {
-  forEach(fns, function(fn) {
-    dest[fn] = function() {
-      return source[fn].apply(source, arguments);
-    };
-  });
-  return dest;
 };
 
 /**

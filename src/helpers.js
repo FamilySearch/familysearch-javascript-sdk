@@ -71,16 +71,6 @@ Helpers.prototype.log = function() {
 };
 
 /**
- * Call the callback on the next tick
- * @param {function()} cb Function to call
- */
-Helpers.prototype.nextTick = function(cb) {
-  setTimeout(function() {
-    cb();
-  },0);
-};
-
-/**
  * Set a timer, optionally clearing the old timer first
  * @param {Function} fn Function to call
  * @param {number} delay
@@ -206,18 +196,6 @@ Helpers.prototype.eraseAccessToken = function(omitCallback) {
  * The following functions are more like utility functions that
  * don't need access to any instance data
  */
-
-/**
- * Get the last segment of a URL
- * @param url
- * @returns {string}
- */
-Helpers.prototype.getLastUrlSegment = function(url) {
-  if (url) {
-    url = url.replace(/^.*\//, '').replace(/\?.*$/, '');
-  }
-  return url;
-};
 
 /**
  * Return true if url starts with https?://
@@ -429,15 +407,6 @@ Helpers.prototype.getEntityType = function(url){
       }
     }
   }
-};
-
-/**
- * return true if no attribution or attribution without a change message or an existing attribution
- * @param {Object} conclusion name or fact or gender - anything with an attribution
- * @returns {boolean}
- */
-Helpers.prototype.attributionNeeded = function(conclusion) {
-  return !!(!conclusion.attribution || !conclusion.attribution.changeMessage || conclusion.attribution.contributor);
 };
 
 /**

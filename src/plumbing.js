@@ -351,9 +351,6 @@ Plumbing.prototype.http = function(method, url, headers, data, retries) {
         getHeader: function(header, all){ 
           return all === true ? response.headers.getAll(header) : response.headers.get(header);
         },
-        getHeaders: function(){ 
-          return response.headers.raw(); 
-        },
         getRequest: function(){
           return {
             url: absoluteUrl,
