@@ -5,12 +5,12 @@ module.exports = function(grunt) {
     src: ['src/**/*.js'],
 
     clean: {
-      dist: ['dist']
+      dist: ['dist/<%= pkg.version %>']
     },
 
     ngdocs: {
       options: {
-        dest: 'dist',
+        dest: 'dist/<%= pkg.version %>',
         html5Mode: false,
         title: 'FamilySearch Javascript SDK',
         bestMatch: false
@@ -36,7 +36,8 @@ module.exports = function(grunt) {
     'gh-pages': {
       options: {
         base: 'dist',
-        message: 'Update docs and files to distribute'
+        message: 'Update docs and files to distribute',
+        add: true
       },
       travis: {
         options: {
@@ -56,7 +57,7 @@ module.exports = function(grunt) {
         files: [{
           cwd: '.',
           src: 'bower.json',
-          dest: 'dist',
+          dest: 'dist/<%= pkg.version %>',
           expand: true
         }]
       }
@@ -70,14 +71,14 @@ module.exports = function(grunt) {
         exec: 'npm run coveralls'
       },
       browserify: {
-        exec: 'npm run browserify'
+        exec: 'node_modules/.bin/browserify src/FamilySearch.js --standalone FamilySearch > dist/<%= pkg.version %>/familysearch-javascript-sdk.js'
       }
     },
     
     uglify: {
       build: {
         files: {
-          'dist/familysearch-javascript-sdk.min.js': 'dist/familysearch-javascript-sdk.js'
+          'dist/<%= pkg.version %>/familysearch-javascript-sdk.min.js': 'dist/<%= pkg.version %>/familysearch-javascript-sdk.js'
         }
       }
     }

@@ -1,6 +1,6 @@
 {
   "name": "familysearch-javascript-sdk",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Javascript SDK for FamilySearch",
   "main": "src/FamilySearch.js",
   "devDependencies": {
@@ -26,8 +26,7 @@
     "build": "grunt build",
     "jasmine": "jasmine",
     "coverage": "istanbul cover ./node_modules/jasmine/bin/jasmine.js",
-    "coveralls": "istanbul cover ./node_modules/jasmine/bin/jasmine.js && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
-    "browserify": "browserify src/FamilySearch.js --standalone FamilySearch > dist/familysearch-javascript-sdk.js"
+    "coveralls": "istanbul cover ./node_modules/jasmine/bin/jasmine.js && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
   },
   "repository": {
     "type": "git",
