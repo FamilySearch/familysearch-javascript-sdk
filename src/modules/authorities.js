@@ -13,7 +13,7 @@ var FS = require('./../FamilySearch'),
 /**
  * @ngdoc function
  * @name authorities.functions:getDate
- * @function
+
  *
  * @description
  * Get the standardized date
@@ -25,29 +25,23 @@ var FS = require('./../FamilySearch'),
  * {@link http://jsfiddle.net/mL906m82/2/ Editable Example}
  *
  * @param {String} date text to standardize
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getDate = function(date, opts) {
+FS.prototype.getDate = function(date) {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getCollectionUrl('FSDA', 'normalized-date'),
-    function(url){
-      var promise = self.plumbing.get(url, {date: date}, {'Accept': 'text/plain'}, opts,
-        utils.compose(
-          utils.objectExtender({getDate: function() { return utils.maybe(this.date); }}),
-          function(body){
-            var response = {};
-            if(body){
-              response.date = self.createDate({
-                normalized: body,
-                formal: promise.getResponseHeader('Location').split(':')[1]
-              });
-            }
-            return response;
-          }
-        )
-      );
-      return promise;
-    });
+  return self.plumbing.getCollectionUrl('FSDA', 'normalized-date').then(function(url){
+    return self.plumbing.get(url, {date: date}, {'Accept': 'text/plain'});
+  }).then(function(response){
+    var date;
+    if(response.getData()){
+      date = self.createDate({
+        normalized: response.getData(),
+        formal: response.getHeader('Location').split(':')[1]
+      });
+    }
+    response.getDate = function() { 
+      return utils.maybe(date);
+    };
+    return response;
+  });
 };

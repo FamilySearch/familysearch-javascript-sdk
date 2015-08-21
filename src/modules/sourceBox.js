@@ -20,21 +20,17 @@ FS.prototype._getUserSourceDescriptionsUrl = function(){
         'Accept': 'application/x-fs-v1+json',
         'X-Expect-Override': '200-ok'
       };
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getCollectionUrl('FSFT', 'source-descriptions'),
-    function(url){
-      var promise = self.plumbing.get(url, null, headers, null, function(){
-        return promise.getResponseHeader('Location');
-      });
-      return promise;
-    }
-  );
+  return self.plumbing.getCollectionUrl('FSFT', 'source-descriptions').then(function(url){
+    return self.plumbing.get(url, null, headers);
+  }).then(function(response){
+    return response.getHeader('Location');
+  });
 };
 
 /**
  * @ngdoc function
  * @name sourceBox.functions:getCollectionsForUser
- * @function
+
  *
  * @description
  * Get the collections for the current user
@@ -46,39 +42,34 @@ FS.prototype._getUserSourceDescriptionsUrl = function(){
  *
  * {@link http://jsfiddle.net/a0eLkwtb/2/ Editable Example}
  *
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getCollectionsForUser = function(params, opts) {
+FS.prototype.getCollectionsForUser = function() {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getCollectionUrl('FSUDS', 'subcollections'),
-    function(url) {
-      var headers = {'Accept': 'application/x-fs-v1+json', 'X-Expect-Override': '200-ok'},
-          promise = self.plumbing.get(url, null, headers, null, function(){
-            return promise.getResponseHeader('Location');
-          });
-      return promise;
-    },
-    function(url) {
-      return self.plumbing.get(url, {}, {'Accept': 'application/x-fs-v1+json'}, opts,
-        utils.compose(
-          utils.objectExtender({getCollections: function() { return this.collections || []; }}),
-          function(response){
-            utils.forEach(response.collections, function(collection, index, obj){
-              obj[index] = self.createCollection(collection);
-            });
-            return response;
-          }
-        ));
+  return self.plumbing.getCollectionUrl('FSUDS', 'subcollections').then(function(url) {
+    var headers = {'Accept': 'application/x-fs-v1+json', 'X-Expect-Override': '200-ok'};
+    return self.plumbing.get(url, null, headers);
+  }).then(function(response){
+    return response.getHeader('Location');
+  }).then(function(url) {
+    return self.plumbing.get(url, {}, {'Accept': 'application/x-fs-v1+json'});
+  }).then(function(response){
+    var data = maybe(response.getData());
+    utils.forEach(data.collections, function(collection, index, obj){
+      obj[index] = self.createCollection(collection);
     });
+    return utils.extend(response, {
+      getCollections: function() { 
+        return data.collections || [];
+      }
+    });
+  });  
 };
 
 /**
  * @ngdoc function
  * @name sourceBox.functions:getCollection
- * @function
+
  *
  * @description
  * Get information about a user-defined collection
@@ -91,28 +82,27 @@ FS.prototype.getCollectionsForUser = function(params, opts) {
  * {@link http://jsfiddle.net/rn5hd0cd/1/ Editable Example}
  *
  * @param {String} url full URL of the collection
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getCollection = function(url, params, opts) {
+FS.prototype.getCollection = function(url) {
   var self = this;
-  return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-    utils.compose(
-      utils.objectExtender({getCollection: function() { return maybe(this.collections)[0]; }}),
-      function(response){
-        utils.forEach(response.collections, function(collection, index, obj){
-          obj[index] = self.createCollection(collection);
-        });
-        return response;
+  return self.plumbing.get(url, null, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
+    var data = maybe(response.getData());
+    utils.forEach(data.collections, function(collection, index, obj){
+      obj[index] = self.createCollection(collection);
+    });
+    return utils.extend(response, {
+      getCollection: function() { 
+        return maybe(data.collections)[0];
       }
-    ));
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name sourceBox.functions:getCollectionSourceDescriptions
- * @function
+
  *
  * @description
  * Get a paged list of source descriptions in a user-defined collection
@@ -126,27 +116,27 @@ FS.prototype.getCollection = function(url, params, opts) {
  *
  * @param {String} url full URL of the collection-source-descriptions endpoint
  * @param {Object=} params `count` maximum to return (defaults to 25), `start` zero-based index of first source to return
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getCollectionSourceDescriptions = function(url, params, opts) {
+FS.prototype.getCollectionSourceDescriptions = function(url, params) {
   var self = this;
-  return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-    utils.compose(
-      utils.objectExtender({getSourceDescriptions: function() { return this.sourceDescriptions || []; }}),
-      function(response){
-        utils.forEach(response.sourceDescriptions, function(source, index, obj){
-          obj[index] = self.createSourceDescription(source);
-        });
-        return response;
+  return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
+    var data = maybe(response.getData());
+    utils.forEach(data.sourceDescriptions, function(source, index, obj){
+      obj[index] = self.createSourceDescription(source);
+    });
+    return utils.extend(response, {
+      getSourceDescriptions: function() { 
+        return data.sourceDescriptions || []; 
       }
-    ));
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name sourceBox.functions:getCollectionSourceDescriptionsForUser
- * @function
+
  *
  * @description
  * Get a paged list of source descriptions in all user-defined collections defined by a user
@@ -159,33 +149,29 @@ FS.prototype.getCollectionSourceDescriptions = function(url, params, opts) {
  * {@link http://jsfiddle.net/pse56a1f/1/ Editable Example}
  *
  * @param {Object=} params `count` maximum to return (defaults to 25), `start` zero-based index of first source to return
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getCollectionSourceDescriptionsForUser = function(params, opts) {
+FS.prototype.getCollectionSourceDescriptionsForUser = function(params) {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self._getUserSourceDescriptionsUrl(),
-    function(url){
-      return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-        utils.compose(
-          utils.objectExtender({getSourceDescriptions: function() { return this.sourceDescriptions || []; }}),
-          function(response){
-            utils.forEach(response.sourceDescriptions, function(source, index, obj){
-              obj[index] = self.createSourceDescription(source);
-            });
-            return response;
-          }
-        )
-      );
-    }
-  );
+  return self._getUserSourceDescriptionsUrl().then(function(url){
+    return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'});
+  }).then(function(response){
+    var data = maybe(response.getData());
+    utils.forEach(data.sourceDescriptions, function(source, index, obj){
+      obj[index] = self.createSourceDescription(source);
+    });
+    return utils.extend(response, {
+      getSourceDescriptions: function() { 
+        return data.sourceDescriptions || []; 
+      }
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name sourceBox.functions:moveSourceDescriptionsToCollection
- * @function
+
  *
  * @description
  * Move the specified source descriptions to the specified collection
@@ -196,23 +182,20 @@ FS.prototype.getCollectionSourceDescriptionsForUser = function(params, opts) {
  *
  * @param {string} url full URL of the collection descriptions endpoint
  * @param {SourceDescription[]|string[]} srcDescs array of source descriptions - may be objects or id's
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the udcid
+ * @return {Object} promise for the response
  */
-FS.prototype.moveSourceDescriptionsToCollection = function(url, srcDescs, opts) {
+FS.prototype.moveSourceDescriptionsToCollection = function(url, srcDescs) {
   var self = this;
   var srcDescIds = utils.map(srcDescs, function(srcDesc) {
     return { id: (srcDesc instanceof FS.SourceDescription) ? srcDesc.id : srcDesc };
   });
-  return self.plumbing.post(url, { sourceDescriptions: srcDescIds }, {}, opts, function() {
-    return url;
-  });
+  return self.plumbing.post(url, { sourceDescriptions: srcDescIds });
 };
 
 /**
  * @ngdoc function
  * @name sourceBox.functions:removeSourceDescriptionsFromCollections
- * @function
+
  *
  * @description
  * Remove the specified source descriptions from all collections
@@ -222,28 +205,22 @@ FS.prototype.moveSourceDescriptionsToCollection = function(url, srcDescs, opts) 
  * {@link http://jsfiddle.net/k39uo7zk/1/ Editable Example}
  *
  * @param {SourceDescription[]|string[]} srcDescs array of source descriptions - may be objects or id's
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the srcDescs
+ * @return {Object} promise for the response
  */
-FS.prototype.removeSourceDescriptionsFromCollections = function(srcDescs, opts) {
+FS.prototype.removeSourceDescriptionsFromCollections = function(srcDescs) {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self._getUserSourceDescriptionsUrl(),
-    function(url) {
-      var sdids = utils.map(srcDescs, function(srcDesc) {
-        return (srcDesc instanceof FS.SourceDescription) ? srcDesc.id : srcDesc;
-      });
-      return self.plumbing.del(self.helpers.appendQueryParameters(url, {id: sdids}), {}, opts, function() {
-        return srcDescs;
-      });
-    }
-  );
+  return self._getUserSourceDescriptionsUrl().then(function(url) {
+    var sdids = utils.map(srcDescs, function(srcDesc) {
+      return (srcDesc instanceof FS.SourceDescription) ? srcDesc.id : srcDesc;
+    });
+    return self.plumbing.del(self.helpers.appendQueryParameters(url, {id: sdids}));
+  });
 };
 
 /**
  * @ngdoc function
  * @name sourceBox.functions:deleteCollection
- * @function
+
  *
  * @description
  * Delete the specified collection
@@ -253,12 +230,8 @@ FS.prototype.removeSourceDescriptionsFromCollections = function(srcDescs, opts) 
  * {@link http://jsfiddle.net/yhdznLu0/1/ Editable Example}
  *
  * @param {string} url full URL of the collection
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the udcid
+ * @return {Object} promise for the response
  */
-FS.prototype.deleteCollection = function(url, opts) {
-  var self = this;
-  return self.plumbing.del(url, {}, opts, function() {
-    return url;
-  });
+FS.prototype.deleteCollection = function(url) {
+  return this.plumbing.del(url);
 };

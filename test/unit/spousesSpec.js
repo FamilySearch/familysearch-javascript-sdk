@@ -1,5 +1,3 @@
-var q = require('q');
-
 describe('Spouses relationship', function() {
   
   it('is returned from getCouple', function(done) {
@@ -44,21 +42,21 @@ describe('Spouses relationship', function() {
         expect(changes.length).toBe(3);
         expect(changes[0].getId()).toBe('1386863423023');
       }));
-      q.all(promises).then(function(){
+      Promise.all(promises).then(function(){
         done();
       });
     });
   });
 
   it('is created', function(done) {
-    var promise = FS.createCouple({
+    var rel = FS.createCouple({
         facts: [{type:'http://gedcomx.org/Marriage', date: {original: 'June 1800', formal: '+1800-06'}, place: {original: 'Provo, Utah, Utah, United States'}}]
       })
       .setHusband('FJP-M4RK')
-      .setWife('JRW-NMSD')
-      .save('...change message...');
-    promise.then(function() {
-      var request = promise.getRequest();
+      .setWife('JRW-NMSD');
+    rel.save('...change message...').then(function(responses) {
+      var response = responses[0],
+          request = response.getRequest();
       expect(request.body).toEqualJson({
         'relationships' : [ {
           'attribution' : {
@@ -85,7 +83,8 @@ describe('Spouses relationship', function() {
           'type' : 'http://gedcomx.org/Couple'
         } ]
       });
-      expect(promise.getStatusCode()).toBe(201);
+      expect(response.getStatusCode()).toBe(201);
+      expect(rel.getId()).toBe('PPPX-PP0');
       done();
     });
   });
@@ -96,25 +95,26 @@ describe('Spouses relationship', function() {
     rel.addLink('relationship', {
       href: 'https://familysearch.org/platform/tree/couple-relationships/R123-456'
     });
-    var promise = rel
-      .addFact({type:'http://gedcomx.org/Marriage', attribution: '...change message...'})
-      .save();
-    promise.then(function(response) {
-      var request = promise.getRequest();
-      expect(request.body).toEqualJson({
-        'relationships' : [ {
-          'facts' : [ {
-            'type' : 'http://gedcomx.org/Marriage',
-            'attribution' : {
-              'changeMessage' : '...change message...'
-            }
+    rel.addFact({type:'http://gedcomx.org/Marriage', attribution: '...change message...'})
+      .save()
+      .then(function(responses) {
+        var response = responses[0],
+            request = response.getRequest();
+        expect(request.body).toEqualJson({
+          'relationships' : [ {
+            'facts' : [ {
+              'type' : 'http://gedcomx.org/Marriage',
+              'attribution' : {
+                'changeMessage' : '...change message...'
+              }
+            } ]
           } ]
-        } ]
+        });
+        expect(response.getStatusCode()).toBe(204);
+        expect(rel.getLink('relationship').href).toBe('https://familysearch.org/platform/tree/couple-relationships/R123-456');
+        expect(rel.getId()).toBe('R123-456');
+        done();
       });
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://familysearch.org/platform/tree/couple-relationships/R123-456');
-      done();
-    });
   });
 
   function createMockRelationship(rid, fid) {
@@ -148,80 +148,79 @@ describe('Spouses relationship', function() {
   it('members are updated', function(done) {
     var rel = createMockRelationship('cid', 'C.1');
     // update husband
-    var promise = rel
-      .setHusband('FJP-M4RK')
-      .save('...change message...');
-    promise.then(function(response) {
-      var request = promise.getRequest();
-      //noinspection JSUnresolvedFunction
-      expect(request.body).toEqualJson({
-        'relationships' : [ {
-          'person1' : {
-            'resourceId' : 'FJP-M4RK',
-            'resource' : 'FJP-M4RK'
-          },
-          'person2' : {
-            'resourceId' : 'wife',
-            'resource' : 'wife'
-          },
-          'attribution' : {
-            'changeMessage' : '...change message...'
-          }
-        } ]
+    rel.setHusband('FJP-M4RK')
+      .save('...change message...')
+      .then(function(responses) {
+        var response = responses[0],
+            request = response.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.body).toEqualJson({
+          'relationships' : [ {
+            'person1' : {
+              'resourceId' : 'FJP-M4RK',
+              'resource' : 'FJP-M4RK'
+            },
+            'person2' : {
+              'resourceId' : 'wife',
+              'resource' : 'wife'
+            },
+            'attribution' : {
+              'changeMessage' : '...change message...'
+            }
+          } ]
+        });
+        expect(response.getStatusCode()).toBe(204);
+        expect(rel.getLink('relationship').href).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/cid');
+        expect(rel.getId()).toBe('cid');
+        done();
       });
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/cid');
-      done();
-    });
   });
 
   it('fact is added', function(done) {
     var rel = createMockRelationship('cid', 'C.1');
     // update fact
-    var promise = rel
-      .addFact({type:'http://gedcomx.org/Divorce'})
-      .save('...change message...');
-    promise.then(function(response) {
-      var request = promise.getRequest();
-      expect(request.body).toEqualJson({
-        'relationships' : [ {
-          'attribution' : {
-            'changeMessage' : '...change message...'
-          },
-          'facts' : [ {
-            'type' : 'http://gedcomx.org/Divorce'
+    rel.addFact({type:'http://gedcomx.org/Divorce'})
+      .save('...change message...')
+      .then(function(responses) {
+        var response = responses[0],
+            request = response.getRequest();
+        expect(request.body).toEqualJson({
+          'relationships' : [ {
+            'attribution' : {
+              'changeMessage' : '...change message...'
+            },
+            'facts' : [ {
+              'type' : 'http://gedcomx.org/Divorce'
+            } ]
           } ]
-        } ]
+        });
+        expect(response.getStatusCode()).toBe(204);
+        expect(rel.getLink('relationship').href).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/cid');
+        expect(rel.getId()).toBe('cid');
+        done();
       });
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/cid');
-      done();
-    });
   });
 
   it('conclusion is deleted', function(done) {
     var rel = createMockRelationship('R123-456', 'C123-456');
     // delete fact
-    var promise = rel
-      .deleteFact(rel.getFacts()[0])
-      .save('...change message...');
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(promise.getRequest().headers['X-Reason']).toBe('...change message...');
-      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/R123-456');
-      done();
-    });
+    rel.deleteFact(rel.getFacts()[0])
+      .save('...change message...')
+      .then(function(responses) {
+        expect(responses[0].getStatusCode()).toBe(204);
+        expect(responses[0].getRequest().headers['X-Reason']).toBe('...change message...');
+        done();
+      });
   });
 
   it('is deleted', function(done) {
-    var promise = createMockRelationship('12345','fid')
-      .delete('...change message...');
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(promise.getRequest().headers['X-Reason']).toBe('...change message...');
-      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/12345');
-      done();
-    });
+   createMockRelationship('12345','fid')
+      .delete('...change message...')
+      .then(function(response) {
+        expect(response.getStatusCode()).toBe(204);
+        expect(response.getRequest().headers['X-Reason']).toBe('...change message...');
+        done();
+      });
   });
   
   it('accepts instances of facts', function(){
@@ -232,12 +231,12 @@ describe('Spouses relationship', function() {
   });
   
   it('is restored', function(done){
-    var promise = createMockRelationship('12345', 'fid').restore();
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/12345/restore');
-      done();
-    });
+    createMockRelationship('12345', 'fid')
+      .restore()
+      .then(function(response) {
+        expect(response.getStatusCode()).toBe(204);
+        done();
+      });
   });
 
 });

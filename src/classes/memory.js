@@ -90,7 +90,6 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name memories.types:constructor.Memory#getTitle
    * @methodOf memories.types:constructor.Memory
-   * @function
    * @return {String} title
    */
   getTitle: function() { return maybe(maybe(this.data.titles)[0]).value; },
@@ -99,7 +98,6 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name memories.types:constructor.Memory#getDescription
    * @methodOf memories.types:constructor.Memory
-   * @function
    * @return {String} description (may not apply to story memories)
    */
   getDescription: function() { return maybe(maybe(this.data.description)[0]).value; },
@@ -108,7 +106,6 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name memories.types:constructor.Memory#getIconUrl
    * @methodOf memories.types:constructor.Memory
-   * @function
    * @return {String} URL of the icon with access token
    */
   getIconUrl: function() { return this.helpers.appendAccessToken(maybe(this.getLink('image-icon')).href); },
@@ -117,7 +114,6 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name memories.types:constructor.Memory#getThumbnailUrl
    * @methodOf memories.types:constructor.Memory
-   * @function
    * @return {String} URL of the thumbnail with access token
    */
   getThumbnailUrl: function() { return this.helpers.appendAccessToken(maybe(this.getLink('image-thumbnail')).href); },
@@ -126,7 +122,6 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name memories.types:constructor.Memory#getImageUrl
    * @methodOf memories.types:constructor.Memory
-   * @function
    * @return {String} URL of the full image with access token
    */
   getImageUrl: function() { return this.helpers.appendAccessToken(maybe(this.getLink('image')).href); },
@@ -135,7 +130,6 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name memories.types:constructor.Memory#getMemoryArtifactUrl
    * @methodOf memories.types:constructor.Memory
-   * @function
    * @return {String} URL of the memory artifact (image, story, or document) with access token
    */
   getMemoryArtifactUrl: function() {
@@ -147,7 +141,6 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name memories.types:constructor.Memory#getMemoryUrl
    * @methodOf memories.types:constructor.Memory
-   * @function
    * @return {String} memory URL (without the access token)
    */
   getMemoryUrl: function() { return this.helpers.removeAccessToken(maybe(this.getLink('description')).href); },
@@ -156,7 +149,6 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name memories.types:constructor.Memory#getArtifactFilename
    * @methodOf memories.types:constructor.Memory
-   * @function
    * @return {String} filename (provided by the user or a default name)
    */
   getArtifactFilename: function() { return maybe(maybe(this.data.artifactMetadata)[0]).filename; },
@@ -165,7 +157,6 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name memories.types:constructor.Memory#getArtifactType
    * @methodOf memories.types:constructor.Memory
-   * @function
    * @return {String} type; e.g., http://familysearch.org/v1/Image
    */
   getArtifactType: function() { return maybe(maybe(this.data.artifactMetadata)[0]).artifactType; },
@@ -174,7 +165,6 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name memories.types:constructor.Memory#getArtifactHeight
    * @methodOf memories.types:constructor.Memory
-   * @function
    * @return {number} image height
    */
   getArtifactHeight: function() { return maybe(maybe(this.data.artifactMetadata)[0]).height; },
@@ -183,7 +173,6 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name memories.types:constructor.Memory#getArtifactWidth
    * @methodOf memories.types:constructor.Memory
-   * @function
    * @return {number} image width
    */
   getArtifactWidth: function() { return maybe(maybe(this.data.artifactMetadata)[0]).width; },
@@ -192,7 +181,6 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name memories.types:constructor.Memory#getCommentsUrl
    * @methodOf memories.types:constructor.Memory
-   * @function
    * @return {String} URL of the comments endpoint
    * - pass into {@link memories.functions:getMemoryComments getMemoryComments} for details
    */
@@ -202,7 +190,6 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name memories.types:constructor.Memory#getComments
    * @methodOf memories.types:constructor.Memory
-   * @function
    * @return {Object} promise for the {@link memories.functions:getMemoryComments getMemoryComments} response
    */
   getComments: function() { return this.client.getMemoryComments(this.getCommentsUrl()); },
@@ -211,7 +198,6 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name memories.types:constructor.Memory#setTitle
    * @methodOf memories.types:constructor.Memory
-   * @function
    * @param {String} title memory title
    * @return {Memory} this memory
    */
@@ -225,7 +211,6 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name memories.types:constructor.Memory#setDescription
    * @methodOf memories.types:constructor.Memory
-   * @function
    * @param {String} description memory description (may not apply to story memories)
    * @return {Memory} this memory
    */
@@ -239,7 +224,6 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name memories.types:constructor.Memory#setArtifactFilename
    * @methodOf memories.types:constructor.Memory
-   * @function
    * @param {String} filename uploaded file
    * @return {Memory} this memory
    */
@@ -256,61 +240,51 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name memories.types:constructor.Memory#save
    * @methodOf memories.types:constructor.Memory
-   * @function
    * @description
    * Create a new memory (if this memory does not have an id) or update the existing memory
    *
    * {@link http://jsfiddle.net/f2wrtgj0/1/ Editable Example}
    *
-   * @param {string=} changeMessage change message (currently ignored)
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise of the memory url which is fulfilled after the memory has been created or updated
+   * @return {Object} promise for the response
    */
-  save: function(changeMessage, opts) {
-    var self = this;
-    return self.helpers.chainHttpPromises(
-      self.getMemoryUrl() ? self.helpers.refPromise(self.getMemoryUrl()) : self.plumbing.getCollectionUrl('FSMEM', 'artifacts'),
-      function(url) {
-        if (self.getId()) {
-          // update memory
-          return self.plumbing.post(url, { sourceDescriptions: [ self ] }, {}, opts, function() {
-            return url;
-          });
-        }
-        else {
-          // create memory
-          var params = {};
-          if (self.getTitle()) {
-            params.title = self.getTitle();
-          }
-          if (self.getDescription()) {
-            params.description = self.getDescription();
-          }
-          if (self.getArtifactFilename()) {
-            params.filename = self.getArtifactFilename();
-          }
-          return self.plumbing.post(self.helpers.appendQueryParameters(url, params),
-            self.data.data, { 'Content-Type': utils.isString(self.data.data) ? 'text/plain' : 'multipart/form-data' }, opts,
-            function(data, promise){
-              return self.helpers.getResponseLocation(data, promise);
-            });
-        }
+  save: function() {
+    var self = this,
+        urlPromise = self.getMemoryUrl() ? Promise.resolve(self.getMemoryUrl()) : self.plumbing.getCollectionUrl('FSMEM', 'artifacts');
+    return urlPromise.then(function(url) {
+      if (self.getId()) {
+        // update memory
+        return self.plumbing.post(url, { sourceDescriptions: [ self ] });
       }
-    );
+      else {
+        // create memory
+        var params = {};
+        if (self.getTitle()) {
+          params.title = self.getTitle();
+        }
+        if (self.getDescription()) {
+          params.description = self.getDescription();
+        }
+        if (self.getArtifactFilename()) {
+          params.filename = self.getArtifactFilename();
+        }
+        return self.plumbing.post(self.helpers.appendQueryParameters(url, params),
+          self.data.data, { 'Content-Type': utils.isString(self.data.data) ? 'text/plain' : 'multipart/form-data' }).then(function(response){
+            self.updateFromResponse(response, 'description');
+            return response;
+          });
+      }
+    });
   },
 
   /**
    * @ngdoc function
    * @name memories.types:constructor.Memory#delete
    * @methodOf memories.types:constructor.Memory
-   * @function
    * @description delete this memory - see {@link memories.functions:deleteMemory deleteMemory}
-   * @param {string=} changeMessage change message (currently ignored)
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the memory URL
+   * @return {Object} promise for the response
    */
-  delete: function(changeMessage, opts) {
-    return this.client.deleteMemory(this.getMemoryUrl(), changeMessage, opts);
+  delete: function() {
+    return this.client.deleteMemory(this.getMemoryUrl());
   }
 
 });

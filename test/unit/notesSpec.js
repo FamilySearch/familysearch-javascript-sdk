@@ -1,12 +1,12 @@
 describe('Note', function() {
   
   it('handles empty response from getNotes', function(done){
-    var promise = FS.getNotes('https://familysearch.org/platform/tree/persons/P12-8975/notes');
-    promise.then(function(response){
-      expect(response.getNotes().length).toBe(0);
-      expect(promise.getStatusCode()).toBe(204);
-      done();
-    });
+    FS.getNotes('https://familysearch.org/platform/tree/persons/P12-8975/notes')
+      .then(function(response){
+        expect(response.getNotes().length).toBe(0);
+        expect(response.getStatusCode()).toBe(204);
+        done();
+      });
   });
   
   it('notes are returned from getNotes for a person', function(done) {
@@ -44,12 +44,12 @@ describe('Note', function() {
   });
   
   it('handles empty response from getNotes for a couple', function(done){
-    var promise = FS.getNotes('https://familysearch.org/platform/tree/couple-relationships/789456/notes');
-    promise.then(function(response){
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response.getNotes().length).toBe(0);
-      done();
-    });
+    FS.getNotes('https://familysearch.org/platform/tree/couple-relationships/789456/notes')
+      .then(function(response){
+        expect(response.getStatusCode()).toBe(204);
+        expect(response.getNotes().length).toBe(0);
+        done();
+      });
   });
 
   it('notes are returned from getNotes for a couple', function(done) {
@@ -86,12 +86,12 @@ describe('Note', function() {
   });
   
   it('handles empty response from getNotes for a child and parents', function(done){
-    var promise = FS.getNotes('https://familysearch.org/platform/tree/child-and-parents-relationships/123456/notes');
-    promise.then(function(response){
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response.getNotes().length).toBe(0);
-      done();
-    });
+    FS.getNotes('https://familysearch.org/platform/tree/child-and-parents-relationships/123456/notes')
+      .then(function(response){
+        expect(response.getStatusCode()).toBe(204);
+        expect(response.getNotes().length).toBe(0);
+        done();
+      });
   });
 
   it('notes are returned from getNotes for a child and parents', function(done) {
@@ -127,35 +127,35 @@ describe('Note', function() {
   });
 
   it('is created (person note)', function(done) {
-    var promise = FS.createNote({subject: 'Sample', text: 'Sample note text.'})
-      .save('https://familysearch.org/platform/tree/persons/P12-3456/notes', 'change message');
-    promise.then(function(response) {
-      var request = promise.getRequest();
-      //noinspection JSUnresolvedFunction
-      expect(request.body).toEqualJson({
-        'persons' : [ {
-          'notes' : [ {
-            'subject' : 'Sample',
-            'text' : 'Sample note text.'
-          } ],
-          'attribution' : {
-            'changeMessage' : 'change message'
-          }
-        } ]
+    var note = FS.createNote({subject: 'Sample', text: 'Sample note text.'});
+    note.save('https://familysearch.org/platform/tree/persons/P12-3456/notes', 'change message')
+      .then(function(response) {
+        var request = response.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.body).toEqualJson({
+          'persons' : [ {
+            'notes' : [ {
+              'subject' : 'Sample',
+              'text' : 'Sample note text.'
+            } ],
+            'attribution' : {
+              'changeMessage' : 'change message'
+            }
+          } ]
+        });
+        expect(response.getStatusCode()).toBe(201);
+        expect(note.getId()).toBe('1');
+        expect(note.getLink('note').href).toBe('https://familysearch.org/platform/tree/persons/P12-3456/notes/1');
+        done();
       });
-      expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('https://familysearch.org/platform/tree/persons/P12-3456/notes/1');
-      done();
-    });
   });
 
   it('is updated (person note)', function(done) {
     var note = FS.createNote({subject: 'Sample', text: 'Sample note text'});
     note.setId('1804317705');
     note.addLink('note', {href: 'https://sandbox.familysearch.org/platform/tree/persons/P12-3456/notes/1804317705'});
-    var promise = note.save(null, 'change message');
-    promise.then(function(response) {
-      var request = promise.getRequest();
+    note.save(null, 'change message').then(function(response) {
+      var request = response.getRequest();
       //noinspection JSUnresolvedFunction
       expect(request.body).toEqualJson({
         'persons' : [ {
@@ -174,51 +174,49 @@ describe('Note', function() {
           }
         } ]
       });
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/persons/P12-3456/notes/1804317705');
+      expect(response.getStatusCode()).toBe(204);
       done();
     });
   });
 
   it('is deleted (person note)', function(done) {
-    var promise = FS.deleteNote('https://familysearch.org/platform/tree/persons/P12-3456/notes/12345');
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://familysearch.org/platform/tree/persons/P12-3456/notes/12345');
-      done();
-    });
+    FS.deleteNote('https://familysearch.org/platform/tree/persons/P12-3456/notes/12345')
+      .then(function(response) {
+        expect(response.getStatusCode()).toBe(204);
+        done();
+      });
   });
 
   it('is created (couple note)', function(done) {
-    var promise = FS.createNote({subject: 'Sample', text: 'Sample note text.'})
-      .save('https://familysearch.org/platform/tree/couple-relationships/R12-3456/notes', 'change message');
-    promise.then(function(response) {
-      var request = promise.getRequest();
-      //noinspection JSUnresolvedFunction
-      expect(request.body).toEqualJson({
-        'relationships' : [ {
-          'notes' : [ {
-            'subject' : 'Sample',
-            'text' : 'Sample note text.'
-          } ],
-          'attribution' : {
-            'changeMessage' : 'change message'
-          }
-        } ]
+    var note = FS.createNote({subject: 'Sample', text: 'Sample note text.'});
+    note.save('https://familysearch.org/platform/tree/couple-relationships/R12-3456/notes', 'change message')
+      .then(function(response) {
+        var request = response.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.body).toEqualJson({
+          'relationships' : [ {
+            'notes' : [ {
+              'subject' : 'Sample',
+              'text' : 'Sample note text.'
+            } ],
+            'attribution' : {
+              'changeMessage' : 'change message'
+            }
+          } ]
+        });
+        expect(response.getStatusCode()).toBe(201);
+        expect(note.getId()).toBe('1');
+        expect(note.getLink('note').href).toBe('https://familysearch.org/platform/tree/couple-relationships/R12-3456/notes/1');
+        done();
       });
-      expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('https://familysearch.org/platform/tree/couple-relationships/R12-3456/notes/1');
-      done();
-    });
   });
 
   it('is updated (couple note)', function(done) {
     var note = FS.createNote({subject: 'Sample', text: 'Sample note text'});
     note.setId('MMMM-ZP8');
     note.addLink('note', {href: 'https://sandbox.familysearch.org/platform/tree/couple-relationships/12345/notes/MMMM-ZP8'});
-    var promise = note.save(null, 'change message');
-    promise.then(function(response) {
-      var request = promise.getRequest();
+    note.save(null, 'change message').then(function(response) {
+      var request = response.getRequest();
       //noinspection JSUnresolvedFunction
       expect(request.body).toEqualJson({
         'relationships' : [ {
@@ -237,51 +235,49 @@ describe('Note', function() {
           }
         } ]
       });
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/12345/notes/MMMM-ZP8');
+      expect(response.getStatusCode()).toBe(204);
       done();
     });
   });
 
   it('is deleted (couple note)', function(done) {
-    var promise = FS.deleteNote('https://sandbox.familysearch.org/platform/tree/couple-relationships/R12-3456/notes/12345');
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/R12-3456/notes/12345');
-      done();
-    });
+    FS.deleteNote('https://sandbox.familysearch.org/platform/tree/couple-relationships/R12-3456/notes/12345')
+      .then(function(response) {
+        expect(response.getStatusCode()).toBe(204);
+        done();
+      });
   });
 
   it('is created (child-and-parents note)', function(done) {
-    var promise = FS.createNote({subject: 'Sample', text: 'Sample note text.'})
-      .save('https://familysearch.org/platform/tree/child-and-parents-relationships/R12-3456/notes', 'change message');
-    promise.then(function(response) {
-      var request = promise.getRequest();
-      //noinspection JSUnresolvedFunction
-      expect(request.body).toEqualJson({
-        'childAndParentsRelationships' : [ {
-          'notes' : [ {
-            'subject' : 'Sample',
-            'text' : 'Sample note text.'
-          } ],
-          'attribution' : {
-            'changeMessage' : 'change message'
-          }
-        } ]
+    var note = FS.createNote({subject: 'Sample', text: 'Sample note text.'});
+    note.save('https://familysearch.org/platform/tree/child-and-parents-relationships/R12-3456/notes', 'change message')
+      .then(function(response) {
+        var request = response.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.body).toEqualJson({
+          'childAndParentsRelationships' : [ {
+            'notes' : [ {
+              'subject' : 'Sample',
+              'text' : 'Sample note text.'
+            } ],
+            'attribution' : {
+              'changeMessage' : 'change message'
+            }
+          } ]
+        });
+        expect(response.getStatusCode()).toBe(201);
+        expect(note.getLink('note').href).toBe('https://familysearch.org/platform/tree/child-and-parents-relationships/R12-3456/notes/1');
+        expect(note.getId()).toBe('1');
+        done();
       });
-      expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('https://familysearch.org/platform/tree/child-and-parents-relationships/R12-3456/notes/1');
-      done();
-    });
   });
 
   it('is updated (cihld-and-parents note)', function(done) {
     var note = FS.createNote({subject: 'Sample', text: 'Sample note text'});
     note.setId('NOTE1');
     note.addLink('note', {href: 'https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/RRRX-RRX/notes/NOTE1'});
-    var promise = note.save(null, 'change message');
-    promise.then(function(response) {
-      var request = promise.getRequest();
+    note.save(null, 'change message').then(function(response) {
+      var request = response.getRequest();
       //noinspection JSUnresolvedFunction
       expect(request.body).toEqualJson({
         'childAndParentsRelationships' : [ {
@@ -300,19 +296,17 @@ describe('Note', function() {
           }
         } ]
       });
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/RRRX-RRX/notes/NOTE1');
+      expect(response.getStatusCode()).toBe(204);
       done();
     });
   });
 
   it('is deleted (child-and-parents note)', function(done) {
-    var promise = FS.deleteNote('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/RRRX-RRX/notes/NOTE1');
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/RRRX-RRX/notes/NOTE1');
-      done();
-    });
+    FS.deleteNote('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/RRRX-RRX/notes/NOTE1')
+      .then(function(response) {
+        expect(response.getStatusCode()).toBe(204);
+        done();
+      });
   });
 
 });

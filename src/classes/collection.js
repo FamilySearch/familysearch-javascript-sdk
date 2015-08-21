@@ -67,7 +67,7 @@ Collection.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name sourceBox.types:constructor.Collection#getCollectionUrl
    * @methodOf sourceBox.types:constructor.Collection
-   * @function
+
    * @return {String} Url of the person
    */
   getCollectionUrl: function() { return this.helpers.removeAccessToken(maybe(this.getLink('self')).href); },
@@ -76,7 +76,7 @@ Collection.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name sourceBox.types:constructor.Collection#getSourceDescriptions
    * @methodOf sourceBox.types:constructor.Collection
-   * @function
+
    * @param {Object=} params `count` maximum to return (defaults to 25), `start` zero-based index of first source to return
    * @return {Object} promise for the {@link sourceBox.functions:getCollectionSourceDescriptions getCollectionSourceDescriptions} response
    */
@@ -88,42 +88,37 @@ Collection.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name sourceBox.types:constructor.Collection#save
    * @methodOf sourceBox.types:constructor.Collection
-   * @function
+
    * @description
    * Create a new user-defined collection (folder)
    *
    * {@link http://jsfiddle.net/ppm671s2/1/ Editable Example}
    *
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise of the collection id, which is fulfilled after the collection has been updated,
-   * and if refresh is true, after the collection has been read.
+   * @return {Object} promise for the response
    */
-  save: function(opts) {
-    var self = this;
-    return self.helpers.chainHttpPromises(
-      self.getCollectionUrl() ? self.helpers.refPromise(self.getCollectionUrl()) : self.plumbing.getCollectionUrl('FSUDS', 'subcollections'),
-      function(url) {
-        var promise = self.plumbing.post(url, { collections: [ self ] }, {}, opts, function(data, promise) {
-          return self.getCollectionUrl() || promise.getResponseHeader('Location');
-        });
-        return promise;
-      }
-    );
+  save: function() {
+    var self = this,
+        urlPromise = self.getCollectionUrl() ? Promise.resolve(self.getCollectionUrl()) : self.plumbing.getCollectionUrl('FSUDS', 'subcollections');
+    return urlPromise.then(function(url) {
+      return self.plumbing.post(url, { collections: [ self ] });
+    }).then(function(response){
+      self.updateFromResponse(response, 'self');
+      return response;
+    });
   },
 
   /**
    * @ngdoc function
    * @name sourceBox.types:constructor.Collection#delete
    * @methodOf sourceBox.types:constructor.Collection
-   * @function
+
    * @description delete this collection (must be empty)
    * - see {@link sources.functions:deleteCollection deleteCollection}
    *
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the collection id
+   * @return {Object} promise for the response
    */
-  delete: function(opts) {
-    return this.client.deleteCollection(this.getCollectionUrl(), opts);
+  delete: function() {
+    return this.client.deleteCollection(this.getCollectionUrl());
   }
 
 });

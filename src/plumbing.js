@@ -1,3 +1,8 @@
+// These are globals so that their interface is the same
+// both in the client and on the server
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
 var utils = require('./utils');
 
 /**
@@ -17,7 +22,7 @@ var Plumbing = function(client){
 /**
  * @ngdoc function
  * @name plumbing.functions:getTotalProcessingTime
- * @function
+
  * @description
  * Return the total "processing time" spent in FamilySearch REST endpoints
  *
@@ -30,7 +35,7 @@ Plumbing.prototype.getTotalProcessingTime = function() {
 /**
  * @ngdoc function
  * @name plumbing.functions:setTotalProcessingTime
- * @function
+
  * @description
  * Set the "processing time" spent in FamilySearch REST endpoints.
  * You could use this to reset the processing time counter to zero if you wanted.
@@ -52,7 +57,7 @@ Plumbing.prototype.setTotalProcessingTime = function(time) {
 Plumbing.prototype.getCollectionUrl = function(collectionId, resourceName, params){
   var self = this;
   return self.getCollectionPromise(collectionId).then(function(collectionResponse){
-    return self.helpers.getUrlFromCollection(collectionResponse.collections[0], resourceName, params);
+    return self.helpers.getUrlFromCollection(collectionResponse.getData().collections[0], resourceName, params);
   });
 };
 
@@ -69,15 +74,14 @@ Plumbing.prototype.getCollectionPromise = function(collectionId){
   var self = this;
   if(!self.settings.collectionsPromises[collectionId]){
     return self.settings.collectionsPromises['collections'].then(function(response){
-      for(var i = 0; i < response.collections.length; i++){
-        if(response.collections[i].id === collectionId){
-          self.settings.collectionsPromises[collectionId] = self.get(response.collections[i].links.self.href);
+      var collections = response.getData().collections;
+      for(var i = 0; i < collections.length; i++){
+        if(collections[i].id === collectionId){
+          self.settings.collectionsPromises[collectionId] = self.get(collections[i].links.self.href);
           return self.settings.collectionsPromises[collectionId];
         }
       }
-      var d = self.settings.deferredWrapper();
-      d.reject(new Error('Collection ' + collectionId + ' does not exist'));
-      return d.promise;
+      return Promise.reject(new Error('Collection ' + collectionId + ' does not exist'));
     });
   } else {
     return self.settings.collectionsPromises[collectionId];
@@ -87,7 +91,7 @@ Plumbing.prototype.getCollectionPromise = function(collectionId){
 /**
  * @ngdoc function
  * @name plumbing.functions:get
- * @function
+
  *
  * @description
  * Low-level call to get a specific REST endpoint from FamilySearch
@@ -95,23 +99,17 @@ Plumbing.prototype.getCollectionPromise = function(collectionId){
  * @param {String} url may be relative; e.g., /platform/users/current
  * @param {Object=} params query parameters
  * @param {Object=} headers options headers
- * @param {Object=} opts options to pass to the http function specified during init
- * @param {Function=} responseMapper function to map response data to something else
  * @return {Object} a promise that behaves like promises returned by the http function specified during init
  */
-Plumbing.prototype.get = function(url, params, headers, opts, responseMapper) {
-  return this.http('GET',
-      this.helpers.appendQueryParameters(url, params),
-      utils.extend({'Accept': 'application/x-gedcomx-v1+json'}, headers),
-      null,
-      opts,
-      responseMapper);
+Plumbing.prototype.get = function(url, params, headers) {
+  return this.http('GET', this.helpers.appendQueryParameters(url, params),
+      utils.extend({'Accept': 'application/x-gedcomx-v1+json'}, headers));
 };
 
 /**
  * @ngdoc function
  * @name plumbing.functions:post
- * @function
+
  *
  * @description
  * Low-level call to post to a specific REST endpoint from FamilySearch
@@ -119,23 +117,19 @@ Plumbing.prototype.get = function(url, params, headers, opts, responseMapper) {
  * @param {String} url may be relative
  * @param {Object=} data post data
  * @param {Object=} headers options headers
- * @param {Object=} opts options to pass to the http function specified during init
- * @param {Function=} responseMapper function to map response data to something else
  * @return {Object} a promise that behaves like promises returned by the http function specified during init
  */
-Plumbing.prototype.post = function(url, data, headers, opts, responseMapper) {
+Plumbing.prototype.post = function(url, data, headers) {
   return this.http('POST',
       url,
       utils.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers),
-      data,
-      opts,
-      responseMapper);
+      data);
 };
 
 /**
  * @ngdoc function
  * @name plumbing.functions:put
- * @function
+
  *
  * @description
  * Low-level call to put to a specific REST endpoint from FamilySearch
@@ -143,40 +137,29 @@ Plumbing.prototype.post = function(url, data, headers, opts, responseMapper) {
  * @param {String} url may be relative
  * @param {Object=} data post data
  * @param {Object=} headers options headers
- * @param {Object=} opts options to pass to the http function specified during init
- * @param {Function=} responseMapper function to map response data to something else
  * @return {Object} a promise that behaves like promises returned by the http function specified during init
  */
-Plumbing.prototype.put = function(url, data, headers, opts, responseMapper) {
+Plumbing.prototype.put = function(url, data, headers) {
   return this.http('PUT',
       url,
       utils.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers),
-      data,
-      opts,
-      responseMapper);
+      data);
 };
 
 /**
  * @ngdoc function
  * @name plumbing.functions:del
- * @function
+
  *
  * @description
  * Low-level call to delete to a specific REST endpoint from FamilySearch
  *
  * @param {String} url may be relative
- * @param {Object=} opts options to pass to the http function specified during init
  * @param {Object=} headers options headers
- * @param {Function=} responseMapper function to map response data to something else
  * @return {Object} a promise that behaves like promises returned by the http function specified during init
  */
-Plumbing.prototype.del = function(url, headers, opts, responseMapper) {
-  return this.http('DELETE',
-      url,
-      utils.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers),
-      null,
-      opts,
-      responseMapper);
+Plumbing.prototype.del = function(url, headers) {
+  return this.http('DELETE', url, utils.extend({'Content-Type': 'application/x-gedcomx-v1+json'}, headers));
 };
 
 /**
@@ -244,7 +227,7 @@ Plumbing.prototype.transformData = function(data, contentType) {
 /**
  * @ngdoc function
  * @name plumbing.functions:http
- * @function
+
  *
  * @description
  * Low-level call to issue an http request to a specific REST endpoint from FamilySearch
@@ -253,15 +236,12 @@ Plumbing.prototype.transformData = function(data, contentType) {
  * @param {String} url may be relative
  * @param {Object=} headers headers object
  * @param {Object=} data post data
- * @param {Object=} opts options to pass to the http function specified during init
- * @param {Function=} responseMapper function to map response data into the data to return
  * @param {Number=} retries number of times to retry
  * @return {Object} a promise that behaves like promises returned by the http function specified during init
  */
-Plumbing.prototype.http = function(method, url, headers, data, opts, responseMapper, retries) {
-  var d = this.settings.deferredWrapper();
-  var returnedPromise = d.promise;
+Plumbing.prototype.http = function(method, url, headers, data, retries) {
   var self = this;
+  
   // prepend the server
   var absoluteUrl = this.helpers.getAPIServerUrl(url);
   headers = headers || {};
@@ -271,13 +251,15 @@ Plumbing.prototype.http = function(method, url, headers, data, opts, responseMap
   if (!this.settings.accessToken &&
       this.settings.autoSignin &&
       !this.helpers.isOAuthServerUrl(absoluteUrl) &&
-      url !== this.settings.discoveryUrl) {
+      url.indexOf('/platform/collections') === -1) {
     accessTokenPromise = this.client.getAccessToken();
   }
   else {
-    accessTokenPromise = this.helpers.refPromise(this.settings.accessToken);
+    accessTokenPromise = Promise.resolve(this.settings.accessToken);
   }
-  accessTokenPromise.then(function() {
+  
+  return accessTokenPromise.then(function() {
+    
     // append the access token as a query parameter to avoid cors pre-flight
     // this is detrimental to browser caching across sessions, which seems less bad than cors pre-flight requests
     var accessTokenName = self.helpers.isAuthoritiesServerUrl(absoluteUrl) ? 'sessionId' : 'access_token';
@@ -291,60 +273,98 @@ Plumbing.prototype.http = function(method, url, headers, data, opts, responseMap
     if (retries == null) { // also catches undefined
       retries = self.settings.maxHttpRequestRetries;
     }
-
-    // call the http wrapper
-    var promise = self.settings.httpWrapper(method,
-        absoluteUrl,
-        headers,
-        self.transformData(data, headers['Content-Type']),
-        opts || {});
-
-    // process the response
-    self.helpers.extendHttpPromise(returnedPromise, promise);
-    promise.then(function(data) {
-      if (method === 'GET' && promise.getStatusCode() === 204) {
-        data = {}; // an empty GET response should become an empty json object
+    
+    var body = self.transformData(data, headers['Content-Type']);
+    
+    // Make the HTTP request
+    return fetch(absoluteUrl, {
+      method: method,
+      headers: headers,
+      body: body
+    })
+    
+    // Erase access token when a 401 Unauthenticated response is received
+    .then(function(response){
+      if(response.status === 401){
+        self.helpers.eraseAccessToken();
       }
+      return response;
+    })
+    
+    // Handle throttling
+    .then(function(response){
+      if ((method === 'GET' && response.status >= 500 && retries > 0) || response.status === 429) {
+        //var retryAfterHeader = response.headers.get('Retry-After');
+        //var retryAfter = retryAfterHeader ? parseInt(retryAfterHeader,10) : self.settings.defaultThrottleRetryAfter;
+        return self.http(method, url, headers, data, retries-1);
+      } else {
+        return response;
+      }
+    })
+    
+    // Catch all other errors
+    .then(function(response){
+      if (response.status >= 200 && response.status < 400) {
+        return response;
+      } else {
+        self.helpers.log('http failure', response.status, retries, response.headers.raw());
+        var error = new Error(response.statusText);
+        error.response = response;
+        throw error;
+      }
+    })
+    
+    // Process the response body and make available at the `body` property
+    // of the response. If JSON parsing fails then we have bad data or no data.
+    // Either way we just catch the error and continue on.
+    .then(function(response){
+      return response.json().then(function(json){
+        response.data = json;
+        return response;
+      }, function(){
+        return response;
+      });
+    })
+    
+    // Processing time
+    .then(function(response){
       self.helpers.refreshAccessToken();
-      var processingTime = promise.getResponseHeader('X-PROCESSING-TIME');
+      var processingTime = response.headers.get('X-PROCESSING-TIME');
       if (processingTime) {
         self.totalProcessingTime += parseInt(processingTime,10);
       }
-      if (responseMapper) {
-        data = responseMapper(data, promise);
-      }
-      d.resolve(data);
-    },
-    function() {
-      var statusCode = promise.getStatusCode();
-      self.helpers.log('http failure', statusCode, retries, promise.getAllResponseHeaders());
-      if (statusCode === 401) {
-        self.helpers.eraseAccessToken();
-      }
-      if ((method === 'GET' && statusCode >= 500 && retries > 0) || statusCode === 429) {
-        var retryAfterHeader = promise.getResponseHeader('Retry-After');
-        var retryAfter = retryAfterHeader ? parseInt(retryAfterHeader,10) : self.settings.defaultThrottleRetryAfter;
-        self.settings.setTimeout(function() {
-          promise = self.http(method, url, headers, data, opts, responseMapper, retries-1);
-          self.helpers.extendHttpPromise(returnedPromise, promise);
-          promise.then(function(data) {
-            d.resolve(data);
-          },
-          function() {
-            d.reject.apply(d, arguments);
-          });
-        }, retryAfter);
-      }
-      else {
-        d.reject.apply(d, arguments);
-      }
+      return response;
+    })
+    
+    // Return a custom response object
+    .then(function(response){
+      return {
+        getBody: function(){ 
+          return response.body; 
+        },
+        getData: function(){
+          return response.data;
+        },
+        getStatusCode: function(){ 
+          return response.status; 
+        },
+        getHeader: function(header, all){ 
+          return all === true ? response.headers.getAll(header) : response.headers.get(header);
+        },
+        getHeaders: function(){ 
+          return response.headers.raw(); 
+        },
+        getRequest: function(){
+          return {
+            url: absoluteUrl,
+            method: method,
+            headers: headers,
+            body: body
+          };
+        }
+      };
     });
-  },
-  function() {
-    d.reject.apply(d, arguments);
   });
-
-  return returnedPromise;
 };
 
 module.exports = Plumbing;

@@ -14,7 +14,7 @@ var FS = require('./../FamilySearch'),
 /**
  * @ngdoc function
  * @name sources.functions:getSourceDescription
- * @function
+
  *
  * @description
  * Get information about a source
@@ -27,29 +27,25 @@ var FS = require('./../FamilySearch'),
  * {@link http://jsfiddle.net/m4Lhab24/1/ Editable Example}
  *
  * @param {string} url full URL of the source description
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getSourceDescription = function(url, params, opts) {
+FS.prototype.getSourceDescription = function(url) {
   var self = this;
-  return self.plumbing.get(url, params, {}, opts,
-    utils.compose(
-      utils.objectExtender({getSourceDescription: function() { return maybe(this.sourceDescriptions)[0]; }}),
-      function(response){
-        var sourceDescriptions = maybe(maybe(response).sourceDescriptions);
-        for(var i = 0; i < sourceDescriptions.length; i++){
-          sourceDescriptions[i] = self.createSourceDescription(sourceDescriptions[i]);
-        }
-        return response;
-      }
-    ));
+  return self.plumbing.get(url).then(function(response){
+    var sourceDescriptions = maybe(maybe(response.getData()).sourceDescriptions);
+    for(var i = 0; i < sourceDescriptions.length; i++){
+      sourceDescriptions[i] = self.createSourceDescription(sourceDescriptions[i]);
+    }
+    return utils.extend(response, {
+      getSourceDescription: function() { return sourceDescriptions[0]; }
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name sources.functions:getMultiSourceDescription
- * @function
+
  *
  * @description
  * Get multiple source descriptions at once by requesting them in parallel
@@ -59,24 +55,29 @@ FS.prototype.getSourceDescription = function(url, params, opts) {
  * {@link http://jsfiddle.net/jvvohktt/1/ Editable Example}
  *
  * @param {string[]} urls full URLs of the source descriptions
- * @param {Object=} params pass to getSourceDescription currently unused
- * @param {Object=} opts pass to the http function specified during init
  * @return {Object} promise that is fulfilled when all of the source descriptions have been read,
  * returning a map of source description id or URL to {@link sources.functions:getSourceDescription getSourceDescription} response
  */
-FS.prototype.getMultiSourceDescription = function(urls, params, opts) {
-  var promises = {},
-      self = this;
+FS.prototype.getMultiSourceDescription = function(urls) {
+  var self = this,
+      promises = [],
+      responses = {};
   utils.forEach(urls, function(u) {
-    promises[u] = self.getSourceDescription(u, params, opts);
+    promises.push(
+      self.getSourceDescription(u).then(function(response){
+        responses[u] = response;
+      })
+    );
   });
-  return self.helpers.promiseAll(promises);
+  return Promise.all(promises).then(function(){
+    return responses;
+  });
 };
 
 /**
  * @ngdoc function
  * @name sources.functions:getSourceRefsQuery
- * @function
+
  *
  * @description
  * Get the people, couples, and child-and-parents relationships referencing a source
@@ -91,86 +92,78 @@ FS.prototype.getMultiSourceDescription = function(urls, params, opts) {
  * {@link http://jsfiddle.net/gbusgbys/1/ Editable Example}
  *
  * @param {String} url url of the source description
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getSourceRefsQuery = function(url, params, opts) {
+FS.prototype.getSourceRefsQuery = function(url) {
   var self = this;
-  return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-    utils.compose(
-      utils.objectExtender({getPersonSourceRefs: function() {
-        return utils.flatMap(maybe(this.persons), function(person) {
+  return self.plumbing.get(url, null, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
+    var data = maybe(response.getData());
+    utils.forEach(['persons','relationships','childAndParentsRelationships'], function(type){
+      data[type] = utils.map(data[type], function(group){
+        group.sources = utils.map(group.sources, function(source){
+          return self.createSourceRef(source);
+        });
+        return group;
+      });
+    });
+    return utils.extend(response, {
+      getPersonSourceRefs: function() {
+        return utils.flatMap(maybe(data.persons), function(person) {
           return person.sources;
         });
-      }}),
-      utils.objectExtender({getCoupleSourceRefs: function() {
-        return utils.flatMap(maybe(this.relationships), function(couple) {
+      },
+      getCoupleSourceRefs: function() {
+        return utils.flatMap(maybe(data.relationships), function(couple) {
           return couple.sources;
         });
-      }}),
-      utils.objectExtender({getChildAndParentsSourceRefs: function() {
-        return utils.flatMap(maybe(this.childAndParentsRelationships), function(childAndParents) {
+      },
+      getChildAndParentsSourceRefs: function() {
+        return utils.flatMap(maybe(data.childAndParentsRelationships), function(childAndParents) {
           return childAndParents.sources;
         });
-      }}),
-      function(response){
-        utils.forEach(['persons','relationships','childAndParentsRelationships'], function(type){
-          maybe(response)[type] = utils.map(maybe(response)[type], function(group){
-            group.sources = utils.map(group.sources, function(source){
-              return self.createSourceRef(source);
-            });
-            return group;
-          });
-        });
-        return response;
       }
-    ));
+    });
+  });
 };
 
-FS.prototype._getSourcesResponseMapper = function(root, includeDescriptions) {
-  var self = this;
-  return utils.compose(
-    utils.objectExtender(utils.removeEmptyProperties({
-      getSourceRefs: function() {
-        return maybe(maybe(this[root])[0]).sources || [];
-      },
-      getSourceDescriptions: includeDescriptions ? function() {
-        return this.sourceDescriptions || [];
-      } : null,
-      getSourceDescription: includeDescriptions ? function(id) {
-        return utils.find(this.sourceDescriptions, function(o){
-          return o.getId() === id;
-        });
-      } : null
-    })),
-    function(response){
-      utils.forEach(maybe(maybe(maybe(response)[root])[0]).sources, function(source, index, obj){
-        if(source.description.charAt(0) === '#'){
-          var descriptionId = source.description.substr(1);
-          utils.forEach(maybe(response.sourceDescriptions), function(description){
-            if(description.getId() === descriptionId){
-              source.description = description.getSourceDescriptionUrl();
-            }
-          });
+FS.prototype._getSourcesResponseMapper = function(response, root, includeDescriptions) {
+  var self = this,
+      data = maybe(response.getData());
+  if(includeDescriptions){
+    utils.forEach(data.sourceDescriptions, function(source, index, obj){
+      obj[index] = self.createSourceDescription(source);
+    });
+  }
+  utils.forEach(maybe(maybe(data[root])[0]).sources, function(source, index, obj){
+    if(source.description.charAt(0) === '#'){
+      var descriptionId = source.description.substr(1);
+      utils.forEach(maybe(data.sourceDescriptions), function(description){
+        if(description.getId() === descriptionId){
+          source.description = description.getSourceDescriptionUrl();
         }
-        obj[index] = self.createSourceRef(source);
       });
-      return response;
+    }
+    obj[index] = self.createSourceRef(source);
+  });
+  return utils.extend(response, utils.removeEmptyProperties({
+    getSourceRefs: function() {
+      return maybe(maybe(data[root])[0]).sources || [];
     },
-    includeDescriptions ? function(response){
-      utils.forEach(response.sourceDescriptions, function(source, index, obj){
-        obj[index] = self.createSourceDescription(source);
+    getSourceDescriptions: includeDescriptions ? function() {
+      return data.sourceDescriptions || [];
+    } : null,
+    getSourceDescription: includeDescriptions ? function(id) {
+      return utils.find(data.sourceDescriptions, function(o){
+        return o.getId() === id;
       });
-      return response;
     } : null
-  );
+  }));
 };
 
 /**
  * @ngdoc function
  * @name sources.functions:getSourceRefs
- * @function
+
  *
  * @description
  * Get the source references for a person
@@ -185,18 +178,20 @@ FS.prototype._getSourcesResponseMapper = function(root, includeDescriptions) {
  * {@link http://jsfiddle.net/xdqcv2dn/1/ Editable Example}
  *
  * @param {String} url full URL of the source-references endpoint
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getSourceRefs = function(url, params, opts) {
-  return this.plumbing.get(url, params, {}, opts, this._getSourcesResponseMapper(this.helpers.getEntityType(url), false));
+FS.prototype.getSourceRefs = function(url) {
+  var self = this;
+  return self.plumbing.get(url).then(function(response){
+    self._getSourcesResponseMapper(response, self.helpers.getEntityType(url), false);
+    return response;
+  });
 };
 
 /**
  * @ngdoc function
  * @name sources.functions:getSourcesQuery
- * @function
+
  *
  * @description
  * Get source references and descriptions for a person
@@ -214,18 +209,20 @@ FS.prototype.getSourceRefs = function(url, params, opts) {
  * {@link http://jsfiddle.net/bxt10adm/2/ Editable Example}
  *
  * @param {String} url full URL of the person-sources-query endpoint
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getSourcesQuery = function(url, params, opts) {
-  return this.plumbing.get(url, params, {}, opts, this._getSourcesResponseMapper(this.helpers.getEntityType(url), true));
+FS.prototype.getSourcesQuery = function(url) {
+  var self = this;
+  return self.plumbing.get(url).then(function(response){
+    self._getSourcesResponseMapper(response, self.helpers.getEntityType(url), true);
+    return response;
+  });
 };
 
 /**
  * @ngdoc function
  * @name sources.functions:deleteSourceDescription
- * @function
+
  *
  * @description
  * Delete the specified source description as well as all source references that refer to it
@@ -239,19 +236,16 @@ FS.prototype.getSourcesQuery = function(url, params, opts) {
  *
  * @param {string} url full url of the source description
  * @param {string} changeMessage reason for the deletion
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the url
+ * @return {Object} promise for the response
  */
-FS.prototype.deleteSourceDescription = function(url, changeMessage, opts) {
-  return this.plumbing.del(url, changeMessage ? {'X-Reason': changeMessage} : {}, opts, function() {
-    return url;
-  });
+FS.prototype.deleteSourceDescription = function(url, changeMessage) {
+  return this.plumbing.del(url, changeMessage ? {'X-Reason': changeMessage} : {});
 };
 
 /**
  * @ngdoc function
  * @name sources.functions:deleteSourceRef
- * @function
+
  *
  * @description
  * Delete the specified source reference
@@ -264,12 +258,8 @@ FS.prototype.deleteSourceDescription = function(url, changeMessage, opts) {
  *
  * @param {string} url url for the source reference
  * @param {string} changeMessage reason for the deletion
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the pid
+ * @return {Object} promise for the response
  */
-FS.prototype.deleteSourceRef = function(url, changeMessage, opts) {
-  var self = this;
-  return self.plumbing.del(url, changeMessage ? {'X-Reason': changeMessage} : {}, opts, function() {
-    return url;
-  });
+FS.prototype.deleteSourceRef = function(url, changeMessage) {
+  return this.plumbing.del(url, changeMessage ? {'X-Reason': changeMessage} : {});
 };

@@ -69,7 +69,6 @@ MemoryPersonaRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype),
    * @ngdoc function
    * @name memories.types:constructor.MemoryPersonaRef#getMemoryPersonaRefUrl
    * @methodOf memories.types:constructor.MemoryPersonaRef
-   * @function
    * @return {String} URL of this memory persona reference; _NOTE_ however, that individual memory persona references cannot be read
    */
   getMemoryPersonaRefUrl: function() { return this.helpers.removeAccessToken(maybe(this.getLink('evidence-reference')).href); },
@@ -78,7 +77,6 @@ MemoryPersonaRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype),
    * @ngdoc function
    * @name memories.types:constructor.MemoryPersonaRef#getMemoryPersonaUrl
    * @methodOf memories.types:constructor.MemoryPersonaRef
-   * @function
    * @return {String} URL of the memory persona (without the access token);
    * pass into {@link memories.functions:getMemoryPersona getMemoryPersona} for details
    */
@@ -88,7 +86,6 @@ MemoryPersonaRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype),
    * @ngdoc function
    * @name memories.types:constructor.MemoryPersonaRef#getMemoryPersona
    * @methodOf memories.types:constructor.MemoryPersonaRef
-   * @function
    * @return {Object} promise for the {@link memories.functions:getMemoryPersona getMemoryPersona} response
    */
   getMemoryPersona:  function() {
@@ -99,7 +96,6 @@ MemoryPersonaRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype),
    * @ngdoc function
    * @name memories.types:constructor.MemoryPersonaRef#getMemoryUrl
    * @methodOf memories.types:constructor.MemoryPersonaRef
-   * @function
    * @return {String} URL of the memory; pass into {@link memories.functions:getMemory getMemory} for details
    */
   getMemoryUrl:  function() {
@@ -110,7 +106,6 @@ MemoryPersonaRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype),
    * @ngdoc function
    * @name memories.types:constructor.MemoryPersonaRef#getMemory
    * @methodOf memories.types:constructor.MemoryPersonaRef
-   * @function
    * @return {Object} promise for the {@link memories.functions:getMemory getMemory} response
    */
   getMemory:  function() {
@@ -121,8 +116,6 @@ MemoryPersonaRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype),
    * @ngdoc function
    * @name memories.types:constructor.MemoryPersonaRef#setMemoryPersona
    * @methodOf memories.types:constructor.MemoryPersonaRef
-   * @function
-   * @function
    * @param {MemoryPersona|string} memoryPersona MemoryPersona object or memory persona URL
    * @return {MemoryPersonaRef} this memory persona ref
    */
@@ -141,7 +134,6 @@ MemoryPersonaRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype),
    * @ngdoc function
    * @name memories.types:constructor.MemoryPersonaRef#save
    * @methodOf memories.types:constructor.MemoryPersonaRef
-   * @function
    * @description
    * Create a new memory persona ref
    *
@@ -151,21 +143,13 @@ MemoryPersonaRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype),
    * {@link http://jsfiddle.net/r3px0ork/1/ Editable Example}
    *
    * @param {string} url full url for the person memory persona references endpoint
-   * @param {string=} changeMessage change message (currently ignored)
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise of the memory persona ref URL, which is fulfilled after the memory persona ref has been created
-   * (note however that individual memory persona references cannot be read).
+   * @return {Object} promise for the response
    */
-  save: function(url, changeMessage, opts) {
+  save: function(url) {
     var self = this;
-    return self.plumbing.post(url, { persons: [{ evidence: [ self ] }] }, {}, opts, function(data, promise) {
-      if (!self.getId()) {
-        self.setId(promise.getResponseHeader('X-ENTITY-ID'));
-      }
-      if (!self.getMemoryPersonaRefUrl()) {
-        self.addLink('evidence-reference', { href: promise.getResponseHeader('Location') });
-      }
-      return self.getMemoryPersonaRefUrl();
+    return self.plumbing.post(url, { persons: [{ evidence: [ self ] }] }).then(function(response){
+      self.updateFromResponse(response, 'evidence-reference');
+      return response;
     });
   },
 
@@ -173,14 +157,11 @@ MemoryPersonaRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype),
    * @ngdoc function
    * @name memories.types:constructor.MemoryPersonaRef#delete
    * @methodOf memories.types:constructor.MemoryPersonaRef
-   * @function
    * @description delete this memory persona reference - see {@link memories.functions:deleteMemoryPersonaRef deleteMemoryPersonaRef}
-   * @param {string=} changeMessage change message (currently ignored)
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the memory persona ref URL
+   * @return {Object} promise for the response
    */
-  delete: function(changeMessage, opts) {
-    return this.client.deleteMemoryPersonaRef(this.getMemoryPersonaRefUrl(), changeMessage, opts);
+  delete: function() {
+    return this.client.deleteMemoryPersonaRef(this.getMemoryPersonaRefUrl());
   }
 
 });

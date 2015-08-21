@@ -40,7 +40,7 @@ VocabularyElement.prototype = utils.extend(Object.create(FS.BaseClass.prototype)
    * @ngdoc function
    * @name vocabularies.types:constructor.VocabularyElement#getLabel
    * @methodOf vocabularies.types:constructor.VocabularyElement
-   * @function
+
    * @return {String} The label of this element.
    */
   getLabel: function(){
@@ -51,7 +51,7 @@ VocabularyElement.prototype = utils.extend(Object.create(FS.BaseClass.prototype)
    * @ngdoc function
    * @name vocabularies.types:constructor.VocabularyElement#getDescription
    * @methodOf vocabularies.types:constructor.VocabularyElement
-   * @function
+
    * @return {String} The description of this element.
    */
   getDescription: function(){

@@ -65,34 +65,31 @@ describe('Search', function() {
   });
   
   it('getResultsCounts returns 0 for empty matches response', function(done){
-    var promise = FS.getPersonMatches('https://familysearch.org/platform/tree/persons/PPPP-PPP/matches');
-    promise.then(function(response){
-      expect(response.getResultsCount()).toBe(0);
-      expect(promise.getStatusCode()).toBe(204);
-      done();
-    });
+    FS.getPersonMatches('https://familysearch.org/platform/tree/persons/PPPP-PPP/matches')
+      .then(function(response){
+        expect(response.getResultsCount()).toBe(0);
+        expect(response.getStatusCode()).toBe(204);
+        done();
+      });
   });
   
-  
   it('handle non-string params', function(done){
-    var searchPromise = FS.getPersonSearch({
+    FS.getPersonSearch({
       givenName: 'Joe',
       surname: null,
       birthPlace: undefined,
       birthDate: 2014
-    });
-    searchPromise.then(function(){
-      expect(searchPromise.getRequest().url).toBe('https://sandbox.familysearch.org/platform/tree/search?q=givenName%3AJoe%20birthDate%3A2014&access_token=mock');
-      var matchPromise = FS.getPersonMatchesQuery({
+    }).then(function(response){
+      expect(response.getRequest().url).toBe('https://sandbox.familysearch.org/platform/tree/search?q=givenName%3AJoe%20birthDate%3A2014&access_token=mock');
+      return FS.getPersonMatchesQuery({
         givenName: 'Joe',
         surname: null,
         birthPlace: undefined,
         birthDate: 2014
       });
-      matchPromise.then(function(){
-        expect(matchPromise.getRequest().url).toBe('https://sandbox.familysearch.org/platform/tree/matches?q=givenName%3AJoe%20birthDate%3A2014&access_token=mock');
-        done();
-      });
+    }).then(function(response){
+      expect(response.getRequest().url).toBe('https://sandbox.familysearch.org/platform/tree/matches?q=givenName%3AJoe%20birthDate%3A2014&access_token=mock');
+      done();
     });
   });
   
@@ -102,9 +99,9 @@ describe('Search', function() {
       surname: null,
       other: undefined
     };
-    FS.getPersonSearch(params).done(function(){
+    FS.getPersonSearch(params).then(function(){
       expect(params.surname).toBe(null);
-      FS.getPersonMatchesQuery(params).done(function(){
+      FS.getPersonMatchesQuery(params).then(function(){
         expect(params.other).toBe(undefined);
         done();
       });

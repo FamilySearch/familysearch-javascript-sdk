@@ -14,23 +14,17 @@ var FS = require('./../FamilySearch'),
 // TODO check whether it's possible now to update story contents (and how to do it)
 // TODO add functions to attach & detach photos to a story when the API exists
 
-FS.prototype._memoriesResponseMapper = function(){
-  var self = this;
-  return function(response){
-    if(response && utils.isArray(response.sourceDescriptions)){
-      for(var i = 0; i < response.sourceDescriptions.length; i++){
-        response.sourceDescriptions[i] = self.createMemory(response.sourceDescriptions[i]);
-      }
-    }
-    return response;
-  };
+FS.prototype._memoriesResponseMapper = function(response){
+  var self = this,
+      data = maybe(response.getData());
+  utils.forEach(data.sourceDescriptions, function(descr, i){
+    data.sourceDescriptions[i] = self.createMemory(descr);
+  });
 };
 
 /**
  * @ngdoc function
  * @name memories.functions:getPersonMemoriesQuery
- * @function
- *
  * @description
  * Get a paged list of memories for a person
  * The response includes the following convenience function
@@ -44,24 +38,23 @@ FS.prototype._memoriesResponseMapper = function(){
  * @param {string} url full URL of the person-memories-query endpoint
  * @param {Object=} params `count` maximum number to return - defaults to 25, `start` defaults to 0,
  * `type` type of artifacts to return - possible values are photo and story - defaults to both
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getPersonMemoriesQuery = function(url, params, opts) {
+FS.prototype.getPersonMemoriesQuery = function(url, params) {
   var self = this;
-  return self.plumbing.get(url, params, {}, opts, 
-    utils.compose(
-      // TODO when the response contains personas, add a function to return them (last checked 14 July 14)
-      utils.objectExtender({getMemories: function() { return this.sourceDescriptions || []; }}),
-      self._memoriesResponseMapper()
-    ));
+  return self.plumbing.get(url, params).then(function(response){
+    self._memoriesResponseMapper(response);
+    return utils.extend(response, {
+      getMemories: function() { 
+        return maybe(this.getData()).sourceDescriptions || []; 
+      }
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name memories.functions:getUserMemoriesQuery
- * @function
- *
  * @description
  * Get a paged list of memories for a user
  * The response includes the following convenience function
@@ -73,34 +66,29 @@ FS.prototype.getPersonMemoriesQuery = function(url, params, opts) {
  * {@link http://jsfiddle.net/ywg2um4q/1/ Editable Example}
  *
  * @param {Object=} params `count` maximum number to return - defaults to 25, `start` defaults to 0
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getUserMemoriesQuery = function(params, opts) {
+FS.prototype.getUserMemoriesQuery = function(params) {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getCollectionUrl('FSMEM', 'artifacts'),
-    function(url){
-      var promise = self.plumbing.get(url, null, {'X-Expect-Override':'200-ok'}, null, function(){
-        return promise.getResponseHeader('Location');
-      });
-      return promise;
-    },
-    function(url) {
-      return self.plumbing.get(url, params, {}, opts, 
-        utils.compose(
-          // TODO when the response contains personas, add a function to return them (last checked 14 July 14)
-          utils.objectExtender({getMemories: function() { return this.sourceDescriptions || []; }}),
-          self._memoriesResponseMapper()
-        ));
+  return self.plumbing.getCollectionUrl('FSMEM', 'artifacts').then(function(url){
+    return self.plumbing.get(url, null, {'X-Expect-Override':'200-ok'});
+  }).then(function(response){
+    return response.getHeader('Location');    
+  }).then(function(url) {
+    return self.plumbing.get(url, params);
+  }).then(function(response){
+    self._memoriesResponseMapper(response);
+    return utils.extend(response, {
+      getMemories: function() { 
+        return maybe(this.getData()).sourceDescriptions || []; 
+      }
     });
+  });
 };
 
 /**
  * @ngdoc function
  * @name memories.functions:getMemory
- * @function
- *
  * @description
  * Get information about a memory
  * The response includes the following convenience function
@@ -112,25 +100,23 @@ FS.prototype.getUserMemoriesQuery = function(params, opts) {
  * {@link http://jsfiddle.net/k064qtLt/1/ Editable Example}
  *
  * @param {String} url full URL of the memory
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getMemory = function(url, params, opts) {
+FS.prototype.getMemory = function(url) {
   var self = this;
-  return self.plumbing.get(url, params, {}, opts, 
-    utils.compose(
-      // TODO when the response contains personas, add a function to return them (last checked 14 July 14)
-      utils.objectExtender({getMemory: function() { return maybe(this.sourceDescriptions)[0]; }}),
-      self._memoriesResponseMapper()
-    ));
+  return self.plumbing.get(url).then(function(response){
+    self._memoriesResponseMapper(response);
+    return utils.extend(response, {
+      getMemory: function() { 
+        return maybe(maybe(this.getData()).sourceDescriptions)[0]; 
+      }
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name memories.functions:getMemoryComments
- * @function
- *
  * @description
  * Get comments for a memory
  * The response includes the following convenience function
@@ -142,58 +128,34 @@ FS.prototype.getMemory = function(url, params, opts) {
  * {@link http://jsfiddle.net/n4rtc6mo/1/ Editable Example}
  *
  * @param {String} url full URL of the memory-comments endpoint
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getMemoryComments = function(url, params, opts) {
+FS.prototype.getMemoryComments = function(url) {
   var self = this;
-  return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts, self._commentsResponseMapper());
+  return self.plumbing.get(url, null, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
+    self._commentsResponseMapper(response);
+    return response;
+  });
 };
 
-FS.prototype._memoryPersonasMapper = function(){
-  var self = this;
-  return utils.compose(
-    function(response){
-      if(response && utils.isArray(response.persons)){
-        for(var i = 0; i < response.persons.length; i++){
-          response.persons[i] = self.createMemoryPersona(response.persons[i]);
-        }
-      }
-      return response;
-    },
-    function(response){
-      if(response && utils.isArray(response.persons)){
-        for(var i = 0; i < response.persons.length; i++){
-          if(utils.isArray(response.persons[i].names)){
-            for(var j = 0; j < response.persons[i].names.length; j++){
-              response.persons[i].names[j] = self.createName(response.persons[i].names[j]);
-            }
-          }
-        }
-      }
-      return response;
-    },
-    function(response){
-      if(response && utils.isArray(response.persons)){
-        for(var i = 0; i < response.persons.length; i++){
-          if(response.persons[i].media && utils.isArray(response.persons[i].media)){
-            for(var j = 0; j < response.persons[i].media.length; j++){
-              response.persons[i].media[j] = self.createMemoryArtifactRef(response.persons[i].media[j]);
-            }
-          }
-        }
-      }
-      return response;
-    }
-  );
+FS.prototype._memoryPersonasMapper = function(response){
+  var self = this,
+      data = maybe(response.getData());
+  
+  utils.forEach(data.persons, function(person, i){
+    utils.forEach(person.media, function(media, j){
+      person.media[j] = self.createMemoryArtifactRef(media);
+    });
+    utils.forEach(person.names, function(name, j){
+      person.names[j] = self.createName(name);
+    });
+    data.persons[i] = self.createMemoryPersona(person);
+  }); 
 };
 
 /**
  * @ngdoc function
  * @name memories.functions:getMemoryPersonas
- * @function
- *
  * @description
  * Get personas for a memory
  * The response includes the following convenience function
@@ -205,26 +167,24 @@ FS.prototype._memoryPersonasMapper = function(){
  * {@link http://jsfiddle.net/ozybtk5v/1/ Editable Example}
  *
  * @param {string} url full URL of the memory-personas endpoint
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getMemoryPersonas = function(url, params, opts) {
+FS.prototype.getMemoryPersonas = function(url) {
   var self = this;
-  return self.plumbing.get(url, params, {}, opts,
-    utils.compose(
-      utils.objectExtender({getMemoryPersonas: function() {
-        return this && this.persons ? this.persons : [];
-      }}),
-      self._memoryPersonasMapper()
-    ));
+  return self.plumbing.get(url).then(function(response){
+    var data = maybe(response.getData());
+    self._memoryPersonasMapper(response);
+    return utils.extend(response, {
+      getMemoryPersonas: function() {
+        return data.persons || [];
+      }
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name memories.functions:getMemoryPersona
- * @function
- *
  * @description
  * Get a single memory persona
  * The response includes the following convenience function
@@ -236,24 +196,24 @@ FS.prototype.getMemoryPersonas = function(url, params, opts) {
  * {@link http://jsfiddle.net/180vfb1w/1/ Editable Example}
  *
  * @param {String} url full URL of the memory persona
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getMemoryPersona = function(url, params, opts) {
+FS.prototype.getMemoryPersona = function(url) {
   var self = this;
-  return self.plumbing.get(url, params, {}, opts,
-    utils.compose(
-      utils.objectExtender({getMemoryPersona: function() { return maybe(this.persons)[0]; }}),
-      self._memoryPersonasMapper()
-    ));
+  return self.plumbing.get(url).then(function(response){
+    var data = maybe(response.getData());
+    self._memoryPersonasMapper(response);
+    return utils.extend(response, {
+      getMemoryPersona: function() { 
+        return maybe(data.persons)[0]; 
+      }
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name memories.functions:getMemoryPersonaRefs
- * @function
- *
  * @description
  * Get references to memories for a person
  * The response includes the following convenience function
@@ -265,38 +225,33 @@ FS.prototype.getMemoryPersona = function(url, params, opts) {
  * {@link http://jsfiddle.net/Ldveszee/1/ Editable Example}
  *
  * @param {String} url full URL of the person-memory-references endpoint
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getMemoryPersonaRefs = function(url, params, opts) {
+FS.prototype.getMemoryPersonaRefs = function(url) {
   var self = this;
-  return self.plumbing.get(url, params, {}, opts,
-    utils.compose(
-      utils.objectExtender({getMemoryPersonaRefs: function() {
-        return maybe(maybe(this.persons)[0]).evidence || [];
-      }}),
-      function(response){
-        if(response && utils.isArray(response.persons) && response.persons[0]){
-          var person = response.persons[0];
-          if(person.evidence && utils.isArray(person.evidence)){
-            for(var i = 0; i < person.evidence.length; i++){
-              person.evidence[i] = self.createMemoryPersonaRef(person.evidence[i]);
-            }
-          }
-        }
-        return response;
+  return self.plumbing.get(url).then(function(response){
+    var data = maybe(response.getData());
+    utils.forEach(data.persons, function(person){
+      utils.forEach(person.evidence, function(evidence, j){
+        person.evidence[j] = self.createMemoryPersonaRef(evidence);
+      });
+    });
+    return utils.extend(response, {
+      getMemoryPersonaRefs: function() {
+        return maybe(maybe(data.persons)[0]).evidence || [];
       }
-    ));
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name memories.functions:getPersonPortraitUrl
- * @function
- *
  * @description
- * Get the URL of the portrait of a person
+ * Get the URL of the portrait of a person.
+ * The response includes the following convenience function
+ * 
+ * - `getPortraitUrl()` - get the portrait url from the response
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memories_Portrait_resource FamilySearch API Docs}
  *
@@ -305,23 +260,22 @@ FS.prototype.getMemoryPersonaRefs = function(url, params, opts) {
  * @param {String} url of the person portrait endpoint
  * @param {Object=} params `default` URL to redirect to if portrait doesn't exist;
  * `followRedirect` if true, follow the redirect and return the final URL
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the URL
  */
-FS.prototype.getPersonPortraitUrl = function(url, params, opts) {
+FS.prototype.getPersonPortraitUrl = function(url, params) {
   var self = this;
   if (params && params.followRedirect) {
     params = utils.extend({}, params);
     delete params.followRedirect;
-    var promise = self.plumbing.get(url, params, { 'X-Expect-Override': '200-ok' }, opts);
-    // we don't use chaining directly between the .get() and the .then() because .then()
-    // returns a new promise representing the return value of the resolve/reject functions
-    return promise.then(function(){
-      return promise.getStatusCode() === 204 ? '' : self.helpers.appendAccessToken(promise.getResponseHeader('Location'));
+    return self.plumbing.get(url, params, { 'X-Expect-Override': '200-ok' }).then(function(response){
+      response.getPortraitUrl = function(){
+        return response.getStatusCode() === 204 ? '' : self.helpers.appendAccessToken(response.getHeader('Location'));
+      };
+      return response;
     });
   }
   else {
-    return self.helpers.refPromise(self.helpers.appendAccessToken(url));
+    return Promise.resolve(self.helpers.appendAccessToken(url));
   }
 };
 
@@ -330,8 +284,6 @@ FS.prototype.getPersonPortraitUrl = function(url, params, opts) {
 /**
  * @ngdoc function
  * @name memories.functions:deleteMemory
- * @function
- *
  * @description
  * Delete the specified memory
  *
@@ -340,21 +292,15 @@ FS.prototype.getPersonPortraitUrl = function(url, params, opts) {
  * {@link http://jsfiddle.net/r3bb6e0u/1/ Editable Example}
  *
  * @param {string} url full URL of the memory
- * @param {string=} changeMessage change message (currently ignored)
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the memory id/URL
+ * @return {Object} promise for the response
  */
-FS.prototype.deleteMemory = function(url, changeMessage, opts) {
-  return this.plumbing.del(url, {}, opts, function() {
-    return url;
-  });
+FS.prototype.deleteMemory = function(url) {
+  return this.plumbing.del(url);
 };
 
 /**
  * @ngdoc function
  * @name memories.functions:deleteMemoryPersona
- * @function
- *
  * @description
  * Delete the specified memory persona
  *
@@ -363,21 +309,15 @@ FS.prototype.deleteMemory = function(url, changeMessage, opts) {
  * {@link http://jsfiddle.net/77ba424q/1/ Editable Example}
  *
  * @param {string} url full URL of the memory persona
- * @param {string=} changeMessage change message (currently ignored)
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the mid
+ * @return {Object} promise for the response
  */
-FS.prototype.deleteMemoryPersona = function(url, changeMessage, opts) {
-  return this.plumbing.del(url, {}, opts, function() {
-    return url;
-  });
+FS.prototype.deleteMemoryPersona = function(url) {
+  return this.plumbing.del(url);
 };
 
 /**
  * @ngdoc function
  * @name memories.functions:deleteMemoryPersonaRef
- * @function
- *
  * @description
  * Delete the specified memory persona ref
  *
@@ -386,12 +326,8 @@ FS.prototype.deleteMemoryPersona = function(url, changeMessage, opts) {
  * {@link http://jsfiddle.net/cbcs86s5/1/ Editable Example}
  *
  * @param {string} url full URL of the memory persona reference
- * @param {string=} changeMessage change message (currently ignored)
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the pid
+ * @return {Object} promise for the response
  */
-FS.prototype.deleteMemoryPersonaRef = function(url, changeMessage, opts) {
-  return this.plumbing.del(url, {}, opts, function() {
-    return url;
-  });
+FS.prototype.deleteMemoryPersonaRef = function(url) {
+  return this.plumbing.del(url);
 };

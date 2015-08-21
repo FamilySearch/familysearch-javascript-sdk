@@ -20,22 +20,14 @@ describe('Change History', function() {
   });
 
   it('for child and parents relationship is returned from getChildAndParentsChanges', function(done) {
-    FS.getPerson('KWWC-RCL').then(function(personResponse){
-      personResponse.getPerson().getChildren().then(function(childrenResponse){
-        var relationships = childrenResponse.getChildAndParentsRelationships();
-        expect(relationships.length).toEqual(2);
-        relationships[0].reload().then(function(relationshipResponse){
-          relationshipResponse.getRelationship().getChanges().then(function(changesResponse){
-            expect(changesResponse.getChanges().length).toBe(4);
-            expect(changesResponse.getChanges()[0].getId()).toBe('M9JY-65T');
-            expect(changesResponse.getChanges()[0].getAgentName()).toEqual('API User 1372');
-            expect(changesResponse.getChanges()[0].getTitle()).toBe('Father Added');
-            expect(changesResponse.getChanges()[0].getUpdatedTimestamp()).toBe(1439225541440);
-            expect(changesResponse.getChanges()[0].getChangeReason()).toBe(undefined);
-            done();
-          });
-        });
-      });
+    FS.getChanges('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MM9N-TGG/changes').then(function(changesResponse){
+      expect(changesResponse.getChanges().length).toBe(4);
+      expect(changesResponse.getChanges()[0].getId()).toBe('M9JY-65T');
+      expect(changesResponse.getChanges()[0].getAgentName()).toEqual('API User 1372');
+      expect(changesResponse.getChanges()[0].getTitle()).toBe('Father Added');
+      expect(changesResponse.getChanges()[0].getUpdatedTimestamp()).toBe(1439225541440);
+      expect(changesResponse.getChanges()[0].getChangeReason()).toBe(undefined);
+      done();
     });
   });
 
@@ -61,12 +53,11 @@ describe('Change History', function() {
     FS.getPerson('KWWC-RCL').then(function(personResponse){
       personResponse.getPerson().getChanges().then(function(changesResponse){
         var change = changesResponse.getChanges()[1];
-        var promise = change.restore();
-        promise.then(function() {
-          var request = promise.getRequest();
+        change.restore().then(function(response) {
+          var request = response.getRequest();
           expect(request.body).toBeNull();
           expect(request.headers['Content-Type']).toBeUndefined();
-          expect(promise.getStatusCode()).toBe(204);
+          expect(response.getStatusCode()).toBe(204);
           done();
         });
       });

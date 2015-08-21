@@ -47,15 +47,6 @@ Helpers.prototype.getAPIServerUrl = function(path) {
 };
 
 /**
- * Prepend authorities server to path if path doesn't start with https?://
- * @param path
- * @returns {string} server + path
- */
-Helpers.prototype.getAuthoritiesServerUrl = function(path) {
-  return this.getAbsoluteUrl(this.settings.authoritiesServer[this.settings.environment], path);
-};
-
-/**
  * Append the access token to the url
  * @param {string} url url
  * @returns {string} url with access token
@@ -84,69 +75,9 @@ Helpers.prototype.log = function() {
  * @param {function()} cb Function to call
  */
 Helpers.prototype.nextTick = function(cb) {
-  this.settings.setTimeout(function() {
+  setTimeout(function() {
     cb();
   },0);
-};
-
-/**
- * borrowed from AngularJS's implementation of $q
- * If passed a promise returns the promise; otherwise returns a pseudo-promise returning the value
- * @param {*} value Promise or value
- * @returns {Object} Promise
- */
-Helpers.prototype.refPromise = function(value) {
-  if (value && utils.isFunction(value.then)) {
-    return value;
-  }
-  var self = this;
-  return {
-    then: function(callback) {
-      var d = self.settings.deferredWrapper();
-      self.nextTick(function() {
-        d.resolve(callback(value));
-      });
-      return d.promise;
-    }
-  };
-};
-
-/**
- * borrowed from AngularJS's implementation of $q
- * @param {Array|Object} promises Array or object of promises
- * @returns {Object} Promise that is resolved when all promises resolve
- */
-Helpers.prototype.promiseAll = function(promises) {
-  var d = this.settings.deferredWrapper(),
-    counter = 0,
-    results = utils.isArray(promises) ? [] : {},
-    self = this;
-
-  forEach(promises, function(promise, key) {
-    counter++;
-    self.refPromise(promise).then(
-      function(value) {
-        if (results.hasOwnProperty(key)) {
-          return;
-        }
-        results[key] = value;
-        if (!(--counter)) {
-          d.resolve(results);
-        }
-      },
-      function() {
-        if (results.hasOwnProperty(key)) {
-          return;
-        }
-        d.reject.apply(d, arguments);
-      });
-  });
-
-  if (counter === 0) {
-    d.resolve(results);
-  }
-
-  return d.promise;
 };
 
 /**
@@ -158,9 +89,9 @@ Helpers.prototype.promiseAll = function(promises) {
  */
 Helpers.prototype.setTimer = function(fn, delay, oldTimer) {
   if (oldTimer) {
-    this.settings.clearTimeout(oldTimer);
+    clearTimeout(oldTimer);
   }
-  return this.settings.setTimeout(function() {
+  setTimeout(function() {
     fn();
   }, delay);
 };
@@ -174,9 +105,9 @@ Helpers.prototype.setAccessTokenCreationTimer = function(delay) {
 };
 
 Helpers.prototype.clearAccessTokenTimers = function() {
-  this.settings.clearTimeout(this.accessTokenInactiveTimer);
+  clearTimeout(this.accessTokenInactiveTimer);
   this.accessTokenInactiveTimer = null;
-  this.settings.clearTimeout(this.accessTokenCreationTimer);
+  clearTimeout(this.accessTokenCreationTimer);
   this.accessTokenCreationTimer = null;
 };
 
@@ -276,43 +207,6 @@ Helpers.prototype.eraseAccessToken = function(omitCallback) {
  * don't need access to any instance data
  */
 
-
-
-/**
- * Extend the destPromise with functions from the sourcePromise
- * @param {Object} destPromise Destination promise
- * @param {Object} sourcePromise Source promise
- * @returns {Object} Destination promise with functions from source promise
- */
-Helpers.prototype.extendHttpPromise = function(destPromise, sourcePromise) {
-  return utils.wrapFunctions(destPromise, sourcePromise, ['getResponseHeader', 'getAllResponseHeaders', 'getStatusCode', 'getRequest']);
-};
-
-/**
- * Chain multiple http promises so the http functions (e.g., getResponseHeader) from the last promise are available in the returned promise
- * Pass an initial promise and one or more http-promise-generating functions to chain
- * @returns {Object} promise with http functions
- */
-Helpers.prototype.chainHttpPromises = function() {
-  var promise = arguments[0];
-  var bridge = {}; // bridge object is needed because the "then" function is executed immediately in unit tests
-  var self = this;
-  forEach(Array.prototype.slice.call(arguments, 1), function(fn) {
-    promise = promise.then(function() {
-      var result = fn.apply(null, arguments);
-      if (result && result.then) {
-        // the bridge object is extended with the functions from each promise-generating function,
-        // but the final functions will be those from the last promise-generating function
-        self.extendHttpPromise(bridge, result);
-      }
-      return result;
-    });
-  });
-  // the returned promise will call into the bridge object for the http functions
-  self.extendHttpPromise(promise, bridge);
-  return promise;
-};
-
 /**
  * Get the last segment of a URL
  * @param url
@@ -323,16 +217,6 @@ Helpers.prototype.getLastUrlSegment = function(url) {
     url = url.replace(/^.*\//, '').replace(/\?.*$/, '');
   }
   return url;
-};
-
-/**
- * Response mapper that returns the location header
- * @param data ignored
- * @param promise http promise
- * @returns {string} the location response header
- */
-Helpers.prototype.getResponseLocation = function(data, promise) {
-  return this.removeAccessToken(promise.getResponseHeader('Location'));
 };
 
 /**
@@ -475,6 +359,30 @@ Helpers.prototype.populateUriTemplate = function(template, params) {
     }
   }
   return segments.join('');
+};
+
+/**
+ * Turn the Link header into a json object of links. The header may either
+ * be an array of link values or an array with one value that is a concatenated
+ * list of header values. The header format for a link is `<href>; rel="relname"`
+ * 
+ * @param {array} headers array of link header values
+ * @returns {object} json object of links
+ */
+Helpers.prototype.parseLinkHeaders = function(headers){
+  var links = {};
+  if(utils.isArray(headers)){
+    utils.forEach(headers, function(header){
+      var values = header.split(', ');
+      utils.forEach(values, function(value){
+        var pieces = value.split('; '),
+            href = pieces[0].slice(1, -1), // remove leading and trailing <>
+            rel = pieces[1].slice(5, -1);
+        links[rel] = { href: href };
+      });
+    });
+  }
+  return links;
 };
 
 /**

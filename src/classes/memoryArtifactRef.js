@@ -63,7 +63,7 @@ MemoryArtifactRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype)
    * @ngdoc function
    * @name memories.types:constructor.MemoryArtifactRef#getQualifierName
    * @methodOf memories.types:constructor.MemoryArtifactRef
-   * @function
+
    * @return {String} qualifier name (http://gedcomx.org/RectangleRegion)
    */
   getQualifierName: function() { return maybe(maybe(this.data.qualifiers)[0]).name; },
@@ -72,7 +72,7 @@ MemoryArtifactRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype)
    * @ngdoc function
    * @name memories.types:constructor.MemoryArtifactRef#getQualifierValue
    * @methodOf memories.types:constructor.MemoryArtifactRef
-   * @function
+
    * @return {String} qualifier value (e.g., 0.0,.25,.5,.75)
    */
   getQualifierValue: function() { return maybe(maybe(this.data.qualifiers)[0]).value; },
@@ -81,7 +81,7 @@ MemoryArtifactRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype)
    * @ngdoc function
    * @name memories.types:constructor.MemoryArtifactRef#setQualifierName
    * @methodOf memories.types:constructor.MemoryArtifactRef
-   * @function
+
    * @param {string} qualifierName qualifier name
    * @return {MemoryArtifactRef} this memory artifact ref
    */
@@ -98,7 +98,7 @@ MemoryArtifactRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype)
    * @ngdoc function
    * @name memories.types:constructor.MemoryArtifactRef#setQualifierValue
    * @methodOf memories.types:constructor.MemoryArtifactRef
-   * @function
+
    * @param {string} qualifierValue qualifier value
    * @return {MemoryArtifactRef} this memory artifact ref
    */

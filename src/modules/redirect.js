@@ -12,7 +12,7 @@ var FS = require('./../FamilySearch');
 /**
  * @ngdoc function
  * @name redirect.functions:getRedirectUrl
- * @function
+
  *
  * @description
  *

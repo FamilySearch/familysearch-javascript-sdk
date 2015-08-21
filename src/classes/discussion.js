@@ -84,7 +84,7 @@ Discussion.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name discussions.types:constructor.Discussion#getDiscussionUrl
    * @methodOf discussions.types:constructor.Discussion
-   * @function
+
    * @return {String} URL of this discussion
    */
   getDiscussionUrl: function() { return this.helpers.removeAccessToken(maybe(this.getLink('discussion')).href); },
@@ -93,7 +93,7 @@ Discussion.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name discussions.types:constructor.Discussion#getCommentsUrl
    * @methodOf discussions.types:constructor.Discussion
-   * @function
+
    * @return {String} URL of the comments endpoint - pass into {@link discussions.functions:getDiscussionComments getDiscussionComments} for details
    */
   getCommentsUrl: function() { return this.helpers.removeAccessToken(maybe(this.getLink('comments')).href); },
@@ -102,7 +102,7 @@ Discussion.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name discussions.types:constructor.Discussion#getComments
    * @methodOf discussions.types:constructor.Discussion
-   * @function
+
    * @return {Object} promise for the {@link discussions.functions:getDiscussionComments getDiscussionComments} response
    */
   getComments: function() { return this.client.getDiscussionComments(this.getCommentsUrl()); },
@@ -111,7 +111,7 @@ Discussion.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name discussions.types:constructor.Discussion#getAgentId
    * @methodOf discussions.types:constructor.Discussion
-   * @function
+
    * @return {String} id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
    */
   getAgentId: function() { return maybe(this.data.contributor).resourceId; },
@@ -120,7 +120,7 @@ Discussion.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name discussions.types:constructor.Discussion#getAgentUrl
    * @methodOf discussions.types:constructor.Discussion
-   * @function
+
    * @return {String} URL of the contributor - pass into {@link user.functions:getAgent getAgent} for details
    */
   getAgentUrl: function() { return this.helpers.removeAccessToken(maybe(this.data.contributor).resource); },
@@ -129,7 +129,7 @@ Discussion.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name discussions.types:constructor.Discussion#getAgent
    * @methodOf discussions.types:constructor.Discussion
-   * @function
+
    * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
    */
   getAgent: function() { return this.client.getAgent(this.getAgentUrl()); },
@@ -138,35 +138,31 @@ Discussion.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name discussions.types:constructor.Discussion#save
    * @methodOf discussions.types:constructor.Discussion
-   * @function
+
    * @description
    * Create a new discussion (if this discussion does not have an id) or update the existing discussion
    *
    * {@link http://jsfiddle.net/fsy9z6kx/1/ Editable Example}
    *
-   * @param {string=} changeMessage change message (currently ignored)
-   * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise of the discussion id, which is fulfilled after the discussion has been updated or,
    * if refresh is true, after the discussion has been read.
    */
-  save: function(changeMessage, opts) {
-    var self = this;
-    return self.helpers.chainHttpPromises(
-      self.getDiscussionUrl() ? self.helpers.refPromise(self.getDiscussionUrl()) : self.plumbing.getCollectionUrl('FSDF', 'discussions'),
-      function(url){
-        return self.plumbing.post(url, { discussions: [ self ] }, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
-          // x-entity-id and location headers are not set on update, only on create
-          return self.getId() || promise.getResponseHeader('X-ENTITY-ID');
-        });
-      }
-    );
+  save: function() {
+    var self = this,
+        urlPromise = self.getDiscussionUrl() ? Promise.resolve(self.getDiscussionUrl()) : self.plumbing.getCollectionUrl('FSDF', 'discussions');
+    return urlPromise.then(function(url){
+        return self.plumbing.post(url, { discussions: [ self ] }, {'Content-Type' : 'application/x-fs-v1+json'});
+    }).then(function(response){
+      self.updateFromResponse(response, 'discussion');
+      return response;
+    });
   },
 
   /**
    * @ngdoc function
    * @name discussions.types:constructor.Discussion#delete
    * @methodOf discussions.types:constructor.Discussion
-   * @function
+
    * @description delete this discussion - see {@link discussions.functions:deleteDiscussion deleteDiscussion}
    *
    * __NOTE__ if you delete a discussion, it's up to you to delete the corresponding Discussion Refs
@@ -175,11 +171,10 @@ Discussion.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * FamilySearch is aware of this issue but hasn't committed to a fix.
    *
    * @param {string=} changeMessage change message (currently ignored)
-   * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the discussion id
    */
-  delete: function(changeMessage, opts) {
-    return this.client.deleteDiscussion(this.getDiscussionUrl(), changeMessage, opts);
+  delete: function(changeMessage) {
+    return this.client.deleteDiscussion(this.getDiscussionUrl(), changeMessage);
   }
 
 });

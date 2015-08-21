@@ -14,7 +14,7 @@ var FS = require('./../FamilySearch'),
 /**
  * @ngdoc function
  * @name user.functions:getCurrentUser
- * @function
+
  *
  * @description
  * Get the current user with the following convenience function
@@ -25,32 +25,25 @@ var FS = require('./../FamilySearch'),
  *
  * {@link http://jsfiddle.net/u7esw4u3/169/ Editable Example}
  *
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} a promise for the current user
+ * @return {Object} a promise for the current user response
  */
-FS.prototype.getCurrentUser = function(params, opts) {
+FS.prototype.getCurrentUser = function() {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getCollectionUrl('FSFT', 'current-user'),
-    function(url) {
-      return self.plumbing.get(url, params, {}, opts,
-        utils.compose(
-          utils.objectExtender({getUser: function() { return maybe(this.users)[0]; }}),
-          function(response){
-            utils.forEach(response.users, function(user, index, obj){
-              obj[index] = self.createUser(user);
-            });
-            return response;
-          }
-        ));
+  return self.plumbing.getCollectionUrl('FSFT', 'current-user').then(function(url) {
+    return self.plumbing.get(url);
+  }).then(function(response){
+    utils.forEach(response.getData().users, function(user, index, obj){
+      obj[index] = self.createUser(user);
     });
+    response.getUser = function() { return maybe(response.getData().users)[0]; };
+    return response;
+  });
 };
 
 /**
  * @ngdoc function
  * @name user.functions:getAgent
- * @function
+
  *
  * @description
  * Get information about the specified agent (contributor)
@@ -63,27 +56,23 @@ FS.prototype.getCurrentUser = function(params, opts) {
  * {@link http://jsfiddle.net/dcxy9a59/2/ Editable Example}
  *
  * @param {String} url full URL of the agent (contributor)
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
  */
-FS.prototype.getAgent = function(url, params, opts) {
+FS.prototype.getAgent = function(url) {
   var self = this;
-  return self.plumbing.get(url, params, {}, opts,
-    utils.compose(
-      utils.objectExtender({getAgent: function() { return maybe(this.agents)[0]; }}),
-      function(response){
-        utils.forEach(response.agents, function(agent, index, obj){
-          obj[index] = self.createAgent(agent);
-        });
-        return response;
-      }
-    ));
+  return self.plumbing.get(url).then(function(response){
+    utils.forEach(response.getData().agents, function(agent, index, obj){
+      obj[index] = self.createAgent(agent);
+    });
+    return utils.extend(response, {
+      getAgent: function() { return maybe(response.getData().agents)[0]; }
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name user.functions:getMultiAgent
- * @function
+
  *
  * @description
  * Get multiple agents at once by requesting them in parallel
@@ -93,16 +82,19 @@ FS.prototype.getAgent = function(url, params, opts) {
  * {@link http://jsfiddle.net/88gbgae5/1/ Editable Example}
  *
  * @param {Array} urls an array of full URLs of the agents (contributors) to read
- * @param {Object=} params pass to getAgent currently unused
- * @param {Object=} opts pass to the http function specified during init
  * @return {Object} promise that is fulfilled when all of the agents have been read,
  * returning a map of agent id to {@link user.functions:getAgent getAgent} response
  */
-FS.prototype.getMultiAgent = function(urls, params, opts) {
+FS.prototype.getMultiAgent = function(urls, params) {
   var self = this,
-      promises = {};
+      promises = [],
+      responses = {};
   utils.forEach(urls, function(url) {
-    promises[url] = self.getAgent(url, params, opts);
+    promises.push(self.getAgent(url, params).then(function(response){
+      responses[url] = response;
+    }));
   });
-  return self.helpers.promiseAll(promises);
+  return Promise.all(promises).then(function(){
+    return responses;
+  });
 };

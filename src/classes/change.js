@@ -57,7 +57,7 @@ Change.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name changeHistory.types:constructor.Change#getAgentName
    * @methodOf changeHistory.types:constructor.Change
-   * @function
+
    * @return {String} agent (contributor) name
    */
   getAgentName: function() { return maybe(maybe(this.data.contributors)[0]).name; },
@@ -66,7 +66,7 @@ Change.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name changeHistory.types:constructor.Change#getChangeReason
    * @methodOf changeHistory.types:constructor.Change
-   * @function
+
    * @return {String} reason for the change
    */
   getChangeReason: function() { return maybe(maybe(this.data.changeInfo)[0]).reason; },
@@ -77,7 +77,7 @@ Change.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name changeHistory.types:constructor.Change#getAgentUrl
    * @methodOf changeHistory.types:constructor.Change
-   * @function
+
    * @return {String} URL of the agent - pass into {@link user.functions:getAgent getAgent} for details
    */
   getAgentUrl: function() { return this.helpers.removeAccessToken(maybe(this.getLink('agent')).href); },
@@ -86,7 +86,7 @@ Change.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name changeHistory.types:constructor.Change#getAgent
    * @methodOf changeHistory.types:constructor.Change
-   * @function
+
    * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
    */
   getAgent: function() { return this.client.getAgent(this.getAgentUrl()); },
@@ -95,7 +95,7 @@ Change.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name changeHistory.types:constructor.Change#restore
    * @methodOf changeHistory.types:constructor.Change
-   * @function
+
    * 
    * @description
    * Restore the specified change
@@ -104,16 +104,13 @@ Change.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    *
    * {@link http://jsfiddle.net/xL50x20d/1/ Editable Example}
    *
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the chid
+   * @return {Object} promise for the response
    */
-  restore: function(opts) {
+  restore: function() {
     var self = this;
-    return self.helpers.chainHttpPromises(
-      self.getLinkPromise('restore'),
-      function(link) {
-        return self.client.restoreChange(link.href, opts);
-      });
+    return self.getLinkPromise('restore').then(function(link) {
+      return self.client.restoreChange(link.href);
+    });
   }
 
 });

@@ -28,6 +28,8 @@
     "clearInterval": false,
     "console": false,
     "require": false,
-    "module": false
+    "module": false,
+    "fetch": false,
+    "Promise": false
   }
 }

@@ -11,28 +11,23 @@ var FS = require('./../FamilySearch'),
  */
 
 var searchMatchResponseConvenienceFunctions = {
-  getSearchResults: function() { return this.entries || []; },
-  getResultsCount: function() { return this.results || 0; },
-  getIndex: function() { return this.index || 0; }
+  getSearchResults: function() { return utils.maybe(this.getData()).entries || []; },
+  getResultsCount: function() { return utils.maybe(this.getData()).results || 0; },
+  getIndex: function() { return utils.maybe(this.getData()).index || 0; }
 };
 
-FS.prototype._getSearchMatchResponseMapper = function() {
+FS.prototype._getSearchMatchResponseMapper = function(response) {
   var self = this;
-  return utils.compose(
-    utils.objectExtender(searchMatchResponseConvenienceFunctions),
-    function(response){
-      utils.forEach(response.entries, function(entry, index, obj){
-        obj[index] = self.createSearchResult(entry);
-      });
-      return response;
-    }
-  );
+  utils.forEach(utils.maybe(response.getData()).entries, function(entry, index, obj){
+    obj[index] = self.createSearchResult(entry);
+  });
+  return utils.extend(response, searchMatchResponseConvenienceFunctions);
 };
 
 /**
  * @ngdoc function
  * @name searchAndMatch.functions:getPersonSearch
- * @function
+
  *
  * @description
  * Search people
@@ -76,37 +71,29 @@ FS.prototype._getSearchMatchResponseMapper = function() {
  * {@link http://jsfiddle.net/ghsyjzLb/1/ Editable Example}
  *
  * @param {Object} params described above
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getPersonSearch = function(params, opts) {
+FS.prototype.getPersonSearch = function(params) {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getCollectionUrl('FSFT', 'person-search'),
-    function(url) {
-      return self.plumbing.get(url, utils.removeEmptyProperties({
-          q: utils.searchParamsFilter(utils.removeEmptyProperties(utils.extend({}, params))),
-          start: params.start,
-          count: params.count,
-          context: params.context
-        }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-        utils.compose(
-          self._getSearchMatchResponseMapper(),
-          function(obj, promise) {
-            obj.getContext = function() {
-              return promise.getResponseHeader('X-FS-Page-Context');
-            };
-            return obj;
-          }
-        )
-      );
-    });
+  return self.plumbing.getCollectionUrl('FSFT', 'person-search').then(function(url) {
+    return self.plumbing.get(url, utils.removeEmptyProperties({
+        q: utils.searchParamsFilter(utils.removeEmptyProperties(utils.extend({}, params))),
+        start: params.start,
+        count: params.count,
+        context: params.context
+      }), {'Accept': 'application/x-gedcomx-atom+json'});
+  }).then(function(response){
+    response.getContext = function() {
+      return response.getHeader('X-FS-Page-Context');
+    };
+    return self._getSearchMatchResponseMapper(response);
+  });
 };
 
 /**
  * @ngdoc function
  * @name searchAndMatch.functions:getPersonMatches
- * @function
+
  *
  * @description
  * Get the matches (possible duplicates) for a person
@@ -121,18 +108,19 @@ FS.prototype.getPersonSearch = function(params, opts) {
  * {@link http://jsfiddle.net/xb0ts69q/1/ Editable Example}
  *
  * @param {String} url full URL of the person-matches endpoint
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getPersonMatches = function(url, params, opts) {
-  return this.plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts, this._getSearchMatchResponseMapper());
+FS.prototype.getPersonMatches = function(url) {
+  var self = this;
+  return self.plumbing.get(url, null, {'Accept': 'application/x-gedcomx-atom+json'}).then(function(response){
+    return self._getSearchMatchResponseMapper(response);
+  });
 };
 
 /**
  * @ngdoc function
  * @name searchAndMatch.functions:getPersonMatchesQuery
- * @function
+
  *
  * @description
  * Get matches for someone not in the tree
@@ -151,19 +139,17 @@ FS.prototype.getPersonMatches = function(url, params, opts) {
  * `context` is not a valid parameter for match,
  * `fatherId`, `motherId`, and `spouseId` assist in finding matches for people whose relatives have already been matched, and
  * `candidateId` restricts matches to the person with that Id (what does this mean?)
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getPersonMatchesQuery = function(params, opts) {
+FS.prototype.getPersonMatchesQuery = function(params) {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getCollectionUrl('FSFT', 'person-matches-query'),
-    function(url) {
-      return self.plumbing.get(url, utils.removeEmptyProperties({
-          q: utils.searchParamsFilter(utils.removeEmptyProperties(utils.extend({}, params))),
-          start: params.start,
-          count: params.count
-        }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-        self._getSearchMatchResponseMapper());
-    });
+  return self.plumbing.getCollectionUrl('FSFT', 'person-matches-query').then(function(url) {
+    return self.plumbing.get(url, utils.removeEmptyProperties({
+      q: utils.searchParamsFilter(utils.removeEmptyProperties(utils.extend({}, params))),
+      start: params.start,
+      count: params.count
+    }), {'Accept': 'application/x-gedcomx-atom+json'});
+  }).then(function(response){
+    return self._getSearchMatchResponseMapper(response);
+  });
 };

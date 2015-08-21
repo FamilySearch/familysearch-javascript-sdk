@@ -14,7 +14,7 @@ var FS = require('./../FamilySearch'),
 /**
  * @ngdoc function
  * @name discussions.functions:getDiscussion
- * @function
+
  *
  * @description
  * Get information about a discussion
@@ -27,30 +27,26 @@ var FS = require('./../FamilySearch'),
  * {@link http://jsfiddle.net/gb1y9jdj/1/ Editable Example}
  *
  * @param {String} url full URL of the discussion to read
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getDiscussion = function(url, params, opts) {
+FS.prototype.getDiscussion = function(url) {
   var self = this;
-  return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-    utils.compose(
-      utils.objectExtender({getDiscussion: function() {
-        return maybe(maybe(this).discussions)[0];
-      }}),
-      function(response){
-        for(var i = 0; i < response.discussions.length; i++){
-          response.discussions[i] = self.createDiscussion(response.discussions[i]);
-        }
-        return response;
+  return self.plumbing.get(url, null, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
+    utils.forEach(response.getData().discussions, function(discussion, i, obj){
+      obj[i] = self.createDiscussion(discussion);
+    });
+    return utils.extend(response, {
+      getDiscussion: function() {
+        return maybe(maybe(this.getData()).discussions)[0];
       }
-    ));
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name discussions.functions:getMultiDiscussion
- * @function
+
  *
  * @description
  * Get multiple discussions at once by requesting them in parallel
@@ -60,28 +56,32 @@ FS.prototype.getDiscussion = function(url, params, opts) {
  * {@link http://jsfiddle.net/9je6gfp5/1/ Editable Example}
  *
  * @param {string[]|DiscussionRef[]} full URLs, or {@link discussions.types:constructor.DiscussionRef DiscussionRefs} of the discussions
- * @param {Object=} params pass to getDiscussion currently unused
- * @param {Object=} opts pass to the http function specified during init
  * @return {Object} promise that is fulfilled when all of the discussions have been read,
- * returning a map of discussions keyed by url
- * {@link discussions.functions:getDiscussion getDiscussion} response
+ * returning a map of {@link discussions.functions:getDiscussion getDiscussion} responses keyed by url
  */
-FS.prototype.getMultiDiscussion = function(urls, params, opts) {
+FS.prototype.getMultiDiscussion = function(urls) {
   var self = this,
-      promises = {};
+      promises = [],
+      responses = {};
   utils.forEach(urls, function(url) {
     if (url instanceof FS.DiscussionRef) {
       url = url.$getDiscussionUrl();
     }
-    promises[url] = self.getDiscussion(url, params, opts);
+    promises.push(
+      self.getDiscussion(url).then(function(response){
+        responses[url] = response;
+      })
+    );
   });
-  return self.helpers.promiseAll(promises);
+  return Promise.all(promises).then(function(){
+    return responses;
+  });
 };
 
 /**
  * @ngdoc function
  * @name discussions.functions:getPersonDiscussionRefs
- * @function
+
  *
  * @description
  * Get references to discussions for a person
@@ -94,56 +94,46 @@ FS.prototype.getMultiDiscussion = function(urls, params, opts) {
  * {@link http://jsfiddle.net/rx9wd0nz/1/ Editable Example}
  *
  * @param {String} url full URL of the person-discussion-references endpoint
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getPersonDiscussionRefs = function(url, params, opts) {
+FS.prototype.getPersonDiscussionRefs = function(url) {
   var self = this;
-  return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-    utils.compose(
-      utils.objectExtender({getDiscussionRefs: function() {
-        return maybe(maybe(maybe(this).persons)[0])['discussion-references'] || [];
-      }}),
-      function(response){
-        if(response && response.persons && response.persons[0] && utils.isArray(response.persons[0]['discussion-references'])){
-          var refs = response.persons[0]['discussion-references'];
-          for(var i = 0; i < refs.length; i++){
-            refs[i] = self.createDiscussionRef(refs[i]);
-          }
-        }
-        return response;
-      },
-      utils.objectExtender(function(response) {
-        return { $personId: maybe(maybe(maybe(response).persons)[0]).id };
-      }, function(response) {
-        return maybe(maybe(maybe(response).persons)[0])['discussion-references'];
-      })
-    ));
+  return self.plumbing.get(url, null, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
+    var data = response.getData();
+    if(data.persons && data.persons[0] && utils.isArray(data.persons[0]['discussion-references'])){
+      var refs = data.persons[0]['discussion-references'];
+      for(var i = 0; i < refs.length; i++){
+        refs[i] = self.createDiscussionRef(refs[i]);
+      }
+    }
+    return utils.extend(response, {
+      getDiscussionRefs: function() {
+        return maybe(maybe(maybe(this.getData()).persons)[0])['discussion-references'] || [];
+      }
+    });
+  });
 };
 
-FS.prototype._commentsResponseMapper = function(){
-  var self = this;
-  return utils.compose(
-    utils.objectExtender({getComments: function() {
-      return maybe(maybe(maybe(this).discussions)[0]).comments || [];
-    }}),
-    function(response){
-      if(response && response.discussions && response.discussions[0] && utils.isArray(response.discussions[0].comments)){
-        var comments = response.discussions[0].comments;
-        for(var i = 0; i < comments.length; i++){
-          comments[i] = self.createComment(comments[i]);
-        }
-      }
-      return response;
+FS.prototype._commentsResponseMapper = function(response){
+  var self = this,
+      data = response.getData();
+  if(data.discussions && data.discussions[0] && utils.isArray(data.discussions[0].comments)){
+    var comments = data.discussions[0].comments;
+    for(var i = 0; i < comments.length; i++){
+      comments[i] = self.createComment(comments[i]);
     }
-  );
+  }
+  return utils.extend(response, {
+    getComments: function() {
+      return maybe(maybe(maybe(this.getData()).discussions)[0]).comments || [];
+    }
+  });
 };
 
 /**
  * @ngdoc function
  * @name discussions.functions:getDiscussionComments
- * @function
+
  *
  * @description
  * Get comments for a discussion
@@ -156,27 +146,19 @@ FS.prototype._commentsResponseMapper = function(){
  * {@link http://jsfiddle.net/3wfxrkj0/1/ Editable Example}
  *
  * @param {String} url full URL of the discussion-comments endpoint
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getDiscussionComments = function(url, params, opts) {
+FS.prototype.getDiscussionComments = function(url) {
   var self = this;
-  return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-    utils.compose(
-      self._commentsResponseMapper(),
-      utils.objectExtender(function(response) {
-        return { $discussionId: maybe(maybe(maybe(response).discussions)[0]).id };
-      }, function(response) {
-        return maybe(maybe(maybe(response).discussions)[0])['comments'];
-      })
-    ));
+  return self.plumbing.get(url, null, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
+    return self._commentsResponseMapper(response);
+  });
 };
 
 /**
  * @ngdoc function
  * @name discussions.functions:deleteDiscussion
- * @function
+
  *
  * @description
  * Delete the specified discussion
@@ -192,19 +174,16 @@ FS.prototype.getDiscussionComments = function(url, params, opts) {
  *
  * @param {string} url full URL of the discussion
  * @param {string=} changeMessage change message (currently ignored)
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the discussion URL
+ * @return {Object} promise for the response
  */
-FS.prototype.deleteDiscussion = function(url, changeMessage, opts) {
-  return this.plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
-    return url;
-  });
+FS.prototype.deleteDiscussion = function(url) {
+  return this.plumbing.del(url, {'Content-Type': 'application/x-fs-v1+json'});
 };
 
 /**
  * @ngdoc function
  * @name discussions.functions:deleteDiscussionRef
- * @function
+
  *
  * @description
  * Delete the specified discussion reference
@@ -216,23 +195,20 @@ FS.prototype.deleteDiscussion = function(url, changeMessage, opts) {
  * @param {string} url full URL of the discussion reference
  * @param {string=} drid id of the discussion reference (must be set if pid is a person id and not the full URL)
  * @param {string=} changeMessage change message
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the pid
+ * @return {Object} promise for the response
  */
-FS.prototype.deleteDiscussionRef = function(url, changeMessage, opts) {
+FS.prototype.deleteDiscussionRef = function(url, changeMessage) {
   var headers = {'Content-Type': 'application/x-fs-v1+json'};
   if (changeMessage) {
     headers['X-Reason'] = changeMessage;
   }
-  return this.plumbing.del(url, headers, opts, function() {
-    return url;
-  });
+  return this.plumbing.del(url, headers);
 };
 
 /**
  * @ngdoc function
  * @name discussions.functions:deleteComment
- * @function
+
  *
  * @description
  * Delete the specified discussion or memory comment
@@ -243,12 +219,8 @@ FS.prototype.deleteDiscussionRef = function(url, changeMessage, opts) {
  * {@link http://jsfiddle.net/Lxcy6pcz/1/ Editable Example}
  *
  * @param {string} url full URL of the comment
- * @param {string=} changeMessage change message (currently ignored)
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the mid
+ * @return {Object} promise for the response
  */
-FS.prototype.deleteComment = function(url, changeMessage, opts) {
-  return this.plumbing.del(url, {}, opts, function() {
-    return url;
-  });
+FS.prototype.deleteComment = function(url) {
+  return this.plumbing.del(url);
 };

@@ -47,6 +47,7 @@
     "FamilySearch": true,
     "FS": true,
     "$": true,
-    "dump": false
+    "dump": false,
+    "Promise": false
   }
 }

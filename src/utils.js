@@ -284,24 +284,6 @@ exports.findIndex = function(arr, objOrFn, context) {
 };
 
 /**
- * borrowed from underscore.js
- * Compose functions from right to left, with each function consuming the return value of the function that follows
- * @returns {Function} Composed function
- */
-exports.compose = function() {
-  var funcs = arguments;
-  return function() {
-    var args = arguments;
-    for (var i = funcs.length - 1; i >= 0; i--) {
-      if (!!funcs[i]) {
-        args = [funcs[i].apply(this, args)];
-      }
-    }
-    return args[0];
-  };
-};
-
-/**
  * simplified version of underscore's flatten that only does shallow flattening
  * @param {Array} arr Array of arrays to flatten
  * @returns {Array} Flattened array
@@ -319,9 +301,14 @@ exports.flatten = function(arr) {
 /**
  * Composition of map and flatten
  * Flattens the output of map into a single array
+ *@param {Array|Object} arr Array or object to iterate over
+ * @param {function(elm)} fn Function to call
+ * @param {Object=} context Object for this
  * @returns {Array} Flattened array
  */
-exports.flatMap = exports.compose(exports.flatten, exports.map);
+exports.flatMap = function(arr, fn, context){
+  return exports.flatten(exports.map(arr, fn, context));
+};
 
 /**
  * borrowed from underscore
@@ -444,28 +431,6 @@ exports.clonePartial = function(obj, filter) {
   }
 
   throw new Error('Unable to copy obj');
-};
-
-/**
- * Return a function that takes an object and extends it with the specified extensions
- * @param {Object|function(Object)} extensions object or a function that takes the object and extension point and returns an extensions object
- * @param {function(Object)=} extensionPointGetter Optional function that returns (sub)objects to extend
- * @return {function(Object)} The extender function
- */
-exports.objectExtender = function(extensions, extensionPointGetter) {
-  return function(obj) {
-    if (obj) {
-      if (extensionPointGetter) {
-        forEach(extensionPointGetter(obj), function(extensionPoint) {
-          exports.extend(extensionPoint, exports.isFunction(extensions) ? extensions(obj, extensionPoint) : extensions);
-        });
-      }
-      else {
-        exports.extend(obj, exports.isFunction(extensions) ? extensions(obj, obj) : extensions);
-      }
-    }
-    return obj;
-  };
 };
 
 exports.appFieldRejector = function(key) {

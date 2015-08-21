@@ -1,7 +1,7 @@
 var FamilySearch = require('../../src/FamilySearch'),
+    mitm = require('mitm')(),
     _ = require('lodash'),
-    fs = require('fs'),
-    q = require('q');
+    fs = require('fs');
 
 // not the same as src/helpers/decodeQueryString
 function decodeQueryString(qs) {
@@ -35,11 +35,11 @@ function isEmpty(obj) {
   return keys(obj).length === 0;
 }
 
-function getFilename(opts) {
-  var params = decodeQueryString(opts.url);
-  var filename = opts.url.replace(/[^\/]*\/\/[^\/]+\//, '').replace(/\?.*$/, ''); // get path portion of URL
-  if (opts.method !== 'GET') {
-    filename = opts.method.toLowerCase() + '_' + filename;
+function getFilename(req) {
+  var params = decodeQueryString(req.url);
+  var filename = req.url.replace(/\?.*$/, ''); // remove query params
+  if (req.method !== 'GET') {
+    filename = req.method.toLowerCase() + filename;
   }
   var sortedKeys = keys(params).sort(); // sort parameters in alphabetical order
   for (var i = 0, len = sortedKeys.length; i < len; i++) {
@@ -48,20 +48,19 @@ function getFilename(opts) {
       filename = filename + '_' + encodeURIComponent(sortedKeys[i]) + '_' + encodeURIComponent(params[sortedKeys[i]]);
     }
   }
-  return filename.replace(/[^A-Za-z0-9_-]/g, '_') + '.json'; // convert special characters to _'s
+  // convert special characters to _'s and remove a possible leading _
+  return filename.replace(/[^A-Za-z0-9_-]/g, '_').replace(/^_/, '') + '.json';
 }
 
 function loadFile(filename){
   var contents = {};
   try {
     contents = JSON.parse(fs.readFileSync(__dirname + '/../mock/' + filename));
-  } catch (e) { }
+  } catch (e) { 
+    // console.error('unable to load mock file: %s', filename);
+  }
   return contents;
 }
-
-// Track requests that have been made
-
-var requests = [];
 
 /**
  * Mock an http call, fetching the json from a file in test/mock
@@ -69,9 +68,8 @@ var requests = [];
  * @param opts
  * @returns {Object} promise
  */
-function httpMock(opts, callback) {
-  requests.push(opts);
-  var filename = getFilename(opts);
+function httpMock(req, res) {
+  var filename = getFilename(req);
   var data = loadFile(filename);
   //console.log(filename);
   //console.log(data);
@@ -84,8 +82,8 @@ function httpMock(opts, callback) {
     status = data.status;
   }
   if (data.status >= 300 && data.status < 400){
-    opts.url = headers.Location;
-    return httpMock(opts, callback);
+    req.url = headers.Location;
+    httpMock(req, res);
   }
   
   var returnedData = {};
@@ -106,23 +104,25 @@ function httpMock(opts, callback) {
     }
   }
   
-  if (opts.method === 'POST' && isEmpty(returnedData)) {
+  if (req.method === 'POST' && isEmpty(returnedData)) {
     returnedData = null;
   }
-
-  setTimeout(function(){
-    callback(null, {
-      headers: headers,
-      statusCode: status
-    }, returnedData);
-  });
+  
+  res.statusCode = status;
+  for(var name in headers){
+    if(headers.hasOwnProperty(name)){
+      res.setHeader(name, headers[name]);
+    }
+  }
+  if(returnedData){
+    res.write(JSON.stringify(returnedData));
+  }
+  res.end();
 }
 
-// Set this attribute so that the init function
-// correctly detects this as the request node lib
-httpMock.cookie = 1;
-
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 750;
+
+mitm.on('request', httpMock);
 
 beforeEach(function() {
 
@@ -151,16 +151,8 @@ beforeEach(function() {
   global.FS = new FamilySearch({
     'client_id': 'mock',
     'environment': 'sandbox',
-    'http_function': httpMock,
-    'deferred_function': q.defer,
     'access_token': 'mock',
     'redirect_uri': 'http://example.com/foo'
   });
-  
-  global.FS.getHttpRequests = function() {
-    return requests;
-  };
-
-  requests = []; // reset requests
 
 });

@@ -100,6 +100,8 @@ describe('Places', function() {
       expect(type.getLabel()).toBe('Aboriginal Council');
       expect(type.getDescription()).toBe('A political jurisdiction in countries with native populations such as Australia.');
       done();
+    }).catch(function(e){
+      console.error(e.stack);
     });
   });
   

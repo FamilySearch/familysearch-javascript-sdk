@@ -30,6 +30,8 @@ describe('A user', function() {
       expect(agent.getAccountName()).toBe('account');
       expect(agent.getEmail()).toBe('someone@somewhere.org');
       done();
+    }).catch(function(e){
+      console.error(e.stack);
     });
   });
 

@@ -71,7 +71,7 @@ Attribution.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name attribution.types:constructor.Attribution#getAgentId
    * @methodOf attribution.types:constructor.Attribution
-   * @function
+
    * @return {String} id of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
    */
   getAgentId: function() { return maybe(this.data.contributor).resourceId; },
@@ -80,7 +80,7 @@ Attribution.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name attribution.types:constructor.Attribution#getAgentUrl
    * @methodOf attribution.types:constructor.Attribution
-   * @function
+
    * @return {String} URL of the agent (contributor) - pass into {@link user.functions:getAgent getAgent} for details
    */
   getAgentUrl: function() { return this.client.helpers.removeAccessToken(maybe(this.data.contributor).resource); },
@@ -89,7 +89,7 @@ Attribution.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name attribution.types:constructor.Attribution#getAgent
    * @methodOf attribution.types:constructor.Attribution
-   * @function
+
    * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
    */
   getAgent: function() { return this.client.getAgent(this.getAgentUrl()); }

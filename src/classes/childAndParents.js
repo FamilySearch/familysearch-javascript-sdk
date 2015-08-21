@@ -81,7 +81,7 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#getChildAndParentsUrl
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
+
    * @return {String} Url of this child-and-parents relationship
    */
   getChildAndParentsUrl: function() { return this.helpers.removeAccessToken(maybe(this.getLink('relationship')).href); },
@@ -106,7 +106,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#getFatherId
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @return {String} Id of the father
    */
   getFatherId: function() { return maybe(this.data.father).resourceId; },
@@ -115,7 +114,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#getFatherUrl
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @return {String} URL of the father
    */
   getFatherUrl: function() { return this.helpers.removeAccessToken(maybe(this.data.father).resource); },
@@ -124,7 +122,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#getFather
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @return {Object} promise for the {@link person.functions:getPerson getPerson} response
    */
   getFather: function() { return this.client.getPerson(this.getFatherUrl()); },
@@ -133,7 +130,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#getMotherId
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @return {String} Id of the mother
    */
   getMotherId: function() { return maybe(this.data.mother).resourceId; },
@@ -142,7 +138,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#getMotherUrl
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @return {String} URL of the mother
    */
   getMotherUrl: function() { return this.helpers.removeAccessToken(maybe(this.data.mother).resource); },
@@ -151,7 +146,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#getMother
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @return {Object} promise for the {@link person.functions:getPerson getPerson} response
    */
   getMother: function() { return this.client.getPerson(this.getMotherUrl()); },
@@ -160,7 +154,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#getChildId
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @return {String} Id of the child
    */
   getChildId: function() { return maybe(this.data.child).resourceId; },
@@ -169,7 +162,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#getChildUrl
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @return {String} URL of the child
    */
   getChildUrl: function() { return this.helpers.removeAccessToken(maybe(this.data.child).resource); },
@@ -178,7 +170,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#getChild
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @return {Object} promise for the {@link person.functions:getPerson getPerson} response
    */
   getChild: function() { return this.client.getPerson(this.getChildUrl()); },
@@ -187,59 +178,45 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#getNotes
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @return {Object} promise for the {@link notes.functions:getNotes getNotes} response
    */
   getNotes: function() { 
     var self = this;
-    return self.helpers.chainHttpPromises(
-      self.getLinkPromise('notes'),
-      function(link){
-        return self.client.getNotes(link.href);
-      }
-    );
+    return self.getLinkPromise('notes').then(function(link){
+      return self.client.getNotes(link.href);
+    });
   },
 
   /**
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#getSourceRefs
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @return {Object} promise for the {@link sources.functions:getSourceRefs getSourceRefs} response
    */
   getSourceRefs: function() { 
     var self = this;
-    return self.helpers.chainHttpPromises(
-      self.getLinkPromise('source-references'),
-      function(link){
-        return self.client.getSourceRefs(link.href);
-      }
-    );
+    return self.getLinkPromise('source-references').then(function(link){
+      return self.client.getSourceRefs(link.href);
+    });
   },
 
   /**
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#getSources
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @return {Object} promise for the {@link sources.functions:getSourcesQuery getSourcesQuery} response
    */
   getSources: function() { 
     var self = this;
-    return self.helpers.chainHttpPromises(
-      self.getLinkPromise('source-descriptions'),
-      function(link){
-        return self.client.getSourcesQuery(link.href);
-      }
-    );
+    return self.getLinkPromise('source-descriptions').then(function(link){
+      return self.client.getSourcesQuery(link.href);
+    });
   },
 
   /**
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#getChanges
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
-   * 
    * @description
    * Get change history for a child and parents relationship
    * The response includes the following convenience function
@@ -252,24 +229,19 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    *
    * @param {String} caprid id of the child and parents relationship or full URL of the child and parents relationship changes endpoint
    * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
-   * @param {Object=} opts options to pass to the http function specified during init
    * @return {Object} promise for the response
    */
-  getChanges: function(params, opts) { 
+  getChanges: function(params) { 
     var self = this;
-    return self.helpers.chainHttpPromises(
-      self.getLinkPromise('change-history'),
-      function(link) {
-        return self.client.getChanges(link.href, params, opts);
-      }
-    );
+    return self.getLinkPromise('change-history').then(function(link) {
+      return self.client.getChanges(link.href, params);
+    });
   },
 
   /**
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#setFather
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @param {Person|string} father person or URL or id
    * @return {ChildAndParents} this relationship
    */
@@ -284,7 +256,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#setMother
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @param {Person|string} mother person or URL or id
    * @return {ChildAndParents} this relationship
    */
@@ -299,7 +270,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#setChild
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @description NOTE: Once the relationship has been saved, the child can no longer be changed
    * @param {Person|string} child person or URL or id
    * @return {ChildAndParents} this relationship
@@ -314,7 +284,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#deleteFather
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @description remove father from the relationship
    * @param {String=} changeMessage change message
    * @return {ChildAndParents} this relationship
@@ -329,7 +298,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#deleteMother
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @description remove mother from the relationship
    * @param {String=} changeMessage change message
    * @return {ChildAndParents} this relationship
@@ -344,7 +312,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#setFatherFacts
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @description NOTE: dates are not supported for BiologicalParent, and places are not supported at all
    * @param {Fact[]|Object[]} facts facts to set; if an array element is not a Fact, it is passed into the Fact constructor
    * @param {string=} changeMessage change message to use for deleted facts if any
@@ -360,7 +327,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#addFatherFact
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @description NOTE: dates are not supported for BiologicalParent, and places are not supported at all
    * @param {Fact|Object} value fact to add; if value is not a Fact, it is passed into the Fact constructor
    * @return {ChildAndParents} this relationship
@@ -375,7 +341,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#deleteFatherFact
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @param {Fact|string} value fact or fact id to remove
    * @param {String=} changeMessage change message
    * @return {ChildAndParents} this relationship
@@ -390,7 +355,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#setMotherFacts
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @description NOTE: dates are not supported for BiologicalParent, and places are not supported at all
    * @param {Fact[]|Object[]} facts facts to set; if an array element is not a Fact, it is passed into the Fact constructor
    * @param {string=} changeMessage change message to use for deleted facts if any
@@ -406,7 +370,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#addMotherFact
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @description NOTE: dates are not supported for BiologicalParent, and places are not supported at all
    * @param {Fact|Object} value fact to add; if value is not a Fact, it is passed into the Fact constructor
    * @return {ChildAndParents} this relationship
@@ -421,7 +384,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#deleteMotherFact
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @param {Fact|string} value fact or fact id to remove
    * @param {String=} changeMessage change message
    * @return {ChildAndParents} this relationship
@@ -436,19 +398,16 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#save
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @description
-   * Create a new relationship if this relationship does not have an id, or update the existing relationship
+   * Create a new relationship if this relationship does not have an id, or update the existing relationship.
+   * When a new relationship is created the Id and links will be set from the HTTP response headers.
    *
    * {@link http://jsfiddle.net/6of3pzte/2/ Editable Example}
    *
    * @param {String=} changeMessage default change message to use when fact/deletion-specific changeMessage was not specified
-   * @param {boolean=} refresh true to read the relationship after updating
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise of the relationship id, which is fulfilled after the relationship has been updated,
-   * and if refresh is true, after the relationship has been read
+   * @return {Object} promise that is resolved with an array of responses for all HTTP requests that were made
    */
-  save: function(changeMessage, opts) {
+  save: function(changeMessage) {
     var postData = this.client.createChildAndParents();
     var isChanged = false;
     var caprid = this.getId();
@@ -491,38 +450,36 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
 
     // post update
     if (isChanged) {
-      promises.push(self.helpers.chainHttpPromises(
-        self.getChildAndParentsUrl() ? self.helpers.refPromise(self.getChildAndParentsUrl()) :
-                 self.plumbing.getCollectionUrl('FSFT', 'relationships'),
-        function(url) {
-          // set url from id
+      var urlPromise = self.getChildAndParentsUrl() ? Promise.resolve(self.getChildAndParentsUrl()) :
+                   self.plumbing.getCollectionUrl('FSFT', 'relationships');
+      promises.push(
+        urlPromise.then(function(url) {
           utils.forEach(['father', 'mother', 'child'], function(role) {
             if (postData.data[role] && !postData.data[role].resource && postData.data[role].resourceId) {
               postData.data[role].resource = postData.data[role].resourceId;
             }
           });
-          var promise = self.plumbing.post(url, { childAndParentsRelationships: [ postData ] },
-            {'Content-Type': 'application/x-fs-v1+json'}, opts, function(){
-              return self.getChildAndParentsUrl() || promise.getResponseHeader('Location');
-            });
-          return promise;
-        }));
+          return self.plumbing.post(url, { childAndParentsRelationships: [ postData ] }, {'Content-Type': 'application/x-fs-v1+json'});
+        }).then(function(response){
+          self.updateFromResponse(response, 'relationship');
+          return response;
+        })
+      );
     }
 
     // post deleted members that haven't been re-set to something else
     utils.forEach(['father', 'mother'], function(role) {
       if (self.getId() && self.deletedMembers && self.deletedMembers.hasOwnProperty(role) && !self.data[role]) {
         var msg = self.deletedMembers[role] || changeMessage; // default to global change message
-        promises.push(self.helpers.chainHttpPromises(
-          self.getLinkPromise(role + '-role'),
-          function(link) {
+        promises.push(
+          self.getLinkPromise(role + '-role').then(function(link) {
             var headers = {'Content-Type': 'application/x-fs-v1+json'};
             if (msg) {
               headers['X-Reason'] = msg;
             }
-            return self.plumbing.del(link.href, headers, opts);
-          }
-        ));
+            return self.plumbing.del(link.href, headers);
+          })
+        );
       }
     });
 
@@ -534,77 +491,38 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
         if (value) {
           headers['X-Reason'] = value;
         }
-        promises.push(self.plumbing.del(key, headers, opts));
+        promises.push(self.plumbing.del(key, headers));
       });
     }
 
     // wait for all promises to be fulfilled
-    var promise = self.helpers.promiseAll(promises).then(function(results) {
-      var url = self.getChildAndParentsUrl() || results[0]; // if we're adding a new relationship, get id from the first (only) promise
-      self.helpers.extendHttpPromise(promise, promises[0]); // extend the first promise into the returned promise
-      return url;
-    });
-    return promise;
+    return Promise.all(promises);
   },
 
   /**
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#delete
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @description delete this relationship - see {@link parentsAndChildren.functions:deleteChildAndParents deleteChildAndPArents}
    * @param {string} changeMessage change message
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the relationship URL
+   * @return {Object} promise for response
    */
-  delete: function(changeMessage, opts) {
-    return this.client.deleteChildAndParents(this.getChildAndParentsUrl(), changeMessage, opts);
+  delete: function(changeMessage) {
+    return this.client.deleteChildAndParents(this.getChildAndParentsUrl(), changeMessage);
   },
 
   /**
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#restore
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
    * @description restore this relationship - see {@link parentsAndChildren.functions:restoreChildAndPArents restoreChildAndPArents}
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the relationship URL
+   * @return {Object} promise for the response
    */
-  restore: function(opts) {
+  restore: function() {
     var self = this;
-    return self.helpers.chainHttpPromises(
-      self.getLinkPromise('restore'),
-      function(link){
-        return self.client.restoreChildAndParents(link.href, opts);
-      }
-    );
-  },
-  
-  /**
-   * @ngdoc function
-   * @name parentsAndChildren.types:constructor.ChildAndParents#reload
-   * @methodOf parentsAndChildren.types:constructor.ChildAndParents
-   * @function
-   * @description Reload the relationship. This is necessary when you need to access links
-   * that are only available when requesting the relationship directly such as change history, notes, and sources.
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for a _new_ relationship object
-   */
-  reload: function(opts){
-    var self = this;
-    return self.helpers.chainHttpPromises(
-      self.getLinkPromise('relationship'),
-      function(link){
-        return self.client.get(link.href, {}, {}, opts, function(response){
-          if(response.childAndParentsRelationships){
-            response.childAndParentsRelationships[0] = self.client.createChildAndParents(response.childAndParentsRelationships[0]);
-          }
-          response.getRelationship = function(){
-            return maybe(response.childAndParentsRelationships)[0];
-          };
-          return response;
-        });
-      }
-    );
+    return self.getLinkPromise('restore').then(function(link){
+      return self.client.restoreChildAndParents(link.href);
+    });
   }
+  
 });

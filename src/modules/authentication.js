@@ -14,7 +14,7 @@ var FS = require('./../FamilySearch'),
 /**
  * @ngdoc function
  * @name authentication.functions:getAuthCode
- * @function
+
  *
  * @description
  * Open a popup window to allow the user to authenticate and authorize this application.
@@ -27,16 +27,14 @@ var FS = require('./../FamilySearch'),
  */
 FS.prototype.getAuthCode = function() {
   var self = this,
-      settings = self.settings,
-      d = settings.deferredWrapper();
+      settings = self.settings;
       
   if (typeof window === 'undefined') {
-    d.reject();
-    return d.promise;
+    return Promise.reject(new Error('This method can only be used in browsers.'));
   } else if(!!settings.expireCallback && !settings.autoSignin) {
     settings.expireCallback(this);
-    d.reject();
-    return d.promise;
+    // TODO: figure this out
+    return Promise.reject(new Error('Not sure why we are rejecting here'));
   } else {
     return self.plumbing.getCollectionUrl('FSFT', 'http://oauth.net/core/2.0/endpoint/authorize').then(function(url) {
       var popup = self.openPopup(url, {
@@ -55,28 +53,26 @@ FS.prototype.getAuthCode = function() {
  * @param {Object} promise promise from the access token endpoint
  * @param {Object} accessTokenDeferred deferred that needs to be resolved or rejected
  */
-FS.prototype.handleAccessTokenResponse = function(promise, accessTokenDeferred) {
-  var self = this;
-  promise.then(
-    function(data) {
-      var accessToken = data['access_token'];
-      if (accessToken) {
-        self.helpers.setAccessToken(accessToken);
-        accessTokenDeferred.resolve(accessToken);
-      }
-      else {
-        accessTokenDeferred.reject(data['error']);
-      }
-    },
-    function() {
-      accessTokenDeferred.reject.apply(accessTokenDeferred, arguments);
-    });
+FS.prototype.handleAccessTokenResponse = function(response) {
+  var self = this,
+      data = response.getData();
+  var accessToken = data['access_token'];
+  if (accessToken) {
+    self.helpers.setAccessToken(accessToken);
+    response.getAccessToken = function(){
+      return accessToken;
+    };
+    return response;
+  }
+  else {
+    throw new Error(data['error']);
+  }
 };
 
 /**
  * @ngdoc function
  * @name authentication.functions:getAccessToken
- * @function
+
  *
  * @description
  * Get the access token for the user.
@@ -95,47 +91,43 @@ FS.prototype.handleAccessTokenResponse = function(promise, accessTokenDeferred) 
 FS.prototype.getAccessToken = function(authCode) {
   var self = this,
       settings = self.settings,
-      accessTokenDeferred = settings.deferredWrapper(),
-      plumbing = self.plumbing,
-      helpers = self.helpers;
+      plumbing = self.plumbing;
+      
+  // Just return the access token if we already have one
   if (settings.accessToken) {
-    helpers.nextTick(function() {
-      accessTokenDeferred.resolve(settings.accessToken);
-    });
+    return Promise.resolve(settings.accessToken);
   }
+  
   else {
+    
     // get auth code if not passed in
     var authCodePromise;
     if (authCode) {
-      authCodePromise = helpers.refPromise(authCode);
+      authCodePromise = Promise.resolve(authCode);
     }
     else {
       authCodePromise = self.getAuthCode();
     }
-    authCodePromise.then(
-      function(authCode) {
-        // get the access token given the auth code
-        plumbing.getCollectionUrl('FSFT', 'http://oauth.net/core/2.0/endpoint/token').then(function(url) {
-          var promise = plumbing.post(url, {
-              'grant_type' : 'authorization_code',
-              'code'       : authCode,
-              'client_id'  : settings.clientId
-            },
-            {'Content-Type': 'application/x-www-form-urlencoded'}); // access token endpoint says it accepts json but it doesn't
-          self.handleAccessTokenResponse(promise, accessTokenDeferred);
-        });
-      },
-      function() {
-        accessTokenDeferred.reject.apply(accessTokenDeferred, arguments);
+    
+    return authCodePromise.then(function(authCode) {
+      return plumbing.getCollectionUrl('FSFT', 'http://oauth.net/core/2.0/endpoint/token').then(function(url) {
+        return plumbing.post(url, {
+            'grant_type' : 'authorization_code',
+            'code'       : authCode,
+            'client_id'  : settings.clientId
+          },
+          {'Content-Type': 'application/x-www-form-urlencoded'}); // access token endpoint says it accepts json but it doesn't
+      }).then(function(response){
+        return self.handleAccessTokenResponse(response);
       });
+    });
   }
-  return accessTokenDeferred.promise;
 };
 
 /**
  * @ngdoc function
  * @name authentication.functions:getAccessTokenForMobile
- * @function
+
  *
  * @description
  * Get the access token for the user, passing in their user name and password
@@ -151,34 +143,29 @@ FS.prototype.getAccessToken = function(authCode) {
  * @return {Object} a promise of the (string) access token.
  */
 FS.prototype.getAccessTokenForMobile = function(userName, password) {
-  var self = this,
-      accessTokenDeferred = self.settings.deferredWrapper(),
-      plumbing = self.plumbing,
-      helpers = self.helpers;
+  var self = this;
   if (self.settings.accessToken) {
-    helpers.nextTick(function() {
-      accessTokenDeferred.resolve(self.settings.accessToken);
-    });
+    return Promise.resolve(self.settings.accessToken);
   }
   else {
-    plumbing.getCollectionUrl('FSFT', 'http://oauth.net/core/2.0/endpoint/token').then(function(url) {
-      var promise = plumbing.post(url, {
+    return self.plumbing.getCollectionUrl('FSFT', 'http://oauth.net/core/2.0/endpoint/token').then(function(url) {
+      return self.plumbing.post(url, {
           'grant_type': 'password',
           'client_id' : self.settings.clientId,
           'username'  : userName,
           'password'  : password
         },
         {'Content-Type': 'application/x-www-form-urlencoded'}); // access token endpoint says it accepts json but it doesn't
-      self.handleAccessTokenResponse(promise, accessTokenDeferred);
+    }).then(function(response){
+      return self.handleAccessTokenResponse(response);
     });
   }
-  return accessTokenDeferred.promise;
 };
 
 /**
  * @ngdoc function
  * @name authentication.functions:getOAuth2AuthorizeURL
- * @function
+
  * 
  * @description
  * Get the URL that a user should be redirected to to begin
@@ -206,7 +193,7 @@ FS.prototype.getOAuth2AuthorizeURL = function(state){
 /**
  * @ngdoc function
  * @name authentication.functions:hasAccessToken
- * @function
+
  *
  * @description
  * Return whether the access token exists.
@@ -222,7 +209,7 @@ FS.prototype.hasAccessToken = function() {
 /**
  * @ngdoc function
  * @name authentication.functions:invalidateAccessToken
- * @function
+
  *
  * @description
  * Invalidate the current access token
@@ -232,11 +219,9 @@ FS.prototype.hasAccessToken = function() {
 FS.prototype.invalidateAccessToken = function() {
   var self = this;
   self.helpers.eraseAccessToken(true);
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getCollectionUrl('FSFT', 'http://oauth.net/core/2.0/endpoint/token'),
-    function(url) {
-      return self.plumbing.del(url);
-    });
+  return self.plumbing.getCollectionUrl('FSFT', 'http://oauth.net/core/2.0/endpoint/token').then(function(url) {
+    return self.plumbing.del(url);
+  });
 };
 
 /**

@@ -19,9 +19,9 @@ var FS = require('./../FamilySearch'),
  */
 function pedigreeConvenienceFunctionGenerator(numberLabel) {
   return {
-    getPersons:    function()    { return this.persons; },
-    exists:        function(num) { return !!maybe(maybe(utils.find(this.persons, matchPersonNum(numberLabel, num))).data).id; },
-    getPerson:     function(num) { return utils.find(this.persons, matchPersonNum(numberLabel, num)); }
+    getPersons:    function()    { return maybe(this.getData()).persons; },
+    exists:        function(num) { return !!maybe(maybe(utils.find(maybe(this.getData()).persons, matchPersonNum(numberLabel, num))).data).id; },
+    getPerson:     function(num) { return utils.find(maybe(this.getData()).persons, matchPersonNum(numberLabel, num)); }
   };
 }
 
@@ -35,7 +35,7 @@ function matchPersonNum(numberLabel, num) {
 /**
  * @ngdoc function
  * @name pedigree.functions:getAncestry
- * @function
+
  *
  * @description
  * Get the ancestors of a specified person and optionally a specified spouse with the following convenience functions
@@ -62,41 +62,49 @@ function matchPersonNum(numberLabel, num) {
  * `spouse` id to get ancestry of person and spouse,
  * `personDetails` set to true to retrieve full person objects for each ancestor,
  * `descendants` set to true to retrieve one generation of descendants
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the ancestry
+ * @return {Object} promise for the ancestry response
  */
-FS.prototype.getAncestry = function(pid, params, opts) {
+FS.prototype.getAncestry = function(pid, params) {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getCollectionUrl('FSFT', 'ancestry-query'),
-    function(url) {
-      return self.plumbing.get(url, utils.extend({'person': pid}, params), {}, opts,
-        utils.compose(
-          utils.objectExtender(pedigreeConvenienceFunctionGenerator('ascendancyNumber')),
-          !!params && !!params.descendants ? utils.objectExtender({
-            getDescendant:    function(num) { return utils.find(this.persons, matchPersonNum('descendancyNumber', num)); },
-            existsDescendant: function(num) { return !!maybe(utils.find(this.persons, matchPersonNum('descendancyNumber', num))).id; }
-          }) : null,
-          function(response){
-            utils.forEach(response.persons, function(person, index, obj){
-              obj[index] = self.createPerson(person);
-            });
-            return response;
-          },
-          utils.objectExtender({getAscendancyNumber: function() { return this.data.display.ascendancyNumber; }}, function(response) {
-            return maybe(response).persons;
-          }),
-          !!params && !!params.descendants ? utils.objectExtender({getDescendancyNumber: function() { return this.data.display.descendancyNumber; }}, function(response) {
-            return maybe(response).persons;
-          }) : null
-        ));
+  return self.plumbing.getCollectionUrl('FSFT', 'ancestry-query').then(function(url) {
+    return self.plumbing.get(url, utils.extend({'person': pid}, params));
+  }).then(function(response){
+    var data = maybe(response.getData());
+    
+    utils.forEach(data.persons, function(person, index, obj){
+      obj[index] = self.createPerson(person);
     });
+    
+    // Add getAscendancyNumber method to persons
+    utils.forEach(data.persons, function(person){
+      person.getAscendancyNumber = function() { 
+        return this.data.display.ascendancyNumber; 
+      };
+    });
+    
+    // Add getDescendancyNumber method to persons
+    // and other helpers to the response if the descendants were requested
+    if(!!params && !!params.descendants){
+      utils.forEach(data.persons, function(person){
+        person.getDescendancyNumber = function() { 
+          return this.data.display.descendancyNumber; 
+        };
+      });
+      
+      utils.extend(response, {
+        getDescendant:    function(num) { return utils.find(data.persons, matchPersonNum('descendancyNumber', num)); },
+        existsDescendant: function(num) { return !!maybe(utils.find(data.persons, matchPersonNum('descendancyNumber', num))).id; }
+      });
+    }
+    
+    return utils.extend(response, pedigreeConvenienceFunctionGenerator('ascendancyNumber'));
+  });
 };
 
 /**
  * @ngdoc function
  * @name pedigree.functions:getDescendancy
- * @function
+
  *
  * @description
  * Get the descendants of a specified person and optionally a specified spouse with the following convenience functions
@@ -122,28 +130,20 @@ FS.prototype.getAncestry = function(pid, params, opts) {
  * `spouse` id to get descendency of person and spouse (set to null to get descendants of unknown spouse),
  * `marriageDetails` set to true to provide marriage details, and
  * `personDetails` set to true to provide person details.
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the descendancy
  */
-FS.prototype.getDescendancy = function(pid, params, opts) {
+FS.prototype.getDescendancy = function(pid, params) {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    // self.plumbing.getCollectionUrl('FSFT', 'descendancy-query'),
-    // descendancy query is not yet available (14 August 2015) so it's hard-coded for now
-    self.helpers.refPromise(self.helpers.getAPIServerUrl('/platform/tree/descendancy')),
-    function(url) {
-      return self.plumbing.get(url, utils.extend({'person': pid}, params), {}, opts,
-        utils.compose(
-          utils.objectExtender(pedigreeConvenienceFunctionGenerator('descendancyNumber')),
-          function(response){
-            utils.forEach(response.persons, function(person, index, obj){
-              obj[index] = self.createPerson(person);
-            });
-            return response;
-          },
-          utils.objectExtender({getDescendancyNumber: function() { return this.data.display.descendancyNumber; }}, function(response) {
-            return maybe(response).persons;
-          })
-        ));
+  // descendancy query is not yet available (14 August 2015) so it's hard-coded for now
+  // return self.plumbing.getCollectionUrl('FSFT', 'descendancy-query'),
+  return Promise.resolve(self.helpers.getAPIServerUrl('/platform/tree/descendancy')).then(function(url) {
+    return self.plumbing.get(url, utils.extend({'person': pid}, params));
+  }).then(function(response){
+    var data = maybe(response.getData());
+    utils.forEach(data.persons, function(person, index, obj){
+      obj[index] = self.createPerson(person);
+      obj[index].getDescendancyNumber = function() { return this.data.display.descendancyNumber; };
     });
+    return utils.extend(response, pedigreeConvenienceFunctionGenerator('descendancyNumber'));
+  });
 };

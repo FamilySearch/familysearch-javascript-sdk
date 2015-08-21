@@ -44,7 +44,7 @@ VocabularyList.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name vocabularies.types:constructor.VocabularyList#getTitle
    * @methodOf vocabularies.types:constructor.VocabularyList
-   * @function
+
    * @return {String} The label of this element.
    */
   getTitle: function(){
@@ -55,7 +55,7 @@ VocabularyList.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name vocabularies.types:constructor.VocabularyList#getDescription
    * @methodOf vocabularies.types:constructor.VocabularyList
-   * @function
+
    * @return {String} The description of this element.
    */
   getDescription: function(){
@@ -66,7 +66,7 @@ VocabularyList.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name vocabularies.types:constructor.VocabularyList#getElements
    * @methodOf vocabularies.types:constructor.VocabularyList
-   * @function
+
    * @return {Array} An array of {@link vocabularies.types:constructor.VocabularyElement VocabularyElements}.
    */
   getElements: function(){

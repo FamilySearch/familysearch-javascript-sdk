@@ -1,5 +1,3 @@
-var q = require('q');
-
 describe('Discussion', function() {
   
   it('references are returned from getPersonDiscussionRefs', function(done) {
@@ -24,7 +22,7 @@ describe('Discussion', function() {
       expect(discussion.getCreatedTimestamp()).toBeUndefined();  // bad example data
       expect(discussion.getModifiedTimestamp()).toBeUndefined(); // bad example data
       expect(discussion.getAgentId()).toBe('12345');
-      q.all([
+      Promise.all([
         discussion.getComments().then(function(response) {
           var comments = response.getComments();
           expect(comments.length).toBe(1);
@@ -41,8 +39,8 @@ describe('Discussion', function() {
   });
 
   it('are returned from getMultiDiscussion', function(done) {
-    FS.getMultiDiscussion(['https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMM']).then(function(response) {
-      var discussion = response['https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMM'].getDiscussion();
+    FS.getMultiDiscussion(['https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMM']).then(function(responses) {
+      var discussion = responses['https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMM'].getDiscussion();
       expect(discussion.getId()).toBe('dis-MMMM-MMM');
       expect(discussion.getTitle()).toBe('1900 US Census, Ethel Hollivet');
       done();
@@ -63,18 +61,16 @@ describe('Discussion', function() {
 
   it('is created', function(done) {
     var disc = FS.createDiscussion({title: '1900 US Census, Ethel Hollivet', details: 'details'});
-    var promise = disc.save();
-    promise.then(function(response) {
-      var request = promise.getRequest();
+    disc.save().then(function(response) {
+      var request = response.getRequest();
       expect(request.body).toEqualJson({
         'discussions' : [ {
           'title' : '1900 US Census, Ethel Hollivet',
           'details' : 'details'
         } ]
       });
-      expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('dis-MMMM-MMM');
-      // discussion has been refreshed from database
+      expect(response.getStatusCode()).toBe(201);
+      expect(disc.getId()).toBe('dis-MMMM-MMM');
       expect(disc.getDetails()).toBe('details');
       done();
     });
@@ -83,9 +79,8 @@ describe('Discussion', function() {
   it('is updated', function(done) {
     var disc = FS.createDiscussion({title: '1900 US Census, Ethel Hollivet', details: 'details'});
     disc.setId('dis-MMMM-MMM');
-    var promise = disc.save('https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMM');
-    promise.then(function(response) {
-      var request = promise.getRequest();
+    disc.save('https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMM').then(function(response) {
+      var request = response.getRequest();
       //noinspection JSUnresolvedFunction
       expect(request.body).toEqualJson({
         'discussions' : [ {
@@ -94,8 +89,7 @@ describe('Discussion', function() {
           'details' : 'details'
         } ]
       });
-      expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('dis-MMMM-MMM');
+      expect(response.getStatusCode()).toBe(201);
       done();
     });
   });
@@ -106,91 +100,86 @@ describe('Discussion', function() {
     disc.addLink('discussion', {
       href: 'https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMM'
     });
-    var promise = disc.delete();
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMM');
+    disc.delete().then(function(response) {
+      expect(response.getStatusCode()).toBe(204);
       done();
     });
   });
 
   it('reference is created', function(done) {
     var discRef = FS.createDiscussionRef({discussion: 'dis-1'});
-    var promise = discRef.save('https://sandbox.familysearch.org/platform/tree/persons/12345/discussion-references', '12345', 'change msg');
-    promise.then(function(response) {
-      var request = promise.getRequest(); 
-      //noinspection JSUnresolvedFunction
-      expect(request.body).toEqualJson({
-        'persons' : [ {
-          'id' : '12345',
-          'discussion-references' : [{
-            resource: 'dis-1'
-          }],
-          'attribution' : { changeMessage: 'change msg' }
-        } ]
+    discRef.save('https://sandbox.familysearch.org/platform/tree/persons/12345/discussion-references', '12345', 'change msg')
+      .then(function(response) {
+        var request = response.getRequest(); 
+        //noinspection JSUnresolvedFunction
+        expect(request.body).toEqualJson({
+          'persons' : [ {
+            'id' : '12345',
+            'discussion-references' : [{
+              resource: 'dis-1'
+            }],
+            'attribution' : { changeMessage: 'change msg' }
+          } ]
+        });
+        expect(response.getStatusCode()).toBe(201);
+        expect(discRef.getLink('discussion-reference').href).toBe('https://sandbox.familysearch.org/platform/tree/persons/12345/discussion-references/dis-1');
+        done();
       });
-      expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/persons/12345/discussion-references/dis-1');
-      done();
-    });
   });
 
   it('reference is deleted', function(done) {
-    var promise = FS.deleteDiscussionRef('https://familysearch.org/platform/tree/persons/12345/discussion-references/67890');
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://familysearch.org/platform/tree/persons/12345/discussion-references/67890');
-      done();
-    });
+    FS.deleteDiscussionRef('https://familysearch.org/platform/tree/persons/12345/discussion-references/67890')
+      .then(function(response) {
+        expect(response.getStatusCode()).toBe(204);
+        done();
+      });
   });
 
   it('comment is created', function(done) {
-    var promise = FS.createComment({text: 'Just a comment.'})
-      .save('https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMM/comments');
-    promise.then(function(response) {
-      var request = promise.getRequest();
-      //noinspection JSUnresolvedFunction
-      expect(request.body).toEqualJson({
-        'discussions' : [ {
-          'comments' : [ {
-            'text' : 'Just a comment.'
+    var comment = FS.createComment({text: 'Just a comment.'});
+    comment.save('https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMM/comments')
+      .then(function(response) {
+        var request = response.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.body).toEqualJson({
+          'discussions' : [ {
+            'comments' : [ {
+              'text' : 'Just a comment.'
+            } ]
           } ]
-        } ]
+        });
+        expect(response.getStatusCode()).toBe(201);
+        expect(comment.getId()).toBe('cmt-id');
+        done();
       });
-      expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('cmt-id');
-      done();
-    });
   });
 
   it('comment is updated', function(done) {
     var cmt = FS.createComment({text: 'Just a comment.'});
     cmt.setId('CMMM-MMM');
-    var promise = cmt.save('https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMU/comments');
-    promise.then(function(response) {
-      var request = promise.getRequest();
-      //noinspection JSUnresolvedFunction
-      expect(request.body).toEqualJson({
-        'discussions' : [ {
-          'comments' : [ {
-            'id' : 'CMMM-MMM',
-            'text' : 'Just a comment.'
+    cmt.save('https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMU/comments')
+      .then(function(response) {
+        var request = response.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.body).toEqualJson({
+          'discussions' : [ {
+            'comments' : [ {
+              'id' : 'CMMM-MMM',
+              'text' : 'Just a comment.'
+            } ]
           } ]
-        } ]
+        });
+        expect(response.getStatusCode()).toBe(204);
+        done();
       });
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('CMMM-MMM');
-      done();
-    });
   });
 
   it('comment is deleted', function(done) {
-    var promise = FS.deleteComment('https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMM/comments/1');
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMM/comments/1');
-      done();
-    });
+    FS.deleteComment('https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMM/comments/1')
+      .then(function(response) {
+        expect(response.getStatusCode()).toBe(204);
+        done();
+      });
   });
 
 });

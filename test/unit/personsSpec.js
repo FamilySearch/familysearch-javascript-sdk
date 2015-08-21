@@ -140,6 +140,8 @@ describe('A person', function() {
       expect(response.getChildRelationshipsOf('PA65-HG3')[0].getId()).toBe('PPPY-PP0');
       expect(response.getChildRelationshipsOf('FOO').length).toBe(0);
       done();
+    }).catch(function(e){
+      console.error(e.stack);
     });
   });
 
@@ -232,90 +234,98 @@ describe('A person', function() {
   });
 
   it('is created', function(done) {
-    var promise = FS.createPerson({names: [{givenName: 'Anastasia', surname: 'Aleksandrova'}]})
+    var person = FS.createPerson({names: [{givenName: 'Anastasia', surname: 'Aleksandrova'}]})
       .setGender('http://gedcomx.org/Female', '...change message...')
-      .addFact({type: 'http://gedcomx.org/Birth', date: {original: '3 Apr 1836', formal: '+1836-04-03'}, place: { original: 'Moscow, Russia'}, attribution: '...change message...'})
-      .save('...default change message...');
-    promise.then(function(response) {
-      var request = promise.getRequest();
-      expect(request.body).toEqualJson({
-        'persons' : [ {
-          'living': false,
-          'attribution' : {
-            'changeMessage' : '...default change message...'
-          },
-          'gender' : {
-            'type' : 'http://gedcomx.org/Female',
+      .addFact({type: 'http://gedcomx.org/Birth', date: {original: '3 Apr 1836', formal: '+1836-04-03'}, place: { original: 'Moscow, Russia'}, attribution: '...change message...'});
+    person.save('...default change message...')
+      .then(function(responses) {
+        var response = responses[0],
+            request = response.getRequest();
+        expect(request.body).toEqualJson({
+          'persons' : [ {
+            'living': false,
             'attribution' : {
-              'changeMessage' : '...change message...'
-            }
-          },
-          'names' : [ {
-            'nameForms' : [ {
-              'parts' : [ {
-                'type' : 'http://gedcomx.org/Given',
-                'value' : 'Anastasia'
-              }, {
-                'type' : 'http://gedcomx.org/Surname',
-                'value' : 'Aleksandrova'
+              'changeMessage' : '...default change message...'
+            },
+            'gender' : {
+              'type' : 'http://gedcomx.org/Female',
+              'attribution' : {
+                'changeMessage' : '...change message...'
+              }
+            },
+            'names' : [ {
+              'nameForms' : [ {
+                'parts' : [ {
+                  'type' : 'http://gedcomx.org/Given',
+                  'value' : 'Anastasia'
+                }, {
+                  'type' : 'http://gedcomx.org/Surname',
+                  'value' : 'Aleksandrova'
+                } ],
+                'fullText' : 'Anastasia Aleksandrova'
               } ],
-              'fullText' : 'Anastasia Aleksandrova'
+              'preferred' : true,
+              'type' : 'http://gedcomx.org/BirthName'
             } ],
-            'preferred' : true,
-            'type' : 'http://gedcomx.org/BirthName'
-          } ],
-          'facts' : [ {
-            'type' : 'http://gedcomx.org/Birth',
-            'date' : {
-              'original' : '3 Apr 1836',
-              'formal' : '+1836-04-03'
-            },
-            'place' : {
-              'original' : 'Moscow, Russia'
-            },
-            'attribution' : {
-              'changeMessage' : '...change message...'
-            }
+            'facts' : [ {
+              'type' : 'http://gedcomx.org/Birth',
+              'date' : {
+                'original' : '3 Apr 1836',
+                'formal' : '+1836-04-03'
+              },
+              'place' : {
+                'original' : 'Moscow, Russia'
+              },
+              'attribution' : {
+                'changeMessage' : '...change message...'
+              }
+            } ]
           } ]
-        } ]
+        });
+        expect(response.getStatusCode()).toBe(201);
+        // Check that the person's id gets set
+        expect(person.getId()).toBe('12345');
+        // Check that the new links get added
+        expect(person.getLinks()['ancestry']).toBeTruthy();
+        // Check that the person link gets added
+        expect(person.getLinks()['person'].href).toBe('https://familysearch.org/platform/tree/persons/12345');
+        done();
       });
-      expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('https://familysearch.org/platform/tree/persons/12345');
-      done();
-    });
   });
 
   it('is created with defaults and living:true', function(done) {
-    var promise = FS.createPerson({ living: true }).save('...default change message...');
-    promise.then(function(response) {
-      var request = promise.getRequest();
-      //noinspection JSUnresolvedFunction
-      expect(request.body).toEqualJson({
-        'persons' : [ {
-          'living': true,
-          'attribution': {
-            'changeMessage' : '...default change message...'
-          },
-          'gender' : {
-            'type' : 'http://gedcomx.org/Unknown'
-          },
-          'names' : [ {
-            'nameForms' : [ {
-              'parts' : [ {
-                'type' : 'http://gedcomx.org/Given',
-                'value' : 'Unknown'
+    var person = FS.createPerson({ living: true });
+    person.save('...default change message...')
+      .then(function(responses) {
+        var response = responses[0],
+            request = response.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.body).toEqualJson({
+          'persons' : [ {
+            'living': true,
+            'attribution': {
+              'changeMessage' : '...default change message...'
+            },
+            'gender' : {
+              'type' : 'http://gedcomx.org/Unknown'
+            },
+            'names' : [ {
+              'nameForms' : [ {
+                'parts' : [ {
+                  'type' : 'http://gedcomx.org/Given',
+                  'value' : 'Unknown'
+                } ],
+                'fullText' : 'Unknown'
               } ],
-              'fullText' : 'Unknown'
-            } ],
-            'preferred' : true,
-            'type' : 'http://gedcomx.org/BirthName'
+              'preferred' : true,
+              'type' : 'http://gedcomx.org/BirthName'
+            } ]
           } ]
-        } ]
+        });
+        expect(response.getStatusCode()).toBe(201);
+        expect(person.getLinks().person.href).toBe('https://familysearch.org/platform/tree/persons/12345');
+        done();
       });
-      expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('https://familysearch.org/platform/tree/persons/12345');
-      done();
-    });
   });
 
   it('conclusion is added', function(done) {
@@ -324,34 +334,34 @@ describe('A person', function() {
     person.addLink('person', {
       href: 'https://familysearch.org/platform/tree/persons/12345'
     });
-    var promise = person
+    person
       .addFact({type: 'http://gedcomx.org/Birth', date: { original: '3 Apr 1836', formal: '+1836-04-03'}, place: {original: 'Moscow, Russia'}, attribution: '...change message...'})
-      .save();
-    promise.then(function(response) {
-      var request = promise.getRequest();
-      //noinspection JSUnresolvedFunction
-      expect(request.body).toEqualJson({
-        'persons' : [ {
-          'id' : '12345',
-          'facts' : [ {
-            'type' : 'http://gedcomx.org/Birth',
-            'date' : {
-              'original' : '3 Apr 1836',
-              'formal' : '+1836-04-03'
-            },
-            'place' : {
-              'original' : 'Moscow, Russia'
-            },
-            'attribution' : {
-              'changeMessage' : '...change message...'
-            }
+      .save()
+      .then(function(responses) {
+        var response = responses[0],
+            request = response.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.body).toEqualJson({
+          'persons' : [ {
+            'id' : '12345',
+            'facts' : [ {
+              'type' : 'http://gedcomx.org/Birth',
+              'date' : {
+                'original' : '3 Apr 1836',
+                'formal' : '+1836-04-03'
+              },
+              'place' : {
+                'original' : 'Moscow, Russia'
+              },
+              'attribution' : {
+                'changeMessage' : '...change message...'
+              }
+            } ]
           } ]
-        } ]
+        });
+        expect(response.getStatusCode()).toBe(204);
+        done();
       });
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://familysearch.org/platform/tree/persons/12345');
-      done();
-    });
   });
 
   function createMockPerson(pid, fid) {
@@ -371,9 +381,9 @@ describe('A person', function() {
     var person = createMockPerson('12345', 'ABCDE');
     // set birth place
     person.getBirth().setOriginalPlace('Moscow, Russia').setAttribution('...change message...');
-    var promise = person.save();
-    promise.then(function(response) {
-      var request = promise.getRequest();
+    person.save().then(function(responses) {
+      var response = responses[0],
+          request = response.getRequest();
       //noinspection JSUnresolvedFunction
       expect(request.body).toEqualJson({
         'persons' : [ {
@@ -394,89 +404,80 @@ describe('A person', function() {
           } ]
         } ]
       });
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://familysearch.org/platform/tree/persons/12345');
+      expect(response.getStatusCode()).toBe(204);
       done();
     });
   });
 
   it('conclusion is deleted', function(done) {
     var person = createMockPerson('12345', '1');
-    // delete fact
-    var promise = person
-      .deleteFact(person.getFacts()[0])
-      .save('...change message...');
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(promise.getRequest().headers['X-Reason']).toBe('...change message...');
-      expect(response).toBe('https://familysearch.org/platform/tree/persons/12345');
-      done();
-    });
+    person.deleteFact(person.getFacts()[0])
+      .save('...change message...')
+      .then(function(responses) {
+        expect(responses[0].getStatusCode()).toBe(204);
+        expect(responses[0].getRequest().headers['X-Reason']).toBe('...change message...');
+        done();
+      });
   });
 
   it('is deleted', function(done) {
-    var promise = createMockPerson('PPPJ-MYZ','fid')
-      .delete('Reason for delete');
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(promise.getRequest().headers['X-Reason']).toBe('Reason for delete');
-      expect(response).toBe('https://familysearch.org/platform/tree/persons/PPPJ-MYZ');
-      done();
-    });
+    createMockPerson('PPPJ-MYZ','fid')
+      .delete('Reason for delete')
+      .then(function(response) {
+        expect(response.getStatusCode()).toBe(204);
+        expect(response.getRequest().headers['X-Reason']).toBe('Reason for delete');
+        done();
+      });
   });
 
   it('preferred spouse is read', function(done) {
     FS.getPreferredSpouse('PPPJ-MYY').then(function(response) {
-      expect(response).toBe('12345');
+      expect(response.getPreferredSpouse()).toBe('https://familysearch.org/platform/tree/couple-relationships/12345');
       done();
     });
   });
 
   it('preferred spouse is set', function(done) {
-    var promise = FS.setPreferredSpouse('PPPJ-MYY', 'https://sandbox.familysearch.org/platform/tree/couple-relationships/12345');
-    promise.then(function(response) {
-      var request = promise.getRequest();
-      expect(request.headers['Location']).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/12345');
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('PPPJ-MYY');
-      done();
-    });
+    FS.setPreferredSpouse('PPPJ-MYY', 'https://sandbox.familysearch.org/platform/tree/couple-relationships/12345')
+      .then(function(response) {
+        var request = response.getRequest();
+        expect(request.headers['Location']).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/12345');
+        expect(response.getStatusCode()).toBe(204);
+        done();
+      });
   });
 
   it('preferred spouse is deleted', function(done) {
-    var promise = FS.deletePreferredSpouse('PPPJ-MYY');
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('PPPJ-MYY');
-      done();
-    });
+    FS.deletePreferredSpouse('PPPJ-MYY')
+      .then(function(response) {
+        expect(response.getStatusCode()).toBe(204);
+        done();
+      });
   });
 
-  it( 'preferred parents are read', function(done) {
+  it('preferred parents are read', function(done) {
     FS.getPreferredParents('PPPJ-MYY').then(function(response) {
-      expect(response).toBe('12345');
+      expect(response.getPreferredParents()).toBe('https://familysearch.org/platform/tree/child-and-parents-relationships/12345');
       done();
     });
   });
 
   it('preferred parents are set', function(done) {
-    var promise = FS.setPreferredParents('PPPJ-MYY', 'https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/12345');
-    promise.then(function(response) {
-      var request = promise.getRequest();
-      expect(request.headers['Location']).toBe('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/12345');
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('PPPJ-MYY');
-      done();
-    });
+    FS.setPreferredParents('PPPJ-MYY', 'https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/12345')
+      .then(function(response) {
+        var request = response.getRequest();
+        expect(request.headers['Location']).toBe('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/12345');
+        expect(response.getStatusCode()).toBe(204);
+        done();
+      });
   });
 
   it('preferred parents are deleted', function(done) {
-    var promise = FS.deletePreferredParents('PPPJ-MYY');
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('PPPJ-MYY');
-      done();
-    });
+    FS.deletePreferredParents('PPPJ-MYY')
+      .then(function(response) {
+        expect(response.getStatusCode()).toBe(204);
+        done();
+      });
   });
   
   it('preferred name does not exist', function(done){
@@ -497,10 +498,8 @@ describe('A person', function() {
   
   it('restore person', function(done){
     FS.getPerson('DELETED').then(function(response){
-      var promise = response.getPerson().restore();
-      promise.then(function(response){
-        expect(promise.getStatusCode()).toBe(204);
-        expect(response).toBe('https://sandbox.familysearch.org/platform/tree/persons/DELETED');
+      response.getPerson().restore().then(function(response){
+        expect(response.getStatusCode()).toBe(204);
         done();
       });
     });

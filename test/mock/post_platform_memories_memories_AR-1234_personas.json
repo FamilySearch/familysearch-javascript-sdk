@@ -1,6 +1,7 @@
 {
   "status": 201,
   "headers": {
-    "Location": "https://sandbox.familysearch.org/platform/memories/memories/AR-1234/personas/PXX-1234"
+    "Location": "https://sandbox.familysearch.org/platform/memories/memories/AR-1234/personas/PXX-1234",
+    "X-Entity-ID": "PXX-1234"
   }
 }

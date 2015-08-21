@@ -63,7 +63,7 @@ Note.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name notes.types:constructor.Note#getNoteUrl
    * @methodOf notes.types:constructor.Note
-   * @function
+
    * @return {String} note URL (without the access token)
    */
   getNoteUrl: function() { return this.helpers.removeAccessToken(maybe(this.getLink('note')).href); },
@@ -72,19 +72,18 @@ Note.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name notes.types:constructor.Note#save
    * @methodOf notes.types:constructor.Note
-   * @function
+
    * @description
-   * Create a new note (if this note does not have an id) or update the existing note
+   * Create a new note (if this note does not have an id) or update the existing note.
    *
    * {@link http://jsfiddle.net/vg1kge0o/1/ Editable Example}
    *
    * @param {string} url url of the notes list endpoint; only necessary when creating a new note
    * @param {string} changeMessage change message
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise of the note id, which is fulfilled after the note has been updated,
+   * @return {Object} promise for the response
    * and if refresh is true, after the note has been read.
    */
-  save: function(url, changeMessage, opts) {
+  save: function(url, changeMessage) {
     var self = this;
     if(!url){
       url = self.getNoteUrl();
@@ -99,9 +98,9 @@ Note.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
     if (changeMessage) {
       payload[entityType][0].attribution = self.client.createAttribution(changeMessage);
     }
-    return self.plumbing.post(url, payload, headers, opts, function(data, promise) {
-      // x-entity-id and location headers are not set on update, only on create
-      return self.getNoteUrl() || self.helpers.removeAccessToken(promise.getResponseHeader('Location'));
+    return self.plumbing.post(url, payload, headers).then(function(response){
+      self.updateFromResponse(response, 'note');
+      return response;
     });
   },
 
@@ -109,14 +108,13 @@ Note.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name notes.types:constructor.Note#delete
    * @methodOf notes.types:constructor.Note
-   * @function
+
    * @description delete this note
    * @param {string=} changeMessage change message
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the note URL
+   * @return {Object} promise for the response
    */
-  delete: function(changeMessage, opts) {
-    return this.client.deleteNote(this.getNoteUrl(), changeMessage, opts);
+  delete: function(changeMessage) {
+    return this.client.deleteNote(this.getNoteUrl(), changeMessage);
   }
 
 });

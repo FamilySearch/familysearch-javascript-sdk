@@ -12,14 +12,14 @@ var FS = require('../FamilySearch'),
  */
 
 var childAndParentsConvenienceFunctions = {
-  getRelationship: function() { return maybe(this.childAndParentsRelationships)[0]; },
-  getPerson:       function(id) { return utils.find(this.persons, {id: id}); }
+  getRelationship: function() { return maybe(this.getData().childAndParentsRelationships)[0]; },
+  getPerson:       function(id) { return utils.find(this.getData().persons, {id: id}); }
 };
 
 /**
  * @ngdoc function
  * @name parentsAndChildren.functions:getChildAndParents
- * @function
+
  *
  * @description
  * Get information about a child and parents relationship.
@@ -36,30 +36,25 @@ var childAndParentsConvenienceFunctions = {
  * @param {String} url full URL of the child-and-parents relationship
  * @param {Object=} params set `persons` true to return a person object for each person in the relationship,
  * which you can access using the `getPerson(id)` convenience function.
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getChildAndParents = function(url, params, opts) {
+FS.prototype.getChildAndParents = function(url, params) {
   var self = this;
-  return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts,
-    utils.compose(
-      utils.objectExtender(childAndParentsConvenienceFunctions),
-      function(response){
-        utils.forEach(response.persons, function(person, index, obj){
-          obj[index] = self.createPerson(person);
-        });
-        utils.forEach(response.childAndParentsRelationships, function(rel, index, obj){
-          obj[index] = self.createChildAndParents(rel);
-        });
-        return response;
-      }
-    ));
+  return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
+    utils.forEach(response.getData().persons, function(person, index, obj){
+      obj[index] = self.createPerson(person);
+    });
+    utils.forEach(response.getData().childAndParentsRelationships, function(rel, index, obj){
+      obj[index] = self.createChildAndParents(rel);
+    });
+    return utils.extend(response, childAndParentsConvenienceFunctions);
+  });
 };
 
 /**
  * @ngdoc function
  * @name parentsAndChildren.functions:deleteChildAndParents
- * @function
+
  *
  * @description
  * Delete the specified relationship
@@ -70,24 +65,21 @@ FS.prototype.getChildAndParents = function(url, params, opts) {
  *
  * @param {string} url full URL of the child-and-parents relationship
  * @param {string} changeMessage reason for the deletion
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the relationship id/URL
+ * @return {Object} promise for the response
  */
-FS.prototype.deleteChildAndParents = function(url, changeMessage, opts) {
+FS.prototype.deleteChildAndParents = function(url, changeMessage) {
   var self = this;
   var headers = {'Content-Type': 'application/x-fs-v1+json'};
   if (changeMessage) {
     headers['X-Reason'] = changeMessage;
   }
-  return self.plumbing.del(url, headers, opts, function() {
-    return url;
-  });
+  return self.plumbing.del(url, headers);
 };
 
 /**
  * @ngdoc function
  * @name parentsAndChildren.functions:restoreChildAndParents
- * @function
+
  *
  * @description
  * Restore a deleted child and parents relationship
@@ -98,11 +90,8 @@ FS.prototype.deleteChildAndParents = function(url, changeMessage, opts) {
  *
  * @param {string} url full URL of the child-and-parents relationship
  * @param {string} changeMessage reason for the deletion
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the relationship id/URL
+ * @return {Object} promise for the response
  */
-FS.prototype.restoreChildAndParents = function(url, opts) {
-  return this.plumbing.post(url, null, {'Content-Type': 'application/x-fs-v1+json'}, opts, function() {
-    return url;
-  });
+FS.prototype.restoreChildAndParents = function(url) {
+  return this.plumbing.post(url, null, {'Content-Type': 'application/x-fs-v1+json'});
 };

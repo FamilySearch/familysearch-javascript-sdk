@@ -179,10 +179,7 @@ PlaceDescription.prototype = utils.extend(Object.create(FS.BaseClass.prototype),
     if(this.data.jurisdiction instanceof FS.PlaceDescription){
       return this.client.getPlaceDescription(this.data.jurisdiction.getPlaceDescriptionUrl());
     } else {
-      var d = this.client.settings.deferredWrapper(),
-          promise = d.promise;
-      d.reject(new Error('No jurisdiction available'));
-      return promise;
+      return Promise.reject(new Error('No jurisdiction available'));
     }
   },
   

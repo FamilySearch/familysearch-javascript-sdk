@@ -10,23 +10,23 @@ var FS = require('./../FamilySearch'),
  * {@link https://familysearch.org/developers/docs/api/resources#change-history FamilySearch API Docs}
  */
 
-FS.prototype._changeHistoryResponseMapper = function(){
-  var self = this;
-  return utils.compose(
-    utils.objectExtender({getChanges: function() { return this.entries || []; }}),
-    function(response){
-      for(var i = 0; i < utils.maybe(response.entries).length; i++){
-        response.entries[i] = self.createChange(response.entries[i]);
-      }
-      return response;
+FS.prototype._changeHistoryResponseMapper = function(response){
+  var self = this,
+      data = utils.maybe(response.getData());
+  for(var i = 0; i < data.entries.length; i++){
+    data.entries[i] = self.createChange(data.entries[i]);
+  }
+  return utils.extend({
+    getChanges: function() { 
+      return data.entries || []; 
     }
-  );
+  });
 };
 
 /**
  * @ngdoc function
  * @name changeHistory.functions:getPersonChanges
- * @function
+
  *
  * @description
  * Get change history for a person
@@ -42,17 +42,19 @@ FS.prototype._changeHistoryResponseMapper = function(){
  *
  * @param {String} url full URL of the person changes. child and parent changes, or couple changes endpoint
  * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getChanges = function(url, params, opts) {
-  return this.plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}, opts, this._changeHistoryResponseMapper());
+FS.prototype.getChanges = function(url, params) {
+  var self = this;
+  return self.plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}).then(function(response){
+    return self._changeHistoryResponseMapper(response);
+  });
 };
 
 /**
  * @ngdoc function
  * @name changeHistory.functions:restoreChange
- * @function
+
  *
  * @description
  * Restore the specified change
@@ -62,12 +64,8 @@ FS.prototype.getChanges = function(url, params, opts) {
  * {@link http://jsfiddle.net/xL50x20d/1/ Editable Example}
  *
  * @param {string} url full URL of the restore changes endpoint
- * @param {Object=} opts options to pass to the http function specified during init
- * @return {Object} promise for the chid
+ * @return {Object} promise for the response
  */
-FS.prototype.restoreChange = function(url, opts) {
-  var self = this;
-  return self.plumbing.post(url, null, {'Content-Type': void 0}, opts, function() { // don't send a Content-Type header
-    return url;
-  });
+FS.prototype.restoreChange = function(url) {
+  return this.plumbing.post(url, null, {'Content-Type': void 0});
 };

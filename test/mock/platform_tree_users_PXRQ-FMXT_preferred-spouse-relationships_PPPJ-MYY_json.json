@@ -1,6 +1,6 @@
 {
   "status" : 200,
   "headers" : {
-    "Location" : "/platform/tree/couple-relationships/12345"
+    "Location" : "https://familysearch.org/platform/tree/couple-relationships/12345"
   }
 }

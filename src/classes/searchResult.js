@@ -64,7 +64,7 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name searchAndMatch.types:constructor.SearchResult#getPerson
    * @methodOf searchAndMatch.types:constructor.SearchResult
-   * @function
+
    * @description
    *
    * **Note: Be aware that the `Person` objects returned from SearchResults do not have as much information
@@ -83,7 +83,7 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name searchAndMatch.types:constructor.SearchResult#getPrimaryPerson
    * @methodOf searchAndMatch.types:constructor.SearchResult
-   * @function
+
    * @return {Person} the primary {@link person.types:constructor.Person Person} for this search result
    */
   getPrimaryPerson: function() {
@@ -94,7 +94,7 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name searchAndMatch.types:constructor.SearchResult#getFullPrimaryPerson
    * @methodOf searchAndMatch.types:constructor.SearchResult
-   * @function
+
    * @return {Object} promise for the {@link person.functions:getPerson getPerson} response
    */
   getFullPrimaryPerson: function() { return this.client.getPerson(this.getId()); },
@@ -103,7 +103,7 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name searchAndMatch.types:constructor.SearchResult#getFatherIds
    * @methodOf searchAndMatch.types:constructor.SearchResult
-   * @function
+
    * @return {String[]} array of father Id's for this search result
    */
   getFatherIds: function() {
@@ -123,7 +123,7 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name searchAndMatch.types:constructor.SearchResult#getFathers
    * @methodOf searchAndMatch.types:constructor.SearchResult
-   * @function
+
    * @return {Person[]} array of father {@link person.types:constructor.Person Persons} for this search result
    */
   getFathers: function() { return utils.map(this.getFatherIds(), this.getPerson, this); },
@@ -132,7 +132,7 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name searchAndMatch.types:constructor.SearchResult#getMotherIds
    * @methodOf searchAndMatch.types:constructor.SearchResult
-   * @function
+
    * @return {String[]} array of mother Id's for this search result
    */
   getMotherIds: function() {
@@ -152,7 +152,7 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name searchAndMatch.types:constructor.SearchResult#getMothers
    * @methodOf searchAndMatch.types:constructor.SearchResult
-   * @function
+
    * @return {Person[]} array of mother {@link person.types:constructor.Person Persons} for this search result
    */
   getMothers: function() { return utils.map(this.getMotherIds(), this.getPerson, this); },
@@ -161,7 +161,7 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name searchAndMatch.types:constructor.SearchResult#getSpouseIds
    * @methodOf searchAndMatch.types:constructor.SearchResult
-   * @function
+
    * @return {String[]} array of spouse Id's for this search result
    */
   getSpouseIds:  function() {
@@ -179,7 +179,7 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name searchAndMatch.types:constructor.SearchResult#getSpouses
    * @methodOf searchAndMatch.types:constructor.SearchResult
-   * @function
+
    * @return {Person[]} array of spouse {@link person.types:constructor.Person Persons} for this search result
    */
   getSpouses: function() { return utils.map(this.getSpouseIds(), this.getPerson, this); },
@@ -188,7 +188,7 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name searchAndMatch.types:constructor.SearchResult#getChildIds
    * @methodOf searchAndMatch.types:constructor.SearchResult
-   * @function
+
    * @return {String[]} array of child Id's for this search result
    */
   getChildIds:  function() {
@@ -207,7 +207,7 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name searchAndMatch.types:constructor.SearchResult#getChildren
    * @methodOf searchAndMatch.types:constructor.SearchResult
-   * @function
+
    * @return {Person[]} array of spouse {@link person.types:constructor.Person Persons} for this search result
    */
   getChildren: function() { return utils.map(this.getChildIds(), this.getPerson, this); }

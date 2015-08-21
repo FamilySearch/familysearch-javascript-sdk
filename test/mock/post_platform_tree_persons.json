@@ -2,6 +2,16 @@
   "status": 201,
   "headers": {
     "X-ENTITY-ID": "12345",
-    "Location": "https://familysearch.org/platform/tree/persons/12345"
+    "Location": "https://familysearch.org/platform/tree/persons/12345",
+    "Link": ["<https://familysearch.org/platform/tree/persons/12345/spouse-relationships>; rel=\"spouse-relationships\"",
+            "<https://familysearch.org/platform/tree/persons/12345/source-references>; rel=\"source-references\"",
+            "<https://familysearch.org/platform/tree/persons-with-relationships?person=12345>; rel=\"person-with-relationships\"",
+            "<https://familysearch.org/platform/tree/persons/12345/parent-relationships>; rel=\"parent-relationships\"",
+            "<https://familysearch.org/platform/tree/persons/12345/notes>; rel=\"notes\"",
+            "<https://familysearch.org/platform/tree/persons/12345/matches>; rel=\"matches\"",
+            "<https://familysearch.org/platform/tree/persons/12345/discussion-references>; rel=\"discussion-references\"",
+            "<https://familysearch.org/platform/tree/descendancy?person=12345>; rel=\"descendancy\"",
+            "<https://familysearch.org/platform/tree/persons/12345/child-relationships>; rel=\"child-relationships\"",
+            "<https://familysearch.org/platform/tree/ancestry?person=12345>; rel=\"ancestry\""]
   }
 }

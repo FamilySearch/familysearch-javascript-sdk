@@ -132,7 +132,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name name.types:constructor.Name#getNameFormsCount
    * @methodOf name.types:constructor.Name
-   * @function
+
    * @return {Number} get the number of name forms
    */
   getNameFormsCount: function() { return this.data.nameForms ? this.data.nameForms.length : 0; },
@@ -141,7 +141,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name name.types:constructor.Name#getNameForm
    * @methodOf name.types:constructor.Name
-   * @function
+
    * @param {Number=} i name form to read; defaults to 0
    * @return {Number} get the `i`'th name form: each name form has `lang`, `fullText`, and `parts` properties
    */
@@ -151,7 +151,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name name.types:constructor.Name#getFullText
    * @methodOf name.types:constructor.Name
-   * @function
+
    * @param {Number=} i name form to read; defaults to 0
    * @return {String} get the full text of the `i`'th name form
    */
@@ -161,7 +161,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name name.types:constructor.Name#getLanguage
    * @methodOf name.types:constructor.Name
-   * @function
+
    * @param {Number=} i name form to read; defaults to 0
    * @return {String} get the language of the `i`'th name form
    */
@@ -171,7 +171,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name name.types:constructor.Name#getNamePart
    * @methodOf name.types:constructor.Name
-   * @function
+
    * @description you can call getGivenName, getSurname, getPrefix, or getSuffix instead of this function
    * @param {String} type http://gedcomx.org/Given or http://gedcomx.org/Surname
    * @param {Number=} i name form to read; defaults to 0
@@ -185,7 +185,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name name.types:constructor.Name#getGivenName
    * @methodOf name.types:constructor.Name
-   * @function
+
    * @param {Number=} i name form to read; defaults to 0
    * @return {String} get the given part of the `i`'th name form
    */
@@ -197,7 +197,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name name.types:constructor.Name#getSurname
    * @methodOf name.types:constructor.Name
-   * @function
+
    * @param {Number=} i name form to read; defaults to 0
    * @return {String} get the surname part of the `i`'th name form
    */
@@ -209,7 +209,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name name.types:constructor.Name#getPrefix
    * @methodOf name.types:constructor.Name
-   * @function
+
    * @param {Number=} i name form to read; defaults to 0
    * @return {String} get the prefix part of the `i`'th name form
    */
@@ -221,7 +221,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name name.types:constructor.Name#getSuffix
    * @methodOf name.types:constructor.Name
-   * @function
+
    * @param {Number=} i name form to read; defaults to 0
    * @return {String} get the suffix part of the `i`'th name form
    */
@@ -233,7 +233,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name name.types:constructor.Name#setType
    * @methodOf name.types:constructor.Name
-   * @function
+
    * @description sets the changed flag as well as the value
    * @param {String} type e.g., http://gedcomx.org/BirthName
    * @return {Name} this name
@@ -254,7 +254,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name name.types:constructor.Name#setPreferred
    * @methodOf name.types:constructor.Name
-   * @function
+
    * @description sets the changed flag as well as the value
    *
    * __NOTE__: the preferred name flag can be set only when the person is initially created; after that it is read-only
@@ -272,7 +272,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name name.types:constructor.Name#setFullText
    * @methodOf name.types:constructor.Name
-   * @function
+
    * @description sets the changed flag as well as the value
    * @param {String} fullText value
    * @param {Number=} i name form to set; defaults to 0
@@ -295,7 +295,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name name.types:constructor.Name#setNamePart
    * @methodOf name.types:constructor.Name
-   * @function
+
    * @description sets the changed flag as well as the value;
    * you can call setGivenName, setSurname, setPrefix, and setSuffix instead of this function
    * @param {String} name value
@@ -328,7 +328,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name name.types:constructor.Name#setGivenName
    * @methodOf name.types:constructor.Name
-   * @function
+
    * @description sets the changed flag as well as the value
    * @param {String} givenName value
    * @param {Number=} i name form to set; defaults to 0
@@ -342,7 +342,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name name.types:constructor.Name#setSurname
    * @methodOf name.types:constructor.Name
-   * @function
+
    * @description sets the changed flag as well as the value
    * @param {String} surname value
    * @param {Number=} i name form to set; defaults to 0
@@ -356,7 +356,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name name.types:constructor.Name#setPrefix
    * @methodOf name.types:constructor.Name
-   * @function
+
    * @description sets the changed flag as well as the value
    * @param {String} prefix value
    * @param {Number=} i name form to set; defaults to 0
@@ -370,7 +370,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name name.types:constructor.Name#setSuffix
    * @methodOf name.types:constructor.Name
-   * @function
+
    * @description sets the changed flag as well as the value
    * @param {String} suffix value
    * @param {Number=} i name form to set; defaults to 0
@@ -384,7 +384,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name name.types:constructor.Name#setChangeMessage
    * @methodOf name.types:constructor.Name
-   * @function
+
    * @description sets the changeMessage used to update the name
    * @param {String} changeMessage change message
    * @return {Name} this name

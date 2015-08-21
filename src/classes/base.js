@@ -90,14 +90,12 @@ FS.BaseClass.prototype.getLink = function(rel){
  * @return {Object} promise for the link
  */
 FS.BaseClass.prototype.getLinkPromise = function(name){
-  var d = this.client.settings.deferredWrapper(),
-      links = this.getLinks();
+  var links = this.getLinks();
   if(links[name]){
-    d.resolve(links[name]);
+    return Promise.resolve(links[name]);
   } else {
-    d.reject(new Error('Missing link: ' + name));
+    return Promise.reject(new Error('Missing link: ' + name));
   }
-  return d.promise;
 };
 
 /**
@@ -128,6 +126,7 @@ FS.BaseClass.prototype.addLinks = function(links){
   utils.forEach(links, function(link, rel){
     self.addLink(rel, link);
   });
+  return this;
 };
 
 /**
@@ -155,6 +154,28 @@ FS.BaseClass.prototype.setAttribution = function(attribution){
  */
 FS.BaseClass.prototype.getAttribution = function(){
   return this.data.attribution;
+};
+
+/**
+ * @ngdoc function
+ * @name familysearch.types:constructor.BaseClass#updateFromResponse
+ * @methodOf familysearch.types:constructor.BaseClass
+ * @param {response} response response object
+ * @param {string} selfRel rel of the link which the location header will be added to
+ * @return {Object} this object
+ * @description Update the object's ID and links from the HTTP headers of the response
+ */
+FS.BaseClass.prototype.updateFromResponse = function(response, selfRel){
+  if(response.getHeader('x-entity-id')){
+    this.setId(response.getHeader('x-entity-id'));
+  }
+  if(response.getHeader('link')){
+    this.addLinks(this.helpers.parseLinkHeaders(response.getHeader('link', true)));
+  }
+  if(selfRel && response.getHeader('location')){
+    this.addLink(selfRel, {href: response.getHeader('location')});
+  }
+  return this;
 };
 
 /**

@@ -13,7 +13,7 @@ var FS = require('./../FamilySearch'),
 /**
  * @ngdoc function
  * @name places.functions:getPlace
- * @function
+
  *
  * @description
  * Get a place.
@@ -25,31 +25,27 @@ var FS = require('./../FamilySearch'),
  * {@link http://jsfiddle.net/sq78dutL/ Editable Example}
  *
  * @param {String} url full url of a place
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getPlace = function(url, opts) {
+FS.prototype.getPlace = function(url) {
   var self = this;
-  return self.plumbing.get(url, {}, {}, opts,
-    utils.compose(
-      utils.objectExtender({
-        getPlace: function() { 
-          return utils.maybe(this.places)[0]; 
-        }
-      }),
-      function(response){
-        utils.forEach(response.places, function(place, index, obj){
-          obj[index] = self.createPlaceDescription(place);
-        });
-        return response;
+  return self.plumbing.get(url).then(function(response){
+    var data = utils.maybe(response.getData());
+    utils.forEach(data.places, function(place, index, obj){
+      obj[index] = self.createPlaceDescription(place);
+    });
+    return utils.extend(response, {
+      getPlace: function() { 
+        return utils.maybe(data.places)[0]; 
       }
-    ));
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name places.functions:getPlaceDescription
- * @function
+
  *
  * @description
  * Get a place.
@@ -61,43 +57,39 @@ FS.prototype.getPlace = function(url, opts) {
  * {@link http://jsfiddle.net/edhbx4L1/1/ Editable Example}
  *
  * @param {String} url full url of the place description
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getPlaceDescription = function(url, opts) {
+FS.prototype.getPlaceDescription = function(url) {
   var self = this;
-  return self.plumbing.get(url, {}, {}, opts,
-    utils.compose(
-      utils.objectExtender({
-        getPlaceDescription: function() { 
-          return utils.maybe(this.places)[0]; 
+  return self.plumbing.get(url).then(function(response){
+    var data = utils.maybe(response.getData()),
+        placesMap = {};
+    
+    utils.forEach(data.places, function(place, index, obj){
+      obj[index] = placesMap[place.id] = self.createPlaceDescription(place);
+    });
+    
+    utils.forEach(data.places, function(place){
+      if(place.data.jurisdiction && place.data.jurisdiction.resource){
+        var jurisdictionId = place.data.jurisdiction.resource.substring(1);
+        if(placesMap[jurisdictionId]){
+          place.setJurisdiction(placesMap[jurisdictionId]);
         }
-      }),
-      function(response){
-        var placesMap = {};
-        
-        utils.forEach(response.places, function(place, index, obj){
-          obj[index] = placesMap[place.id] = self.createPlaceDescription(place);
-        });
-        
-        utils.forEach(response.places, function(place){
-          if(place.data.jurisdiction && place.data.jurisdiction.resource){
-            var jurisdictionId = place.data.jurisdiction.resource.substring(1);
-            if(placesMap[jurisdictionId]){
-              place.setJurisdiction(placesMap[jurisdictionId]);
-            }
-          }
-        });
-        
-        return response;
       }
-    ));
+    });
+    
+    return utils.extend(response, {
+      getPlaceDescription: function() { 
+        return utils.maybe(data.places)[0]; 
+      }
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name places.functions:getPlaceSearch
- * @function
+
  *
  * @description
  * Search for a place.
@@ -123,41 +115,33 @@ FS.prototype.getPlaceDescription = function(url, opts) {
  * {@link http://jsfiddle.net/80xcpfps/2/ Editable Example}
  *
  * @param {String} id of the place description
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getPlacesSearch = function(params, opts) {
+FS.prototype.getPlacesSearch = function(params) {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getCollectionUrl('FSPA', 'place-search'),
-    function(url){
-      return self.plumbing.get(url, utils.removeEmptyProperties({
-        q: utils.searchParamsFilter(utils.removeEmptyProperties(utils.extend({}, params))),
-        start: params.start,
-        count: params.count
-      }), {'Accept': 'application/x-gedcomx-atom+json'}, opts,
-        utils.compose(
-          utils.objectExtender({
-            getSearchResults: function() { 
-              return utils.maybe(this.entries); 
-            }
-          }),
-          function(response){
-            utils.forEach(response.entries, function(entry, i, obj){
-              obj[i] = self.createPlacesSearchResult(entry);
-            });
-            return response;
-          }
-        )
-      );
-    }
-  );
+  return self.plumbing.getCollectionUrl('FSPA', 'place-search').then(function(url){
+    return self.plumbing.get(url, utils.removeEmptyProperties({
+      q: utils.searchParamsFilter(utils.removeEmptyProperties(utils.extend({}, params))),
+      start: params.start,
+      count: params.count
+    }), {'Accept': 'application/x-gedcomx-atom+json'});
+  }).then(function(response){
+    var data = utils.maybe(response.getData());
+    utils.forEach(data.entries, function(entry, i, obj){
+      obj[i] = self.createPlacesSearchResult(entry);
+    });
+    return utils.extend(response, {
+      getSearchResults: function() { 
+        return utils.maybe(data.entries); 
+      }
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name places.functions:getPlaceDescriptionChildren
- * @function
+
  *
  * @description
  * Get the children of a Place Description. Use {@link places.functions:getPlaceSearch getPlacesSearch()} to filter by type, date, and more.
@@ -169,31 +153,27 @@ FS.prototype.getPlacesSearch = function(params, opts) {
  * {@link http://jsfiddle.net/xwpsLm46/ Editable Example}
  *
  * @param {String} url full url for the place descriptions children endpoint
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getPlaceDescriptionChildren = function(url, opts) {
+FS.prototype.getPlaceDescriptionChildren = function(url) {
   var self = this;
-  return self.plumbing.get(url, {}, {}, opts,
-    utils.compose(
-      utils.objectExtender({
-        getChildren: function() { 
-          return utils.maybe(this.places); 
-        }
-      }),
-      function(response){
-        utils.forEach(response.places, function(place, index, obj){
-          obj[index] = self.createPlaceDescription(place);
-        });
-        return response;
+  return self.plumbing.get(url).then(function(response){
+    var data = utils.maybe(response.getData());
+    utils.forEach(data.places, function(place, index, obj){
+      obj[index] = self.createPlaceDescription(place);
+    });
+    return utils.extend(response, {
+      getChildren: function() { 
+        return utils.maybe(data.places); 
       }
-    ));
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name places.functions:getPlaceType
- * @function
+
  *
  * @description
  * Get a place.
@@ -205,31 +185,25 @@ FS.prototype.getPlaceDescriptionChildren = function(url, opts) {
  * {@link http://jsfiddle.net/gry2tgna/ Editable Example}
  *
  * @param {String} id of the place
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getPlaceType = function(typeId, opts) {
+FS.prototype.getPlaceType = function(typeId) {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getCollectionUrl('FSPA', 'place-type', {ptid: typeId}),
-    function(url){
-      return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
-        utils.compose(
-          utils.objectExtender({
-            getPlaceType: function() { 
-              return self.createVocabularyElement(this); 
-            }
-          })
-        )
-      );
-    }
-  );
+  return self.plumbing.getCollectionUrl('FSPA', 'place-type', {ptid: typeId}).then(function(url){
+    return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'});
+  }).then(function(response){
+    return utils.extend(response, {
+      getPlaceType: function() { 
+        return self.createVocabularyElement(this.getData());
+      }
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name places.functions:getPlaceTypes
- * @function
+
  *
  * @description
  * Get a list of all available Place Types.
@@ -241,34 +215,28 @@ FS.prototype.getPlaceType = function(typeId, opts) {
  * 
  * {@link http://jsfiddle.net/tjyf4xk8/1/ Editable Example}
  *
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getPlaceTypes = function(opts) {
+FS.prototype.getPlaceTypes = function() {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getCollectionUrl('FSPA', 'place-types'),
-    function(url){
-      return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
-        utils.compose(
-          utils.objectExtender({
-            getList: function() {
-              return self.createVocabularyList(this);
-            },
-            getPlaceTypes: function() { 
-              return this.getList().getElements(); 
-            }
-          })
-        )
-      );
-    }
-  );
+  return self.plumbing.getCollectionUrl('FSPA', 'place-types').then(function(url){
+    return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'});
+  }).then(function(response){
+    return utils.extend(response, {
+      getList: function() {
+        return self.createVocabularyList(this.getData());
+      },
+      getPlaceTypes: function() { 
+        return this.getList().getElements(); 
+      }
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name places.functions:getPlaceTypeGroup
- * @function
+
  *
  * @description
  * Get a Place Type Group which includes a list of Places Types in the group.
@@ -281,34 +249,28 @@ FS.prototype.getPlaceTypes = function(opts) {
  * {@link http://jsfiddle.net/85sn2dbv/1/ Editable Example}
  *
  * @param {String} id of the place type group
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getPlaceTypeGroup = function(groupId, opts) {
+FS.prototype.getPlaceTypeGroup = function(groupId) {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getCollectionUrl('FSPA', 'place-type-group', {ptgid: groupId}),
-    function(url){
-      return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
-        utils.compose(
-          utils.objectExtender({
-            getList: function() {
-              return self.createVocabularyList(this);
-            },
-            getPlaceTypes: function() { 
-              return this.getList().getElements(); 
-            }
-          })
-        )
-      );
-    }
-  );
+  return self.plumbing.getCollectionUrl('FSPA', 'place-type-group', {ptgid: groupId}).then(function(url){
+    return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'});
+  }).then(function(response){
+    return utils.extend(response, {
+      getList: function() {
+        return self.createVocabularyList(this.getData());
+      },
+      getPlaceTypes: function() { 
+        return this.getList().getElements(); 
+      }
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name places.functions:getPlaceTypeGroups
- * @function
+
  *
  * @description
  * Get a list of all available Place Types.
@@ -320,26 +282,20 @@ FS.prototype.getPlaceTypeGroup = function(groupId, opts) {
  * 
  * {@link http://jsfiddle.net/zawzfh82/1/ Editable Example}
  *
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getPlaceTypeGroups = function(opts) {
+FS.prototype.getPlaceTypeGroups = function() {
   var self = this;
-  return self.helpers.chainHttpPromises(
-    self.plumbing.getCollectionUrl('FSPA', 'place-type-groups'),
-    function(url){
-      return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'}, opts,
-        utils.compose(
-          utils.objectExtender({
-            getList: function() {
-              return self.createVocabularyList(this);
-            },
-            getPlaceTypeGroups: function() { 
-              return this.getList().getElements(); 
-            }
-          })
-        )
-      );
-    }
-  );
+  return self.plumbing.getCollectionUrl('FSPA', 'place-type-groups').then(function(url){
+    return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'});
+  }).then(function(response){
+    return utils.extend(response, {
+      getList: function() {
+        return self.createVocabularyList(this.getData());
+      },
+      getPlaceTypeGroups: function() { 
+        return this.getList().getElements(); 
+      }
+    });
+  });
 };

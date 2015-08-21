@@ -1,8 +1,5 @@
 var globals = require('./globals'),
     utils = require('./utils'),
-    angularjsWrappers = require('./angularjs-wrappers'),
-    jQueryWrappers = require('./jquery-wrappers'),
-    nodejsWrappers = require('./nodejs-wrappers'),
     Helpers = require('./helpers'),
     Plumbing = require('./plumbing');
 
@@ -11,7 +8,7 @@ var instanceId = 0;
 /**
  * @ngdoc function
  * @name familysearch.types:constructor.FamilySearch
- * @function
+
  *
  * @description
  * Initialize the FamilySearch object
@@ -20,10 +17,6 @@ var instanceId = 0;
  *
  * - `client_id` - the developer key you received from FamilySearch
  * - `environment` - sandbox, staging, or production
- * - `http_function` - a function for issuing http requests: `jQuery.ajax`, angular's `$http`,
- * or the [request](https://github.com/request/request) library for node; defaults to `jQuery.ajax`
- * - `deferred_function` - a function for creating deferred's: `jQuery.Deferred`, angular's `$q.defer`
- * or the [Q](https://github.com/kriskowal/q) library for node
  * - `timeout_function` - optional timeout function: angular users should pass `$timeout`; otherwise the global `setTimeout` is used
  * - `redirect_uri` - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
  * but must have the same host and port as the server running your script;
@@ -61,60 +54,8 @@ var FS = module.exports = function(opts){
   if(!opts['environment']) {
     throw 'environment must be set';
   }
-  //noinspection JSUndeclaredVariable
-  self.settings.environment = opts['environment'];
-
-  // Determine which http function is being used
-  if(!opts['http_function'] && !window.jQuery) {
-    throw 'http must be set; e.g., jQuery.ajax';
-  }
-  var httpFunction = opts['http_function'] || window.jQuery.ajax;
-  if (httpFunction.pendingRequests) {
-    self.settings.httpWrapper = angularjsWrappers.httpWrapper(httpFunction, self);
-  }
-  else if (httpFunction.cookie){
-    self.settings.httpWrapper = nodejsWrappers.httpWrapper(httpFunction, self);
-  }
-  else {
-    self.settings.httpWrapper = jQueryWrappers.httpWrapper(httpFunction, self);
-  }
-
-  // Determine which deferred function is being used
-  if(!opts['deferred_function'] && !window.jQuery) {
-    throw 'deferred_function must be set; e.g., jQuery.Deferred';
-  }
-  var deferredFunction = opts['deferred_function'] || window.jQuery.Deferred;
-  var d = deferredFunction();
-  d.resolve(); // required for unit tests
-  if (utils.isFunction(d.promise)) {
-    self.settings.deferredWrapper = jQueryWrappers.deferredWrapper(deferredFunction);    
-  }
-  else if (utils.isFunction(deferredFunction.nfcall)) {
-    self.settings.deferredWrapper = nodejsWrappers.deferredWrapper(deferredFunction);
-  }
-  else {
-    self.settings.deferredWrapper = angularjsWrappers.deferredWrapper(deferredFunction);
-  }
   
-
-  var timeout = opts['timeout_function'];
-  if (timeout) {
-    self.settings.setTimeout = function(fn, delay) {
-      return timeout(fn, delay);
-    };
-    self.settings.clearTimeout = function(timer) {
-      timeout.cancel(timer);
-    };
-  }
-  else {
-    // not sure why I can't just set self.settings.setTimeout = setTimeout, but it doesn't seem to work; anyone know why?
-    self.settings.setTimeout = function(fn, delay) {
-      return setTimeout(fn, delay);
-    };
-    self.settings.clearTimeout = function(timer) {
-      clearTimeout(timer);
-    };
-  }
+  self.settings.environment = opts['environment'];
 
   self.settings.redirectUri = opts['redirect_uri'] || opts['auth_callback']; // auth_callback is deprecated
 

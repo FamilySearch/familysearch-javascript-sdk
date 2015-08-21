@@ -59,7 +59,7 @@ Comment.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name discussions.types:constructor.Comment#getCommentUrl
    * @methodOf discussions.types:constructor.Comment
-   * @function
+
    * @return {String} URL of this comment; _NOTE_ however, that individual comments cannot be read
    */
   getCommentUrl: function() { return this.helpers.removeAccessToken(maybe(this.getLink('comment')).href); },
@@ -68,7 +68,7 @@ Comment.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name discussions.types:constructor.Comment#getAgentId
    * @methodOf discussions.types:constructor.Comment
-   * @function
+
    * @return {String} id of the contributor - pass into {@link user.functions:getAgent getAgent} for details
    */
   getAgentId: function() { return maybe(this.data.contributor).resourceId; },
@@ -77,7 +77,7 @@ Comment.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name discussions.types:constructor.Comment#getAgentUrl
    * @methodOf discussions.types:constructor.Comment
-   * @function
+
    * @return {String} URL of the contributor - pass into {@link user.functions:getAgent getAgent} for details
    */
   getAgentUrl: function() { return this.helpers.removeAccessToken(maybe(this.data.contributor).resource); },
@@ -86,7 +86,7 @@ Comment.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name discussions.types:constructor.Comment#getAgent
    * @methodOf discussions.types:constructor.Comment
-   * @function
+
    * @return {Object} promise for the {@link user.functions:getAgent getAgent} response
    */
   getAgent: function() { return this.client.getAgent(this.getAgentUrl() || this.getAgentId()); },
@@ -95,7 +95,7 @@ Comment.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name discussions.types:constructor.Comment#save
    * @methodOf discussions.types:constructor.Comment
-   * @function
+
    * @description
    * Create a new comment or update an existing comment
    *
@@ -105,21 +105,14 @@ Comment.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * {@link http://jsfiddle.net/yr9zv5fw/1/ Editable Example}
    *
    * @param {string} url url of the discussion or memory comments list; required for both creating and updating comments; updating is distinguished from creating by the presence of an id on the comment.
-   * @param {string=} changeMessage change message (currently ignored)
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise of the comment id
+   * @return {Object} promise for the response
    */
-  save: function(url, changeMessage, opts) {
+  save: function(url) {
     var self = this;
     var payload = {discussions: [{ comments: [ self ] }] };
-    return self.plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}, opts, function(data, promise) {
-      if (!self.getId()) {
-        self.data.id = promise.getResponseHeader('X-ENTITY-ID');
-      }
-      if (!self.getCommentUrl()) {
-        self.data.links = { comment: { href: promise.getResponseHeader('Location') } };
-      }
-      return self.getId();
+    return self.plumbing.post(url, payload, {'Content-Type' : 'application/x-fs-v1+json'}).then(function(response){
+      self.updateFromResponse(response, 'comment');
+      return response;  
     });
   },
 
@@ -127,16 +120,15 @@ Comment.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name discussions.types:constructor.Comment#delete
    * @methodOf discussions.types:constructor.Comment
-   * @function
+
    * @description delete this comment
    * @description delete this comment - see {@link discussions.functions:deleteDiscussionComment deleteDiscussionComment}
    * or {@link memories.functions:deleteMemoryComment deleteMemoryComment}
    * @param {string=} changeMessage change message (currently ignored)
-   * @param {Object=} opts options to pass to the http function specified during init
-   * @return {Object} promise for the comment url
+   * @return {Object} promise for the response
    */
-  delete: function(url, changeMessage, opts) {
-    return this.client.deleteComment(this.getCommentUrl(), changeMessage, opts);
+  delete: function(url, changeMessage) {
+    return this.client.deleteComment(this.getCommentUrl(), changeMessage);
   }
 
 });

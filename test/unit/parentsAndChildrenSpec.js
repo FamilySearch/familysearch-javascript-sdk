@@ -1,5 +1,3 @@
-var q = require('q');
-
 describe('Parents and Children relationship', function() {
   
   it('is returned from getChildAndParents', function(done) {
@@ -39,23 +37,27 @@ describe('Parents and Children relationship', function() {
         expect(changes.length).toBe(3);
         expect(changes[0].getId()).toBe('1386863479538');
       }));
-      q.all(promises).then(function(){
+      Promise.all(promises).then(function(){
         done();
+      }).catch(function(e){
+        console.error(e.stack);
       });
+    }).catch(function(e){
+      console.error(e.stack);
     });
   });
 
   it('is created', function(done) {
-    var promise = FS.createChildAndParents({
+    var rel = FS.createChildAndParents({
         fatherFacts: [{type:'http://gedcomx.org/AdoptiveParent'}],
         motherFacts: [{type:'http://gedcomx.org/BiologicalParent'}]
       })
       .setFather('PPPX-MP1')
       .setMother('PPPX-FP2')
-      .setChild('PPPX-PP3')
-      .save('...change message...');
-    promise.then(function(response) {
-      var request = promise.getRequest();
+      .setChild('PPPX-PP3');
+    rel.save('...change message...').then(function(responses) {
+      var response = responses[0],
+          request = response.getRequest();
       expect(request.body).toEqualJson({
         'childAndParentsRelationships' : [ {
           'attribution' : {
@@ -81,23 +83,23 @@ describe('Parents and Children relationship', function() {
           } ]
         } ]
       });
-      expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0');
+      expect(response.getStatusCode()).toBe(201);
+      expect(rel.getLink('relationship').href).toBe('https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0');
+      expect(rel.getId()).toBe('PPPX-PP0');
       done();
     });
   });
 
   it('conclusion is created', function(done) {
-    var rel = FS.createChildAndParents();
-    rel.setId('12345');
-    rel.addLink('relationship', {
-      href: 'https://familysearch.org/platform/tree/child-and-parents-relationships/12345'
-    });
-    var promise = rel
+    var rel = FS.createChildAndParents()
       .addMotherFact(FS.createFact({type:'http://gedcomx.org/BiologicalParent'}).setAttribution('...change message...'))
-      .save();
-    promise.then(function(response) {
-      var request = promise.getRequest();
+      .setId('12345')
+      .addLink('relationship', {
+        href: 'https://familysearch.org/platform/tree/child-and-parents-relationships/12345'
+      });
+    rel.save().then(function(responses) {
+      var response = responses[0],
+          request = response.getRequest();
       expect(request.body).toEqualJson({
         'childAndParentsRelationships' : [ {
           'motherFacts' : [ {
@@ -108,8 +110,8 @@ describe('Parents and Children relationship', function() {
           } ]
         } ]
       });
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://familysearch.org/platform/tree/child-and-parents-relationships/12345');
+      expect(response.getStatusCode()).toBe(204);
+      expect(rel.getLink('relationship').href).toBe('https://familysearch.org/platform/tree/child-and-parents-relationships/12345');
       done();
     });
   });
@@ -147,9 +149,9 @@ describe('Parents and Children relationship', function() {
     // update mother and mother fact
     rel.setMother('PPPX-FP2')
       .getMotherFacts()[0].setType('http://gedcomx.org/AdoptiveParent');
-    var promise = rel.save('...change message...');
-    promise.then(function(response) {
-      var request = promise.getRequest();
+    rel.save('...change message...').then(function(responses) {
+      var response = responses[0],
+          request = response.getRequest();
       //noinspection JSUnresolvedFunction
       expect(request.body).toEqualJson({
         'childAndParentsRelationships' : [ {
@@ -171,8 +173,7 @@ describe('Parents and Children relationship', function() {
           } ]
         } ]
       });
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/12345');
+      expect(response.getStatusCode()).toBe(204);
       done();
     });
   });
@@ -180,39 +181,33 @@ describe('Parents and Children relationship', function() {
   it('conclusion is deleted', function(done) {
     var rel = createMockRelationship('R123-456', 'C123-456');
     // delete fact
-    var promise = rel
-      .deleteMotherFact(rel.getMotherFacts()[0])
-      .save('Deleted for reason 1');
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(promise.getRequest().headers['X-Reason']).toBe('Deleted for reason 1');
-      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/R123-456');
+    rel.deleteMotherFact(rel.getMotherFacts()[0]);
+    rel.save('Deleted for reason 1').then(function(responses) {
+      expect(responses[0].getStatusCode()).toBe(204);
+      expect(responses[0].getRequest().headers['X-Reason']).toBe('Deleted for reason 1');
       done();
     });
   });
 
   it('parent is deleted', function(done) {
-    var promise = createMockRelationship('RRRX-RRX','fid')
+    var rel = createMockRelationship('RRRX-RRX','fid')
       // delete mother
-      .deleteMother()
-      .save('Deleted for reason 1');
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(promise.getRequest().headers['X-Reason']).toBe('Deleted for reason 1');
-      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/RRRX-RRX');
+      .deleteMother();
+    rel.save('Deleted for reason 1').then(function(responses) {
+      expect(responses[0].getStatusCode()).toBe(204);
+      expect(responses[0].getRequest().headers['X-Reason']).toBe('Deleted for reason 1');
       done();
     });
   });
 
   it('is deleted', function(done) {
-    var promise = createMockRelationship('PPPX-PP0','fid')
-      .delete('Deleted for reason 1');
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(promise.getRequest().headers['X-Reason']).toBe('Deleted for reason 1');
-      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0');
-      done();
-    });
+    createMockRelationship('PPPX-PP0','fid')
+      .delete('Deleted for reason 1')
+      .then(function(response) {
+        expect(response.getStatusCode()).toBe(204);
+        expect(response.getRequest().headers['X-Reason']).toBe('Deleted for reason 1');
+        done();
+      });
   });
   
   it('accepts instances of facts', function(){
@@ -225,12 +220,12 @@ describe('Parents and Children relationship', function() {
   });
 
   it('is restored', function(done) {
-    var promise = createMockRelationship('PPPX-PP0','fid').restore();
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0/restore');
-      done();
-    });
+    createMockRelationship('PPPX-PP0','fid')
+      .restore()
+      .then(function(response) {
+        expect(response.getStatusCode()).toBe(204);
+        done();
+      });
   });
 
 });

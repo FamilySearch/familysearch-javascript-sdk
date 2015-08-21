@@ -11,7 +11,8 @@ var FS = require('./../FamilySearch'),
  * {@link https://familysearch.org/developers/docs/api/resources#notes FamilySearch API Docs}
  */
 
-function getRoot(obj) {
+function getRoot(response) {
+  var obj = response.getData();
   if (obj) {
     if (obj.persons) {
       return obj.persons;
@@ -29,7 +30,7 @@ function getRoot(obj) {
 /**
  * @ngdoc function
  * @name notes.functions:getNote
- * @function
+
  *
  * @description
  * Get information about a note
@@ -44,31 +45,28 @@ function getRoot(obj) {
  * {@link http://jsfiddle.net/rcud84ur/1/ Editable Example}
  *
  * @param {string} url full URL of the note
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getNote = function(url, params, opts) {
+FS.prototype.getNote = function(url, params) {
   var self = this;
-  return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}, opts, // child and parents note requires x-fs-v1; others allow fs or gedcomx
-    utils.compose(
-      utils.objectExtender({getNote: function() {
+  // child and parents note requires x-fs-v1; others allow fs or gedcomx
+  return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
+    var notes = maybe(getRoot(response)[0]).notes;
+    utils.forEach(notes, function(note, i){
+      notes[i] = self.createNote(note);
+    });
+    return utils.extend(response, {
+      getNote: function() {
         return maybe(maybe(getRoot(this)[0]).notes)[0];
-      }}),
-      function(response){
-        var notes = maybe(getRoot(response)[0]).notes;
-        utils.forEach(notes, function(note, i){
-          notes[i] = self.createNote(note);
-        });
-        return response;
       }
-    ));
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name notes.functions:getMultiNote
- * @function
+
  *
  * @description
  * Get multiple notes at once by requesting them in parallel
@@ -80,24 +78,30 @@ FS.prototype.getNote = function(url, params, opts) {
  * {@link http://jsfiddle.net/4d1wLp8a/1/ Editable Example}
  *
  * @param {string[]} urls full URLs of the notes
- * @param {Object=} params pass to getNote currently unused
- * @param {Object=} opts pass to the http function specified during init
  * @return {Object} promise that is fulfilled when all of the notes have been read,
- * returning a map of note id or URL to {@link notes.functions:getNote getNote} response
+ * returning a map of note id or URL to {@link notes.functions:getNote getNote} responses
  */
-FS.prototype.getMultiNote = function(urls, params, opts) {
+FS.prototype.getMultiNote = function(urls) {
   var self = this,
-      promises = {};
+      promises = [],
+      responses = {};
   utils.forEach(urls, function(u) {
-    promises[u] = self.getNote.call(self, u, null, params, opts);
+    promises.push(
+      self.getNote.call(self, u).then(function(response){
+        responses[u] = response;
+        return response;
+      })
+    );
   });
-  return this.helpers.promiseAll(promises);
+  return Promise.all(promises).then(function(){
+    return responses;
+  });
 };
 
 /**
  * @ngdoc function
  * @name notes.functions:getNotes
- * @function
+
  *
  * @description
  * Get notes for a person, couple, or child and parents relationship
@@ -113,31 +117,27 @@ FS.prototype.getMultiNote = function(urls, params, opts) {
  * {@link http://jsfiddle.net/rcud84ur/2/ Editable Example}
  *
  * @param {String} url full URL of the person-notes, couple-notes, or child-and-parents-notes endpoint
- * @param {Object=} params currently unused
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the response
  */
-FS.prototype.getNotes = function(url, params, opts) {
+FS.prototype.getNotes = function(url) {
   var self = this;
-  return self.plumbing.get(url, params, {}, opts,
-    utils.compose(
-      utils.objectExtender({getNotes: function() {
+  return self.plumbing.get(url).then(function(response){
+    var notes = maybe(getRoot(response)[0]).notes;
+    utils.forEach(notes, function(note, index){
+      notes[index] = self.createNote(note);
+    });
+    return utils.extend(response, {
+      getNotes: function() {
         return maybe(getRoot(this)[0]).notes || [];
-      }}),
-      function(response){
-        var notes = maybe(getRoot(response)[0]).notes;
-        utils.forEach(notes, function(note, index){
-          notes[index] = self.createNote(note);
-        });
-        return response;
       }
-    ));
+    });
+  });
 };
 
 /**
  * @ngdoc function
  * @name notes.functions:deleteNote
- * @function
+
  *
  * @description
  * Delete the specified person note
@@ -148,17 +148,14 @@ FS.prototype.getNotes = function(url, params, opts) {
  *
  * @param {string} url full URL of the note
  * @param {string=} changeMessage change message
- * @param {Object=} opts options to pass to the http function specified during init
  * @return {Object} promise for the url
  */
-FS.prototype.deleteNote = function(url, changeMessage, opts) {
+FS.prototype.deleteNote = function(url, changeMessage) {
   var self = this;
   // x-fs-v1+json is required for child-and-parents notes
   var headers = {'Content-Type': 'application/x-fs-v1+json'};
   if (changeMessage) {
     headers['X-Reason'] = changeMessage;
   }
-  return self.plumbing.del(url, headers, opts, function() {
-    return url;
-  });
+  return self.plumbing.del(url, headers);
 };

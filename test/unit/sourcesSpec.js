@@ -142,9 +142,8 @@ describe('Source', function() {
       title: '1900 US Census, Ethel Hollivet',
       text: 'Ethel Hollivet (line 75) with husband Albert Hollivet (line 74)'
     });
-    var promise = srcDesc.save('This is the change message');
-    promise.then(function(response) {
-      var request = promise.getRequest();
+    srcDesc.save('This is the change message').then(function(response) {
+      var request = response.getRequest();
       expect(request.body).toEqualJson({
         sourceDescriptions: [{
           citations : [ {
@@ -162,8 +161,9 @@ describe('Source', function() {
           }
         }]
       });
-      expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('https://familysearch.org/platform/sources/descriptions/MMMM-MMM');
+      expect(response.getStatusCode()).toBe(201);
+      expect(srcDesc.getLink('description').href).toBe('https://familysearch.org/platform/sources/descriptions/MMMM-MMM');
+      expect(srcDesc.getId()).toBe('MMMM-MMM');
       done();
     });
   });
@@ -179,9 +179,8 @@ describe('Source', function() {
     srcDesc.addLink('description', {
       href: 'https://familysearch.org/platform/sources/descriptions/MMMM-MMM' 
     });
-    var promise = srcDesc.save('This is the change message');
-    promise.then(function(response) {
-      var request = promise.getRequest();
+    srcDesc.save('This is the change message').then(function(response) {
+      var request = response.getRequest();
       //noinspection JSUnresolvedFunction
       expect(request.body).toEqualJson({
         sourceDescriptions: [{
@@ -206,46 +205,45 @@ describe('Source', function() {
           }
         }]
       });
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://familysearch.org/platform/sources/descriptions/MMMM-MMM');
+      expect(response.getStatusCode()).toBe(204);
       done();
     });
   });
 
   it('description is deleted', function(done) {
-    var promise = FS.deleteSourceDescription('https://familysearch.org/platform/sources/descriptions/MM93-JFK');
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://familysearch.org/platform/sources/descriptions/MM93-JFK');
-      done();
-    });
+    FS.deleteSourceDescription('https://familysearch.org/platform/sources/descriptions/MM93-JFK')
+      .then(function(response) {
+        expect(response.getStatusCode()).toBe(204);
+        done();
+      });
   });
 
   it('reference is created', function(done) {
     var srcRef = FS.createSourceRef({
       sourceDescription: 'https://familysearch.org/platform/sources/descriptions/MMMM-MMM'
     }).setTags(['http://gedcomx.org/Name']);
-    var promise = srcRef.save('https://familysearch.org/platform/tree/persons/PPPP-PPP/source-references', 'This is the change message');
-    promise.then(function(response) {
-      var request = promise.getRequest();
-      //noinspection JSUnresolvedFunction
-      expect(request.body).toEqualJson({
-        persons: [{
-          sources: [{
-            tags: [{
-              resource: 'http://gedcomx.org/Name'
-            }],
-            attribution: {
-              changeMessage: 'This is the change message'
-            },
-            description: 'https://familysearch.org/platform/sources/descriptions/MMMM-MMM'
+    srcRef.save('https://familysearch.org/platform/tree/persons/PPPP-PPP/source-references', 'This is the change message')
+      .then(function(response) {
+        var request = response.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.body).toEqualJson({
+          persons: [{
+            sources: [{
+              tags: [{
+                resource: 'http://gedcomx.org/Name'
+              }],
+              attribution: {
+                changeMessage: 'This is the change message'
+              },
+              description: 'https://familysearch.org/platform/sources/descriptions/MMMM-MMM'
+            }]
           }]
-        }]
+        });
+        expect(response.getStatusCode()).toBe(201);
+        expect(srcRef.getLink('source-reference').href).toBe('https://familysearch.org/platform/tree/persons/PPPP-PPP/source-references/SRSR-R01');
+        expect(srcRef.getId()).toBe('SRSR-R01');
+        done();
       });
-      expect(promise.getStatusCode()).toBe(201);
-      expect(response).toBe('https://familysearch.org/platform/tree/persons/PPPP-PPP/source-references/SRSR-R01');
-      done();
-    });
   });
 
   it('reference is updated', function(done) {
@@ -253,58 +251,54 @@ describe('Source', function() {
       sourceDescription: 'https://familysearch.org/platform/sources/descriptions/MMMM-MMM'
     }).setTags(['http://gedcomx.org/Name']);
     srcRef.setId('SRSR-R01');
-    var promise = srcRef.save('https://familysearch.org/platform/tree/persons/PPPP-PPX/source-references', 'This is the change message');
-    promise.then(function(response) {
-      var request = promise.getRequest();
-      //noinspection JSUnresolvedFunction
-      expect(request.body).toEqualJson({
-        persons: [{
-          sources: [{
-            id: 'SRSR-R01',
-            tags: [{
-              resource: 'http://gedcomx.org/Name'
-            }],
-            attribution: {
-              changeMessage: 'This is the change message'
-            },
-            description: 'https://familysearch.org/platform/sources/descriptions/MMMM-MMM'
+    srcRef.save('https://familysearch.org/platform/tree/persons/PPPP-PPX/source-references', 'This is the change message')
+      .then(function(response) {
+        var request = response.getRequest();
+        //noinspection JSUnresolvedFunction
+        expect(request.body).toEqualJson({
+          persons: [{
+            sources: [{
+              id: 'SRSR-R01',
+              tags: [{
+                resource: 'http://gedcomx.org/Name'
+              }],
+              attribution: {
+                changeMessage: 'This is the change message'
+              },
+              description: 'https://familysearch.org/platform/sources/descriptions/MMMM-MMM'
+            }]
           }]
-        }]
+        });
+        expect(response.getStatusCode()).toBe(204);
+        done();
       });
-      expect(promise.getStatusCode()).toBe(204);
-      expect(response).toBe('https://familysearch.org/platform/tree/persons/PPPP-PPX/source-references/SRSR-R01');
-      done();
-    });
   });
 
   it('reference is deleted from a person', function(done) {
-    var promise = FS.deleteSourceRef('https://familysearch.org/platform/tree/persons/PPPP-PPP/source-references/SRSR-R01', 'testDelete use case 1 reason');
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(promise.getRequest().headers['X-Reason']).toBe('testDelete use case 1 reason');
-      expect(response).toBe('https://familysearch.org/platform/tree/persons/PPPP-PPP/source-references/SRSR-R01');
-      done();
-    });
+    FS.deleteSourceRef('https://familysearch.org/platform/tree/persons/PPPP-PPP/source-references/SRSR-R01', 'testDelete use case 1 reason')
+      .then(function(response) {
+        expect(response.getStatusCode()).toBe(204);
+        expect(response.getRequest().headers['X-Reason']).toBe('testDelete use case 1 reason');
+        done();
+      });
   });
 
   it('reference is deleted from a couple', function(done) {
-    var promise = FS.deleteSourceRef('https://familysearch.org/platform/tree/couple-relationships/RRRR-RRR/source-references/SRSR-R01', 'testDelete use case 1 reason');
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(promise.getRequest().headers['X-Reason']).toBe('testDelete use case 1 reason');
-      expect(response).toBe('https://familysearch.org/platform/tree/couple-relationships/RRRR-RRR/source-references/SRSR-R01');
-      done();
-    });
+    FS.deleteSourceRef('https://familysearch.org/platform/tree/couple-relationships/RRRR-RRR/source-references/SRSR-R01', 'testDelete use case 1 reason')
+      .then(function(response) {
+        expect(response.getStatusCode()).toBe(204);
+        expect(response.getRequest().headers['X-Reason']).toBe('testDelete use case 1 reason');
+        done();
+      });
   });
 
   it('reference is deleted from a child-and-parents', function(done) {
-    var promise = FS.deleteSourceRef('https://familysearch.org/platform/tree/child-and-parents-relationships/RRRR-RRX/source-references/SRSR-R01', 'testDelete use case 1 reason');
-    promise.then(function(response) {
-      expect(promise.getStatusCode()).toBe(204);
-      expect(promise.getRequest().headers['X-Reason']).toBe('testDelete use case 1 reason');
-      expect(response).toBe('https://familysearch.org/platform/tree/child-and-parents-relationships/RRRR-RRX/source-references/SRSR-R01');
-      done();
-    });
+    FS.deleteSourceRef('https://familysearch.org/platform/tree/child-and-parents-relationships/RRRR-RRX/source-references/SRSR-R01', 'testDelete use case 1 reason')
+      .then(function(response) {
+        expect(response.getStatusCode()).toBe(204);
+        expect(response.getRequest().headers['X-Reason']).toBe('testDelete use case 1 reason');
+        done();
+      });
   });
 
 });

@@ -72,7 +72,7 @@ PlacesSearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype
    * @ngdoc function
    * @name places.types:constructor.PlacesSearchResult#getPlace
    * @methodOf places.types:constructor.PlacesSearchResult
-   * @function
+
    * @return {PlaceDescription} The {@link places.types:constructor.PlaceDescription Place Description}.
    */
   getPlace: function(){

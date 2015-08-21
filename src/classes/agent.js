@@ -42,7 +42,7 @@ Agent.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name user.types:constructor.Agent#getName
    * @methodOf user.types:constructor.Agent
-   * @function
+
    * @return {String} name of the agent
    */
   getName: function() { return maybe(maybe(this.data.names)[0]).value; },
@@ -51,7 +51,7 @@ Agent.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name user.types:constructor.Agent#getAccountName
    * @methodOf user.types:constructor.Agent
-   * @function
+
    * @return {String} account / contact name of the agent
    */
   getAccountName: function() { return maybe(maybe(this.data.accounts)[0]).accountName; },
@@ -61,7 +61,7 @@ Agent.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name user.types:constructor.Agent#getEmail
    * @methodOf user.types:constructor.Agent
-   * @function
+
    * @return {String} email of the agent
    */
   getEmail: function() {
@@ -73,7 +73,7 @@ Agent.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name user.types:constructor.Agent#getPhoneNumber
    * @methodOf user.types:constructor.Agent
-   * @function
+
    * @return {String} phone number of the agent
    */
   getPhoneNumber: function() {
@@ -84,7 +84,7 @@ Agent.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name user.types:constructor.Agent#getAddress
    * @methodOf user.types:constructor.Agent
-   * @function
+
    * @return {String} postal address of the agent
    */
   getAddress: function() {
