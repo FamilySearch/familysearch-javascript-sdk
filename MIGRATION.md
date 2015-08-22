@@ -11,7 +11,35 @@ HTTP and promise libraries. This was done for a few important reasons:
 
 ### Promises
 
+In v2 all promises returned by the SDK have the same functionality. The biggest
+change here will be for jQuery users. jQuery Deferreds are a little bit different
+than standard promises. Instead of using `done()` and `fail()` you'll need to use
+`then()`.
 
+Here's an example request using jQuery Deferreds with v1 of the SDK.
+
+```js
+client.getPerson().done(function(response){
+  // Handle a succesful response here
+}).fail(function(){
+  // Handle an error here
+});
+```
+
+With v2 of the SDK you do this instead.
+
+```js
+client.getPerson().then(function(response){
+  // Handle a successful response
+}, function(error){
+  // Handle a failure
+})
+```
+
+Angular users should not need to change anything with regards to promises.
+
+Promises have become a standard feature of JavaScript in ES6. To learn more about them
+we suggest reading the in-depth guide from [HTML5 Rocks](http://www.html5rocks.com/en/tutorials/es6/promises/).
 
 ### Responses
 
@@ -80,13 +108,46 @@ There are two options for doing this in v2.
 
 ### $ Prefix Removed
 
+In v1 methods on classes were prefixed with a `$`. 
+
+```js
+// The old way
+person.$getBirth();
+```
+
+In v2 the `$` has been removed.
+
+```js
+// The new way
+person.getBirth();
+```
+
+In v1 you could also access some data on objects via properties. A common propery is `id`.
+
+```js
+// The old way
+console.log(person.id);
+```
+
+In v2 the properties are accessed via a method.
+
+```js
+// The new way
+console.log(person.getId());
+```
+
+All new methods are explained in the documentation.
+
 ### Base Class Methods
+
+All object classes (such as Person, Note, Source, etc) inherit from `FamilySearch.BaseClass`.
+This allows them to share common methods such as `getId()` and `getLink()`. Read
+more in the documentation about `BaseClass`.
 
 ### Angular
 
 For Angular users, since the SDK is no longer using `$http`, `$q`, and `$timeout`,
-you'll have to begin calling `$scope.apply()` when updating your app with data
-from the SDK.
+you'll have to call `$scope.apply()` when updating your app with data from the SDK.
 
 ```js
 fsClient.getCurrentUser().then(function(response) {
@@ -108,7 +169,7 @@ var client = new FamilySearch({
 });
 ```
 
-Now you call the API methods directly on the new instance.
+Now you call the API methods directly on the SDK instance.
 
 ```js
 client.getPerson('PPPP-PPP').then(function(response){
