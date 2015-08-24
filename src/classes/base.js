@@ -182,20 +182,39 @@ FS.BaseClass.prototype.updateFromResponse = function(response, selfRel){
  * @ngdoc function
  * @name familysearch.types:constructor.BaseClass#toJSON
  * @methodOf familysearch.types:constructor.BaseClass
- * @return {Object} JSON object that JSON.stringify() will use
+ * @return {Object} JSON object representing the raw data. JSON.stringify() will
+ * automatically call it.
  */
 FS.BaseClass.prototype.toJSON = function(){
-  return this.data;
+  var json = {};
+  utils.forEach(this.data, function(value, name){
+    json[name] = _toJSON(value);
+  });
+  return json;
 };
+
+function _toJSON(value){
+  if(utils.isFunction(value) && value instanceof FS.BaseClass){
+    return value.toJSON(); 
+  } else if(utils.isArray(value)){
+    var list = [];
+    for(var i = 0; i < value.length; i++){
+      list[i] = _toJSON(value[i]);
+    }
+    return list;
+  } else {
+    return JSON.parse(JSON.stringify(value));
+  }
+}
 
 /**
  * @ngdoc function
  * @name familysearch.types:constructor.BaseClass#toString
  * @methodOf familysearch.types:constructor.BaseClass
- * @return {string} serialized form of the object
+ * @return {string} object serialized in JSON
  */
 FS.BaseClass.prototype.toString = function(){
-  return JSON.stringify(this.data);
+  return JSON.stringify(this);
 };
 
 /**

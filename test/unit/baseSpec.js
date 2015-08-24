@@ -1,6 +1,6 @@
 describe('base class', function() {
   
-  it('serializes', function(){
+  fit('serializes', function(){
     var person = FS.createPerson({
       gender: 'Male',
       names: [
@@ -9,8 +9,7 @@ describe('base class', function() {
         }
       ]
     });
-    var json = JSON.parse(JSON.stringify(person));
-    expect(json).toEqualJson({
+    var expectedJson = {
       names: [ {
         nameForms: [ {
           parts: [ {
@@ -23,7 +22,9 @@ describe('base class', function() {
       gender: {
         type: 'Male',
       }
-    });
+    };
+    expect(person.toJSON()).toEqualJson(expectedJson);
+    expect(JSON.parse(person.toString())).toEqualJson(expectedJson);
   });
   
   it('getLinkPromise success', function(done){
