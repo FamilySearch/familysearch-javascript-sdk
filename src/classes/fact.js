@@ -129,9 +129,9 @@ Fact.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   
   /**
    * @ngdoc function
-   * @name fact.types:constructor.Fact#getPlace
+   * @name fact.types:constructor.Fact#getOriginalPlace
    * @methodOf fact.types:constructor.Fact
-   * @return {PlaceReference} event place
+   * @return {String} original place text
    */
   getOriginalPlace: function(){ 
     if(this.data.place) {

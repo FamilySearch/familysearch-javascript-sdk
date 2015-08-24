@@ -1,13 +1,14 @@
 ## Migrating from v1 to v2
 
-The first major change in v2 is that you can no longer specify the `http_function`,
+### Built-in HTTP and Promise Libraries
+
+You can no longer specify the `http_function`,
 `deferred_function`, and `timeout_function` for the SDK. It now ships with built-in
 HTTP and promise libraries. This was done for a few important reasons:
 
 * Simpler code base
-* Enables better testing
 * Standardized response format
-* Better promise format (primarily internally)
+* Better promise format
 
 ### Promises
 
@@ -156,6 +157,29 @@ fsClient.getCurrentUser().then(function(response) {
   });
 });
 ```
+
+### Facts, Dates, and Places
+
+The Date class has changed considerably. It was transformed from a class that
+helped interpret formal dates to a class that merely represents the data returned
+by the API. If you need to interpret GEDCOM X formal dates we recommend using the
+[gedcomx-date-js](https://github.com/trepo/gedcomx-date-js) library.
+
+A PlaceReference class was also added to reflect the place data contained in Facts.
+
+Due to the Date changes and new PlaceReference class, the methods on Facts have
+changed slightly. `fact.getDate()` and `fact.getPlace()` used to return strings
+representing the original date and place string respectively. Now they return objects.
+
+There are two options for getting the original date string:
+
+1. `fact.getOriginalDate()`
+2. `fact.getDate().getOriginal()`
+
+Similarly, there are two ways to get the original place string:
+
+1. `fact.getOriginalPlace()`
+2. `fact.getPlace().getOriginal()`
 
 ## Migrating from v0.9 to v1
 
