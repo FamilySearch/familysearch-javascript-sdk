@@ -44,18 +44,25 @@ we suggest reading the in-depth guide from [HTML5 Rocks](http://www.html5rocks.c
 
 ### Responses
 
-All SDK methods that issue HTTP requests will return a standard response object
-with HTTP methods for accessing the status, body, and headers. The same convenience
-methods for accessing the response data are still added as before. The standard
+All SDK methods that issue HTTP requests will return a promise that resolves to
+a standard response object. The response object will have methods for accessing
+the HTTP resonse data such as the status, body, and headers. The same convenience
+methods for accessing the response data are also added as before. The standard
 response methods are detailed in the main page of the documentation. Any available
 convenience functions are explained in the particular method's documentation.
+
+Two exceptions are the `getAccessToken()` and `getAccessTokenForMobile()` methods.
+Promises for those methods will resolve to the access token and not a response object.
+This is happens because if the access token already exists it will be returned
+with making any HTTP requests to fetch one. Therefore we don't always have an HTTP
+response.
 
 In v1, `POST` and `DELETE` requests often returned an ID or a URL for the data that
 was being changed. This was done because the object was not usually updated itself
 with the new ID after being saved. Therefore returning the ID was the only way
 to tell what the new ID was. In v2 objects are updated after being saved,
 both with an ID and any new links. This also allows the SDK to return a regular
-response object for all methods as explained in the previous paragraph.
+response object for all methods as explained above.
 
 ### Collections
 
