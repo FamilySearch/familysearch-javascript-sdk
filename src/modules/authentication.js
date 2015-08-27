@@ -51,6 +51,7 @@ FS.prototype.getAuthCode = function() {
  *
  * @param {Object} promise promise from the access token endpoint
  * @param {Object} accessTokenDeferred deferred that needs to be resolved or rejected
+ * @return {Object} promise for the access token
  */
 FS.prototype.handleAccessTokenResponse = function(response) {
   var self = this,
@@ -58,13 +59,10 @@ FS.prototype.handleAccessTokenResponse = function(response) {
   var accessToken = data['access_token'];
   if (accessToken) {
     self.helpers.setAccessToken(accessToken);
-    response.getAccessToken = function(){
-      return accessToken;
-    };
-    return response;
+    return Promise.resolve(accessToken);
   }
   else {
-    throw new Error(data['error']);
+    return Promise.reject(new Error(data['error']));
   }
 };
 
@@ -85,7 +83,7 @@ FS.prototype.handleAccessTokenResponse = function(response) {
  * {@link http://jsfiddle.net/fqn6j7fs/ Editable Example}
  *
  * @param {String=} authCode auth code from getAuthCode; if not passed in, this function will call getAuthCode
- * @return {Object} a promise of the (string) access token.
+ * @return {Object} a promise for the (string) access token.
  */
 FS.prototype.getAccessToken = function(authCode) {
   var self = this,
@@ -139,7 +137,7 @@ FS.prototype.getAccessToken = function(authCode) {
  *
  * @param {String} userName name of the user
  * @param {String} password of the user
- * @return {Object} a promise of the (string) access token.
+ * @return {Object} a promise for the (string) access token.
  */
 FS.prototype.getAccessTokenForMobile = function(userName, password) {
   var self = this;

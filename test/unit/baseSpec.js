@@ -1,6 +1,6 @@
 describe('base class', function() {
   
-  fit('serializes', function(){
+  it('serializes', function(){
     var person = FS.createPerson({
       gender: 'Male',
       names: [

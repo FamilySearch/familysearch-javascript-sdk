@@ -9,8 +9,8 @@ describe('An access token', function() {
 
   it('is returned from getAccessToken', function(done) {
     FS.invalidateAccessToken().then(function() {
-      FS.getAccessToken('mock auth code').then(function(response) {
-        expect(response.getAccessToken()).toBe('2YoTnFdFEjr1zCsicMWpAA');
+      FS.getAccessToken('mock auth code').then(function(accessToken) {
+        expect(accessToken).toBe('2YoTnFdFEjr1zCsicMWpAA');
         done();
       });
     });
@@ -18,8 +18,8 @@ describe('An access token', function() {
   
   it('is returned from getAccessTokenForMobile', function(done){
     FS.invalidateAccessToken().then(function(){
-      FS.getAccessTokenForMobile('username', 'password').then(function(response){
-        expect(response.getAccessToken()).toBe('2YoTnFdFEjr1zCsicMWpAA');
+      FS.getAccessTokenForMobile('username', 'password').then(function(accessToken){
+        expect(accessToken).toBe('2YoTnFdFEjr1zCsicMWpAA');
         done();
       }).catch(function(e){
         console.error(e.stack);
