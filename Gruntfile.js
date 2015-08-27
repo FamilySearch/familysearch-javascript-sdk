@@ -106,19 +106,6 @@ module.exports = function(grunt) {
           branch: '<%= gitinfo.local.branch.current.name %>'
         }
       }
-    },
-    
-    gitstash: {
-      stash: {
-        options: {
-          command: 'save'
-        }
-      },
-      apply: {
-        options: {
-          command: 'apply'
-        }
-      }
     }
   });
 
@@ -170,11 +157,9 @@ module.exports = function(grunt) {
     'clean:dist',
     'test',
     'gitinfo',
-    'gitstash:stash',
     'gitcheckout:gh-pages',
     'versions',
     'gitcheckout:reset',
-    'gitstash:apply',
     'ngdocs',
     'docsindex',
     'run:browserify',
