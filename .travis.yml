@@ -1,6 +1,7 @@
 language: node_js
 node_js:
 - '0.10'
+sudo: false
 env:
   global:
     secure: gwZrOCs5mOukCgPdj1nIqcIAUkw1X7Cy5aa7q1Ofl3mOYLVML7SFKOC8UpfqSDWd+9mLfClYOcy0brgYcco4D16ETWXCtm67WAH8YyOsr/IVKPVCKkwbG5dK0q/9ecjUa+im0/mBw+gprQUObYKADZI8EG6tPYjTTznqDU+ZXvU=
@@ -9,7 +10,6 @@ cache:
   - node_modules
 before_script:
 - npm install -g grunt-cli
-- git fetch origin gh-pages:gh-pages
 script:
 - if [[ $TRAVIS_PULL_REQUEST == false && $TRAVIS_BRANCH == master ]]; then npm run
   travis; else npm test; fi;
