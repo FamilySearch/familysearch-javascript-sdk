@@ -83,14 +83,14 @@ module.exports = function(grunt) {
         exec: 'npm run coveralls'
       },
       browserify: {
-        exec: 'node_modules/.bin/browserify src/FamilySearch.js --standalone FamilySearch > dist/<%= docVersion %>/familysearch-javascript-sdk.js'
+        exec: 'node_modules/.bin/browserify src/FamilySearch.js --standalone FamilySearch > dist/familysearch-javascript-sdk.js'
       }
     },
     
     uglify: {
       build: {
         files: {
-          'dist/<%= docVersion %>/familysearch-javascript-sdk.min.js': 'dist/<%= docVersion %>/familysearch-javascript-sdk.js'
+          'dist/familysearch-javascript-sdk.min.js': 'dist/familysearch-javascript-sdk.js'
         }
       }
     },
