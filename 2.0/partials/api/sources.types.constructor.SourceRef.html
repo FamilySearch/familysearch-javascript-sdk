@@ -1,0 +1,94 @@
+<h1><code ng:non-bindable="">SourceRef</code>
+<div><span class="hint">type in module <code ng:non-bindable="">sources</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="sources-types-page sources-types-constructor-sourceref-page"><p>Reference from a person or relationship to a source.</p>
+<p>FamilySearch API Docs:
+<a href="https://familysearch.org/developers/docs/api/tree/Person_Source_References_resource">Person SourceRef</a>,
+<a href="https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Source_References_resource">Couple SourceRef</a>, and
+<a href="https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource">ChildAndParents SourceRef</a></p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">SourceRef(client, data);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>client</td><td><a href="" class="label type-hint type-hint-familysearch">FamilySearch</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-page"><p>FamilySearch sdk client</p>
+</div></td></tr><tr><td>data</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-page"><p>raw object data</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_addtag">addTag(tag)</h3>
+<div class="addtag"><h5 id="methods_addtag_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>tag</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-addtag-page"><p>tag to add</p>
+</div></td></tr></tbody></table><h5 id="methods_addtag_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-sourceref">SourceRef</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-addtag-page"><p>this source reference</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_delete">delete(changeMessage)</h3>
+<div class="delete"><div class="sources-types-page sources-types-constructor-sourceref-delete-page"><p>delete this source reference
+- see <a href="#/api/sources.functions:deletePersonSourceRef">deletePersonSourceRef</a>,
+<a href="#/api/sources.functions:deleteCoupleSourceRef">deleteCoupleSourceRef</a>, or
+<a href="#/api/sources.functions:deleteChildAndParentsSourceRef">deleteChildAndParentsSourceRef</a></p>
+</div><h5 id="methods_delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-delete-page"><p>reason for the deletion</p>
+</div></td></tr></tbody></table><h5 id="methods_delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-delete-page"><p>promise for the source reference URL</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getattribution">getAttribution()</h3>
+<div class="getattribution"><h5 id="methods_getattribution_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-attribution">Attribution</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-getattribution-page"><p><a href="#/api/attribution.types:constructor.Attribution">Attribution</a> object</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getdescription">getDescription()</h3>
+<div class="getdescription"><h5 id="methods_getdescription_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-getdescription-page"><p>description</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getid">getId()</h3>
+<div class="getid"><h5 id="methods_getid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-getid-page"><p>Id of the source reference</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getsourcedescription">getSourceDescription()</h3>
+<div class="getsourcedescription"><h5 id="methods_getsourcedescription_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-getsourcedescription-page"><p>promise for the <a href="#/api/sources.functions:getSourceDescription">getSourceDescription</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getsourcedescriptionid">getSourceDescriptionId()</h3>
+<div class="getsourcedescriptionid"><h5 id="methods_getsourcedescriptionid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-getsourcedescriptionid-page"><p>Id of the source description</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getsourcedescriptionurl">getSourceDescriptionUrl()</h3>
+<div class="getsourcedescriptionurl"><h5 id="methods_getsourcedescriptionurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-getsourcedescriptionurl-page"><p>URL of the source description - pass into <a href="#/api/sources.functions:getSourceDescription">getSourceDescription</a> for details</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getsourcerefurl">getSourceRefUrl()</h3>
+<div class="getsourcerefurl"><h5 id="methods_getsourcerefurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-getsourcerefurl-page"><p>URL of this source reference - <em>NOTE</em> however that you cannot read individual source references</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_gettags">getTags()</h3>
+<div class="gettags"><h5 id="methods_gettags_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string[]</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-gettags-page"><p>an array of tags; e.g., <a href="http://gedcomx.org/Name">http://gedcomx.org/Name</a> or <a href="http://gedcomx.org/Birth">http://gedcomx.org/Birth</a></p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_removetag">removeTag(tag)</h3>
+<div class="removetag"><h5 id="methods_removetag_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>tag</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-removetag-page"><p>tag to remove</p>
+</div></td></tr></tbody></table><h5 id="methods_removetag_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-sourceref">SourceRef</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-removetag-page"><p>this source reference</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_save">save(url, changeMessage)</h3>
+<div class="save"><div class="sources-types-page sources-types-constructor-sourceref-save-page"><p>Create a new source reference (if this source reference does not have an id) or update the existing source reference</p>
+<p><em>NOTE</em>: there&#39;s no <em>refresh</em> parameter because it&#39;s not possible to read individual source references;
+however, the source reference&#39;s id and URL are set when creating a new source reference.</p>
+<p><em>NOTE</em>: the person/couple/childAndParents id and the source description are not updateable.
+Only the tags are updateable.</p>
+<p><a href="http://jsfiddle.net/sqsejsjq/1/">Editable Example</a></p>
+</div><h5 id="methods_save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>url</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-save-page"><p>url for a person, couple, or child and parents source references endpoint</p>
+</div></td></tr><tr><td>changeMessage</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-save-page"><p>change message</p>
+</div></td></tr></tbody></table><h5 id="methods_save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-save-page"><p>promise of the source reference id, which is fulfilled after the source reference has been updated</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setsourcedescription">setSourceDescription(srcDesc)</h3>
+<div class="setsourcedescription"><h5 id="methods_setsourcedescription_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>srcDesc</td><td><a href="" class="label type-hint type-hint-sourcedescription">SourceDescription</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-setsourcedescription-page"><p>SourceDescription object or URL of the source description</p>
+</div></td></tr></tbody></table><h5 id="methods_setsourcedescription_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-sourceref">SourceRef</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-setsourcedescription-page"><p>this source reference</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_settags">setTags(tags)</h3>
+<div class="settags"><h5 id="methods_settags_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>tags</td><td><a href="" class="label type-hint type-hint-string">string[]</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-settags-page"><p>an array of tags; e.g., <a href="http://gedcomx.org/Name">http://gedcomx.org/Name</a> or <a href="http://gedcomx.org/Birth">http://gedcomx.org/Birth</a></p>
+</div></td></tr></tbody></table><h5 id="methods_settags_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-sourceref">SourceRef</a></td><td><div class="sources-types-page sources-types-constructor-sourceref-settags-page"><p>this source reference</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

@@ -1,0 +1,73 @@
+<h1><code ng:non-bindable="">MemoryPersonaRef</code>
+<div><span class="hint">type in module <code ng:non-bindable="">memories</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="memories-types-page memories-types-constructor-memorypersonaref-page"><p>Reference from a person to a memory persona
+To create a new memory persona reference you must set memoryPersona</p>
+<p><em>NOTE</em>: memory persona references cannot be updated. They can only be created or deleted.</p>
+<p><a href="https://familysearch.org/developers/docs/api/tree/Person_Memory_References_resource">FamilySearch API Docs</a></p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">MemoryPersonaRef(client[, data]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>client</td><td><a href="" class="label type-hint type-hint-familysearch">FamilySearch</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-page"><p>FamilySearch sdk client</p>
+</div></td></tr><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-page"><p>an object with optional attributes {memoryPersona}.
+<em>memoryPersona</em> can be a <a href="#/api/memories.types:constructor.MemoryPersona">MemoryPersona</a> or a memory persona url</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_delete">delete()</h3>
+<div class="delete"><div class="memories-types-page memories-types-constructor-memorypersonaref-delete-page"><p>delete this memory persona reference - see <a href="#/api/memories.functions:deleteMemoryPersonaRef">deleteMemoryPersonaRef</a></p>
+</div><h5 id="methods_delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-delete-page"><p>promise for the response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getid">getId()</h3>
+<div class="getid"><h5 id="methods_getid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-getid-page"><p>Id of the Memory Persona Reference</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getmemory">getMemory()</h3>
+<div class="getmemory"><h5 id="methods_getmemory_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-getmemory-page"><p>promise for the <a href="#/api/memories.functions:getMemory">getMemory</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getmemorypersona">getMemoryPersona()</h3>
+<div class="getmemorypersona"><h5 id="methods_getmemorypersona_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-getmemorypersona-page"><p>promise for the <a href="#/api/memories.functions:getMemoryPersona">getMemoryPersona</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getmemorypersonarefurl">getMemoryPersonaRefUrl()</h3>
+<div class="getmemorypersonarefurl"><h5 id="methods_getmemorypersonarefurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-getmemorypersonarefurl-page"><p>URL of this memory persona reference; <em>NOTE</em> however, that individual memory persona references cannot be read</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getmemorypersonaurl">getMemoryPersonaUrl()</h3>
+<div class="getmemorypersonaurl"><h5 id="methods_getmemorypersonaurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-getmemorypersonaurl-page"><p>URL of the memory persona (without the access token);
+pass into <a href="#/api/memories.functions:getMemoryPersona">getMemoryPersona</a> for details</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getmemoryurl">getMemoryUrl()</h3>
+<div class="getmemoryurl"><h5 id="methods_getmemoryurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-getmemoryurl-page"><p>URL of the memory; pass into <a href="#/api/memories.functions:getMemory">getMemory</a> for details</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getresource">getResource()</h3>
+<div class="getresource"><h5 id="methods_getresource_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-getresource-page"><p>URL of the Memory Persona</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getresourceid">getResourceId()</h3>
+<div class="getresourceid"><h5 id="methods_getresourceid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-getresourceid-page"><p>Id of the Memory Persona</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_save">save(url)</h3>
+<div class="save"><div class="memories-types-page memories-types-constructor-memorypersonaref-save-page"><p>Create a new memory persona ref</p>
+<p>NOTE: there&#39;s no <em>refresh</em> parameter because it&#39;s not possible to read individual memory persona references;
+however, the memory persona ref&#39;s id and URL is set when creating a new memory persona ref</p>
+<p><a href="http://jsfiddle.net/r3px0ork/1/">Editable Example</a></p>
+</div><h5 id="methods_save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>url</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-save-page"><p>full url for the person memory persona references endpoint</p>
+</div></td></tr></tbody></table><h5 id="methods_save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-save-page"><p>promise for the response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setmemorypersona">setMemoryPersona(memoryPersona)</h3>
+<div class="setmemorypersona"><h5 id="methods_setmemorypersona_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>memoryPersona</td><td><a href="" class="label type-hint type-hint-memorypersona">MemoryPersona</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-setmemorypersona-page"><p>MemoryPersona object or memory persona URL</p>
+</div></td></tr></tbody></table><h5 id="methods_setmemorypersona_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-memorypersonaref">MemoryPersonaRef</a></td><td><div class="memories-types-page memories-types-constructor-memorypersonaref-setmemorypersona-page"><p>this memory persona ref</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

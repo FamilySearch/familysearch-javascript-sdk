@@ -1,0 +1,19 @@
+<h1><code ng:non-bindable="">getMultiNote</code>
+<div><span class="hint">functions in module <code ng:non-bindable="">notes</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="notes-functions-page notes-functions-getmultinote-page"><p>Get multiple notes at once by requesting them in parallel</p>
+<p><a href="https://familysearch.org/developers/docs/api/tree/Person_Note_resource">Person Note API Docs</a>
+<a href="https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource">Couple Relationship Note API Docs</a>
+<a href="https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource">Child and Parents Relationship API Docs</a></p>
+<p><a href="http://jsfiddle.net/4d1wLp8a/1/">Editable Example</a></p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getMultiNote(urls);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>urls</td><td><a href="" class="label type-hint type-hint-string">string[]</a></td><td><div class="notes-functions-page notes-functions-getmultinote-page"><p>full URLs of the notes</p>
+</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="notes-functions-page notes-functions-getmultinote-page"><p>promise that is fulfilled when all of the notes have been read,
+returning a map of note id or URL to <a href="#/api/notes.functions:getNote">getNote</a> responses</p>
+</div></td></tr></table></div>
+</div>

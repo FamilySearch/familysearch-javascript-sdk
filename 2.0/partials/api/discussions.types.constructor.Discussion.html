@@ -1,0 +1,82 @@
+<h1><code ng:non-bindable="">Discussion</code>
+<div><span class="hint">type in module <code ng:non-bindable="">discussions</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="discussions-types-page discussions-types-constructor-discussion-page"><p>Discussion</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">Discussion(client, data);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>client</td><td><a href="" class="label type-hint type-hint-familysearch">FamilySearch</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-page"><p>FamilySearch sdk client</p>
+</div></td></tr><tr><td>data</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-page"><p>raw object data</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_delete">delete(changeMessage)</h3>
+<div class="delete"><div class="discussions-types-page discussions-types-constructor-discussion-delete-page"><p>delete this discussion - see <a href="#/api/discussions.functions:deleteDiscussion">deleteDiscussion</a></p>
+<p><strong>NOTE</strong> if you delete a discussion, it&#39;s up to you to delete the corresponding Discussion Refs
+Since there is no way to tell which people a discussion has been linked to, your best best is to
+attach a discussion to a single person and to delete the discussion when you delete the discussion-reference
+FamilySearch is aware of this issue but hasn&#39;t committed to a fix.</p>
+</div><h5 id="methods_delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-delete-page"><p>change message (currently ignored)</p>
+</div></td></tr></tbody></table><h5 id="methods_delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-delete-page"><p>promise for the discussion id</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getagent">getAgent()</h3>
+<div class="getagent"><h5 id="methods_getagent_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-getagent-page"><p>promise for the <a href="#/api/user.functions:getAgent">getAgent</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getagentid">getAgentId()</h3>
+<div class="getagentid"><h5 id="methods_getagentid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-getagentid-page"><p>id of the contributor - pass into <a href="#/api/user.functions:getAgent">getAgent</a> for details</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getagenturl">getAgentUrl()</h3>
+<div class="getagenturl"><h5 id="methods_getagenturl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-getagenturl-page"><p>URL of the contributor - pass into <a href="#/api/user.functions:getAgent">getAgent</a> for details</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getcomments">getComments()</h3>
+<div class="getcomments"><h5 id="methods_getcomments_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-getcomments-page"><p>promise for the <a href="#/api/discussions.functions:getDiscussionComments">getDiscussionComments</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getcommentsurl">getCommentsUrl()</h3>
+<div class="getcommentsurl"><h5 id="methods_getcommentsurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-getcommentsurl-page"><p>URL of the comments endpoint - pass into <a href="#/api/discussions.functions:getDiscussionComments">getDiscussionComments</a> for details</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getcreatedtimestamp">getCreatedTimestamp()</h3>
+<div class="getcreatedtimestamp"><h5 id="methods_getcreatedtimestamp_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-getcreatedtimestamp-page"><p>timestamp in millis</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getdetails">getDetails()</h3>
+<div class="getdetails"><h5 id="methods_getdetails_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-getdetails-page"><p>description / text of the discussion</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getdiscussionurl">getDiscussionUrl()</h3>
+<div class="getdiscussionurl"><h5 id="methods_getdiscussionurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-getdiscussionurl-page"><p>URL of this discussion</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getid">getId()</h3>
+<div class="getid"><h5 id="methods_getid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-getid-page"><p>Id of the discussion</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getmodifiedtimestamp">getModifiedTimestamp()</h3>
+<div class="getmodifiedtimestamp"><h5 id="methods_getmodifiedtimestamp_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-getmodifiedtimestamp-page"><p>timestamp in millis</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getnumberofcomments">getNumberOfComments()</h3>
+<div class="getnumberofcomments"><h5 id="methods_getnumberofcomments_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-getnumberofcomments-page"><p>number of comments</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_gettitle">getTitle()</h3>
+<div class="gettitle"><h5 id="methods_gettitle_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-gettitle-page"><p>title of the discussion</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_save">save()</h3>
+<div class="save"><div class="discussions-types-page discussions-types-constructor-discussion-save-page"><p>Create a new discussion (if this discussion does not have an id) or update the existing discussion</p>
+<p><a href="http://jsfiddle.net/fsy9z6kx/1/">Editable Example</a></p>
+</div><h5 id="methods_save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-discussion-save-page"><p>promise of the discussion id, which is fulfilled after the discussion has been updated or,
+if refresh is true, after the discussion has been read.</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

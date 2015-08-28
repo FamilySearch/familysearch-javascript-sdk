@@ -1,0 +1,76 @@
+<h1><code ng:non-bindable="">SearchResult</code>
+<div><span class="hint">type in module <code ng:non-bindable="">searchAndMatch</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-page"><p>A person search result entry.</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">SearchResult(client, data);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>client</td><td><a href="" class="label type-hint type-hint-familysearch">FamilySearch</a></td><td><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-page"><p>FamilySearch sdk client</p>
+</div></td></tr><tr><td>data</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-page"><p>raw object data</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_getchildids">getChildIds()</h3>
+<div class="getchildids"><h5 id="methods_getchildids_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String[]</a></td><td><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-getchildids-page"><p>array of child Id&#39;s for this search result</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getchildren">getChildren()</h3>
+<div class="getchildren"><h5 id="methods_getchildren_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-person">Person[]</a></td><td><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-getchildren-page"><p>array of spouse <a href="#/api/person.types:constructor.Person">Persons</a> for this search result</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getfatherids">getFatherIds()</h3>
+<div class="getfatherids"><h5 id="methods_getfatherids_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String[]</a></td><td><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-getfatherids-page"><p>array of father Id&#39;s for this search result</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getfathers">getFathers()</h3>
+<div class="getfathers"><h5 id="methods_getfathers_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-person">Person[]</a></td><td><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-getfathers-page"><p>array of father <a href="#/api/person.types:constructor.Person">Persons</a> for this search result</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getfullprimaryperson">getFullPrimaryPerson()</h3>
+<div class="getfullprimaryperson"><h5 id="methods_getfullprimaryperson_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-getfullprimaryperson-page"><p>promise for the <a href="#/api/person.functions:getPerson">getPerson</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getid">getId()</h3>
+<div class="getid"><h5 id="methods_getid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-getid-page"><p>Id of the person for this search result</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getmotherids">getMotherIds()</h3>
+<div class="getmotherids"><h5 id="methods_getmotherids_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String[]</a></td><td><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-getmotherids-page"><p>array of mother Id&#39;s for this search result</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getmothers">getMothers()</h3>
+<div class="getmothers"><h5 id="methods_getmothers_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-person">Person[]</a></td><td><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-getmothers-page"><p>array of mother <a href="#/api/person.types:constructor.Person">Persons</a> for this search result</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getperson">getPerson(pid)</h3>
+<div class="getperson"><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-getperson-page"><p><strong>Note: Be aware that the <code>Person</code> objects returned from SearchResults do not have as much information
+as <code>Person</code> objects returned from the various person and pedigree functions.</strong></p>
+</div><h5 id="methods_getperson_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-getperson-page"><p>id of the person</p>
+</div></td></tr></tbody></table><h5 id="methods_getperson_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-person">Person</a></td><td><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-getperson-page"><p>the <a href="#/api/person.types:constructor.Person">Person</a> for this Id in this search result</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getprimaryperson">getPrimaryPerson()</h3>
+<div class="getprimaryperson"><h5 id="methods_getprimaryperson_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-person">Person</a></td><td><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-getprimaryperson-page"><p>the primary <a href="#/api/person.types:constructor.Person">Person</a> for this search result</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getscore">getScore()</h3>
+<div class="getscore"><h5 id="methods_getscore_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-getscore-page"><p>higher is better</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getspouseids">getSpouseIds()</h3>
+<div class="getspouseids"><h5 id="methods_getspouseids_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String[]</a></td><td><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-getspouseids-page"><p>array of spouse Id&#39;s for this search result</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getspouses">getSpouses()</h3>
+<div class="getspouses"><h5 id="methods_getspouses_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-person">Person[]</a></td><td><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-getspouses-page"><p>array of spouse <a href="#/api/person.types:constructor.Person">Persons</a> for this search result</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_gettitle">getTitle()</h3>
+<div class="gettitle"><h5 id="methods_gettitle_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="searchandmatch-types-page searchandmatch-types-constructor-searchresult-gettitle-page"><p>Id and name</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>
