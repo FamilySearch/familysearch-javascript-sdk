@@ -4,7 +4,6 @@ node_js:
 env:
   global:
     secure: gwZrOCs5mOukCgPdj1nIqcIAUkw1X7Cy5aa7q1Ofl3mOYLVML7SFKOC8UpfqSDWd+9mLfClYOcy0brgYcco4D16ETWXCtm67WAH8YyOsr/IVKPVCKkwbG5dK0q/9ecjUa+im0/mBw+gprQUObYKADZI8EG6tPYjTTznqDU+ZXvU=
-sudo: false
 cache:
   directories:
   - node_modules
