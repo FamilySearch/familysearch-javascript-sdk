@@ -13,7 +13,7 @@ HTTP and promise libraries. This was done for a few important reasons:
 ### Promises
 
 In v2 all promises returned by the SDK have the same functionality. The biggest
-change here will be for jQuery users. jQuery Deferreds are a little bit different
+change here will be for jQuery users. jQuery Deferreds are [a little bit different](https://thewayofcode.wordpress.com/tag/jquery-deferred-broken/)
 than standard promises. Instead of using `done()` and `fail()` you'll need to use
 `then()`.
 
@@ -45,7 +45,7 @@ we suggest reading the in-depth guide from [HTML5 Rocks](http://www.html5rocks.c
 ### Responses
 
 All SDK methods that issue HTTP requests will return a promise that resolves to
-a standard response object. The response object will have methods for accessing
+a standard response object. The response object will have [methods](http://familysearch.github.io/familysearch-javascript-sdk/2.0/#/api#handling-responses) for accessing
 the HTTP resonse data such as the status, body, and headers. The same convenience
 methods for accessing the response data are also added as before. The standard
 response methods are detailed in the main page of the documentation. Any available
@@ -150,7 +150,7 @@ All new methods are explained in the documentation.
 
 All object classes (such as Person, Note, Source, etc) inherit from `FamilySearch.BaseClass`.
 This allows them to share common methods such as `getId()` and `getLink()`. Read
-more in the documentation about `BaseClass`.
+more in the documentation about [`BaseClass`](http://familysearch.github.io/familysearch-javascript-sdk/2.0/#/api/familysearch.types:constructor.BaseClass).
 
 ### Angular
 
@@ -167,12 +167,14 @@ fsClient.getCurrentUser().then(function(response) {
 
 ### Facts, Dates, and Places
 
-The Date class has changed considerably. It was transformed from a class that
+The [Date](http://familysearch.github.io/familysearch-javascript-sdk/2.0/#/api/authorities.types:constructor.Date)
+class has changed considerably. It was transformed from a class that
 helped interpret formal dates to a class that merely represents the data returned
 by the API. If you need to interpret GEDCOM X formal dates we recommend using the
 [gedcomx-date-js](https://github.com/trepo/gedcomx-date-js) library.
 
-A PlaceReference class was also added to reflect the place data contained in Facts.
+A [PlaceReference](http://familysearch.github.io/familysearch-javascript-sdk/2.0/#/api/places.types:constructor.PlaceReference)
+class was also added to reflect the place data contained in Facts.
 
 Due to the Date changes and new PlaceReference class, the methods on Facts have
 changed slightly. `fact.getDate()` and `fact.getPlace()` used to return strings

@@ -1,0 +1,9 @@
+.form-search > ul.nav > li > a {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.getdisplaylifespan {
+  float: none;
+}

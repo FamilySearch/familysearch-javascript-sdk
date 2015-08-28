@@ -25,7 +25,8 @@ module.exports = function(grunt) {
         html5Mode: false,
         title: 'FamilySearch Javascript SDK',
         bestMatch: false,
-        navTemplate: 'dist/nav.tmpl'
+        navTemplate: 'dist/nav.tmpl',
+        styles: ['dist/fix.css']
       },
       all: ['<%= src %>']
     },
