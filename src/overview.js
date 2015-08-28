@@ -2,6 +2,11 @@
  * @ngdoc overview
  * @name index
  * @description
+ * 
+ * <div class="alert alert-warning">The documentation contains links to jsFiddles. The jsFiddles use version 1
+ * of the SDK. Overtime the jsFiddles will be migrated to the [sample app](https://github.com/FamilySearch/javascript-sdk-sample-app)
+ * which is a work in progress. As the examples are migrated, the jsFiddle links
+ * will be replaced with links to the sample app.</div>
  *
  * ## Overview
  *
@@ -23,7 +28,7 @@
  * - Throttling is handled - calls are automatically retried.
  * - Responses are mapped to objects or arrays of objects that have convenience functions
  * to make extracting data from the responses easier.
- * - The response object prototypes can be extended with additional functions to navigate the response json and return
+ * - The object prototypes can be extended with additional functions to navigate the response json and return
  * whatever custom information is desired.
  * - The SDK works both in the browser and in node.
  *

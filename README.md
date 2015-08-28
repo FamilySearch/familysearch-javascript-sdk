@@ -23,7 +23,6 @@ and has an editable jsFiddle to demonstrate its functionality and allow you to e
 
 * In the browser, authentication is handled using a popup window.  You do not need to create an OAuth redirect page.
 All you need to do is register a callback URI that shares the same hostname and port as your code.
-Check out the [jsFiddle](http://jsfiddle.net/MpUg7/60/) to see it in action (requires you to have a sandbox account).
 
 * Option to store access token in a session cookie.
 
@@ -85,12 +84,6 @@ See the existing unit test files for examples.
 Grunt also generates documentation for the project.
 Nearly a third of the code consists of comments that is turned into online documentation.
 Please comment your changes.
-
-Please create editable examples for your changes on jsFiddle.net.
-
-In the future we might use Facebook's Huxley project to create end-to-end (integration) tests from the examples on jsFiddle,
-so they will serve two purposes simultaneously: as human-readable examples and as end-to-end tests.
-(There is a proof-of-concept in the huxley directory.)
 
 When choosing what to work on, you may pick an existing issue to implement or create a new issue.
 We suggest that you describe what you plan to implement in order to get feedback prior to implementation and
