@@ -116,52 +116,16 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-gh-pages');
   grunt.loadNpmTasks('grunt-ngdocs');
   grunt.loadNpmTasks('grunt-run');
-  grunt.loadNpmTasks('grunt-gitinfo');
-  grunt.loadNpmTasks('grunt-git');
 
   grunt.registerTask('test', [
     'jshint',
     'run:jasmine'
   ]);
-  
-  // Get a list of previous doc versions by checkout out gh-pages branch
-  // and traversing the list of directories
-  grunt.registerTask('versions', function(){
-    
-    // We filter out any lingering directories that might not match what
-    // we're looking for, such as node_modules
-    var versionMatcher = /^\d+\.\d+$/,
-        versions = grunt.file.expand({
-          filter: "isDirectory"
-        }, ["*"]).filter(function(name){
-          return versionMatcher.test(name); 
-        });
-    
-    var currentVersion = grunt.config.get('docVersion');
-    if(versions.indexOf(currentVersion) === -1){
-      versions.push(currentVersion);
-    }
-    
-    // We want them in reverse order so that most recent is first
-    versions.sort().reverse();
-    
-    // Save in grunt config so that the docs generator can see it
-    grunt.config.set('versions', versions);
-  });
-  
-  grunt.registerTask('docsindex', function(){
-    grunt.file.write('dist/index.html', grunt.template.process(grunt.file.read('dist/index.tmpl')));
-  });
 
   grunt.registerTask('build', [
     'clean:dist',
     'test',
-    'gitinfo',
-    'gitcheckout:gh-pages',
-    'versions',
-    'gitcheckout:reset',
     'ngdocs',
-    'docsindex',
     'run:browserify',
     'uglify',
     'copy:dist'
