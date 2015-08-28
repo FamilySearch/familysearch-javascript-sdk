@@ -1,0 +1,145 @@
+<h1><code ng:non-bindable="">Name</code>
+<div><span class="hint">type in module <code ng:non-bindable="">name</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="name-types-page name-types-constructor-name-page"><p>Name</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">Name([data]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-page"><p>either a fullText string or an object with optional attributes
+{type, givenName, surname, prefix, suffix, fullText, preferred, changeMessage}</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_$getfulltext">$getFullText(i)</h3>
+<div class="$getfulltext"><h5 id="methods_$getfulltext_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>i <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="name-types-page name-types-constructor-name-getfulltext-page"><p>name form to read; defaults to 0</p>
+</div></td></tr></tbody></table><h5 id="methods_$getfulltext_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-getfulltext-page"><p>get the full text of the <code>i</code>&#39;th name form</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getgivenname">$getGivenName(i)</h3>
+<div class="$getgivenname"><h5 id="methods_$getgivenname_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>i <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="name-types-page name-types-constructor-name-getgivenname-page"><p>name form to read; defaults to 0</p>
+</div></td></tr></tbody></table><h5 id="methods_$getgivenname_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-getgivenname-page"><p>get the given part of the <code>i</code>&#39;th name form</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getlanguage">$getLanguage(i)</h3>
+<div class="$getlanguage"><h5 id="methods_$getlanguage_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>i <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="name-types-page name-types-constructor-name-getlanguage-page"><p>name form to read; defaults to 0</p>
+</div></td></tr></tbody></table><h5 id="methods_$getlanguage_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-getlanguage-page"><p>get the language of the <code>i</code>&#39;th name form</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getnameform">$getNameForm(i)</h3>
+<div class="$getnameform"><h5 id="methods_$getnameform_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>i <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="name-types-page name-types-constructor-name-getnameform-page"><p>name form to read; defaults to 0</p>
+</div></td></tr></tbody></table><h5 id="methods_$getnameform_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="name-types-page name-types-constructor-name-getnameform-page"><p>get the <code>i</code>&#39;th name form: each name form has <code>lang</code>, <code>fullText</code>, and <code>parts</code> properties</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getnameformscount">$getNameFormsCount()</h3>
+<div class="$getnameformscount"><h5 id="methods_$getnameformscount_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="name-types-page name-types-constructor-name-getnameformscount-page"><p>get the number of name forms</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getnamepart">$getNamePart(type, i)</h3>
+<div class="$getnamepart"><div class="name-types-page name-types-constructor-name-getnamepart-page"><p>you can call $getGivenName, $getSurname, $getPrefix, or $getSuffix instead of this function</p>
+</div><h5 id="methods_$getnamepart_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>type</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-getnamepart-page"><p><a href="http://gedcomx.org/Given">http://gedcomx.org/Given</a> or <a href="http://gedcomx.org/Surname">http://gedcomx.org/Surname</a></p>
+</div></td></tr><tr><td>i <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="name-types-page name-types-constructor-name-getnamepart-page"><p>name form to read; defaults to 0</p>
+</div></td></tr></tbody></table><h5 id="methods_$getnamepart_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-getnamepart-page"><p>get the specified part of the <code>i</code>&#39;th name form</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getprefix">$getPrefix(i)</h3>
+<div class="$getprefix"><h5 id="methods_$getprefix_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>i <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="name-types-page name-types-constructor-name-getprefix-page"><p>name form to read; defaults to 0</p>
+</div></td></tr></tbody></table><h5 id="methods_$getprefix_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-getprefix-page"><p>get the prefix part of the <code>i</code>&#39;th name form</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getsuffix">$getSuffix(i)</h3>
+<div class="$getsuffix"><h5 id="methods_$getsuffix_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>i <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="name-types-page name-types-constructor-name-getsuffix-page"><p>name form to read; defaults to 0</p>
+</div></td></tr></tbody></table><h5 id="methods_$getsuffix_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-getsuffix-page"><p>get the suffix part of the <code>i</code>&#39;th name form</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getsurname">$getSurname(i)</h3>
+<div class="$getsurname"><h5 id="methods_$getsurname_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>i <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="name-types-page name-types-constructor-name-getsurname-page"><p>name form to read; defaults to 0</p>
+</div></td></tr></tbody></table><h5 id="methods_$getsurname_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-getsurname-page"><p>get the surname part of the <code>i</code>&#39;th name form</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setchangemessage">$setChangeMessage(changeMessage)</h3>
+<div class="$setchangemessage"><div class="name-types-page name-types-constructor-name-setchangemessage-page"><p>sets the changeMessage used to update the name</p>
+</div><h5 id="methods_$setchangemessage_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-setchangemessage-page"><p>change message</p>
+</div></td></tr></tbody></table><h5 id="methods_$setchangemessage_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-name">Name</a></td><td><div class="name-types-page name-types-constructor-name-setchangemessage-page"><p>this name</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setfulltext">$setFullText(fullText, i)</h3>
+<div class="$setfulltext"><div class="name-types-page name-types-constructor-name-setfulltext-page"><p>sets the $changed flag as well as the value</p>
+</div><h5 id="methods_$setfulltext_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>fullText</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-setfulltext-page"><p>value</p>
+</div></td></tr><tr><td>i <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="name-types-page name-types-constructor-name-setfulltext-page"><p>name form to set; defaults to 0</p>
+</div></td></tr></tbody></table><h5 id="methods_$setfulltext_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-name">Name</a></td><td><div class="name-types-page name-types-constructor-name-setfulltext-page"><p>this name</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setgivenname">$setGivenName(givenName, i)</h3>
+<div class="$setgivenname"><div class="name-types-page name-types-constructor-name-setgivenname-page"><p>sets the $changed flag as well as the value</p>
+</div><h5 id="methods_$setgivenname_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>givenName</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-setgivenname-page"><p>value</p>
+</div></td></tr><tr><td>i <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="name-types-page name-types-constructor-name-setgivenname-page"><p>name form to set; defaults to 0</p>
+</div></td></tr></tbody></table><h5 id="methods_$setgivenname_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-name">Name</a></td><td><div class="name-types-page name-types-constructor-name-setgivenname-page"><p>this name</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setnamepart">$setNamePart(name, type, i)</h3>
+<div class="$setnamepart"><div class="name-types-page name-types-constructor-name-setnamepart-page"><p>sets the $changed flag as well as the value;
+you can call $setGivenName, $setSurname, $setPrefix, and $setSuffix instead of this function</p>
+</div><h5 id="methods_$setnamepart_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>name</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-setnamepart-page"><p>value</p>
+</div></td></tr><tr><td>type</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-setnamepart-page"><p><a href="http://gedcomx.org/Given">http://gedcomx.org/Given</a> or <a href="http://gedcomx.org/Surname">http://gedcomx.org/Surname</a></p>
+</div></td></tr><tr><td>i <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="name-types-page name-types-constructor-name-setnamepart-page"><p>name form to set; defaults to 0</p>
+</div></td></tr></tbody></table><h5 id="methods_$setnamepart_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-name">Name</a></td><td><div class="name-types-page name-types-constructor-name-setnamepart-page"><p>this name</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setpreferred">$setPreferred(isPreferred)</h3>
+<div class="$setpreferred"><div class="name-types-page name-types-constructor-name-setpreferred-page"><p>sets the $changed flag as well as the value</p>
+<p><strong>NOTE</strong>: the preferred name flag can be set only when the person is initially created; after that it is read-only</p>
+</div><h5 id="methods_$setpreferred_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>isPreferred</td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="name-types-page name-types-constructor-name-setpreferred-page"><p>true if preferred</p>
+</div></td></tr></tbody></table><h5 id="methods_$setpreferred_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-name">Name</a></td><td><div class="name-types-page name-types-constructor-name-setpreferred-page"><p>this name</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setprefix">$setPrefix(prefix, i)</h3>
+<div class="$setprefix"><div class="name-types-page name-types-constructor-name-setprefix-page"><p>sets the $changed flag as well as the value</p>
+</div><h5 id="methods_$setprefix_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>prefix</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-setprefix-page"><p>value</p>
+</div></td></tr><tr><td>i <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="name-types-page name-types-constructor-name-setprefix-page"><p>name form to set; defaults to 0</p>
+</div></td></tr></tbody></table><h5 id="methods_$setprefix_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-name">Name</a></td><td><div class="name-types-page name-types-constructor-name-setprefix-page"><p>this name</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setsuffix">$setSuffix(suffix, i)</h3>
+<div class="$setsuffix"><div class="name-types-page name-types-constructor-name-setsuffix-page"><p>sets the $changed flag as well as the value</p>
+</div><h5 id="methods_$setsuffix_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>suffix</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-setsuffix-page"><p>value</p>
+</div></td></tr><tr><td>i <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="name-types-page name-types-constructor-name-setsuffix-page"><p>name form to set; defaults to 0</p>
+</div></td></tr></tbody></table><h5 id="methods_$setsuffix_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-name">Name</a></td><td><div class="name-types-page name-types-constructor-name-setsuffix-page"><p>this name</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setsurname">$setSurname(surname, i)</h3>
+<div class="$setsurname"><div class="name-types-page name-types-constructor-name-setsurname-page"><p>sets the $changed flag as well as the value</p>
+</div><h5 id="methods_$setsurname_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>surname</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-setsurname-page"><p>value</p>
+</div></td></tr><tr><td>i <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="name-types-page name-types-constructor-name-setsurname-page"><p>name form to set; defaults to 0</p>
+</div></td></tr></tbody></table><h5 id="methods_$setsurname_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-name">Name</a></td><td><div class="name-types-page name-types-constructor-name-setsurname-page"><p>this name</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$settype">$setType(type)</h3>
+<div class="$settype"><div class="name-types-page name-types-constructor-name-settype-page"><p>sets the $changed flag as well as the value</p>
+</div><h5 id="methods_$settype_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>type</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-settype-page"><p>e.g., <a href="http://gedcomx.org/BirthName">http://gedcomx.org/BirthName</a></p>
+</div></td></tr></tbody></table><h5 id="methods_$settype_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-name">Name</a></td><td><div class="name-types-page name-types-constructor-name-settype-page"><p>this name</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_attribution">attribution</h3>
+<div class="attribution"><h5 id="properties_attribution_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-attribution">Attribution</a></td><td><div class="name-types-page name-types-constructor-name-attribution-page"><p><a href="#/api/attribution.types:constructor.Attribution">Attribution</a> object</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="properties_id">id</h3>
+<div class="id"><h5 id="properties_id_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-id-page"><p>Id of the name</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="properties_preferred">preferred</h3>
+<div class="preferred"><h5 id="properties_preferred_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="name-types-page name-types-constructor-name-preferred-page"><p>true if this name is preferred</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="properties_type">type</h3>
+<div class="type"><h5 id="properties_type_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="name-types-page name-types-constructor-name-type-page"><p><a href="http://gedcomx.org/BirthName">http://gedcomx.org/BirthName</a>, etc.</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

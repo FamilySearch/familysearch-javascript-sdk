@@ -1,0 +1,37 @@
+<h1><code ng:non-bindable="">init</code>
+<div><span class="hint">functions in module <code ng:non-bindable="">init</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="init-functions-page init-functions-init-page"><p>Initialize the FamilySearch object</p>
+<p><strong>Options</strong></p>
+<ul>
+<li><code>client_id</code> - the developer key you received from FamilySearch</li>
+<li><code>environment</code> - sandbox, staging, or production</li>
+<li><code>http_function</code> - a function for issuing http requests: <code>jQuery.ajax</code> or angular&#39;s <code>$http</code>,
+or eventually node.js&#39;s http function; defaults to <code>jQuery.ajax</code></li>
+<li><code>deferred_function</code> - a function for creating deferred&#39;s: <code>jQuery.Deferred</code> or angular&#39;s <code>$q.defer</code>
+or eventually <code>Q</code>; defaults to <code>jQuery.Deferred</code></li>
+<li><code>timeout_function</code> - optional timeout function: angular users should pass <code>$timeout</code>; otherwise the global <code>setTimeout</code> is used</li>
+<li><code>redirect_uri</code> - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
+but must have the same host and port as the server running your script;
+however, it must exist for mobile safari - see the Overview section of the documentation</li>
+<li><code>auto_expire</code> - set to true if you want to the system to clear the access token when it has expired
+(after one hour of inactivity or 24 hours, whichever comes first; should probably be false for node.js)</li>
+<li><code>auto_signin</code> - set to true if you want the user to be prompted to sign in whenever you call an API function
+without an access token; must be false for node.js, and may result in a blocked pop-up if the API call is
+not in direct response to a user-initiated action; because of the blocked pop-up issue, you may want to use <code>expire_callback</code> instead</li>
+<li><code>expire_callback</code> - pass in a function that will be called when the access token expires</li>
+<li><code>save_access_token</code> - set to true if you want the access token to be saved and re-read in future init calls
+(uses a session cookie, must be false for node.js) - <em>setting <code>save_access_token</code> along with <code>auto_signin</code> and
+<code>auto_expire</code> is very convenient</em></li>
+<li><code>access_token</code> - pass this in if you already have an access token</li>
+<li><code>debug</code> - set to true to turn on console logging during development</li>
+</ul>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">init(opts);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>opts</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="init-functions-page init-functions-init-page"><p>opts</p>
+</div></td></tr></tbody></table></div>
+</div>

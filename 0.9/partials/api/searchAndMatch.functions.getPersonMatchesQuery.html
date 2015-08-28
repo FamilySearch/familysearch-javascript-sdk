@@ -1,0 +1,27 @@
+<h1><code ng:non-bindable="">getPersonMatchesQuery</code>
+<div><span class="hint">functions in module <code ng:non-bindable="">searchAndMatch</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="searchandmatch-functions-page searchandmatch-functions-getpersonmatchesquery-page"><p>Get matches for someone not in the tree
+The response includes the following convenience function</p>
+<ul>
+<li><code>getSearchResults()</code> - get the array of <a href="#/api/searchAndMatch.types:constructor.SearchResult">SearchResults</a> from the response</li>
+<li><code>getResultsCount()</code> - get the total number of search results</li>
+<li><code>getIndex()</code> - get the starting index of the results array</li>
+</ul>
+<p><a href="https://familysearch.org/developers/docs/api/tree/Person_Search_resource">FamilySearch API Docs</a></p>
+<p><a href="http://jsfiddle.net/DallanQ/hhcLP/">editable example</a></p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getPersonMatchesQuery(params[, opts]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>params</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="searchandmatch-functions-page searchandmatch-functions-getpersonmatchesquery-page"><p>generally the same parameters as described for
+<a href="#/api/searchAndMatch.functions:getPersonSearch">getPersonSearch</a>, with the the following differences:
+<code>context</code> is not a valid parameter for match,
+<code>fatherId</code>, <code>motherId</code>, and <code>spouseId</code> assist in finding matches for people whose relatives have already been matched, and
+<code>candidateId</code> restricts matches to the person with that Id (what does this mean?)</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="searchandmatch-functions-page searchandmatch-functions-getpersonmatchesquery-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="searchandmatch-functions-page searchandmatch-functions-getpersonmatchesquery-page"><p>promise for the response</p>
+</div></td></tr></table></div>
+</div>

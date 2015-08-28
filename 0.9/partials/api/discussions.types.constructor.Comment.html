@@ -1,0 +1,74 @@
+<h1><code ng:non-bindable="">Comment</code>
+<div><span class="hint">type in module <code ng:non-bindable="">discussions</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="discussions-types-page discussions-types-constructor-comment-page"><p>Comment on a discussion
+To create a new comment, you must set text and either $discussionId or $memoryId.</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">Comment([data]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-page"><p>an object with optional attributes {text, $discussionId, $memoryId}</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_$delete">$delete(changeMessage, opts)</h3>
+<div class="$delete"><div class="discussions-types-page discussions-types-constructor-comment-delete-page"><p>delete this comment - see <a href="#/api/discussions.functions:deleteDiscussionComment">deleteDiscussionComment</a>
+or <a href="#/api/memories.functions:deleteMemoryComment">deleteMemoryComment</a></p>
+</div><h5 id="methods_$delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-delete-page"><p>change message (currently ignored)</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-delete-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-delete-page"><p>promise for the comment url</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getagent">$getAgent()</h3>
+<div class="$getagent"><h5 id="methods_$getagent_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-getagent-page"><p>promise for the <a href="#/api/user.functions:getAgent">getAgent</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getagentid">$getAgentId()</h3>
+<div class="$getagentid"><h5 id="methods_$getagentid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-getagentid-page"><p>id of the contributor - pass into <a href="#/api/user.functions:getAgent">getAgent</a> for details</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getagenturl">$getAgentUrl()</h3>
+<div class="$getagenturl"><h5 id="methods_$getagenturl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-getagenturl-page"><p>URL of the contributor - pass into <a href="#/api/user.functions:getAgent">getAgent</a> for details</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getcommenturl">$getCommentUrl()</h3>
+<div class="$getcommenturl"><h5 id="methods_$getcommenturl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-getcommenturl-page"><p>URL of this comment; <em>NOTE</em> however, that individual comments cannot be read</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$save">$save(changeMessage, opts)</h3>
+<div class="$save"><div class="discussions-types-page discussions-types-constructor-comment-save-page"><p>Create a new comment or update an existing comment</p>
+<p><em>NOTE</em>: there&#39;s no <em>refresh</em> parameter because it&#39;s not possible to read individual comments;
+however, the comment&#39;s id and URL is set when creating a new comment</p>
+<p><a href="http://jsfiddle.net/DallanQ/9YHfX/">editable example</a></p>
+</div><h5 id="methods_$save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-save-page"><p>change message (currently ignored)</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-save-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-save-page"><p>promise of the comment id</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_$discussionid">$discussionId</h3>
+<div class="$discussionid"><h5 id="properties_$discussionid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-discussionid-page"><p>Id of the discussion if this is a discussion comment</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="properties_$memoryid">$memoryId</h3>
+<div class="$memoryid"><h5 id="properties_$memoryid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-memoryid-page"><p>Id of the memory if this is a memory comment</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="properties_created">created</h3>
+<div class="created"><h5 id="properties_created_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-created-page"><p>timestamp</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="properties_id">id</h3>
+<div class="id"><h5 id="properties_id_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-id-page"><p>Id of the comment</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="properties_text">text</h3>
+<div class="text"><h5 id="properties_text_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-text-page"><p>text of the comment</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>
