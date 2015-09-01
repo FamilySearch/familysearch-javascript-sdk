@@ -2049,7 +2049,6 @@ Change.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Restore_Change_resource}
    *
-   * {@link http://jsfiddle.net/xL50x20d/1/ Editable Example}
    *
    * @return {Object} promise for the response
    */
@@ -2289,7 +2288,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Change_History_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/v6e1yjsz/1/ Editable Example}
    *
    * @param {String} caprid id of the child and parents relationship or full URL of the child and parents relationship changes endpoint
    * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
@@ -2466,7 +2464,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * Create a new relationship if this relationship does not have an id, or update the existing relationship.
    * When a new relationship is created the Id and links will be set from the HTTP response headers.
    *
-   * {@link http://jsfiddle.net/6of3pzte/2/ Editable Example}
    *
    * @param {String=} changeMessage default change message to use when fact/deletion-specific changeMessage was not specified
    * @return {Object} promise that is resolved with an array of responses for all HTTP requests that were made
@@ -2685,7 +2682,6 @@ Collection.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @description
    * Create a new user-defined collection (folder)
    *
-   * {@link http://jsfiddle.net/ppm671s2/1/ Editable Example}
    *
    * @return {Object} promise for the response
    */
@@ -2820,7 +2816,6 @@ Comment.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * _NOTE_: there's no _refresh_ parameter because it's not possible to read individual comments;
    * however, the comment's id and URL is set when creating a new comment
    *
-   * {@link http://jsfiddle.net/yr9zv5fw/1/ Editable Example}
    *
    * @param {string} url url of the discussion or memory comments list; required for both creating and updating comments; updating is distinguished from creating by the presence of an id on the comment.
    * @return {Object} promise for the response
@@ -3090,7 +3085,6 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Change_History_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/940x4gux/1/ Editable Example}
    *
    * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
    * @return {Object} promise for the response
@@ -3180,7 +3174,6 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @description
    * Create a new relationship if this relationship does not have an id, or update the existing relationship.
    *
-   * {@link http://jsfiddle.net/LtphkL51/1/ Editable Example}
    *
    * @param {String=} changeMessage default change message to use when fact/deletion-specific changeMessage was not specified
    * @return {Object} promise that resolves to an array of responses
@@ -3528,7 +3521,6 @@ Discussion.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @description
    * Create a new discussion (if this discussion does not have an id) or update the existing discussion
    *
-   * {@link http://jsfiddle.net/fsy9z6kx/1/ Editable Example}
    *
    * @return {Object} promise of the discussion id, which is fulfilled after the discussion has been updated or,
    * if refresh is true, after the discussion has been read.
@@ -3703,7 +3695,6 @@ DiscussionRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * NOTE: there's no _refresh_ parameter because it's not possible to read individual discussion references;
    * however, the discussion reference's URL is set when creating a new discussion reference
    *
-   * {@link http://jsfiddle.net/q7pwkc9k/1/ Editable Example}
    *
    * @param {string} url url of the discussions references list. this is only need for new discussion refs. you can set it to null (or anything else) for existing refs that you are updating
    * @param {string} personId id of the person which the discussion ref will be attached to
@@ -4416,7 +4407,6 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @description
    * Create a new memory (if this memory does not have an id) or update the existing memory
    *
-   * {@link http://jsfiddle.net/f2wrtgj0/1/ Editable Example}
    *
    * @return {Object} promise for the response
    */
@@ -4730,7 +4720,6 @@ MemoryPersona.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * Create a new memory persona (if this memory persona does not have an id) or update the existing memory persona.
    * Only the name can be updated, not the memory id or the memory artifact reference.
    *
-   * {@link http://jsfiddle.net/eeozaLkL/1/ Editable Example}
    *
    * @param {string} url full url of the memory personas endpoint
    * @return {Object} promise for the response
@@ -4900,7 +4889,6 @@ MemoryPersonaRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype),
    * NOTE: there's no _refresh_ parameter because it's not possible to read individual memory persona references;
    * however, the memory persona ref's id and URL is set when creating a new memory persona ref
    *
-   * {@link http://jsfiddle.net/r3px0ork/1/ Editable Example}
    *
    * @param {string} url full url for the person memory persona references endpoint
    * @return {Object} promise for the response
@@ -5403,7 +5391,6 @@ Note.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @description
    * Create a new note (if this note does not have an id) or update the existing note.
    *
-   * {@link http://jsfiddle.net/vg1kge0o/1/ Editable Example}
    *
    * @param {string} url url of the notes list endpoint; only necessary when creating a new note
    * @param {string} changeMessage change message
@@ -5872,7 +5859,6 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Change_History_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/s90nqqLs/1/ Editable Example}
    *
    * @param {String} pid id of the person or full URL of the person changes endpoint
    * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
@@ -5957,7 +5943,6 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Spouses_of_a_Person_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/1311jcz8/18/ Editable Example}
    *
    * @return {Object} promise for the response
    */
@@ -5986,7 +5971,6 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Parents_of_a_person_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/Lf9fe61r/5/ Editable Example}
    *
    * @return {Object} promise for the response
    */
@@ -6014,7 +5998,6 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Children_of_a_person_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/fownteLe/1/ Editable Example}
    *
    * @return {Object} promise for the response
    */
@@ -6252,7 +6235,6 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * the returned promises resolves with an array of responses. After being created,
    * the person's ID and links will be updated from HTTP headers in the response.
    *
-   * {@link http://jsfiddle.net/v4840hjt/1/ Editable Example}
    * 
    * {@link https://familysearch.org/developers/docs/api/tree/Create_Person_usecase API Docs}
    *
@@ -6386,7 +6368,6 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Restore_resource FamilySearch API Docs}
    * 
-   * {@link http://jsfiddle.net/0mxLgb1w/1/ Editable Example}
    *
    * @return {Object} promise for the request
    */
@@ -7152,7 +7133,6 @@ SourceDescription.prototype = utils.extend(Object.create(FS.BaseClass.prototype)
    * @description
    * Create a new source description (if this source description does not have an id) or update the existing source description
    *
-   * {@link http://jsfiddle.net/mtets2sf/1/ Editable Example}
    *
    * @param {string=} changeMessage change message
    * @return {Object} promise for the response
@@ -7394,7 +7374,6 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * _NOTE_: the person/couple/childAndParents id and the source description are not updateable.
    * Only the tags are updateable.
    *
-   * {@link http://jsfiddle.net/sqsejsjq/1/ Editable Example}
    *
    * @param {string} url url for a person, couple, or child and parents source references endpoint
    * @param {string} changeMessage change message
@@ -8322,7 +8301,6 @@ FS.prototype.handleAccessTokenResponse = function(response) {
  *
  * {@link https://familysearch.org/developers/docs/api/authentication/Access_Token_resource FamilySearch API docs}
  *
- * {@link http://jsfiddle.net/fqn6j7fs/ Editable Example}
  *
  * @param {String=} authCode auth code from getAuthCode; if not passed in, this function will call getAuthCode
  * @return {Object} a promise for the (string) access token.
@@ -8565,7 +8543,6 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/dates/Date_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/mL906m82/2/ Editable Example}
  *
  * @param {String} date text to standardize
  * @return {Object} promise for the response
@@ -8630,7 +8607,6 @@ FS.prototype._changeHistoryResponseMapper = function(response){
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Change_History_resource Child and Parents Changes API Docs}
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Change_History_resource Couple Changes API Docs}
  *
- * {@link http://jsfiddle.net/s90nqqLs/1/ Editable Example}
  *
  * @param {String} url full URL of the person changes. child and parent changes, or couple changes endpoint
  * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
@@ -8653,7 +8629,6 @@ FS.prototype.getChanges = function(url, params) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Restore_Change_resource}
  *
- * {@link http://jsfiddle.net/xL50x20d/1/ Editable Example}
  *
  * @param {string} url full URL of the restore changes endpoint
  * @return {Object} promise for the response
@@ -8688,7 +8663,6 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/gb1y9jdj/1/ Editable Example}
  *
  * @param {String} url full URL of the discussion to read
  * @return {Object} promise for the response
@@ -8717,7 +8691,6 @@ FS.prototype.getDiscussion = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/9je6gfp5/1/ Editable Example}
  *
  * @param {string[]|DiscussionRef[]} full URLs, or {@link discussions.types:constructor.DiscussionRef DiscussionRefs} of the discussions
  * @return {Object} promise that is fulfilled when all of the discussions have been read,
@@ -8755,7 +8728,6 @@ FS.prototype.getMultiDiscussion = function(urls) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Discussion_References_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/rx9wd0nz/1/ Editable Example}
  *
  * @param {String} url full URL of the person-discussion-references endpoint
  * @return {Object} promise for the response
@@ -8807,7 +8779,6 @@ FS.prototype._commentsResponseMapper = function(response){
  *
  * {@link https://familysearch.org/developers/docs/api/discussions/Comments_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/3wfxrkj0/1/ Editable Example}
  *
  * @param {String} url full URL of the discussion-comments endpoint
  * @return {Object} promise for the response
@@ -8834,7 +8805,6 @@ FS.prototype.getDiscussionComments = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/quj3enjs/1/ Editable Example}
  *
  * @param {string} url full URL of the discussion
  * @param {string=} changeMessage change message (currently ignored)
@@ -8854,7 +8824,6 @@ FS.prototype.deleteDiscussion = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Discussion_Reference_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/p2sjn4ob/1/ Editable Example}
  *
  * @param {string} url full URL of the discussion reference
  * @param {string=} drid id of the discussion reference (must be set if pid is a person id and not the full URL)
@@ -8880,7 +8849,6 @@ FS.prototype.deleteDiscussionRef = function(url, changeMessage) {
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Comment_resource FamilySearch API Docs}
  * {@link https://familysearch.org/developers/docs/api/discussions/Comment_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/Lxcy6pcz/1/ Editable Example}
  *
  * @param {string} url full URL of the comment
  * @return {Object} promise for the response
@@ -8925,7 +8893,6 @@ FS.prototype._memoriesResponseMapper = function(response){
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memories_Query_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/48hw65vz/1/ Editable Example}
  *
  * @param {string} url full URL of the person-memories-query endpoint
  * @param {Object=} params `count` maximum number to return - defaults to 25, `start` defaults to 0,
@@ -8955,7 +8922,6 @@ FS.prototype.getPersonMemoriesQuery = function(url, params) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/User_Memories_Query_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/ywg2um4q/1/ Editable Example}
  *
  * @param {Object=} params `count` maximum number to return - defaults to 25, `start` defaults to 0
  * @return {Object} promise for the response
@@ -8989,7 +8955,6 @@ FS.prototype.getUserMemoriesQuery = function(params) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/k064qtLt/1/ Editable Example}
  *
  * @param {String} url full URL of the memory
  * @return {Object} promise for the response
@@ -9017,7 +8982,6 @@ FS.prototype.getMemory = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Comments_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/n4rtc6mo/1/ Editable Example}
  *
  * @param {String} url full URL of the memory-comments endpoint
  * @return {Object} promise for the response
@@ -9056,7 +9020,6 @@ FS.prototype._memoryPersonasMapper = function(response){
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Personas_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/ozybtk5v/1/ Editable Example}
  *
  * @param {string} url full URL of the memory-personas endpoint
  * @return {Object} promise for the response
@@ -9085,7 +9048,6 @@ FS.prototype.getMemoryPersonas = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Persona_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/180vfb1w/1/ Editable Example}
  *
  * @param {String} url full URL of the memory persona
  * @return {Object} promise for the response
@@ -9114,7 +9076,6 @@ FS.prototype.getMemoryPersona = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_References_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/Ldveszee/1/ Editable Example}
  *
  * @param {String} url full URL of the person-memory-references endpoint
  * @return {Object} promise for the response
@@ -9147,7 +9108,6 @@ FS.prototype.getMemoryPersonaRefs = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memories_Portrait_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/oc4g7334/2/ Editable Example}
  *
  * @param {String} url of the person portrait endpoint
  * @param {Object=} params `default` URL to redirect to if portrait doesn't exist;
@@ -9181,7 +9141,6 @@ FS.prototype.getPersonPortraitUrl = function(url, params) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/r3bb6e0u/1/ Editable Example}
  *
  * @param {string} url full URL of the memory
  * @return {Object} promise for the response
@@ -9198,7 +9157,6 @@ FS.prototype.deleteMemory = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Persona_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/77ba424q/1/ Editable Example}
  *
  * @param {string} url full URL of the memory persona
  * @return {Object} promise for the response
@@ -9215,7 +9173,6 @@ FS.prototype.deleteMemoryPersona = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_Reference_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/cbcs86s5/1/ Editable Example}
  *
  * @param {string} url full URL of the memory persona reference
  * @return {Object} promise for the response
@@ -9269,7 +9226,6 @@ function getRoot(response) {
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource Couple Relationship Note API Docs}
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource Child and Parents Relationship API Docs}
  *
- * {@link http://jsfiddle.net/rcud84ur/1/ Editable Example}
  *
  * @param {string} url full URL of the note
  * @return {Object} promise for the response
@@ -9302,7 +9258,6 @@ FS.prototype.getNote = function(url, params) {
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource Couple Relationship Note API Docs}
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource Child and Parents Relationship API Docs}
  *
- * {@link http://jsfiddle.net/4d1wLp8a/1/ Editable Example}
  *
  * @param {string[]} urls full URLs of the notes
  * @return {Object} promise that is fulfilled when all of the notes have been read,
@@ -9341,7 +9296,6 @@ FS.prototype.getMultiNote = function(urls) {
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Notes_resource Couple Notes API Docs}
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Notes_resource Child and Parents Notes API Docs}
  *
- * {@link http://jsfiddle.net/rcud84ur/2/ Editable Example}
  *
  * @param {String} url full URL of the person-notes, couple-notes, or child-and-parents-notes endpoint
  * @return {Object} promise for the response
@@ -9371,7 +9325,6 @@ FS.prototype.getNotes = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Note_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/zxwsxzjr/1/ Editable Example}
  *
  * @param {string} url full URL of the note
  * @param {string=} changeMessage change message
@@ -9421,7 +9374,6 @@ var childAndParentsConvenienceFunctions = {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/swk1pmo7/10/ Editable Example}
  *
  * @param {String} url full URL of the child-and-parents relationship
  * @param {Object=} params set `persons` true to return a person object for each person in the relationship,
@@ -9451,7 +9403,6 @@ FS.prototype.getChildAndParents = function(url, params) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/hguctxyv/1/ Editable Example}
  *
  * @param {string} url full URL of the child-and-parents relationship
  * @param {string} changeMessage reason for the deletion
@@ -9476,7 +9427,6 @@ FS.prototype.deleteChildAndParents = function(url, changeMessage) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Restore_resource FamilySearch API Docs}
  * 
- * {@link http://jsfiddle.net/3n4ro8jd/1/ Editable Example}
  *
  * @param {string} url full URL of the child-and-parents relationship
  * @param {string} changeMessage reason for the deletion
@@ -9544,7 +9494,6 @@ function matchPersonNum(numberLabel, num) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Ancestry_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/15z6fzkf/6/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {Object=} params includes `generations` to retrieve (max 8),
@@ -9611,7 +9560,6 @@ FS.prototype.getAncestry = function(pid, params) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Descendancy_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/fbcppezv/2/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {Object=} params includes
@@ -9666,7 +9614,6 @@ var FS = require('../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/m2y1qwm3/110/ Editable Example}
  *
  * @param {String} pid id or full URL of the person
  * @return {Object} promise for the response
@@ -9698,7 +9645,6 @@ FS.prototype.getPerson = function(pid) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/ukvu1dqs/1/ Editable Example}
  *
  * @param {Array} pids array of ids or urls for the people to read
  * @return {Object} promise that is fulfilled when all of the people have been read,
@@ -9792,7 +9738,6 @@ FS.prototype._personsAndRelationshipsMapper = function(response){
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/6vpk7asr/51/ Editable Example}
  *
  * @param {String} pid id of the person
  * @param {Object=} params set `persons` to true to retrieve full person objects for each relative
@@ -9918,7 +9863,6 @@ FS.prototype.getPersonWithRelationships = function(pid, params) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/cv5wravg/2/ Editable Example}
  *
  * @param {string} pid id or full URL of the person
  * @param {string} changeMessage reason for the deletion
@@ -9946,7 +9890,6 @@ FS.prototype.deletePerson = function(pid, changeMessage) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Spouse_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/fh5jxsre/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @return {Object} promise for the response
@@ -9984,7 +9927,6 @@ FS.prototype.getPreferredSpouse = function(pid) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Spouse_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/j8kws5n3/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {string} curl url of the preferred couple relationship. You may also pass in a child and parents relationship url
@@ -10012,7 +9954,6 @@ FS.prototype.setPreferredSpouse = function(pid, curl) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Spouse_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/2cxup42f/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @return {Object} promise for the response
@@ -10041,7 +9982,6 @@ FS.prototype.deletePreferredSpouse = function(pid) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Parent_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/rarpqLb6/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {Object=} params currently unused
@@ -10074,7 +10014,6 @@ FS.prototype.getPreferredParents = function(pid) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Parent_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/swfsnarb/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {string} curl url of the preferred ChildAndParents relationship
@@ -10101,7 +10040,6 @@ FS.prototype.setPreferredParents = function(pid, curl) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Parent_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/r5erwvft/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @return {Object} promise for the response
@@ -10144,7 +10082,6 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_resource API Docs}
  * 
- * {@link http://jsfiddle.net/sq78dutL/ Editable Example}
  *
  * @param {String} url full url of a place
  * @return {Object} promise for the response
@@ -10176,7 +10113,6 @@ FS.prototype.getPlace = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Description_resource API Docs}
  * 
- * {@link http://jsfiddle.net/edhbx4L1/1/ Editable Example}
  *
  * @param {String} url full url of the place description
  * @return {Object} promise for the response
@@ -10234,7 +10170,6 @@ FS.prototype.getPlaceDescription = function(url) {
  * 
  * Read the {@link https://familysearch.org/developers/docs/api/places/Places_Search_resource API Docs} for more details on how to use the parameters.
  * 
- * {@link http://jsfiddle.net/80xcpfps/2/ Editable Example}
  *
  * @param {String} id of the place description
  * @return {Object} promise for the response
@@ -10272,7 +10207,6 @@ FS.prototype.getPlacesSearch = function(params) {
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Description_Children_resource API Docs}
  * 
- * {@link http://jsfiddle.net/xwpsLm46/ Editable Example}
  *
  * @param {String} url full url for the place descriptions children endpoint
  * @return {Object} promise for the response
@@ -10304,7 +10238,6 @@ FS.prototype.getPlaceDescriptionChildren = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Type_resource API Docs}
  * 
- * {@link http://jsfiddle.net/gry2tgna/ Editable Example}
  *
  * @param {String} id of the place
  * @return {Object} promise for the response
@@ -10335,7 +10268,6 @@ FS.prototype.getPlaceType = function(typeId) {
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Types_resource API Docs}
  * 
- * {@link http://jsfiddle.net/tjyf4xk8/1/ Editable Example}
  *
  * @return {Object} promise for the response
  */
@@ -10368,7 +10300,6 @@ FS.prototype.getPlaceTypes = function() {
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Types_resource API Docs}
  * 
- * {@link http://jsfiddle.net/85sn2dbv/1/ Editable Example}
  *
  * @param {String} id of the place type group
  * @return {Object} promise for the response
@@ -10402,7 +10333,6 @@ FS.prototype.getPlaceTypeGroup = function(groupId) {
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Type_Groups_resource API Docs}
  * 
- * {@link http://jsfiddle.net/zawzfh82/1/ Editable Example}
  *
  * @return {Object} promise for the response
  */
@@ -10519,7 +10449,6 @@ FS.prototype._getSearchMatchResponseMapper = function(response) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Search_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/ghsyjzLb/1/ Editable Example}
  *
  * @param {Object} params described above
  * @return {Object} promise for the response
@@ -10556,7 +10485,6 @@ FS.prototype.getPersonSearch = function(params) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Matches_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/xb0ts69q/1/ Editable Example}
  *
  * @param {String} url full URL of the person-matches endpoint
  * @return {Object} promise for the response
@@ -10583,7 +10511,6 @@ FS.prototype.getPersonMatches = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Search_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/fdLrujkb/1/ Editable Example}
  *
  * @param {Object} params generally the same parameters as described for
  * {@link searchAndMatch.functions:getPersonSearch getPersonSearch}, with the the following differences:
@@ -10648,7 +10575,6 @@ FS.prototype._getUserSourceDescriptionsUrl = function(){
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_for_a_User_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/a0eLkwtb/2/ Editable Example}
  *
  * @return {Object} promise for the response
  */
@@ -10687,7 +10613,6 @@ FS.prototype.getCollectionsForUser = function() {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/rn5hd0cd/1/ Editable Example}
  *
  * @param {String} url full URL of the collection
  * @return {Object} promise for the response
@@ -10720,7 +10645,6 @@ FS.prototype.getCollection = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_Source_Descriptions_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/a73eysbs/1/ Editable Example}
  *
  * @param {String} url full URL of the collection-source-descriptions endpoint
  * @param {Object=} params `count` maximum to return (defaults to 25), `start` zero-based index of first source to return
@@ -10754,7 +10678,6 @@ FS.prototype.getCollectionSourceDescriptions = function(url, params) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_Source_Descriptions_for_a_User_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/pse56a1f/1/ Editable Example}
  *
  * @param {Object=} params `count` maximum to return (defaults to 25), `start` zero-based index of first source to return
  * @return {Object} promise for the response
@@ -10786,7 +10709,6 @@ FS.prototype.getCollectionSourceDescriptionsForUser = function(params) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_Source_Descriptions_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/5mva0why/1/ Editable Example}
  *
  * @param {string} url full URL of the collection descriptions endpoint
  * @param {SourceDescription[]|string[]} srcDescs array of source descriptions - may be objects or id's
@@ -10810,7 +10732,6 @@ FS.prototype.moveSourceDescriptionsToCollection = function(url, srcDescs) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_Source_Descriptions_for_a_User_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/k39uo7zk/1/ Editable Example}
  *
  * @param {SourceDescription[]|string[]} srcDescs array of source descriptions - may be objects or id's
  * @return {Object} promise for the response
@@ -10835,7 +10756,6 @@ FS.prototype.removeSourceDescriptionsFromCollections = function(srcDescs) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/yhdznLu0/1/ Editable Example}
  *
  * @param {string} url full URL of the collection
  * @return {Object} promise for the response
@@ -10871,7 +10791,6 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/m4Lhab24/1/ Editable Example}
  *
  * @param {string} url full URL of the source description
  * @return {Object} promise for the response
@@ -10899,7 +10818,6 @@ FS.prototype.getSourceDescription = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/jvvohktt/1/ Editable Example}
  *
  * @param {string[]} urls full URLs of the source descriptions
  * @return {Object} promise that is fulfilled when all of the source descriptions have been read,
@@ -10936,7 +10854,6 @@ FS.prototype.getMultiSourceDescription = function(urls) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Source_References_Query_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/gbusgbys/1/ Editable Example}
  *
  * @param {String} url url of the source description
  * @return {Object} promise for the response
@@ -11022,7 +10939,6 @@ FS.prototype._getSourcesResponseMapper = function(response, root, includeDescrip
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Source_References_resource Couple Source References API Docs}
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource Child and Parents Source References API Docs}
  *
- * {@link http://jsfiddle.net/xdqcv2dn/1/ Editable Example}
  *
  * @param {String} url full URL of the source-references endpoint
  * @return {Object} promise for the response
@@ -11053,7 +10969,6 @@ FS.prototype.getSourceRefs = function(url) {
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Sources_Query_resource Couple Sources Query API Docs}
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource Child and Parents Sources Query API Docs}
  *
- * {@link http://jsfiddle.net/bxt10adm/2/ Editable Example}
  *
  * @param {String} url full URL of the person-sources-query endpoint
  * @return {Object} promise for the response
@@ -11079,7 +10994,6 @@ FS.prototype.getSourcesQuery = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/fb2fzgsv/1/ Editable Example}
  *
  * @param {string} url full url of the source description
  * @param {string} changeMessage reason for the deletion
@@ -11101,7 +11015,6 @@ FS.prototype.deleteSourceDescription = function(url, changeMessage) {
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Source_Reference_resource Couple Source Reference API Docs}
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_Reference_resource Child and Parents Source Reference API Docs}
  *
- * {@link http://jsfiddle.net/nenz4de2/1/ Editable Example}
  *
  * @param {string} url url for the source reference
  * @param {string} changeMessage reason for the deletion
@@ -11149,7 +11062,6 @@ var coupleConvenienceFunctions = {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/x1v6vxoy/4/ Editable Example}
  *
  * @param {String} url full URL of the couple relationship
  * @param {Object=} params set `persons` true to return a person object for each person in the relationship,
@@ -11179,7 +11091,6 @@ FS.prototype.getCouple = function(url, params) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/1hsj5b59/1/ Editable Example}
  *
  * @param {string} url full URL of the couple relationship
  * @param {string} changeMessage reason for the deletion
@@ -11199,7 +11110,6 @@ FS.prototype.deleteCouple = function(url, changeMessage) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Restore_resource FamilySearch API Docs}
  * 
- * {@link http://jsfiddle.net/zhbvsrs0/2/ Editable Example}
  *
  * @param {string} crid id or full URL of the couple relationship
  * @return {Object} promise for the response
@@ -11234,7 +11144,6 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/users/Current_User_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/u7esw4u3/169/ Editable Example}
  *
  * @return {Object} a promise for the current user response
  */
@@ -11264,7 +11173,6 @@ FS.prototype.getCurrentUser = function() {
  *
  * {@link https://familysearch.org/developers/docs/api/users/Agent_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/dcxy9a59/2/ Editable Example}
  *
  * @param {String} url full URL of the agent (contributor)
  */
@@ -11290,7 +11198,6 @@ FS.prototype.getAgent = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/users/Agent_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/88gbgae5/1/ Editable Example}
  *
  * @param {Array} urls an array of full URLs of the agents (contributors) to read
  * @return {Object} promise that is fulfilled when all of the agents have been read,
