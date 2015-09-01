@@ -237,7 +237,6 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Change_History_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/940x4gux/1/ Editable Example}
    *
    * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
    * @return {Object} promise for the response
@@ -327,7 +326,6 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @description
    * Create a new relationship if this relationship does not have an id, or update the existing relationship.
    *
-   * {@link http://jsfiddle.net/LtphkL51/1/ Editable Example}
    *
    * @param {String=} changeMessage default change message to use when fact/deletion-specific changeMessage was not specified
    * @return {Object} promise that resolves to an array of responses

@@ -204,7 +204,6 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * _NOTE_: the person/couple/childAndParents id and the source description are not updateable.
    * Only the tags are updateable.
    *
-   * {@link http://jsfiddle.net/sqsejsjq/1/ Editable Example}
    *
    * @param {string} url url for a person, couple, or child and parents source references endpoint
    * @param {string} changeMessage change message

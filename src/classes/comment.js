@@ -102,7 +102,6 @@ Comment.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * _NOTE_: there's no _refresh_ parameter because it's not possible to read individual comments;
    * however, the comment's id and URL is set when creating a new comment
    *
-   * {@link http://jsfiddle.net/yr9zv5fw/1/ Editable Example}
    *
    * @param {string} url url of the discussion or memory comments list; required for both creating and updating comments; updating is distinguished from creating by the presence of an id on the comment.
    * @return {Object} promise for the response

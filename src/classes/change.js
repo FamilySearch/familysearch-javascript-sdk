@@ -102,7 +102,6 @@ Change.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Restore_Change_resource}
    *
-   * {@link http://jsfiddle.net/xL50x20d/1/ Editable Example}
    *
    * @return {Object} promise for the response
    */

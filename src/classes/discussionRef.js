@@ -136,7 +136,6 @@ DiscussionRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * NOTE: there's no _refresh_ parameter because it's not possible to read individual discussion references;
    * however, the discussion reference's URL is set when creating a new discussion reference
    *
-   * {@link http://jsfiddle.net/q7pwkc9k/1/ Editable Example}
    *
    * @param {string} url url of the discussions references list. this is only need for new discussion refs. you can set it to null (or anything else) for existing refs that you are updating
    * @param {string} personId id of the person which the discussion ref will be attached to

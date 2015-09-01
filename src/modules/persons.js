@@ -26,7 +26,6 @@ var FS = require('../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/m2y1qwm3/110/ Editable Example}
  *
  * @param {String} pid id or full URL of the person
  * @return {Object} promise for the response
@@ -58,7 +57,6 @@ FS.prototype.getPerson = function(pid) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/ukvu1dqs/1/ Editable Example}
  *
  * @param {Array} pids array of ids or urls for the people to read
  * @return {Object} promise that is fulfilled when all of the people have been read,
@@ -152,7 +150,6 @@ FS.prototype._personsAndRelationshipsMapper = function(response){
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/6vpk7asr/51/ Editable Example}
  *
  * @param {String} pid id of the person
  * @param {Object=} params set `persons` to true to retrieve full person objects for each relative
@@ -278,7 +275,6 @@ FS.prototype.getPersonWithRelationships = function(pid, params) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/cv5wravg/2/ Editable Example}
  *
  * @param {string} pid id or full URL of the person
  * @param {string} changeMessage reason for the deletion
@@ -306,7 +302,6 @@ FS.prototype.deletePerson = function(pid, changeMessage) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Spouse_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/fh5jxsre/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @return {Object} promise for the response
@@ -344,7 +339,6 @@ FS.prototype.getPreferredSpouse = function(pid) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Spouse_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/j8kws5n3/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {string} curl url of the preferred couple relationship. You may also pass in a child and parents relationship url
@@ -372,7 +366,6 @@ FS.prototype.setPreferredSpouse = function(pid, curl) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Spouse_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/2cxup42f/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @return {Object} promise for the response
@@ -401,7 +394,6 @@ FS.prototype.deletePreferredSpouse = function(pid) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Parent_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/rarpqLb6/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {Object=} params currently unused
@@ -434,7 +426,6 @@ FS.prototype.getPreferredParents = function(pid) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Parent_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/swfsnarb/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {string} curl url of the preferred ChildAndParents relationship
@@ -461,7 +452,6 @@ FS.prototype.setPreferredParents = function(pid, curl) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Preferred_Parent_Relationship_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/r5erwvft/1/ Editable Example}
  *
  * @param {string} pid id of the person
  * @return {Object} promise for the response

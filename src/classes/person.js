@@ -424,7 +424,6 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Change_History_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/s90nqqLs/1/ Editable Example}
    *
    * @param {String} pid id of the person or full URL of the person changes endpoint
    * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
@@ -509,7 +508,6 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Spouses_of_a_Person_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/1311jcz8/18/ Editable Example}
    *
    * @return {Object} promise for the response
    */
@@ -538,7 +536,6 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Parents_of_a_person_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/Lf9fe61r/5/ Editable Example}
    *
    * @return {Object} promise for the response
    */
@@ -566,7 +563,6 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Children_of_a_person_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/fownteLe/1/ Editable Example}
    *
    * @return {Object} promise for the response
    */
@@ -804,7 +800,6 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * the returned promises resolves with an array of responses. After being created,
    * the person's ID and links will be updated from HTTP headers in the response.
    *
-   * {@link http://jsfiddle.net/v4840hjt/1/ Editable Example}
    * 
    * {@link https://familysearch.org/developers/docs/api/tree/Create_Person_usecase API Docs}
    *
@@ -938,7 +933,6 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Person_Restore_resource FamilySearch API Docs}
    * 
-   * {@link http://jsfiddle.net/0mxLgb1w/1/ Editable Example}
    *
    * @return {Object} promise for the request
    */

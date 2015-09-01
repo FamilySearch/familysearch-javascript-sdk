@@ -42,7 +42,6 @@ function getRoot(response) {
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource Couple Relationship Note API Docs}
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource Child and Parents Relationship API Docs}
  *
- * {@link http://jsfiddle.net/rcud84ur/1/ Editable Example}
  *
  * @param {string} url full URL of the note
  * @return {Object} promise for the response
@@ -75,7 +74,6 @@ FS.prototype.getNote = function(url, params) {
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Note_resource Couple Relationship Note API Docs}
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Note_resource Child and Parents Relationship API Docs}
  *
- * {@link http://jsfiddle.net/4d1wLp8a/1/ Editable Example}
  *
  * @param {string[]} urls full URLs of the notes
  * @return {Object} promise that is fulfilled when all of the notes have been read,
@@ -114,7 +112,6 @@ FS.prototype.getMultiNote = function(urls) {
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Notes_resource Couple Notes API Docs}
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Notes_resource Child and Parents Notes API Docs}
  *
- * {@link http://jsfiddle.net/rcud84ur/2/ Editable Example}
  *
  * @param {String} url full URL of the person-notes, couple-notes, or child-and-parents-notes endpoint
  * @return {Object} promise for the response
@@ -144,7 +141,6 @@ FS.prototype.getNotes = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Note_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/zxwsxzjr/1/ Editable Example}
  *
  * @param {string} url full URL of the note
  * @param {string=} changeMessage change message

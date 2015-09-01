@@ -225,7 +225,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    *
    * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Change_History_resource FamilySearch API Docs}
    *
-   * {@link http://jsfiddle.net/v6e1yjsz/1/ Editable Example}
    *
    * @param {String} caprid id of the child and parents relationship or full URL of the child and parents relationship changes endpoint
    * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
@@ -402,7 +401,6 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * Create a new relationship if this relationship does not have an id, or update the existing relationship.
    * When a new relationship is created the Id and links will be set from the HTTP response headers.
    *
-   * {@link http://jsfiddle.net/6of3pzte/2/ Editable Example}
    *
    * @param {String=} changeMessage default change message to use when fact/deletion-specific changeMessage was not specified
    * @return {Object} promise that is resolved with an array of responses for all HTTP requests that were made

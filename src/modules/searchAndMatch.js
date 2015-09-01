@@ -68,7 +68,6 @@ FS.prototype._getSearchMatchResponseMapper = function(response) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Search_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/ghsyjzLb/1/ Editable Example}
  *
  * @param {Object} params described above
  * @return {Object} promise for the response
@@ -105,7 +104,6 @@ FS.prototype.getPersonSearch = function(params) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Matches_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/xb0ts69q/1/ Editable Example}
  *
  * @param {String} url full URL of the person-matches endpoint
  * @return {Object} promise for the response
@@ -132,7 +130,6 @@ FS.prototype.getPersonMatches = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Search_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/fdLrujkb/1/ Editable Example}
  *
  * @param {Object} params generally the same parameters as described for
  * {@link searchAndMatch.functions:getPersonSearch getPersonSearch}, with the the following differences:

@@ -55,7 +55,6 @@ function matchPersonNum(numberLabel, num) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Ancestry_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/15z6fzkf/6/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {Object=} params includes `generations` to retrieve (max 8),
@@ -122,7 +121,6 @@ FS.prototype.getAncestry = function(pid, params) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Descendancy_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/fbcppezv/2/ Editable Example}
  *
  * @param {string} pid id of the person
  * @param {Object=} params includes

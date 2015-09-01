@@ -24,7 +24,6 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/m4Lhab24/1/ Editable Example}
  *
  * @param {string} url full URL of the source description
  * @return {Object} promise for the response
@@ -52,7 +51,6 @@ FS.prototype.getSourceDescription = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/jvvohktt/1/ Editable Example}
  *
  * @param {string[]} urls full URLs of the source descriptions
  * @return {Object} promise that is fulfilled when all of the source descriptions have been read,
@@ -89,7 +87,6 @@ FS.prototype.getMultiSourceDescription = function(urls) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Source_References_Query_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/gbusgbys/1/ Editable Example}
  *
  * @param {String} url url of the source description
  * @return {Object} promise for the response
@@ -175,7 +172,6 @@ FS.prototype._getSourcesResponseMapper = function(response, root, includeDescrip
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Source_References_resource Couple Source References API Docs}
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource Child and Parents Source References API Docs}
  *
- * {@link http://jsfiddle.net/xdqcv2dn/1/ Editable Example}
  *
  * @param {String} url full URL of the source-references endpoint
  * @return {Object} promise for the response
@@ -206,7 +202,6 @@ FS.prototype.getSourceRefs = function(url) {
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Sources_Query_resource Couple Sources Query API Docs}
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource Child and Parents Sources Query API Docs}
  *
- * {@link http://jsfiddle.net/bxt10adm/2/ Editable Example}
  *
  * @param {String} url full URL of the person-sources-query endpoint
  * @return {Object} promise for the response
@@ -232,7 +227,6 @@ FS.prototype.getSourcesQuery = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/fb2fzgsv/1/ Editable Example}
  *
  * @param {string} url full url of the source description
  * @param {string} changeMessage reason for the deletion
@@ -254,7 +248,6 @@ FS.prototype.deleteSourceDescription = function(url, changeMessage) {
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Source_Reference_resource Couple Source Reference API Docs}
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_Reference_resource Child and Parents Source Reference API Docs}
  *
- * {@link http://jsfiddle.net/nenz4de2/1/ Editable Example}
  *
  * @param {string} url url for the source reference
  * @param {string} changeMessage reason for the deletion

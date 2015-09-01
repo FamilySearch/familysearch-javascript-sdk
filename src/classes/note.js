@@ -76,7 +76,6 @@ Note.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @description
    * Create a new note (if this note does not have an id) or update the existing note.
    *
-   * {@link http://jsfiddle.net/vg1kge0o/1/ Editable Example}
    *
    * @param {string} url url of the notes list endpoint; only necessary when creating a new note
    * @param {string} changeMessage change message

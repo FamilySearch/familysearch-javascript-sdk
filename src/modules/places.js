@@ -22,7 +22,6 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_resource API Docs}
  * 
- * {@link http://jsfiddle.net/sq78dutL/ Editable Example}
  *
  * @param {String} url full url of a place
  * @return {Object} promise for the response
@@ -54,7 +53,6 @@ FS.prototype.getPlace = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Description_resource API Docs}
  * 
- * {@link http://jsfiddle.net/edhbx4L1/1/ Editable Example}
  *
  * @param {String} url full url of the place description
  * @return {Object} promise for the response
@@ -112,7 +110,6 @@ FS.prototype.getPlaceDescription = function(url) {
  * 
  * Read the {@link https://familysearch.org/developers/docs/api/places/Places_Search_resource API Docs} for more details on how to use the parameters.
  * 
- * {@link http://jsfiddle.net/80xcpfps/2/ Editable Example}
  *
  * @param {String} id of the place description
  * @return {Object} promise for the response
@@ -150,7 +147,6 @@ FS.prototype.getPlacesSearch = function(params) {
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Description_Children_resource API Docs}
  * 
- * {@link http://jsfiddle.net/xwpsLm46/ Editable Example}
  *
  * @param {String} url full url for the place descriptions children endpoint
  * @return {Object} promise for the response
@@ -182,7 +178,6 @@ FS.prototype.getPlaceDescriptionChildren = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Type_resource API Docs}
  * 
- * {@link http://jsfiddle.net/gry2tgna/ Editable Example}
  *
  * @param {String} id of the place
  * @return {Object} promise for the response
@@ -213,7 +208,6 @@ FS.prototype.getPlaceType = function(typeId) {
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Types_resource API Docs}
  * 
- * {@link http://jsfiddle.net/tjyf4xk8/1/ Editable Example}
  *
  * @return {Object} promise for the response
  */
@@ -246,7 +240,6 @@ FS.prototype.getPlaceTypes = function() {
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Types_resource API Docs}
  * 
- * {@link http://jsfiddle.net/85sn2dbv/1/ Editable Example}
  *
  * @param {String} id of the place type group
  * @return {Object} promise for the response
@@ -280,7 +273,6 @@ FS.prototype.getPlaceTypeGroup = function(groupId) {
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Type_Groups_resource API Docs}
  * 
- * {@link http://jsfiddle.net/zawzfh82/1/ Editable Example}
  *
  * @return {Object} promise for the response
  */

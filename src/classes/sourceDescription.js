@@ -168,7 +168,6 @@ SourceDescription.prototype = utils.extend(Object.create(FS.BaseClass.prototype)
    * @description
    * Create a new source description (if this source description does not have an id) or update the existing source description
    *
-   * {@link http://jsfiddle.net/mtets2sf/1/ Editable Example}
    *
    * @param {string=} changeMessage change message
    * @return {Object} promise for the response

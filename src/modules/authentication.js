@@ -80,7 +80,6 @@ FS.prototype.handleAccessTokenResponse = function(response) {
  *
  * {@link https://familysearch.org/developers/docs/api/authentication/Access_Token_resource FamilySearch API docs}
  *
- * {@link http://jsfiddle.net/fqn6j7fs/ Editable Example}
  *
  * @param {String=} authCode auth code from getAuthCode; if not passed in, this function will call getAuthCode
  * @return {Object} a promise for the (string) access token.

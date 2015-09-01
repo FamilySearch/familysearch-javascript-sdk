@@ -23,7 +23,6 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/users/Current_User_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/u7esw4u3/169/ Editable Example}
  *
  * @return {Object} a promise for the current user response
  */
@@ -53,7 +52,6 @@ FS.prototype.getCurrentUser = function() {
  *
  * {@link https://familysearch.org/developers/docs/api/users/Agent_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/dcxy9a59/2/ Editable Example}
  *
  * @param {String} url full URL of the agent (contributor)
  */
@@ -79,7 +77,6 @@ FS.prototype.getAgent = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/users/Agent_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/88gbgae5/1/ Editable Example}
  *
  * @param {Array} urls an array of full URLs of the agents (contributors) to read
  * @return {Object} promise that is fulfilled when all of the agents have been read,

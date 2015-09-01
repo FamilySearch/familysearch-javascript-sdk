@@ -24,7 +24,6 @@ var FS = require('./../FamilySearch'),
  *
  * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/gb1y9jdj/1/ Editable Example}
  *
  * @param {String} url full URL of the discussion to read
  * @return {Object} promise for the response
@@ -53,7 +52,6 @@ FS.prototype.getDiscussion = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/9je6gfp5/1/ Editable Example}
  *
  * @param {string[]|DiscussionRef[]} full URLs, or {@link discussions.types:constructor.DiscussionRef DiscussionRefs} of the discussions
  * @return {Object} promise that is fulfilled when all of the discussions have been read,
@@ -91,7 +89,6 @@ FS.prototype.getMultiDiscussion = function(urls) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Discussion_References_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/rx9wd0nz/1/ Editable Example}
  *
  * @param {String} url full URL of the person-discussion-references endpoint
  * @return {Object} promise for the response
@@ -143,7 +140,6 @@ FS.prototype._commentsResponseMapper = function(response){
  *
  * {@link https://familysearch.org/developers/docs/api/discussions/Comments_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/3wfxrkj0/1/ Editable Example}
  *
  * @param {String} url full URL of the discussion-comments endpoint
  * @return {Object} promise for the response
@@ -170,7 +166,6 @@ FS.prototype.getDiscussionComments = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/discussions/Discussion_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/quj3enjs/1/ Editable Example}
  *
  * @param {string} url full URL of the discussion
  * @param {string=} changeMessage change message (currently ignored)
@@ -190,7 +185,6 @@ FS.prototype.deleteDiscussion = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Discussion_Reference_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/p2sjn4ob/1/ Editable Example}
  *
  * @param {string} url full URL of the discussion reference
  * @param {string=} drid id of the discussion reference (must be set if pid is a person id and not the full URL)
@@ -216,7 +210,6 @@ FS.prototype.deleteDiscussionRef = function(url, changeMessage) {
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Comment_resource FamilySearch API Docs}
  * {@link https://familysearch.org/developers/docs/api/discussions/Comment_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/Lxcy6pcz/1/ Editable Example}
  *
  * @param {string} url full URL of the comment
  * @return {Object} promise for the response

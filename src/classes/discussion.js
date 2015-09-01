@@ -142,7 +142,6 @@ Discussion.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @description
    * Create a new discussion (if this discussion does not have an id) or update the existing discussion
    *
-   * {@link http://jsfiddle.net/fsy9z6kx/1/ Editable Example}
    *
    * @return {Object} promise of the discussion id, which is fulfilled after the discussion has been updated or,
    * if refresh is true, after the discussion has been read.

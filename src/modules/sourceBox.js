@@ -40,7 +40,6 @@ FS.prototype._getUserSourceDescriptionsUrl = function(){
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_for_a_User_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/a0eLkwtb/2/ Editable Example}
  *
  * @return {Object} promise for the response
  */
@@ -79,7 +78,6 @@ FS.prototype.getCollectionsForUser = function() {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/rn5hd0cd/1/ Editable Example}
  *
  * @param {String} url full URL of the collection
  * @return {Object} promise for the response
@@ -112,7 +110,6 @@ FS.prototype.getCollection = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_Source_Descriptions_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/a73eysbs/1/ Editable Example}
  *
  * @param {String} url full URL of the collection-source-descriptions endpoint
  * @param {Object=} params `count` maximum to return (defaults to 25), `start` zero-based index of first source to return
@@ -146,7 +143,6 @@ FS.prototype.getCollectionSourceDescriptions = function(url, params) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_Source_Descriptions_for_a_User_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/pse56a1f/1/ Editable Example}
  *
  * @param {Object=} params `count` maximum to return (defaults to 25), `start` zero-based index of first source to return
  * @return {Object} promise for the response
@@ -178,7 +174,6 @@ FS.prototype.getCollectionSourceDescriptionsForUser = function(params) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_Source_Descriptions_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/5mva0why/1/ Editable Example}
  *
  * @param {string} url full URL of the collection descriptions endpoint
  * @param {SourceDescription[]|string[]} srcDescs array of source descriptions - may be objects or id's
@@ -202,7 +197,6 @@ FS.prototype.moveSourceDescriptionsToCollection = function(url, srcDescs) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_Source_Descriptions_for_a_User_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/k39uo7zk/1/ Editable Example}
  *
  * @param {SourceDescription[]|string[]} srcDescs array of source descriptions - may be objects or id's
  * @return {Object} promise for the response
@@ -227,7 +221,6 @@ FS.prototype.removeSourceDescriptionsFromCollections = function(srcDescs) {
  *
  * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collection_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/yhdznLu0/1/ Editable Example}
  *
  * @param {string} url full URL of the collection
  * @return {Object} promise for the response

@@ -38,7 +38,6 @@ FS.prototype._changeHistoryResponseMapper = function(response){
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Change_History_resource Child and Parents Changes API Docs}
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Change_History_resource Couple Changes API Docs}
  *
- * {@link http://jsfiddle.net/s90nqqLs/1/ Editable Example}
  *
  * @param {String} url full URL of the person changes. child and parent changes, or couple changes endpoint
  * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
@@ -61,7 +60,6 @@ FS.prototype.getChanges = function(url, params) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Restore_Change_resource}
  *
- * {@link http://jsfiddle.net/xL50x20d/1/ Editable Example}
  *
  * @param {string} url full URL of the restore changes endpoint
  * @return {Object} promise for the response

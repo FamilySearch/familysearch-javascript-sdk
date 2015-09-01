@@ -243,7 +243,6 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @description
    * Create a new memory (if this memory does not have an id) or update the existing memory
    *
-   * {@link http://jsfiddle.net/f2wrtgj0/1/ Editable Example}
    *
    * @return {Object} promise for the response
    */

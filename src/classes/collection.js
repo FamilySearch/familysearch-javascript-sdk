@@ -92,7 +92,6 @@ Collection.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @description
    * Create a new user-defined collection (folder)
    *
-   * {@link http://jsfiddle.net/ppm671s2/1/ Editable Example}
    *
    * @return {Object} promise for the response
    */

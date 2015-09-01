@@ -33,7 +33,6 @@ FS.prototype._memoriesResponseMapper = function(response){
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memories_Query_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/48hw65vz/1/ Editable Example}
  *
  * @param {string} url full URL of the person-memories-query endpoint
  * @param {Object=} params `count` maximum number to return - defaults to 25, `start` defaults to 0,
@@ -63,7 +62,6 @@ FS.prototype.getPersonMemoriesQuery = function(url, params) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/User_Memories_Query_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/ywg2um4q/1/ Editable Example}
  *
  * @param {Object=} params `count` maximum number to return - defaults to 25, `start` defaults to 0
  * @return {Object} promise for the response
@@ -97,7 +95,6 @@ FS.prototype.getUserMemoriesQuery = function(params) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/k064qtLt/1/ Editable Example}
  *
  * @param {String} url full URL of the memory
  * @return {Object} promise for the response
@@ -125,7 +122,6 @@ FS.prototype.getMemory = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Comments_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/n4rtc6mo/1/ Editable Example}
  *
  * @param {String} url full URL of the memory-comments endpoint
  * @return {Object} promise for the response
@@ -164,7 +160,6 @@ FS.prototype._memoryPersonasMapper = function(response){
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Personas_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/ozybtk5v/1/ Editable Example}
  *
  * @param {string} url full URL of the memory-personas endpoint
  * @return {Object} promise for the response
@@ -193,7 +188,6 @@ FS.prototype.getMemoryPersonas = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Persona_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/180vfb1w/1/ Editable Example}
  *
  * @param {String} url full URL of the memory persona
  * @return {Object} promise for the response
@@ -222,7 +216,6 @@ FS.prototype.getMemoryPersona = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_References_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/Ldveszee/1/ Editable Example}
  *
  * @param {String} url full URL of the person-memory-references endpoint
  * @return {Object} promise for the response
@@ -255,7 +248,6 @@ FS.prototype.getMemoryPersonaRefs = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memories_Portrait_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/oc4g7334/2/ Editable Example}
  *
  * @param {String} url of the person portrait endpoint
  * @param {Object=} params `default` URL to redirect to if portrait doesn't exist;
@@ -289,7 +281,6 @@ FS.prototype.getPersonPortraitUrl = function(url, params) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/r3bb6e0u/1/ Editable Example}
  *
  * @param {string} url full URL of the memory
  * @return {Object} promise for the response
@@ -306,7 +297,6 @@ FS.prototype.deleteMemory = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/memories/Memory_Persona_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/77ba424q/1/ Editable Example}
  *
  * @param {string} url full URL of the memory persona
  * @return {Object} promise for the response
@@ -323,7 +313,6 @@ FS.prototype.deleteMemoryPersona = function(url) {
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_Memory_Reference_resource FamilySearch API Docs}
  *
- * {@link http://jsfiddle.net/cbcs86s5/1/ Editable Example}
  *
  * @param {string} url full URL of the memory persona reference
  * @return {Object} promise for the response

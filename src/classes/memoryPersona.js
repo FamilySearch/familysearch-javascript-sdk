@@ -151,7 +151,6 @@ MemoryPersona.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * Create a new memory persona (if this memory persona does not have an id) or update the existing memory persona.
    * Only the name can be updated, not the memory id or the memory artifact reference.
    *
-   * {@link http://jsfiddle.net/eeozaLkL/1/ Editable Example}
    *
    * @param {string} url full url of the memory personas endpoint
    * @return {Object} promise for the response

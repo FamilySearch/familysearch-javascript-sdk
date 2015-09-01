@@ -140,7 +140,6 @@ MemoryPersonaRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype),
    * NOTE: there's no _refresh_ parameter because it's not possible to read individual memory persona references;
    * however, the memory persona ref's id and URL is set when creating a new memory persona ref
    *
-   * {@link http://jsfiddle.net/r3px0ork/1/ Editable Example}
    *
    * @param {string} url full url for the person memory persona references endpoint
    * @return {Object} promise for the response
