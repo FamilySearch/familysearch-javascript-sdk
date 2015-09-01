@@ -35,6 +35,7 @@
  *     - [`getAccessToken()`](http://jsfiddle.net/fqn6j7fs/44/)
  *     - [`getPerson()`](http://jsfiddle.net/m2y1qwm3/112/)
  *     - [`getPersonWithRelationships()`](http://jsfiddle.net/6vpk7asr/52/)
+ *     - [`getCurrentUser()`](http://jsfiddle.net/u7esw4u3/170/)
  *
  * ### Object model
  *
