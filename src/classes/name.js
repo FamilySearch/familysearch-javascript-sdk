@@ -159,7 +159,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
 
   /**
    * @ngdoc function
-   * @name name.types:constructor.Name#getLanguage
+   * @name name.types:constructor.Name#getLang
    * @methodOf name.types:constructor.Name
 
    * @param {Number=} i name form to read; defaults to 0
