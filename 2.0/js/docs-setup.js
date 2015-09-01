@@ -577,7 +577,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "name",
       "shortDescription": "Name",
-      "keywords": "__note__ api attributes attribution call change changed changemessage client created data defaults familysearch flag form forms full fulltext function getattribution getfulltext getgivenname getid getlanguage getnameform getnameformscount getnamepart getprefix getsuffix getsurname gettype givenname http initially ispreferred lang language message number object optional org parts person preferred prefix properties read read-only sdk set setchangemessage setfulltext setgivenname setnamepart setpreferred setprefix sets setsuffix setsurname settype string suffix surname text true type types update"
+      "keywords": "__note__ api attributes attribution call change changed changemessage client created data defaults familysearch flag form forms full fulltext function getattribution getfulltext getgivenname getid getlang getnameform getnameformscount getnamepart getprefix getsuffix getsurname gettype givenname http initially ispreferred lang language message number object optional org parts person preferred prefix properties read read-only sdk set setchangemessage setfulltext setgivenname setnamepart setpreferred setprefix sets setsuffix setsurname settype string suffix surname text true type types update"
     },
     {
       "section": "api",
