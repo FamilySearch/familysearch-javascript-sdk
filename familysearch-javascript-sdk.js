@@ -11527,7 +11527,9 @@ Plumbing.prototype.http = function(method, url, headers, data, retries) {
       if (response.status >= 200 && response.status < 400) {
         return response;
       } else {
-        self.helpers.log('http failure', response.status, retries, response.headers.raw());
+        if(self.settings.debug){
+          self.helpers.log('http failure', response.status, retries);
+        }
         var error = new Error(response.statusText);
         error.response = response;
         throw error;
