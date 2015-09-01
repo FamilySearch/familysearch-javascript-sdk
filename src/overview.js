@@ -2,11 +2,6 @@
  * @ngdoc overview
  * @name index
  * @description
- * 
- * <div class="alert alert-warning">The documentation contains links to jsFiddles. The jsFiddles use version 1
- * of the SDK. Overtime the jsFiddles will be migrated to the [sample app](https://github.com/FamilySearch/javascript-sdk-sample-app)
- * which is a work in progress. As the examples are migrated, the jsFiddle links
- * will be replaced with links to the sample app.</div>
  *
  * ## Overview
  *
