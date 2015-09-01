@@ -26,6 +26,15 @@
  * - The object prototypes can be extended with additional functions to navigate the response json and return
  * whatever custom information is desired.
  * - The SDK works both in the browser and in node.
+ * 
+ * ### Example Code
+ * 
+ * - [Simple examples](https://github.com/FamilySearch/familysearch-javascript-sdk/tree/master/examples)
+ * - [Sample App](https://github.com/FamilySearch/javascript-sdk-sample-app)
+ * - Editable Examples via jsFiddle:
+ *     - [`getAccessToken()`](http://jsfiddle.net/fqn6j7fs/44/)
+ *     - [`getPerson()`](http://jsfiddle.net/m2y1qwm3/112/)
+ *     - [`getPersonWithRelationships()`](http://jsfiddle.net/6vpk7asr/52/)
  *
  * ### Object model
  *
