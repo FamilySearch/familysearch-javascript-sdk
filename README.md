@@ -35,6 +35,9 @@ All you need to do is register a callback URI that shares the same hostname and 
 
 * Consistent update API: each object has save and delete functions to persist changes or delete the object respectively.
 
+* A [sample app](https://github.com/FamilySearch/javascript-sdk-sample-app) demonstrates how to fulfill common use cases.
+
+
 Installation
 ============
 
