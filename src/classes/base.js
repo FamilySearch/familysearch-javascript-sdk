@@ -202,7 +202,7 @@ function _toJSON(value){
       list[i] = _toJSON(value[i]);
     }
     return list;
-  } else {
+  } else if(value !== undefined) {
     return JSON.parse(JSON.stringify(value));
   }
 }

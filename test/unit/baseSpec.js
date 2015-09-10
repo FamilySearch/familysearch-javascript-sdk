@@ -57,4 +57,14 @@ describe('base class', function() {
     });
   });
   
+  it('toJSON handle undefined values', function(){
+    var base = new FamilySearch.BaseClass(FS, {
+      a: 'a',
+      b: undefined
+    });
+    expect(JSON.stringify(base)).toEqualJson({
+      a: 'a'
+    });
+  });
+  
 });
