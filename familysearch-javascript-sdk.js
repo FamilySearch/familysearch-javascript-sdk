@@ -6056,7 +6056,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @return {Object} promise for the {@link memories.functions:getPersonPortraitUrl getPersonPortraitUrl} response
    */
   getPersonPortraitUrl: function(params) {
-    return this.client.getPersonPortraitUrl(this.getId(), params);
+    return this.client.getPersonPortraitUrl(this.getLink('portrait').href, params);
   },
 
   /**
@@ -9110,25 +9110,17 @@ FS.prototype.getMemoryPersonaRefs = function(url) {
  *
  *
  * @param {String} url of the person portrait endpoint
- * @param {Object=} params `default` URL to redirect to if portrait doesn't exist;
- * `followRedirect` if true, follow the redirect and return the final URL
- * @return {Object} promise for the URL
+ * @param {Object=} params `default` URL to redirect to if portrait doesn't exist
+ * @return {Object} promise for the response
  */
 FS.prototype.getPersonPortraitUrl = function(url, params) {
   var self = this;
-  if (params && params.followRedirect) {
-    params = utils.extend({}, params);
-    delete params.followRedirect;
-    return self.plumbing.get(url, params, { 'X-Expect-Override': '200-ok' }).then(function(response){
-      response.getPortraitUrl = function(){
-        return response.getStatusCode() === 204 ? '' : self.helpers.appendAccessToken(response.getHeader('Location'));
-      };
-      return response;
-    });
-  }
-  else {
-    return Promise.resolve(self.helpers.appendAccessToken(url));
-  }
+  return self.plumbing.get(url, params, { 'X-Expect-Override': '200-ok' }).then(function(response){
+    response.getPortraitUrl = function(){
+      return response.getStatusCode() === 204 ? '' : self.helpers.appendAccessToken(response.getHeader('Location'));
+    };
+    return response;
+  });
 };
 
 // TODO wrap call to read all portrait urls
@@ -11135,7 +11127,6 @@ var FS = require('./../FamilySearch'),
 /**
  * @ngdoc function
  * @name user.functions:getCurrentUser
-
  *
  * @description
  * Get the current user with the following convenience function
@@ -11163,7 +11154,6 @@ FS.prototype.getCurrentUser = function() {
 /**
  * @ngdoc function
  * @name user.functions:getAgent
-
  *
  * @description
  * Get information about the specified agent (contributor)
@@ -11191,7 +11181,6 @@ FS.prototype.getAgent = function(url) {
 /**
  * @ngdoc function
  * @name user.functions:getMultiAgent
-
  *
  * @description
  * Get multiple agents at once by requesting them in parallel
@@ -11214,6 +11203,31 @@ FS.prototype.getMultiAgent = function(urls, params) {
   });
   return Promise.all(promises).then(function(){
     return responses;
+  });
+};
+
+/**
+ * @ngdoc function
+ * @name user.functions:getCurrentUserPerson
+ *
+ * @description
+ * Get the tree person that represents the current user.
+ *
+ * - `getPerson()` - get the {@link user.types:constructor.Person Person} from the response
+ *
+ * {@link https://familysearch.org/developers/docs/api/tree/Current_Tree_Person_resource FamilySearch API Docs}
+ *
+ *
+ * @return {Object} a promise for the current user person response
+ */
+FS.prototype.getCurrentUserPerson = function() {
+  var self = this;
+  return self.plumbing.getCollectionUrl('FSFT', 'current-user-person').then(function(url) {
+    return self.plumbing.get(url, null, { 'X-Expect-Override': '200-ok' });
+  }).then(function(response){
+    return response.getHeader('Location');
+  }).then(function(url){
+    return self.getPerson(url);
   });
 };
 

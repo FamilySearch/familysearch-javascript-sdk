@@ -505,7 +505,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "memories",
       "shortDescription": "Get the URL of the portrait of a person.",
-      "keywords": "api convenience default docs doesn endpoint exist familysearch final follow followredirect function functions getportraiturl https includes memories org params person portrait promise redirect response return true url"
+      "keywords": "api convenience default docs doesn endpoint exist familysearch function functions getportraiturl https includes memories org params person portrait promise redirect response url"
     },
     {
       "section": "api",
@@ -1424,6 +1424,15 @@ NG_DOCS={
       "moduleName": "user",
       "shortDescription": "Get the current user with the following convenience function",
       "keywords": "api convenience current docs familysearch function functions getuser https org promise response types user"
+    },
+    {
+      "section": "api",
+      "id": "user.functions:getCurrentUserPerson",
+      "shortName": "getCurrentUserPerson",
+      "type": "function",
+      "moduleName": "user",
+      "shortDescription": "Get the tree person that represents the current user.",
+      "keywords": "api current docs familysearch function functions getperson https org person promise represents response tree types user"
     },
     {
       "section": "api",
