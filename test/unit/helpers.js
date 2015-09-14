@@ -66,7 +66,6 @@ function loadFile(filename){
  * Mock an http call, fetching the json from a file in test/mock
  *
  * @param opts
- * @returns {Object} promise
  */
 function httpMock(req, res) {
   var filename = getFilename(req);
@@ -83,7 +82,7 @@ function httpMock(req, res) {
   }
   if (data.status >= 300 && data.status < 400){
     req.url = headers.Location;
-    httpMock(req, res);
+    return httpMock(req, res);
   }
   
   var returnedData = {};

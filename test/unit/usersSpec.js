@@ -30,9 +30,18 @@ describe('A user', function() {
       expect(agent.getAccountName()).toBe('account');
       expect(agent.getEmail()).toBe('someone@somewhere.org');
       done();
+    });
+  });
+  
+  it('current user person is returned', function(done){
+    FS.getCurrentUserPerson().then(function(response){
+      var person = response.getPerson();
+      expect(person.getId()).toBe('P12-345');
+      expect(person.getDisplayName()).toBe('Alexa Aleksandrova');
+      done();
     }).catch(function(e){
       console.error(e.stack);
-    });
+    })
   });
 
 });

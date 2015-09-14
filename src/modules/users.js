@@ -14,7 +14,6 @@ var FS = require('./../FamilySearch'),
 /**
  * @ngdoc function
  * @name user.functions:getCurrentUser
-
  *
  * @description
  * Get the current user with the following convenience function
@@ -42,7 +41,6 @@ FS.prototype.getCurrentUser = function() {
 /**
  * @ngdoc function
  * @name user.functions:getAgent
-
  *
  * @description
  * Get information about the specified agent (contributor)
@@ -70,7 +68,6 @@ FS.prototype.getAgent = function(url) {
 /**
  * @ngdoc function
  * @name user.functions:getMultiAgent
-
  *
  * @description
  * Get multiple agents at once by requesting them in parallel
@@ -93,5 +90,32 @@ FS.prototype.getMultiAgent = function(urls, params) {
   });
   return Promise.all(promises).then(function(){
     return responses;
+  });
+};
+
+/**
+ * @ngdoc function
+ * @name user.functions:getCurrentUserPerson
+ *
+ * @description
+ * Get the tree person that represents the current user.
+ *
+ * - `getPerson()` - get the {@link user.types:constructor.Person Person} from the response
+ *
+ * {@link https://familysearch.org/developers/docs/api/tree/Current_Tree_Person_resource FamilySearch API Docs}
+ *
+ *
+ * @return {Object} a promise for the current user person response
+ */
+FS.prototype.getCurrentUserPerson = function() {
+  var self = this;
+  return self.plumbing.getCollectionUrl('FSFT', 'current-user-person').then(function(url) {
+    return self.plumbing.get(url, null, { 'X-Expect-Override': '200-ok' });
+  }).then(function(response){
+    utils.forEach(response.getData().persons, function(person, index, obj){
+      obj[index] = self.createPerson(person);
+    });
+    response.getPerson = function() { return maybe(response.getData().persons)[0]; };
+    return response;
   });
 };
