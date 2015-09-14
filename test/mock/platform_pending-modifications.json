@@ -1,0 +1,18 @@
+{
+  "features" : [ {
+    "name" : "remove-identity-v2-login",
+    "description" : "Support for obtaining an access token via identity/v2/login will be removed, in favor of OAuth2 username/password flow",
+    "enabled" : false,
+    "activationDate" : 1420070400000
+  }, {
+    "name" : "301-on-updates-to-merged-entities",
+    "description" : "When an update (POST or DELETE) happens on persons or relationships that have been merged, the response has been a 410, but it should be a 301.",
+    "enabled" : false,
+    "activationDate" : 1428364800000
+  }, {
+    "name" : "source-ref-query-param-change",
+    "description" : "The name of the parameter for the source description id in the source references query was changed from source to description.",
+    "enabled" : false,
+    "activationDate" : 1434585600000
+  } ]
+}

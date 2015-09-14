@@ -8,7 +8,6 @@ var instanceId = 0;
 /**
  * @ngdoc function
  * @name familysearch.types:constructor.FamilySearch
-
  *
  * @description
  * Initialize the FamilySearch object
@@ -17,10 +16,12 @@ var instanceId = 0;
  *
  * - `client_id` - the developer key you received from FamilySearch
  * - `environment` - sandbox, staging, or production
- * - `timeout_function` - optional timeout function: angular users should pass `$timeout`; otherwise the global `setTimeout` is used
  * - `redirect_uri` - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
  * but must have the same host and port as the server running your script;
  * however, it must exist for mobile safari - see the Overview section of the documentation
+ * - `pending_modifications` - an array of pending modifications that should be enabled for all requests. 
+ * __Warning__: When pending modifications are enabled on the client, all requests will require a preflight request.
+ * See the [CORS spec](http://www.w3.org/TR/cors/#cors-api-specifiation-request) for more details.
  * - `auto_expire` - set to true if you want to the system to clear the access token when it has expired
  * (after one hour of inactivity or 24 hours, whichever comes first; should probably be false for node.js)
  * - `auto_signin` - set to true if you want the user to be prompted to sign in whenever you call an API function
@@ -56,20 +57,21 @@ var FS = module.exports = function(opts){
   }
   
   self.settings.environment = opts['environment'];
-
   self.settings.redirectUri = opts['redirect_uri'] || opts['auth_callback']; // auth_callback is deprecated
-
   self.settings.autoSignin = opts['auto_signin'];
-
   self.settings.autoExpire = opts['auto_expire'];
 
-  if (opts['save_access_token']) {
+  if(opts['save_access_token']) {
     self.settings.saveAccessToken = true;
     self.helpers.readAccessToken();
   }
 
-  if (opts['access_token']) {
+  if(opts['access_token']) {
     self.settings.accessToken = opts['access_token'];
+  }
+  
+  if(opts['pending_modifications'] && utils.isArray(opts['pending_modifications'])){
+    self.settings.pendingModifications = opts['pending_modifications'].join(',');
   }
 
   self.settings.debug = opts['debug'];
@@ -94,12 +96,12 @@ require('./modules/parentsAndChildren');
 require('./modules/pedigree');
 require('./modules/persons');
 require('./modules/places');
-require('./modules/redirect');
 require('./modules/searchAndMatch');
 require('./modules/sourceBox');
 require('./modules/sources');
 require('./modules/spouses');
 require('./modules/users');
+require('./modules/utilities');
 
 // These files contain class definitions
 require('./classes/base');

@@ -274,6 +274,11 @@ Plumbing.prototype.http = function(method, url, headers, data, retries) {
       retries = self.settings.maxHttpRequestRetries;
     }
     
+    // Pending modifications
+    if(self.settings.pendingModifications){
+      headers['X-FS-Feature-Tag'] = self.settings.pendingModifications;
+    }
+    
     var body = self.transformData(data, headers['Content-Type']);
     
     // Make the HTTP request
