@@ -112,10 +112,8 @@ FS.prototype.getCurrentUserPerson = function() {
   return self.plumbing.getCollectionUrl('FSFT', 'current-user-person').then(function(url) {
     return self.plumbing.get(url, null, { 'X-Expect-Override': '200-ok' });
   }).then(function(response){
-    utils.forEach(response.getData().persons, function(person, index, obj){
-      obj[index] = self.createPerson(person);
-    });
-    response.getPerson = function() { return maybe(response.getData().persons)[0]; };
-    return response;
+    return response.getHeader('Location');
+  }).then(function(url){
+    return self.getPerson(url);
   });
 };

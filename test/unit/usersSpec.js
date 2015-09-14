@@ -39,8 +39,6 @@ describe('A user', function() {
       expect(person.getId()).toBe('P12-345');
       expect(person.getDisplayName()).toBe('Alexa Aleksandrova');
       done();
-    }).catch(function(e){
-      console.error(e.stack);
     });
   });
 

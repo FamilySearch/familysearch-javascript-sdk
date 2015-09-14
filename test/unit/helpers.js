@@ -80,10 +80,6 @@ function httpMock(req, res) {
   if (data.status) {
     status = data.status;
   }
-  if (data.status >= 300 && data.status < 400){
-    req.url = headers.Location;
-    return httpMock(req, res);
-  }
   
   var returnedData = {};
   
