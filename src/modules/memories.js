@@ -250,25 +250,17 @@ FS.prototype.getMemoryPersonaRefs = function(url) {
  *
  *
  * @param {String} url of the person portrait endpoint
- * @param {Object=} params `default` URL to redirect to if portrait doesn't exist;
- * `followRedirect` if true, follow the redirect and return the final URL
- * @return {Object} promise for the URL
+ * @param {Object=} params `default` URL to redirect to if portrait doesn't exist
+ * @return {Object} promise for the response
  */
 FS.prototype.getPersonPortraitUrl = function(url, params) {
   var self = this;
-  if (params && params.followRedirect) {
-    params = utils.extend({}, params);
-    delete params.followRedirect;
-    return self.plumbing.get(url, params, { 'X-Expect-Override': '200-ok' }).then(function(response){
-      response.getPortraitUrl = function(){
-        return response.getStatusCode() === 204 ? '' : self.helpers.appendAccessToken(response.getHeader('Location'));
-      };
-      return response;
-    });
-  }
-  else {
-    return Promise.resolve(self.helpers.appendAccessToken(url));
-  }
+  return self.plumbing.get(url, params, { 'X-Expect-Override': '200-ok' }).then(function(response){
+    response.getPortraitUrl = function(){
+      return response.getStatusCode() === 204 ? '' : self.helpers.appendAccessToken(response.getHeader('Location'));
+    };
+    return response;
+  });
 };
 
 // TODO wrap call to read all portrait urls

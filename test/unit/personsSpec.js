@@ -504,5 +504,14 @@ describe('A person', function() {
       });
     });
   });
+  
+  it('person portrait', function(done){
+    FS.getPerson('P12-345').then(function(response){
+      return response.getPerson().getPersonPortraitUrl();
+    }).then(function(response){
+      expect(response.getPortraitUrl()).toBe('https://myexample.com/portrait?access_token=mock');
+      done();
+    });
+  });
 
 });

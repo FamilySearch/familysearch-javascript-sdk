@@ -41,7 +41,7 @@ describe('A user', function() {
       done();
     }).catch(function(e){
       console.error(e.stack);
-    })
+    });
   });
 
 });

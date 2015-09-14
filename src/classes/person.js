@@ -621,7 +621,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @return {Object} promise for the {@link memories.functions:getPersonPortraitUrl getPersonPortraitUrl} response
    */
   getPersonPortraitUrl: function(params) {
-    return this.client.getPersonPortraitUrl(this.getId(), params);
+    return this.client.getPersonPortraitUrl(this.getLink('portrait').href, params);
   },
 
   /**

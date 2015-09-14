@@ -62,21 +62,13 @@ describe('Memory', function() {
       done();
     });
   });
-
-  it('portrait URL is returned from getPersonPortraitUrl', function(done) {
-    FS.getPersonPortraitUrl('https://sandbox.familysearch.org/platform/tree/persons/PID/portrait').then(function(response) {
-      expect(response).toBe('https://sandbox.familysearch.org/platform/tree/persons/PID/portrait?access_token=mock');
-      done();
-    });
-  });
   
-  it('portrait URL is returned from getPersonPortraitUrl with follow redirect', function(done) {
-    FS.getPersonPortraitUrl('https://sandbox.familysearch.org/platform/tree/persons/PID2/portrait', {followRedirect: true}).then(function(response) {
+  it('portrait URL is returned from getPersonPortraitUrl', function(done) {
+    FS.getPersonPortraitUrl('https://sandbox.familysearch.org/platform/tree/persons/PID2/portrait').then(function(response) {
       expect(response.getPortraitUrl()).toBe('https://somegoodplace.com?access_token=mock');
       done();
     });
   });
-
 
   it('are returned from getPersonMemoriesQuery', function(done) {
     FS.getPersonMemoriesQuery('https://familysearch.org/platform/tree/persons/KWCR-JWS/memories', {start: 2, count: 2}).then(function(response) {
