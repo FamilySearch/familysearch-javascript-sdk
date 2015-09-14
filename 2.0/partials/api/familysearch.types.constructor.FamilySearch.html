@@ -9,10 +9,12 @@
 <ul>
 <li><code>client_id</code> - the developer key you received from FamilySearch</li>
 <li><code>environment</code> - sandbox, staging, or production</li>
-<li><code>timeout_function</code> - optional timeout function: angular users should pass <code>$timeout</code>; otherwise the global <code>setTimeout</code> is used</li>
 <li><code>redirect_uri</code> - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
 but must have the same host and port as the server running your script;
 however, it must exist for mobile safari - see the Overview section of the documentation</li>
+<li><code>pending_modifications</code> - an array of pending modifications that should be enabled for all requests. 
+<strong>Warning</strong>: When pending modifications are enabled on the client, all requests will require a preflight request.
+See the <a href="http://www.w3.org/TR/cors/#cors-api-specifiation-request">CORS spec</a> for more details.</li>
 <li><code>auto_expire</code> - set to true if you want to the system to clear the access token when it has expired
 (after one hour of inactivity or 24 hours, whichever comes first; should probably be false for node.js)</li>
 <li><code>auto_signin</code> - set to true if you want the user to be prompted to sign in whenever you call an API function

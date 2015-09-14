@@ -352,7 +352,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "familysearch",
       "shortDescription": "Initialize the FamilySearch object",
-      "keywords": "$timeout access access_token action angular api auto_expire auto_signin blocked call called calls clear client_id console convenient cookie debug developer development direct documentation environment exist expire_callback expired expires false familysearch function future global host hour hours inactivity init initialize issue js key logging mobile node oauth2 object optional opts overview pass pop-up port production prompted re-read received redirect redirect_uri registered response result running safari sandbox save_access_token saved script server session set settimeout sign staging system timeout timeout_function token true turn types uri user user-initiated users whichever"
+      "keywords": "__warning__ access access_token action api array auto_expire auto_signin blocked call called calls clear client client_id console convenient cookie cors-api-specifiation-request debug details developer development direct documentation enabled environment exist expire_callback expired expires false familysearch function future host hour hours inactivity init initialize issue js key logging mobile modifications node oauth2 object opts org overview pass pending pending_modifications pop-up port preflight production prompted re-read received redirect redirect_uri registered request requests require response result running safari sandbox save_access_token saved script server session set sign spec staging system token true turn types uri user user-initiated w3 whichever"
     },
     {
       "section": "api",
@@ -1067,24 +1067,6 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "redirect",
-      "shortName": "redirect",
-      "type": "overview",
-      "moduleName": "redirect",
-      "shortDescription": "Utility functions",
-      "keywords": "api docs familysearch functions https org overview redirect utility"
-    },
-    {
-      "section": "api",
-      "id": "redirect.functions:getRedirectUrl",
-      "shortName": "getRedirectUrl",
-      "type": "function",
-      "moduleName": "redirect",
-      "shortDescription": "FamilySearch API Docs",
-      "keywords": "access api changes context docs familysearch function functions https location memories ordinances org params person precedence redirect token uri url user"
-    },
-    {
-      "section": "api",
       "id": "searchAndMatch",
       "shortName": "searchAndMatch",
       "type": "overview",
@@ -1460,6 +1442,33 @@ NG_DOCS={
       "moduleName": "user",
       "shortDescription": "User - a user is returned from getCurrentUser;",
       "keywords": "address agent api client contact contributor data display email en family familysearch female full function functions getcontactname getcurrentuser getdisplayname getemail getfamilyname getgender getgivenname getid getpersonid getpreferredlanguage gettreeuserid ids male object person raw returned sdk types user"
+    },
+    {
+      "section": "api",
+      "id": "utilities",
+      "shortName": "utilities",
+      "type": "overview",
+      "moduleName": "utilities",
+      "shortDescription": "Utility functions",
+      "keywords": "api docs familysearch functions https org overview utilities utility"
+    },
+    {
+      "section": "api",
+      "id": "utilities.functions:getPendingModifications",
+      "shortName": "getPendingModifications",
+      "type": "function",
+      "moduleName": "utilities",
+      "shortDescription": "Get a list of the pending modifications for the API.",
+      "keywords": "api array convenience docs familysearch function functions getpendingmodifications https includes list modifications org pending promise response utilities"
+    },
+    {
+      "section": "api",
+      "id": "utilities.functions:getRedirectUrl",
+      "shortName": "getRedirectUrl",
+      "type": "function",
+      "moduleName": "utilities",
+      "shortDescription": "FamilySearch API Docs",
+      "keywords": "access api changes context docs familysearch function functions https location memories ordinances org params person precedence redirect token uri url user utilities"
     },
     {
       "section": "api",

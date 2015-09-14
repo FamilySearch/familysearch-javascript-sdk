@@ -1385,7 +1385,6 @@ var instanceId = 0;
 /**
  * @ngdoc function
  * @name familysearch.types:constructor.FamilySearch
-
  *
  * @description
  * Initialize the FamilySearch object
@@ -1394,10 +1393,12 @@ var instanceId = 0;
  *
  * - `client_id` - the developer key you received from FamilySearch
  * - `environment` - sandbox, staging, or production
- * - `timeout_function` - optional timeout function: angular users should pass `$timeout`; otherwise the global `setTimeout` is used
  * - `redirect_uri` - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
  * but must have the same host and port as the server running your script;
  * however, it must exist for mobile safari - see the Overview section of the documentation
+ * - `pending_modifications` - an array of pending modifications that should be enabled for all requests. 
+ * __Warning__: When pending modifications are enabled on the client, all requests will require a preflight request.
+ * See the [CORS spec](http://www.w3.org/TR/cors/#cors-api-specifiation-request) for more details.
  * - `auto_expire` - set to true if you want to the system to clear the access token when it has expired
  * (after one hour of inactivity or 24 hours, whichever comes first; should probably be false for node.js)
  * - `auto_signin` - set to true if you want the user to be prompted to sign in whenever you call an API function
@@ -1433,20 +1434,21 @@ var FS = module.exports = function(opts){
   }
   
   self.settings.environment = opts['environment'];
-
   self.settings.redirectUri = opts['redirect_uri'] || opts['auth_callback']; // auth_callback is deprecated
-
   self.settings.autoSignin = opts['auto_signin'];
-
   self.settings.autoExpire = opts['auto_expire'];
 
-  if (opts['save_access_token']) {
+  if(opts['save_access_token']) {
     self.settings.saveAccessToken = true;
     self.helpers.readAccessToken();
   }
 
-  if (opts['access_token']) {
+  if(opts['access_token']) {
     self.settings.accessToken = opts['access_token'];
+  }
+  
+  if(opts['pending_modifications'] && utils.isArray(opts['pending_modifications'])){
+    self.settings.pendingModifications = opts['pending_modifications'].join(',');
   }
 
   self.settings.debug = opts['debug'];
@@ -1471,12 +1473,12 @@ require('./modules/parentsAndChildren');
 require('./modules/pedigree');
 require('./modules/persons');
 require('./modules/places');
-require('./modules/redirect');
 require('./modules/searchAndMatch');
 require('./modules/sourceBox');
 require('./modules/sources');
 require('./modules/spouses');
 require('./modules/users');
+require('./modules/utilities');
 
 // These files contain class definitions
 require('./classes/base');
@@ -1525,7 +1527,7 @@ function extendFSPrototype(moduleName, functionName){
     return this[moduleName][functionName].apply(this[moduleName], arguments);
   };
 }
-},{"./classes/agent":6,"./classes/attribution":7,"./classes/base":8,"./classes/change":9,"./classes/childAndParents":10,"./classes/collection":11,"./classes/comment":12,"./classes/couple":13,"./classes/date":14,"./classes/discussion":15,"./classes/discussionRef":16,"./classes/fact":17,"./classes/gender":18,"./classes/memory":19,"./classes/memoryArtifactRef":20,"./classes/memoryPersona":21,"./classes/memoryPersonaRef":22,"./classes/name":23,"./classes/note":24,"./classes/person":25,"./classes/placeDescription":26,"./classes/placeReference":27,"./classes/placesSearchResult":28,"./classes/searchResult":29,"./classes/sourceDescription":30,"./classes/sourceRef":31,"./classes/textValue":32,"./classes/user":33,"./classes/vocabularyElement":34,"./classes/vocabularyList":35,"./globals":36,"./helpers":37,"./modules/authentication":38,"./modules/authorities":39,"./modules/changeHistory":40,"./modules/discussions":41,"./modules/memories":42,"./modules/notes":43,"./modules/parentsAndChildren":44,"./modules/pedigree":45,"./modules/persons":46,"./modules/places":47,"./modules/redirect":48,"./modules/searchAndMatch":49,"./modules/sourceBox":50,"./modules/sources":51,"./modules/spouses":52,"./modules/users":53,"./plumbing":54,"./utils":56}],6:[function(require,module,exports){
+},{"./classes/agent":6,"./classes/attribution":7,"./classes/base":8,"./classes/change":9,"./classes/childAndParents":10,"./classes/collection":11,"./classes/comment":12,"./classes/couple":13,"./classes/date":14,"./classes/discussion":15,"./classes/discussionRef":16,"./classes/fact":17,"./classes/gender":18,"./classes/memory":19,"./classes/memoryArtifactRef":20,"./classes/memoryPersona":21,"./classes/memoryPersonaRef":22,"./classes/name":23,"./classes/note":24,"./classes/person":25,"./classes/placeDescription":26,"./classes/placeReference":27,"./classes/placesSearchResult":28,"./classes/searchResult":29,"./classes/sourceDescription":30,"./classes/sourceRef":31,"./classes/textValue":32,"./classes/user":33,"./classes/vocabularyElement":34,"./classes/vocabularyList":35,"./globals":36,"./helpers":37,"./modules/authentication":38,"./modules/authorities":39,"./modules/changeHistory":40,"./modules/discussions":41,"./modules/memories":42,"./modules/notes":43,"./modules/parentsAndChildren":44,"./modules/pedigree":45,"./modules/persons":46,"./modules/places":47,"./modules/searchAndMatch":48,"./modules/sourceBox":49,"./modules/sources":50,"./modules/spouses":51,"./modules/users":52,"./modules/utilities":53,"./plumbing":54,"./utils":56}],6:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -10344,33 +10346,6 @@ FS.prototype.getPlaceTypeGroups = function() {
   });
 };
 },{"./../FamilySearch":5,"./../utils":56}],48:[function(require,module,exports){
-var FS = require('./../FamilySearch');
-
-/**
- * @ngdoc overview
- * @name redirect
- * @description
- * Utility functions
- *
- * {@link https://familysearch.org/developers/docs/api/resources#redirect FamilySearch API Docs}
- */
-
-/**
- * @ngdoc function
- * @name redirect.functions:getRedirectUrl
-
- *
- * @description
- *
- * {@link https://familysearch.org/developers/docs/api/tree/Redirect_resource FamilySearch API Docs}
- *
- * @param {Object=} params context (details, memories, ordinances, or changes), or person (id), or uri (takes precedence)
- * @return {string} URL with access token that will redirect the user to the specified location
- */
-FS.prototype.getRedirectUrl = function(params) {
-  return this.helpers.appendAccessToken(this.helpers.appendQueryParameters(this.helpers.getAPIServerUrl('/platform/redirect'), params));
-};
-},{"./../FamilySearch":5}],49:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -10524,7 +10499,7 @@ FS.prototype.getPersonMatchesQuery = function(params) {
   });
 };
 
-},{"./../FamilySearch":5,"./../utils":56}],50:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":56}],49:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -10756,7 +10731,7 @@ FS.prototype.deleteCollection = function(url) {
   return this.plumbing.del(url);
 };
 
-},{"./../FamilySearch":5,"./../utils":56}],51:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":56}],50:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -11016,7 +10991,7 @@ FS.prototype.deleteSourceRef = function(url, changeMessage) {
   return this.plumbing.del(url, changeMessage ? {'X-Reason': changeMessage} : {});
 };
 
-},{"./../FamilySearch":5,"./../utils":56}],52:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":56}],51:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     utils = require('../utils'),
     maybe = utils.maybe;
@@ -11110,7 +11085,7 @@ FS.prototype.restoreCouple = function(url) {
   return this.plumbing.post(url, null, {'Content-Type': 'application/x-fs-v1+json'});
 };
 
-},{"../FamilySearch":5,"../utils":56}],53:[function(require,module,exports){
+},{"../FamilySearch":5,"../utils":56}],52:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -11231,7 +11206,55 @@ FS.prototype.getCurrentUserPerson = function() {
   });
 };
 
-},{"./../FamilySearch":5,"./../utils":56}],54:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":56}],53:[function(require,module,exports){
+var FS = require('./../FamilySearch');
+
+/**
+ * @ngdoc overview
+ * @name utilities
+ * @description
+ * Utility functions
+ *
+ * {@link https://familysearch.org/developers/docs/api/resources#utilities FamilySearch API Docs}
+ */
+
+/**
+ * @ngdoc function
+ * @name utilities.functions:getRedirectUrl
+ *
+ * @description
+ *
+ * {@link https://familysearch.org/developers/docs/api/tree/Redirect_resource FamilySearch API Docs}
+ *
+ * @param {Object=} params context (details, memories, ordinances, or changes), or person (id), or uri (takes precedence)
+ * @return {string} URL with access token that will redirect the user to the specified location
+ */
+FS.prototype.getRedirectUrl = function(params) {
+  return this.helpers.appendAccessToken(this.helpers.appendQueryParameters(this.helpers.getAPIServerUrl('/platform/redirect'), params));
+};
+
+/**
+ * @ngdoc function
+ * @name utilities.functions:getPendingModifications
+ *
+ * @description Get a list of the pending modifications for the API.
+ * The response includes the following convenience function
+ *
+ * - `getPendingModifications()` - get an array of the pending modifications from the response
+ *
+ * {@link https://familysearch.org/developers/docs/api/tree/Pending_Modifications_resource FamilySearch API Docs}
+ *
+ * @return {Object} Promise for the response
+ */
+FS.prototype.getPendingModifications = function() {
+  return this.plumbing.get('/platform/pending-modifications').then(function(response){
+    response.getPendingModifications = function(){
+      return response.getData().features;
+    };
+    return response;
+  });
+};
+},{"./../FamilySearch":5}],54:[function(require,module,exports){
 // These are globals so that their interface is the same
 // both in the client and on the server
 require('es6-promise').polyfill();
@@ -11506,6 +11529,11 @@ Plumbing.prototype.http = function(method, url, headers, data, retries) {
     // default retries
     if (retries == null) { // also catches undefined
       retries = self.settings.maxHttpRequestRetries;
+    }
+    
+    // Pending modifications
+    if(self.settings.pendingModifications){
+      headers['X-FS-Feature-Tag'] = self.settings.pendingModifications;
     }
     
     var body = self.transformData(data, headers['Content-Type']);
