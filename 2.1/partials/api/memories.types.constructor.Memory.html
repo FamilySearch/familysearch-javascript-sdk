@@ -1,0 +1,125 @@
+<h1><code ng:non-bindable="">Memory</code>
+<div><span class="hint">type in module <code ng:non-bindable="">memories</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="memories-types-page memories-types-constructor-memory-page"><p>Memory</p>
+<p><a href="https://familysearch.org/developers/docs/api/memories/Memory_resource">FamilySearch API Docs</a></p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">Memory(client[, data]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>client</td><td><a href="" class="label type-hint type-hint-familysearch">FamilySearch</a></td><td><div class="memories-types-page memories-types-constructor-memory-page"><p>FamilySearch sdk client</p>
+</div></td></tr><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memory-page"><p>an object with optional attributes {title, description, artifactFilename, data}.
+data<em> is a string for Stories, or a FormData for Images or Documents
+- if FormData, the field name of the file to upload _must</em> be <code>artifact</code>.
+data<em> is ignored when updating a memory.
+_description</em> doesn&#39;t appear to apply to stories.</p>
+<p><strong>NOTE</strong> it is not currently possible to update memory contents - not even for stories</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_delete">delete()</h3>
+<div class="delete"><div class="memories-types-page memories-types-constructor-memory-delete-page"><p>delete this memory - see <a href="#/api/memories.functions:deleteMemory">deleteMemory</a></p>
+</div><h5 id="methods_delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memory-delete-page"><p>promise for the response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getabout">getAbout()</h3>
+<div class="getabout"><h5 id="methods_getabout_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getabout-page"><p>memory artifact URL</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getartifactfilename">getArtifactFilename()</h3>
+<div class="getartifactfilename"><h5 id="methods_getartifactfilename_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getartifactfilename-page"><p>filename (provided by the user or a default name)</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getartifactheight">getArtifactHeight()</h3>
+<div class="getartifactheight"><h5 id="methods_getartifactheight_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="memories-types-page memories-types-constructor-memory-getartifactheight-page"><p>image height</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getartifactmetadata">getArtifactMetadata()</h3>
+<div class="getartifactmetadata"><h5 id="methods_getartifactmetadata_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object[]</a></td><td><div class="memories-types-page memories-types-constructor-memory-getartifactmetadata-page"><p>array of { <code>artifactType</code>, <code>filename</code> }</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getartifacttype">getArtifactType()</h3>
+<div class="getartifacttype"><h5 id="methods_getartifacttype_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getartifacttype-page"><p>type; e.g., <a href="http://familysearch.org/v1/Image">http://familysearch.org/v1/Image</a></p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getartifactwidth">getArtifactWidth()</h3>
+<div class="getartifactwidth"><h5 id="methods_getartifactwidth_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="memories-types-page memories-types-constructor-memory-getartifactwidth-page"><p>image width</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getattribution">getAttribution()</h3>
+<div class="getattribution"><h5 id="methods_getattribution_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-attribution">Attribution</a></td><td><div class="memories-types-page memories-types-constructor-memory-getattribution-page"><p><a href="#/api/attribution.types:constructor.Attribution">Attribution</a> object</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getcomments">getComments()</h3>
+<div class="getcomments"><h5 id="methods_getcomments_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memory-getcomments-page"><p>promise for the <a href="#/api/memories.functions:getMemoryComments">getMemoryComments</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getcommentsurl">getCommentsUrl()</h3>
+<div class="getcommentsurl"><h5 id="methods_getcommentsurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getcommentsurl-page"><p>URL of the comments endpoint
+- pass into <a href="#/api/memories.functions:getMemoryComments">getMemoryComments</a> for details</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getdescription">getDescription()</h3>
+<div class="getdescription"><h5 id="methods_getdescription_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getdescription-page"><p>description (may not apply to story memories)</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_geticonurl">getIconUrl()</h3>
+<div class="geticonurl"><h5 id="methods_geticonurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-geticonurl-page"><p>URL of the icon with access token</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getid">getId()</h3>
+<div class="getid"><h5 id="methods_getid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getid-page"><p>Id of the Memory</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getimageurl">getImageUrl()</h3>
+<div class="getimageurl"><h5 id="methods_getimageurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getimageurl-page"><p>URL of the full image with access token</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getmediatype">getMediaType()</h3>
+<div class="getmediatype"><h5 id="methods_getmediatype_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getmediatype-page"><p>media type; e.g., image/jpeg</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getmemoryartifacturl">getMemoryArtifactUrl()</h3>
+<div class="getmemoryartifacturl"><h5 id="methods_getmemoryartifacturl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getmemoryartifacturl-page"><p>URL of the memory artifact (image, story, or document) with access token</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getmemoryurl">getMemoryUrl()</h3>
+<div class="getmemoryurl"><h5 id="methods_getmemoryurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getmemoryurl-page"><p>memory URL (without the access token)</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getresourcetype">getResourceType()</h3>
+<div class="getresourcetype"><h5 id="methods_getresourcetype_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getresourcetype-page"><p>resource type; e.g., <a href="http://gedcomx.org/DigitalArtifact">http://gedcomx.org/DigitalArtifact</a></p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getthumbnailurl">getThumbnailUrl()</h3>
+<div class="getthumbnailurl"><h5 id="methods_getthumbnailurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-getthumbnailurl-page"><p>URL of the thumbnail with access token</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_gettitle">getTitle()</h3>
+<div class="gettitle"><h5 id="methods_gettitle_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-gettitle-page"><p>title</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_save">save()</h3>
+<div class="save"><div class="memories-types-page memories-types-constructor-memory-save-page"><p>Create a new memory (if this memory does not have an id) or update the existing memory</p>
+</div><h5 id="methods_save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memory-save-page"><p>promise for the response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setartifactfilename">setArtifactFilename(filename)</h3>
+<div class="setartifactfilename"><h5 id="methods_setartifactfilename_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>filename</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-setartifactfilename-page"><p>uploaded file</p>
+</div></td></tr></tbody></table><h5 id="methods_setartifactfilename_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-memory">Memory</a></td><td><div class="memories-types-page memories-types-constructor-memory-setartifactfilename-page"><p>this memory</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setdescription">setDescription(description)</h3>
+<div class="setdescription"><h5 id="methods_setdescription_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>description</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-setdescription-page"><p>memory description (may not apply to story memories)</p>
+</div></td></tr></tbody></table><h5 id="methods_setdescription_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-memory">Memory</a></td><td><div class="memories-types-page memories-types-constructor-memory-setdescription-page"><p>this memory</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_settitle">setTitle(title)</h3>
+<div class="settitle"><h5 id="methods_settitle_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>title</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memory-settitle-page"><p>memory title</p>
+</div></td></tr></tbody></table><h5 id="methods_settitle_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-memory">Memory</a></td><td><div class="memories-types-page memories-types-constructor-memory-settitle-page"><p>this memory</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>
