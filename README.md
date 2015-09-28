@@ -52,7 +52,7 @@ The SDK is available as a versioned javascript file, following the [semantic ver
 1. Node
    
   ```
-  npm install familysearch-javascript-sdk.git
+  npm install familysearch-javascript-sdk
   ```
 
 1. CDN via [jsDelivr](http://www.jsdelivr.com/#!familysearch-javascript-sdk)
