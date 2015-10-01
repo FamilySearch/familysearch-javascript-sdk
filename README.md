@@ -58,7 +58,7 @@ The SDK is available as a versioned javascript file, following the [semantic ver
 1. CDN via [jsDelivr](http://www.jsdelivr.com/#!familysearch-javascript-sdk)
 
   ```html
-  <script src="//cdn.jsdelivr.net/familysearch-javascript-sdk/1.0.0/familysearch-javascript-sdk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/familysearch-javascript-sdk/2.1.0/familysearch-javascript-sdk.min.js"></script>
   ```
 
 Contributing
