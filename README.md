@@ -4,10 +4,37 @@ A high-level JavaScript wrapper around the FamilySearch REST API.
 [![Build Status](https://travis-ci.org/FamilySearch/familysearch-javascript-sdk.png)](https://travis-ci.org/FamilySearch/familysearch-javascript-sdk)
 [![Coverage Status](https://coveralls.io/repos/FamilySearch/familysearch-javascript-sdk/badge.svg?branch=master)](https://coveralls.io/r/FamilySearch/familysearch-javascript-sdk?branch=master)
 
-Overview
+A [sample app](https://github.com/FamilySearch/javascript-sdk-sample-app) demonstrates how to fulfill common use cases.
+
+Installation
+============
+
+The SDK is available as a versioned javascript file, following the [semantic versioning](http://semver.org/) guidelines.
+
+If you want to run the SDK on your own server, copy the familysearch-javascript-sdk file to your project folder and run one of the following commands from that folder on your server console:
+
+* For a Bower server:
+  ```
+  bower install familysearch-javascript-sdk
+  ```
+
+* For a Node server:
+  ```
+  npm install familysearch-javascript-sdk
+  ```
+
+If you want to use a copy of the SDK that is already available on a CDN previously installed using [jsDelivr](http://www.jsdelivr.com/#!familysearch-javascript-sdk), add the following script command to your setup file.
+
+  ```html
+  <script src="//cdn.jsdelivr.net/familysearch-javascript-sdk/2.1.0/familysearch-javascript-sdk.min.js"></script>
+  ```
+
+
+Javascript SDK Features
 ========
 
-* JavaScript functions wrap the underlying REST API calls.
+* **Wrapped REST API Calls**
+JavaScript functions wrap the underlying REST API calls.
 The objects returned by the functions include convenience functions for extracting information from the returned JSON.
 For example, the following logs the name of a person along with their spouses and chilren.
 
@@ -17,49 +44,37 @@ For example, the following logs the name of a person along with their spouses an
     });
     ```
 
-* Asynchronous functions (like the one above) return promises to make it easy for you to refer to their results from anywhere in your code.
+* **Promises**
+Asynchronous functions (like the one above) return promises to make it easy for you to refer to their results from anywhere in your code.
 
-* Each function is [well-documented](http://familysearch.github.io/familysearch-javascript-sdk)
+* **Well Documented**
+Each function is [well-documented](http://familysearch.github.io/familysearch-javascript-sdk)
 and has an editable jsFiddle to demonstrate its functionality and allow you to experiment.
 
-* In the browser, authentication is handled using a popup window.  You do not need to create an OAuth redirect page.
+* **Popup Authentication**
+In the browser, authentication is handled using a popup window. You do not need to create an OAuth redirect page.
 All you need to do is register a callback URI that shares the same hostname and port as your code.
 
-* Option to store access token in a session cookie.
+* **Automatic Authentication**
+If you make a call without first authenticating, the authentication process will be initiated first automatically.
 
-* Retry in the case of throttled responses is handled for you.
+* **Token Storage**
+There is an option to store your access token in a session cookie.
 
-* Cross-platform: Works both in the browser and in node. See the [examples](https://github.com/FamilySearch/familysearch-javascript-sdk/tree/master/examples).
+* **Throttle Handling**
+Retry in the case of throttled responses is handled for you.
 
-* Object-oriented: SDK functions return objects, which have convenience functions to make getting or setting data easy.
+* **Cross-platform**
+Works both in the browser and in node. See the [examples](https://github.com/FamilySearch/familysearch-javascript-sdk/tree/master/examples).
 
-* Consistent update API: each object has save and delete functions to persist changes or delete the object respectively.
+* **Object-oriented**
+SDK functions return objects, which have convenience functions to make getting or setting data easy.
 
-* A [sample app](https://github.com/FamilySearch/javascript-sdk-sample-app) demonstrates how to fulfill common use cases.
+* **Consistent update API**
+Each object has save and delete functions to persist changes or delete the object respectively.
 
 
-Installation
-============
 
-The SDK is available as a versioned javascript file, following the [semantic versioning](http://semver.org/) guidelines.
-
-1. Bower
-
-  ```
-  bower install familysearch-javascript-sdk
-  ```
-
-1. Node
-   
-  ```
-  npm install familysearch-javascript-sdk
-  ```
-
-1. CDN via [jsDelivr](http://www.jsdelivr.com/#!familysearch-javascript-sdk)
-
-  ```html
-  <script src="//cdn.jsdelivr.net/familysearch-javascript-sdk/2.1.0/familysearch-javascript-sdk.min.js"></script>
-  ```
 
 Contributing
 ============
