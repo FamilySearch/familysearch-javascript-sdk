@@ -33,7 +33,7 @@ If you want to use a copy of the SDK that is already available on a CDN previous
 
 * **Wrapped REST API Calls**
 
-JavaScript functions wrap the underlying REST API calls.
+ JavaScript functions wrap the underlying REST API calls.
 The objects returned by the functions include convenience functions for extracting information from the returned JSON.
 For example, the following logs the name of a person along with their spouses and chilren.
 
@@ -45,11 +45,11 @@ For example, the following logs the name of a person along with their spouses an
 
 * **Promises**
 
-Asynchronous functions (like the one above) return promises to make it easy for you to refer to their results from anywhere in your code.
+  Asynchronous functions (like the one above) return promises to make it easy for you to refer to their results from anywhere in your code.
 
 * **Well Documented**
 
-Each function is [well-documented](http://familysearch.github.io/familysearch-javascript-sdk)
+  Each function is [well-documented](http://familysearch.github.io/familysearch-javascript-sdk)
 and has an editable jsFiddle to demonstrate its functionality and allow you to experiment.
 
 * **Popup Authentication**
