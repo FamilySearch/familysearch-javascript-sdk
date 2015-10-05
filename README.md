@@ -1,3 +1,5 @@
+# GedcomX - JavaScript SDK
+
 A high-level JavaScript wrapper around the FamilySearch REST API.
 
 [![npm](https://img.shields.io/npm/v/familysearch-javascript-sdk.svg)]()
