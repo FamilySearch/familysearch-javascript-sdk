@@ -74,6 +74,7 @@ All you need to do is register a callback URI that shares the same hostname and 
  Works both in the browser and in node. See the [examples](https://github.com/FamilySearch/familysearch-javascript-sdk/tree/master/examples).
 
 * **Object-oriented**
+
  SDK functions return objects, which have convenience functions to make getting or setting data easy.
 
 * **Consistent update API**
