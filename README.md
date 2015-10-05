@@ -6,8 +6,7 @@ A high-level JavaScript wrapper around the FamilySearch REST API.
 
 A [sample app](https://github.com/FamilySearch/javascript-sdk-sample-app) demonstrates how to fulfill common use cases.
 
-Installation
-============
+## Installation
 
 The SDK is available as a versioned javascript file, following the [semantic versioning](http://semver.org/) guidelines.
 
@@ -30,10 +29,10 @@ If you want to use a copy of the SDK that is already available on a CDN previous
   ```
 
 
-Javascript SDK Features
-========
+## Javascript SDK Features
 
 * **Wrapped REST API Calls**
+
 JavaScript functions wrap the underlying REST API calls.
 The objects returned by the functions include convenience functions for extracting information from the returned JSON.
 For example, the following logs the name of a person along with their spouses and chilren.
@@ -45,39 +44,45 @@ For example, the following logs the name of a person along with their spouses an
     ```
 
 * **Promises**
+
 Asynchronous functions (like the one above) return promises to make it easy for you to refer to their results from anywhere in your code.
 
 * **Well Documented**
+
 Each function is [well-documented](http://familysearch.github.io/familysearch-javascript-sdk)
 and has an editable jsFiddle to demonstrate its functionality and allow you to experiment.
 
 * **Popup Authentication**
+
 In the browser, authentication is handled using a popup window. You do not need to create an OAuth redirect page.
 All you need to do is register a callback URI that shares the same hostname and port as your code.
 
 * **Automatic Authentication**
+
 If you make a call without first authenticating, the authentication process will be initiated first automatically.
 
 * **Token Storage**
+
 There is an option to store your access token in a session cookie.
 
 * **Throttle Handling**
+
 Retry in the case of throttled responses is handled for you.
 
 * **Cross-platform**
+
 Works both in the browser and in node. See the [examples](https://github.com/FamilySearch/familysearch-javascript-sdk/tree/master/examples).
 
 * **Object-oriented**
+
 SDK functions return objects, which have convenience functions to make getting or setting data easy.
 
 * **Consistent update API**
+
 Each object has save and delete functions to persist changes or delete the object respectively.
 
 
-
-
-Contributing
-============
+## Contributing
 
 Thank you for your interest in contributing! We love pull requests.
 
