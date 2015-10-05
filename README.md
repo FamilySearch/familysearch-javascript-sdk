@@ -6,13 +6,16 @@ A high-level JavaScript wrapper around the FamilySearch REST API.
 [![Build Status](https://travis-ci.org/FamilySearch/familysearch-javascript-sdk.png)](https://travis-ci.org/FamilySearch/familysearch-javascript-sdk)
 [![Coverage Status](https://coveralls.io/repos/FamilySearch/familysearch-javascript-sdk/badge.svg?branch=master)](https://coveralls.io/r/FamilySearch/familysearch-javascript-sdk?branch=master)
 
-A [sample app](https://github.com/FamilySearch/javascript-sdk-sample-app) demonstrates how to fulfill common use cases.
+See the [sample app wiki](https://github.com/FamilySearch/javascript-sdk-sample-app/wiki) for the following components of this SDK:
+* A tutorial to help get you started.
+* A [sample app](https://github.com/FamilySearch/javascript-sdk-sample-app) with code that demonstrates how to fulfill common use cases.
+* Documentation of the JavaScript SDK and other development guides.
 
 ## Installation
 
-The SDK is available as a versioned javascript file, following the [semantic versioning](http://semver.org/) guidelines.
+The JavaScript SDK is available as a versioned JavaScript file, following the [semantic versioning](http://semver.org/) guidelines.
 
-If you want to run the SDK on your own server, copy the familysearch-javascript-sdk file to your project folder using [jsDelivr](http://www.jsdelivr.com/#!familysearch-javascript-sdk) and run one of the following commands from that folder on your server console:
+If you want to run the SDK on your own server, download and extract the familysearch-javascript-sdk file to your project folder using [jsDelivr](http://www.jsdelivr.com/#!familysearch-javascript-sdk) and run one of the following commands from that folder on your server console:
 
 * For a Bower server:
   ```
@@ -24,14 +27,14 @@ If you want to run the SDK on your own server, copy the familysearch-javascript-
   npm install familysearch-javascript-sdk
   ```
 
-If you prefer to use a copy of the SDK that is already installed and available on a CDN, add the following script command to your setup file.
+If you prefer to use a copy of the SDK that is already installed and available on a CDN, you do not need to download the SDK. Just add the following script command to your setup file.
 
   ```html
   <script src="//cdn.jsdelivr.net/familysearch-javascript-sdk/2.1.0/familysearch-javascript-sdk.min.js"></script>
   ```
 
 
-## Javascript SDK Features
+## JavaScript SDK Features
 
 * **Wrapped REST API Calls**
 
