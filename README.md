@@ -12,7 +12,7 @@ A [sample app](https://github.com/FamilySearch/javascript-sdk-sample-app) demons
 
 The SDK is available as a versioned javascript file, following the [semantic versioning](http://semver.org/) guidelines.
 
-If you want to run the SDK on your own server, copy the familysearch-javascript-sdk file to your project folder and run one of the following commands from that folder on your server console:
+If you want to run the SDK on your own server, copy the familysearch-javascript-sdk file to your project folder using [jsDelivr](http://www.jsdelivr.com/#!familysearch-javascript-sdk) and run one of the following commands from that folder on your server console:
 
 * For a Bower server:
   ```
@@ -24,7 +24,7 @@ If you want to run the SDK on your own server, copy the familysearch-javascript-
   npm install familysearch-javascript-sdk
   ```
 
-If you want to use a copy of the SDK that is already available on a CDN previously installed using [jsDelivr](http://www.jsdelivr.com/#!familysearch-javascript-sdk), add the following script command to your setup file.
+If you prefer to use a copy of the SDK that is already installed and available on a CDN, add the following script command to your setup file.
 
   ```html
   <script src="//cdn.jsdelivr.net/familysearch-javascript-sdk/2.1.0/familysearch-javascript-sdk.min.js"></script>
