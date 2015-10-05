@@ -45,41 +45,40 @@ For example, the following logs the name of a person along with their spouses an
 
 * **Promises**
 
-  Asynchronous functions (like the one above) return promises to make it easy for you to refer to their results from anywhere in your code.
+ Asynchronous functions (like the one above) return promises to make it easy for you to refer to their results from anywhere in your code.
 
 * **Well Documented**
 
-  Each function is [well-documented](http://familysearch.github.io/familysearch-javascript-sdk)
+ Each function is [well-documented](http://familysearch.github.io/familysearch-javascript-sdk)
 and has an editable jsFiddle to demonstrate its functionality and allow you to experiment.
 
 * **Popup Authentication**
 
-In the browser, authentication is handled using a popup window. You do not need to create an OAuth redirect page.
+ In the browser, authentication is handled using a popup window. You do not need to create an OAuth redirect page.
 All you need to do is register a callback URI that shares the same hostname and port as your code.
 
 * **Automatic Authentication**
 
-If you make a call without first authenticating, the authentication process will be initiated first automatically.
+ If you make a call without first authenticating, the authentication process will be initiated first automatically.
 
 * **Token Storage**
 
-There is an option to store your access token in a session cookie.
+ There is an option to store your access token in a session cookie.
 
 * **Throttle Handling**
 
-Retry in the case of throttled responses is handled for you.
+ Retry in the case of throttled responses is handled for you.
 
 * **Cross-platform**
 
-Works both in the browser and in node. See the [examples](https://github.com/FamilySearch/familysearch-javascript-sdk/tree/master/examples).
+ Works both in the browser and in node. See the [examples](https://github.com/FamilySearch/familysearch-javascript-sdk/tree/master/examples).
 
 * **Object-oriented**
-
-SDK functions return objects, which have convenience functions to make getting or setting data easy.
+ SDK functions return objects, which have convenience functions to make getting or setting data easy.
 
 * **Consistent update API**
 
-Each object has save and delete functions to persist changes or delete the object respectively.
+ Each object has save and delete functions to persist changes or delete the object respectively.
 
 
 ## Contributing
