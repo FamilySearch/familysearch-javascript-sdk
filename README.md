@@ -9,7 +9,7 @@ This JavaScript SDK is a high-level JavaScript wrapper around the [FamilySearch 
 See the wiki for the following:
 
 * A [tutorial](https://github.com/FamilySearch/familysearch-javascript-sdk/wiki) to help get you started.
-* A **sample app** [github project](https://github.com/FamilySearch/javascript-sdk-sample-app) and [running version](https://github.com/FamilySearch/javascript-sdk-sample-app) that demonstrates how to fulfill common use cases.
+* A **sample app** [github project](https://github.com/FamilySearch/javascript-sdk-sample-app) and [running version](https://fs-javascript-sdk-sample-app.herokuapp.com/) that demonstrates how to fulfill common use cases.
 * [Documentation of the JavaScript SDK](http://familysearch.github.io/familysearch-javascript-sdk/) and other [FamilySearch API development guides](https://familysearch.org/developers/docs/guides).
 
 ## JavaScript SDK Installation
