@@ -6,12 +6,13 @@ A high-level JavaScript wrapper around the FamilySearch REST API.
 [![Build Status](https://travis-ci.org/FamilySearch/familysearch-javascript-sdk.png)](https://travis-ci.org/FamilySearch/familysearch-javascript-sdk)
 [![Coverage Status](https://coveralls.io/repos/FamilySearch/familysearch-javascript-sdk/badge.svg?branch=master)](https://coveralls.io/r/FamilySearch/familysearch-javascript-sdk?branch=master)
 
-See the [sample app wiki](https://github.com/FamilySearch/javascript-sdk-sample-app/wiki) for the following components of this SDK:
-* A tutorial to help get you started.
-* A [sample app](https://github.com/FamilySearch/javascript-sdk-sample-app) with code that demonstrates how to fulfill common use cases.
-* Documentation of the JavaScript SDK and other development guides.
+## [Sample App](https://github.com/FamilySearch/javascript-sdk-sample-app)
+The [sample app wiki](https://github.com/FamilySearch/javascript-sdk-sample-app/wiki) contains the following components:
+* A **tutorial** to help get you started.
+* A running version of the [sample app](https://github.com/FamilySearch/javascript-sdk-sample-app) that demonstrates how to fulfill common use cases.
+* **Documentation** of the JavaScript SDK and other development guides.
 
-## Installation
+## JavaScript SDK Installation
 
 The JavaScript SDK is available as a versioned JavaScript file, following the [semantic versioning](http://semver.org/) guidelines. It is installed on a CDN for ready access.
 
