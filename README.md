@@ -18,6 +18,19 @@ The JavaScript SDK is available as a versioned JavaScript file, following the [s
 
 If you want to install the JavaScript SDK on your own server, download and extract the familysearch-javascript-sdk file using [jsDelivr](http://www.jsdelivr.com/#!familysearch-javascript-sdk).
 
+To enable your app to access the JavaScript SDK, complete the following steps:
+
+1. Install [Node.js](https://nodejs.org/en/)
+2. On a system console from your app project folder, install the app's dependencies:
+
+   `npm install` (If you are using Bower, `bower install`)
+   
+3. Add the following line to your app setup code. (This line downloads the JavaScript SDK for your app to access.)
+
+  ```html
+    <script src="//cdn.jsdelivr.net/familysearch-javascript-sdk/2.1.0/familysearch-javascript-sdk.min.js"></script>
+  ```
+  **Note:** The tutorial or sample app are examples of how this is done. 
 
 ## JavaScript SDK Features
 
