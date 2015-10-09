@@ -1,16 +1,16 @@
 # GedcomX - JavaScript SDK
 
-A high-level JavaScript wrapper around the FamilySearch REST API.
-
 [![npm](https://img.shields.io/npm/v/familysearch-javascript-sdk.svg)]()
 [![Build Status](https://travis-ci.org/FamilySearch/familysearch-javascript-sdk.png)](https://travis-ci.org/FamilySearch/familysearch-javascript-sdk)
 [![Coverage Status](https://coveralls.io/repos/FamilySearch/familysearch-javascript-sdk/badge.svg?branch=master)](https://coveralls.io/r/FamilySearch/familysearch-javascript-sdk?branch=master)
 
-## [Sample App](https://github.com/FamilySearch/javascript-sdk-sample-app)
-The [sample app wiki](https://github.com/FamilySearch/javascript-sdk-sample-app/wiki) contains the following components:
-* A **tutorial** to help get you started.
-* A running version of the [sample app](https://github.com/FamilySearch/javascript-sdk-sample-app) that demonstrates how to fulfill common use cases.
-* **Documentation** of the JavaScript SDK and other development guides.
+This JavaScript SDK is a high-level JavaScript wrapper around the [FamilySearch REST API](https://familysearch.org/developers/docs/api/resources).
+
+See the [wiki]() for the following:
+
+* A [tutorial](https://github.com/FamilySearch/familysearch-javascript-sdk/wiki) to help get you started.
+* A **sample app** [github project](https://github.com/FamilySearch/javascript-sdk-sample-app) and [running version](https://github.com/FamilySearch/javascript-sdk-sample-app) that demonstrates how to fulfill common use cases.
+* [Documentation of the JavaScript SDK](http://familysearch.github.io/familysearch-javascript-sdk/) and other [FamilySearch API development guides](https://familysearch.org/developers/docs/guides).
 
 ## JavaScript SDK Installation
 
@@ -18,20 +18,6 @@ The JavaScript SDK is available as a versioned JavaScript file, following the [s
 
 If you want to install the JavaScript SDK on your own server, download and extract the familysearch-javascript-sdk file using [jsDelivr](http://www.jsdelivr.com/#!familysearch-javascript-sdk).
 
-To enable your app to access the JavaScript SDK, complete the following steps:
-
-1. Install [Node.js](https://nodejs.org/en/)
-2. On a system console from your app project folder, install the app's dependencies:
-
-   `npm install` (If you are using Bower, `bower install`)
-   
-3. Add the following line to your app setup code.
-
-  ```html
-    <script src="//cdn.jsdelivr.net/familysearch-javascript-sdk/2.1.0/familysearch-javascript-sdk.min.js"></script>
-  ```
-
-  This line downloads the JavaScript SDK for your app to access. 
 
 ## JavaScript SDK Features
 
