@@ -100,7 +100,7 @@ FS.prototype.getMultiAgent = function(urls, params) {
  * @description
  * Get the tree person that represents the current user.
  *
- * - `getPerson()` - get the {@link user.types:constructor.Person Person} from the response
+ * - `getPerson()` - get the {@link person.types:constructor.Person Person} from the response
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Current_Tree_Person_resource FamilySearch API Docs}
  *
