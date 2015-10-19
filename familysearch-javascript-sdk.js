@@ -5863,8 +5863,8 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    *
    *
    * @param {String} pid id of the person or full URL of the person changes endpoint
-   * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
-   * @return {Object} promise for the responseturn {Object} promise for the {@link changeHistory.functions:getPersonChanges getPersonChanges} response
+   * @param {Object=} params `count` is the number of change entries to return, `from` to return changes following this id
+   * @return {Object} promise for the {@link changeHistory.functions:getPersonChanges getPersonChanges} response
    */
   getChanges: function(params) {
     var self = this;
