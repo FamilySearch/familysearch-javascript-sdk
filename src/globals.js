@@ -16,8 +16,8 @@ module.exports = {
   // constants for now, but could become options in the future
   accessTokenCookie: 'FS_ACCESS_TOKEN',
   authCodePollDelay: 50,
-  defaultThrottleRetryAfter: 500,
-  maxHttpRequestRetries: 2,
+  defaultThrottleRetryAfter: 1000,
+  maxHttpRequestRetries: 4,
   maxAccessTokenInactivityTime: 3540000, // 59 minutes to be safe
   maxAccessTokenCreationTime:  86340000, // 23 hours 59 minutes to be safe
   apiServer: {

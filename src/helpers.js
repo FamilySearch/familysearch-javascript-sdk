@@ -65,8 +65,8 @@ Helpers.prototype.appendAccessToken = function(url) {
  * log to console only if debugging is turned on
  */
 Helpers.prototype.log = function() {
-  if (this.settings.debug) {
-    console.log.apply(null, arguments);
+  if (this.settings.debug && console.log) {
+    console.log.apply(console, arguments);
   }
 };
 
