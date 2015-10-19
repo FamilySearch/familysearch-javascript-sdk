@@ -7739,8 +7739,8 @@ module.exports = {
   // constants for now, but could become options in the future
   accessTokenCookie: 'FS_ACCESS_TOKEN',
   authCodePollDelay: 50,
-  defaultThrottleRetryAfter: 500,
-  maxHttpRequestRetries: 2,
+  defaultThrottleRetryAfter: 1000,
+  maxHttpRequestRetries: 4,
   maxAccessTokenInactivityTime: 3540000, // 59 minutes to be safe
   maxAccessTokenCreationTime:  86340000, // 23 hours 59 minutes to be safe
   apiServer: {
@@ -7826,8 +7826,8 @@ Helpers.prototype.appendAccessToken = function(url) {
  * log to console only if debugging is turned on
  */
 Helpers.prototype.log = function() {
-  if (this.settings.debug) {
-    console.log.apply(null, arguments);
+  if (this.settings.debug && console.log) {
+    console.log.apply(console, arguments);
   }
 };
 
@@ -11517,7 +11517,7 @@ Plumbing.prototype.http = function(method, url, headers, data, retries) {
   
   return accessTokenPromise.then(function() {
     
-    // append the access token as a query parameter to avoid cors pre-flight
+    // Append the access token as a query parameter to avoid cors pre-flight
     // this is detrimental to browser caching across sessions, which seems less bad than cors pre-flight requests
     var accessTokenName = self.helpers.isAuthoritiesServerUrl(absoluteUrl) ? 'sessionId' : 'access_token';
     if (self.settings.accessToken && absoluteUrl.indexOf(accessTokenName+'=') === -1) {
@@ -11526,7 +11526,7 @@ Plumbing.prototype.http = function(method, url, headers, data, retries) {
       absoluteUrl = self.helpers.appendQueryParameters(absoluteUrl, accessTokenParam);
     }
 
-    // default retries
+    // Default retries
     if (retries == null) { // also catches undefined
       retries = self.settings.maxHttpRequestRetries;
     }
@@ -11536,47 +11536,11 @@ Plumbing.prototype.http = function(method, url, headers, data, retries) {
       headers['X-FS-Feature-Tag'] = self.settings.pendingModifications;
     }
     
+    // Prepare body
     var body = self.transformData(data, headers['Content-Type']);
     
-    // Make the HTTP request
-    return fetch(absoluteUrl, {
-      method: method,
-      headers: headers,
-      body: body
-    })
-    
-    // Erase access token when a 401 Unauthenticated response is received
-    .then(function(response){
-      if(response.status === 401){
-        self.helpers.eraseAccessToken();
-      }
-      return response;
-    })
-    
-    // Handle throttling
-    .then(function(response){
-      if ((method === 'GET' && response.status >= 500 && retries > 0) || response.status === 429) {
-        //var retryAfterHeader = response.headers.get('Retry-After');
-        //var retryAfter = retryAfterHeader ? parseInt(retryAfterHeader,10) : self.settings.defaultThrottleRetryAfter;
-        return self.http(method, url, headers, data, retries-1);
-      } else {
-        return response;
-      }
-    })
-    
-    // Catch all other errors
-    .then(function(response){
-      if (response.status >= 200 && response.status < 400) {
-        return response;
-      } else {
-        if(self.settings.debug){
-          self.helpers.log('http failure', response.status, retries);
-        }
-        var error = new Error(response.statusText);
-        error.response = response;
-        throw error;
-      }
-    })
+    // HTTP request and error handling
+    return self._http(method, absoluteUrl, headers, body, retries)
     
     // Process the response body and make available at the `body` property
     // of the response. If JSON parsing fails then we have bad data or no data.
@@ -11588,16 +11552,6 @@ Plumbing.prototype.http = function(method, url, headers, data, retries) {
       }, function(){
         return response;
       });
-    })
-    
-    // Processing time
-    .then(function(response){
-      self.helpers.refreshAccessToken();
-      var processingTime = response.headers.get('X-PROCESSING-TIME');
-      if (processingTime) {
-        self.totalProcessingTime += parseInt(processingTime,10);
-      }
-      return response;
     })
     
     // Return a custom response object
@@ -11625,6 +11579,65 @@ Plumbing.prototype.http = function(method, url, headers, data, retries) {
         }
       };
     });
+  });
+};
+
+/**
+ * Helper and internal HTTP function. Enables recursive calling required for
+ * handling throttling.
+ */
+Plumbing.prototype._http = function(method, url, headers, body, retries){
+  var self = this;
+  
+  // Make the HTTP request
+  return fetch(url, {
+    method: method,
+    headers: headers,
+    body: body
+  })
+  
+  // Erase access token when a 401 Unauthenticated response is received
+  .then(function(response){
+    if(response.status === 401){
+      self.helpers.eraseAccessToken();
+    }
+    return response;
+  })
+  
+  // Handle throttling and other random server failures. If the Retry-After
+  // header exists then honor it's value (it always exists for throttled
+  // responses). The Retry-After value is in seconds while the setTimeout
+  // parameter is in ms so we multiply the header value by 1000.
+  .then(function(response){
+    if (method === 'GET' && retries > 0 && (response.status >= 500 || response.status === 429)) {
+      var retryAfterHeader = response.headers.get('Retry-After');
+      var retryAfter = retryAfterHeader ? parseInt(retryAfterHeader, 10) * 1000 : self.settings.defaultThrottleRetryAfter;
+      return new Promise(function(resolve, reject){
+        setTimeout(function(){
+          self._http(method, url, headers, body, retries-1).then(function(response){
+            resolve(response);
+          }, function(error){
+            reject(error);
+          });
+        }, retryAfter);
+      });
+    } else {
+      return response;
+    }
+  })
+  
+  // Catch all other errors
+  .then(function(response){
+    if (response.status >= 200 && response.status < 400) {
+      return response;
+    } else {
+      if(self.settings.debug){
+        self.helpers.log('http failure', response.status, retries);
+      }
+      var error = new Error(response.statusText);
+      error.response = response;
+      throw error;
+    }
   });
 };
 
