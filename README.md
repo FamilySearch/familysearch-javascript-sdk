@@ -30,7 +30,7 @@ To enable your app to access the JavaScript SDK, complete the following steps:
   ```html
     <script src="//cdn.jsdelivr.net/familysearch-javascript-sdk/2.1.0/familysearch-javascript-sdk.min.js"></script>
   ```
-  **Note:** See the tutorial or sample app as examples of how this is done. 
+  **Note:** See the sample app as an example of how this is done. 
 
 ## JavaScript SDK Features
 
