@@ -1,6 +1,7 @@
 language: node_js
 node_js:
 - '0.10'
+- '0.12'
 sudo: false
 env:
   global:
@@ -11,8 +12,8 @@ cache:
 before_script:
 - npm install -g grunt-cli
 script:
-- if [[ $TRAVIS_PULL_REQUEST == false && $TRAVIS_BRANCH == master ]]; then npm run
-  travis; else npm test; fi;
+- if [[ $TRAVIS_PULL_REQUEST == false && $TRAVIS_BRANCH == master && $TRAVIS_NODE_VERSION == '0.10']]; 
+  then npm run travis; else npm test; fi;
 notifications:
   email:
     on_success: never
