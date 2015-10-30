@@ -14,27 +14,23 @@ See the wiki for the following:
 * A **sample app** [github project](https://github.com/FamilySearch/javascript-sdk-sample-app) and [running version](https://fs-javascript-sdk-sample-app.herokuapp.com/) that demonstrates how to fulfill common use cases.
 * [Documentation of the JavaScript SDK](http://familysearch.github.io/familysearch-javascript-sdk/) and other [FamilySearch API development guides](https://familysearch.org/developers/docs/guides).
 
-## JavaScript SDK Installation
+## Installation
 
-The JavaScript SDK is available as a versioned JavaScript file, following the [semantic versioning](http://semver.org/) guidelines. It is installed on a CDN for ready access.
+### Node.js
 
-If you want to install the JavaScript SDK on your own server, download and extract the familysearch-javascript-sdk file using [jsDelivr](http://www.jsdelivr.com/#!familysearch-javascript-sdk).
+Node versions 0.10 and 0.12 are officially supported.
 
-To enable your app to access the JavaScript SDK, complete the following steps:
+`npm install familysearch-javascript-sdk`
 
-1. Install [Node.js](https://nodejs.org/en/)
-2. On a system console from your app project folder, install the app's dependencies:
+### Browser via a CDN
 
-   `npm install`
-   
-3. Add the following line to your app setup code. (This line downloads the JavaScript SDK for your app to access.)
+The SDK is available for use in the browser via [jsDelivr](http://www.jsdelivr.com/#!familysearch-javascript-sdk).
 
-  ```html
-    <script src="//cdn.jsdelivr.net/familysearch-javascript-sdk/2.1.0/familysearch-javascript-sdk.min.js"></script>
-  ```
-  **Note:** See the sample app as an example of how this is done. 
+```html
+<script src="//cdn.jsdelivr.net/familysearch-javascript-sdk/2.1.0/familysearch-javascript-sdk.min.js"></script>
+```
 
-## JavaScript SDK Features
+## Features
 
 * **Wrapped REST API Calls**
 
