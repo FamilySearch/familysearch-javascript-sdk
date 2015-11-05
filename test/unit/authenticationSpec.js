@@ -21,9 +21,16 @@ describe('An access token', function() {
       FS.getAccessTokenForMobile('username', 'password').then(function(accessToken){
         expect(accessToken).toBe('2YoTnFdFEjr1zCsicMWpAA');
         done();
-      }).catch(function(e){
-        console.error(e.stack);
       });
+    });
+  });
+  
+  it('logout', function(done){
+    FS.invalidateAccessToken().then(function(response){
+      expect(response.getStatusCode()).toBe(204);
+      done();
+    }).catch(function(e){
+      console.error(e.stack);
     });
   });
 });

@@ -23,7 +23,7 @@
     "id" : "FSFT",
     "links" : {
       "person" : {
-        "template" : "https://sandbox.familysearch.org/platform/tree/persons/{pid}{?access_token}",
+        "template" : "https://sandbox.familysearch.org/platform/tree/persons/{pid}{?skipDateNormalization,access_token}",
         "type" : "application/json,application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml,application/xml,text/html",
         "accept" : "application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml",
         "allow" : "HEAD,GET,POST,DELETE",
@@ -35,6 +35,13 @@
         "accept" : "*/*",
         "allow" : "GET,POST,DELETE",
         "title" : "Person With Relationships"
+      },
+      "descendancy-query" : {
+        "template" : "https://sandbox.familysearch.org/platform/tree/descendancy{?spouse,personDetails,generations,marriageDetails,person,access_token}",
+        "type" : "application/json,application/x-fs-v1+json,application/x-fs-v1+xml,application/x-gedcomx-v1+json,application/x-gedcomx-v1+xml,application/xml,text/html",
+        "accept" : "*/*",
+        "allow" : "GET",
+        "title" : "Descendancy"
       },
       "self" : {
         "href" : "https://sandbox.familysearch.org/platform/collections/tree"
@@ -81,6 +88,9 @@
       },
       "http://oauth.net/core/2.0/endpoint/token" : {
         "href" : "https://integration.familysearch.org/cis-web/oauth2/v3/token"
+      },
+      "logout" : {
+        "href" : "https://sandbox.familysearch.org/platform/logout"
       },
       "current-user-history" : {
         "href" : "https://sandbox.familysearch.org/platform/users/current/history"

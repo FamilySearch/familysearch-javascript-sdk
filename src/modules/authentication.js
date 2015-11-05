@@ -212,10 +212,13 @@ FS.prototype.hasAccessToken = function() {
  * @return {Object} promise that is resolved once the access token has been invalidated
  */
 FS.prototype.invalidateAccessToken = function() {
-  var self = this;
+  var self = this,
+      accessToken = self.settings.accessToken;
   self.helpers.eraseAccessToken(true);
-  return self.plumbing.getCollectionUrl('FSFT', 'http://oauth.net/core/2.0/endpoint/token').then(function(url) {
-    return self.plumbing.del(url);
+  return self.plumbing.getCollectionUrl('FSFT', 'logout').then(function(url) {
+    return self.plumbing.post(self.helpers.appendQueryParameters(url, {
+      'access_token': accessToken
+    }));
   });
 };
 
