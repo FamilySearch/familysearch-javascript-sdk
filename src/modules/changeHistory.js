@@ -25,11 +25,11 @@ FS.prototype._changeHistoryResponseMapper = function(response){
 
 /**
  * @ngdoc function
- * @name changeHistory.functions:getPersonChanges
+ * @name changeHistory.functions:getChanges
 
  *
  * @description
- * Get change history for a person
+ * Get change history for a person, couple, or child and parents.
  * The response includes the following convenience function
  *
  * - `getChanges()` - get the array of {@link changeHistory.types:constructor.Change Changes} from the response
@@ -39,7 +39,7 @@ FS.prototype._changeHistoryResponseMapper = function(response){
  * {@link https://familysearch.org/developers/docs/api/tree/Couple_Relationship_Change_History_resource Couple Changes API Docs}
  *
  *
- * @param {String} url full URL of the person changes. child and parent changes, or couple changes endpoint
+ * @param {String} url full URL of the person changes, child and parent changes, or couple changes endpoint
  * @param {Object=} params: `count` is the number of change entries to return, `from` to return changes following this id
  * @return {Object} promise for the response
  */
