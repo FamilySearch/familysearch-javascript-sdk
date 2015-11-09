@@ -534,7 +534,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * - `getCoupleRelationships()` - an array of {@link spouses.types:constructor.Couple Couple} relationships for parents
    * - `getPerson(pid)` - a {@link person.types:constructor.Person Person} for any person id in a relationship
    *
-   * {@link https://familysearch.org/developers/docs/api/tree/Parents_of_a_person_resource FamilySearch API Docs}
+   * {@link https://familysearch.org/developers/docs/api/tree/Parents_of_a_Person_resource FamilySearch API Docs}
    *
    *
    * @return {Object} promise for the response
@@ -561,7 +561,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * - `getChildAndParentsRelationships()` - an array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationships
    * - `getPerson(pid)` - a {@link person.types:constructor.Person Person} for any person id in a relationship
    *
-   * {@link https://familysearch.org/developers/docs/api/tree/Children_of_a_person_resource FamilySearch API Docs}
+   * {@link https://familysearch.org/developers/docs/api/tree/Children_of_a_Person_resource FamilySearch API Docs}
    *
    *
    * @return {Object} promise for the response

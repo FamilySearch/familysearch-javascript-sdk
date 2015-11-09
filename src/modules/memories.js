@@ -31,7 +31,7 @@ FS.prototype._memoriesResponseMapper = function(response){
  *
  * - `getMemories()` - get the array of {@link memories.types:constructor.Memory Memories} from the response
  *
- * {@link https://familysearch.org/developers/docs/api/tree/Person_Memories_Query_resource FamilySearch API Docs}
+ * {@link https://familysearch.org/developers/docs/api/tree/Person_Memories_resource FamilySearch API Docs}
  *
  *
  * @param {string} url full URL of the person-memories-query endpoint
@@ -60,7 +60,7 @@ FS.prototype.getPersonMemoriesQuery = function(url, params) {
  *
  * - `getMemories()` - get the array of {@link memories.types:constructor.Memory Memories} from the response
  *
- * {@link https://familysearch.org/developers/docs/api/memories/User_Memories_Query_resource FamilySearch API Docs}
+ * {@link https://familysearch.org/developers/docs/api/memories/User_Memories_resource FamilySearch API Docs}
  *
  *
  * @param {Object=} params `count` maximum number to return - defaults to 25, `start` defaults to 0

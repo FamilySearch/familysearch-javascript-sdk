@@ -9,7 +9,7 @@ var FS = require('./../FamilySearch'),
  *
  * Collection
  *
- * {@link https://familysearch.org/developers/docs/api/sources/User-Defined_Collections_resource FamilySearch API Docs}
+ * {@link https://familysearch.org/developers/docs/api/sources/Source_Folder_resource FamilySearch API Docs}
  *
  * @param {FamilySearch} client FamilySearch sdk client
  * @param {Object} data raw object data
