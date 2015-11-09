@@ -158,11 +158,11 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "changeHistory.functions:getPersonChanges",
-      "shortName": "getPersonChanges",
+      "id": "changeHistory.functions:getChanges",
+      "shortName": "getChanges",
       "type": "function",
       "moduleName": "changeHistory",
-      "shortDescription": "Get change history for a person",
+      "shortDescription": "Get change history for a person, couple, or child and parents.",
       "keywords": "api array change changehistory changes child convenience count couple docs endpoint entries full function functions getchanges history https includes number org params parent parents person promise response return types url"
     },
     {
