@@ -190,8 +190,8 @@ FS.prototype.getSourceRefs = function(url) {
 
  *
  * @description
- * Get source references and descriptions for a person
- * The response includes the following convenience functions
+ * Get source references and descriptions for a person, couple, or child and parents.
+ * The response includes the following convenience functions:
  *
  * - `getSourceRefs()` - get an array of {@link sources.types:constructor.SourceRef SourceRefs} from the response
  * - `getSourceDescriptions()` get an array of {@link sources.types:constructor.SourceDescription SourceDescriptions} from the response
@@ -203,7 +203,7 @@ FS.prototype.getSourceRefs = function(url) {
  * {@link https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Source_References_resource Child and Parents Sources Query API Docs}
  *
  *
- * @param {String} url full URL of the person-sources-query endpoint
+ * @param {String} url full URL of the sources-query endpoint
  * @return {Object} promise for the response
  */
 FS.prototype.getSourcesQuery = function(url) {
