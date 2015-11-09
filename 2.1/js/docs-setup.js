@@ -1287,8 +1287,8 @@ NG_DOCS={
       "shortName": "getSourcesQuery",
       "type": "function",
       "moduleName": "sources",
-      "shortDescription": "Get source references and descriptions for a person",
-      "keywords": "api array child convenience couple description descriptions docs endpoint full function functions getsourcedescription getsourcedescriptions getsourcerefs https includes org parents person person-sources-query promise query references response source sourcedescription sourcedescriptions sourceref sourcerefs sources types url"
+      "shortDescription": "Get source references and descriptions for a person, couple, or child and parents.",
+      "keywords": "api array child convenience couple description descriptions docs endpoint full function functions getsourcedescription getsourcedescriptions getsourcerefs https includes org parents person promise query references response source sourcedescription sourcedescriptions sourceref sourcerefs sources sources-query types url"
     },
     {
       "section": "api",
