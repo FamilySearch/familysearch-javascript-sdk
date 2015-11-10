@@ -10843,7 +10843,6 @@ var FS = require('./../FamilySearch'),
 /**
  * @ngdoc function
  * @name sources.functions:getSourceDescription
-
  *
  * @description
  * Get information about a source
@@ -10852,7 +10851,6 @@ var FS = require('./../FamilySearch'),
  * - `getSourceDescription()` - get the {@link sources.types:constructor.SourceDescription SourceDescription} from the response
  *
  * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
- *
  *
  * @param {string} url full URL of the source description
  * @return {Object} promise for the response
@@ -10873,13 +10871,11 @@ FS.prototype.getSourceDescription = function(url) {
 /**
  * @ngdoc function
  * @name sources.functions:getMultiSourceDescription
-
  *
  * @description
  * Get multiple source descriptions at once by requesting them in parallel
  *
  * {@link https://familysearch.org/developers/docs/api/sources/Source_Description_resource FamilySearch API Docs}
- *
  *
  * @param {string[]} urls full URLs of the source descriptions
  * @return {Object} promise that is fulfilled when all of the source descriptions have been read,
@@ -10904,10 +10900,10 @@ FS.prototype.getMultiSourceDescription = function(urls) {
 /**
  * @ngdoc function
  * @name sources.functions:getSourceRefsQuery
-
  *
  * @description
- * Get the people, couples, and child-and-parents relationships referencing a source
+ * Get the people, couples, and child-and-parents relationships referencing a source description.
+ * To get attachments for a URL, use {@link sources.functions:getSourceAttachments getSourceAttachments}
  * The response includes the following convenience functions
  *
  * - `getPersonSourceRefs()` - get an array of person {@link sources.types:constructor.SourceRef SourceRefs} from the response
@@ -10915,14 +10911,14 @@ FS.prototype.getMultiSourceDescription = function(urls) {
  * - `getChildAndParentsSourceRefs()` - get an array of child and parent relationship {@link sources.types:constructor.SourceRef SourceRefs} from the response
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Source_References_Query_resource FamilySearch API Docs}
+ * This method uses the `description` parameter of the Source References Query resource.
  *
- *
- * @param {String} url url of the source description
+ * @param {String} url url of the source references query resource of a source description
  * @return {Object} promise for the response
  */
-FS.prototype.getSourceRefsQuery = function(url) {
+FS.prototype.getSourceRefsQuery = function(url, params) {
   var self = this;
-  return self.plumbing.get(url, null, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
+  return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
     var data = maybe(response.getData());
     utils.forEach(['persons','relationships','childAndParentsRelationships'], function(type){
       data[type] = utils.map(data[type], function(group){
@@ -10946,6 +10942,53 @@ FS.prototype.getSourceRefsQuery = function(url) {
       getChildAndParentsSourceRefs: function() {
         return utils.flatMap(maybe(data.childAndParentsRelationships), function(childAndParents) {
           return childAndParents.sources;
+        });
+      }
+    });
+  });
+};
+
+/**
+ * @ngdoc function
+ * @name sources.functions:getSourceAttachments
+ *
+ * @description
+ * Get the people, couples, and child-and-parents relationships that have the
+ * given URL attached as a source. Use {@link sources.functions:getSourceRefsQuery getSourceRefsQuery}
+ * to get attachments for an existing source description.
+ * 
+ * The response includes the following convenience functions
+ *
+ * - `getPersonSourceRefs()` - get an array of person {@link sources.types:constructor.SourceRef SourceRefs} from the response
+ * - `getCoupleSourceRefs()` - get an array of couple relationship {@link sources.types:constructor.SourceRef SourceRefs} from the response
+ * - `getChildAndParentsSourceRefs()` - get an array of child and parent relationship {@link sources.types:constructor.SourceRef SourceRefs} from the response
+ * - `getSourceDescriptions()` get an array of {@link sources.types:constructor.SourceDescription SourceDescriptions} from the response
+ * - `getSourceDescription(id)` get the {@link sources.types:constructor.SourceDescription SourceDescription}
+ * with the specified source description id from the response
+ * 
+ * {@link https://familysearch.org/developers/docs/api/tree/Source_References_Query_resource FamilySearch API Docs}.
+ * This method uses the `source` parameter of the Source References Query resource.
+ *
+ * @param {String} url url of the source references query resource of a source description
+ * @return {Object} promise for the response
+ */
+FS.prototype.getSourceAttachments = function(url){
+  // TODO: update when the link in the tree collection is fixed
+  // https://groups.google.com/a/ldsmail.net/d/msg/FSDN/fQaQWkRUQ2o/bIG54_fzBwAJ
+  // Last checked 10/10/2015
+  var self = this;
+  return this.getSourceRefsQuery('/platform/tree/source-references', { source: url }).then(function(response){
+    var data = maybe(response.getData());
+    utils.forEach(data.sourceDescriptions, function(source, index, obj){
+      obj[index] = self.createSourceDescription(source);
+    });
+    return utils.extend(response, {
+      getSourceDescriptions: function(){
+        return data.sourceDescriptions || [];
+      },
+      getSourceDescription: function(id) {
+        return utils.find(data.sourceDescriptions, function(o){
+          return o.getId() === id;
         });
       }
     });
@@ -10989,7 +11032,6 @@ FS.prototype._getSourcesResponseMapper = function(response, root, includeDescrip
 /**
  * @ngdoc function
  * @name sources.functions:getSourceRefs
-
  *
  * @description
  * Get the source references for a person
@@ -11016,7 +11058,6 @@ FS.prototype.getSourceRefs = function(url) {
 /**
  * @ngdoc function
  * @name sources.functions:getSourcesQuery
-
  *
  * @description
  * Get source references and descriptions for a person, couple, or child and parents.
@@ -11046,7 +11087,6 @@ FS.prototype.getSourcesQuery = function(url) {
 /**
  * @ngdoc function
  * @name sources.functions:deleteSourceDescription
-
  *
  * @description
  * Delete the specified source description as well as all source references that refer to it
@@ -11068,7 +11108,6 @@ FS.prototype.deleteSourceDescription = function(url, changeMessage) {
 /**
  * @ngdoc function
  * @name sources.functions:deleteSourceRef
-
  *
  * @description
  * Delete the specified source reference

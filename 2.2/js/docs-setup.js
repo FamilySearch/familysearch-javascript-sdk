@@ -1256,6 +1256,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "sources.functions:getSourceAttachments",
+      "shortName": "getSourceAttachments",
+      "type": "function",
+      "moduleName": "sources",
+      "shortDescription": "Get the people, couples, and child-and-parents relationships that have the",
+      "keywords": "api array attached attachments child child-and-parents convenience couple couples description docs existing familysearch function functions getchildandparentssourcerefs getcouplesourcerefs getpersonsourcerefs getsourcedescription getsourcedescriptions getsourcerefsquery https includes method org parameter parent people person promise query references relationship relationships resource response source sourcedescription sourcedescriptions sourceref sourcerefs sources types url"
+    },
+    {
+      "section": "api",
       "id": "sources.functions:getSourceDescription",
       "shortName": "getSourceDescription",
       "type": "function",
@@ -1278,8 +1287,8 @@ NG_DOCS={
       "shortName": "getSourceRefsQuery",
       "type": "function",
       "moduleName": "sources",
-      "shortDescription": "Get the people, couples, and child-and-parents relationships referencing a source",
-      "keywords": "api array child child-and-parents convenience couple couples description docs familysearch function functions getchildandparentssourcerefs getcouplesourcerefs getpersonsourcerefs https includes org parent people person promise referencing relationship relationships response source sourceref sourcerefs sources types url"
+      "shortDescription": "Get the people, couples, and child-and-parents relationships referencing a source description.",
+      "keywords": "api array attachments child child-and-parents convenience couple couples description docs familysearch function functions getchildandparentssourcerefs getcouplesourcerefs getpersonsourcerefs getsourceattachments https includes method org parameter parent people person promise query references referencing relationship relationships resource response source sourceref sourcerefs sources types url"
     },
     {
       "section": "api",
