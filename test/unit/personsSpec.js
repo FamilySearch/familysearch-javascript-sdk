@@ -568,5 +568,41 @@ describe('A person', function() {
       done();
     });
   });
+  
+  it('source is properly created and attached by addSource', function(done){
+    var person = FS.createPerson({
+      id: 'PPPP-PPP',
+      links: {
+        'source-references': {
+          href: 'https://familysearch.org/platform/tree/persons/PPPP-PPP/source-references'
+        }
+      }
+    });
+    person.addSource({
+      about: 'https://familysearch.org/pal:/MM9.1.1/M9PJ-2JJ',
+      citation: '"United States Census, 1900." database and digital images, FamilySearch (https://familysearch.org/)',
+      title: '1900 US Census, Ethel Hollivet',
+      text: 'Ethel Hollivet (line 75) with husband Albert Hollivet (line 74)'
+    }, 'This is the change message', ['http://gedcomx.org/Name']).then(function(response){
+      var request = response.getRequest();
+      //noinspection JSUnresolvedFunction
+      expect(request.body).toEqualJson({
+        persons: [{
+          sources: [{
+            tags: [{
+              resource: 'http://gedcomx.org/Name'
+            }],
+            attribution: {
+              changeMessage: 'This is the change message'
+            },
+            description: 'https://familysearch.org/platform/sources/descriptions/MMMM-MMM'
+          }]
+        }]
+      });
+      expect(response.getStatusCode()).toBe(201);
+      expect(response.getHeader('X-entity-id')).toBe('SRSR-R01');
+      done();
+    });
+  });
 
 });

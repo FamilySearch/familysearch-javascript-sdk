@@ -318,6 +318,25 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
     //noinspection JSValidateTypes
     return this;
   },
+  
+  /**
+   * @ngdoc function
+   * @name spouses.types:constructor.Couple#addSource
+   * @methodOf spouses.types:constructor.Couple
+   * 
+   * @description
+   * Attach a source to this couple. This will create a source description (if
+   * it doesn't already exist) and a source reference for you.
+   * 
+   * @param {Object} sourceDescription Data for the source description or a
+   * {@link sources.types:constructor.SourceDescription SourceDescription} object.
+   * @param {String=} changeMessage change message
+   * @param {String[]=} tags an array of tags; e.g., http://gedcomx.org/Name or http://gedcomx.org/Birth
+   * @return {Object} promise for the {@link sources.types:constructor.SourceRef#save SourceRef.save()} response
+   */
+  addSource: function(sourceDescription, changeMessage, tags){
+    return this.client._createAndAttachSource(this, sourceDescription, changeMessage, tags);
+  },
 
   /**
    * @ngdoc function

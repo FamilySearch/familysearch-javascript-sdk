@@ -295,3 +295,39 @@ FS.prototype.deleteSourceDescription = function(url, changeMessage) {
 FS.prototype.deleteSourceRef = function(url, changeMessage) {
   return this.plumbing.del(url, changeMessage ? {'X-Reason': changeMessage} : {});
 };
+
+/**
+ * This is a helper function shared by Person, Couple, and ChildAndParents.
+ * The method creates and attaches a source.
+ */
+FS.prototype._createAndAttachSource = function(obj, sourceDescription, changeMessage, tags){
+  var client = this;
+  
+  if(!(sourceDescription instanceof FS.SourceDescription)){
+    sourceDescription = client.createSourceDescription(sourceDescription);
+  }
+  
+  // Has the source description already been saved?
+  var sourceDescriptionPromise = new Promise(function(resolve, reject){
+    if(sourceDescription.getId()){
+      resolve(sourceDescription);
+    } else {
+      sourceDescription.save().then(function(){
+        resolve(sourceDescription);
+      }, function(e){
+        reject(e);
+      });
+    }
+  });
+  
+  // Create the source refererence after the source description is saved
+  return sourceDescriptionPromise.then(function(sourceDescription){
+    var sourceRef = client.createSourceRef({
+      sourceDescription: sourceDescription
+    });
+    if(tags){
+      sourceRef.setTags(tags);
+    }
+    return sourceRef.save(obj.getLink('source-references').href, changeMessage);
+  });
+};

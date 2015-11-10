@@ -872,12 +872,30 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
     }
     return this;
   },
+  
+  /**
+   * @ngdoc function
+   * @name person.types:constructor.Person#addSource
+   * @methodOf person.types:constructor.Person
+   * 
+   * @description
+   * Attach a source to this person. This will create a source description (if
+   * it doesn't already exist) and a source reference for you.
+   * 
+   * @param {Object} sourceDescription Data for the source description or a
+   * {@link sources.types:constructor.SourceDescription SourceDescription} object.
+   * @param {String=} changeMessage change message
+   * @param {String[]=} tags an array of tags; e.g., http://gedcomx.org/Name or http://gedcomx.org/Birth
+   * @return {Object} promise for the {@link sources.types:constructor.SourceRef#save SourceRef.save()} response
+   */
+  addSource: function(sourceDescription, changeMessage, tags){
+    return this.client._createAndAttachSource(this, sourceDescription, changeMessage, tags);
+  },
 
   /**
    * @ngdoc function
    * @name person.types:constructor.Person#save
    * @methodOf person.types:constructor.Person
-
    * @description
    * Create a new person (if this person does not have an id) or update the existing person.
    * Multiple HTTP requests may be needed when conslusions are deleted. Therefore
