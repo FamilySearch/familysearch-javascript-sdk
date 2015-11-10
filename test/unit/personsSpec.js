@@ -191,6 +191,25 @@ describe('A person', function() {
       });
     });
   });
+  
+  it('spouse relationships are returned from getSpouseRelationships', function(done){
+    var person = FS.createPerson({
+      id: 'KJ8T-MP1',
+      links: {
+        'spouse-relationships': {
+          href: 'https://sandbox.familysearch.org/platform/tree/persons/KJ8T-MP1/spouse-relationships'
+        }
+      }
+    });
+    person.getSpouseRelationships().then(function(response){
+      var relationships = response.getCoupleRelationships();
+      expect(relationships.length).toBe(1);
+      expect(relationships[0].getWifeId()).toBe('KJ8T-FP2');
+      done();
+    }).catch(function(e){
+      console.error(e.stack);
+    });
+  });
 
   it('parent relationships are returned from getParents', function(done) {
     FS.getPerson('KW31-H9P').then(function(personResponse){
@@ -215,6 +234,24 @@ describe('A person', function() {
     });
   });
 
+  it('parent relationships are returned from getParentRelationships', function(done){
+    var person = FS.createPerson({
+      id: 'PPP0-PP3',
+      links: {
+        'parent-relationships': {
+          href: 'https://sandbox.familysearch.org/platform/tree/persons/PPP0-PP3/parent-relationships'
+        }
+      }
+    });
+    person.getParentRelationships().then(function(response){
+      var relationships = response.getChildAndParentsRelationships();
+      expect(relationships.length).toBe(2);
+      expect(relationships[0].getFatherId()).toBe('PPP0-MP1');
+      expect(relationships[0].getMotherId()).toBe('PPP0-FP2');
+      done();
+    });
+  });
+
   it('child relationships are returned from getChildren', function(done) {
     FS.getPerson('PPP0-MP1').then(function(personResponse) {
       personResponse.getPerson().getChildren().then(function(childrenResponse){
@@ -230,6 +267,24 @@ describe('A person', function() {
         expect(childrenResponse.getPerson(rel.getChildId()).getPreferredName().getFullText()).toBe('Anastasia Aleksandrova');
         done();
       });
+    });
+  });
+  
+  it('child relationships are returned from getChildRelationships', function(done){
+    var person = FS.createPerson({
+      id: 'PPP0-MP1',
+      links: {
+        'child-relationships': {
+          href: 'https://sandbox.familysearch.org/platform/tree/persons/PPP0-MP1/child-relationships'
+        }
+      }
+    });
+    person.getChildRelationships().then(function(response){
+      var relationships = response.getChildAndParentsRelationships();
+      expect(relationships.length).toBe(2);
+      expect(relationships[0].getFatherId()).toBe('PPP0-MP1');
+      expect(relationships[0].getChildId()).toBe('PPP0-PP3');
+      done();
     });
   });
 

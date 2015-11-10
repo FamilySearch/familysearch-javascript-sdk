@@ -495,11 +495,12 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name person.types:constructor.Person#getSpouses
    * @methodOf person.types:constructor.Person
-
-   * 
+   *
    * @description
-   * Get the relationships to a person's spouses.
-   * The response includes the following convenience functions
+   * Get the relationships to a person's spouses. The response may include child and parents
+   * relationships because two people can be the parent of a child without an explicit
+   * couple relationship; this method returns those implied relationships.
+   * The response includes the following convenience functions:
    *
    * - `getCoupleRelationships()` - an array of {@link spouses.types:constructor.Couple Couple} relationships
    * - `getChildAndParentsRelationships()` - an array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents}
@@ -519,15 +520,45 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
       return self.client._personsAndRelationshipsMapper(response);
     });
   },
+  
+  /**
+   * @ngdoc function
+   * @name person.types:constructor.Person#getSpouseRelationships
+   * @methodOf person.types:constructor.Person
+   * 
+   * @description
+   * Get the spouse relationships for a person. Use the `persons` param to also
+   * get {@link person.types:constructor.Person Person} objects for the spouses. 
+   * Use {@link person.types:constructor.Person#getSpouses getSpouses}
+   * method if you also want implied spouse relationships (listed together as 
+   * parents in a child and parents relationship but no explicit couple relationship).
+   * The response includes the following convenience function:
+   * 
+   * - `getCoupleRelationships()` - an array of {@link spouses.types:constructor.Couple Couple} relationships.
+   * - `getPerson(id)` - a {@link person.types:constructor.Person Person} for any person id in any
+   * couple relationship in the response.
+   * 
+   * @param {Object=} params if `persons` is set (the value doesn't matter) then the response will include
+   * person objects for the spouses in the couple relationships.
+   * @return {Object} promise for the response. This is only available when the `persons` parameter is set.
+   */
+  getSpouseRelationships: function(params){
+    var self = this;
+    return self.getLinkPromise('spouse-relationships').then(function(link){
+      return self.plumbing.get(link.href, params);
+    }).then(function(response){
+      return self.client._personsAndRelationshipsMapper(response);
+    });
+  },
 
   /**
    * @ngdoc function
    * @name person.types:constructor.Person#getParents
    * @methodOf person.types:constructor.Person
-
    * 
    * @description
-   * Get the relationships to a person's parents.
+   * Get the relationships to a person's parents, person objects for the
+   * parents, and couple relationships for the parents (when a relationship exists).
    * The response includes the following convenience functions
    *
    * - `getChildAndParentsRelationships()` - an array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationships
@@ -547,12 +578,40 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
       return self.client._personsAndRelationshipsMapper(response);
     });
   },
+  
+  /**
+   * @ngdoc function
+   * @name person.types:constructor.Person#getParentRelationships
+   * @methodOf person.types:constructor.Person
+   * 
+   * @description
+   * Get the parent relationships for a person. Use the `persons` param to also
+   * get {@link person.types:constructor.Person Person} objects for the parents.
+   * Use {@link person.types:constructor.Person#getParents getParents} method 
+   * if you also want couple relationships for the parents.
+   * The response includes the following convenience function:
+   * 
+   * - `getChildAndParentsRelationships()` - an array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationships
+   * - `getPerson(id)` - a {@link person.types:constructor.Person Person} for any person id in any
+   * relationship in the response.
+   * 
+   * @param {Object=} params if `persons` is set (the value doesn't matter) then the response will include
+   * person objects for all parents in the relationships.
+   * @return {Object} promise for the response. This is only available when the `persons` parameter is set.
+   */
+  getParentRelationships: function(params){
+    var self = this;
+    return self.getLinkPromise('parent-relationships').then(function(link){
+      return self.plumbing.get(link.href, params);
+    }).then(function(response){
+      return self.client._personsAndRelationshipsMapper(response);
+    });
+  },
 
   /**
    * @ngdoc function
    * @name person.types:constructor.Person#getChildren
    * @methodOf person.types:constructor.Person
-
    * 
    * @description
    * Get the relationships to a person's children
@@ -577,9 +636,37 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   
   /**
    * @ngdoc function
+   * @name person.types:constructor.Person#getChildRelationships
+   * @methodOf person.types:constructor.Person
+   * 
+   * @description
+   * Get the child relationships for a person. Use the `persons` param to also
+   * get {@link person.types:constructor.Person Person} objects for the children.
+   * You may also use {@link person.types:constructor.Person#getChildren getChildren} method 
+   * to get {@link person.types:constructor.Person Person} objects for the children.
+   * The response includes the following convenience function:
+   * 
+   * - `getChildAndParentsRelationships()` - an array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationships
+   * - `getPerson(id)` - a {@link person.types:constructor.Person Person} for any person id in any
+   * relationship in the response. This is only available when the `persons` parameter is set.
+   * 
+   * @param {Object=} params if `persons` is set (the value doesn't matter) then the response will include
+   * person objects for all children in the relationships.
+   * @return {Object} promise for the response
+   */
+  getChildRelationships: function(params){
+    var self = this;
+    return self.getLinkPromise('child-relationships').then(function(link){
+      return self.plumbing.get(link.href, params);
+    }).then(function(response){
+      return self.client._personsAndRelationshipsMapper(response);
+    });
+  },
+  
+  /**
+   * @ngdoc function
    * @name person.types:constructor.Person#getMatches
    * @methodOf person.types:constructor.Person
-
    * @return {Object} promise for the {@link searchAndMatch.functions:getPersonMatches getPersonMatches} response
    */
   getMatches: function() {
@@ -590,8 +677,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name person.types:constructor.Person#getAncestry
    * @methodOf person.types:constructor.Person
-
-   * @param {Object=} params includes `generations` to retrieve max 8, `spouse` id to get ancestry of person and spouse,
+   * @param {Object=} params include `generations` to retrieve max 8, `spouse` id to get ancestry of person and spouse,
    * `personDetails` set to true to retrieve full person objects for each ancestor
    * @return {Object} promise for the {@link pedigree.functions:getAncestry getAncestry} response
    */
@@ -603,8 +689,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name person.types:constructor.Person#getDescendancy
    * @methodOf person.types:constructor.Person
-
-   * @param {Object=} params includes `generations` to retrieve max 2, `spouse` id to get descendency of person and spouse
+   * @param {Object=} params include `generations` to retrieve max 2, `spouse` id to get descendency of person and spouse
    * @return {Object} promise for the {@link pedigree.functions:getDescendancy getDescendancy} response
    */
   getDescendancy: function(params) {
@@ -615,7 +700,6 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name person.types:constructor.Person#getPersonPortraitUrl
    * @methodOf person.types:constructor.Person
-
    * @param {Object=} params `default` URL to redirect to if portrait doesn't exist;
    * `followRedirect` if true, follow the redirect and return the final URL
    * @return {Object} promise for the {@link memories.functions:getPersonPortraitUrl getPersonPortraitUrl} response
