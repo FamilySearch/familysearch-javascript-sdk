@@ -1117,7 +1117,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "searchAndMatch",
       "shortDescription": "A person search result entry.",
-      "keywords": "api array aware better child client data entry familysearch father function functions getchildids getchildren getfatherids getfathers getfullprimaryperson getid getmotherids getmothers getperson getprimaryperson getscore getspouseids getspouses gettitle higher mother object objects pedigree person persons pid primary promise raw response result returned sdk search searchandmatch searchresult searchresults spouse types"
+      "keywords": "api array aware better child client data entry familysearch father function functions getchildids getchildren getconfidence getfatherids getfathers getfullprimaryperson getid getmotherids getmothers getperson getprimaryperson getscore getspouseids getspouses gettitle higher mother object objects pedigree person persons pid primary promise raw response result returned sdk search searchandmatch searchresult searchresults spouse types"
     },
     {
       "section": "api",
