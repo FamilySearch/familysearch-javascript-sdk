@@ -13,7 +13,6 @@ var FS = require('./../FamilySearch'),
 /**
  * @ngdoc function
  * @name places.functions:getPlace
-
  *
  * @description
  * Get a place.
@@ -21,7 +20,6 @@ var FS = require('./../FamilySearch'),
  * - `getPlace()` - get the {@link places.types:constructor.PlaceDescription PlaceDescription} from the response
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_resource API Docs}
- * 
  *
  * @param {String} url full url of a place
  * @return {Object} promise for the response

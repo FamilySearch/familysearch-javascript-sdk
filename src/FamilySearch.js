@@ -92,6 +92,7 @@ require('./modules/changeHistory');
 require('./modules/discussions');
 require('./modules/memories');
 require('./modules/notes');
+require('./modules/ordinances');
 require('./modules/parentsAndChildren');
 require('./modules/pedigree');
 require('./modules/persons');

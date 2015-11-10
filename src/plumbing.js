@@ -285,7 +285,7 @@ Plumbing.prototype.http = function(method, url, headers, data, retries) {
     // HTTP request and error handling
     return self._http(method, absoluteUrl, headers, body, retries)
     
-    // Process the response body and make available at the `body` property
+    // Process the response body and make available at the `data` property
     // of the response. If JSON parsing fails then we have bad data or no data.
     // Either way we just catch the error and continue on.
     .then(function(response){
