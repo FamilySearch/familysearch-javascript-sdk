@@ -134,6 +134,21 @@ describe('Source', function() {
       done();
     });
   });
+  
+  it('references are returned from getSourceAttachments', function(done){
+    FS.getSourceAttachments('https://www.myheritage.com/research/collection-10126').then(function(response){
+      var personRefs = response.getPersonSourceRefs();
+      expect(personRefs.length).toBe(3);
+      expect(personRefs[0].getId()).toBe('MBKV-8QB');
+      var descriptions = response.getSourceDescriptions();
+      expect(descriptions.length).toBe(3);
+      expect(descriptions[0].getId()).toBe('9DLV-WT9');
+      expect(descriptions[0].getAbout()).toBe('https://www.myheritage.com/research/collection-10126/1850-united-states-federal-census?s=236609761&itemId=19082757-&groupId=7b0a96c252d15433cee359f4a9e80f3d&action=showRecord&indId=individual-236609761-1501138');
+      done();
+    }).catch(function(e){
+      console.error(e.stack);
+    });
+  });
 
   it('description is created', function(done) {
     var srcDesc = FS.createSourceDescription({
