@@ -1,0 +1,16 @@
+<h1><code ng:non-bindable="">getMultiPerson</code>
+<div><span class="hint">functions in module <code ng:non-bindable="">person</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="person-functions-page person-functions-getmultiperson-page"><p>Get multiple people at once by requesting them in parallel</p>
+<p><a href="https://familysearch.org/developers/docs/api/tree/Person_resource">FamilySearch API Docs</a></p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getMultiPerson(pids);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pids</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="person-functions-page person-functions-getmultiperson-page"><p>array of ids or urls for the people to read</p>
+</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getmultiperson-page"><p>promise that is fulfilled when all of the people have been read,
+returning a map of person id to <a href="#/api/person.functions:getPerson">getPerson</a> response</p>
+</div></td></tr></table></div>
+</div>
