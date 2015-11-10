@@ -644,6 +644,33 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "ordinances",
+      "shortName": "ordinances",
+      "type": "overview",
+      "moduleName": "ordinances",
+      "shortDescription": "Functions for interacting with the FamilySearch Ordinance API",
+      "keywords": "api docs familysearch functions https interacting ordinance ordinances org overview"
+    },
+    {
+      "section": "api",
+      "id": "ordinances.functions:getOrdinancesPolicy",
+      "shortName": "getOrdinancesPolicy",
+      "type": "function",
+      "moduleName": "ordinances",
+      "shortDescription": "Get the policy that must be agreed to by the user in order to reserve an LDS ordinance.",
+      "keywords": "accept-language agreed api calling determines docs format function functions getdata header html https language lds order ordinance ordinances org policy promise reserve response retrieved text user"
+    },
+    {
+      "section": "api",
+      "id": "ordinances.functions:hasOrdinancesAccess",
+      "shortName": "hasOrdinancesAccess",
+      "type": "function",
+      "moduleName": "ordinances",
+      "shortDescription": "Determine whether the current user has access to LDS ordinances. The returned",
+      "keywords": "access api current determine docs function functions https lds ordinances org promise rejected resolved response returned user"
+    },
+    {
+      "section": "api",
       "id": "parentsAndChildren",
       "shortName": "parentsAndChildren",
       "type": "overview",

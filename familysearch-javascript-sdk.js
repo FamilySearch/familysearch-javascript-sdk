@@ -1469,6 +1469,7 @@ require('./modules/changeHistory');
 require('./modules/discussions');
 require('./modules/memories');
 require('./modules/notes');
+require('./modules/ordinances');
 require('./modules/parentsAndChildren');
 require('./modules/pedigree');
 require('./modules/persons');
@@ -1527,7 +1528,7 @@ function extendFSPrototype(moduleName, functionName){
     return this[moduleName][functionName].apply(this[moduleName], arguments);
   };
 }
-},{"./classes/agent":6,"./classes/attribution":7,"./classes/base":8,"./classes/change":9,"./classes/childAndParents":10,"./classes/collection":11,"./classes/comment":12,"./classes/couple":13,"./classes/date":14,"./classes/discussion":15,"./classes/discussionRef":16,"./classes/fact":17,"./classes/gender":18,"./classes/memory":19,"./classes/memoryArtifactRef":20,"./classes/memoryPersona":21,"./classes/memoryPersonaRef":22,"./classes/name":23,"./classes/note":24,"./classes/person":25,"./classes/placeDescription":26,"./classes/placeReference":27,"./classes/placesSearchResult":28,"./classes/searchResult":29,"./classes/sourceDescription":30,"./classes/sourceRef":31,"./classes/textValue":32,"./classes/user":33,"./classes/vocabularyElement":34,"./classes/vocabularyList":35,"./globals":36,"./helpers":37,"./modules/authentication":38,"./modules/authorities":39,"./modules/changeHistory":40,"./modules/discussions":41,"./modules/memories":42,"./modules/notes":43,"./modules/parentsAndChildren":44,"./modules/pedigree":45,"./modules/persons":46,"./modules/places":47,"./modules/searchAndMatch":48,"./modules/sourceBox":49,"./modules/sources":50,"./modules/spouses":51,"./modules/users":52,"./modules/utilities":53,"./plumbing":54,"./utils":56}],6:[function(require,module,exports){
+},{"./classes/agent":6,"./classes/attribution":7,"./classes/base":8,"./classes/change":9,"./classes/childAndParents":10,"./classes/collection":11,"./classes/comment":12,"./classes/couple":13,"./classes/date":14,"./classes/discussion":15,"./classes/discussionRef":16,"./classes/fact":17,"./classes/gender":18,"./classes/memory":19,"./classes/memoryArtifactRef":20,"./classes/memoryPersona":21,"./classes/memoryPersonaRef":22,"./classes/name":23,"./classes/note":24,"./classes/person":25,"./classes/placeDescription":26,"./classes/placeReference":27,"./classes/placesSearchResult":28,"./classes/searchResult":29,"./classes/sourceDescription":30,"./classes/sourceRef":31,"./classes/textValue":32,"./classes/user":33,"./classes/vocabularyElement":34,"./classes/vocabularyList":35,"./globals":36,"./helpers":37,"./modules/authentication":38,"./modules/authorities":39,"./modules/changeHistory":40,"./modules/discussions":41,"./modules/memories":42,"./modules/notes":43,"./modules/ordinances":44,"./modules/parentsAndChildren":45,"./modules/pedigree":46,"./modules/persons":47,"./modules/places":48,"./modules/searchAndMatch":49,"./modules/sourceBox":50,"./modules/sources":51,"./modules/spouses":52,"./modules/users":53,"./modules/utilities":54,"./plumbing":55,"./utils":57}],6:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -1621,7 +1622,7 @@ Agent.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
     return maybe(maybe(this.data.addresses)[0]).value;
   }
 });
-},{"./../FamilySearch":5,"./../utils":56}],7:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],7:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -1719,7 +1720,7 @@ Attribution.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   getAgent: function() { return this.client.getAgent(this.getAgentUrl()); }
 });
 
-},{"./../FamilySearch":5,"./../utils":56}],8:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],8:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -1946,7 +1947,7 @@ FS.BaseClass.prototype.toString = function(){
 FS.BaseClass.prototype.inspect = function(){
   return this.toString();  
 };
-},{"./../FamilySearch":5,"./../utils":56}],9:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],9:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -2062,7 +2063,7 @@ Change.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":56}],10:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],10:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     relHelpers = require('../relationshipHelpers'),
     utils = require('../utils'),
@@ -2608,7 +2609,7 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
   }
   
 });
-},{"../FamilySearch":5,"../relationshipHelpers":55,"../utils":56}],11:[function(require,module,exports){
+},{"../FamilySearch":5,"../relationshipHelpers":56,"../utils":57}],11:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -2732,7 +2733,7 @@ Collection.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":56}],12:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],12:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -2866,7 +2867,7 @@ Comment.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":56}],13:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],13:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     relHelpers = require('../relationshipHelpers'),
     utils = require('../utils'),
@@ -3307,7 +3308,7 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
     });
   }
 });
-},{"../FamilySearch":5,"../relationshipHelpers":55,"../utils":56}],14:[function(require,module,exports){
+},{"../FamilySearch":5,"../relationshipHelpers":56,"../utils":57}],14:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('../utils');
 
@@ -3416,7 +3417,7 @@ FSDate.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   
 });
 
-},{"../utils":56,"./../FamilySearch":5}],15:[function(require,module,exports){
+},{"../utils":57,"./../FamilySearch":5}],15:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -3596,7 +3597,7 @@ Discussion.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":56}],16:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],16:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -3779,7 +3780,7 @@ DiscussionRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":56}],17:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],17:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -4142,7 +4143,7 @@ Fact.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 });
 
-},{"./../FamilySearch":5,"./../utils":56}],18:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],18:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('../utils');
 
@@ -4201,7 +4202,7 @@ Gender.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   
 });
 
-},{"../utils":56,"./../FamilySearch":5}],19:[function(require,module,exports){
+},{"../utils":57,"./../FamilySearch":5}],19:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -4491,7 +4492,7 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":56}],20:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],20:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -4606,7 +4607,7 @@ MemoryArtifactRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype)
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":56}],21:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],21:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -4786,7 +4787,7 @@ MemoryPersona.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":56}],22:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],22:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -4953,7 +4954,7 @@ MemoryPersonaRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype),
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":56}],23:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],23:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -5352,7 +5353,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 });
 
-},{"./../FamilySearch":5,"./../utils":56}],24:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],24:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -5472,7 +5473,7 @@ Note.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":56}],25:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],25:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     utils = require('../utils'),
     maybe = utils.maybe;
@@ -6521,7 +6522,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 });
 
-},{"../FamilySearch":5,"../utils":56}],26:[function(require,module,exports){
+},{"../FamilySearch":5,"../utils":57}],26:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -6723,7 +6724,7 @@ PlaceDescription.prototype = utils.extend(Object.create(FS.BaseClass.prototype),
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":56}],27:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],27:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -6805,7 +6806,7 @@ PlaceReference.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
   
 });
-},{"./../FamilySearch":5,"./../utils":56}],28:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],28:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -6889,7 +6890,7 @@ PlacesSearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype
   }
    
 });
-},{"./../FamilySearch":5,"./../utils":56}],29:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],29:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -7112,7 +7113,7 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    */
   getChildren: function() { return utils.map(this.getChildIds(), this.getPerson, this); }
 });
-},{"./../FamilySearch":5,"./../utils":56}],30:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],30:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -7317,7 +7318,7 @@ SourceDescription.prototype = utils.extend(Object.create(FS.BaseClass.prototype)
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":56}],31:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],31:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -7566,7 +7567,7 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":56}],32:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],32:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('../utils');
 
@@ -7615,7 +7616,7 @@ TextValue.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    */ 
   getValue: function(){ return this.data.value; }
 });
-},{"../utils":56,"./../FamilySearch":5}],33:[function(require,module,exports){
+},{"../utils":57,"./../FamilySearch":5}],33:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     utils = require('../utils');
 
@@ -7729,7 +7730,7 @@ User.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    */
   getPreferredLanguage: function() { return this.data.preferredLanguage; }
 });
-},{"../FamilySearch":5,"../utils":56}],34:[function(require,module,exports){
+},{"../FamilySearch":5,"../utils":57}],34:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -7791,7 +7792,7 @@ VocabularyElement.prototype = utils.extend(Object.create(FS.BaseClass.prototype)
   }
    
 });
-},{"./../FamilySearch":5,"./../utils":56}],35:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],35:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -7868,7 +7869,7 @@ VocabularyList.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
    
 });
-},{"./../FamilySearch":5,"./../utils":56}],36:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],36:[function(require,module,exports){
 /**
  * TODO: Add interface for modifying these so that you
  * don't have to pass the same config options
@@ -8368,7 +8369,7 @@ Helpers.prototype.eraseCookie = function(name) {
 };
 
 module.exports = Helpers;
-},{"./utils":56}],38:[function(require,module,exports){
+},{"./utils":57}],38:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -8671,7 +8672,7 @@ FS.prototype._pollForAuthCode = function(popup) {
   }
 };
 
-},{"./../FamilySearch":5,"./../utils":56}],39:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],39:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -8719,7 +8720,7 @@ FS.prototype.getDate = function(date) {
   });
 };
 
-},{"./../FamilySearch":5,"./../utils":56}],40:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],40:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -8789,7 +8790,7 @@ FS.prototype.getChanges = function(url, params) {
 FS.prototype.restoreChange = function(url) {
   return this.plumbing.post(url, null, {'Content-Type': void 0});
 };
-},{"./../FamilySearch":5,"./../utils":56}],41:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],41:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -9010,7 +9011,7 @@ FS.prototype.deleteComment = function(url) {
   return this.plumbing.del(url);
 };
 
-},{"./../FamilySearch":5,"./../utils":56}],42:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],42:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -9326,7 +9327,7 @@ FS.prototype.deleteMemoryPersonaRef = function(url) {
   return this.plumbing.del(url);
 };
 
-},{"./../FamilySearch":5,"./../utils":56}],43:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],43:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -9485,7 +9486,66 @@ FS.prototype.deleteNote = function(url, changeMessage) {
   return self.plumbing.del(url, headers);
 };
 
-},{"./../FamilySearch":5,"./../utils":56}],44:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],44:[function(require,module,exports){
+var FS = require('./../FamilySearch');
+
+/**
+ * @ngdoc overview
+ * @name ordinances
+ * @description
+ * Functions for interacting with the FamilySearch Ordinance API
+ *
+ * {@link https://familysearch.org/developers/docs/api/resources#ordinances FamilySearch API Docs}
+ */
+ 
+/**
+ * @ngdoc function
+ * @name ordinances.functions:hasOrdinancesAccess
+ *
+ * @description
+ * Determine whether the current user has access to LDS ordinances. The returned
+ * promise will be resolved if the user has access to LDS ordinances; it will be
+ * rejected if the user does not have access.
+ *
+ * {@link https://familysearch.org/developers/docs/api/ordinances/Ordinances_resource API Docs}
+ *
+ * @return {Object} promise for the response
+ */
+FS.prototype.hasOrdinancesAccess = function(){
+  return this.plumbing.get('/platform/ordinances/ordinances');
+};
+
+/**
+ * @ngdoc function
+ * @name ordinances.functions:getOrdinancesPolicy
+ *
+ * @description
+ * Get the policy that must be agreed to by the user in order to reserve an LDS ordinance.
+ * The policy text is retrieved from the response by calling `response.getData()`.
+ *
+ * {@link https://familysearch.org/developers/docs/api/ordinances/Ordinance_Policy_resource API Docs}
+ *
+ * @param {String=} format Response format: `text` or `html` (defaults to `text`)
+ * @param {String=} language Value of the `Accept-Language` header that determines the language of the policy
+ * @return {Object} promise for the response
+ */
+FS.prototype.getOrdinancesPolicy = function(format, language){
+  var headers = {
+    'Accept': 'text/plain'
+  };
+  if(format === 'html'){
+    headers.Accept = 'text/html';
+  }
+  
+  if(language){
+    headers['Accept-Language'] = language;
+  }
+  
+  // TODO: get url from the collection
+  // It's not availabe in the collection as of 10/10/2015
+  return this.plumbing.get('/platform/ordinances/policy', null, headers);
+};
+},{"./../FamilySearch":5}],45:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     utils = require('../utils'),
     maybe = utils.maybe;
@@ -9581,7 +9641,7 @@ FS.prototype.restoreChildAndParents = function(url) {
   return this.plumbing.post(url, null, {'Content-Type': 'application/x-fs-v1+json'});
 };
 
-},{"../FamilySearch":5,"../utils":56}],45:[function(require,module,exports){
+},{"../FamilySearch":5,"../utils":57}],46:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -9730,7 +9790,7 @@ FS.prototype.getDescendancy = function(pid, params) {
   });
 };
 
-},{"./../FamilySearch":5,"./../utils":56}],46:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],47:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     utils = require('../utils'),
     maybe = utils.maybe;
@@ -10202,7 +10262,7 @@ FS.prototype.deletePreferredParents = function(pid) {
 // TODO person merge
 // TODO person not a match
 
-},{"../FamilySearch":5,"../utils":56}],47:[function(require,module,exports){
+},{"../FamilySearch":5,"../utils":57}],48:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -10218,7 +10278,6 @@ var FS = require('./../FamilySearch'),
 /**
  * @ngdoc function
  * @name places.functions:getPlace
-
  *
  * @description
  * Get a place.
@@ -10226,7 +10285,6 @@ var FS = require('./../FamilySearch'),
  * - `getPlace()` - get the {@link places.types:constructor.PlaceDescription PlaceDescription} from the response
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_resource API Docs}
- * 
  *
  * @param {String} url full url of a place
  * @return {Object} promise for the response
@@ -10496,7 +10554,7 @@ FS.prototype.getPlaceTypeGroups = function() {
     });
   });
 };
-},{"./../FamilySearch":5,"./../utils":56}],48:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],49:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -10650,7 +10708,7 @@ FS.prototype.getPersonMatchesQuery = function(params) {
   });
 };
 
-},{"./../FamilySearch":5,"./../utils":56}],49:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],50:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -10882,7 +10940,7 @@ FS.prototype.deleteCollection = function(url) {
   return this.plumbing.del(url);
 };
 
-},{"./../FamilySearch":5,"./../utils":56}],50:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],51:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -11216,7 +11274,7 @@ FS.prototype._createAndAttachSource = function(obj, sourceDescription, changeMes
     return sourceRef.save(obj.getLink('source-references').href, changeMessage);
   });
 };
-},{"./../FamilySearch":5,"./../utils":56}],51:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],52:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     utils = require('../utils'),
     maybe = utils.maybe;
@@ -11310,7 +11368,7 @@ FS.prototype.restoreCouple = function(url) {
   return this.plumbing.post(url, null, {'Content-Type': 'application/x-fs-v1+json'});
 };
 
-},{"../FamilySearch":5,"../utils":56}],52:[function(require,module,exports){
+},{"../FamilySearch":5,"../utils":57}],53:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -11431,7 +11489,7 @@ FS.prototype.getCurrentUserPerson = function() {
   });
 };
 
-},{"./../FamilySearch":5,"./../utils":56}],53:[function(require,module,exports){
+},{"./../FamilySearch":5,"./../utils":57}],54:[function(require,module,exports){
 var FS = require('./../FamilySearch');
 
 /**
@@ -11479,7 +11537,7 @@ FS.prototype.getPendingModifications = function() {
     return response;
   });
 };
-},{"./../FamilySearch":5}],54:[function(require,module,exports){
+},{"./../FamilySearch":5}],55:[function(require,module,exports){
 // These are globals so that their interface is the same
 // both in the client and on the server
 require('es6-promise').polyfill();
@@ -11767,7 +11825,7 @@ Plumbing.prototype.http = function(method, url, headers, data, retries) {
     // HTTP request and error handling
     return self._http(method, absoluteUrl, headers, body, retries)
     
-    // Process the response body and make available at the `body` property
+    // Process the response body and make available at the `data` property
     // of the response. If JSON parsing fails then we have bad data or no data.
     // Either way we just catch the error and continue on.
     .then(function(response){
@@ -11867,7 +11925,7 @@ Plumbing.prototype._http = function(method, url, headers, body, retries){
 };
 
 module.exports = Plumbing;
-},{"./utils":56,"es6-promise":2,"isomorphic-fetch":3}],55:[function(require,module,exports){
+},{"./utils":57,"es6-promise":2,"isomorphic-fetch":3}],56:[function(require,module,exports){
 var FS = require('./FamilySearch'),
     utils = require('./utils'),
     maybe = utils.maybe,
@@ -11952,7 +12010,7 @@ exports.deleteFact = function(prop, value, changeMessage) {
 };
 
 module.exports = exports;
-},{"./FamilySearch":5,"./utils":56}],56:[function(require,module,exports){
+},{"./FamilySearch":5,"./utils":57}],57:[function(require,module,exports){
 /**
  * Collection of utility functions. Only put functions in here that aren't
  * specific to the FamilySearch API (those go in helpers.js)
