@@ -22,6 +22,16 @@
 </div></td></tr></tbody></table><h5 id="methods_addfact_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-couple">Couple</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-addfact-page"><p>this relationship</p>
 </div></td></tr></table></div>
 </li>
+<li><h3 id="methods_addsource">addSource(sourceDescription, changeMessage, tags)</h3>
+<div class="addsource"><div class="spouses-types-page spouses-types-constructor-couple-addsource-page"><p>Attach a source to this couple. This will create a source description (if
+it doesn&#39;t already exist) and a source reference for you.</p>
+</div><h5 id="methods_addsource_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>sourceDescription</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-addsource-page"><p>Data for the source description or a
+<a href="#/api/sources.types:constructor.SourceDescription">SourceDescription</a> object.</p>
+</div></td></tr><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-addsource-page"><p>change message</p>
+</div></td></tr><tr><td>tags <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">String[]</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-addsource-page"><p>an array of tags; e.g., <a href="http://gedcomx.org/Name">http://gedcomx.org/Name</a> or <a href="http://gedcomx.org/Birth">http://gedcomx.org/Birth</a></p>
+</div></td></tr></tbody></table><h5 id="methods_addsource_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-addsource-page"><p>promise for the <a href="#/api/sources.types:constructor.SourceRef#save">SourceRef.save()</a> response</p>
+</div></td></tr></table></div>
+</li>
 <li><h3 id="methods_delete">delete(changeMessage)</h3>
 <div class="delete"><div class="spouses-types-page spouses-types-constructor-couple-delete-page"><p>delete this relationship - see <a href="#/api/spouses.functions:deleteCouple">deleteCouple</a></p>
 </div><h5 id="methods_delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-delete-page"><p>change message</p>
