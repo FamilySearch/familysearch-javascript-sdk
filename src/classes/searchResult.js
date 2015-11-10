@@ -59,6 +59,14 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @return {Number} higher is better
    */
   getScore: function(){ return this.data.score; },
+  
+  /**
+   * @ngdoc function
+   * @name searchAndMatch.types:constructor.SearchResult#getConfidence
+   * @methodOf searchAndMatch.types:constructor.SearchResult
+   * @return {Number} between 1 and 5; higher is better
+   */
+  getConfidence: function(){ return this.data.confidence; },
 
   /**
    * @ngdoc function

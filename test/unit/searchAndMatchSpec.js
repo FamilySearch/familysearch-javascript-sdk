@@ -1,4 +1,4 @@
-describe('Search', function() {
+fdescribe('Search', function() {
   
   it('results are returned from getPersonSearch', function(done) {
     FS.getPersonSearch({surname:'Heaton'}).then(function(response) {
@@ -8,6 +8,7 @@ describe('Search', function() {
       expect(results[0].getId()).toBe('98765');
       expect(results[0].getTitle()).toBe('Person 98765');
       expect(results[0].getScore()).toEqual(0.95);
+      expect(results[0].getConfidence()).toEqual(5);
       expect(results[0].getPrimaryPerson().getId()).toBe('98765');
       expect(results[0].getPrimaryPerson().getDisplayName()).toBe('Israel Heaton');
       expect(results[0].getPrimaryPerson().getFacts()[0].getOriginalDate()).toBe('30 January 1880');
@@ -31,6 +32,7 @@ describe('Search', function() {
       expect(results[0].getId()).toBe('98765');
       expect(results[0].getTitle()).toBe('Person 98765');
       expect(results[0].getScore()).toEqual(0.95);
+      expect(results[0].getConfidence()).toEqual(3);
       expect(results[0].getPrimaryPerson().getId()).toBe('98765');
       expect(results[0].getChildren().length).toBe(1);
       expect(results[0].getChildren()[0].getId()).toBe('54321');
@@ -51,6 +53,7 @@ describe('Search', function() {
       expect(results[0].getId()).toBe('98765');
       expect(results[0].getTitle()).toBe('Person 98765');
       expect(results[0].getScore()).toEqual(0.95);
+      expect(results[0].getConfidence()).toEqual(4);
       expect(results[0].getPrimaryPerson().getId()).toBe('98765');
       expect(results[0].getChildren().length).toBe(1);
       expect(results[0].getChildren()[0].getId()).toBe('54321');

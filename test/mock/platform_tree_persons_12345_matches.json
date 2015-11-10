@@ -134,6 +134,7 @@
     },
     "id" : "98765",
     "score" : 0.95,
+    "confidence": 3,
     "links" : {
       "person" : {
         "href" : "https://familysearch.org/platform/tree/persons/98765",
