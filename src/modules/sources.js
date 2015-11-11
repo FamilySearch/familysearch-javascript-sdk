@@ -143,12 +143,16 @@ FS.prototype.getSourceRefsQuery = function(url, params) {
  * @param {String} url url of the source references query resource of a source description
  * @return {Object} promise for the response
  */
-FS.prototype.getSourceAttachments = function(url){
+FS.prototype.getSourceAttachments = function(sourceUrl){
   // TODO: update when the link in the tree collection is fixed
   // https://groups.google.com/a/ldsmail.net/d/msg/FSDN/fQaQWkRUQ2o/bIG54_fzBwAJ
   // Last checked 10/10/2015
-  var self = this;
-  return this.getSourceRefsQuery('/platform/tree/source-references', { source: url }).then(function(response){
+  //
+  // TODO: Remove the feature header when it's been activated
+  var self = this,
+      params = { source: sourceUrl },
+      headers = {'X-FS-Feature-Tag':'local-source-description-references'};
+  return this.getSourceRefsQuery('/platform/tree/source-references', params, headers).then(function(response){
     var data = maybe(response.getData());
     utils.forEach(data.sourceDescriptions, function(source, index, obj){
       obj[index] = self.createSourceDescription(source);
