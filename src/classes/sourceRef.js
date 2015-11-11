@@ -83,7 +83,9 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @return {string} URL of the source description - pass into {@link sources.functions:getSourceDescription getSourceDescription} for details
    */
   getSourceDescriptionUrl: function() {
-    return this.helpers.removeAccessToken(this.getDescription());
+    if(this.getDescription().charAt(0) !== '#'){
+      return this.helpers.removeAccessToken(this.getDescription());
+    }
   },
   
   /**
@@ -94,7 +96,11 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @return {string} Id of the source description
    */
   getSourceDescriptionId: function() {
-    return this.getSourceDescriptionUrl().split('/').pop();
+    if(this.getDescription().charAt(0) === '#'){
+      return this.getDescription().substr(1);
+    } else {
+      return this.getSourceDescriptionUrl().split('/').pop();
+    }
   },
 
   /**

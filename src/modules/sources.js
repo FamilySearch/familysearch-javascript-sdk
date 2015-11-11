@@ -68,6 +68,51 @@ FS.prototype.getMultiSourceDescription = function(urls) {
   });
 };
 
+FS.prototype._getSourceRefsQueryResponseMapper = function(response, includeDescriptions){
+  var self = this,
+      data = maybe(response.getData());
+  if(includeDescriptions){
+    utils.forEach(data.sourceDescriptions, function(source, index, obj){
+      obj[index] = self.createSourceDescription(source);
+    });
+    utils.extend(response, {
+      getSourceDescriptions: function(){
+        return data.sourceDescriptions || [];
+      },
+      getSourceDescription: function(id) {
+        return utils.find(data.sourceDescriptions, function(o){
+          return o.getId() === id;
+        });
+      }
+    });
+  }
+  utils.forEach(['persons','relationships','childAndParentsRelationships'], function(type){
+    data[type] = utils.map(data[type], function(group){
+      group.sources = utils.map(group.sources, function(source){
+        return self.createSourceRef(source);
+      });
+      return group;
+    });
+  });
+  return utils.extend(response, {
+    getPersonSourceRefs: function() {
+      return utils.flatMap(maybe(data.persons), function(person) {
+        return person.sources;
+      });
+    },
+    getCoupleSourceRefs: function() {
+      return utils.flatMap(maybe(data.relationships), function(couple) {
+        return couple.sources;
+      });
+    },
+    getChildAndParentsSourceRefs: function() {
+      return utils.flatMap(maybe(data.childAndParentsRelationships), function(childAndParents) {
+        return childAndParents.sources;
+      });
+    }
+  });
+};
+
 /**
  * @ngdoc function
  * @name sources.functions:getSourceRefsQuery
@@ -87,35 +132,11 @@ FS.prototype.getMultiSourceDescription = function(urls) {
  * @param {String} url url of the source references query resource of a source description
  * @return {Object} promise for the response
  */
-FS.prototype.getSourceRefsQuery = function(url, params) {
+FS.prototype.getSourceRefsQuery = function(url) {
   var self = this;
-  return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
-    var data = maybe(response.getData());
-    utils.forEach(['persons','relationships','childAndParentsRelationships'], function(type){
-      data[type] = utils.map(data[type], function(group){
-        group.sources = utils.map(group.sources, function(source){
-          return self.createSourceRef(source);
-        });
-        return group;
-      });
-    });
-    return utils.extend(response, {
-      getPersonSourceRefs: function() {
-        return utils.flatMap(maybe(data.persons), function(person) {
-          return person.sources;
-        });
-      },
-      getCoupleSourceRefs: function() {
-        return utils.flatMap(maybe(data.relationships), function(couple) {
-          return couple.sources;
-        });
-      },
-      getChildAndParentsSourceRefs: function() {
-        return utils.flatMap(maybe(data.childAndParentsRelationships), function(childAndParents) {
-          return childAndParents.sources;
-        });
-      }
-    });
+  return self.plumbing.get(url, null, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
+    self._getSourceRefsQueryResponseMapper(response, false);
+    return response;
   });
 };
 
@@ -152,21 +173,9 @@ FS.prototype.getSourceAttachments = function(sourceUrl){
   var self = this,
       params = { source: sourceUrl },
       headers = {'X-FS-Feature-Tag':'local-source-description-references'};
-  return this.getSourceRefsQuery('/platform/tree/source-references', params, headers).then(function(response){
-    var data = maybe(response.getData());
-    utils.forEach(data.sourceDescriptions, function(source, index, obj){
-      obj[index] = self.createSourceDescription(source);
-    });
-    return utils.extend(response, {
-      getSourceDescriptions: function(){
-        return data.sourceDescriptions || [];
-      },
-      getSourceDescription: function(id) {
-        return utils.find(data.sourceDescriptions, function(o){
-          return o.getId() === id;
-        });
-      }
-    });
+  return this.get('/platform/tree/source-references', params, headers).then(function(response){
+    self._getSourceRefsQueryResponseMapper(response, true);
+    return response;
   });
 };
 
@@ -176,6 +185,16 @@ FS.prototype._getSourcesResponseMapper = function(response, root, includeDescrip
   if(includeDescriptions){
     utils.forEach(data.sourceDescriptions, function(source, index, obj){
       obj[index] = self.createSourceDescription(source);
+    });
+    utils.extend(response, {
+      getSourceDescriptions: function() {
+        return data.sourceDescriptions || [];
+      },
+      getSourceDescription: function(id) {
+        return utils.find(data.sourceDescriptions, function(o){
+          return o.getId() === id;
+        });
+      }
     });
   }
   utils.forEach(maybe(maybe(data[root])[0]).sources, function(source, index, obj){
@@ -189,19 +208,11 @@ FS.prototype._getSourcesResponseMapper = function(response, root, includeDescrip
     }
     obj[index] = self.createSourceRef(source);
   });
-  return utils.extend(response, utils.removeEmptyProperties({
+  return utils.extend(response, {
     getSourceRefs: function() {
       return maybe(maybe(data[root])[0]).sources || [];
-    },
-    getSourceDescriptions: includeDescriptions ? function() {
-      return data.sourceDescriptions || [];
-    } : null,
-    getSourceDescription: includeDescriptions ? function(id) {
-      return utils.find(data.sourceDescriptions, function(o){
-        return o.getId() === id;
-      });
-    } : null
-  }));
+    }
+  });
 };
 
 /**
