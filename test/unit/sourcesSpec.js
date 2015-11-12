@@ -27,6 +27,8 @@ fdescribe('Source', function() {
       var sourceRefs = response.getSourceRefs();
       expect(sourceRefs[0].getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
       expect(sourceRefs[0].getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/SSSS-SS1');
+      expect(sourceRefs[0].getAttachedEntityId()).toBe('PPPP-PPP');
+      expect(sourceRefs[0].getAttachedEntityUrl()).toBe('https://familysearch.org/platform/tree/persons/PPPP-PPP');
       expect(sourceRefs[1].getAttribution().getAgentId()).toBe('UUUU-UUU');
       expect(sourceRefs[1].getAttribution().getModifiedTimestamp()).toBe(987654321);
       expect(sourceRefs[1].getAttribution().getChangeMessage()).toBe('Dates and location match with other sources.');
@@ -39,6 +41,8 @@ fdescribe('Source', function() {
       var sourceRefs = response.getSourceRefs();
       expect(sourceRefs[0].getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
       expect(sourceRefs[0].getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/SSSS-SS1');
+      expect(sourceRefs[0].getAttachedEntityId()).toBe('PPPP-PPP');
+      expect(sourceRefs[0].getAttachedEntityUrl()).toBe('https://familysearch.org/platform/tree/persons/PPPP-PPP');
       expect(sourceRefs[1].getAttribution().getAgentId()).toBe('UUUU-UUU');
       expect(sourceRefs[1].getAttribution().getModifiedTimestamp()).toBe(987654321);
       expect(sourceRefs[1].getAttribution().getChangeMessage()).toBe('Dates and location match with other sources.');
@@ -55,6 +59,8 @@ fdescribe('Source', function() {
       var sourceRefs = response.getSourceRefs();
       expect(sourceRefs[0].getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
       expect(sourceRefs[0].getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/SSSS-SS1');
+      expect(sourceRefs[0].getAttachedEntityId()).toBe('12345');
+      expect(sourceRefs[0].getAttachedEntityUrl()).toBe('https://familysearch.org/platform/tree/couple-relationships/12345');
       expect(sourceRefs[1].getTags().length).toBe(0);
       expect(sourceRefs[1].getAttribution().getAgentId()).toBe('UUUU-UUU');
       expect(sourceRefs[1].getAttribution().getModifiedTimestamp()).toBe(987654321);
@@ -68,6 +74,8 @@ fdescribe('Source', function() {
       var sourceRefs = response.getSourceRefs();
       expect(sourceRefs[0].getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
       expect(sourceRefs[0].getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/SSSS-SS1');
+      expect(sourceRefs[0].getAttachedEntityId()).toBe('12345');
+      expect(sourceRefs[0].getAttachedEntityUrl()).toBe('https://familysearch.org/platform/tree/couple-relationships/12345');
       expect(sourceRefs[1].getTags().length).toBe(0);
       expect(sourceRefs[1].getAttribution().getAgentId()).toBe('UUUU-UUU');
       expect(sourceRefs[1].getAttribution().getModifiedTimestamp()).toBe(987654321);
@@ -87,10 +95,14 @@ fdescribe('Source', function() {
       expect(sourceRefs[0].getAttribution().getModifiedTimestamp()).toBe(987654321);
       expect(sourceRefs[0].getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/SSSS-SS2');
       expect(sourceRefs[0].getAttribution().getChangeMessage()).toBe('Dates and location match with other sources.');
+      expect(sourceRefs[0].getAttachedEntityId()).toBe('PPPX-PP0');
+      expect(sourceRefs[0].getAttachedEntityUrl()).toBe('https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0');
       expect(sourceRefs[1].getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
       expect(sourceRefs[1].getAttribution().getAgentId()).toBe('UUUU-UUU');
       expect(sourceRefs[1].getAttribution().getModifiedTimestamp()).toBe(123456789);
       done();
+    }).catch(function(e){
+      console.error(e.stack);
     });
   });
   
@@ -101,6 +113,8 @@ fdescribe('Source', function() {
       expect(sourceRefs[0].getAttribution().getModifiedTimestamp()).toBe(987654321);
       expect(sourceRefs[0].getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/SSSS-SS2');
       expect(sourceRefs[0].getAttribution().getChangeMessage()).toBe('Dates and location match with other sources.');
+      expect(sourceRefs[0].getAttachedEntityId()).toBe('PPPX-PP0');
+      expect(sourceRefs[0].getAttachedEntityUrl()).toBe('https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0');
       expect(sourceRefs[1].getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
       expect(sourceRefs[1].getAttribution().getAgentId()).toBe('UUUU-UUU');
       expect(sourceRefs[1].getAttribution().getModifiedTimestamp()).toBe(123456789);
@@ -119,18 +133,24 @@ fdescribe('Source', function() {
       expect(personSourceRef.getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/MM93-JFK');
       expect(personSourceRef.getAttribution().getAgentId()).toBe('MMD8-3NT');
       expect(personSourceRef.getSourceDescriptionId()).toBe('MM93-JFK');
+      expect(personSourceRef.getAttachedEntityId()).toBe('KW7V-Y32');
+      expect(personSourceRef.getAttachedEntityUrl()).toBe('https://sandbox.familysearch.org/platform/tree/persons/KW7V-Y32');
 
       var coupleSourceRef = response.getCoupleSourceRefs()[0];
       expect(coupleSourceRef.getId()).toBe('MMMM-S3D');
       expect(coupleSourceRef.getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/MM93-JFK');
       expect(coupleSourceRef.getAttribution().getAgentId()).toBe('MMD8-3NT');
       expect(coupleSourceRef.getSourceDescriptionId()).toBe('MM93-JFK');
+      expect(coupleSourceRef.getAttachedEntityId()).toBe('MMM7-12S');
+      expect(coupleSourceRef.getAttachedEntityUrl()).toBe('https://sandbox.familysearch.org/platform/tree/couple-relationships/MMM7-12S');
 
       var childAndParentsSourceRef = response.getChildAndParentsSourceRefs()[0];
       expect(childAndParentsSourceRef.getId()).toBe('MMMM-S36');
       expect(childAndParentsSourceRef.getSourceDescriptionUrl()).toBe('https://sandbox.familysearch.org/platform/sources/descriptions/MM93-JFK');
       expect(childAndParentsSourceRef.getAttribution().getAgentId()).toBe('MMD8-3NT');
       expect(childAndParentsSourceRef.getSourceDescriptionId()).toBe('MM93-JFK');
+      expect(childAndParentsSourceRef.getAttachedEntityId()).toBe('MMMP-KN5');
+      expect(childAndParentsSourceRef.getAttachedEntityUrl()).toBe('https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/MMMP-KN5');
       done();
     });
   });
@@ -141,12 +161,12 @@ fdescribe('Source', function() {
       expect(personRefs.length).toBe(3);
       expect(personRefs[0].getId()).toBe('MBKV-8QB');
       expect(personRefs[0].getSourceDescriptionId()).toBe('9DPJ-RGW');
+      expect(personRefs[0].getAttachedEntityId()).toBe('LKRR-NJS');
+      expect(personRefs[0].getAttachedEntityUrl()).toBe('https://familysearch.org/platform/tree/persons/LKRR-NJS');
       var description = response.getSourceDescription(personRefs[0].getSourceDescriptionId());
       expect(description.getId()).toBe('9DPJ-RGW');
       expect(description.getAbout()).toBe('https://www.myheritage.com/research/collection-10126/1850-united-states-federal-census?s=236609761&itemId=19082759-&groupId=7b0a96c252d15433cee359f4a9e80f3d&action=showRecord&indId=individual-236609761-1501140');
       done();
-    }).catch(function(e){
-      console.error(e.stack);
     });
   });
 

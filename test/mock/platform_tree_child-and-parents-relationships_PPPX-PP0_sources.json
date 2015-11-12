@@ -52,6 +52,11 @@
   } ],
   "childAndParentsRelationships" : [ {
     "id" : "PPPX-PP0",
+    "links" : {
+      "relationship" : {
+        "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0"
+      }
+    },
     "sources" : [ {
       "id" : "fghij",
       "links" : {

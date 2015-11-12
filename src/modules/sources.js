@@ -71,6 +71,9 @@ FS.prototype.getMultiSourceDescription = function(urls) {
 FS.prototype._getSourceRefsQueryResponseMapper = function(response, includeDescriptions){
   var self = this,
       data = maybe(response.getData());
+  
+  // If source descriptions are included in the response then process them and
+  // add helper methods for accessing them to the response
   if(includeDescriptions){
     utils.forEach(data.sourceDescriptions, function(source, index, obj){
       obj[index] = self.createSourceDescription(source);
@@ -86,12 +89,20 @@ FS.prototype._getSourceRefsQueryResponseMapper = function(response, includeDescr
       }
     });
   }
+  
+  // Process source references
   utils.forEach(['persons','relationships','childAndParentsRelationships'], function(type){
-    data[type] = utils.map(data[type], function(group){
-      group.sources = utils.map(group.sources, function(source){
-        return self.createSourceRef(source);
+    var selfLinkName = type === 'persons' ? 'person' : 'relationship';
+    data[type] = utils.map(data[type], function(entity){
+      var entityId = entity.id,
+          entityUrl = maybe(maybe(entity.links)[selfLinkName]).href;
+      entity.sources = utils.map(entity.sources, function(source){
+        var sourceRef = self.createSourceRef(source);
+        sourceRef.setAttachedEntityId(entityId);
+        sourceRef.setAttachedEntityUrl(entityUrl);
+        return sourceRef;
       });
-      return group;
+      return entity;
     });
   });
   return utils.extend(response, {
@@ -182,6 +193,9 @@ FS.prototype.getSourceAttachments = function(sourceUrl){
 FS.prototype._getSourcesResponseMapper = function(response, root, includeDescriptions) {
   var self = this,
       data = maybe(response.getData());
+      
+  // If source descriptions are included in the response then process them and
+  // add helper methods for accessing them to the response
   if(includeDescriptions){
     utils.forEach(data.sourceDescriptions, function(source, index, obj){
       obj[index] = self.createSourceDescription(source);
@@ -197,17 +211,24 @@ FS.prototype._getSourcesResponseMapper = function(response, root, includeDescrip
       }
     });
   }
-  utils.forEach(maybe(maybe(data[root])[0]).sources, function(source, index, obj){
-    if(source.description.charAt(0) === '#'){
-      var descriptionId = source.description.substr(1);
-      utils.forEach(maybe(data.sourceDescriptions), function(description){
-        if(description.getId() === descriptionId){
-          source.description = description.getSourceDescriptionUrl();
-        }
-      });
-    }
-    obj[index] = self.createSourceRef(source);
-  });
+  
+  // Process the source refs and add helper methods to the response
+  var rootObj = maybe(maybe(data[root])[0]),
+      sources = rootObj.sources;
+  if(sources){
+    var selfLinkName = root === 'persons' ? 'person' : 'relationship',
+        entityId = rootObj.id,
+        entityUrl = maybe(maybe(maybe(rootObj).links)[selfLinkName]).href;
+    utils.forEach(maybe(maybe(data[root])[0]).sources, function(source, index, obj){
+      var sourceRef = self.createSourceRef(source);
+      if(source.description.charAt(0) === '#'){
+        sourceRef.setSourceDescription(response.getSourceDescription(source.description.substr(1)));
+      }
+      sourceRef.setAttachedEntityId(entityId);
+      sourceRef.setAttachedEntityUrl(entityUrl);
+      obj[index] = sourceRef;
+    });
+  }
   return utils.extend(response, {
     getSourceRefs: function() {
       return maybe(maybe(data[root])[0]).sources || [];

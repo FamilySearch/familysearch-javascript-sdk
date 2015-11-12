@@ -107,7 +107,6 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name sources.types:constructor.SourceRef#getSourceDescription
    * @methodOf sources.types:constructor.SourceRef
-
    * @return {Object} promise for the {@link sources.functions:getSourceDescription getSourceDescription} response
    */
   getSourceDescription: function() {
@@ -118,7 +117,6 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name sources.types:constructor.SourceRef#getTags
    * @methodOf sources.types:constructor.SourceRef
-
    * @return {string[]} an array of tags; e.g., http://gedcomx.org/Name or http://gedcomx.org/Birth
    */
   getTags: function() { 
@@ -126,12 +124,57 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
       return tag.resource;
     });
   },
+  
+  /**
+   * @ngdoc function
+   * @name sources.type:constructor.SourceRef#getAttachedEntityId
+   * @methodOf sources.types:constructor.SourceRef
+   * @return {String} ID of the person, couple, or child and parents that this source ref is attached to
+   */
+  getAttachedEntityId: function() {
+    // We store it outside of the data object so that it doesn't get serialized
+    return this.attachedEntityId;
+  },
+  
+  /**
+   * @ngdoc function
+   * @name sources.type:constructor.SourceRef#getAttachedEntityUrl
+   * @methodOf sources.types:constructor.SourceRef
+   * @return {String} URL of the person, couple, or child and parents that this source ref is attached to
+   */
+  getAttachedEntityUrl: function() {
+    // We store it outside of the data object so that it doesn't get serialized
+    return this.attachedEntityUrl;
+  },
+  
+  /**
+   * @ngdoc function
+   * @name sources.types:constructor.SourceRef#setAttachedEntityId
+   * @methodOf sources.types:constructor.SourceRef
+   * @param {string} entityId ID of the person, couple, or child and parents that this source ref is attached to
+   * @return {SourceRef} this source reference
+   */
+  setAttachedEntityId: function(entityId) {
+    this.attachedEntityId = entityId;
+    return this;
+  },
+  
+  /**
+   * @ngdoc function
+   * @name sources.types:constructor.SourceRef#setAttachedEntityUrl
+   * @methodOf sources.types:constructor.SourceRef
+   * @param {string} entityUrl URL of the person, couple, or child and parents that this source ref is attached to
+   * @return {SourceRef} this source reference
+   */
+  setAttachedEntityUrl: function(entityUrl) {
+    this.attachedEntityUrl = this.helpers.removeAccessToken(entityUrl);
+    return this;
+  },
 
   /**
    * @ngdoc function
    * @name sources.types:constructor.SourceRef#setSourceDescription
    * @methodOf sources.types:constructor.SourceRef
-
    * @param {SourceDescription|string} srcDesc SourceDescription object or URL of the source description
    * @return {SourceRef} this source reference
    */

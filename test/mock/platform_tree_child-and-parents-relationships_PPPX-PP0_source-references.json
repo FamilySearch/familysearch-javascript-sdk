@@ -1,6 +1,11 @@
 {
   "childAndParentsRelationships" : [ {
     "id" : "PPPX-PP0",
+    "links" : {
+      "relationship" : {
+        "href" : "https://familysearch.org/platform/tree/child-and-parents-relationships/PPPX-PP0"
+      }
+    },
     "sources" : [ {
       "id" : "fghij",
       "links" : {
@@ -34,7 +39,7 @@
         "modified" : 123456789,
         "changeMessage" : "Family is at the same address found in other sources associated with this family.  Names are a good match.  Estimated births are reasonable."
       },
-      "description" : "#SSSS-SS1",
+      "description" : "https://familysearch.org/platform/sources/descriptions/SSSS-SS1",
       "tags" : [ {
         "resource" : "http://gedcomx.org/Name"
       }, {
