@@ -1,4 +1,4 @@
-fdescribe('Source', function() {
+describe('Source', function() {
   
   it('description is returned from getSourceDescription', function(done) {
     FS.getSourceDescription('https://sandbox.familysearch.org/platform/sources/descriptions/MMMM-MMM').then(function(response) {
@@ -166,6 +166,9 @@ fdescribe('Source', function() {
       var description = response.getSourceDescription(personRefs[0].getSourceDescriptionId());
       expect(description.getId()).toBe('9DPJ-RGW');
       expect(description.getAbout()).toBe('https://www.myheritage.com/research/collection-10126/1850-united-states-federal-census?s=236609761&itemId=19082759-&groupId=7b0a96c252d15433cee359f4a9e80f3d&action=showRecord&indId=individual-236609761-1501140');
+      expect(response.getPersonIds().length).toBe(3);
+      expect(response.getCoupleIds().length).toBe(0);
+      expect(response.getChildAndParentsIds().length).toBe(0);
       done();
     });
   });

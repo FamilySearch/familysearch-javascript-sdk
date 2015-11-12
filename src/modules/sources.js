@@ -86,6 +86,21 @@ FS.prototype._getSourceRefsQueryResponseMapper = function(response, includeDescr
         return utils.find(data.sourceDescriptions, function(o){
           return o.getId() === id;
         });
+      },
+      getPersonIds: function() {
+        return utils.map(data.persons, function(person){
+          return person.id;
+        });
+      },
+      getCoupleIds: function() {
+        return utils.map(data.relationships, function(couple){
+          return couple.id;
+        });
+      },
+      getChildAndParentsIds: function() {
+        return utils.map(data.childAndParentsRelationships, function(cap){
+          return cap.id;
+        });
       }
     });
   }
