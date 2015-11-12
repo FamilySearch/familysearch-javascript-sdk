@@ -7404,7 +7404,9 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @return {string} URL of the source description - pass into {@link sources.functions:getSourceDescription getSourceDescription} for details
    */
   getSourceDescriptionUrl: function() {
-    return this.helpers.removeAccessToken(this.getDescription());
+    if(this.getDescription().charAt(0) !== '#'){
+      return this.helpers.removeAccessToken(this.getDescription());
+    }
   },
   
   /**
@@ -7415,14 +7417,17 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @return {string} Id of the source description
    */
   getSourceDescriptionId: function() {
-    return this.getSourceDescriptionUrl().split('/').pop();
+    if(this.getDescription().charAt(0) === '#'){
+      return this.getDescription().substr(1);
+    } else {
+      return this.getSourceDescriptionUrl().split('/').pop();
+    }
   },
 
   /**
    * @ngdoc function
    * @name sources.types:constructor.SourceRef#getSourceDescription
    * @methodOf sources.types:constructor.SourceRef
-
    * @return {Object} promise for the {@link sources.functions:getSourceDescription getSourceDescription} response
    */
   getSourceDescription: function() {
@@ -7433,7 +7438,6 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name sources.types:constructor.SourceRef#getTags
    * @methodOf sources.types:constructor.SourceRef
-
    * @return {string[]} an array of tags; e.g., http://gedcomx.org/Name or http://gedcomx.org/Birth
    */
   getTags: function() { 
@@ -7441,12 +7445,57 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
       return tag.resource;
     });
   },
+  
+  /**
+   * @ngdoc function
+   * @name sources.type:constructor.SourceRef#getAttachedEntityId
+   * @methodOf sources.types:constructor.SourceRef
+   * @return {String} ID of the person, couple, or child and parents that this source ref is attached to
+   */
+  getAttachedEntityId: function() {
+    // We store it outside of the data object so that it doesn't get serialized
+    return this.attachedEntityId;
+  },
+  
+  /**
+   * @ngdoc function
+   * @name sources.type:constructor.SourceRef#getAttachedEntityUrl
+   * @methodOf sources.types:constructor.SourceRef
+   * @return {String} URL of the person, couple, or child and parents that this source ref is attached to
+   */
+  getAttachedEntityUrl: function() {
+    // We store it outside of the data object so that it doesn't get serialized
+    return this.attachedEntityUrl;
+  },
+  
+  /**
+   * @ngdoc function
+   * @name sources.types:constructor.SourceRef#setAttachedEntityId
+   * @methodOf sources.types:constructor.SourceRef
+   * @param {string} entityId ID of the person, couple, or child and parents that this source ref is attached to
+   * @return {SourceRef} this source reference
+   */
+  setAttachedEntityId: function(entityId) {
+    this.attachedEntityId = entityId;
+    return this;
+  },
+  
+  /**
+   * @ngdoc function
+   * @name sources.types:constructor.SourceRef#setAttachedEntityUrl
+   * @methodOf sources.types:constructor.SourceRef
+   * @param {string} entityUrl URL of the person, couple, or child and parents that this source ref is attached to
+   * @return {SourceRef} this source reference
+   */
+  setAttachedEntityUrl: function(entityUrl) {
+    this.attachedEntityUrl = this.helpers.removeAccessToken(entityUrl);
+    return this;
+  },
 
   /**
    * @ngdoc function
    * @name sources.types:constructor.SourceRef#setSourceDescription
    * @methodOf sources.types:constructor.SourceRef
-
    * @param {SourceDescription|string} srcDesc SourceDescription object or URL of the source description
    * @return {SourceRef} this source reference
    */
@@ -11011,6 +11060,77 @@ FS.prototype.getMultiSourceDescription = function(urls) {
   });
 };
 
+FS.prototype._getSourceRefsQueryResponseMapper = function(response, includeDescriptions){
+  var self = this,
+      data = maybe(response.getData());
+  
+  // If source descriptions are included in the response then process them and
+  // add helper methods for accessing them to the response
+  if(includeDescriptions){
+    utils.forEach(data.sourceDescriptions, function(source, index, obj){
+      obj[index] = self.createSourceDescription(source);
+    });
+    utils.extend(response, {
+      getSourceDescriptions: function(){
+        return data.sourceDescriptions || [];
+      },
+      getSourceDescription: function(id) {
+        return utils.find(data.sourceDescriptions, function(o){
+          return o.getId() === id;
+        });
+      },
+      getPersonIds: function() {
+        return utils.map(data.persons, function(person){
+          return person.id;
+        });
+      },
+      getCoupleIds: function() {
+        return utils.map(data.relationships, function(couple){
+          return couple.id;
+        });
+      },
+      getChildAndParentsIds: function() {
+        return utils.map(data.childAndParentsRelationships, function(cap){
+          return cap.id;
+        });
+      }
+    });
+  }
+  
+  // Process source references
+  utils.forEach(['persons','relationships','childAndParentsRelationships'], function(type){
+    var selfLinkName = type === 'persons' ? 'person' : 'relationship';
+    data[type] = utils.map(data[type], function(entity){
+      var entityId = entity.id,
+          entityUrl = maybe(maybe(entity.links)[selfLinkName]).href;
+      entity.sources = utils.map(entity.sources, function(source){
+        var sourceRef = self.createSourceRef(source);
+        sourceRef.setAttachedEntityId(entityId);
+        sourceRef.setAttachedEntityUrl(entityUrl);
+        return sourceRef;
+      });
+      return entity;
+    });
+  });
+  return utils.extend(response, {
+    getPersonSourceRefs: function() {
+      return utils.flatMap(maybe(data.persons), function(person) {
+        return person.sources;
+      });
+    },
+    getCoupleSourceRefs: function() {
+      return utils.flatMap(maybe(data.relationships), function(couple) {
+        return couple.sources;
+      });
+    },
+    getChildAndParentsSourceRefs: function() {
+      return utils.flatMap(maybe(data.childAndParentsRelationships), function(childAndParents) {
+        return childAndParents.sources;
+      });
+    }
+  });
+};
+
 /**
  * @ngdoc function
  * @name sources.functions:getSourceRefsQuery
@@ -11030,35 +11150,11 @@ FS.prototype.getMultiSourceDescription = function(urls) {
  * @param {String} url url of the source references query resource of a source description
  * @return {Object} promise for the response
  */
-FS.prototype.getSourceRefsQuery = function(url, params) {
+FS.prototype.getSourceRefsQuery = function(url) {
   var self = this;
-  return self.plumbing.get(url, params, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
-    var data = maybe(response.getData());
-    utils.forEach(['persons','relationships','childAndParentsRelationships'], function(type){
-      data[type] = utils.map(data[type], function(group){
-        group.sources = utils.map(group.sources, function(source){
-          return self.createSourceRef(source);
-        });
-        return group;
-      });
-    });
-    return utils.extend(response, {
-      getPersonSourceRefs: function() {
-        return utils.flatMap(maybe(data.persons), function(person) {
-          return person.sources;
-        });
-      },
-      getCoupleSourceRefs: function() {
-        return utils.flatMap(maybe(data.relationships), function(couple) {
-          return couple.sources;
-        });
-      },
-      getChildAndParentsSourceRefs: function() {
-        return utils.flatMap(maybe(data.childAndParentsRelationships), function(childAndParents) {
-          return childAndParents.sources;
-        });
-      }
-    });
+  return self.plumbing.get(url, null, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
+    self._getSourceRefsQueryResponseMapper(response, false);
+    return response;
   });
 };
 
@@ -11095,13 +11191,24 @@ FS.prototype.getSourceAttachments = function(sourceUrl){
   var self = this,
       params = { source: sourceUrl },
       headers = {'X-FS-Feature-Tag':'local-source-description-references'};
-  return this.getSourceRefsQuery('/platform/tree/source-references', params, headers).then(function(response){
-    var data = maybe(response.getData());
+  return this.get('/platform/tree/source-references', params, headers).then(function(response){
+    self._getSourceRefsQueryResponseMapper(response, true);
+    return response;
+  });
+};
+
+FS.prototype._getSourcesResponseMapper = function(response, root, includeDescriptions) {
+  var self = this,
+      data = maybe(response.getData());
+      
+  // If source descriptions are included in the response then process them and
+  // add helper methods for accessing them to the response
+  if(includeDescriptions){
     utils.forEach(data.sourceDescriptions, function(source, index, obj){
       obj[index] = self.createSourceDescription(source);
     });
-    return utils.extend(response, {
-      getSourceDescriptions: function(){
+    utils.extend(response, {
+      getSourceDescriptions: function() {
         return data.sourceDescriptions || [];
       },
       getSourceDescription: function(id) {
@@ -11110,41 +11217,30 @@ FS.prototype.getSourceAttachments = function(sourceUrl){
         });
       }
     });
-  });
-};
-
-FS.prototype._getSourcesResponseMapper = function(response, root, includeDescriptions) {
-  var self = this,
-      data = maybe(response.getData());
-  if(includeDescriptions){
-    utils.forEach(data.sourceDescriptions, function(source, index, obj){
-      obj[index] = self.createSourceDescription(source);
+  }
+  
+  // Process the source refs and add helper methods to the response
+  var rootObj = maybe(maybe(data[root])[0]),
+      sources = rootObj.sources;
+  if(sources){
+    var selfLinkName = root === 'persons' ? 'person' : 'relationship',
+        entityId = rootObj.id,
+        entityUrl = maybe(maybe(maybe(rootObj).links)[selfLinkName]).href;
+    utils.forEach(maybe(maybe(data[root])[0]).sources, function(source, index, obj){
+      var sourceRef = self.createSourceRef(source);
+      if(source.description.charAt(0) === '#'){
+        sourceRef.setSourceDescription(response.getSourceDescription(source.description.substr(1)));
+      }
+      sourceRef.setAttachedEntityId(entityId);
+      sourceRef.setAttachedEntityUrl(entityUrl);
+      obj[index] = sourceRef;
     });
   }
-  utils.forEach(maybe(maybe(data[root])[0]).sources, function(source, index, obj){
-    if(source.description.charAt(0) === '#'){
-      var descriptionId = source.description.substr(1);
-      utils.forEach(maybe(data.sourceDescriptions), function(description){
-        if(description.getId() === descriptionId){
-          source.description = description.getSourceDescriptionUrl();
-        }
-      });
-    }
-    obj[index] = self.createSourceRef(source);
-  });
-  return utils.extend(response, utils.removeEmptyProperties({
+  return utils.extend(response, {
     getSourceRefs: function() {
       return maybe(maybe(data[root])[0]).sources || [];
-    },
-    getSourceDescriptions: includeDescriptions ? function() {
-      return data.sourceDescriptions || [];
-    } : null,
-    getSourceDescription: includeDescriptions ? function(id) {
-      return utils.find(data.sourceDescriptions, function(o){
-        return o.getId() === id;
-      });
-    } : null
-  }));
+    }
+  });
 };
 
 /**
