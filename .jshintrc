@@ -30,6 +30,7 @@
     "require": false,
     "module": false,
     "fetch": false,
-    "Promise": false
+    "Promise": false,
+    "Buffer": false
   }
 }

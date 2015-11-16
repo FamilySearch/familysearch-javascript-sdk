@@ -1,3 +1,5 @@
+var url = require('url');
+
 describe('An access token', function() {
  
   it('is cached', function(done) {
@@ -19,6 +21,16 @@ describe('An access token', function() {
   it('is returned from getAccessTokenForMobile', function(done){
     FS.invalidateAccessToken().then(function(){
       FS.getAccessTokenForMobile('username', 'password').then(function(accessToken){
+        expect(accessToken).toBe('2YoTnFdFEjr1zCsicMWpAA');
+        done();
+      });
+    });
+  });
+  
+  it('is returned from getAccessTokenWithClientCredentials', function(done){
+    FS.invalidateAccessToken().then(function(){
+      FS.getAccessTokenWithClientCredentials(process.env['FS_CLIENT_KEY'], 12345).then(function(accessToken){
+        expect(url.parse(__getHttpRequests()[0].url, true)['client_secret']).toBe('foo');
         expect(accessToken).toBe('2YoTnFdFEjr1zCsicMWpAA');
         done();
       });

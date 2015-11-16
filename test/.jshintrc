@@ -48,6 +48,8 @@
     "FS": true,
     "$": true,
     "dump": false,
-    "Promise": false
+    "Promise": false,
+    "process": false,
+    "__getHttpRequests": false
   }
 }

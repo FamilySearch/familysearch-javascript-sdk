@@ -84,7 +84,7 @@ module.exports = function(grunt) {
         exec: 'npm run coveralls'
       },
       browserify: {
-        exec: 'node_modules/.bin/browserify src/FamilySearch.js --standalone FamilySearch > dist/familysearch-javascript-sdk.js'
+        exec: 'npm run browserify'
       }
     },
     

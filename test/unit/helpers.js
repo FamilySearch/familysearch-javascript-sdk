@@ -2,6 +2,8 @@ var FamilySearch = require('../../src/FamilySearch'),
     mitm = require('mitm')(),
     _ = require('lodash'),
     fs = require('fs');
+    
+var requests = [];
 
 // not the same as src/helpers/decodeQueryString
 function decodeQueryString(qs) {
@@ -68,6 +70,8 @@ function loadFile(filename){
  * @param opts
  */
 function httpMock(req, res) {
+  requests.push(req);
+  
   var filename = getFilename(req);
   var data = loadFile(filename);
   //console.log(filename);
@@ -149,5 +153,16 @@ beforeEach(function() {
     'access_token': 'mock',
     'redirect_uri': 'http://example.com/foo'
   });
+  
+  /**
+   * For some tests we need access to requests but don't always get that
+   * via the response such as auth methods which return a token and not the
+   * response object and therefore no response.getRequest() method.
+   */
+  global.__getHttpRequests = function(){
+    return requests;
+  };
+  
+  requests = [];
 
 });

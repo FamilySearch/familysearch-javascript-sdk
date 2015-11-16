@@ -25,6 +25,7 @@
     "test": "grunt test --verbose",
     "build": "grunt build",
     "jasmine": "jasmine",
+    "browserify": "node_modules/.bin/browserify src/FamilySearch.js --standalone FamilySearch --exclude src/modules/node-only.js --no-builtins > dist/familysearch-javascript-sdk.js",
     "coverage": "istanbul cover ./node_modules/jasmine/bin/jasmine.js",
     "coveralls": "istanbul cover ./node_modules/jasmine/bin/jasmine.js && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
   },

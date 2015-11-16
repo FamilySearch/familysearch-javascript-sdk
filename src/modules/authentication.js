@@ -123,7 +123,6 @@ FS.prototype.getAccessToken = function(authCode) {
 /**
  * @ngdoc function
  * @name authentication.functions:getAccessTokenForMobile
-
  *
  * @description
  * Get the access token for the user, passing in their user name and password
@@ -156,6 +155,13 @@ FS.prototype.getAccessTokenForMobile = function(userName, password) {
       return self.handleAccessTokenResponse(response);
     });
   }
+};
+
+/**
+ * Docs and implementation are in `node-only.js`.
+ */
+FS.prototype.getAccessTokenWithClientCredentials = function(){
+  throw new Error('Authentication via client credentials is not supported in the browser.');
 };
 
 /**
