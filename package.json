@@ -2,9 +2,26 @@
   "name": "familysearch-javascript-sdk",
   "version": "2.3.0",
   "description": "Javascript SDK for FamilySearch",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/familysearch/familysearch-javascript-sdk.git"
+  },
+  "keywords": [
+    "familysearch"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rootsdev/familysearch-javascript-sdk/issues"
+  },
   "main": "src/FamilySearch.js",
+  "dependencies": {
+    "es6-promise": "3.0.2",
+    "isomorphic-fetch": "2.1.1",
+    "ursa": "^0.9.1"
+  },
   "devDependencies": {
-    "browserify": "8.1.3",
+    "browserify": "12.0.1",
     "coveralls": "2.11.2",
     "grunt": "0.4.5",
     "grunt-contrib-clean": "0.4.1",
@@ -25,25 +42,8 @@
     "test": "grunt test --verbose",
     "build": "grunt build",
     "jasmine": "jasmine",
-    "browserify": "node_modules/.bin/browserify src/FamilySearch.js --standalone FamilySearch --exclude src/modules/node-only.js --no-builtins > dist/familysearch-javascript-sdk.js",
+    "browserify": "browserify src/FamilySearch.js --standalone FamilySearch -i ./src/modules/node-only.js -o dist/familysearch-javascript-sdk.js",
     "coverage": "istanbul cover ./node_modules/jasmine/bin/jasmine.js",
     "coveralls": "istanbul cover ./node_modules/jasmine/bin/jasmine.js && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/familysearch/familysearch-javascript-sdk.git"
-  },
-  "keywords": [
-    "familysearch"
-  ],
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/rootsdev/familysearch-javascript-sdk/issues"
-  },
-  "dependencies": {
-    "es6-promise": "3.0.2",
-    "isomorphic-fetch": "2.1.1",
-    "ursa": "^0.9.1"
   }
 }
