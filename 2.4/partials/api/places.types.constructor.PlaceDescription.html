@@ -1,0 +1,88 @@
+<h1><code ng:non-bindable="">PlaceDescription</code>
+<div><span class="hint">type in module <code ng:non-bindable="">places</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="places-types-page places-types-constructor-placedescription-page"><p>Place description returned by the Place Authority.</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">PlaceDescription(client, data);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>client</td><td><a href="" class="label type-hint type-hint-familysearch">FamilySearch</a></td><td><div class="places-types-page places-types-constructor-placedescription-page"><p>FamilySearch sdk client</p>
+</div></td></tr><tr><td>data</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="places-types-page places-types-constructor-placedescription-page"><p>raw object data</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_getdisplay">getDisplay()</h3>
+<div class="getdisplay"><h5 id="methods_getdisplay_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="places-types-page places-types-constructor-placedescription-getdisplay-page"><p>includes <code>name</code>, <code>fullName</code>, and <code>type</code> attributes</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getfullname">getFullName()</h3>
+<div class="getfullname"><h5 id="methods_getfullname_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="places-types-page places-types-constructor-placedescription-getfullname-page"><p>The fully qualified name (e.g. includes the name of parent jursdictions) of this place as listed in the display properties</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getid">getId()</h3>
+<div class="getid"><h5 id="methods_getid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="places-types-page places-types-constructor-placedescription-getid-page"><p>place id</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getidentifiers">getIdentifiers()</h3>
+<div class="getidentifiers"><h5 id="methods_getidentifiers_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="places-types-page places-types-constructor-placedescription-getidentifiers-page"><p>map of identifiers to arrays of values</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getjurisdictiondetails">getJurisdictionDetails()</h3>
+<div class="getjurisdictiondetails"><div class="places-types-page places-types-constructor-placedescription-getjurisdictiondetails-page"><p>Get the full details of the jurisdiction&#39;s PlaceDescription. The promise
+will fail if no jurisdiction is available.</p>
+</div><h5 id="methods_getjurisdictiondetails_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="places-types-page places-types-constructor-placedescription-getjurisdictiondetails-page"><p>A promise for the response of retrieving the details for the jursdiction</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getjurisdictionsummary">getJurisdictionSummary()</h3>
+<div class="getjurisdictionsummary"><div class="places-types-page places-types-constructor-placedescription-getjurisdictionsummary-page"><p>Get a summary of the jurisdiction&#39;s place description, when available. Useful
+for place descriptions returned by <a href="#/api/places.functions:getPlaceDescription">places.functions:getPlaceDescription</a> if you just
+want the names and ids of all place descriptions in the jurisdiction chain. If you want
+more details then use <a href="#/api/places.types:constructor.PlaceDescription#getjurisdictiondetails">places.types:constructor.PlaceDescription#getJurisdictionDetails</a>.</p>
+</div><h5 id="methods_getjurisdictionsummary_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-placedescription">PlaceDescription</a></td><td><div class="places-types-page places-types-constructor-placedescription-getjurisdictionsummary-page"><p>A summary PlaceDescription for this PlaceDescription&#39;s jurisdiction.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getlang">getLang()</h3>
+<div class="getlang"><h5 id="methods_getlang_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="places-types-page places-types-constructor-placedescription-getlang-page"><p>The language of the Place Description. See <a href="http://www.w3.org/International/articles/language-tags/"><a href="http://www.w3.org/International/articles/language-tags/">http://www.w3.org/International/articles/language-tags/</a></a></p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getlatitude">getLatitude()</h3>
+<div class="getlatitude"><h5 id="methods_getlatitude_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="places-types-page places-types-constructor-placedescription-getlatitude-page"><p>Degrees north or south of the Equator (0.0 degrees). Values range from −90.0 degrees (south) to 90.0 degrees (north).</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getlongitude">getLongitude()</h3>
+<div class="getlongitude"><h5 id="methods_getlongitude_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="places-types-page places-types-constructor-placedescription-getlongitude-page"><p>Angular distance in degrees, relative to the Prime Meridian. Values range from −180.0 degrees (west of the Meridian) to 180.0 degrees (east of the Meridian).</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getname">getName()</h3>
+<div class="getname"><h5 id="methods_getname_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="places-types-page places-types-constructor-placedescription-getname-page"><p>The name of this place as listed in the display properties.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getnames">getNames()</h3>
+<div class="getnames"><h5 id="methods_getnames_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-textvalue">TextValue[]</a></td><td><div class="places-types-page places-types-constructor-placedescription-getnames-page"><p>An array of names. The preferred value is first.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getplacedescriptionurl">getPlaceDescriptionUrl()</h3>
+<div class="getplacedescriptionurl"><h5 id="methods_getplacedescriptionurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="places-types-page places-types-constructor-placedescription-getplacedescriptionurl-page"><p>The place description&#39;s url without the access token</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_gettemporaldescription">getTemporalDescription()</h3>
+<div class="gettemporaldescription"><h5 id="methods_gettemporaldescription_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="places-types-page places-types-constructor-placedescription-gettemporaldescription-page"><p>A description of the time period to which this place description is relevant.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_gettype">getType()</h3>
+<div class="gettype"><h5 id="methods_gettype_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="places-types-page places-types-constructor-placedescription-gettype-page"><p>The type as listed in the display properties.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_gettypeuri">getTypeUri()</h3>
+<div class="gettypeuri"><h5 id="methods_gettypeuri_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="places-types-page places-types-constructor-placedescription-gettypeuri-page"><p>A URI used to identify the type of a place.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setjurisdiction">setJurisdiction(A)</h3>
+<div class="setjurisdiction"><h5 id="methods_setjurisdiction_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>A</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="places-types-page places-types-constructor-placedescription-setjurisdiction-page"><p>json object representing the new jursidication data, or a PlaceDescription object.</p>
+</div></td></tr></tbody></table><h5 id="methods_setjurisdiction_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-placedescription">PlaceDescription</a></td><td><div class="places-types-page places-types-constructor-placedescription-setjurisdiction-page"><p>this object</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

@@ -1,35 +1,71 @@
-!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.FamilySearch=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.FamilySearch = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+
+},{}],2:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
 var queue = [];
 var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
 
 function drainQueue() {
     if (draining) {
         return;
     }
+    var timeout = setTimeout(cleanUpNextTick);
     draining = true;
-    var currentQueue;
+
     var len = queue.length;
     while(len) {
         currentQueue = queue;
         queue = [];
-        var i = -1;
-        while (++i < len) {
-            currentQueue[i]();
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
         }
+        queueIndex = -1;
         len = queue.length;
     }
+    currentQueue = null;
     draining = false;
+    clearTimeout(timeout);
 }
+
 process.nextTick = function (fun) {
-    queue.push(fun);
-    if (!draining) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
         setTimeout(drainQueue, 0);
     }
 };
 
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
 process.title = 'browser';
 process.browser = true;
 process.env = {};
@@ -51,14 +87,13 @@ process.binding = function (name) {
     throw new Error('process.binding is not supported');
 };
 
-// TODO(shtylman)
 process.cwd = function () { return '/' };
 process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 process.umask = function() { return 0; };
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 (function (process,global){
 /*!
  * @overview es6-promise - a tiny implementation of Promises/A+.
@@ -1029,7 +1064,7 @@ process.umask = function() { return 0; };
 
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":1}],3:[function(require,module,exports){
+},{"_process":2}],4:[function(require,module,exports){
 // the whatwg-fetch polyfill installs the fetch() function
 // on the global object (window or self)
 //
@@ -1037,7 +1072,7 @@ process.umask = function() { return 0; };
 require('whatwg-fetch');
 module.exports = self.fetch.bind(self);
 
-},{"whatwg-fetch":4}],4:[function(require,module,exports){
+},{"whatwg-fetch":5}],5:[function(require,module,exports){
 (function() {
   'use strict';
 
@@ -1374,7 +1409,7 @@ module.exports = self.fetch.bind(self);
   self.fetch.polyfill = true
 })();
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 var globals = require('./globals'),
     utils = require('./utils'),
     Helpers = require('./helpers'),
@@ -1480,6 +1515,7 @@ require('./modules/sources');
 require('./modules/spouses');
 require('./modules/users');
 require('./modules/utilities');
+require('./modules/node-only');
 
 // These files contain class definitions
 require('./classes/base');
@@ -1528,7 +1564,7 @@ function extendFSPrototype(moduleName, functionName){
     return this[moduleName][functionName].apply(this[moduleName], arguments);
   };
 }
-},{"./classes/agent":6,"./classes/attribution":7,"./classes/base":8,"./classes/change":9,"./classes/childAndParents":10,"./classes/collection":11,"./classes/comment":12,"./classes/couple":13,"./classes/date":14,"./classes/discussion":15,"./classes/discussionRef":16,"./classes/fact":17,"./classes/gender":18,"./classes/memory":19,"./classes/memoryArtifactRef":20,"./classes/memoryPersona":21,"./classes/memoryPersonaRef":22,"./classes/name":23,"./classes/note":24,"./classes/person":25,"./classes/placeDescription":26,"./classes/placeReference":27,"./classes/placesSearchResult":28,"./classes/searchResult":29,"./classes/sourceDescription":30,"./classes/sourceRef":31,"./classes/textValue":32,"./classes/user":33,"./classes/vocabularyElement":34,"./classes/vocabularyList":35,"./globals":36,"./helpers":37,"./modules/authentication":38,"./modules/authorities":39,"./modules/changeHistory":40,"./modules/discussions":41,"./modules/memories":42,"./modules/notes":43,"./modules/ordinances":44,"./modules/parentsAndChildren":45,"./modules/pedigree":46,"./modules/persons":47,"./modules/places":48,"./modules/searchAndMatch":49,"./modules/sourceBox":50,"./modules/sources":51,"./modules/spouses":52,"./modules/users":53,"./modules/utilities":54,"./plumbing":55,"./utils":57}],6:[function(require,module,exports){
+},{"./classes/agent":7,"./classes/attribution":8,"./classes/base":9,"./classes/change":10,"./classes/childAndParents":11,"./classes/collection":12,"./classes/comment":13,"./classes/couple":14,"./classes/date":15,"./classes/discussion":16,"./classes/discussionRef":17,"./classes/fact":18,"./classes/gender":19,"./classes/memory":20,"./classes/memoryArtifactRef":21,"./classes/memoryPersona":22,"./classes/memoryPersonaRef":23,"./classes/name":24,"./classes/note":25,"./classes/person":26,"./classes/placeDescription":27,"./classes/placeReference":28,"./classes/placesSearchResult":29,"./classes/searchResult":30,"./classes/sourceDescription":31,"./classes/sourceRef":32,"./classes/textValue":33,"./classes/user":34,"./classes/vocabularyElement":35,"./classes/vocabularyList":36,"./globals":37,"./helpers":38,"./modules/authentication":39,"./modules/authorities":40,"./modules/changeHistory":41,"./modules/discussions":42,"./modules/memories":43,"./modules/node-only":1,"./modules/notes":44,"./modules/ordinances":45,"./modules/parentsAndChildren":46,"./modules/pedigree":47,"./modules/persons":48,"./modules/places":49,"./modules/searchAndMatch":50,"./modules/sourceBox":51,"./modules/sources":52,"./modules/spouses":53,"./modules/users":54,"./modules/utilities":55,"./plumbing":56,"./utils":58}],7:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -1622,7 +1658,7 @@ Agent.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
     return maybe(maybe(this.data.addresses)[0]).value;
   }
 });
-},{"./../FamilySearch":5,"./../utils":57}],7:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],8:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -1720,7 +1756,7 @@ Attribution.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   getAgent: function() { return this.client.getAgent(this.getAgentUrl()); }
 });
 
-},{"./../FamilySearch":5,"./../utils":57}],8:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],9:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -1947,7 +1983,7 @@ FS.BaseClass.prototype.toString = function(){
 FS.BaseClass.prototype.inspect = function(){
   return this.toString();  
 };
-},{"./../FamilySearch":5,"./../utils":57}],9:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],10:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -2063,7 +2099,7 @@ Change.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":57}],10:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],11:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     relHelpers = require('../relationshipHelpers'),
     utils = require('../utils'),
@@ -2609,7 +2645,7 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
   }
   
 });
-},{"../FamilySearch":5,"../relationshipHelpers":56,"../utils":57}],11:[function(require,module,exports){
+},{"../FamilySearch":6,"../relationshipHelpers":57,"../utils":58}],12:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -2733,7 +2769,7 @@ Collection.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":57}],12:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],13:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -2867,7 +2903,7 @@ Comment.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":57}],13:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],14:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     relHelpers = require('../relationshipHelpers'),
     utils = require('../utils'),
@@ -3308,7 +3344,7 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
     });
   }
 });
-},{"../FamilySearch":5,"../relationshipHelpers":56,"../utils":57}],14:[function(require,module,exports){
+},{"../FamilySearch":6,"../relationshipHelpers":57,"../utils":58}],15:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('../utils');
 
@@ -3417,7 +3453,7 @@ FSDate.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   
 });
 
-},{"../utils":57,"./../FamilySearch":5}],15:[function(require,module,exports){
+},{"../utils":58,"./../FamilySearch":6}],16:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -3597,7 +3633,7 @@ Discussion.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":57}],16:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],17:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -3780,7 +3816,7 @@ DiscussionRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":57}],17:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],18:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -4143,7 +4179,7 @@ Fact.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 });
 
-},{"./../FamilySearch":5,"./../utils":57}],18:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],19:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('../utils');
 
@@ -4202,7 +4238,7 @@ Gender.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   
 });
 
-},{"../utils":57,"./../FamilySearch":5}],19:[function(require,module,exports){
+},{"../utils":58,"./../FamilySearch":6}],20:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -4492,7 +4528,7 @@ Memory.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":57}],20:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],21:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -4607,7 +4643,7 @@ MemoryArtifactRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype)
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":57}],21:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],22:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -4787,7 +4823,7 @@ MemoryPersona.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":57}],22:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],23:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -4954,7 +4990,7 @@ MemoryPersonaRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype),
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":57}],23:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],24:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -5353,7 +5389,7 @@ Name.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 });
 
-},{"./../FamilySearch":5,"./../utils":57}],24:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],25:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -5473,7 +5509,7 @@ Note.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":57}],25:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],26:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     utils = require('../utils'),
     maybe = utils.maybe;
@@ -6522,7 +6558,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 });
 
-},{"../FamilySearch":5,"../utils":57}],26:[function(require,module,exports){
+},{"../FamilySearch":6,"../utils":58}],27:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -6724,7 +6760,7 @@ PlaceDescription.prototype = utils.extend(Object.create(FS.BaseClass.prototype),
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":57}],27:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],28:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -6806,7 +6842,7 @@ PlaceReference.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
   
 });
-},{"./../FamilySearch":5,"./../utils":57}],28:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],29:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -6890,7 +6926,7 @@ PlacesSearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype
   }
    
 });
-},{"./../FamilySearch":5,"./../utils":57}],29:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],30:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -7113,7 +7149,7 @@ SearchResult.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    */
   getChildren: function() { return utils.map(this.getChildIds(), this.getPerson, this); }
 });
-},{"./../FamilySearch":5,"./../utils":57}],30:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],31:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -7318,7 +7354,7 @@ SourceDescription.prototype = utils.extend(Object.create(FS.BaseClass.prototype)
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":57}],31:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],32:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -7616,7 +7652,7 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
 
 });
-},{"./../FamilySearch":5,"./../utils":57}],32:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],33:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('../utils');
 
@@ -7665,7 +7701,7 @@ TextValue.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    */ 
   getValue: function(){ return this.data.value; }
 });
-},{"../utils":57,"./../FamilySearch":5}],33:[function(require,module,exports){
+},{"../utils":58,"./../FamilySearch":6}],34:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     utils = require('../utils');
 
@@ -7779,7 +7815,7 @@ User.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    */
   getPreferredLanguage: function() { return this.data.preferredLanguage; }
 });
-},{"../FamilySearch":5,"../utils":57}],34:[function(require,module,exports){
+},{"../FamilySearch":6,"../utils":58}],35:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -7841,7 +7877,7 @@ VocabularyElement.prototype = utils.extend(Object.create(FS.BaseClass.prototype)
   }
    
 });
-},{"./../FamilySearch":5,"./../utils":57}],35:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],36:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -7918,7 +7954,7 @@ VocabularyList.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   }
    
 });
-},{"./../FamilySearch":5,"./../utils":57}],36:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],37:[function(require,module,exports){
 /**
  * TODO: Add interface for modifying these so that you
  * don't have to pass the same config options
@@ -7956,7 +7992,7 @@ module.exports = {
   collectionsUrl: '/platform/collections'
 };
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 var utils = require('./utils'),
     forEach = utils.forEach;
 
@@ -8418,7 +8454,7 @@ Helpers.prototype.eraseCookie = function(name) {
 };
 
 module.exports = Helpers;
-},{"./utils":57}],38:[function(require,module,exports){
+},{"./utils":58}],39:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -8544,7 +8580,6 @@ FS.prototype.getAccessToken = function(authCode) {
 /**
  * @ngdoc function
  * @name authentication.functions:getAccessTokenForMobile
-
  *
  * @description
  * Get the access token for the user, passing in their user name and password
@@ -8577,6 +8612,13 @@ FS.prototype.getAccessTokenForMobile = function(userName, password) {
       return self.handleAccessTokenResponse(response);
     });
   }
+};
+
+/**
+ * Docs and implementation are in `node-only.js`.
+ */
+FS.prototype.getAccessTokenWithClientCredentials = function(){
+  throw new Error('Authentication via client credentials is not supported in the browser.');
 };
 
 /**
@@ -8720,8 +8762,7 @@ FS.prototype._pollForAuthCode = function(popup) {
     return Promise.reject('Popup blocked');
   }
 };
-
-},{"./../FamilySearch":5,"./../utils":57}],39:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],40:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -8769,7 +8810,7 @@ FS.prototype.getDate = function(date) {
   });
 };
 
-},{"./../FamilySearch":5,"./../utils":57}],40:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],41:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -8839,7 +8880,7 @@ FS.prototype.getChanges = function(url, params) {
 FS.prototype.restoreChange = function(url) {
   return this.plumbing.post(url, null, {'Content-Type': void 0});
 };
-},{"./../FamilySearch":5,"./../utils":57}],41:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],42:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -9060,7 +9101,7 @@ FS.prototype.deleteComment = function(url) {
   return this.plumbing.del(url);
 };
 
-},{"./../FamilySearch":5,"./../utils":57}],42:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],43:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -9376,7 +9417,7 @@ FS.prototype.deleteMemoryPersonaRef = function(url) {
   return this.plumbing.del(url);
 };
 
-},{"./../FamilySearch":5,"./../utils":57}],43:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],44:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -9535,7 +9576,7 @@ FS.prototype.deleteNote = function(url, changeMessage) {
   return self.plumbing.del(url, headers);
 };
 
-},{"./../FamilySearch":5,"./../utils":57}],44:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],45:[function(require,module,exports){
 var FS = require('./../FamilySearch');
 
 /**
@@ -9594,7 +9635,7 @@ FS.prototype.getOrdinancesPolicy = function(format, language){
   // It's not availabe in the collection as of 10/10/2015
   return this.plumbing.get('/platform/ordinances/policy', null, headers);
 };
-},{"./../FamilySearch":5}],45:[function(require,module,exports){
+},{"./../FamilySearch":6}],46:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     utils = require('../utils'),
     maybe = utils.maybe;
@@ -9690,7 +9731,7 @@ FS.prototype.restoreChildAndParents = function(url) {
   return this.plumbing.post(url, null, {'Content-Type': 'application/x-fs-v1+json'});
 };
 
-},{"../FamilySearch":5,"../utils":57}],46:[function(require,module,exports){
+},{"../FamilySearch":6,"../utils":58}],47:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -9839,7 +9880,7 @@ FS.prototype.getDescendancy = function(pid, params) {
   });
 };
 
-},{"./../FamilySearch":5,"./../utils":57}],47:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],48:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     utils = require('../utils'),
     maybe = utils.maybe;
@@ -10311,7 +10352,7 @@ FS.prototype.deletePreferredParents = function(pid) {
 // TODO person merge
 // TODO person not a match
 
-},{"../FamilySearch":5,"../utils":57}],48:[function(require,module,exports){
+},{"../FamilySearch":6,"../utils":58}],49:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -10603,7 +10644,7 @@ FS.prototype.getPlaceTypeGroups = function() {
     });
   });
 };
-},{"./../FamilySearch":5,"./../utils":57}],49:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],50:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils');
 
@@ -10757,7 +10798,7 @@ FS.prototype.getPersonMatchesQuery = function(params) {
   });
 };
 
-},{"./../FamilySearch":5,"./../utils":57}],50:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],51:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -10989,7 +11030,7 @@ FS.prototype.deleteCollection = function(url) {
   return this.plumbing.del(url);
 };
 
-},{"./../FamilySearch":5,"./../utils":57}],51:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],52:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -11374,7 +11415,7 @@ FS.prototype._createAndAttachSource = function(obj, sourceDescription, changeMes
     return sourceRef.save(obj.getLink('source-references').href, changeMessage);
   });
 };
-},{"./../FamilySearch":5,"./../utils":57}],52:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],53:[function(require,module,exports){
 var FS = require('../FamilySearch'),
     utils = require('../utils'),
     maybe = utils.maybe;
@@ -11468,7 +11509,7 @@ FS.prototype.restoreCouple = function(url) {
   return this.plumbing.post(url, null, {'Content-Type': 'application/x-fs-v1+json'});
 };
 
-},{"../FamilySearch":5,"../utils":57}],53:[function(require,module,exports){
+},{"../FamilySearch":6,"../utils":58}],54:[function(require,module,exports){
 var FS = require('./../FamilySearch'),
     utils = require('./../utils'),
     maybe = utils.maybe;
@@ -11589,7 +11630,7 @@ FS.prototype.getCurrentUserPerson = function() {
   });
 };
 
-},{"./../FamilySearch":5,"./../utils":57}],54:[function(require,module,exports){
+},{"./../FamilySearch":6,"./../utils":58}],55:[function(require,module,exports){
 var FS = require('./../FamilySearch');
 
 /**
@@ -11637,7 +11678,7 @@ FS.prototype.getPendingModifications = function() {
     return response;
   });
 };
-},{"./../FamilySearch":5}],55:[function(require,module,exports){
+},{"./../FamilySearch":6}],56:[function(require,module,exports){
 // These are globals so that their interface is the same
 // both in the client and on the server
 require('es6-promise').polyfill();
@@ -12025,7 +12066,7 @@ Plumbing.prototype._http = function(method, url, headers, body, retries){
 };
 
 module.exports = Plumbing;
-},{"./utils":57,"es6-promise":2,"isomorphic-fetch":3}],56:[function(require,module,exports){
+},{"./utils":58,"es6-promise":3,"isomorphic-fetch":4}],57:[function(require,module,exports){
 var FS = require('./FamilySearch'),
     utils = require('./utils'),
     maybe = utils.maybe,
@@ -12110,7 +12151,7 @@ exports.deleteFact = function(prop, value, changeMessage) {
 };
 
 module.exports = exports;
-},{"./FamilySearch":5,"./utils":57}],57:[function(require,module,exports){
+},{"./FamilySearch":6,"./utils":58}],58:[function(require,module,exports){
 /**
  * Collection of utility functions. Only put functions in here that aren't
  * specific to the FamilySearch API (those go in helpers.js)
@@ -12486,5 +12527,5 @@ exports.searchParamsFilter = function(params) {
   return exports.map(exports.filter(exports.keys(params), function(key) { return !nonQueryParams[key]; }),
     function(key) { return key+':'+quoteSearchParam(params[key]); }).join(' ');
 };
-},{}]},{},[5])(5)
+},{}]},{},[6])(6)
 });
