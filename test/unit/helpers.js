@@ -70,6 +70,16 @@ function loadFile(filename){
  * @param opts
  */
 function httpMock(req, res) {
+  
+  // Make the request body available to tests
+  var body = '';
+  req.on('data', function(data){
+    body += data;
+  });
+  req.on('end', function(){
+    req.body = body;
+  });
+  
   requests.push(req);
   
   var filename = getFilename(req);

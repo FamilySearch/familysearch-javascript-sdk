@@ -1,4 +1,5 @@
-var url = require('url');
+var querystring = require('querystring'),
+    fs = require('fs');
 
 describe('An access token', function() {
  
@@ -29,8 +30,11 @@ describe('An access token', function() {
   
   it('is returned from getAccessTokenWithClientCredentials', function(done){
     FS.invalidateAccessToken().then(function(){
-      FS.getAccessTokenWithClientCredentials(process.env['FS_CLIENT_KEY'], 12345).then(function(accessToken){
-        expect(url.parse(__getHttpRequests()[0].url, true)['client_secret']).toBe('foo');
+      FS.getAccessTokenWithClientCredentials(fs.readFileSync('key.pem'), process.env['FS_KEY_PASSWORD'], 1447773012436).then(function(accessToken){
+        var request = __getHttpRequests()[3],
+            body = request.body,
+            params = querystring.parse(body);
+        expect(params['client_secret']).toBe('vAo5bmjV2SZj9XCZJ5HAew6bFwrz1uuPyyQMfjlAddoELBKkZdTsaua7iK6J0AZPu9vo8Nzd/Nc/r1UHiSVR0N4N5q8DX8p5jDe+/LRzwyog1tS6zW/ke8S/x+eSNtbMhXAsHixMJkwrncMgmhoqEYX99Glh4wc4CNVU+eSB8seBDG37KTlUsEK//gm+vbt2/v6A3U4CEp7BTPMIGNWoWm0548zzO01cnZ2zezXMuwDARH0ENy3gQ37sG2tI+9MBHijO7Q8TG+4GfbVzz/QOQuDDL/rf9MonZcFF+pdaESDk7NpRGeXKGfCpHHHHQF7Eyobisdrl35WGowdCwnUzew==');
         expect(accessToken).toBe('2YoTnFdFEjr1zCsicMWpAA');
         done();
       });
