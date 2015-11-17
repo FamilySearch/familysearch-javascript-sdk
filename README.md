@@ -1,6 +1,6 @@
 # GedcomX - JavaScript SDK
 
-[![npm](https://img.shields.io/npm/v/familysearch-javascript-sdk.svg)]()
+[![npm](https://img.shields.io/npm/v/familysearch-javascript-sdk.svg)](https://www.npmjs.com/package/familysearch-javascript-sdk)
 [![Build Status](https://travis-ci.org/FamilySearch/familysearch-javascript-sdk.png)](https://travis-ci.org/FamilySearch/familysearch-javascript-sdk)
 [![Coverage Status](https://coveralls.io/repos/FamilySearch/familysearch-javascript-sdk/badge.svg?branch=master)](https://coveralls.io/r/FamilySearch/familysearch-javascript-sdk?branch=master)
 [![Dependency Status](https://david-dm.org/FamilySearch/familysearch-javascript-sdk.svg)](https://david-dm.org/FamilySearch/familysearch-javascript-sdk)
