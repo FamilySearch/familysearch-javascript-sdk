@@ -110,7 +110,8 @@ FS.prototype.getAccessToken = function(authCode) {
       return plumbing.post(url, {
             'grant_type' : 'authorization_code',
             'code'       : authCode,
-            'client_id'  : settings.clientId
+            'client_id'  : settings.clientId,
+            'redirect_uri'  : settings.redirectUri
           },
           // access token endpoint says it accepts json but it doesn't
           {'Content-Type': 'application/x-www-form-urlencoded'}).then(function(response){
