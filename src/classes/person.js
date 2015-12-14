@@ -474,10 +474,10 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @name person.types:constructor.Person#getSourceRefs
    * @methodOf person.types:constructor.Person
 
-   * @return {Object} promise for the {@link sources.functions:getPersonSourceRefs getPersonSourceRefs} response
+   * @return {Object} promise for the {@link sources.functions:getSourceRefs getSourceRefs} response
    */
   getSourceRefs: function() {
-    return this.client.getPersonSourceRefs(this.getId());
+    return this.client.getSourceRefs(this.getLink('source-references').href);
   },
 
   /**
@@ -485,10 +485,10 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @name person.types:constructor.Person#getSources
    * @methodOf person.types:constructor.Person
 
-   * @return {Object} promise for the {@link sources.functions:getPersonSourcesQuery getPersonSourcesQuery} response
+   * @return {Object} promise for the {@link sources.functions:getSourcesQuery getSourcesQuery} response
    */
   getSources: function() {
-    return this.client.getPersonSourcesQuery(this.getId());
+    return this.client.getSourcesQuery(this.getLink('source-descriptions').href);
   },
 
   /**

@@ -604,5 +604,53 @@ describe('A person', function() {
       done();
     });
   });
+  
+  it('source refs are returned by Person.getSourceRefs', function(done){
+    var person = FS.createPerson({
+      id: 'PPPP-PPP',
+      links: {
+        'source-references': {
+          href: 'https://familysearch.org/platform/tree/persons/PPPP-PPP/source-references'
+        }
+      }
+    });
+    person.getSourceRefs().then(function(response){
+      var sourceRefs = response.getSourceRefs();
+      expect(sourceRefs[0].getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
+      expect(sourceRefs[0].getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/SSSS-SS1');
+      expect(sourceRefs[0].getAttachedEntityId()).toBe('PPPP-PPP');
+      expect(sourceRefs[0].getAttachedEntityUrl()).toBe('https://familysearch.org/platform/tree/persons/PPPP-PPP');
+      expect(sourceRefs[1].getAttribution().getAgentId()).toBe('UUUU-UUU');
+      expect(sourceRefs[1].getAttribution().getModifiedTimestamp()).toBe(987654321);
+      expect(sourceRefs[1].getAttribution().getChangeMessage()).toBe('Dates and location match with other sources.');
+      done();
+    });
+  });
+  
+  it('source refs and descriptions are returned by Person.getSourcesQuery', function(done){
+    var person = FS.createPerson({
+      id: 'PPPP-PPP',
+      links: {
+        'source-descriptions': {
+          href: 'https://familysearch.org/platform/tree/persons/PPPP-PPP/sources'
+        }
+      }
+    });
+    person.getSources().then(function(response){
+      var sourceRefs = response.getSourceRefs();
+      expect(sourceRefs[0].getTags()).toEqual(['http://gedcomx.org/Name', 'http://gedcomx.org/Gender', 'http://gedcomx.org/Birth']);
+      expect(sourceRefs[0].getSourceDescriptionUrl()).toBe('https://familysearch.org/platform/sources/descriptions/SSSS-SS1');
+      expect(sourceRefs[0].getAttachedEntityId()).toBe('PPPP-PPP');
+      expect(sourceRefs[0].getAttachedEntityUrl()).toBe('https://familysearch.org/platform/tree/persons/PPPP-PPP');
+      expect(sourceRefs[1].getAttribution().getAgentId()).toBe('UUUU-UUU');
+      expect(sourceRefs[1].getAttribution().getModifiedTimestamp()).toBe(987654321);
+      expect(sourceRefs[1].getAttribution().getChangeMessage()).toBe('Dates and location match with other sources.');
+      var sourceDesc = response.getSourceDescription(sourceRefs[0].getSourceDescriptionId());
+      expect(sourceDesc.getId()).toBe('SSSS-SS1');
+      expect(sourceDesc.getAttribution().getAgentId()).toBe('123');
+      expect(sourceDesc.getTitle()).toBe('1900 US Census, Ethel Hollivet');
+      done();
+    });
+  });
 
 });
