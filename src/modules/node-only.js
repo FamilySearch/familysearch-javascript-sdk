@@ -15,6 +15,7 @@ var FS = require('./../FamilySearch'),
  * @param {String} key A PEM-encoded key. Matches the `pem` parameter of [ursa.createPrivateKey()](https://github.com/quartzjer/ursa#ursacreateprivatekeypem-password-encoding).
  * @param {String=} password The password for descrypting the key, if necessary.
  * @param {Integer|String=} time This parameter is only available for the sake of testing. Do not use it in production.
+ * @return {Object} a promise for the (string) access token.
  */
 FS.prototype.getAccessTokenWithClientCredentials = function(key, password, time){
   
