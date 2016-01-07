@@ -73,7 +73,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "authentication",
       "shortDescription": "Get an access token via client credentials.",
-      "keywords": "access api authentication client createprivatekey credentials descrypting function functions key matches parameter password pem pem-encoded production sake testing time token ursacreateprivatekeypem-password-encoding"
+      "keywords": "access api authentication client createprivatekey credentials descrypting function functions key matches parameter password pem pem-encoded production promise sake testing time token ursacreateprivatekeypem-password-encoding"
     },
     {
       "section": "api",
