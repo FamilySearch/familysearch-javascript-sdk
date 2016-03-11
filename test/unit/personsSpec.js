@@ -652,5 +652,28 @@ describe('A person', function() {
       done();
     });
   });
+  
+  it('notes are returned by Person.getNotes', function(done){
+    var person = FS.createPerson({
+      id: 'P12-3456',
+      links: {
+        notes: {
+          href: 'https://familysearch.org/platform/tree/persons/P12-3456/notes'
+        }
+      }
+    });
+    person.getNotes().then(function(response){
+      var notes = response.getNotes();
+      expect(notes.length).toBe(2);
+      expect(notes[0].getId()).toBe('1804317705');
+      expect(notes[0].getSubject()).toBe('note 0');
+      expect(notes[0].getNoteUrl()).toBe('https://familysearch.org/platform/tree/persons/P12-3456/notes/1804317705');
+      expect(notes[0].getText()).toBe('Sample note text');
+      expect(notes[0].getAttribution().getAgentId()).toBe('MMD8-3NT');
+      expect(notes[1].getId()).toBe('1805241226');
+      expect(notes[1].getSubject()).toBe('note 1');
+      done();
+    });
+  });
 
 });
