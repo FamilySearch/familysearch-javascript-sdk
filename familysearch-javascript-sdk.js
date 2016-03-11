@@ -5975,10 +5975,10 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @name person.types:constructor.Person#getNotes
    * @methodOf person.types:constructor.Person
 
-   * @return {Object} promise for the {@link notes.functions:getPersonNotes getPersonNotes} response
+   * @return {Object} promise for the {@link notes.functions:getNotes getNotes} response
    */
   getNotes: function() {
-    return this.client.getPersonNotes(this.helpers.removeAccessToken(maybe(this.getLink('notes')).href));
+    return this.client.getNotes(maybe(this.getLink('notes')).href);
   },
 
   /**
