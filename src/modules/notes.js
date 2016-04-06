@@ -118,7 +118,8 @@ FS.prototype.getMultiNote = function(urls) {
  */
 FS.prototype.getNotes = function(url) {
   var self = this;
-  return self.plumbing.get(url).then(function(response){
+  // child and parents note requires x-fs-v1; others allow fs or gedcomx
+  return self.plumbing.get(url, null, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
     var notes = maybe(getRoot(response)[0]).notes;
     utils.forEach(notes, function(note, index){
       notes[index] = self.createNote(note);

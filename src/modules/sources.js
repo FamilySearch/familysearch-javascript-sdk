@@ -271,7 +271,8 @@ FS.prototype._getSourcesResponseMapper = function(response, root, includeDescrip
  */
 FS.prototype.getSourceRefs = function(url) {
   var self = this;
-  return self.plumbing.get(url).then(function(response){
+  // child and parents note requires x-fs-v1; others allow fs or gedcomx
+  return self.plumbing.get(url, null, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
     self._getSourcesResponseMapper(response, self.helpers.getEntityType(url), false);
     return response;
   });
@@ -300,7 +301,8 @@ FS.prototype.getSourceRefs = function(url) {
  */
 FS.prototype.getSourcesQuery = function(url) {
   var self = this;
-  return self.plumbing.get(url).then(function(response){
+  // child and parents note requires x-fs-v1; others allow fs or gedcomx
+  return self.plumbing.get(url, null, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
     self._getSourcesResponseMapper(response, self.helpers.getEntityType(url), true);
     return response;
   });
