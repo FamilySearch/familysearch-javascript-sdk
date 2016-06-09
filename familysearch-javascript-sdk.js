@@ -10,6 +10,9 @@ var currentQueue;
 var queueIndex = -1;
 
 function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
     draining = false;
     if (currentQueue.length) {
         queue = currentQueue.concat(queue);
@@ -7984,7 +7987,7 @@ module.exports = {
     'production': 'https://familysearch.org'
   },
   oauthServer: {
-    'sandbox'   : 'https://integration.familysearch.org/cis-web/oauth2/v3',
+    'sandbox'   : 'https://identint.familysearch.org/cis-web/oauth2/v3',
     'staging'   : 'https://identbeta.familysearch.org/cis-web/oauth2/v3',
     'beta'      : 'https://identbeta.familysearch.org/cis-web/oauth2/v3',
     'production': 'https://ident.familysearch.org/cis-web/oauth2/v3'
