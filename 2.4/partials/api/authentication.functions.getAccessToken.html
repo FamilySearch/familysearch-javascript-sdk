@@ -8,7 +8,11 @@
 Call this function before making any requests that require authentication.</p>
 <p>You don&#39;t need to store the access token returned by this function; you just need to ensure that the promise
 returned by this function resolves before making calls that require authentication.</p>
+<p>This method does not allow your site to handle any piece of the auth process.
+Use <a href="#/api/authentication.functions:getOAuth2AuthorizeURL">getOAuth2AuthorizeURL</a> if you want to
+initiate and recieve the redirects yourself.</p>
 <p><a href="https://familysearch.org/developers/docs/api/authentication/Access_Token_resource">FamilySearch API docs</a></p>
+<p><a href="https://fs-javascript-sdk-sample-app.herokuapp.com/examples/authentication">Popup Authentication in the Sample App</a></p>
 </div></div>
 <h2 id="usage">Usage</h2>
 <div class="usage"><pre class="prettyprint linenums">getAccessToken([authCode]);</pre>

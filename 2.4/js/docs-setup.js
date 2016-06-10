@@ -55,7 +55,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "authentication",
       "shortDescription": "Get the access token for the user.",
-      "keywords": "access api authcode authentication call calls code docs don ensure familysearch function functions getauthcode https making org passed promise requests require resolves returned store token user"
+      "keywords": "access allow api app authcode authentication call calls code docs don ensure familysearch function functions getauthcode getoauth2authorizeurl handle herokuapp https initiate making method org passed piece popup process promise recieve redirects requests require resolves returned sample site store token user"
     },
     {
       "section": "api",
@@ -90,8 +90,8 @@ NG_DOCS={
       "shortName": "getOAuth2AuthorizeURL",
       "type": "function",
       "moduleName": "authentication",
-      "shortDescription": "Get the URL that a user should be redirected to to begin",
-      "keywords": "api authentication authorize function functions oauth2 optional parameter redirected url user"
+      "shortDescription": "Get the URL that a user should be redirected to for initiating",
+      "keywords": "api app authentication authorize example function functions herokuapp https initiating oauth2 optional parameter redirect redirected sample url user"
     },
     {
       "section": "api",
