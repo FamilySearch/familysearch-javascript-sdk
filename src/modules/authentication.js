@@ -77,9 +77,14 @@ FS.prototype.handleAccessTokenResponse = function(response) {
  *
  * You don't need to store the access token returned by this function; you just need to ensure that the promise
  * returned by this function resolves before making calls that require authentication.
+ * 
+ * This method does not allow your site to handle any piece of the auth process.
+ * Use {@link authentication.functions:getOAuth2AuthorizeURL getOAuth2AuthorizeURL} if you want to
+ * initiate and recieve the redirects yourself.
  *
  * {@link https://familysearch.org/developers/docs/api/authentication/Access_Token_resource FamilySearch API docs}
- *
+ * 
+ * {@link https://fs-javascript-sdk-sample-app.herokuapp.com/examples/authentication Popup Authentication in the Sample App}
  *
  * @param {String=} authCode auth code from getAuthCode; if not passed in, this function will call getAuthCode
  * @return {Object} a promise for the (string) access token.
@@ -168,11 +173,12 @@ FS.prototype.getAccessTokenWithClientCredentials = function(){
 /**
  * @ngdoc function
  * @name authentication.functions:getOAuth2AuthorizeURL
-
  * 
  * @description
- * Get the URL that a user should be redirected to to begin
+ * Get the URL that a user should be redirected to for initiating
  * OAuth2 authentication.
+ * 
+ * {@link https://fs-javascript-sdk-sample-app.herokuapp.com/examples/authentication-redirect Redirect Authentication Example in the Sample App}
  * 
  * @param {String=} Optional state parameter
  * @return {string} The OAuth2 authorize URL the user should be sent to
