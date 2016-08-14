@@ -182,7 +182,7 @@ FS.prototype.getCollectionSourceDescriptionsForUser = function(params) {
 FS.prototype.moveSourceDescriptionsToCollection = function(url, srcDescs) {
   var self = this;
   var srcDescIds = utils.map(srcDescs, function(srcDesc) {
-    return { id: (srcDesc instanceof FS.SourceDescription) ? srcDesc.id : srcDesc };
+    return { id: (srcDesc instanceof FS.SourceDescription) ? srcDesc.getId() : srcDesc };
   });
   return self.plumbing.post(url, { sourceDescriptions: srcDescIds });
 };
@@ -205,7 +205,7 @@ FS.prototype.removeSourceDescriptionsFromCollections = function(srcDescs) {
   var self = this;
   return self._getUserSourceDescriptionsUrl().then(function(url) {
     var sdids = utils.map(srcDescs, function(srcDesc) {
-      return (srcDesc instanceof FS.SourceDescription) ? srcDesc.id : srcDesc;
+      return (srcDesc instanceof FS.SourceDescription) ? srcDesc.getId() : srcDesc;
     });
     return self.plumbing.del(self.helpers.appendQueryParameters(url, {id: sdids}));
   });
