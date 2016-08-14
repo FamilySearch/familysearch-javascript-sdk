@@ -184,6 +184,9 @@ FS.prototype.moveSourceDescriptionsToCollection = function(url, srcDescs) {
   var srcDescIds = utils.map(srcDescs, function(srcDesc) {
     return { id: (srcDesc instanceof FS.SourceDescription) ? srcDesc.getId() : srcDesc };
   });
+  if ( !url.includes("descriptions") ) {
+      url += (url.substr(url.length - 1) != "/") ? "/descriptions" : "descriptions";
+  }
   return self.plumbing.post(url, { sourceDescriptions: srcDescIds });
 };
 
