@@ -1,0 +1,48 @@
+<h1><code ng:non-bindable="">Note</code>
+<div><span class="hint">type in module <code ng:non-bindable="">notes</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="notes-types-page notes-types-constructor-note-page"><p>Note</p>
+<p>To create a new note, you must set subject and text.</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">Note(client[, data]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>client</td><td><a href="" class="label type-hint type-hint-familysearch">FamilySearch</a></td><td><div class="notes-types-page notes-types-constructor-note-page"><p>FamilySearch sdk client</p>
+</div></td></tr><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="notes-types-page notes-types-constructor-note-page"><p>an object with optional attributes {subject, text, attribution}</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_delete">delete(changeMessage)</h3>
+<div class="delete"><div class="notes-types-page notes-types-constructor-note-delete-page"><p>delete this note</p>
+</div><h5 id="methods_delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="notes-types-page notes-types-constructor-note-delete-page"><p>change message</p>
+</div></td></tr></tbody></table><h5 id="methods_delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="notes-types-page notes-types-constructor-note-delete-page"><p>promise for the response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getid">getId()</h3>
+<div class="getid"><h5 id="methods_getid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="notes-types-page notes-types-constructor-note-getid-page"><p>Id of the note</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getnoteurl">getNoteUrl()</h3>
+<div class="getnoteurl"><h5 id="methods_getnoteurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="notes-types-page notes-types-constructor-note-getnoteurl-page"><p>note URL (without the access token)</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getsubject">getSubject()</h3>
+<div class="getsubject"><h5 id="methods_getsubject_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="notes-types-page notes-types-constructor-note-getsubject-page"><p>subject / title of the note</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_gettext">getText()</h3>
+<div class="gettext"><h5 id="methods_gettext_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="notes-types-page notes-types-constructor-note-gettext-page"><p>text of the note</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_save">save(url, changeMessage)</h3>
+<div class="save"><div class="notes-types-page notes-types-constructor-note-save-page"><p>Create a new note (if this note does not have an id) or update the existing note.</p>
+</div><h5 id="methods_save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>url</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="notes-types-page notes-types-constructor-note-save-page"><p>url of the notes list endpoint; only necessary when creating a new note</p>
+</div></td></tr><tr><td>changeMessage</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="notes-types-page notes-types-constructor-note-save-page"><p>change message</p>
+</div></td></tr></tbody></table><h5 id="methods_save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="notes-types-page notes-types-constructor-note-save-page"><p>promise for the response
+and if refresh is true, after the note has been read.</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

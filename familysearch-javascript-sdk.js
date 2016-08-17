@@ -6251,7 +6251,25 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @return {Object} promise for the {@link searchAndMatch.functions:getPersonMatches getPersonMatches} response
    */
   getMatches: function() {
-    return this.client.getPersonMatches(this.getId());
+    var self = this;
+    return self.getLinkPromise('matches').then(function(link){
+      return self.client.getPersonMatches(link.href);
+    });
+  },
+  
+  /**
+   * @ngdoc function
+   * @name person.types:constructor.Person#getRecordMatches
+   * @methodOf person.types:constructor.Person
+   * @return {Object} promise for the {@link searchAndMatch.functions:getPersonMatches getPersonMatches} response
+   */
+  getRecordMatches: function() {
+    var self = this;
+    return self.getLinkPromise('matches').then(function(link){
+      return self.client.getPersonMatches(link.href, {
+        collection: 'records'
+      });
+    });
   },
 
   /**
@@ -7641,7 +7659,7 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    */
   addTag: function(tag) {
     if (!utils.isArray(this.data.tags)) {
-      this.tags = [];
+      this.data.tags = [];
     }
     this.data.tags.push({resource: tag});
     //noinspection JSValidateTypes
@@ -10816,11 +10834,13 @@ FS.prototype.getPersonSearch = function(params) {
 /**
  * @ngdoc function
  * @name searchAndMatch.functions:getPersonMatches
-
  *
  * @description
- * Get the matches (possible duplicates) for a person
- * The response includes the following convenience function
+ * Get the matches (possible duplicates) for a person. Set the `collection` query
+ * parameter to `https://familysearch.org/platform/collections/records` to get
+ * record hints.
+ * 
+ * The response includes the following convenience functions
  *
  * - `getSearchResults()` - get the array of {@link searchAndMatch.types:constructor.SearchResult SearchResults} from the response
  * - `getResultsCount()` - get the total number of search results
@@ -10830,11 +10850,12 @@ FS.prototype.getPersonSearch = function(params) {
  *
  *
  * @param {String} url full URL of the person-matches endpoint
+ * @param {Object} params Query parameters. See the FamilySearch API docs for supported query parameters.
  * @return {Object} promise for the response
  */
-FS.prototype.getPersonMatches = function(url) {
+FS.prototype.getPersonMatches = function(url, params) {
   var self = this;
-  return self.plumbing.get(url, null, {'Accept': 'application/x-gedcomx-atom+json'}).then(function(response){
+  return self.plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}).then(function(response){
     return self._getSearchMatchResponseMapper(response);
   });
 };
@@ -11060,7 +11081,7 @@ FS.prototype.getCollectionSourceDescriptionsForUser = function(params) {
 FS.prototype.moveSourceDescriptionsToCollection = function(url, srcDescs) {
   var self = this;
   var srcDescIds = utils.map(srcDescs, function(srcDesc) {
-    return { id: (srcDesc instanceof FS.SourceDescription) ? srcDesc.id : srcDesc };
+    return { id: (srcDesc instanceof FS.SourceDescription) ? srcDesc.getId() : srcDesc };
   });
   return self.plumbing.post(url, { sourceDescriptions: srcDescIds });
 };
@@ -11083,7 +11104,7 @@ FS.prototype.removeSourceDescriptionsFromCollections = function(srcDescs) {
   var self = this;
   return self._getUserSourceDescriptionsUrl().then(function(url) {
     var sdids = utils.map(srcDescs, function(srcDesc) {
-      return (srcDesc instanceof FS.SourceDescription) ? srcDesc.id : srcDesc;
+      return (srcDesc instanceof FS.SourceDescription) ? srcDesc.getId() : srcDesc;
     });
     return self.plumbing.del(self.helpers.appendQueryParameters(url, {id: sdids}));
   });
