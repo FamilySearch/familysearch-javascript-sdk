@@ -1,4 +1,4 @@
-describe('Search', function() {
+fdescribe('Search', function() {
   
   it('results are returned from getPersonSearch', function(done) {
     FS.getPersonSearch({surname:'Heaton'}).then(function(response) {
@@ -26,7 +26,14 @@ describe('Search', function() {
   });
 
   it('match results are returned from getPersonMatches', function(done) {
-    FS.getPersonMatches('https://familysearch.org/platform/tree/persons/12345/matches').then(function(response) {
+    var person = FS.createPerson({
+      links: {
+        matches: {
+          href: 'https://familysearch.org/platform/tree/persons/12345/matches'
+        }
+      }
+    });
+    person.getMatches('https://familysearch.org/platform/tree/persons/12345/matches').then(function(response) {
       var results = response.getSearchResults();
       expect(results.length).toBe(2);
       expect(results[0].getId()).toBe('98765');
@@ -108,6 +115,21 @@ describe('Search', function() {
         expect(params.other).toBe(undefined);
         done();
       });
+    });
+  });
+  
+  it('getPersonMatches returns record hints', function(done){
+    var person = FS.createPerson({
+      links: {
+        matches: {
+          href: 'https://familysearch.org/platform/tree/persons/PPPP-PPP/matches'
+        }
+      }
+    });
+    person.getRecordMatches().then(function(response){
+      expect(response.getResultsCount()).toBe(3);
+      expect(response.getStatusCode()).toBe(200);
+      done();
     });
   });
   

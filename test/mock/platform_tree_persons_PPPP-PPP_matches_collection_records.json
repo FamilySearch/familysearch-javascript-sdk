@@ -1,0 +1,103 @@
+{
+  "id" : "uuid:556ec1e4-2123-49c0-9ef8-dbd4e57d6c44",
+  "results" : 3,
+  "index" : 1,
+  "links" : {
+    "person" : {
+      "href" : "https://familysearch.org/platform/genealogies/persons/2:1:GRN-MN"
+    },
+    "self" : {
+      "href" : "https://familysearch.org/platform/genealogies/persons/2:1:GRN-MN/matches?collection=https://familysearch.org/platform/collections/records"
+    },
+    "collection" : {
+      "href" : "https://familysearch.org/platform/collections/tree"
+    }
+  },
+  "title" : "Record Match Results",
+  "updated" : 1471032662406,
+  "entries" : [ {
+    "content" : {
+      "gedcomx" : {
+        "sourceDescriptions" : [ {
+          "titles" : [ {
+            "value" : "FamilySearch Historical Collection 173"
+          } ],
+          "resourceType" : "http://gedcomx.org/Collection",
+          "identifiers" : {
+            "http://gedcomx.org/Persistent" : [ "https://familysearch.org/platform/records/collections/173" ]
+          }
+        } ]
+      }
+    },
+    "id" : "https://familysearch.org/ark:/61903/1:1:MMMM-7P1",
+    "score" : 0.9824,
+    "confidence" : 4,
+    "links" : {
+      "person" : {
+        "href" : "https://familysearch.org/platform/genealogies/persons/2:1:GRN-MN"
+      }
+    },
+    "title" : "FamilySearch Historical Collection 173",
+    "updated" : 1471032662406,
+    "matchInfo" : [ {
+      "collection" : "https://familysearch.org/platform/collections/records",
+      "status" : "http://familysearch.org/v1/Pending"
+    } ]
+  }, {
+    "content" : {
+      "gedcomx" : {
+        "sourceDescriptions" : [ {
+          "titles" : [ {
+            "value" : "FamilySearch Historical Collection 268"
+          } ],
+          "resourceType" : "http://gedcomx.org/Collection",
+          "identifiers" : {
+            "http://gedcomx.org/Persistent" : [ "https://familysearch.org/platform/records/collections/268" ]
+          }
+        } ]
+      }
+    },
+    "id" : "https://familysearch.org/ark:/61903/1:1:MMMM-8NN",
+    "score" : 1.8981,
+    "confidence" : 5,
+    "links" : {
+      "person" : {
+        "href" : "https://familysearch.org/platform/genealogies/persons/2:1:GRN-MN"
+      }
+    },
+    "title" : "FamilySearch Historical Collection 268",
+    "updated" : 1471032662407,
+    "matchInfo" : [ {
+      "collection" : "https://familysearch.org/platform/collections/records",
+      "status" : "http://familysearch.org/v1/Pending"
+    } ]
+  }, {
+    "content" : {
+      "gedcomx" : {
+        "sourceDescriptions" : [ {
+          "titles" : [ {
+            "value" : "FamilySearch Historical Collection 363"
+          } ],
+          "resourceType" : "http://gedcomx.org/Collection",
+          "identifiers" : {
+            "http://gedcomx.org/Persistent" : [ "https://familysearch.org/platform/records/collections/363" ]
+          }
+        } ]
+      }
+    },
+    "id" : "https://familysearch.org/ark:/61903/1:1:MMMM-JC3",
+    "score" : 0.9824,
+    "confidence" : 4,
+    "links" : {
+      "person" : {
+        "href" : "https://familysearch.org/platform/genealogies/persons/2:1:GRN-MN"
+      }
+    },
+    "title" : "FamilySearch Historical Collection 363",
+    "updated" : 1471032662407,
+    "matchInfo" : [ {
+      "collection" : "https://familysearch.org/platform/collections/records",
+      "status" : "http://familysearch.org/v1/Pending"
+    } ]
+  } ]
+}

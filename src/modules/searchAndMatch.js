@@ -92,11 +92,13 @@ FS.prototype.getPersonSearch = function(params) {
 /**
  * @ngdoc function
  * @name searchAndMatch.functions:getPersonMatches
-
  *
  * @description
- * Get the matches (possible duplicates) for a person
- * The response includes the following convenience function
+ * Get the matches (possible duplicates) for a person. Set the `collection` query
+ * parameter to `https://familysearch.org/platform/collections/records` to get
+ * record hints.
+ * 
+ * The response includes the following convenience functions
  *
  * - `getSearchResults()` - get the array of {@link searchAndMatch.types:constructor.SearchResult SearchResults} from the response
  * - `getResultsCount()` - get the total number of search results
@@ -106,11 +108,12 @@ FS.prototype.getPersonSearch = function(params) {
  *
  *
  * @param {String} url full URL of the person-matches endpoint
+ * @param {Object} params Query parameters. See the FamilySearch API docs for supported query parameters.
  * @return {Object} promise for the response
  */
-FS.prototype.getPersonMatches = function(url) {
+FS.prototype.getPersonMatches = function(url, params) {
   var self = this;
-  return self.plumbing.get(url, null, {'Accept': 'application/x-gedcomx-atom+json'}).then(function(response){
+  return self.plumbing.get(url, params, {'Accept': 'application/x-gedcomx-atom+json'}).then(function(response){
     return self._getSearchMatchResponseMapper(response);
   });
 };

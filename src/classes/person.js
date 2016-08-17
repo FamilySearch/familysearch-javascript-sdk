@@ -670,7 +670,25 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @return {Object} promise for the {@link searchAndMatch.functions:getPersonMatches getPersonMatches} response
    */
   getMatches: function() {
-    return this.client.getPersonMatches(this.getId());
+    var self = this;
+    return self.getLinkPromise('matches').then(function(link){
+      return self.client.getPersonMatches(link.href);
+    });
+  },
+  
+  /**
+   * @ngdoc function
+   * @name person.types:constructor.Person#getRecordMatches
+   * @methodOf person.types:constructor.Person
+   * @return {Object} promise for the {@link searchAndMatch.functions:getPersonMatches getPersonMatches} response
+   */
+  getRecordMatches: function() {
+    var self = this;
+    return self.getLinkPromise('matches').then(function(link){
+      return self.client.getPersonMatches(link.href, {
+        collection: 'records'
+      });
+    });
   },
 
   /**
