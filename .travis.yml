@@ -1,38 +1,31 @@
 language: node_js
-
 sudo: false
-
 node_js:
 - '0.10'
 - '0.12'
 - '4.0'
-
 matrix:
   allow_failures:
-    - node_js: '4.0'
-
+  - node_js: '4.0'
 env:
   global:
     secure: gwZrOCs5mOukCgPdj1nIqcIAUkw1X7Cy5aa7q1Ofl3mOYLVML7SFKOC8UpfqSDWd+9mLfClYOcy0brgYcco4D16ETWXCtm67WAH8YyOsr/IVKPVCKkwbG5dK0q/9ecjUa+im0/mBw+gprQUObYKADZI8EG6tPYjTTznqDU+ZXvU=
-
 cache:
   directories:
   - node_modules
-
 before_script:
 - npm install -g grunt-cli
 script:
-- if [[ $TRAVIS_PULL_REQUEST == false && $TRAVIS_BRANCH == master && $TRAVIS_NODE_VERSION == '0.10' ]]; then npm run travis; else npm test; fi;
-
+- if [[ $TRAVIS_PULL_REQUEST == false && $TRAVIS_BRANCH == master && $TRAVIS_NODE_VERSION
+  == '0.10' ]]; then npm run travis; else npm test; fi;
 notifications:
   email:
     on_success: never
     on_failure: always
-    
 deploy:
   provider: npm
   email: devsupport@familysearch.org
   api_key:
-    secure: ghK/nKkdR1VUkhQEIdrdjLnkYtJlTv+uMDnnvDmNdaGg4INdIKtL/c21PR0wr0Tp+7v1qvJOH/snwwdMVjUxuBDD8OYsSosxNQtvd3H49+Ao4vgKxl5lN7+0/LLM81YhuZq6+zZMHMrssGeyIzlPigccgJWACcWap78Elhp4Tpw=
+    secure: eN10cNmYYbqWqtRIOzJPu1Ske+b4b21IvP1m1+LzFRfwZx7HfXxq4CQzArkLXNT9qzPrdUPEXWC6Ll4qaK13z38c7rN3oDlQouOJlDmuPRVst+O/VVvclMPB/FqQiG27fN7nmg+z9vOYn44L/FkIhAz0o3+as4d765zvksxDPkQ=
   on:
     repo: FamilySearch/familysearch-javascript-sdk
