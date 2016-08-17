@@ -338,5 +338,12 @@ describe('Source', function() {
         done();
       });
   });
+  
+  it('addTag', function(){
+    var sourceRef = FS.createSourceRef();
+    expect(function(){
+      sourceRef.addTag('http://gedcomx.org/Birth');
+    }).not.toThrow();
+  });
 
 });

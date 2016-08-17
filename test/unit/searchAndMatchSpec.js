@@ -1,4 +1,4 @@
-fdescribe('Search', function() {
+describe('Search', function() {
   
   it('results are returned from getPersonSearch', function(done) {
     FS.getPersonSearch({surname:'Heaton'}).then(function(response) {

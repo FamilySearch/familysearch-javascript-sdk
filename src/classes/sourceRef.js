@@ -215,7 +215,7 @@ SourceRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    */
   addTag: function(tag) {
     if (!utils.isArray(this.data.tags)) {
-      this.tags = [];
+      this.data.tags = [];
     }
     this.data.tags.push({resource: tag});
     //noinspection JSValidateTypes
