@@ -84,8 +84,8 @@ function httpMock(req, res) {
   
   var filename = getFilename(req);
   var data = loadFile(filename);
-  //console.log(filename);
-  //console.log(data);
+  // console.log(filename);
+  // console.log(data);
   var headers = {};
   if (data.headers) {
     headers = data.headers;

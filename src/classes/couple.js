@@ -335,7 +335,7 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @return {Object} promise for the {@link sources.types:constructor.SourceRef#save SourceRef.save()} response
    */
   addSource: function(sourceDescription, changeMessage, tags){
-    return this.client._createAndAttachSource(this, sourceDescription, changeMessage, tags);
+    return this.client._createAndAttachSource(this.getCoupleUrl(), sourceDescription, changeMessage, tags);
   },
 
   /**

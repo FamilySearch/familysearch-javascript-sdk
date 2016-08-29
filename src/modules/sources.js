@@ -353,7 +353,7 @@ FS.prototype.deleteSourceRef = function(url, changeMessage) {
  * This is a helper function shared by Person, Couple, and ChildAndParents.
  * The method creates and attaches a source.
  */
-FS.prototype._createAndAttachSource = function(obj, sourceDescription, changeMessage, tags){
+FS.prototype._createAndAttachSource = function(url, sourceDescription, changeMessage, tags){
   var client = this;
   
   if(!(sourceDescription instanceof FS.SourceDescription)){
@@ -381,6 +381,6 @@ FS.prototype._createAndAttachSource = function(obj, sourceDescription, changeMes
     if(tags){
       sourceRef.setTags(tags);
     }
-    return sourceRef.save(obj.getLink('source-references').href, changeMessage);
+    return sourceRef.save(url, changeMessage);
   });
 };

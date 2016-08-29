@@ -231,8 +231,8 @@ describe('Parents and Children relationship', function() {
   it('source is properly created and attached by addSource', function(done){
     var childAndParents = FS.createChildAndParents({
       links: {
-        'source-references': {
-          href: 'https://familysearch.org/platform/tree/child-and-parents-relationships/RRRR-RRR/source-references'
+        relationship: {
+          href: 'https://sandbox.familysearch.org/platform/tree/child-and-parents-relationships/RRRR-RSR'
         }
       }
     });

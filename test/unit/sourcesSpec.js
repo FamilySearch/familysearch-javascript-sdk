@@ -260,7 +260,7 @@ describe('Source', function() {
     var srcRef = FS.createSourceRef({
       sourceDescription: 'https://familysearch.org/platform/sources/descriptions/MMMM-MMM'
     }).setTags(['http://gedcomx.org/Name']);
-    srcRef.save('https://familysearch.org/platform/tree/persons/PPPP-PPP/source-references', 'This is the change message')
+    srcRef.save('https://familysearch.org/platform/tree/persons/PPPP-PSR', 'This is the change message')
       .then(function(response) {
         var request = response.getRequest();
         //noinspection JSUnresolvedFunction

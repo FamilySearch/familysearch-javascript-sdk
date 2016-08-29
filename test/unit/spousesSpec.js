@@ -242,8 +242,8 @@ describe('Spouses relationship', function() {
   it('source is properly created and attached by addSource', function(done){
     var couple = FS.createCouple({
       links: {
-        'source-references': {
-          href: 'https://familysearch.org/platform/tree/couple-relationships/RRRR-RRR/source-references'
+        relationship: {
+          href: 'https://familysearch.org/platform/tree/couple-relationships/RRRR-RSR'
         }
       }
     });

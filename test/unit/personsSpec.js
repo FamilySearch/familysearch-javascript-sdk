@@ -573,8 +573,8 @@ describe('A person', function() {
     var person = FS.createPerson({
       id: 'PPPP-PPP',
       links: {
-        'source-references': {
-          href: 'https://familysearch.org/platform/tree/persons/PPPP-PPP/source-references'
+        person: {
+          href: 'https://sandbox.familysearch.org/platform/tree/persons/PPPP-PSR'
         }
       }
     });
