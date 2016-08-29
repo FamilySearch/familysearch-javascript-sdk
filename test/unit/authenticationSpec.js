@@ -28,8 +28,7 @@ describe('An access token', function() {
     });
   });
   
-  if(process.env.TRAVIS_PULL_REQUEST !== 'false'){
-    console.log('client credentials test');
+  if(process.env.FS_KEY_PASSWORD){
     it('is returned from getAccessTokenWithClientCredentials', function(done){
       FS.invalidateAccessToken().then(function(){
         FS.getAccessTokenWithClientCredentials(fs.readFileSync('key.pem'), process.env['FS_KEY_PASSWORD'], 1447773012436).then(function(accessToken){

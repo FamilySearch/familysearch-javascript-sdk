@@ -909,6 +909,50 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   addSource: function(sourceDescription, changeMessage, tags){
     return this.client._createAndAttachSource(this, sourceDescription, changeMessage, tags);
   },
+  
+  /**
+   * @ngdoc function
+   * @name person.types:constructor.Person#addDiscussion
+   * @methodOf person.types:constructor.Person
+   * 
+   * @description
+   * Add a discussion to this person. This will create a discussion (if
+   * it doesn't already exist) and a discussion reference.
+   * 
+   * @param {Object} discussion Data for the discussion or a
+   * {@link discussions.types:constructor.Discussion Discussion} object.
+   * @param {String=} changeMessage change message
+   * @return {Object} promise for the {@link discussions.types:constructor.DiscussionRef#save DiscussionRef.save()} response
+   */
+  addDiscussion: function(discussion, changeMessage){
+    var person = this,
+        client = this.client;
+    
+    if(!(discussion instanceof FS.Discussion)){
+      discussion = client.createDiscussion(discussion);
+    }
+    
+    // Save the discussion if it hasn't already been saved
+    var discussionPromise = new Promise(function(resolve, reject){
+      if(discussion.getId()){
+        resolve(discussion);
+      } else {
+        discussion.save().then(function(){
+          resolve(discussion);
+        }, function(e){
+          reject(e);
+        });
+      }
+    });
+    
+    // Create the discussion ref after the discussion is saved
+    return discussionPromise.then(function(discussion){
+      var discussionRef = client.createDiscussionRef({
+        discussion: discussion
+      });
+      return discussionRef.save(person.getPersonUrl(), changeMessage);
+    });
+  },
 
   /**
    * @ngdoc function

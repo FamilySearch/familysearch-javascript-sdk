@@ -114,11 +114,9 @@ describe('Discussion', function() {
         //noinspection JSUnresolvedFunction
         expect(request.body).toEqualJson({
           'persons' : [ {
-            'id' : '12345',
             'discussion-references' : [{
               resource: 'dis-1'
             }],
-            'attribution' : { changeMessage: 'change msg' }
           } ]
         });
         expect(response.getStatusCode()).toBe(201);

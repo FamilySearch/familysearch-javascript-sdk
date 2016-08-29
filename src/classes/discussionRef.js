@@ -133,16 +133,10 @@ DiscussionRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @description
    * Create a new discussion reference
    *
-   * NOTE: there's no _refresh_ parameter because it's not possible to read individual discussion references;
-   * however, the discussion reference's URL is set when creating a new discussion reference
-   *
-   *
-   * @param {string} url url of the discussions references list. this is only need for new discussion refs. you can set it to null (or anything else) for existing refs that you are updating
-   * @param {string} personId id of the person which the discussion ref will be attached to
-   * @param {string} changeMessage change message - unused - discussion reference attributions do not contain change messages
+   * @param {string} url URL of the discussions references list. This is only needed for new discussion refs. You can set it to null (or anything else) for existing refs that you are updating
    * @return {Object} promise for the response
    */
-  save: function(url, personId, changeMessage) {
+  save: function(url) {
     var self = this;
     if (self.getDiscussionRefUrl()) {
       url = self.getDiscussionRefUrl();
@@ -152,13 +146,9 @@ DiscussionRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
     }
     var payload = {
       persons: [{
-        id: personId,
         'discussion-references' : [ { resource: self.data.resource } ]
       }]
     };
-    if (changeMessage) {
-      payload.persons[0].attribution = self.client.createAttribution(changeMessage);
-    }
     var headers = {'Content-Type': 'application/x-fs-v1+json'};
     return self.plumbing.post(url, payload, headers).then(function(response){
       self.updateFromResponse(response, 'discussion-reference');

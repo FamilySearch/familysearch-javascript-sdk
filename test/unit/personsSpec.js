@@ -675,5 +675,23 @@ describe('A person', function() {
       done();
     });
   });
+  
+  it('addDiscussion', function(done){
+    var person = FS.createPerson({
+      id: 'PDDD-DDD',
+      links: {
+        person: {
+          href: 'https://sandbox.familysearch.org/platform/tree/persons/PDDD-DDD'
+        }
+      }
+    });
+    person.addDiscussion({
+      title: 'Discussion Title',
+      details: 'Discussion details'
+    }).then(function(response){
+      expect(response.getStatusCode()).toBe(201);
+      done();
+    });
+  });
 
 });
