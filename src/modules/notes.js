@@ -30,7 +30,6 @@ function getRoot(response) {
 /**
  * @ngdoc function
  * @name notes.functions:getNote
-
  *
  * @description
  * Get information about a note
@@ -65,7 +64,6 @@ FS.prototype.getNote = function(url, params) {
 /**
  * @ngdoc function
  * @name notes.functions:getMultiNote
-
  *
  * @description
  * Get multiple notes at once by requesting them in parallel
@@ -99,7 +97,6 @@ FS.prototype.getMultiNote = function(urls) {
 /**
  * @ngdoc function
  * @name notes.functions:getNotes
-
  *
  * @description
  * Get notes for a person, couple, or child and parents relationship
@@ -135,7 +132,6 @@ FS.prototype.getNotes = function(url) {
 /**
  * @ngdoc function
  * @name notes.functions:deleteNote
-
  *
  * @description
  * Delete the specified person note
@@ -155,4 +151,14 @@ FS.prototype.deleteNote = function(url, changeMessage) {
     headers['X-Reason'] = changeMessage;
   }
   return self.plumbing.del(url, headers);
+};
+
+/**
+ * Share handler for adding notes to persons and relationships
+ */
+FS.prototype._addNote = function(url, note, changeMessage){
+  if(!(note instanceof FS.Note)){
+    note = this.createNote(note);
+  }
+  return note.save(url, changeMessage);
 };

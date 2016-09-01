@@ -337,6 +337,26 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   addSource: function(sourceDescription, changeMessage, tags){
     return this.client._createAndAttachSource(this.getCoupleUrl(), sourceDescription, changeMessage, tags);
   },
+  
+  /**
+   * @ngdoc function
+   * @name spouses.types:constructor.Couple#addNote
+   * @methodOf spouses.types:constructor.Couple
+   * 
+   * @description
+   * Add a note to this relationship.
+   * 
+   * @param {Object} note Data for the note or a
+   * {@link notes.types:constructor.Note Note} object.
+   * @param {String=} changeMessage change message
+   * @return {Object} promise for the {@link notes.types:constructor.Note#save Note.save()} response
+   */
+  addNote: function(note, changeMessage){
+    var client = this.client;
+    return this.getLinkPromise('notes').then(function(link){
+      return client._addNote(link.href, note, changeMessage);
+    });
+  },
 
   /**
    * @ngdoc function

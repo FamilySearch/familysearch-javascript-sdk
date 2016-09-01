@@ -127,8 +127,15 @@ describe('Note', function() {
   });
 
   it('is created (person note)', function(done) {
-    var note = FS.createNote({subject: 'Sample', text: 'Sample note text.'});
-    note.save('https://familysearch.org/platform/tree/persons/P12-3456/notes', 'change message')
+    var note = FS.createNote({subject: 'Sample', text: 'Sample note text.'}),
+        person = FS.createPerson({
+          links: {
+            notes: {
+              href: 'https://familysearch.org/platform/tree/persons/P12-3456/notes'
+            }
+          }
+        });
+    person.addNote(note, 'change message')
       .then(function(response) {
         var request = response.getRequest();
         //noinspection JSUnresolvedFunction
@@ -147,7 +154,7 @@ describe('Note', function() {
         expect(note.getId()).toBe('1');
         expect(note.getLink('note').href).toBe('https://familysearch.org/platform/tree/persons/P12-3456/notes/1');
         done();
-      });
+      }).catch(done.fail);
   });
 
   it('is updated (person note)', function(done) {
@@ -188,8 +195,15 @@ describe('Note', function() {
   });
 
   it('is created (couple note)', function(done) {
-    var note = FS.createNote({subject: 'Sample', text: 'Sample note text.'});
-    note.save('https://familysearch.org/platform/tree/couple-relationships/R12-3456/notes', 'change message')
+    var note = FS.createNote({subject: 'Sample', text: 'Sample note text.'}),
+        couple = FS.createCouple({
+          links: {
+            notes: {
+              href: 'https://familysearch.org/platform/tree/couple-relationships/R12-3456/notes'
+            }
+          }
+        });
+    couple.addNote(note, 'change message')
       .then(function(response) {
         var request = response.getRequest();
         //noinspection JSUnresolvedFunction
@@ -249,8 +263,15 @@ describe('Note', function() {
   });
 
   it('is created (child-and-parents note)', function(done) {
-    var note = FS.createNote({subject: 'Sample', text: 'Sample note text.'});
-    note.save('https://familysearch.org/platform/tree/child-and-parents-relationships/R12-3456/notes', 'change message')
+    var note = FS.createNote({subject: 'Sample', text: 'Sample note text.'}),
+        childAndParents = FS.createChildAndParents({
+          links: {
+            notes: {
+              href: 'https://familysearch.org/platform/tree/child-and-parents-relationships/R12-3456/notes'
+            }
+          }
+        });
+    childAndParents.addNote(note, 'change message')
       .then(function(response) {
         var request = response.getRequest();
         //noinspection JSUnresolvedFunction

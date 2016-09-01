@@ -953,6 +953,26 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
       return discussionRef.save(person.getPersonUrl(), changeMessage);
     });
   },
+  
+  /**
+   * @ngdoc function
+   * @name person.types:constructor.Person#addNote
+   * @methodOf person.types:constructor.Person
+   * 
+   * @description
+   * Add a note to this person.
+   * 
+   * @param {Object} note Data for the note or a
+   * {@link notes.types:constructor.Note Note} object.
+   * @param {String=} changeMessage change message
+   * @return {Object} promise for the {@link notes.types:constructor.Note#save Note.save()} response
+   */
+  addNote: function(note, changeMessage){
+    var client = this.client;
+    return this.getLinkPromise('notes').then(function(link){
+      return client._addNote(link.href, note, changeMessage);
+    });
+  },
 
   /**
    * @ngdoc function
