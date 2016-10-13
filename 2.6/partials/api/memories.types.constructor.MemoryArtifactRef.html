@@ -1,0 +1,47 @@
+<h1><code ng:non-bindable="">MemoryArtifactRef</code>
+<div><span class="hint">type in module <code ng:non-bindable="">memories</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="memories-types-page memories-types-constructor-memoryartifactref-page"><p>Memory Artifact Reference</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">MemoryArtifactRef(client[, data]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>client</td><td><a href="" class="label type-hint type-hint-familysearch">FamilySearch</a></td><td><div class="memories-types-page memories-types-constructor-memoryartifactref-page"><p>FamilySearch sdk client</p>
+</div></td></tr><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memoryartifactref-page"><p>an object with optional attributes {description, qualifierValue, qualifierName}.
+<em>description</em> is required; it should be the memory URL
+<em>qualifierValue</em> is a comma-separated string of 4 numbers: &quot;x-start,y-start,x-end,y-end&quot;.
+Each number ranges from 0 to 1, with 0 corresponding to top-left and 1 corresponding to bottom-right.
+<em>qualifierName</em> is required if <em>qualifierValue</em> is set; it should be <a href="http://gedcomx.org/RectangleRegion">http://gedcomx.org/RectangleRegion</a></p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_getdescription">getDescription()</h3>
+<div class="getdescription"><h5 id="methods_getdescription_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memoryartifactref-getdescription-page"><p>URL of the memory</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getid">getId()</h3>
+<div class="getid"><h5 id="methods_getid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memoryartifactref-getid-page"><p>Id of the Memory Artifact</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getqualifiername">getQualifierName()</h3>
+<div class="getqualifiername"><h5 id="methods_getqualifiername_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memoryartifactref-getqualifiername-page"><p>qualifier name (<a href="http://gedcomx.org/RectangleRegion">http://gedcomx.org/RectangleRegion</a>)</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getqualifiervalue">getQualifierValue()</h3>
+<div class="getqualifiervalue"><h5 id="methods_getqualifiervalue_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memoryartifactref-getqualifiervalue-page"><p>qualifier value (e.g., 0.0,.25,.5,.75)</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setqualifiername">setQualifierName(qualifierName)</h3>
+<div class="setqualifiername"><h5 id="methods_setqualifiername_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>qualifierName</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="memories-types-page memories-types-constructor-memoryartifactref-setqualifiername-page"><p>qualifier name</p>
+</div></td></tr></tbody></table><h5 id="methods_setqualifiername_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-memoryartifactref">MemoryArtifactRef</a></td><td><div class="memories-types-page memories-types-constructor-memoryartifactref-setqualifiername-page"><p>this memory artifact ref</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setqualifiervalue">setQualifierValue(qualifierValue)</h3>
+<div class="setqualifiervalue"><h5 id="methods_setqualifiervalue_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>qualifierValue</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="memories-types-page memories-types-constructor-memoryartifactref-setqualifiervalue-page"><p>qualifier value</p>
+</div></td></tr></tbody></table><h5 id="methods_setqualifiervalue_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-memoryartifactref">MemoryArtifactRef</a></td><td><div class="memories-types-page memories-types-constructor-memoryartifactref-setqualifiervalue-page"><p>this memory artifact ref</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

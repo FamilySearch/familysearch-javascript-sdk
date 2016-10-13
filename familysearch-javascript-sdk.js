@@ -12,25 +12,40 @@ var process = module.exports = {};
 var cachedSetTimeout;
 var cachedClearTimeout;
 
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
 (function () {
     try {
-        cachedSetTimeout = setTimeout;
-    } catch (e) {
-        cachedSetTimeout = function () {
-            throw new Error('setTimeout is not defined');
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
         }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
     }
     try {
-        cachedClearTimeout = clearTimeout;
-    } catch (e) {
-        cachedClearTimeout = function () {
-            throw new Error('clearTimeout is not defined');
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
         }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
     }
 } ())
 function runTimeout(fun) {
     if (cachedSetTimeout === setTimeout) {
         //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
         return setTimeout(fun, 0);
     }
     try {
@@ -51,6 +66,11 @@ function runTimeout(fun) {
 function runClearTimeout(marker) {
     if (cachedClearTimeout === clearTimeout) {
         //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
         return clearTimeout(marker);
     }
     try {
@@ -2580,7 +2600,27 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @return {Object} promise for the {@link sources.types:constructor.SourceRef#save SourceRef.save()} response
    */
   addSource: function(sourceDescription, changeMessage, tags){
-    return this.client._createAndAttachSource(this, sourceDescription, changeMessage, tags);
+    return this.client._createAndAttachSource(this.getChildAndParentsUrl(), sourceDescription, changeMessage, tags);
+  },
+  
+  /**
+   * @ngdoc function
+   * @name parentsAndChildren.types:constructor.ChildAndParents#addNote
+   * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+   * 
+   * @description
+   * Add a note to this relationship.
+   * 
+   * @param {Object} note Data for the note or a
+   * {@link notes.types:constructor.Note Note} object.
+   * @param {String=} changeMessage change message
+   * @return {Object} promise for the {@link notes.types:constructor.Note#save Note.save()} response
+   */
+  addNote: function(note, changeMessage){
+    var client = this.client;
+    return this.getLinkPromise('notes').then(function(link){
+      return client._addNote(link.href, note, changeMessage);
+    });
   },
 
   /**
@@ -3310,7 +3350,27 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @return {Object} promise for the {@link sources.types:constructor.SourceRef#save SourceRef.save()} response
    */
   addSource: function(sourceDescription, changeMessage, tags){
-    return this.client._createAndAttachSource(this, sourceDescription, changeMessage, tags);
+    return this.client._createAndAttachSource(this.getCoupleUrl(), sourceDescription, changeMessage, tags);
+  },
+  
+  /**
+   * @ngdoc function
+   * @name spouses.types:constructor.Couple#addNote
+   * @methodOf spouses.types:constructor.Couple
+   * 
+   * @description
+   * Add a note to this relationship.
+   * 
+   * @param {Object} note Data for the note or a
+   * {@link notes.types:constructor.Note Note} object.
+   * @param {String=} changeMessage change message
+   * @return {Object} promise for the {@link notes.types:constructor.Note#save Note.save()} response
+   */
+  addNote: function(note, changeMessage){
+    var client = this.client;
+    return this.getLinkPromise('notes').then(function(link){
+      return client._addNote(link.href, note, changeMessage);
+    });
   },
 
   /**
@@ -3838,16 +3898,10 @@ DiscussionRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @description
    * Create a new discussion reference
    *
-   * NOTE: there's no _refresh_ parameter because it's not possible to read individual discussion references;
-   * however, the discussion reference's URL is set when creating a new discussion reference
-   *
-   *
-   * @param {string} url url of the discussions references list. this is only need for new discussion refs. you can set it to null (or anything else) for existing refs that you are updating
-   * @param {string} personId id of the person which the discussion ref will be attached to
-   * @param {string} changeMessage change message - unused - discussion reference attributions do not contain change messages
+   * @param {string} url URL of the discussions references list. This is only needed for new discussion refs. You can set it to null (or anything else) for existing refs that you are updating
    * @return {Object} promise for the response
    */
-  save: function(url, personId, changeMessage) {
+  save: function(url) {
     var self = this;
     if (self.getDiscussionRefUrl()) {
       url = self.getDiscussionRefUrl();
@@ -3857,13 +3911,9 @@ DiscussionRef.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
     }
     var payload = {
       persons: [{
-        id: personId,
         'discussion-references' : [ { resource: self.data.resource } ]
       }]
     };
-    if (changeMessage) {
-      payload.persons[0].attribution = self.client.createAttribution(changeMessage);
-    }
     var headers = {'Content-Type': 'application/x-fs-v1+json'};
     return self.plumbing.post(url, payload, headers).then(function(response){
       self.updateFromResponse(response, 'discussion-reference');
@@ -6488,7 +6538,71 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @return {Object} promise for the {@link sources.types:constructor.SourceRef#save SourceRef.save()} response
    */
   addSource: function(sourceDescription, changeMessage, tags){
-    return this.client._createAndAttachSource(this, sourceDescription, changeMessage, tags);
+    return this.client._createAndAttachSource(this.getPersonUrl(), sourceDescription, changeMessage, tags);
+  },
+  
+  /**
+   * @ngdoc function
+   * @name person.types:constructor.Person#addDiscussion
+   * @methodOf person.types:constructor.Person
+   * 
+   * @description
+   * Add a discussion to this person. This will create a discussion (if
+   * it doesn't already exist) and a discussion reference.
+   * 
+   * @param {Object} discussion Data for the discussion or a
+   * {@link discussions.types:constructor.Discussion Discussion} object.
+   * @param {String=} changeMessage change message
+   * @return {Object} promise for the {@link discussions.types:constructor.DiscussionRef#save DiscussionRef.save()} response
+   */
+  addDiscussion: function(discussion, changeMessage){
+    var person = this,
+        client = this.client;
+    
+    if(!(discussion instanceof FS.Discussion)){
+      discussion = client.createDiscussion(discussion);
+    }
+    
+    // Save the discussion if it hasn't already been saved
+    var discussionPromise = new Promise(function(resolve, reject){
+      if(discussion.getId()){
+        resolve(discussion);
+      } else {
+        discussion.save().then(function(){
+          resolve(discussion);
+        }, function(e){
+          reject(e);
+        });
+      }
+    });
+    
+    // Create the discussion ref after the discussion is saved
+    return discussionPromise.then(function(discussion){
+      var discussionRef = client.createDiscussionRef({
+        discussion: discussion
+      });
+      return discussionRef.save(person.getPersonUrl(), changeMessage);
+    });
+  },
+  
+  /**
+   * @ngdoc function
+   * @name person.types:constructor.Person#addNote
+   * @methodOf person.types:constructor.Person
+   * 
+   * @description
+   * Add a note to this person.
+   * 
+   * @param {Object} note Data for the note or a
+   * {@link notes.types:constructor.Note Note} object.
+   * @param {String=} changeMessage change message
+   * @return {Object} promise for the {@link notes.types:constructor.Note#save Note.save()} response
+   */
+  addNote: function(note, changeMessage){
+    var client = this.client;
+    return this.getLinkPromise('notes').then(function(link){
+      return client._addNote(link.href, note, changeMessage);
+    });
   },
 
   /**
@@ -8708,6 +8822,39 @@ FS.prototype.getAccessTokenForMobile = function(userName, password) {
 };
 
 /**
+ * @ngdoc function
+ * @name authentication.functions:getUnauthenticatedAccessToken
+ * 
+ * @description
+ * Get an unauthenticated access token for APIs that allow it (currently only the
+ * places API).
+ * 
+ * {@link https://familysearch.org/developers/docs/api/authentication/Obtain_Access_Token_without_Authenticating_usecase FamilySearch API docs}
+ * 
+ * @param {String} ipAddress IP Address of the user
+ * @return {Object} a promise that resolves to the access token
+ */
+FS.prototype.getUnauthenticatedAccessToken = function(ipAddress) {
+  var self = this;
+  if (!ipAddress) {
+    return Promise.reject('IP Address is required.');
+  }
+  if (self.settings.accessToken) {
+    return Promise.resolve(self.settings.accessToken);
+  }
+  var url = self.settings.oauthServer[self.settings.environment] + '/token';
+  return self.plumbing.post(url, {
+        'grant_type': 'unauthenticated_session',
+        'client_id' : self.settings.clientId,
+        'ip_address': ipAddress
+      },
+      // access token endpoint says it accepts json but it doesn't
+      {'Content-Type': 'application/x-www-form-urlencoded'}).then(function(response){
+    return self.handleAccessTokenResponse(response);
+  });
+};
+
+/**
  * Docs and implementation are in `node-only.js`.
  */
 FS.prototype.getAccessTokenWithClientCredentials = function(){
@@ -9544,7 +9691,6 @@ function getRoot(response) {
 /**
  * @ngdoc function
  * @name notes.functions:getNote
-
  *
  * @description
  * Get information about a note
@@ -9579,7 +9725,6 @@ FS.prototype.getNote = function(url, params) {
 /**
  * @ngdoc function
  * @name notes.functions:getMultiNote
-
  *
  * @description
  * Get multiple notes at once by requesting them in parallel
@@ -9613,7 +9758,6 @@ FS.prototype.getMultiNote = function(urls) {
 /**
  * @ngdoc function
  * @name notes.functions:getNotes
-
  *
  * @description
  * Get notes for a person, couple, or child and parents relationship
@@ -9649,7 +9793,6 @@ FS.prototype.getNotes = function(url) {
 /**
  * @ngdoc function
  * @name notes.functions:deleteNote
-
  *
  * @description
  * Delete the specified person note
@@ -9671,6 +9814,15 @@ FS.prototype.deleteNote = function(url, changeMessage) {
   return self.plumbing.del(url, headers);
 };
 
+/**
+ * Share handler for adding notes to persons and relationships
+ */
+FS.prototype._addNote = function(url, note, changeMessage){
+  if(!(note instanceof FS.Note)){
+    note = this.createNote(note);
+  }
+  return note.save(url, changeMessage);
+};
 },{"./../FamilySearch":6,"./../utils":58}],45:[function(require,module,exports){
 var FS = require('./../FamilySearch');
 
@@ -11484,7 +11636,7 @@ FS.prototype.deleteSourceRef = function(url, changeMessage) {
  * This is a helper function shared by Person, Couple, and ChildAndParents.
  * The method creates and attaches a source.
  */
-FS.prototype._createAndAttachSource = function(obj, sourceDescription, changeMessage, tags){
+FS.prototype._createAndAttachSource = function(url, sourceDescription, changeMessage, tags){
   var client = this;
   
   if(!(sourceDescription instanceof FS.SourceDescription)){
@@ -11512,7 +11664,7 @@ FS.prototype._createAndAttachSource = function(obj, sourceDescription, changeMes
     if(tags){
       sourceRef.setTags(tags);
     }
-    return sourceRef.save(obj.getLink('source-references').href, changeMessage);
+    return sourceRef.save(url, changeMessage);
   });
 };
 },{"./../FamilySearch":6,"./../utils":58}],53:[function(require,module,exports){
