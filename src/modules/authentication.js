@@ -164,6 +164,39 @@ FS.prototype.getAccessTokenForMobile = function(userName, password) {
 };
 
 /**
+ * @ngdoc function
+ * @name authentication.functions:getUnauthenticatedAccessToken
+ * 
+ * @description
+ * Get an unauthenticated access token for APIs that allow it (currently only the
+ * places API).
+ * 
+ * {@link https://familysearch.org/developers/docs/api/authentication/Obtain_Access_Token_without_Authenticating_usecase FamilySearch API docs}
+ * 
+ * @param {String} ipAddress IP Address of the user
+ * @return {Object} a promise that resolves to the access token
+ */
+FS.prototype.getUnauthenticatedAccessToken = function(ipAddress) {
+  var self = this;
+  if (!ipAddress) {
+    return Promise.reject('IP Address is required.');
+  }
+  if (self.settings.accessToken) {
+    return Promise.resolve(self.settings.accessToken);
+  }
+  var url = self.settings.oauthServer[self.settings.environment] + '/token';
+  return self.plumbing.post(url, {
+        'grant_type': 'unauthenticated_session',
+        'client_id' : self.settings.clientId,
+        'ip_address': ipAddress
+      },
+      // access token endpoint says it accepts json but it doesn't
+      {'Content-Type': 'application/x-www-form-urlencoded'}).then(function(response){
+    return self.handleAccessTokenResponse(response);
+  });
+};
+
+/**
  * Docs and implementation are in `node-only.js`.
  */
 FS.prototype.getAccessTokenWithClientCredentials = function(){

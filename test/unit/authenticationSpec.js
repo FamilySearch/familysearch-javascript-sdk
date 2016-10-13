@@ -28,6 +28,15 @@ describe('An access token', function() {
     });
   });
   
+  it('is returned from getUnauthenticatedAccessToken', function(done){
+    FS.invalidateAccessToken().then(function(){
+      FS.getUnauthenticatedAccessToken('127.0.0.1').then(function(accessToken){
+        expect(accessToken).toBe('2YoTnFdFEjr1zCsicMWpAA');
+        done();
+      });
+    });
+  });
+  
   if(process.env.FS_KEY_PASSWORD){
     it('is returned from getAccessTokenWithClientCredentials', function(done){
       FS.invalidateAccessToken().then(function(){
