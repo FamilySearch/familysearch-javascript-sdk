@@ -1,6 +1,6 @@
 {
   "name": "familysearch-javascript-sdk",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "Javascript SDK for FamilySearch",
   "repository": {
     "type": "git",
