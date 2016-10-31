@@ -21,16 +21,18 @@ module.exports = {
   maxAccessTokenInactivityTime: 3540000, // 59 minutes to be safe
   maxAccessTokenCreationTime:  86340000, // 23 hours 59 minutes to be safe
   apiServer: {
-    'sandbox'   : 'https://sandbox.familysearch.org',
-    'staging'   : 'https://stage.familysearch.org',
-    'beta'      : 'https://beta.familysearch.org',
-    'production': 'https://familysearch.org'
+    'sandbox'    : 'https://integration.familysearch.org',
+    'integration': 'https://integration.familysearch.org',
+    'staging'    : 'https://stage.familysearch.org',
+    'beta'       : 'https://beta.familysearch.org',
+    'production' : 'https://familysearch.org'
   },
   oauthServer: {
-    'sandbox'   : 'https://identint.familysearch.org/cis-web/oauth2/v3',
-    'staging'   : 'https://identbeta.familysearch.org/cis-web/oauth2/v3',
-    'beta'      : 'https://identbeta.familysearch.org/cis-web/oauth2/v3',
-    'production': 'https://ident.familysearch.org/cis-web/oauth2/v3'
+    'integration': 'https://integration.familysearch.org/cis-web/oauth2/v3',
+    'sandbox'    : 'https://integration.familysearch.org/cis-web/oauth2/v3',
+    'staging'    : 'https://identbeta.familysearch.org/cis-web/oauth2/v3',
+    'beta'       : 'https://identbeta.familysearch.org/cis-web/oauth2/v3',
+    'production' : 'https://ident.familysearch.org/cis-web/oauth2/v3'
   },
   collectionsUrl: '/platform/collections'
 };

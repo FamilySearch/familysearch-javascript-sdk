@@ -15,7 +15,7 @@ var instanceId = 0;
  * **Options**
  *
  * - `client_id` - the developer key you received from FamilySearch
- * - `environment` - sandbox, staging, or production
+ * - `environment` - integration, staging, or production
  * - `redirect_uri` - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
  * but must have the same host and port as the server running your script;
  * however, it must exist for mobile safari - see the Overview section of the documentation

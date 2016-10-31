@@ -107,7 +107,7 @@
  * <pre>
  * var client = new FamilySearch({
  *   client_id: 'YOUR_CLIENT_ID_GOES_HERE',
- *   environment: 'sandbox',
+ *   environment: 'integration',
  *   // redirect_uri is the URI you registered with FamilySearch.
  *   // The page does not need to exist. The URI only needs to have
  *   // the same host and port as the server running your script.
@@ -136,7 +136,7 @@
  * <pre>
  * var client = new FamilySearch({
  *   client_id: 'MY_CLIENT_ID',
- *   environment: 'sandbox',
+ *   environment: 'integration',
  *   redirect_uri: 'http://localhost/auth'
  * });
  *
@@ -161,7 +161,7 @@
  * <pre>
  * var client = new FamilySearch({
  *   client_id: 'YOUR_CLIENT_ID_GOES_HERE',
- *   environment: 'sandbox',
+ *   environment: 'integration',
  *   access_token: 'SOME_ACCESS_TOKEN'
  * });
  * </pre>
@@ -178,7 +178,7 @@
  * <pre>
  * var client = new FamilySearch({
  *   client_id: 'MY_CLIENT_ID',
- *   environment: 'sandbox',
+ *   environment: 'integration',
  *   access_token: 'SOME_ACCESS_TOKEN'
  * });
  *
