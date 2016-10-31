@@ -1516,7 +1516,7 @@ var instanceId = 0;
  * **Options**
  *
  * - `client_id` - the developer key you received from FamilySearch
- * - `environment` - sandbox, staging, or production
+ * - `environment` - integration, staging, or production
  * - `redirect_uri` - the OAuth2 redirect uri you registered with FamilySearch.  Does not need to exist,
  * but must have the same host and port as the server running your script;
  * however, it must exist for mobile safari - see the Overview section of the documentation
@@ -8179,16 +8179,18 @@ module.exports = {
   maxAccessTokenInactivityTime: 3540000, // 59 minutes to be safe
   maxAccessTokenCreationTime:  86340000, // 23 hours 59 minutes to be safe
   apiServer: {
-    'sandbox'   : 'https://sandbox.familysearch.org',
-    'staging'   : 'https://stage.familysearch.org',
-    'beta'      : 'https://beta.familysearch.org',
-    'production': 'https://familysearch.org'
+    'sandbox'    : 'https://integration.familysearch.org',
+    'integration': 'https://integration.familysearch.org',
+    'staging'    : 'https://stage.familysearch.org',
+    'beta'       : 'https://beta.familysearch.org',
+    'production' : 'https://familysearch.org'
   },
   oauthServer: {
-    'sandbox'   : 'https://identint.familysearch.org/cis-web/oauth2/v3',
-    'staging'   : 'https://identbeta.familysearch.org/cis-web/oauth2/v3',
-    'beta'      : 'https://identbeta.familysearch.org/cis-web/oauth2/v3',
-    'production': 'https://ident.familysearch.org/cis-web/oauth2/v3'
+    'integration': 'https://integration.familysearch.org/cis-web/oauth2/v3',
+    'sandbox'    : 'https://integration.familysearch.org/cis-web/oauth2/v3',
+    'staging'    : 'https://identbeta.familysearch.org/cis-web/oauth2/v3',
+    'beta'       : 'https://identbeta.familysearch.org/cis-web/oauth2/v3',
+    'production' : 'https://ident.familysearch.org/cis-web/oauth2/v3'
   },
   collectionsUrl: '/platform/collections'
 };
