@@ -1,28 +1,5 @@
 {
-  "persons" : [ {
-    "id" : "PPPP-PPP",
-    "links" : {
-      "person" : {
-        "href" : "https://familysearch.org/platform/tree/persons/PPPP-PPP",
-        "title" : "Person"
-      }
-    },
-    "evidence" : [ {
-      "links" : {
-        "memory" : {
-          "href" : "https://familysearch.org/platform/memories/memories/ARXX-MMM"
-        }
-      },
-      "resource" : "https://familysearch.org/platform/memories/memories/ARXX-MMM/personas/1083",
-      "resourceId" : "1083"
-    }, {
-      "links" : {
-        "memory" : {
-          "href" : "https://familysearch.org/platform/memories/memories/ARXX-MMM"
-        }
-      },
-      "resource" : "https://familysearch.org/platform/memories/memories/ARXX-MMM/personas/1204",
-      "resourceId" : "1204"
-    } ]
-  } ]
+  "headers": {
+    "Location": "/platform/tree/persons/PPPP-PPP"
+  }
 }

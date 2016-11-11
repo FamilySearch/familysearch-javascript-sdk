@@ -191,6 +191,7 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#getSourceRefs
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+   * @deprecated
    * @return {Object} promise for the {@link sources.functions:getSourceRefs getSourceRefs} response
    */
   getSourceRefs: function() { 

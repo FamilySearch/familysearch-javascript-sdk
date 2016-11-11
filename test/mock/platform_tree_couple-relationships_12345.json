@@ -53,6 +53,48 @@
       "place" : {
         "original" : "Provo, Utah, Utah, United States"
       }
+    } ],
+    "sources" : [ {
+      "id" : "abcde",
+      "links" : {
+        "source-reference" : {
+          "href" : "https://familysearch.org/platform/tree/couple-relationships/12345/source-references/827094316",
+          "title" : "Couple Relationship Source Reference"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://familysearch.org/platform/users/agents/UUUU-UUU",
+          "resourceId" : "UUUU-UUU"
+        },
+        "modified" : 123456789,
+        "changeMessage" : "Family is at the same address found in other sources associated with this family.  Names are a good match.  Estimated births are reasonable."
+      },
+      "description" : "https://familysearch.org/platform/sources/descriptions/SSSS-SS1",
+      "tags" : [ {
+        "resource" : "http://gedcomx.org/Name"
+      }, {
+        "resource" : "http://gedcomx.org/Gender"
+      }, {
+        "resource" : "http://gedcomx.org/Birth"
+      } ]
+    }, {
+      "id" : "fghij",
+      "links" : {
+        "source-reference" : {
+          "href" : "https://familysearch.org/platform/tree/couple-relationships/12345/source-references/312521981",
+          "title" : "Couple Relationship Source Reference"
+        }
+      },
+      "attribution" : {
+        "contributor" : {
+          "resource" : "https://familysearch.org/platform/users/agents/UUUU-UUU",
+          "resourceId" : "UUUU-UUU"
+        },
+        "modified" : 987654321,
+        "changeMessage" : "Dates and location match with other sources."
+      },
+      "description" : "https://familysearch.org/platform/sources/descriptions/SSSS-SS2"
     } ]
   } ]
 }

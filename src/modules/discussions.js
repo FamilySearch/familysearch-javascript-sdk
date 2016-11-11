@@ -79,9 +79,11 @@ FS.prototype.getMultiDiscussion = function(urls) {
 /**
  * @ngdoc function
  * @name discussions.functions:getPersonDiscussionRefs
-
- *
+ * @deprecated
  * @description
+ * 
+ * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve discussion references.__
+ * 
  * Get references to discussions for a person
  * The response includes the following convenience function
  *
@@ -95,7 +97,15 @@ FS.prototype.getMultiDiscussion = function(urls) {
  */
 FS.prototype.getPersonDiscussionRefs = function(url) {
   var self = this;
-  return self.plumbing.get(url, null, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
+  return self.plumbing.get(url, null, {
+    'Accept': 'application/x-fs-v1+json',
+    'X-FS-Feature-Tag': 'consolidate-redundant-resources',
+    'X-Expect-Override': '200-ok'
+  })
+  .then(function(response){
+    return self.plumbing.get(response.getHeader('Location'));
+  })
+  .then(function(response){
     var data = response.getData();
     if(data.persons && data.persons[0] && utils.isArray(data.persons[0]['discussion-references'])){
       var refs = data.persons[0]['discussion-references'];

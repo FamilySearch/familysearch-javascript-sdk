@@ -1,14 +1,5 @@
 {
-  "persons" : [ {
-    "id" : "12345",
-    "links" : {
-      "person" : {
-        "href" : "https://familysearch.org/platform/tree/persons/12345",
-        "title" : "Person"
-      }
-    },
-    "discussion-references" : [ {
-      "resource" : "https://familysearch.org/platform/discussions/discussions/dis-MMMM-MMM"
-    } ]
-  } ]
+  "headers": {
+    "Location": "/platform/tree/persons/12345"
+  }
 }

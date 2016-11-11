@@ -78,6 +78,8 @@ describe('A person', function() {
       expect(facts[1].getId()).toBe('res');
       expect(facts[1].getType()).toBe('http://gedcomx.org/Residence');
       done();
+    }).catch(function(error){
+      console.error(error.stack);
     });
   });
 
@@ -158,15 +160,6 @@ describe('A person', function() {
       expect(response.getChildrenOf('FOO').length).toBe(0);
       expect(response.getRequestedId()).toBe('KW7S-VQJ');
       expect(response.wasRedirected()).toBe(false);
-      done();
-    });
-  });
-  
-  it('redirects are properly handled from getPersonWithRelationships', function(done){
-    FS.getPersonWithRelationships('DYHJ-R84').then(function(response){
-      expect(response.getPrimaryId()).toBe('KJTW-NML');
-      expect(response.getRequestedId()).toBe('DYHJ-R84');
-      expect(response.wasRedirected()).toBe(true);
       done();
     });
   });

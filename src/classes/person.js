@@ -440,7 +440,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name person.types:constructor.Person#getDiscussionRefs
    * @methodOf person.types:constructor.Person
-
+   * @deprecated
    * @return {Object} promise for the {@link discussions.functions:getPersonDiscussionRefs getPersonDiscussionRefs} response
    */
   getDiscussionRefs: function() {
@@ -473,7 +473,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name person.types:constructor.Person#getSourceRefs
    * @methodOf person.types:constructor.Person
-
+   * @deprecated
    * @return {Object} promise for the {@link sources.functions:getSourceRefs getSourceRefs} response
    */
   getSourceRefs: function() {
@@ -525,14 +525,17 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name person.types:constructor.Person#getSpouseRelationships
    * @methodOf person.types:constructor.Person
-   * 
+   * @deprecated
    * @description
+   * 
+   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
+   * 
    * Get the spouse relationships for a person. Use the `persons` param to also
    * get {@link person.types:constructor.Person Person} objects for the spouses. 
    * Use {@link person.types:constructor.Person#getSpouses getSpouses}
    * method if you also want implied spouse relationships (listed together as 
    * parents in a child and parents relationship but no explicit couple relationship).
-   * The response includes the following convenience function:
+   * The response includes the following convenience functions:
    * 
    * - `getCoupleRelationships()` - an array of {@link spouses.types:constructor.Couple Couple} relationships.
    * - `getPerson(id)` - a {@link person.types:constructor.Person Person} for any person id in any
@@ -540,13 +543,22 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * 
    * @param {Object=} params if `persons` is set (the value doesn't matter) then the response will include
    * person objects for the spouses in the couple relationships.
-   * @return {Object} promise for the response. This is only available when the `persons` parameter is set.
+   * @return {Object} promise for the response.
    */
   getSpouseRelationships: function(params){
     var self = this;
     return self.getLinkPromise('spouse-relationships').then(function(link){
-      return self.plumbing.get(link.href, params);
-    }).then(function(response){
+      return self.plumbing.get(link.href, params, {
+        'X-FS-Feature-Tag': 'consolidate-redundant-resources',
+        'X-Expect-Override': '200-ok'
+      });
+    })
+    .then(function(response){
+      return self.plumbing.get(response.getHeader('Location'), null, {
+        'X-FS-Feature-Tag': 'include-non-subject-persons-and-relationships'
+      });
+    })
+    .then(function(response){
       return self.client._personsAndRelationshipsMapper(response);
     });
   },
@@ -583,8 +595,11 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name person.types:constructor.Person#getParentRelationships
    * @methodOf person.types:constructor.Person
-   * 
+   * @deprecated
    * @description
+   * 
+   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
+   * 
    * Get the parent relationships for a person. Use the `persons` param to also
    * get {@link person.types:constructor.Person Person} objects for the parents.
    * Use {@link person.types:constructor.Person#getParents getParents} method 
@@ -602,8 +617,17 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   getParentRelationships: function(params){
     var self = this;
     return self.getLinkPromise('parent-relationships').then(function(link){
-      return self.plumbing.get(link.href, params);
-    }).then(function(response){
+      return self.plumbing.get(link.href, params, {
+        'X-FS-Feature-Tag': 'consolidate-redundant-resources',
+        'X-Expect-Override': '200-ok'
+      });
+    })
+    .then(function(response){
+      return self.plumbing.get(response.getHeader('Location'), null, {
+        'X-FS-Feature-Tag': 'include-non-subject-persons-and-relationships'
+      });
+    })
+    .then(function(response){
       return self.client._personsAndRelationshipsMapper(response);
     });
   },
@@ -638,8 +662,11 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name person.types:constructor.Person#getChildRelationships
    * @methodOf person.types:constructor.Person
-   * 
+   * @deprecated
    * @description
+   * 
+   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
+   * 
    * Get the child relationships for a person. Use the `persons` param to also
    * get {@link person.types:constructor.Person Person} objects for the children.
    * You may also use {@link person.types:constructor.Person#getChildren getChildren} method 
@@ -657,8 +684,17 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   getChildRelationships: function(params){
     var self = this;
     return self.getLinkPromise('child-relationships').then(function(link){
-      return self.plumbing.get(link.href, params);
-    }).then(function(response){
+      return self.plumbing.get(link.href, params, {
+        'X-FS-Feature-Tag': 'consolidate-redundant-resources',
+        'X-Expect-Override': '200-ok'
+      });
+    })
+    .then(function(response){
+      return self.plumbing.get(response.getHeader('Location'), null, {
+        'X-FS-Feature-Tag': 'include-non-subject-persons-and-relationships'
+      });
+    })
+    .then(function(response){
       return self.client._personsAndRelationshipsMapper(response);
     });
   },

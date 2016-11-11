@@ -203,6 +203,7 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name spouses.types:constructor.Couple#getSourceRefs
    * @methodOf spouses.types:constructor.Couple
+   * @deprecated
    * @return {Object} promise for the {@link sources.functions:getCoupleSourceRefs getCoupleSourceRefs} response
    */
   getSourceRefs: function() { 
