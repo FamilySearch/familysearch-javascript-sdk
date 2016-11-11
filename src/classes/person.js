@@ -648,7 +648,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name person.types:constructor.Person#getChildRelationships
    * @methodOf person.types:constructor.Person
-   * 
+   * @deprecated
    * @description
    * Get the child relationships for a person. Use the `persons` param to also
    * get {@link person.types:constructor.Person Person} objects for the children.
@@ -667,8 +667,17 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   getChildRelationships: function(params){
     var self = this;
     return self.getLinkPromise('child-relationships').then(function(link){
-      return self.plumbing.get(link.href, params);
-    }).then(function(response){
+      return self.plumbing.get(link.href, params, {
+        'X-FS-Feature-Tag': 'consolidate-redundant-resources',
+        'X-Expect-Override': '200-ok'
+      });
+    })
+    .then(function(response){
+      return self.plumbing.get(response.getHeader('Location'), null, {
+        'X-FS-Feature-Tag': 'include-non-subject-persons-and-relationships'
+      });
+    })
+    .then(function(response){
       return self.client._personsAndRelationshipsMapper(response);
     });
   },
