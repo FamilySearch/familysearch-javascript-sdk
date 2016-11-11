@@ -232,7 +232,8 @@ FS.prototype._personsAndRelationshipsMapper = function(response, requestedId){
  * @deprecated
  * @description
  * 
- * __This method is deprecated as of December 6, 2016. Use {@link person.functions:getPerson getPerson()} instead.__
+ * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09#consolidate-redundant-resources December 6, 2016}. 
+ * Use {@link person.functions:getPerson getPerson()} instead.__
  * 
  * Get a person and their children, spouses, and parents.
  * The response has the following convenience functions:

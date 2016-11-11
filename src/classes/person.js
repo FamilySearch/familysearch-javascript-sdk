@@ -528,6 +528,8 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @deprecated
    * @description
    * 
+   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09#consolidate-redundant-resources December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
+   * 
    * Get the spouse relationships for a person. Use the `persons` param to also
    * get {@link person.types:constructor.Person Person} objects for the spouses. 
    * Use {@link person.types:constructor.Person#getSpouses getSpouses}
@@ -593,8 +595,11 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name person.types:constructor.Person#getParentRelationships
    * @methodOf person.types:constructor.Person
-   * 
+   * @deprecated
    * @description
+   * 
+   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09#consolidate-redundant-resources December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
+   * 
    * Get the parent relationships for a person. Use the `persons` param to also
    * get {@link person.types:constructor.Person Person} objects for the parents.
    * Use {@link person.types:constructor.Person#getParents getParents} method 
@@ -612,8 +617,17 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   getParentRelationships: function(params){
     var self = this;
     return self.getLinkPromise('parent-relationships').then(function(link){
-      return self.plumbing.get(link.href, params);
-    }).then(function(response){
+      return self.plumbing.get(link.href, params, {
+        'X-FS-Feature-Tag': 'consolidate-redundant-resources',
+        'X-Expect-Override': '200-ok'
+      });
+    })
+    .then(function(response){
+      return self.plumbing.get(response.getHeader('Location'), null, {
+        'X-FS-Feature-Tag': 'include-non-subject-persons-and-relationships'
+      });
+    })
+    .then(function(response){
       return self.client._personsAndRelationshipsMapper(response);
     });
   },
@@ -650,6 +664,9 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @methodOf person.types:constructor.Person
    * @deprecated
    * @description
+   * 
+   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09#consolidate-redundant-resources December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
+   * 
    * Get the child relationships for a person. Use the `persons` param to also
    * get {@link person.types:constructor.Person Person} objects for the children.
    * You may also use {@link person.types:constructor.Person#getChildren getChildren} method 
