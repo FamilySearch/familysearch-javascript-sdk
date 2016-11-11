@@ -78,6 +78,8 @@ describe('A person', function() {
       expect(facts[1].getId()).toBe('res');
       expect(facts[1].getType()).toBe('http://gedcomx.org/Residence');
       done();
+    }).catch(function(error){
+      console.error(error.stack);
     });
   });
 

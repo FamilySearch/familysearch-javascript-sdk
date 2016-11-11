@@ -1,4 +1,5 @@
 {
+  "description": "#SD-PPPJ-MYZ",
   "persons" : [ {
     "id" : "PPPJ-MYZ",
     "identifiers" : {
@@ -170,5 +171,30 @@
     } ],
     "latitude" : 37.613983,
     "longitude" : 55.784296
+  } ],
+  "sourceDescriptions" : [ {
+    "id" : "SD-PPPJ-MYZ",
+    "about" : "#PPPJ-MYZ",
+    "componentOf" : {
+      "description" : "https://integration.familysearch.org/platform/collections/tree?access_token=USYSDAC59A572731849944CF3D9BB270E3C7_idses-int01.a.fsglobal.net"
+    },
+    "resourceType" : "http://gedcomx.org/Person",
+    "modified" : 1468877004000,
+    "version" : "136881698040830000",
+    "links" : {
+      "description" : {
+        "href" : "https://integration.familysearch.org/platform/sources/descriptions/SD-PPPJ-MYZ?access_token=USYSDAC59A572731849944CF3D9BB270E3C7_idses-int01.a.fsglobal.net"
+      }
+    },
+    "citations" : [ {
+      "lang" : "en",
+      "value" : "\"Family Tree,\" database, <i>FamilySearch</i> (http://familysearch.org : modified 18 July 2016, 21:23), entry for API User 1372(PID https://integration.familysearch.org/ark:/61903/4:1:PPPJ-MYZ); contributed by various users."
+    } ],
+    "titles" : [ {
+      "value" : "API User 1372"
+    } ],
+    "identifiers" : {
+      "http://gedcomx.org/Persistent" : [ "https://integration.familysearch.org/ark:/61903/4:1:PPPJ-MYZ" ]
+    }
   } ]
 }
