@@ -254,8 +254,11 @@ FS.prototype._getSourcesResponseMapper = function(response, root, includeDescrip
 /**
  * @ngdoc function
  * @name sources.functions:getSourceRefs
- *
+ * @deprecated
  * @description
+ * 
+ * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09#consolidate-redundant-resources December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve source references.__
+ * 
  * Get the source references for a person
  * The response includes the following convenience function
  *
@@ -272,7 +275,15 @@ FS.prototype._getSourcesResponseMapper = function(response, root, includeDescrip
 FS.prototype.getSourceRefs = function(url) {
   var self = this;
   // child and parents note requires x-fs-v1; others allow fs or gedcomx
-  return self.plumbing.get(url, null, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
+  return self.plumbing.get(url, null, {
+    'Accept': 'application/x-fs-v1+json',
+    'X-Expect-Override': '200-ok',
+    'X-FS-Feature-Tag': 'consolidate-redundant-resources'
+  })
+  .then(function(response){
+    return self.plumbing.get(response.getHeader('Location'));
+  })
+  .then(function(response){
     self._getSourcesResponseMapper(response, self.helpers.getEntityType(url), false);
     return response;
   });

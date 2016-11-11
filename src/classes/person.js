@@ -473,7 +473,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name person.types:constructor.Person#getSourceRefs
    * @methodOf person.types:constructor.Person
-
+   * @deprecated
    * @return {Object} promise for the {@link sources.functions:getSourceRefs getSourceRefs} response
    */
   getSourceRefs: function() {
