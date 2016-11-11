@@ -19,7 +19,7 @@ var FS = require('../FamilySearch'),
  *
  * @description
  * Get the specified person
- * The response includes the following convenience function
+ * The response includes the following convenience functions:
  *
  * - `getPerson()` - get the {@link person.types:constructor.Person Person} from the response
  * - `getPrimaryId()` - id of the person returned
@@ -237,6 +237,9 @@ FS.prototype._personsAndRelationshipsMapper = function(response){
  * @name person.functions:getPersonWithRelationships
  * @deprecated
  * @description
+ * 
+ * __This method is deprecated as of December 6, 2016. Use {@link person.functions:getPerson getPerson()} instead.__
+ * 
  * Get a person and their children, spouses, and parents.
  * The response has the following convenience functions:
  *
