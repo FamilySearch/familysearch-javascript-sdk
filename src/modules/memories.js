@@ -208,7 +208,11 @@ FS.prototype.getMemoryPersona = function(url) {
 /**
  * @ngdoc function
  * @name memories.functions:getMemoryPersonaRefs
+ * @deprecated
  * @description
+ * 
+ * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve memory references.__
+ * 
  * Get references to memories for a person
  * The response includes the following convenience function
  *
@@ -222,7 +226,14 @@ FS.prototype.getMemoryPersona = function(url) {
  */
 FS.prototype.getMemoryPersonaRefs = function(url) {
   var self = this;
-  return self.plumbing.get(url).then(function(response){
+  return self.plumbing.get(url, null, {
+    'X-Expect-Override': '200-ok',
+    'X-FS-Feature-Tag': 'consolidate-redundant-resources'
+  })
+  .then(function(response){
+    return self.plumbing.get(response.getHeader('Location'));
+  })
+  .then(function(response){
     var data = maybe(response.getData());
     utils.forEach(data.persons, function(person){
       utils.forEach(person.evidence, function(evidence, j){
