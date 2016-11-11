@@ -257,7 +257,7 @@ FS.prototype._getSourcesResponseMapper = function(response, root, includeDescrip
  * @deprecated
  * @description
  * 
- * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09#consolidate-redundant-resources December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve source references.__
+ * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve source references.__
  * 
  * Get the source references for a person
  * The response includes the following convenience function
