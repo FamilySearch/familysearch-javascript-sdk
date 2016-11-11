@@ -2382,6 +2382,7 @@ ChildAndParents.prototype = utils.extend(Object.create(FS.BaseClass.prototype), 
    * @ngdoc function
    * @name parentsAndChildren.types:constructor.ChildAndParents#getSourceRefs
    * @methodOf parentsAndChildren.types:constructor.ChildAndParents
+   * @deprecated
    * @return {Object} promise for the {@link sources.functions:getSourceRefs getSourceRefs} response
    */
   getSourceRefs: function() { 
@@ -3218,6 +3219,7 @@ Couple.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name spouses.types:constructor.Couple#getSourceRefs
    * @methodOf spouses.types:constructor.Couple
+   * @deprecated
    * @return {Object} promise for the {@link sources.functions:getCoupleSourceRefs getCoupleSourceRefs} response
    */
   getSourceRefs: function() { 
@@ -6071,7 +6073,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name person.types:constructor.Person#getDiscussionRefs
    * @methodOf person.types:constructor.Person
-
+   * @deprecated
    * @return {Object} promise for the {@link discussions.functions:getPersonDiscussionRefs getPersonDiscussionRefs} response
    */
   getDiscussionRefs: function() {
@@ -6104,7 +6106,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name person.types:constructor.Person#getSourceRefs
    * @methodOf person.types:constructor.Person
-
+   * @deprecated
    * @return {Object} promise for the {@link sources.functions:getSourceRefs getSourceRefs} response
    */
   getSourceRefs: function() {
@@ -6156,14 +6158,17 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name person.types:constructor.Person#getSpouseRelationships
    * @methodOf person.types:constructor.Person
-   * 
+   * @deprecated
    * @description
+   * 
+   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
+   * 
    * Get the spouse relationships for a person. Use the `persons` param to also
    * get {@link person.types:constructor.Person Person} objects for the spouses. 
    * Use {@link person.types:constructor.Person#getSpouses getSpouses}
    * method if you also want implied spouse relationships (listed together as 
    * parents in a child and parents relationship but no explicit couple relationship).
-   * The response includes the following convenience function:
+   * The response includes the following convenience functions:
    * 
    * - `getCoupleRelationships()` - an array of {@link spouses.types:constructor.Couple Couple} relationships.
    * - `getPerson(id)` - a {@link person.types:constructor.Person Person} for any person id in any
@@ -6171,13 +6176,22 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * 
    * @param {Object=} params if `persons` is set (the value doesn't matter) then the response will include
    * person objects for the spouses in the couple relationships.
-   * @return {Object} promise for the response. This is only available when the `persons` parameter is set.
+   * @return {Object} promise for the response.
    */
   getSpouseRelationships: function(params){
     var self = this;
     return self.getLinkPromise('spouse-relationships').then(function(link){
-      return self.plumbing.get(link.href, params);
-    }).then(function(response){
+      return self.plumbing.get(link.href, params, {
+        'X-FS-Feature-Tag': 'consolidate-redundant-resources',
+        'X-Expect-Override': '200-ok'
+      });
+    })
+    .then(function(response){
+      return self.plumbing.get(response.getHeader('Location'), null, {
+        'X-FS-Feature-Tag': 'include-non-subject-persons-and-relationships'
+      });
+    })
+    .then(function(response){
       return self.client._personsAndRelationshipsMapper(response);
     });
   },
@@ -6214,8 +6228,11 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name person.types:constructor.Person#getParentRelationships
    * @methodOf person.types:constructor.Person
-   * 
+   * @deprecated
    * @description
+   * 
+   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
+   * 
    * Get the parent relationships for a person. Use the `persons` param to also
    * get {@link person.types:constructor.Person Person} objects for the parents.
    * Use {@link person.types:constructor.Person#getParents getParents} method 
@@ -6233,8 +6250,17 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   getParentRelationships: function(params){
     var self = this;
     return self.getLinkPromise('parent-relationships').then(function(link){
-      return self.plumbing.get(link.href, params);
-    }).then(function(response){
+      return self.plumbing.get(link.href, params, {
+        'X-FS-Feature-Tag': 'consolidate-redundant-resources',
+        'X-Expect-Override': '200-ok'
+      });
+    })
+    .then(function(response){
+      return self.plumbing.get(response.getHeader('Location'), null, {
+        'X-FS-Feature-Tag': 'include-non-subject-persons-and-relationships'
+      });
+    })
+    .then(function(response){
       return self.client._personsAndRelationshipsMapper(response);
     });
   },
@@ -6269,8 +6295,11 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @ngdoc function
    * @name person.types:constructor.Person#getChildRelationships
    * @methodOf person.types:constructor.Person
-   * 
+   * @deprecated
    * @description
+   * 
+   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
+   * 
    * Get the child relationships for a person. Use the `persons` param to also
    * get {@link person.types:constructor.Person Person} objects for the children.
    * You may also use {@link person.types:constructor.Person#getChildren getChildren} method 
@@ -6288,8 +6317,17 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
   getChildRelationships: function(params){
     var self = this;
     return self.getLinkPromise('child-relationships').then(function(link){
-      return self.plumbing.get(link.href, params);
-    }).then(function(response){
+      return self.plumbing.get(link.href, params, {
+        'X-FS-Feature-Tag': 'consolidate-redundant-resources',
+        'X-Expect-Override': '200-ok'
+      });
+    })
+    .then(function(response){
+      return self.plumbing.get(response.getHeader('Location'), null, {
+        'X-FS-Feature-Tag': 'include-non-subject-persons-and-relationships'
+      });
+    })
+    .then(function(response){
       return self.client._personsAndRelationshipsMapper(response);
     });
   },
@@ -9205,9 +9243,11 @@ FS.prototype.getMultiDiscussion = function(urls) {
 /**
  * @ngdoc function
  * @name discussions.functions:getPersonDiscussionRefs
-
- *
+ * @deprecated
  * @description
+ * 
+ * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve discussion references.__
+ * 
  * Get references to discussions for a person
  * The response includes the following convenience function
  *
@@ -9221,7 +9261,15 @@ FS.prototype.getMultiDiscussion = function(urls) {
  */
 FS.prototype.getPersonDiscussionRefs = function(url) {
   var self = this;
-  return self.plumbing.get(url, null, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
+  return self.plumbing.get(url, null, {
+    'Accept': 'application/x-fs-v1+json',
+    'X-FS-Feature-Tag': 'consolidate-redundant-resources',
+    'X-Expect-Override': '200-ok'
+  })
+  .then(function(response){
+    return self.plumbing.get(response.getHeader('Location'));
+  })
+  .then(function(response){
     var data = response.getData();
     if(data.persons && data.persons[0] && utils.isArray(data.persons[0]['discussion-references'])){
       var refs = data.persons[0]['discussion-references'];
@@ -9555,7 +9603,11 @@ FS.prototype.getMemoryPersona = function(url) {
 /**
  * @ngdoc function
  * @name memories.functions:getMemoryPersonaRefs
+ * @deprecated
  * @description
+ * 
+ * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve memory references.__
+ * 
  * Get references to memories for a person
  * The response includes the following convenience function
  *
@@ -9569,7 +9621,14 @@ FS.prototype.getMemoryPersona = function(url) {
  */
 FS.prototype.getMemoryPersonaRefs = function(url) {
   var self = this;
-  return self.plumbing.get(url).then(function(response){
+  return self.plumbing.get(url, null, {
+    'X-Expect-Override': '200-ok',
+    'X-FS-Feature-Tag': 'consolidate-redundant-resources'
+  })
+  .then(function(response){
+    return self.plumbing.get(response.getHeader('Location'));
+  })
+  .then(function(response){
     var data = maybe(response.getData());
     utils.forEach(data.persons, function(person){
       utils.forEach(person.evidence, function(evidence, j){
@@ -10148,34 +10207,49 @@ var FS = require('../FamilySearch'),
 /**
  * @ngdoc function
  * @name person.functions:getPerson
-
  *
  * @description
  * Get the specified person
- * The response includes the following convenience function
+ * The response includes the following convenience functions:
  *
  * - `getPerson()` - get the {@link person.types:constructor.Person Person} from the response
+ * - `getPrimaryId()` - id of the person returned
+ * - `getRequestedId()` - person id that was requested; may differ from primary id
+ * when the requested id was deleted due to a merge
+ * - `getFatherIds()` - array of ids
+ * - `getMotherIds()` - array of ids
+ * - `getSpouseIds()` - array of ids
+ * - `getChildIds()` - array of ids of all children
+ * - `getChildIdsOf(spouseId)` - array of ids; if `spouseId` is null/undefined, return ids of children without the other parent
+ * - `getParentRelationships()` - array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationship objects
+ * - `getSpouseRelationships()` - array of {@link spouses.types:constructor.Couple Couple} relationship objects
+ * - `getSpouseRelationship(spouseId)` - {@link spouses.types:constructor.Couple Couple} relationship with the specified spouse
+ * - `getChildRelationships()` - array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationship objects
+ * - `getChildRelationshipsOf(spouseId)` - array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationship objects
+ * if `spouseId` is null/undefined, return ids of child relationships without the other parent
+ * - `getPrimaryPerson()` - {@link person.types:constructor.Person Person} object for the primary person
+ * - `getPerson(id)` - {@link person.types:constructor.Person Person} object for the person with `id`
+ * - `getFathers()` - array of father {@link person.types:constructor.Person Persons}
+ * - `getMothers()` - array of mother {@link person.types:constructor.Person Persons}
+ * - `getSpouses()` - array of spouse {@link person.types:constructor.Person Persons}
+ * - `getChildren()` - array of all child {@link person.types:constructor.Person Persons};
+ * - `getChildrenOf(spouseId)` - array of child {@link person.types:constructor.Person Persons};
+ * if `spouseId` is null/undefined, return children without the other parent
+ * - `wasRedirected()` - returns true when the primary id is different from the requested id
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
  *
- *
  * @param {String} pid id or full URL of the person
+ * @param {Object} query URL query parameters. See the API docs for supported parameters.
  * @return {Object} promise for the response
  */
-FS.prototype.getPerson = function(pid) {
+FS.prototype.getPerson = function(pid, query) {
   var self = this,
       urlPromise = self.helpers.isAbsoluteUrl(pid) ? Promise.resolve(pid) : self.plumbing.getCollectionUrl('FSFT', 'person', {pid: pid});
   return urlPromise.then(function(url) {
-    return self.plumbing.get(url);
+    return self.plumbing.get(url, query);
   }).then(function(response){
-    var person = response.getData().persons[0] = self.createPerson(response.getData().persons[0]);
-    person.isReadOnly = function() {
-      var allowHeader = response.getHeader('Allow');
-      return !!allowHeader && allowHeader.indexOf('POST') < 0;
-    };
-    return utils.extend(response, {
-      getPerson: function() { return person; }
-    });
+    return self._personsAndRelationshipsMapper(response, pid);
   });
 };
 
@@ -10211,7 +10285,7 @@ FS.prototype.getMultiPerson = function(pids) {
 /**
  * Expose globally so that other files can access it
  */
-FS.prototype._personsAndRelationshipsMapper = function(response){
+FS.prototype._personsAndRelationshipsMapper = function(response, requestedId){
   var self = this;
   
   utils.forEach(response.getData().persons, function(person, index, obj){
@@ -10227,7 +10301,16 @@ FS.prototype._personsAndRelationshipsMapper = function(response){
     obj[index] = self.createChildAndParents(rel);
   });
   
+  response.getData().persons[0].isReadOnly = function() {
+    var allowHeader = response.getHeader('Allow');
+    return !!allowHeader && allowHeader.indexOf('POST') < 0;
+  };
+  
   return utils.extend(response, {
+    getRequestedId: function() { return requestedId; },
+    wasRedirected: function() {
+      return this.getPrimaryId() !== this.getRequestedId();
+    },
     getCoupleRelationships: function() { 
       return utils.filter(maybe(this.getData()).relationships, function(rel){
         return rel.data.type === 'http://gedcomx.org/Couple';
@@ -10237,19 +10320,112 @@ FS.prototype._personsAndRelationshipsMapper = function(response){
       return maybe(this.getData()).childAndParentsRelationships || []; 
     },
     getPerson: function(id) { 
-      return utils.find(this.getData().persons, function(person){
-        return person.getId() === id;
+      if(id){
+        return utils.find(this.getData().persons, function(person){
+          return person.getId() === id;
+        });
+      } else {
+        return this.getPrimaryPerson();
+      }
+    },
+    getPrimaryId: function() {
+      var sourceDescriptionId = this.getData().description.substring(1),
+          sourceDescription = utils.find(this.getData().sourceDescriptions, function(sourceDescription){
+            return sourceDescription.id === sourceDescriptionId;
+          });
+      if(sourceDescription){
+        return sourceDescription.about.substring(1);
+      }
+    },
+    getPrimaryPerson: function() { return this.getPerson(this.getPrimaryId()); },
+    getParentRelationships: function() {
+      var primaryId = this.getPrimaryId();
+      return utils.filter(this.getData().childAndParentsRelationships, function(r) {
+        return r.getChildId() === primaryId;
       });
-    }
+    },
+    getSpouseRelationships: function() {
+      return utils.filter(this.getData().relationships, function(r) {
+        return r.data.type === 'http://gedcomx.org/Couple';
+      });
+    },
+    getSpouseRelationship: function(spouseId) {
+      var primaryId = this.getPrimaryId();
+      return utils.find(this.getData().relationships, function(r) {
+        return r.data.type === 'http://gedcomx.org/Couple' &&
+          (primaryId === r.getHusbandId() ? r.getWifeId() : r.getHusbandId()) === spouseId;
+      });
+    },
+    getChildRelationships: function() {
+      var primaryId = this.getPrimaryId();
+      return utils.filter(this.getData().childAndParentsRelationships, function(r) {
+        return r.getFatherId() === primaryId || r.getMotherId() === primaryId;
+      });
+    },
+    getChildRelationshipsOf: function(spouseId) {
+      var primaryId = this.getPrimaryId();
+      return utils.filter(this.getData().childAndParentsRelationships, function(r) {
+        /*jshint eqeqeq:false */
+        return (r.getFatherId() === primaryId || r.getMotherId() === primaryId) &&
+          (r.getFatherId() == spouseId || r.getMotherId() == spouseId); // allow spouseId to be null or undefined
+      });
+    },
+    getFatherIds: function() {
+      return utils.uniq(utils.map(
+        utils.filter(this.getParentRelationships(), function(r) {
+          return !!r.getFatherId();
+        }),
+        function(r) {
+          return r.getFatherId();
+        }, this));
+    },
+    getFathers: function() { return utils.map(this.getFatherIds(), this.getPerson, this); },
+    getMotherIds: function() {
+      return utils.uniq(utils.map(
+        utils.filter(this.getParentRelationships(), function(r) {
+          return !!r.getMotherId();
+        }),
+        function(r) {
+          return r.getMotherId();
+        }, this));
+    },
+    getMothers: function() { return utils.map(this.getMotherIds(), this.getPerson, this); },
+    getSpouseIds: function() {
+      return utils.uniq(utils.map(
+        utils.filter(this.getSpouseRelationships(), function(r) {
+          return r.getHusbandId() && r.getWifeId(); // only consider couple relationships with both spouses
+        }),
+        function(r) {
+          return this.getPrimaryId() === r.getHusbandId() ? r.getWifeId() : r.getHusbandId();
+        }, this));
+    },
+    getSpouses: function() { return utils.map(this.getSpouseIds(), this.getPerson, this); },
+    getChildIds: function() {
+      return utils.uniq(utils.map(this.getChildRelationships(),
+        function(r) {
+          return r.getChildId();
+        }, this));
+    },
+    getChildren: function() { return utils.map(this.getChildIds(), this.getPerson, this); },
+    getChildIdsOf: function(spouseId) {
+      return utils.uniq(utils.map(this.getChildRelationshipsOf(spouseId),
+        function(r) {
+          return r.getChildId();
+        }, this));
+    },
+    getChildrenOf: function(spouseId) { return utils.map(this.getChildIdsOf(spouseId), this.getPerson, this); },
   });
 };
 
 /**
  * @ngdoc function
  * @name person.functions:getPersonWithRelationships
-
- *
+ * @deprecated
  * @description
+ * 
+ * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. 
+ * Use {@link person.functions:getPerson getPerson()} instead.__
+ * 
  * Get a person and their children, spouses, and parents.
  * The response has the following convenience functions:
  *
@@ -10290,110 +10466,18 @@ FS.prototype._personsAndRelationshipsMapper = function(response){
 FS.prototype.getPersonWithRelationships = function(pid, params) {
   var self = this;
   return self.plumbing.getCollectionUrl('FSFT', 'person-with-relationships').then(function(url) {
-    return self.plumbing.get(url, utils.extend({'person': pid}, params));
-  }).then(function(response){
-    response = self._personsAndRelationshipsMapper(response);
-    response.getData().persons[0].isReadOnly = function() {
-      var allowHeader = response.getHeader('Allow');
-      return !!allowHeader && allowHeader.indexOf('POST') < 0;
-    };
-    return utils.extend(response, {
-      getRequestedId: function() { return pid; },
-      getPrimaryId: function() {
-        var sourceDescriptionId = this.getData().description.substring(1),
-            sourceDescription = utils.find(this.getData().sourceDescriptions, function(sourceDescription){
-              return sourceDescription.id === sourceDescriptionId;
-            });
-        if(sourceDescription){
-          return sourceDescription.about.substring(1);
-        }
-      },
-      getPerson: function(id) { 
-        return utils.find(this.getData().persons, function(person){
-          return person.getId() === id;
-        });
-      },
-      getPrimaryPerson: function() { return this.getPerson(this.getPrimaryId()); },
-      getParentRelationships: function() {
-        var primaryId = this.getPrimaryId();
-        return utils.filter(this.getData().childAndParentsRelationships, function(r) {
-          return r.getChildId() === primaryId;
-        });
-      },
-      getSpouseRelationships: function() {
-        return utils.filter(this.getData().relationships, function(r) {
-          return r.data.type === 'http://gedcomx.org/Couple';
-        });
-      },
-      getSpouseRelationship: function(spouseId) {
-        var primaryId = this.getPrimaryId();
-        return utils.find(this.getData().relationships, function(r) {
-          return r.data.type === 'http://gedcomx.org/Couple' &&
-            (primaryId === r.getHusbandId() ? r.getWifeId() : r.getHusbandId()) === spouseId;
-        });
-      },
-      getChildRelationships: function() {
-        var primaryId = this.getPrimaryId();
-        return utils.filter(this.getData().childAndParentsRelationships, function(r) {
-          return r.getFatherId() === primaryId || r.getMotherId() === primaryId;
-        });
-      },
-      getChildRelationshipsOf: function(spouseId) {
-        var primaryId = this.getPrimaryId();
-        return utils.filter(this.getData().childAndParentsRelationships, function(r) {
-          /*jshint eqeqeq:false */
-          return (r.getFatherId() === primaryId || r.getMotherId() === primaryId) &&
-            (r.getFatherId() == spouseId || r.getMotherId() == spouseId); // allow spouseId to be null or undefined
-        });
-      },
-      getFatherIds: function() {
-        return utils.uniq(utils.map(
-          utils.filter(this.getParentRelationships(), function(r) {
-            return !!r.getFatherId();
-          }),
-          function(r) {
-            return r.getFatherId();
-          }, this));
-      },
-      getFathers: function() { return utils.map(this.getFatherIds(), this.getPerson, this); },
-      getMotherIds: function() {
-        return utils.uniq(utils.map(
-          utils.filter(this.getParentRelationships(), function(r) {
-            return !!r.getMotherId();
-          }),
-          function(r) {
-            return r.getMotherId();
-          }, this));
-      },
-      getMothers: function() { return utils.map(this.getMotherIds(), this.getPerson, this); },
-      getSpouseIds: function() {
-        return utils.uniq(utils.map(
-          utils.filter(this.getSpouseRelationships(), function(r) {
-            return r.getHusbandId() && r.getWifeId(); // only consider couple relationships with both spouses
-          }),
-          function(r) {
-            return this.getPrimaryId() === r.getHusbandId() ? r.getWifeId() : r.getHusbandId();
-          }, this));
-      },
-      getSpouses: function() { return utils.map(this.getSpouseIds(), this.getPerson, this); },
-      getChildIds: function() {
-        return utils.uniq(utils.map(this.getChildRelationships(),
-          function(r) {
-            return r.getChildId();
-          }, this));
-      },
-      getChildren: function() { return utils.map(this.getChildIds(), this.getPerson, this); },
-      getChildIdsOf: function(spouseId) {
-        return utils.uniq(utils.map(this.getChildRelationshipsOf(spouseId),
-          function(r) {
-            return r.getChildId();
-          }, this));
-      },
-      getChildrenOf: function(spouseId) { return utils.map(this.getChildIdsOf(spouseId), this.getPerson, this); },
-      wasRedirected: function() {
-        return this.getPrimaryId() !== this.getRequestedId();
-      }
+    return self.plumbing.get(url, utils.extend({'person': pid}, params), {
+      'X-FS-Feature-Tag': 'consolidate-redundant-resources',
+      'X-Expect-Override': '200-ok'
     });
+  })
+  .then(function(response){
+    return self.plumbing.get(response.getHeader('Location'), null, {
+      'X-FS-Feature-Tag': 'include-non-subject-persons-and-relationships'
+    });
+  })
+  .then(function(response){
+    return self._personsAndRelationshipsMapper(response, pid);
   });
 };
 
@@ -10688,7 +10772,7 @@ FS.prototype.getPlaceDescription = function(url) {
 
 /**
  * @ngdoc function
- * @name places.functions:getPlaceSearch
+ * @name places.functions:getPlacesSearch
 
  *
  * @description
@@ -11539,8 +11623,11 @@ FS.prototype._getSourcesResponseMapper = function(response, root, includeDescrip
 /**
  * @ngdoc function
  * @name sources.functions:getSourceRefs
- *
+ * @deprecated
  * @description
+ * 
+ * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve source references.__
+ * 
  * Get the source references for a person
  * The response includes the following convenience function
  *
@@ -11557,7 +11644,15 @@ FS.prototype._getSourcesResponseMapper = function(response, root, includeDescrip
 FS.prototype.getSourceRefs = function(url) {
   var self = this;
   // child and parents note requires x-fs-v1; others allow fs or gedcomx
-  return self.plumbing.get(url, null, {'Accept': 'application/x-fs-v1+json'}).then(function(response){
+  return self.plumbing.get(url, null, {
+    'Accept': 'application/x-fs-v1+json',
+    'X-Expect-Override': '200-ok',
+    'X-FS-Feature-Tag': 'consolidate-redundant-resources'
+  })
+  .then(function(response){
+    return self.plumbing.get(response.getHeader('Location'));
+  })
+  .then(function(response){
     self._getSourcesResponseMapper(response, self.helpers.getEntityType(url), false);
     return response;
   });
@@ -12176,6 +12271,10 @@ Plumbing.prototype.transformData = function(data, contentType) {
  */
 Plumbing.prototype.http = function(method, url, headers, data, retries) {
   var self = this;
+  
+  if(!url){
+    return Promise.reject(new Error('No URL was provided.'));
+  }
   
   // prepend the server
   var absoluteUrl = this.helpers.getAPIServerUrl(url);

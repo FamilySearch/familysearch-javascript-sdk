@@ -1,0 +1,299 @@
+<h1><code ng:non-bindable=""></code>
+<div><span class="hint"></span>
+</div>
+</h1>
+<div><div class="index-page"><h3 id="overview">Overview</h3>
+<h4 id="overview_goal">Goal</h4>
+<p>The goal of this SDK is to make the FamilySearch REST endpoints easier to consume.
+Each SDK function wraps a corresponding REST endpoint and adds <em>convenience functions</em>
+to make navigating the response easier.
+In addition to the convenience functions you also have access to the original response,
+so you always have the option of navigating the response elements yourself.
+And you can make calls not anticipated by the SDK using the <em>plumbing functions</em> described below.</p>
+<h4 id="overview_features">Features</h4>
+<ul>
+<li>Authentication can be performed with a single function call, or even automatically.</li>
+<li>The access token can be saved in a cookie and can be expired automatically.</li>
+<li>REST endpoints can be called using simple function calls that set the correct request headers and request the correct URL.</li>
+<li>GET&#39;s are automatically retried to handle transient errors.</li>
+<li>Throttling is handled - calls are automatically retried.</li>
+<li>Responses are mapped to objects or arrays of objects that have convenience functions
+to make extracting data from the responses easier.</li>
+<li>The object prototypes can be extended with additional functions to navigate the response json and return
+whatever custom information is desired.</li>
+<li>The SDK works both in the browser and in node.</li>
+</ul>
+<h4 id="overview_example-code">Example Code</h4>
+<ul>
+<li><a href="https://github.com/FamilySearch/familysearch-javascript-sdk/tree/master/examples">Simple examples</a></li>
+<li><a href="https://github.com/FamilySearch/javascript-sdk-sample-app">Sample App</a></li>
+<li>Editable Examples via jsFiddle:<ul>
+<li><a href="http://jsfiddle.net/fqn6j7fs/44/"><code>getAccessToken()</code></a></li>
+<li><a href="http://jsfiddle.net/m2y1qwm3/112/"><code>getPerson()</code></a></li>
+<li><a href="http://jsfiddle.net/6vpk7asr/52/"><code>getPersonWithRelationships()</code></a></li>
+<li><a href="http://jsfiddle.net/u7esw4u3/170/"><code>getCurrentUser()</code></a></li>
+</ul>
+</li>
+</ul>
+<h4 id="overview_object-model">Object model</h4>
+<p><img src="https://docs.google.com/drawings/d/1o3vRqYQSXoao94Z0cdaK9dR8MveS9U2jCsBOobw0xks/pub?w=650&amp;h=492"/></p>
+<p>People with names and facts</p>
+<ul>
+<li><a href="#/api/person.types:constructor.Person">Person</a></li>
+<li><a href="#/api/fact.types:constructor.Fact">Fact</a></li>
+<li><a href="#/api/name.types:constructor.Name">Name</a></li>
+</ul>
+<p>Relationships between people</p>
+<ul>
+<li><a href="#/api/spouses.types:constructor.Couple">Couple</a></li>
+<li><a href="#/api/parentsAndChildren.types:constructor.ChildAndParents">ChildAndParents</a></li>
+</ul>
+<p>Ojects related to people and relationships</p>
+<ul>
+<li><a href="#/api/notes.types:constructor.Note">Note</a></li>
+<li><a href="#/api/sources.types:constructor.SourceRef">SourceRef</a></li>
+<li><a href="#/api/sources.types:constructor.SourceDescription">SourceDescription</a></li>
+<li><a href="#/api/discussions.types:constructor.DiscussionRef">DiscussionRef</a></li>
+<li><a href="#/api/discussions.types:constructor.Discussion">Discussion</a></li>
+<li><a href="#/api/discussions.types:constructor.Comment">Comment</a></li>
+<li><a href="#/api/memories.types:constructor.MemoryPersonaRef">MemoryPersonaRef</a></li>
+<li><a href="#/api/memories.types:constructor.MemoryPersona">MemoryPersona</a></li>
+<li><a href="#/api/memories.types:constructor.Memory">Memory</a></li>
+<li><a href="#/api/memories.types:constructor.MemoryArtifactRef">MemoryArtifactRef</a></li>
+<li><a href="#/api/changeHistory.types:constructor.Change">Change</a></li>
+</ul>
+<p>Search &amp; match</p>
+<ul>
+<li><a href="#/api/searchAndMatch.types:constructor.SearchResult">SearchResult</a></li>
+</ul>
+<p>Attribution</p>
+<ul>
+<li><a href="#/api/attribution.types:constructor.Attribution">Attribution</a></li>
+</ul>
+<p>Users</p>
+<ul>
+<li><a href="#/api/user.types:constructor.Agent">Agent</a></li>
+<li><a href="#/api/user.types:constructor.User">User</a></li>
+</ul>
+<h3 id="installation">Installation</h3>
+<p>The SDK is available as a versioned javascript file, following the <a href="http://semver.org/">semantic versioning</a> guidelines.</p>
+<ol>
+<li><p>Bower</p>
+<pre><code>bower install familysearch-javascript-sdk</code></pre>
+</li>
+<li><p>Node</p>
+<pre><code>npm install familysearch-javascript-sdk.git</code></pre>
+</li>
+<li><p>CDN via <a href="http://www.jsdelivr.com/#!familysearch-javascript-sdk">jsDelivr</a></p>
+<pre><code class="lang-html">&lt;script src=&quot;//cdn.jsdelivr.net/familysearch-javascript-sdk/1.0.0/familysearch-javascript-sdk.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+</li>
+</ol>
+<h4 id="installation_browser">Browser</h4>
+<ol>
+<li><p>Create an instance of the SDK. Read more about <a href="#/api/familysearch.types:constructor.FamilySearch">all available options</a>.
+<pre class="prettyprint linenums">
+var client = new FamilySearch({
+  client_id: 'YOUR_CLIENT_ID_GOES_HERE',
+  environment: 'integration',
+  // redirect_uri is the URI you registered with FamilySearch.
+  // The page does not need to exist. The URI only needs to have
+  // the same host and port as the server running your script.
+  // (If you want your app to work on Mobile Safari, the page does need to exist.
+  //  see the "Authentication with Mobile Safari" section below for more information.)
+  redirect_uri: 'REDIRECT_URI_GOES_HERE'
+});
+</pre>
+</li>
+<li><p>Get an access token
+<pre class="prettyprint linenums">
+client.getAccessToken().then(function(response) {
+   // now you have an access token
+});
+</pre>
+</li>
+<li><p>Make API calls
+<pre class="prettyprint linenums">
+client.getCurrentUser().then(function(response) {
+   // now you have the response
+});
+</pre>
+</li>
+</ol>
+<h5 id="installation_browser_example">Example</h5>
+<pre class="prettyprint linenums">
+var client = new FamilySearch({
+  client_id: 'MY_CLIENT_ID',
+  environment: 'integration',
+  redirect_uri: 'http://localhost/auth'
+});
+
+client.getAccessToken().then(function(accessToken) {
+  client.getCurrentUser().then(function(response) {
+    var user = response.getUser();
+    console.log('Hello ' + user.getContactName());
+  });
+});
+</pre>
+<h4 id="installation_nodejs">Node.js</h4>
+<ol>
+<li><p><code>npm install familysearch-javascript-sdk</code></p>
+</li>
+<li><p>Require the necessary modules:
+<pre class="prettyprint linenums">
+var FS = require('familysearch-javascript-sdk');
+</pre>
+</li>
+<li><p>Create an instance of the SDK. Read more about <a href="#/api/familysearch.types:constructor.FamilySearch">all available options</a>.
+<pre class="prettyprint linenums">
+var client = new FamilySearch({
+  client_id: 'YOUR_CLIENT_ID_GOES_HERE',
+  environment: 'integration',
+  access_token: 'SOME_ACCESS_TOKEN'
+});
+</pre>
+</li>
+<li><p>Make API calls
+<pre class="prettyprint linenums">
+client.getCurrentUser().then(function(response) {
+   // now you have the response
+});
+</pre>
+</li>
+</ol>
+<h5 id="installation_nodejs_example">Example</h5>
+<pre class="prettyprint linenums">
+var client = new FamilySearch({
+  client_id: 'MY_CLIENT_ID',
+  environment: 'integration',
+  access_token: 'SOME_ACCESS_TOKEN'
+});
+
+client.getCurrentUser().then(function(response) {
+  var user = response.getUser();
+  console.log('Hello '+user.contactName);
+});
+</pre>
+<h3 id="sdk-functions-return-promises">SDK Functions return promises</h3>
+<p>As illustrated by the example above, most SDK functions return <em>promises</em>.
+Promises are a great way to manage asynchronous code.
+A promise has a <code>then(success callback, optional error callback)</code> method into which you pass your
+<em>callback functions</em>.
+Your <em>success callback function</em> is called once the promise has been fulfilled;
+your <em>error callback function</em> is called if the project gets rejected.
+Learn more about <a href="http://www.html5rocks.com/en/tutorials/es6/promises/">promises in JavaScript</a>.</p>
+<p>If the promise is fulfilled, it will call your success callback function with a single parameter containing a response object.
+If the response is rejected, it will call your error callback function with an Error.</p>
+<h3 id="handling-responses">Handling responses</h3>
+<p>SDK functions typically return a response object with the follow functions:</p>
+<ul>
+<li><code>getBody()</code> - Get the raw body. In the browser this is a string. In Node this will be a buffer.</li>
+<li><code>getData()</code> - Get the processed body. When the response is JSON this will return a JSON object.</li>
+<li><code>getStatusCode()</code> - Return the HTTP status code as an integer.</li>
+<li><code>getHeader(header[, getAll])</code> - Get a header value from the response. When <code>getAll</code> is true it will return an array containing all header values.
+Sometimes the same header is set multiple times such as the <code>Link</code> headers when creating a new object.</li>
+<li><code>getRequest()</code> - Get an object representing the original request with properties <code>url</code>, <code>method</code>, <code>headers</code>, and <code>body</code>.</li>
+</ul>
+<p>The SDK function calls often add <em>convenience functions</em> for returning various objects from the response.
+For example, the <code>getPerson(&#39;ID&#39;)</code> call adds a <code>response.getPerson()</code> convenience function that returns the
+<a href="#/api/person.types:constructor.Person">Person</a> object from the response.</p>
+<p>The returned objects convenience functions for accessing the data.
+For example, the prototype for <a href="#/api/person.types:constructor.Person">Person</a> objects includes <code>getGivenName()</code> and <code>getSurname()</code>
+convenience functions for returning the person&#39;s given name and surname respectively.
+Without these convenience functions, you would have to navigate the <code>parts</code> elements of the <code>nameForms</code> array,
+look for a part whose <code>type</code> element is <code>http://gedcomx.org/Given</code> or <code>http://gedcomx.org/Surname</code> respectively, and
+then return the <code>value</code> element of that part. <code>getGivenName()</code> and <code>getSurname()</code> do this for you.
+The object properties and convenience functions are fully described in the docs.</p>
+<p>You can add your own convenience functions to the returned objects.
+For example, suppose you wanted to display someone&#39;s name followed by their id. You could write
+<pre class="prettyprint linenums">
+  FamilySearch.Person.prototype._getNameAndId = function() {
+    return this.getDisplayName() + ' (' + this.getId() + ')';
+  }
+</pre>
+<p>and from then on you could call <code>person._getNameAndId()</code> on any <a href="#/api/person.types:constructor.Person">Person</a> object.</p>
+<pre class="prettyprint linenums">
+FamilySearch.getPerson('ID').then(function(response) {
+  var person = response.getPerson();
+  console.log('Hello ' + person._getNameAndId());
+});
+</pre>
+<h3 id="creating,-updating,-and-deleting">Creating, Updating, and Deleting</h3>
+<p>When you want to create a new object, do not use the class&#39;s constructor directly. 
+Each class has a function which should be used instead. This allows us to maintain
+a reference to the SDK client in each object (so that you don&#39;t have to).</p>
+<pre class="prettyprint linenums">
+var person = client.createPerson({ person data });
+</pre>
+<p>For each class, the structure of the data it expects matches what the API uses,
+as <a href="https://familysearch.org/developers/docs/api/media-types">documented here</a>.
+Occassionally we support simplified attributes for common
+bits of data so that you don&#39;t have to nest them in objects and arrays.
+The following two examples are equivalent:</p>
+<pre class="prettyprint linenums">
+var name = client.createName({
+ "attribution" : {
+   "changeMessage" : "change message"
+ },
+ "type" : "http://gedcomx.org/BirthName",
+ "nameForms" : [ {
+   "fullText" : "Anastasia Aleksandrova",
+   "parts" : [ {
+     "type" : "http://gedcomx.org/Given",
+     "value" : "Anastasia"
+   }, {
+     "type" : "http://gedcomx.org/Surname",
+     "value" : "Aleksandrova"
+   } ]
+ } ]
+});
+
+var name = client.createName({
+ "changeMessage" : "change message",
+ "type" : "http://gedcomx.org/BirthName",
+ "fullText" : "Anastasia Aleksandrova",
+ "givenName": "Anastasia"
+ "surname": "Aleksandrova"
+});
+</pre>
+<p>The constructors for each class document whether any simplified attributes are supported.</p>
+<p>Often, the simplified attributes are just shortcuts to a corresponding setter function.
+Therefore, this example is equivalent to the two above:</p>
+<pre class="prettyprint linenums">
+var name = client.createName()
+  .setChangeMessage("change message")
+  .setType("http://gedcomx.org/BirthName")
+  .setFullText("Anastasia Aleksandrova")
+  .setGivenName("Anastasia")
+  .setSurname("Aleksandrova");
+</pre>
+<p>When a object can be saved directly, such as a Person, the <code>save()</code> method will
+send the object&#39;s data to the API to create in then update the object&#39;s ID and
+links from the response before resolving the promise returned by <code>save()</code>.</p>
+<p>After modifying an object that has already been saved, you can call the <code>save()</code>
+method again to send the changes to the API.</p>
+<p>Deletable objects will have a <code>delete()</code> method.</p>
+<p>Many <code>save()</code> and <code>delete()</code> functions take a <code>changeMessage</code> parameter to record the reason for the change.</p>
+<h3 id="authentication-with-mobile-safari">Authentication with Mobile Safari</h3>
+<p>Mobile Safari opens the authentication popup window in a new tab and doesn&#39;t run javascript in background tabs.
+Therefore, to run your app on Mobile Safari the redirect_uri URL must point to an HTML page containing the following:</p>
+<pre class="prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;&lt;body&gt;
+&lt;script&gt;
+  window.opener.FamilySearchOauthReceiver(window.location.href);
+  window.close();
+&lt;/script&gt;
+&lt;/body&gt;&lt;/html&gt;
+</pre>
+<h3 id="using-the-sdk-with-module-loaders">Using the SDK with module loaders</h3>
+<p>The SDK can be used</p>
+<ul>
+<li>as a browser global (i.e., referring to it as <code>window.FamilySearch</code> or just <code>FamilySearch</code>),</li>
+<li>with AMD loaders like <em>RequireJS</em> (<a href="https://github.com/rootsdev/familysearch-javascript-sdk/blob/master/examples/jquery.html">see the jQuery.html example</a>),</li>
+<li>or with CommonJS loaders like <em>Node.js</em>.</li>
+</ul>
+<h3 id="plumbing-functions">Plumbing functions</h3>
+<p>The functions in the <em>plumbing</em> module are low-level functions that you would not normally call.
+The higher-level API functions that you normally call are built on top of the plumbing functions.
+The plumbing functions are exposed in case you want to do something not anticipated by the API functions.</p>
+</div></div>

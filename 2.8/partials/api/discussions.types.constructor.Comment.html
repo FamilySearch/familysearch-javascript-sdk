@@ -1,0 +1,60 @@
+<h1><code ng:non-bindable="">Comment</code>
+<div><span class="hint">type in module <code ng:non-bindable="">discussions</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="discussions-types-page discussions-types-constructor-comment-page"><p>Comment on a discussion or memory</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">Comment(client, data);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>client</td><td><a href="" class="label type-hint type-hint-familysearch">FamilySearch</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-page"><p>FamilySearch sdk client</p>
+</div></td></tr><tr><td>data</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-page"><p>raw object data</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_delete">delete(changeMessage)</h3>
+<div class="delete"><div class="discussions-types-page discussions-types-constructor-comment-delete-page"><p>delete this comment - see <a href="#/api/discussions.functions:deleteDiscussionComment">deleteDiscussionComment</a>
+or <a href="#/api/memories.functions:deleteMemoryComment">deleteMemoryComment</a></p>
+</div><h5 id="methods_delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-delete-page"><p>change message (currently ignored)</p>
+</div></td></tr></tbody></table><h5 id="methods_delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-delete-page"><p>promise for the response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getagent">getAgent()</h3>
+<div class="getagent"><h5 id="methods_getagent_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-getagent-page"><p>promise for the <a href="#/api/user.functions:getAgent">getAgent</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getagentid">getAgentId()</h3>
+<div class="getagentid"><h5 id="methods_getagentid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-getagentid-page"><p>id of the contributor - pass into <a href="#/api/user.functions:getAgent">getAgent</a> for details</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getagenturl">getAgentUrl()</h3>
+<div class="getagenturl"><h5 id="methods_getagenturl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-getagenturl-page"><p>URL of the contributor - pass into <a href="#/api/user.functions:getAgent">getAgent</a> for details</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getcommenturl">getCommentUrl()</h3>
+<div class="getcommenturl"><h5 id="methods_getcommenturl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-getcommenturl-page"><p>URL of this comment; <em>NOTE</em> however, that individual comments cannot be read</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getcreatedtimestamp">getCreatedTimestamp()</h3>
+<div class="getcreatedtimestamp"><h5 id="methods_getcreatedtimestamp_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-getcreatedtimestamp-page"><p>timestamp</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getid">getId()</h3>
+<div class="getid"><h5 id="methods_getid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-getid-page"><p>Id of the comment</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_gettext">getText()</h3>
+<div class="gettext"><h5 id="methods_gettext_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-gettext-page"><p>text of the comment</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_save">save(url)</h3>
+<div class="save"><div class="discussions-types-page discussions-types-constructor-comment-save-page"><p>Create a new comment or update an existing comment</p>
+<p><em>NOTE</em>: there&#39;s no <em>refresh</em> parameter because it&#39;s not possible to read individual comments;
+however, the comment&#39;s id and URL is set when creating a new comment</p>
+</div><h5 id="methods_save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>url</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-save-page"><p>url of the discussion or memory comments list; required for both creating and updating comments; updating is distinguished from creating by the presence of an id on the comment.</p>
+</div></td></tr></tbody></table><h5 id="methods_save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-types-page discussions-types-constructor-comment-save-page"><p>promise for the response</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>
