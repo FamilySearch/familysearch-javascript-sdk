@@ -84,7 +84,7 @@ FS.prototype.getPlaceDescription = function(url) {
 
 /**
  * @ngdoc function
- * @name places.functions:getPlaceSearch
+ * @name places.functions:getPlacesSearch
 
  *
  * @description
