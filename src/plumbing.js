@@ -242,6 +242,10 @@ Plumbing.prototype.transformData = function(data, contentType) {
 Plumbing.prototype.http = function(method, url, headers, data, retries) {
   var self = this;
   
+  if(!url){
+    return Promise.reject(new Error('No URL was provided.'));
+  }
+  
   // prepend the server
   var absoluteUrl = this.helpers.getAPIServerUrl(url);
   headers = headers || {};

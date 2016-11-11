@@ -158,8 +158,17 @@ FS.prototype._personsAndRelationshipsMapper = function(response){
 FS.prototype.getPersonWithRelationships = function(pid, params) {
   var self = this;
   return self.plumbing.getCollectionUrl('FSFT', 'person-with-relationships').then(function(url) {
-    return self.plumbing.get(url, utils.extend({'person': pid}, params));
-  }).then(function(response){
+    return self.plumbing.get(url, utils.extend({'person': pid}, params), {
+      'X-FS-Feature-Tag': 'consolidate-redundant-resources',
+      'X-Expect-Override': '200-ok'
+    });
+  })
+  .then(function(response){
+    return self.plumbing.get(response.getHeader('Location'), null, {
+      'X-FS-Feature-Tag': 'include-non-subject-persons-and-relationships'
+    });
+  })
+  .then(function(response){
     response = self._personsAndRelationshipsMapper(response);
     response.getData().persons[0].isReadOnly = function() {
       var allowHeader = response.getHeader('Allow');

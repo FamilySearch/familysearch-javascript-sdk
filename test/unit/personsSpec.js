@@ -161,15 +161,6 @@ describe('A person', function() {
       done();
     });
   });
-  
-  it('redirects are properly handled from getPersonWithRelationships', function(done){
-    FS.getPersonWithRelationships('DYHJ-R84').then(function(response){
-      expect(response.getPrimaryId()).toBe('KJTW-NML');
-      expect(response.getRequestedId()).toBe('DYHJ-R84');
-      expect(response.wasRedirected()).toBe(true);
-      done();
-    });
-  });
 
   it('spouse relationships are returned from getSpouses', function(done) {
     FS.getPerson('FJP-M4RK').then(function(personResponse){
