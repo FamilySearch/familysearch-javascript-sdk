@@ -58,112 +58,7 @@ FS.prototype.getPerson = function(pid, query) {
   return urlPromise.then(function(url) {
     return self.plumbing.get(url, query);
   }).then(function(response){
-    response = self._personsAndRelationshipsMapper(response);
-    response.getData().persons[0].isReadOnly = function() {
-      var allowHeader = response.getHeader('Allow');
-      return !!allowHeader && allowHeader.indexOf('POST') < 0;
-    };
-    return utils.extend(response, {
-      getRequestedId: function() { return pid; },
-      getPrimaryId: function() {
-        var sourceDescriptionId = this.getData().description.substring(1),
-            sourceDescription = utils.find(this.getData().sourceDescriptions, function(sourceDescription){
-              return sourceDescription.id === sourceDescriptionId;
-            });
-        if(sourceDescription){
-          return sourceDescription.about.substring(1);
-        }
-      },
-      getPerson: function(id) { 
-        if(id){
-          return utils.find(this.getData().persons, function(person){
-            return person.getId() === id;
-          });
-        } else {
-          return this.getPrimaryPerson();
-        }
-      },
-      getPrimaryPerson: function() { return this.getPerson(this.getPrimaryId()); },
-      getParentRelationships: function() {
-        var primaryId = this.getPrimaryId();
-        return utils.filter(this.getData().childAndParentsRelationships, function(r) {
-          return r.getChildId() === primaryId;
-        });
-      },
-      getSpouseRelationships: function() {
-        return utils.filter(this.getData().relationships, function(r) {
-          return r.data.type === 'http://gedcomx.org/Couple';
-        });
-      },
-      getSpouseRelationship: function(spouseId) {
-        var primaryId = this.getPrimaryId();
-        return utils.find(this.getData().relationships, function(r) {
-          return r.data.type === 'http://gedcomx.org/Couple' &&
-            (primaryId === r.getHusbandId() ? r.getWifeId() : r.getHusbandId()) === spouseId;
-        });
-      },
-      getChildRelationships: function() {
-        var primaryId = this.getPrimaryId();
-        return utils.filter(this.getData().childAndParentsRelationships, function(r) {
-          return r.getFatherId() === primaryId || r.getMotherId() === primaryId;
-        });
-      },
-      getChildRelationshipsOf: function(spouseId) {
-        var primaryId = this.getPrimaryId();
-        return utils.filter(this.getData().childAndParentsRelationships, function(r) {
-          /*jshint eqeqeq:false */
-          return (r.getFatherId() === primaryId || r.getMotherId() === primaryId) &&
-            (r.getFatherId() == spouseId || r.getMotherId() == spouseId); // allow spouseId to be null or undefined
-        });
-      },
-      getFatherIds: function() {
-        return utils.uniq(utils.map(
-          utils.filter(this.getParentRelationships(), function(r) {
-            return !!r.getFatherId();
-          }),
-          function(r) {
-            return r.getFatherId();
-          }, this));
-      },
-      getFathers: function() { return utils.map(this.getFatherIds(), this.getPerson, this); },
-      getMotherIds: function() {
-        return utils.uniq(utils.map(
-          utils.filter(this.getParentRelationships(), function(r) {
-            return !!r.getMotherId();
-          }),
-          function(r) {
-            return r.getMotherId();
-          }, this));
-      },
-      getMothers: function() { return utils.map(this.getMotherIds(), this.getPerson, this); },
-      getSpouseIds: function() {
-        return utils.uniq(utils.map(
-          utils.filter(this.getSpouseRelationships(), function(r) {
-            return r.getHusbandId() && r.getWifeId(); // only consider couple relationships with both spouses
-          }),
-          function(r) {
-            return this.getPrimaryId() === r.getHusbandId() ? r.getWifeId() : r.getHusbandId();
-          }, this));
-      },
-      getSpouses: function() { return utils.map(this.getSpouseIds(), this.getPerson, this); },
-      getChildIds: function() {
-        return utils.uniq(utils.map(this.getChildRelationships(),
-          function(r) {
-            return r.getChildId();
-          }, this));
-      },
-      getChildren: function() { return utils.map(this.getChildIds(), this.getPerson, this); },
-      getChildIdsOf: function(spouseId) {
-        return utils.uniq(utils.map(this.getChildRelationshipsOf(spouseId),
-          function(r) {
-            return r.getChildId();
-          }, this));
-      },
-      getChildrenOf: function(spouseId) { return utils.map(this.getChildIdsOf(spouseId), this.getPerson, this); },
-      wasRedirected: function() {
-        return this.getPrimaryId() !== this.getRequestedId();
-      }
-    });
+    return self._personsAndRelationshipsMapper(response, pid);
   });
 };
 
@@ -199,7 +94,7 @@ FS.prototype.getMultiPerson = function(pids) {
 /**
  * Expose globally so that other files can access it
  */
-FS.prototype._personsAndRelationshipsMapper = function(response){
+FS.prototype._personsAndRelationshipsMapper = function(response, requestedId){
   var self = this;
   
   utils.forEach(response.getData().persons, function(person, index, obj){
@@ -215,7 +110,16 @@ FS.prototype._personsAndRelationshipsMapper = function(response){
     obj[index] = self.createChildAndParents(rel);
   });
   
+  response.getData().persons[0].isReadOnly = function() {
+    var allowHeader = response.getHeader('Allow');
+    return !!allowHeader && allowHeader.indexOf('POST') < 0;
+  };
+  
   return utils.extend(response, {
+    getRequestedId: function() { return requestedId; },
+    wasRedirected: function() {
+      return this.getPrimaryId() !== this.getRequestedId();
+    },
     getCoupleRelationships: function() { 
       return utils.filter(maybe(this.getData()).relationships, function(rel){
         return rel.data.type === 'http://gedcomx.org/Couple';
@@ -225,10 +129,100 @@ FS.prototype._personsAndRelationshipsMapper = function(response){
       return maybe(this.getData()).childAndParentsRelationships || []; 
     },
     getPerson: function(id) { 
-      return utils.find(this.getData().persons, function(person){
-        return person.getId() === id;
+      if(id){
+        return utils.find(this.getData().persons, function(person){
+          return person.getId() === id;
+        });
+      } else {
+        return this.getPrimaryPerson();
+      }
+    },
+    getPrimaryId: function() {
+      var sourceDescriptionId = this.getData().description.substring(1),
+          sourceDescription = utils.find(this.getData().sourceDescriptions, function(sourceDescription){
+            return sourceDescription.id === sourceDescriptionId;
+          });
+      if(sourceDescription){
+        return sourceDescription.about.substring(1);
+      }
+    },
+    getPrimaryPerson: function() { return this.getPerson(this.getPrimaryId()); },
+    getParentRelationships: function() {
+      var primaryId = this.getPrimaryId();
+      return utils.filter(this.getData().childAndParentsRelationships, function(r) {
+        return r.getChildId() === primaryId;
       });
-    }
+    },
+    getSpouseRelationships: function() {
+      return utils.filter(this.getData().relationships, function(r) {
+        return r.data.type === 'http://gedcomx.org/Couple';
+      });
+    },
+    getSpouseRelationship: function(spouseId) {
+      var primaryId = this.getPrimaryId();
+      return utils.find(this.getData().relationships, function(r) {
+        return r.data.type === 'http://gedcomx.org/Couple' &&
+          (primaryId === r.getHusbandId() ? r.getWifeId() : r.getHusbandId()) === spouseId;
+      });
+    },
+    getChildRelationships: function() {
+      var primaryId = this.getPrimaryId();
+      return utils.filter(this.getData().childAndParentsRelationships, function(r) {
+        return r.getFatherId() === primaryId || r.getMotherId() === primaryId;
+      });
+    },
+    getChildRelationshipsOf: function(spouseId) {
+      var primaryId = this.getPrimaryId();
+      return utils.filter(this.getData().childAndParentsRelationships, function(r) {
+        /*jshint eqeqeq:false */
+        return (r.getFatherId() === primaryId || r.getMotherId() === primaryId) &&
+          (r.getFatherId() == spouseId || r.getMotherId() == spouseId); // allow spouseId to be null or undefined
+      });
+    },
+    getFatherIds: function() {
+      return utils.uniq(utils.map(
+        utils.filter(this.getParentRelationships(), function(r) {
+          return !!r.getFatherId();
+        }),
+        function(r) {
+          return r.getFatherId();
+        }, this));
+    },
+    getFathers: function() { return utils.map(this.getFatherIds(), this.getPerson, this); },
+    getMotherIds: function() {
+      return utils.uniq(utils.map(
+        utils.filter(this.getParentRelationships(), function(r) {
+          return !!r.getMotherId();
+        }),
+        function(r) {
+          return r.getMotherId();
+        }, this));
+    },
+    getMothers: function() { return utils.map(this.getMotherIds(), this.getPerson, this); },
+    getSpouseIds: function() {
+      return utils.uniq(utils.map(
+        utils.filter(this.getSpouseRelationships(), function(r) {
+          return r.getHusbandId() && r.getWifeId(); // only consider couple relationships with both spouses
+        }),
+        function(r) {
+          return this.getPrimaryId() === r.getHusbandId() ? r.getWifeId() : r.getHusbandId();
+        }, this));
+    },
+    getSpouses: function() { return utils.map(this.getSpouseIds(), this.getPerson, this); },
+    getChildIds: function() {
+      return utils.uniq(utils.map(this.getChildRelationships(),
+        function(r) {
+          return r.getChildId();
+        }, this));
+    },
+    getChildren: function() { return utils.map(this.getChildIds(), this.getPerson, this); },
+    getChildIdsOf: function(spouseId) {
+      return utils.uniq(utils.map(this.getChildRelationshipsOf(spouseId),
+        function(r) {
+          return r.getChildId();
+        }, this));
+    },
+    getChildrenOf: function(spouseId) { return utils.map(this.getChildIdsOf(spouseId), this.getPerson, this); },
   });
 };
 
@@ -291,108 +285,7 @@ FS.prototype.getPersonWithRelationships = function(pid, params) {
     });
   })
   .then(function(response){
-    response = self._personsAndRelationshipsMapper(response);
-    response.getData().persons[0].isReadOnly = function() {
-      var allowHeader = response.getHeader('Allow');
-      return !!allowHeader && allowHeader.indexOf('POST') < 0;
-    };
-    return utils.extend(response, {
-      getRequestedId: function() { return pid; },
-      getPrimaryId: function() {
-        var sourceDescriptionId = this.getData().description.substring(1),
-            sourceDescription = utils.find(this.getData().sourceDescriptions, function(sourceDescription){
-              return sourceDescription.id === sourceDescriptionId;
-            });
-        if(sourceDescription){
-          return sourceDescription.about.substring(1);
-        }
-      },
-      getPerson: function(id) { 
-        return utils.find(this.getData().persons, function(person){
-          return person.getId() === id;
-        });
-      },
-      getPrimaryPerson: function() { return this.getPerson(this.getPrimaryId()); },
-      getParentRelationships: function() {
-        var primaryId = this.getPrimaryId();
-        return utils.filter(this.getData().childAndParentsRelationships, function(r) {
-          return r.getChildId() === primaryId;
-        });
-      },
-      getSpouseRelationships: function() {
-        return utils.filter(this.getData().relationships, function(r) {
-          return r.data.type === 'http://gedcomx.org/Couple';
-        });
-      },
-      getSpouseRelationship: function(spouseId) {
-        var primaryId = this.getPrimaryId();
-        return utils.find(this.getData().relationships, function(r) {
-          return r.data.type === 'http://gedcomx.org/Couple' &&
-            (primaryId === r.getHusbandId() ? r.getWifeId() : r.getHusbandId()) === spouseId;
-        });
-      },
-      getChildRelationships: function() {
-        var primaryId = this.getPrimaryId();
-        return utils.filter(this.getData().childAndParentsRelationships, function(r) {
-          return r.getFatherId() === primaryId || r.getMotherId() === primaryId;
-        });
-      },
-      getChildRelationshipsOf: function(spouseId) {
-        var primaryId = this.getPrimaryId();
-        return utils.filter(this.getData().childAndParentsRelationships, function(r) {
-          /*jshint eqeqeq:false */
-          return (r.getFatherId() === primaryId || r.getMotherId() === primaryId) &&
-            (r.getFatherId() == spouseId || r.getMotherId() == spouseId); // allow spouseId to be null or undefined
-        });
-      },
-      getFatherIds: function() {
-        return utils.uniq(utils.map(
-          utils.filter(this.getParentRelationships(), function(r) {
-            return !!r.getFatherId();
-          }),
-          function(r) {
-            return r.getFatherId();
-          }, this));
-      },
-      getFathers: function() { return utils.map(this.getFatherIds(), this.getPerson, this); },
-      getMotherIds: function() {
-        return utils.uniq(utils.map(
-          utils.filter(this.getParentRelationships(), function(r) {
-            return !!r.getMotherId();
-          }),
-          function(r) {
-            return r.getMotherId();
-          }, this));
-      },
-      getMothers: function() { return utils.map(this.getMotherIds(), this.getPerson, this); },
-      getSpouseIds: function() {
-        return utils.uniq(utils.map(
-          utils.filter(this.getSpouseRelationships(), function(r) {
-            return r.getHusbandId() && r.getWifeId(); // only consider couple relationships with both spouses
-          }),
-          function(r) {
-            return this.getPrimaryId() === r.getHusbandId() ? r.getWifeId() : r.getHusbandId();
-          }, this));
-      },
-      getSpouses: function() { return utils.map(this.getSpouseIds(), this.getPerson, this); },
-      getChildIds: function() {
-        return utils.uniq(utils.map(this.getChildRelationships(),
-          function(r) {
-            return r.getChildId();
-          }, this));
-      },
-      getChildren: function() { return utils.map(this.getChildIds(), this.getPerson, this); },
-      getChildIdsOf: function(spouseId) {
-        return utils.uniq(utils.map(this.getChildRelationshipsOf(spouseId),
-          function(r) {
-            return r.getChildId();
-          }, this));
-      },
-      getChildrenOf: function(spouseId) { return utils.map(this.getChildIdsOf(spouseId), this.getPerson, this); },
-      wasRedirected: function() {
-        return this.getPrimaryId() !== this.getRequestedId();
-      }
-    });
+    return self._personsAndRelationshipsMapper(response, pid);
   });
 };
 
