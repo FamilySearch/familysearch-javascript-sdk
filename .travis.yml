@@ -23,9 +23,11 @@ notifications:
     on_success: never
     on_failure: always
 deploy:
+  skip_cleanup: true
   provider: npm
   email: devsupport@familysearch.org
   api_key:
     secure: eN10cNmYYbqWqtRIOzJPu1Ske+b4b21IvP1m1+LzFRfwZx7HfXxq4CQzArkLXNT9qzPrdUPEXWC6Ll4qaK13z38c7rN3oDlQouOJlDmuPRVst+O/VVvclMPB/FqQiG27fN7nmg+z9vOYn44L/FkIhAz0o3+as4d765zvksxDPkQ=
   on:
     repo: FamilySearch/familysearch-javascript-sdk
+    condition: $TRAVIS_NODE_VERSION == '0.10'
