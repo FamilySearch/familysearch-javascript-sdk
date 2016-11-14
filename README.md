@@ -24,13 +24,14 @@ Node versions 0.10 and 0.12 are officially supported.
 
 ### Browser via a CDN
 
-Versions 1.0.0 - 2.6.0 are available via [jsDelivr](http://www.jsdelivr.com/#!familysearch-javascript-sdk).
+Versions 1.0.0 - 2.7.0 are available via [jsDelivr](http://www.jsdelivr.com/#!familysearch-javascript-sdk)
+(2.7.0 doesn't show on the website but it's available).
 
 ```html
 <script src="//cdn.jsdelivr.net/familysearch-javascript-sdk/2.1.0/familysearch-javascript-sdk.min.js"></script>
 ```
 
-jsDelivr's hasn't published v2.7.0 or v2.8.0 and it's future is uncertain so we
+jsDelivr's hasn't published v2.8.0 and it's future is uncertain so we
 switched to [unpkg](https://unpkg.com/#/) starting with version 2.8.2.
 
 ```html
