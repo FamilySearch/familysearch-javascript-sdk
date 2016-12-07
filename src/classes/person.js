@@ -528,7 +528,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @deprecated
    * @description
    * 
-   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
+   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-12 March 2017}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
    * 
    * Get the spouse relationships for a person. Use the `persons` param to also
    * get {@link person.types:constructor.Person Person} objects for the spouses. 
@@ -598,7 +598,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @deprecated
    * @description
    * 
-   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
+   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-12 March 2017}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
    * 
    * Get the parent relationships for a person. Use the `persons` param to also
    * get {@link person.types:constructor.Person Person} objects for the parents.
@@ -665,7 +665,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @deprecated
    * @description
    * 
-   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
+   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-12 March 2017}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
    * 
    * Get the child relationships for a person. Use the `persons` param to also
    * get {@link person.types:constructor.Person Person} objects for the children.
