@@ -297,8 +297,8 @@ NG_DOCS={
       "shortName": "getPersonDiscussionRefs",
       "type": "function",
       "moduleName": "discussions",
-      "shortDescription": "This method is deprecated as of December 6, 2016. Use getPerson() to retrieve discussion references.",
-      "keywords": "__ __this api array convenience december deprecated discussion discussionref discussionrefs discussions docs endpoint familysearch full function functions getdiscussionrefs getperson https includes method org person person-discussion-references promise references response retrieve types url"
+      "shortDescription": "This method is deprecated as of March 2017. Use getPerson() to retrieve discussion references.",
+      "keywords": "__ __this api array convenience deprecated discussion discussionref discussionrefs discussions docs endpoint familysearch full function functions getdiscussionrefs getperson https includes march method org person person-discussion-references promise references response retrieve types url"
     },
     {
       "section": "api",
@@ -495,8 +495,8 @@ NG_DOCS={
       "shortName": "getMemoryPersonaRefs",
       "type": "function",
       "moduleName": "memories",
-      "shortDescription": "This method is deprecated as of December 6, 2016. Use getPerson() to retrieve memory references.",
-      "keywords": "__ __this api array convenience december deprecated docs endpoint familysearch full function functions getmemorypersonarefs getperson https includes memories memory memorypersonaref memorypersonarefs method org person person-memory-references promise references response retrieve types url"
+      "shortDescription": "This method is deprecated as of March 2017. Use getPerson() to retrieve memory references.",
+      "keywords": "__ __this api array convenience deprecated docs endpoint familysearch full function functions getmemorypersonarefs getperson https includes march memories memory memorypersonaref memorypersonarefs method org person person-memory-references promise references response retrieve types url"
     },
     {
       "section": "api",
@@ -837,8 +837,8 @@ NG_DOCS={
       "shortName": "getPersonWithRelationships",
       "type": "function",
       "moduleName": "person",
-      "shortDescription": "This method is deprecated as of December 6, 2016. ",
-      "keywords": "__ __this addition api array child childandparents children convenience couple december deleted deprecated differ docs familysearch father full function functions getchildids getchildidsof getchildrelationships getchildrelationshipsof getchildren getchildrenof getfatherids getfathers getmotherids getmothers getparentrelationships getperson getprimaryid getprimaryperson getrequestedid getspouseids getspouserelationship getspouserelationships getspouses https ids merge method mother null object objects org params parent parents parentsandchildren person persons pid primary promise relationship relationships relative requested response retrieve return returned returns set spouse spouseid spouses true types wasredirected"
+      "shortDescription": "This method is deprecated as of March 2017. ",
+      "keywords": "__ __this addition api array child childandparents children convenience couple deleted deprecated differ docs familysearch father full function functions getchildids getchildidsof getchildrelationships getchildrelationshipsof getchildren getchildrenof getfatherids getfathers getmotherids getmothers getparentrelationships getperson getprimaryid getprimaryperson getrequestedid getspouseids getspouserelationship getspouserelationships getspouses https ids march merge method mother null object objects org params parent parents parentsandchildren person persons pid primary promise relationship relationships relative requested response retrieve return returned returns set spouse spouseid spouses true types wasredirected"
     },
     {
       "section": "api",
@@ -883,7 +883,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "person",
       "shortDescription": "Person",
-      "keywords": "__ __this _delete_ _facts_ _gender_ _names_ _save_ add adddiscussion addfact addname addnote addsource ancestor ancestry api array arrays attach attributes birth birthdate birthplace burial change changehistory changemessage changes child childandparents children christening christning client conslusions convenience count couple couples create created data death deathdate deathplace december default delete deleted deletefact deletename deleteperson deprecated descendency description discussion discussionref discussions display docs doesn element endpoint entries exist existing exists explicit fact facts false familysearch female final follow followredirect full function functions gender generations getancestry getbirth getbirthdate getbirthplace getburial getburialdate getburialplace getchanges getchildandparentsrelationships getchildrelationships getchildren getchristening getchristeningdate getchristeningplace getcouplerelationships getdeath getdeathdate getdeathplace getdescendancy getdiscussionrefs getdisplay getdisplaybirthdate getdisplaybirthplace getdisplaydeathdate getdisplaydeathplace getdisplaygender getdisplaylifespan getdisplayname getfact getfacts getgender getgivenname getid getidentifiers getmatches getmemorypersonarefs getnames getnotes getparentrelationships getparents getpersistentidentifier getperson getpersonchanges getpersondiscussionrefs getpersonmatches getpersonportraiturl getpersonurl getpersonwithrelationships getpreferredname getrecordmatches getsourcerefs getsources getsourcesquery getspouserelationships getspouses getsurname headers history http https identifier identifiers implied include includes isliving isreadonly lifespan links male map matter max memories message method methods multiple names needed note notes number object objects optional org param parameter params parent parents parentsandchildren pass passed pedigree people persistent persists person persondetails persons pid place portrait preferred promise promises read read-only redirect reference relationship relationships remove removes request requests resolved resolves response responses restore retrieve return returned returns save sdk searchandmatch set setfacts setgender setnames source sourcedescription sourceref sources spouse spouses string strings surname tags true type types update updated url values year"
+      "keywords": "__ __this _delete_ _facts_ _gender_ _names_ _save_ add adddiscussion addfact addname addnote addsource ancestor ancestry api array arrays attach attributes birth birthdate birthplace burial change changehistory changemessage changes child childandparents children christening christning client conslusions convenience count couple couples create created data death deathdate deathplace default delete deleted deletefact deletename deleteperson deprecated descendency description discussion discussionref discussions display docs doesn element endpoint entries exist existing exists explicit fact facts false familysearch female final follow followredirect full function functions gender generations getancestry getbirth getbirthdate getbirthplace getburial getburialdate getburialplace getchanges getchildandparentsrelationships getchildrelationships getchildren getchristening getchristeningdate getchristeningplace getcouplerelationships getdeath getdeathdate getdeathplace getdescendancy getdiscussionrefs getdisplay getdisplaybirthdate getdisplaybirthplace getdisplaydeathdate getdisplaydeathplace getdisplaygender getdisplaylifespan getdisplayname getfact getfacts getgender getgivenname getid getidentifiers getmatches getmemorypersonarefs getnames getnotes getparentrelationships getparents getpersistentidentifier getperson getpersonchanges getpersondiscussionrefs getpersonmatches getpersonportraiturl getpersonurl getpersonwithrelationships getpreferredname getrecordmatches getsourcerefs getsources getsourcesquery getspouserelationships getspouses getsurname headers history http https identifier identifiers implied include includes isliving isreadonly lifespan links male map march matter max memories message method methods multiple names needed note notes number object objects optional org param parameter params parent parents parentsandchildren pass passed pedigree people persistent persists person persondetails persons pid place portrait preferred promise promises read read-only redirect reference relationship relationships remove removes request requests resolved resolves response responses restore retrieve return returned returns save sdk searchandmatch set setfacts setgender setnames source sourcedescription sourceref sources spouse spouses string strings surname tags true type types update updated url values year"
     },
     {
       "section": "api",
@@ -1323,8 +1323,8 @@ NG_DOCS={
       "shortName": "getSourceRefs",
       "type": "function",
       "moduleName": "sources",
-      "shortDescription": "This method is deprecated as of December 6, 2016. Use getPerson() to retrieve source references.",
-      "keywords": "__ __this api array child convenience couple december deprecated docs endpoint full function functions getperson getsourcerefs https includes method org parents person promise references response retrieve source source-references sourceref sourcerefs sources types url"
+      "shortDescription": "This method is deprecated as of March 2017. Use getPerson() to retrieve source references.",
+      "keywords": "__ __this api array child convenience couple deprecated docs endpoint full function functions getperson getsourcerefs https includes march method org parents person promise references response retrieve source source-references sourceref sourcerefs sources types url"
     },
     {
       "section": "api",

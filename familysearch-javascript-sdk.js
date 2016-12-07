@@ -6161,7 +6161,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @deprecated
    * @description
    * 
-   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
+   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-12 March 2017}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
    * 
    * Get the spouse relationships for a person. Use the `persons` param to also
    * get {@link person.types:constructor.Person Person} objects for the spouses. 
@@ -6231,7 +6231,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @deprecated
    * @description
    * 
-   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
+   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-12 March 2017}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
    * 
    * Get the parent relationships for a person. Use the `persons` param to also
    * get {@link person.types:constructor.Person Person} objects for the parents.
@@ -6298,7 +6298,7 @@ Person.prototype = utils.extend(Object.create(FS.BaseClass.prototype), {
    * @deprecated
    * @description
    * 
-   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
+   * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-12 March 2017}. Use {@link person.functions:getPerson getPerson()} to retrieve relationships.__
    * 
    * Get the child relationships for a person. Use the `persons` param to also
    * get {@link person.types:constructor.Person Person} objects for the children.
@@ -9246,7 +9246,7 @@ FS.prototype.getMultiDiscussion = function(urls) {
  * @deprecated
  * @description
  * 
- * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve discussion references.__
+ * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-12 March 2017}. Use {@link person.functions:getPerson getPerson()} to retrieve discussion references.__
  * 
  * Get references to discussions for a person
  * The response includes the following convenience function
@@ -9606,7 +9606,7 @@ FS.prototype.getMemoryPersona = function(url) {
  * @deprecated
  * @description
  * 
- * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve memory references.__
+ * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-12 March 2017}. Use {@link person.functions:getPerson getPerson()} to retrieve memory references.__
  * 
  * Get references to memories for a person
  * The response includes the following convenience function
@@ -10423,7 +10423,7 @@ FS.prototype._personsAndRelationshipsMapper = function(response, requestedId){
  * @deprecated
  * @description
  * 
- * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. 
+ * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-12 March 2017}. 
  * Use {@link person.functions:getPerson getPerson()} instead.__
  * 
  * Get a person and their children, spouses, and parents.
@@ -11626,7 +11626,7 @@ FS.prototype._getSourcesResponseMapper = function(response, root, includeDescrip
  * @deprecated
  * @description
  * 
- * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-09 December 6, 2016}. Use {@link person.functions:getPerson getPerson()} to retrieve source references.__
+ * __This method is deprecated as of {@link https://familysearch.org/developers/news/2016-12 March 2017}. Use {@link person.functions:getPerson getPerson()} to retrieve source references.__
  * 
  * Get the source references for a person
  * The response includes the following convenience function
