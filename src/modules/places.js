@@ -109,7 +109,7 @@ FS.prototype.getPlaceDescription = function(url) {
  * Read the {@link https://familysearch.org/developers/docs/api/places/Places_Search_resource API Docs} for more details on how to use the parameters.
  * 
  *
- * @param {String} id of the place description
+ * @param {Object} params Search parameters
  * @return {Object} promise for the response
  */
 FS.prototype.getPlacesSearch = function(params) {
