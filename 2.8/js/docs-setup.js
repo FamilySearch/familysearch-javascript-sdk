@@ -937,7 +937,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "places",
       "shortDescription": "Get a place.",
-      "keywords": "api browser data defaults display docs en full function functions getplace https lang language optional org place placedescription places promise response returned server types url"
+      "keywords": "api docs full function functions getplace https org place placedescription places promise response types url"
     },
     {
       "section": "api",
@@ -946,7 +946,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "places",
       "shortDescription": "Get a place.",
-      "keywords": "api browser data defaults description display docs en full function functions getplacedescription https lang language optional org place placedescription places promise response returned server types url"
+      "keywords": "api description docs full function functions getplacedescription https org place placedescription places promise response types url"
     },
     {
       "section": "api",
@@ -955,7 +955,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "places",
       "shortDescription": "Get the children of a Place Description. Use getPlacesSearch() to filter by type, date, and more.",
-      "keywords": "api array browser children data defaults description descriptions display docs en endpoint filter full function functions getchildren getplacessearch https lang language optional org place placedescription placedescriptions places promise response returned server type types url"
+      "keywords": "api array children description descriptions docs endpoint filter full function functions getchildren getplacessearch https org place placedescription placedescriptions places promise response type types url"
     },
     {
       "section": "api",
@@ -964,7 +964,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "places",
       "shortDescription": "Search for a place.",
-      "keywords": "__search api array browser count data defaults details display distance docs en function functions getsearchresults https lang language latitude longitude number optional org parameters parameters__ params parentid partialname place places placessearchresult placessearchresults promise read response result returned search server start typegroupid typeid types"
+      "keywords": "__search api array count description details distance docs function functions getsearchresults https latitude longitude number org parameters parameters__ parentid partialname place places placessearchresult placessearchresults promise read response result search start typegroupid typeid types"
     },
     {
       "section": "api",
@@ -973,7 +973,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "places",
       "shortDescription": "Get a place.",
-      "keywords": "api browser data defaults display docs en function functions getplacetype https lang language optional org place places promise response returned server types vocabularies vocabularyelement"
+      "keywords": "api docs function functions getplacetype https org place places promise response types vocabularies vocabularyelement"
     },
     {
       "section": "api",
@@ -982,7 +982,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "places",
       "shortDescription": "Get a Place Type Group which includes a list of Places Types in the group.",
-      "keywords": "api array browser data defaults display docs en function functions getlist getplacetypes group https includes lang language list optional org place places promise response returned server type types vocabularies vocabularyelement vocabularyelements vocabularylist"
+      "keywords": "api array docs function functions getlist getplacetypes group https includes list org place places promise response type types vocabularies vocabularyelement vocabularyelements vocabularylist"
     },
     {
       "section": "api",
@@ -1000,7 +1000,7 @@ NG_DOCS={
       "type": "function",
       "moduleName": "places",
       "shortDescription": "Get a list of all available Place Types.",
-      "keywords": "api array browser data defaults display docs en function functions getlist getplacetypes https lang language list optional org place places promise response returned server types vocabularies vocabularyelement vocabularyelements vocabularylist"
+      "keywords": "api array docs function functions getlist getplacetypes https list org place places promise response types vocabularies vocabularyelement vocabularyelements vocabularylist"
     },
     {
       "section": "api",
