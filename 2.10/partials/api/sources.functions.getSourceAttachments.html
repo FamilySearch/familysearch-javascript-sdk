@@ -1,0 +1,27 @@
+<h1><code ng:non-bindable="">getSourceAttachments</code>
+<div><span class="hint">functions in module <code ng:non-bindable="">sources</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="sources-functions-page sources-functions-getsourceattachments-page"><p>Get the people, couples, and child-and-parents relationships that have the
+given URL attached as a source. Use <a href="#/api/sources.functions:getSourceRefsQuery">getSourceRefsQuery</a>
+to get attachments for an existing source description.</p>
+<p>The response includes the following convenience functions</p>
+<ul>
+<li><code>getPersonSourceRefs()</code> - get an array of person <a href="#/api/sources.types:constructor.SourceRef">SourceRefs</a> from the response</li>
+<li><code>getCoupleSourceRefs()</code> - get an array of couple relationship <a href="#/api/sources.types:constructor.SourceRef">SourceRefs</a> from the response</li>
+<li><code>getChildAndParentsSourceRefs()</code> - get an array of child and parent relationship <a href="#/api/sources.types:constructor.SourceRef">SourceRefs</a> from the response</li>
+<li><code>getSourceDescriptions()</code> get an array of <a href="#/api/sources.types:constructor.SourceDescription">SourceDescriptions</a> from the response</li>
+<li><code>getSourceDescription(id)</code> get the <a href="#/api/sources.types:constructor.SourceDescription">SourceDescription</a>
+with the specified source description id from the response</li>
+</ul>
+<p><a href="https://familysearch.org/developers/docs/api/tree/Source_References_Query_resource">FamilySearch API Docs</a>.
+This method uses the <code>source</code> parameter of the Source References Query resource.</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getSourceAttachments(url);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>url</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sources-functions-page sources-functions-getsourceattachments-page"><p>url of the source references query resource of a source description</p>
+</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-functions-page sources-functions-getsourceattachments-page"><p>promise for the response</p>
+</div></td></tr></table></div>
+</div>

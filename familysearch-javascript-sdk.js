@@ -10228,6 +10228,10 @@ var FS = require('../FamilySearch'),
  * - `getChildRelationshipsOf(spouseId)` - array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationship objects
  * if `spouseId` is null/undefined, return ids of child relationships without the other parent
  * - `getPrimaryPerson()` - {@link person.types:constructor.Person Person} object for the primary person
+ * - `wasRedirected()` - returns true when the primary id is different from the requested id
+ * 
+ * When the `relatives` parameter is set, the following functions are also available:
+ * 
  * - `getPerson(id)` - {@link person.types:constructor.Person Person} object for the person with `id`
  * - `getFathers()` - array of father {@link person.types:constructor.Person Persons}
  * - `getMothers()` - array of mother {@link person.types:constructor.Person Persons}
@@ -10235,7 +10239,12 @@ var FS = require('../FamilySearch'),
  * - `getChildren()` - array of all child {@link person.types:constructor.Person Persons};
  * - `getChildrenOf(spouseId)` - array of child {@link person.types:constructor.Person Persons};
  * if `spouseId` is null/undefined, return children without the other parent
- * - `wasRedirected()` - returns true when the primary id is different from the requested id
+ * 
+ * When the `sourceDescriptions` parameter is set, the following functions are also available:
+ * 
+ * - `getSourceDescriptions()` get an array of {@link sources.types:constructor.SourceDescription SourceDescriptions} from the response
+ * - `getSourceDescription(id)` get the {@link sources.types:constructor.SourceDescription SourceDescription}
+ * with the specified source description id from the response
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
  *
@@ -10300,6 +10309,9 @@ FS.prototype._personsAndRelationshipsMapper = function(response, requestedId){
   utils.forEach(response.getData().childAndParentsRelationships, function(rel, index, obj){
     obj[index] = self.createChildAndParents(rel);
   });
+  utils.forEach(response.getData().sourceDesecriptions, function(descr, index, obj){
+    obj[index] = self.createSourceDescription(descr);
+  });
   
   response.getData().persons[0].isReadOnly = function() {
     var allowHeader = response.getHeader('Allow');
@@ -10345,8 +10357,10 @@ FS.prototype._personsAndRelationshipsMapper = function(response, requestedId){
       });
     },
     getSpouseRelationships: function() {
+      var primaryId = this.getPrimaryId();
       return utils.filter(this.getData().relationships, function(r) {
-        return r.data.type === 'http://gedcomx.org/Couple';
+        return r.data.type === 'http://gedcomx.org/Couple' &&
+          (r.getWifeId() === primaryId || r.getHusbandId() === primaryId);
       });
     },
     getSpouseRelationship: function(spouseId) {
@@ -10414,6 +10428,11 @@ FS.prototype._personsAndRelationshipsMapper = function(response, requestedId){
         }, this));
     },
     getChildrenOf: function(spouseId) { return utils.map(this.getChildIdsOf(spouseId), this.getPerson, this); },
+    getSourceDescriptions: function() { return this.getData().sourceDescriptions || []; },
+    getSourceDescription: function(id) { return utils.find(this.getData().sourceDescriptions, function(o){
+        return o.getId() === id;
+      });
+    }
   });
 };
 
@@ -10710,11 +10729,16 @@ var FS = require('./../FamilySearch'),
  * {@link https://familysearch.org/developers/docs/api/places/Place_resource API Docs}
  *
  * @param {String} url full url of a place
+ * @param {String} lang Optional. The language you want the display data returned in, when available. In the browser this defaults to the browser's language. On the server this defaults to 'en'.
  * @return {Object} promise for the response
  */
-FS.prototype.getPlace = function(url) {
+FS.prototype.getPlace = function(url, lang) {
   var self = this;
-  return self.plumbing.get(url).then(function(response){
+  var headers = {};
+  if(lang){
+    headers['Accept-Language'] = lang;
+  }
+  return self.plumbing.get(url, null, headers).then(function(response){
     var data = utils.maybe(response.getData());
     utils.forEach(data.places, function(place, index, obj){
       obj[index] = self.createPlaceDescription(place);
@@ -10738,14 +10762,18 @@ FS.prototype.getPlace = function(url) {
  * - `getPlaceDescription()` - get the {@link places.types:constructor.PlaceDescription PlaceDescription} from the response
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Description_resource API Docs}
- * 
  *
  * @param {String} url full url of the place description
+ * @param {String} lang Optional. The language you want the display data returned in, when available. In the browser this defaults to the browser's language. On the server this defaults to 'en'.
  * @return {Object} promise for the response
  */
-FS.prototype.getPlaceDescription = function(url) {
+FS.prototype.getPlaceDescription = function(url, lang) {
   var self = this;
-  return self.plumbing.get(url).then(function(response){
+  var headers = {};
+  if(lang){
+    headers['Accept-Language'] = lang;
+  }
+  return self.plumbing.get(url, null, headers).then(function(response){
     var data = utils.maybe(response.getData()),
         placesMap = {};
     
@@ -10797,17 +10825,22 @@ FS.prototype.getPlaceDescription = function(url) {
  * Read the {@link https://familysearch.org/developers/docs/api/places/Places_Search_resource API Docs} for more details on how to use the parameters.
  * 
  *
- * @param {String} id of the place description
+ * @param {Object} params Search parameters
+ * @param {String} lang Optional. The language you want the display data returned in, when available. In the browser this defaults to the browser's language. On the server this defaults to 'en'.
  * @return {Object} promise for the response
  */
-FS.prototype.getPlacesSearch = function(params) {
+FS.prototype.getPlacesSearch = function(params, lang) {
   var self = this;
+  var headers  = {'Accept': 'application/x-gedcomx-atom+json'};
+  if(lang){
+    headers['Accept-Language'] = lang;
+  }
   return self.plumbing.getCollectionUrl('FSPA', 'place-search').then(function(url){
     return self.plumbing.get(url, utils.removeEmptyProperties({
       q: utils.searchParamsFilter(utils.removeEmptyProperties(utils.extend({}, params))),
       start: params.start,
       count: params.count
-    }), {'Accept': 'application/x-gedcomx-atom+json'});
+    }), headers);
   }).then(function(response){
     var data = utils.maybe(response.getData());
     utils.forEach(data.entries, function(entry, i, obj){
@@ -10832,14 +10865,18 @@ FS.prototype.getPlacesSearch = function(params) {
  * - `getChildren()` - get an array of the {@link places.types:constructor.PlaceDescription PlaceDescriptions} (children) from the response
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Description_Children_resource API Docs}
- * 
  *
  * @param {String} url full url for the place descriptions children endpoint
+ * @param {String} lang Optional. The language you want the display data returned in, when available. In the browser this defaults to the browser's language. On the server this defaults to 'en'.
  * @return {Object} promise for the response
  */
-FS.prototype.getPlaceDescriptionChildren = function(url) {
+FS.prototype.getPlaceDescriptionChildren = function(url, lang) {
   var self = this;
-  return self.plumbing.get(url).then(function(response){
+  var headers = {};
+  if(lang){
+    headers['Accept-Language'] = lang;
+  }
+  return self.plumbing.get(url, null, headers).then(function(response){
     var data = utils.maybe(response.getData());
     utils.forEach(data.places, function(place, index, obj){
       obj[index] = self.createPlaceDescription(place);
@@ -10866,12 +10903,17 @@ FS.prototype.getPlaceDescriptionChildren = function(url) {
  * 
  *
  * @param {String} id of the place
+ * @param {String} lang Optional. The language you want the display data returned in, when available. In the browser this defaults to the browser's language. On the server this defaults to 'en'.
  * @return {Object} promise for the response
  */
-FS.prototype.getPlaceType = function(typeId) {
+FS.prototype.getPlaceType = function(typeId, lang) {
   var self = this;
+  var headers = {'Accept': 'application/ld+json'};
+  if(lang){
+    headers['Accept-Language'] = lang;
+  }
   return self.plumbing.getCollectionUrl('FSPA', 'place-type', {ptid: typeId}).then(function(url){
-    return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'});
+    return self.plumbing.get(url, {}, headers);
   }).then(function(response){
     return utils.extend(response, {
       getPlaceType: function() { 
@@ -10894,13 +10936,17 @@ FS.prototype.getPlaceType = function(typeId) {
  *
  * {@link https://familysearch.org/developers/docs/api/places/Place_Types_resource API Docs}
  * 
- *
+ * @param {String} lang Optional. The language you want the display data returned in, when available. In the browser this defaults to the browser's language. On the server this defaults to 'en'.
  * @return {Object} promise for the response
  */
-FS.prototype.getPlaceTypes = function() {
+FS.prototype.getPlaceTypes = function(lang) {
   var self = this;
+  var headers = {'Accept': 'application/ld+json'};
+  if(lang){
+    headers['Accept-Language'] = lang;
+  }
   return self.plumbing.getCollectionUrl('FSPA', 'place-types').then(function(url){
-    return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'});
+    return self.plumbing.get(url, {}, headers);
   }).then(function(response){
     return utils.extend(response, {
       getList: function() {
@@ -10924,16 +10970,21 @@ FS.prototype.getPlaceTypes = function() {
  * - `getList()` - get the {@link vocabularies.types:constructor.VocabularyList VocabularyList} (Place Type Group) from the response
  * - `getPlaceTypes()` - get an array of the {@link vocabularies.types:constructor.VocabularyElement VocabularyElements} (Place Types) in the group
  *
- * {@link https://familysearch.org/developers/docs/api/places/Place_Types_resource API Docs}
+ * {@link https://familysearch.org/developers/docs/api/places/Place_Type_Group_resource API Docs}
  * 
  *
  * @param {String} id of the place type group
+ * @param {String} lang Optional. The language you want the display data returned in, when available. In the browser this defaults to the browser's language. On the server this defaults to 'en'.
  * @return {Object} promise for the response
  */
-FS.prototype.getPlaceTypeGroup = function(groupId) {
+FS.prototype.getPlaceTypeGroup = function(groupId, lang) {
   var self = this;
+  var headers = {'Accept': 'application/ld+json'};
+  if(lang){
+    headers['Accept-Language'] = lang;
+  }
   return self.plumbing.getCollectionUrl('FSPA', 'place-type-group', {ptgid: groupId}).then(function(url){
-    return self.plumbing.get(url, {}, {'Accept': 'application/ld+json'});
+    return self.plumbing.get(url, {}, headers);
   }).then(function(response){
     return utils.extend(response, {
       getList: function() {
