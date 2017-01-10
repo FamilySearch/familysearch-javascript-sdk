@@ -37,6 +37,10 @@ var FS = require('../FamilySearch'),
  * - `getChildRelationshipsOf(spouseId)` - array of {@link parentsAndChildren.types:constructor.ChildAndParents ChildAndParents} relationship objects
  * if `spouseId` is null/undefined, return ids of child relationships without the other parent
  * - `getPrimaryPerson()` - {@link person.types:constructor.Person Person} object for the primary person
+ * - `wasRedirected()` - returns true when the primary id is different from the requested id
+ * 
+ * When the `relatives` parameter is set, the following functions are also available:
+ * 
  * - `getPerson(id)` - {@link person.types:constructor.Person Person} object for the person with `id`
  * - `getFathers()` - array of father {@link person.types:constructor.Person Persons}
  * - `getMothers()` - array of mother {@link person.types:constructor.Person Persons}
@@ -44,7 +48,12 @@ var FS = require('../FamilySearch'),
  * - `getChildren()` - array of all child {@link person.types:constructor.Person Persons};
  * - `getChildrenOf(spouseId)` - array of child {@link person.types:constructor.Person Persons};
  * if `spouseId` is null/undefined, return children without the other parent
- * - `wasRedirected()` - returns true when the primary id is different from the requested id
+ * 
+ * When the `sourceDescriptions` parameter is set, the following functions are also available:
+ * 
+ * - `getSourceDescriptions()` get an array of {@link sources.types:constructor.SourceDescription SourceDescriptions} from the response
+ * - `getSourceDescription(id)` get the {@link sources.types:constructor.SourceDescription SourceDescription}
+ * with the specified source description id from the response
  *
  * {@link https://familysearch.org/developers/docs/api/tree/Person_resource FamilySearch API Docs}
  *
@@ -109,6 +118,9 @@ FS.prototype._personsAndRelationshipsMapper = function(response, requestedId){
   utils.forEach(response.getData().childAndParentsRelationships, function(rel, index, obj){
     obj[index] = self.createChildAndParents(rel);
   });
+  utils.forEach(response.getData().sourceDesecriptions, function(descr, index, obj){
+    obj[index] = self.createSourceDescription(descr);
+  });
   
   response.getData().persons[0].isReadOnly = function() {
     var allowHeader = response.getHeader('Allow');
@@ -154,8 +166,10 @@ FS.prototype._personsAndRelationshipsMapper = function(response, requestedId){
       });
     },
     getSpouseRelationships: function() {
+      var primaryId = this.getPrimaryId();
       return utils.filter(this.getData().relationships, function(r) {
-        return r.data.type === 'http://gedcomx.org/Couple';
+        return r.data.type === 'http://gedcomx.org/Couple' &&
+          (r.getWifeId() === primaryId || r.getHusbandId() === primaryId);
       });
     },
     getSpouseRelationship: function(spouseId) {
@@ -223,6 +237,11 @@ FS.prototype._personsAndRelationshipsMapper = function(response, requestedId){
         }, this));
     },
     getChildrenOf: function(spouseId) { return utils.map(this.getChildIdsOf(spouseId), this.getPerson, this); },
+    getSourceDescriptions: function() { return this.getData().sourceDescriptions || []; },
+    getSourceDescription: function(id) { return utils.find(this.getData().sourceDescriptions, function(o){
+        return o.getId() === id;
+      });
+    }
   });
 };
 
