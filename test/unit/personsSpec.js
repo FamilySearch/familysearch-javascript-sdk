@@ -82,6 +82,14 @@ describe('A person', function() {
       console.error(error.stack);
     });
   });
+  
+  // https://github.com/FamilySearch/familysearch-javascript-sdk/issues/175
+  it('spouse relationships are properly calculated', function(done){
+    FS.getPerson('MFYR-RQD', {relatives: true}).then(function(response){
+      expect(response.getSpouses().length).toBe(3);
+      done();
+    });
+  });
 
   it('is returned with others from getMultiPerson', function(done) {
     FS.getMultiPerson(['PPPJ-MYZ','PPPJ-MYY']).then(function(response) {

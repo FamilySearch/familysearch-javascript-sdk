@@ -154,8 +154,10 @@ FS.prototype._personsAndRelationshipsMapper = function(response, requestedId){
       });
     },
     getSpouseRelationships: function() {
+      var primaryId = this.getPrimaryId();
       return utils.filter(this.getData().relationships, function(r) {
-        return r.data.type === 'http://gedcomx.org/Couple';
+        return r.data.type === 'http://gedcomx.org/Couple' &&
+          (r.getWifeId() === primaryId || r.getHusbandId() === primaryId);
       });
     },
     getSpouseRelationship: function(spouseId) {
