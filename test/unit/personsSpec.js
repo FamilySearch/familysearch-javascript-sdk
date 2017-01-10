@@ -84,9 +84,17 @@ describe('A person', function() {
   });
   
   // https://github.com/FamilySearch/familysearch-javascript-sdk/issues/175
-  it('spouse relationships are properly calculated', function(done){
+  it('spouse relationships are properly calculated, returns source descriptions', function(done){
     FS.getPerson('MFYR-RQD', {relatives: true}).then(function(response){
       expect(response.getSpouses().length).toBe(3);
+      done();
+    });
+  });
+  
+  // https://github.com/FamilySearch/familysearch-javascript-sdk/issues/176
+  it('spouse relationships are properly calculated, returns source descriptions', function(done){
+    FS.getPerson('MFYR-RQD', {sourceDescriptions: true}).then(function(response){
+      expect(response.getSourceDescriptions().length).toBe(6);
       done();
     });
   });
