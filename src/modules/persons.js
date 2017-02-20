@@ -253,12 +253,13 @@ FS.prototype._personsAndRelationshipsMapper = function(){
 FS.prototype.getPersonWithRelationships = function(pid, params, opts) {
   var self = this;
   return self.helpers.chainHttpPromises(
-    self.plumbing.getUrl('person-with-relationships-query'),
+    self.plumbing.getUrl('person-template', pid, {pid: pid}),
     function(url) {
-      return self.plumbing.get(url, utils.extend({'person': pid}, params), {}, opts,
+      return self.plumbing.get(url, params, {}, opts,
         utils.compose(
           utils.objectExtender({getRequestedId: function() { return pid; }}),
           self._personsAndRelationshipsMapper(),
+          self._getSourcesResponseMapper('persons', '$personId', false),
           utils.objectExtender(personWithRelationshipsConvenienceFunctions),
           function(response, promise) {
             response.persons[0].$isReadOnly = function() {

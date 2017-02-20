@@ -55,7 +55,9 @@ function loadFile(filename){
   var contents = {};
   try {
     contents = JSON.parse(fs.readFileSync(__dirname + '/../mock/' + filename));
-  } catch (e) { }
+  } catch (e) { 
+    // console.error(e.stack);
+  }
   return contents;
 }
 

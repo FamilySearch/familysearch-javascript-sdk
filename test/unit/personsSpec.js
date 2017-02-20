@@ -144,7 +144,7 @@ describe('A person', function() {
   });
 
   it('is returned with populated relationships from getPersonWithRelationships with persons parameter', function(done) {
-    FS.getPersonWithRelationships('KW7S-VQJ', {persons: true}).then(function(response) {
+    FS.getPersonWithRelationships('KW7S-VQJ', {relatives: true}).then(function(response) {
       expect(response.getFathers()[0].$getDisplayName()).toBe('Jens Christian Jensen');
       expect(response.getMothers()[0].$getDisplayName()).toBe('Ane Christensdr');
       expect(response.getPerson(response.getParentRelationships()[0].$getFatherId()).$getDisplayName()).toEqual('Jens Christian Jensen');
