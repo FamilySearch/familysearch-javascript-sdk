@@ -12395,7 +12395,10 @@ Plumbing.prototype.http = function(method, url, headers, data, retries) {
           return response.status; 
         },
         getHeader: function(header, all){ 
-          return all === true ? response.headers.getAll(header) : response.headers.get(header);
+          // Fetch spec removed Headers.getAll() so we simulate it's behavior
+          // for backwards compatibility.
+          // https://github.com/FamilySearch/familysearch-javascript-sdk/issues/177
+          return all === true ? response.headers.get(header).split(/\s*,\s*/) : response.headers.get(header);
         },
         getRequest: function(){
           return {
