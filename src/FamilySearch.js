@@ -19,7 +19,7 @@ var instanceId = 0;
  * **Options**
  *
  * - `client_id` - the developer key you received from FamilySearch
- * - `environment` - sandbox, staging, or production
+ * - `environment` - integration, staging, or production
  * - `http_function` - a function for issuing http requests: `jQuery.ajax`, angular's `$http`,
  * or the [request](https://github.com/request/request) library for node; defaults to `jQuery.ajax`
  * - `deferred_function` - a function for creating deferred's: `jQuery.Deferred`, angular's `$q.defer`
