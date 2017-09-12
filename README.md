@@ -24,15 +24,11 @@ Node versions 0.10 and 0.12 are officially supported.
 
 ### Browser via a CDN
 
-Versions 1.0.0 - 2.7.0 are available via [jsDelivr](http://www.jsdelivr.com/#!familysearch-javascript-sdk)
-(2.7.0 doesn't show on the website but it's available).
+Available via both [jsDelivr](https://www.jsdelivr.com/package/npm/familysearch-javascript-sdk) and [unpkg](https://unpkg.com/#/).
 
 ```html
 <script src="//cdn.jsdelivr.net/npm/familysearch-javascript-sdk@2.10.1/dist/familysearch-javascript-sdk.min.js"></script>
 ```
-
-jsDelivr's hasn't published v2.8.0 and it's future is uncertain so we
-switched to [unpkg](https://unpkg.com/#/) starting with version 2.8.2.
 
 ```html
 <script src="//unpkg.com/familysearch-javascript-sdk@2.8.2/dist/familysearch-javascript-sdk.min.js"></script>
@@ -42,7 +38,7 @@ switched to [unpkg](https://unpkg.com/#/) starting with version 2.8.2.
 
 * **Wrapped REST API Calls**
 
- JavaScript functions wrap the underlying REST API calls.
+JavaScript functions wrap the underlying REST API calls.
 The objects returned by the functions include convenience functions for extracting information from the returned JSON.
 For example, the following logs the name of a person along with their spouses and chilren.
 
