@@ -28,7 +28,7 @@ Versions 1.0.0 - 2.7.0 are available via [jsDelivr](http://www.jsdelivr.com/#!fa
 (2.7.0 doesn't show on the website but it's available).
 
 ```html
-<script src="//cdn.jsdelivr.net/familysearch-javascript-sdk/2.1.0/familysearch-javascript-sdk.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/familysearch-javascript-sdk@2.10.1/dist/familysearch-javascript-sdk.min.js"></script>
 ```
 
 jsDelivr's hasn't published v2.8.0 and it's future is uncertain so we
