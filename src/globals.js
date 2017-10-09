@@ -29,7 +29,7 @@ module.exports = {
     'sandbox'    : 'https://integration.familysearch.org',
     'staging'    : 'https://stage.familysearch.org',
     'beta'       : 'https://beta.familysearch.org',
-    'production' : 'https://familysearch.org'
+    'production' : 'https://api.familysearch.org'
   },
   oauthServer: {
     'integration': 'https://integration.familysearch.org/cis-web/oauth2/v3',
