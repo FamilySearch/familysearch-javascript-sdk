@@ -59,7 +59,7 @@ module.exports = function(grunt) {
             name: 'Travis',
             email: 'travis@travis-ci.org'
           },
-          // silent: true
+          silent: true
         },
         src: ['**/*']
       }
