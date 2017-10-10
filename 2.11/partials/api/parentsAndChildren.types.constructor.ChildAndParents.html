@@ -1,0 +1,201 @@
+<h1><code ng:non-bindable="">ChildAndParents</code>
+<div><span class="hint">type in module <code ng:non-bindable="">parentsAndChildren</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-page"><p>Child and parents relationship</p>
+<p><a href="https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_resource">FamilySearch API Docs</a></p>
+<p>Two methods to note below are <em>save</em> and <em>delete</em>.
+<em>save</em> persists the changes made to father, mother, child, and facts;
+<em>delete</em> removes the relationship.</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">ChildAndParents(client[, data]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>client</td><td><a href="" class="label type-hint type-hint-familysearch">FamilySearch</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-page"><p>FamilySearch sdk client</p>
+</div></td></tr><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-page"><p>an object with optional attributes {father, mother, child, fatherFacts, motherFacts}.
+<em>father</em>, <em>mother</em>, and <em>child</em> are Person objects, URLs, or ids.
+<em>fatherFacts</em> and <em>motherFacts</em> are arrays of Facts or objects to be passed into the Fact constructor.</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_addfatherfact">addFatherFact(value)</h3>
+<div class="addfatherfact"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-addfatherfact-page"><p>NOTE: dates are not supported for BiologicalParent, and places are not supported at all</p>
+</div><h5 id="methods_addfatherfact_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-fact">Fact</a><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-addfatherfact-page"><p>fact to add; if value is not a Fact, it is passed into the Fact constructor</p>
+</div></td></tr></tbody></table><h5 id="methods_addfatherfact_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-childandparents">ChildAndParents</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-addfatherfact-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_addmotherfact">addMotherFact(value)</h3>
+<div class="addmotherfact"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-addmotherfact-page"><p>NOTE: dates are not supported for BiologicalParent, and places are not supported at all</p>
+</div><h5 id="methods_addmotherfact_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-fact">Fact</a><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-addmotherfact-page"><p>fact to add; if value is not a Fact, it is passed into the Fact constructor</p>
+</div></td></tr></tbody></table><h5 id="methods_addmotherfact_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-childandparents">ChildAndParents</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-addmotherfact-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_addnote">addNote(note, changeMessage)</h3>
+<div class="addnote"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-addnote-page"><p>Add a note to this relationship.</p>
+</div><h5 id="methods_addnote_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>note</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-addnote-page"><p>Data for the note or a
+<a href="#/api/notes.types:constructor.Note">Note</a> object.</p>
+</div></td></tr><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-addnote-page"><p>change message</p>
+</div></td></tr></tbody></table><h5 id="methods_addnote_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-addnote-page"><p>promise for the <a href="#/api/notes.types:constructor.Note#save">Note.save()</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_addsource">addSource(sourceDescription, changeMessage, tags)</h3>
+<div class="addsource"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-addsource-page"><p>Attach a source to this child and parents relationship. This will create a source description (if
+it doesn&#39;t already exist) and a source reference for you.</p>
+</div><h5 id="methods_addsource_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>sourceDescription</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-addsource-page"><p>Data for the source description or a
+<a href="#/api/sources.types:constructor.SourceDescription">SourceDescription</a> object.</p>
+</div></td></tr><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-addsource-page"><p>change message</p>
+</div></td></tr><tr><td>tags <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">String[]</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-addsource-page"><p>an array of tags; e.g., <a href="http://gedcomx.org/Name">http://gedcomx.org/Name</a> or <a href="http://gedcomx.org/Birth">http://gedcomx.org/Birth</a></p>
+</div></td></tr></tbody></table><h5 id="methods_addsource_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-addsource-page"><p>promise for the <a href="#/api/sources.types:constructor.SourceRef#save">SourceRef.save()</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_delete">delete(changeMessage)</h3>
+<div class="delete"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-delete-page"><p>delete this relationship - see <a href="#/api/parentsAndChildren.functions:deleteChildAndParents">deleteChildAndPArents</a></p>
+</div><h5 id="methods_delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-delete-page"><p>change message</p>
+</div></td></tr></tbody></table><h5 id="methods_delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-delete-page"><p>promise for response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_deletefather">deleteFather(changeMessage)</h3>
+<div class="deletefather"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-deletefather-page"><p>remove father from the relationship</p>
+</div><h5 id="methods_deletefather_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-deletefather-page"><p>change message</p>
+</div></td></tr></tbody></table><h5 id="methods_deletefather_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-childandparents">ChildAndParents</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-deletefather-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_deletefatherfact">deleteFatherFact(value, changeMessage)</h3>
+<div class="deletefatherfact"><h5 id="methods_deletefatherfact_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-fact">Fact</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-deletefatherfact-page"><p>fact or fact id to remove</p>
+</div></td></tr><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-deletefatherfact-page"><p>change message</p>
+</div></td></tr></tbody></table><h5 id="methods_deletefatherfact_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-childandparents">ChildAndParents</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-deletefatherfact-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_deletemother">deleteMother(changeMessage)</h3>
+<div class="deletemother"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-deletemother-page"><p>remove mother from the relationship</p>
+</div><h5 id="methods_deletemother_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-deletemother-page"><p>change message</p>
+</div></td></tr></tbody></table><h5 id="methods_deletemother_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-childandparents">ChildAndParents</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-deletemother-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_deletemotherfact">deleteMotherFact(value, changeMessage)</h3>
+<div class="deletemotherfact"><h5 id="methods_deletemotherfact_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-fact">Fact</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-deletemotherfact-page"><p>fact or fact id to remove</p>
+</div></td></tr><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-deletemotherfact-page"><p>change message</p>
+</div></td></tr></tbody></table><h5 id="methods_deletemotherfact_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-childandparents">ChildAndParents</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-deletemotherfact-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getchanges">getChanges(caprid, params:)</h3>
+<div class="getchanges"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getchanges-page"><p>Get change history for a child and parents relationship
+The response includes the following convenience function</p>
+<ul>
+<li><code>getChanges()</code> - get the array of <a href="#/api/changeHistory.types:constructor.Change">Changes</a> from the response</li>
+</ul>
+<p><a href="https://familysearch.org/developers/docs/api/tree/Child-and-Parents_Relationship_Change_History_resource">FamilySearch API Docs</a></p>
+</div><h5 id="methods_getchanges_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>caprid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getchanges-page"><p>id of the child and parents relationship or full URL of the child and parents relationship changes endpoint</p>
+</div></td></tr><tr><td>params: <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getchanges-page"><p><code>count</code> is the number of change entries to return, <code>from</code> to return changes following this id</p>
+</div></td></tr></tbody></table><h5 id="methods_getchanges_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getchanges-page"><p>promise for the response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getchild">getChild()</h3>
+<div class="getchild"><h5 id="methods_getchild_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getchild-page"><p>promise for the <a href="#/api/person.functions:getPerson">getPerson</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getchildandparentsurl">getChildAndParentsUrl()</h3>
+<div class="getchildandparentsurl"><h5 id="methods_getchildandparentsurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getchildandparentsurl-page"><p>Url of this child-and-parents relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getchildid">getChildId()</h3>
+<div class="getchildid"><h5 id="methods_getchildid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getchildid-page"><p>Id of the child</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getchildurl">getChildUrl()</h3>
+<div class="getchildurl"><h5 id="methods_getchildurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getchildurl-page"><p>URL of the child</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getfather">getFather()</h3>
+<div class="getfather"><h5 id="methods_getfather_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getfather-page"><p>promise for the <a href="#/api/person.functions:getPerson">getPerson</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getfatherfacts">getFatherFacts()</h3>
+<div class="getfatherfacts"><h5 id="methods_getfatherfacts_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact[]</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getfatherfacts-page"><p>array of <a href="#/api/fact.types:constructor.Fact">Facts</a>; e.g., parent-relationship type</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getfatherid">getFatherId()</h3>
+<div class="getfatherid"><h5 id="methods_getfatherid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getfatherid-page"><p>Id of the father</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getfatherurl">getFatherUrl()</h3>
+<div class="getfatherurl"><h5 id="methods_getfatherurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getfatherurl-page"><p>URL of the father</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getid">getId()</h3>
+<div class="getid"><h5 id="methods_getid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getid-page"><p>Id of the relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getmother">getMother()</h3>
+<div class="getmother"><h5 id="methods_getmother_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getmother-page"><p>promise for the <a href="#/api/person.functions:getPerson">getPerson</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getmotherfacts">getMotherFacts()</h3>
+<div class="getmotherfacts"><h5 id="methods_getmotherfacts_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact[]</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getmotherfacts-page"><p>array of <a href="#/api/fact.types:constructor.Fact">Facts</a>; e.g., parent-relationship type</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getmotherid">getMotherId()</h3>
+<div class="getmotherid"><h5 id="methods_getmotherid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getmotherid-page"><p>Id of the mother</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getmotherurl">getMotherUrl()</h3>
+<div class="getmotherurl"><h5 id="methods_getmotherurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getmotherurl-page"><p>URL of the mother</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getnotes">getNotes()</h3>
+<div class="getnotes"><h5 id="methods_getnotes_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getnotes-page"><p>promise for the <a href="#/api/notes.functions:getNotes">getNotes</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getsourcerefs">getSourceRefs()</h3>
+<div class="getsourcerefs"><h5 id="methods_getsourcerefs_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getsourcerefs-page"><p>promise for the <a href="#/api/sources.functions:getSourceRefs">getSourceRefs</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getsources">getSources()</h3>
+<div class="getsources"><h5 id="methods_getsources_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-getsources-page"><p>promise for the <a href="#/api/sources.functions:getSourcesQuery">getSourcesQuery</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_restore">restore()</h3>
+<div class="restore"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-restore-page"><p>restore this relationship - see <a href="#/api/parentsAndChildren.functions:restoreChildAndPArents">restoreChildAndPArents</a></p>
+</div><h5 id="methods_restore_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-restore-page"><p>promise for the response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_save">save(changeMessage)</h3>
+<div class="save"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-save-page"><p>Create a new relationship if this relationship does not have an id, or update the existing relationship.
+When a new relationship is created the Id and links will be set from the HTTP response headers.</p>
+</div><h5 id="methods_save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-save-page"><p>default change message to use when fact/deletion-specific changeMessage was not specified</p>
+</div></td></tr></tbody></table><h5 id="methods_save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-save-page"><p>promise that is resolved with an array of responses for all HTTP requests that were made</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setchild">setChild(child)</h3>
+<div class="setchild"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setchild-page"><p>NOTE: Once the relationship has been saved, the child can no longer be changed</p>
+</div><h5 id="methods_setchild_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>child</td><td><a href="" class="label type-hint type-hint-person">Person</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setchild-page"><p>person or URL or id</p>
+</div></td></tr></tbody></table><h5 id="methods_setchild_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-childandparents">ChildAndParents</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setchild-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setfather">setFather(father)</h3>
+<div class="setfather"><h5 id="methods_setfather_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>father</td><td><a href="" class="label type-hint type-hint-person">Person</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setfather-page"><p>person or URL or id</p>
+</div></td></tr></tbody></table><h5 id="methods_setfather_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-childandparents">ChildAndParents</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setfather-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setfatherfacts">setFatherFacts(facts, changeMessage)</h3>
+<div class="setfatherfacts"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setfatherfacts-page"><p>NOTE: dates are not supported for BiologicalParent, and places are not supported at all</p>
+</div><h5 id="methods_setfatherfacts_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>facts</td><td><a href="" class="label type-hint type-hint-fact">Fact[]</a><a href="" class="label type-hint type-hint-object">Object[]</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setfatherfacts-page"><p>facts to set; if an array element is not a Fact, it is passed into the Fact constructor</p>
+</div></td></tr><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setfatherfacts-page"><p>change message to use for deleted facts if any</p>
+</div></td></tr></tbody></table><h5 id="methods_setfatherfacts_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-childandparents">ChildAndParents</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setfatherfacts-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setmother">setMother(mother)</h3>
+<div class="setmother"><h5 id="methods_setmother_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>mother</td><td><a href="" class="label type-hint type-hint-person">Person</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setmother-page"><p>person or URL or id</p>
+</div></td></tr></tbody></table><h5 id="methods_setmother_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-childandparents">ChildAndParents</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setmother-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setmotherfacts">setMotherFacts(facts, changeMessage)</h3>
+<div class="setmotherfacts"><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setmotherfacts-page"><p>NOTE: dates are not supported for BiologicalParent, and places are not supported at all</p>
+</div><h5 id="methods_setmotherfacts_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>facts</td><td><a href="" class="label type-hint type-hint-fact">Fact[]</a><a href="" class="label type-hint type-hint-object">Object[]</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setmotherfacts-page"><p>facts to set; if an array element is not a Fact, it is passed into the Fact constructor</p>
+</div></td></tr><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setmotherfacts-page"><p>change message to use for deleted facts if any</p>
+</div></td></tr></tbody></table><h5 id="methods_setmotherfacts_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-childandparents">ChildAndParents</a></td><td><div class="parentsandchildren-types-page parentsandchildren-types-constructor-childandparents-setmotherfacts-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

@@ -1,0 +1,21 @@
+<h1><code ng:non-bindable="">deleteSourceDescription</code>
+<div><span class="hint">functions in module <code ng:non-bindable="">sources</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="sources-functions-page sources-functions-deletesourcedescription-page"><p>Delete the specified source description as well as all source references that refer to it</p>
+<p><strong>NOTE</strong> if you delete a source description, FamilySearch does not automatically delete references to it.
+Therefore, this function reads and deletes source references before deleting the source description.
+FamilySearch is aware of this issue but hasn&#39;t committed to a fix.</p>
+<p><a href="https://familysearch.org/developers/docs/api/sources/Source_Description_resource">FamilySearch API Docs</a></p>
+<p><a href="http://jsfiddle.net/fb2fzgsv/1/">Editable Example</a></p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">deleteSourceDescription(sdid, changeMessage[, opts]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>sdid</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sources-functions-page sources-functions-deletesourcedescription-page"><p>id of the source description (cannot be the URL)</p>
+</div></td></tr><tr><td>changeMessage</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sources-functions-page sources-functions-deletesourcedescription-page"><p>reason for the deletion</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-functions-page sources-functions-deletesourcedescription-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-functions-page sources-functions-deletesourcedescription-page"><p>promise for the sdid</p>
+</div></td></tr></table></div>
+</div>

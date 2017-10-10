@@ -1,0 +1,287 @@
+<h1><code ng:non-bindable="">Person</code>
+<div><span class="hint">type in module <code ng:non-bindable="">person</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="person-types-page person-types-constructor-person-page"><p>Person</p>
+<p><a href="https://familysearch.org/developers/docs/api/tree/Person_resource">FamilySearch API Docs</a></p>
+<p>Two methods to note below are <em>$save</em> and <em>$delete</em>.
+<em>$save</em> persists the changes made to names, facts, and gender;
+<em>$delete</em> removes the person.</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">Person([data]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-page"><p>an object with optional attributes {$gender, names, facts}.
+<em>$gender</em> is a string.
+<em>names</em> is an array of Name&#39;s, or Objects or strings to pass into the Name constructor.
+<em>facts</em> is an array of Fact&#39;s or Objects to pass into the Fact constructor.</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_$addfact">$addFact(value)</h3>
+<div class="$addfact"><h5 id="methods_$addfact_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-fact">Fact</a><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-addfact-page"><p>fact to add; if value is not a Fact, it is passed into the Fact constructor</p>
+</div></td></tr></tbody></table><h5 id="methods_$addfact_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-person">Person</a></td><td><div class="person-types-page person-types-constructor-person-addfact-page"><p>this person</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$addname">$addName(value)</h3>
+<div class="$addname"><h5 id="methods_$addname_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-name">Name</a><a href="" class="label type-hint type-hint-object">Object</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-addname-page"><p>name to add; if value is not a Name, it is passed into the Name constructor</p>
+</div></td></tr></tbody></table><h5 id="methods_$addname_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-person">Person</a></td><td><div class="person-types-page person-types-constructor-person-addname-page"><p>this person</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$delete">$delete(changeMessage, opts)</h3>
+<div class="$delete"><div class="person-types-page person-types-constructor-person-delete-page"><p>delete this person - see <a href="#/api/person.functions:deletePerson">deletePerson</a></p>
+</div><h5 id="methods_$delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-delete-page"><p>change message</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-delete-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-delete-page"><p>promise for the person URL</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$deletefact">$deleteFact(value, changeMessage)</h3>
+<div class="$deletefact"><h5 id="methods_$deletefact_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-fact">Fact</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-deletefact-page"><p>fact or fact id to remove</p>
+</div></td></tr><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-types-page person-types-constructor-person-deletefact-page"><p>change message</p>
+</div></td></tr></tbody></table><h5 id="methods_$deletefact_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-person">Person</a></td><td><div class="person-types-page person-types-constructor-person-deletefact-page"><p>this person</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$deletename">$deleteName(value, changeMessage)</h3>
+<div class="$deletename"><h5 id="methods_$deletename_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-name">Name</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-deletename-page"><p>name or name id to remove</p>
+</div></td></tr><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-types-page person-types-constructor-person-deletename-page"><p>change message</p>
+</div></td></tr></tbody></table><h5 id="methods_$deletename_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-person">Person</a></td><td><div class="person-types-page person-types-constructor-person-deletename-page"><p>this person</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getancestry">$getAncestry(params)</h3>
+<div class="$getancestry"><h5 id="methods_$getancestry_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getancestry-page"><p>includes <code>generations</code> to retrieve max 8, <code>spouse</code> id to get ancestry of person and spouse,
+<code>personDetails</code> set to true to retrieve full person objects for each ancestor</p>
+</div></td></tr></tbody></table><h5 id="methods_$getancestry_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getancestry-page"><p>promise for the <a href="#/api/pedigree.functions:getAncestry">getAncestry</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getbirth">$getBirth()</h3>
+<div class="$getbirth"><h5 id="methods_$getbirth_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="person-types-page person-types-constructor-person-getbirth-page"><p>Birth <a href="#/api/fact.types:constructor.Fact">Fact</a></p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getbirthdate">$getBirthDate()</h3>
+<div class="$getbirthdate"><h5 id="methods_$getbirthdate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-getbirthdate-page"><p>Birth date</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getbirthplace">$getBirthPlace()</h3>
+<div class="$getbirthplace"><h5 id="methods_$getbirthplace_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-getbirthplace-page"><p>Birth place</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getburial">$getBurial()</h3>
+<div class="$getburial"><h5 id="methods_$getburial_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="person-types-page person-types-constructor-person-getburial-page"><p>Burial <a href="#/api/fact.types:constructor.Fact">Fact</a></p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getburialdate">$getBurialDate()</h3>
+<div class="$getburialdate"><h5 id="methods_$getburialdate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-getburialdate-page"><p>Burial date</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getburialplace">$getBurialPlace()</h3>
+<div class="$getburialplace"><h5 id="methods_$getburialplace_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-getburialplace-page"><p>Birth place</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getchanges">$getChanges(params)</h3>
+<div class="$getchanges"><h5 id="methods_$getchanges_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getchanges-page"><p><code>count</code> is the number of change entries to return, <code>from</code> to return changes following this id</p>
+</div></td></tr></tbody></table><h5 id="methods_$getchanges_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getchanges-page"><p>promise for the <a href="#/api/changeHistory.functions:getPersonChanges">getPersonChanges</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getchildren">$getChildren()</h3>
+<div class="$getchildren"><h5 id="methods_$getchildren_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getchildren-page"><p>promise for the <a href="#/api/person.functions:getChildren">getChildren</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getchristening">$getChristening()</h3>
+<div class="$getchristening"><h5 id="methods_$getchristening_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="person-types-page person-types-constructor-person-getchristening-page"><p>Christening <a href="#/api/fact.types:constructor.Fact">Fact</a></p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getchristeningdate">$getChristeningDate()</h3>
+<div class="$getchristeningdate"><h5 id="methods_$getchristeningdate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-getchristeningdate-page"><p>Christening date</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getchristeningplace">$getChristeningPlace()</h3>
+<div class="$getchristeningplace"><h5 id="methods_$getchristeningplace_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-getchristeningplace-page"><p>Christning place</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getdeath">$getDeath()</h3>
+<div class="$getdeath"><h5 id="methods_$getdeath_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="person-types-page person-types-constructor-person-getdeath-page"><p>Death <a href="#/api/fact.types:constructor.Fact">Fact</a></p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getdeathdate">$getDeathDate()</h3>
+<div class="$getdeathdate"><h5 id="methods_$getdeathdate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-getdeathdate-page"><p>Death date</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getdeathplace">$getDeathPlace()</h3>
+<div class="$getdeathplace"><h5 id="methods_$getdeathplace_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-getdeathplace-page"><p>Death place</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getdescendancy">$getDescendancy(params)</h3>
+<div class="$getdescendancy"><h5 id="methods_$getdescendancy_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getdescendancy-page"><p>includes <code>generations</code> to retrieve max 2, <code>spouse</code> id to get descendency of person and spouse</p>
+</div></td></tr></tbody></table><h5 id="methods_$getdescendancy_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getdescendancy-page"><p>promise for the <a href="#/api/pedigree.functions:getDescendancy">getDescendancy</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getdiscussionrefs">$getDiscussionRefs()</h3>
+<div class="$getdiscussionrefs"><h5 id="methods_$getdiscussionrefs_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getdiscussionrefs-page"><p>promise for the <a href="#/api/discussions.functions:getPersonDiscussionRefs">getPersonDiscussionRefs</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getdisplaybirthdate">$getDisplayBirthDate()</h3>
+<div class="$getdisplaybirthdate"><h5 id="methods_$getdisplaybirthdate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-types-page person-types-constructor-person-getdisplaybirthdate-page"><p>birth date</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getdisplaybirthplace">$getDisplayBirthPlace()</h3>
+<div class="$getdisplaybirthplace"><h5 id="methods_$getdisplaybirthplace_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-types-page person-types-constructor-person-getdisplaybirthplace-page"><p>birth place</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getdisplaydeathdate">$getDisplayDeathDate()</h3>
+<div class="$getdisplaydeathdate"><h5 id="methods_$getdisplaydeathdate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-types-page person-types-constructor-person-getdisplaydeathdate-page"><p>death date</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getdisplaydeathplace">$getDisplayDeathPlace()</h3>
+<div class="$getdisplaydeathplace"><h5 id="methods_$getdisplaydeathplace_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-types-page person-types-constructor-person-getdisplaydeathplace-page"><p>death place</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getdisplaygender">$getDisplayGender()</h3>
+<div class="$getdisplaygender"><h5 id="methods_$getdisplaygender_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-types-page person-types-constructor-person-getdisplaygender-page"><p>gender - Male or Female</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getdisplaylifespan">$getDisplayLifeSpan()</h3>
+<div class="$getdisplaylifespan"><h5 id="methods_$getdisplaylifespan_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-getdisplaylifespan-page"><p>birth year - death year</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getdisplayname">$getDisplayName()</h3>
+<div class="$getdisplayname"><h5 id="methods_$getdisplayname_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-getdisplayname-page"><p>display name</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getfact">$getFact(type)</h3>
+<div class="$getfact"><h5 id="methods_$getfact_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>type</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-getfact-page"><p>fact type; e.g., <a href="http://gedcomx.org/Birth">http://gedcomx.org/Birth</a></p>
+</div></td></tr></tbody></table><h5 id="methods_$getfact_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="person-types-page person-types-constructor-person-getfact-page"><p>return first <a href="#/api/fact.types:constructor.Fact">Fact</a> having specified type</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getfacts">$getFacts(type)</h3>
+<div class="$getfacts"><h5 id="methods_$getfacts_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>type <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-getfacts-page"><p>if present, return only facts with this type</p>
+</div></td></tr></tbody></table><h5 id="methods_$getfacts_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact[]</a></td><td><div class="person-types-page person-types-constructor-person-getfacts-page"><p>an array of <a href="#/api/fact.types:constructor.Fact">Facts</a></p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getgivenname">$getGivenName()</h3>
+<div class="$getgivenname"><h5 id="methods_$getgivenname_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-types-page person-types-constructor-person-getgivenname-page"><p>preferred given name</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getmatches">$getMatches()</h3>
+<div class="$getmatches"><h5 id="methods_$getmatches_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getmatches-page"><p>promise for the <a href="#/api/searchAndMatch.functions:getPersonMatches">getPersonMatches</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getmemorypersonarefs">$getMemoryPersonaRefs()</h3>
+<div class="$getmemorypersonarefs"><h5 id="methods_$getmemorypersonarefs_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getmemorypersonarefs-page"><p>promise for the <a href="#/api/memories.functions:getMemoryPersonaRefs">getMemoryPersonaRefs</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getnames">$getNames(type)</h3>
+<div class="$getnames"><h5 id="methods_$getnames_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>type <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-getnames-page"><p>if present, return only names with this type</p>
+</div></td></tr></tbody></table><h5 id="methods_$getnames_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-name">Name[]</a></td><td><div class="person-types-page person-types-constructor-person-getnames-page"><p>an array of <a href="#/api/name.types:constructor.Name">Names</a></p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getnotes">$getNotes()</h3>
+<div class="$getnotes"><h5 id="methods_$getnotes_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getnotes-page"><p>promise for the <a href="#/api/notes.functions:getPersonNotes">getPersonNotes</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getparents">$getParents()</h3>
+<div class="$getparents"><h5 id="methods_$getparents_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getparents-page"><p>promise for the <a href="#/api/person.functions:getParents">getParents</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getpersistentidentifier">$getPersistentIdentifier()</h3>
+<div class="$getpersistentidentifier"><h5 id="methods_$getpersistentidentifier_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-types-page person-types-constructor-person-getpersistentidentifier-page"><p>persistent identifier</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getpersonportraiturl">$getPersonPortraitUrl(params)</h3>
+<div class="$getpersonportraiturl"><h5 id="methods_$getpersonportraiturl_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getpersonportraiturl-page"><p><code>default</code> URL to redirect to if portrait doesn&#39;t exist;
+<code>followRedirect</code> if true, follow the redirect and return the final URL</p>
+</div></td></tr></tbody></table><h5 id="methods_$getpersonportraiturl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getpersonportraiturl-page"><p>promise for the <a href="#/api/memories.functions:getPersonPortraitUrl">getPersonPortraitUrl</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getpersonurl">$getPersonUrl()</h3>
+<div class="$getpersonurl"><h5 id="methods_$getpersonurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-types-page person-types-constructor-person-getpersonurl-page"><p>Url of the person</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getpreferredname">$getPreferredName()</h3>
+<div class="$getpreferredname"><h5 id="methods_$getpreferredname_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-getpreferredname-page"><p>preferred <a href="#/api/name.types:constructor.Name">Name</a></p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getsourcerefs">$getSourceRefs()</h3>
+<div class="$getsourcerefs"><h5 id="methods_$getsourcerefs_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getsourcerefs-page"><p>promise for the <a href="#/api/sources.functions:getPersonSourceRefs">getPersonSourceRefs</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getsources">$getSources()</h3>
+<div class="$getsources"><h5 id="methods_$getsources_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getsources-page"><p>promise for the <a href="#/api/sources.functions:getPersonSourcesQuery">getPersonSourcesQuery</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getspouses">$getSpouses()</h3>
+<div class="$getspouses"><h5 id="methods_$getspouses_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-getspouses-page"><p>promise for the <a href="#/api/person.functions:getSpouses">getSpouses</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getsurname">$getSurname()</h3>
+<div class="$getsurname"><h5 id="methods_$getsurname_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-types-page person-types-constructor-person-getsurname-page"><p>preferred surname</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$isreadonly">$isReadOnly()</h3>
+<div class="$isreadonly"><div class="person-types-page person-types-constructor-person-isreadonly-page"><p>This function is available only if the person is read with <code>getPerson</code> or <code>getPersonWithRelationships</code>.</p>
+</div><h5 id="methods_$isreadonly_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="person-types-page person-types-constructor-person-isreadonly-page"><p>true if the person is read-only</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$restore">$restore(opts)</h3>
+<div class="$restore"><div class="person-types-page person-types-constructor-person-restore-page"><p>restore this person - see <a href="#/api/person.functions:restorePerson">restorePerson</a></p>
+</div><h5 id="methods_$restore_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-restore-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$restore_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-restore-page"><p>promise for the person URL</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$save">$save(changeMessage, refresh, opts)</h3>
+<div class="$save"><div class="person-types-page person-types-constructor-person-save-page"><p>Create a new person (if this person does not have an id) or update the existing person</p>
+<p><a href="http://jsfiddle.net/v4840hjt/1/">Editable Example</a></p>
+</div><h5 id="methods_$save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-types-page person-types-constructor-person-save-page"><p>default change message to use when name/fact/gender-specific changeMessage is not specified</p>
+</div></td></tr><tr><td>refresh <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="person-types-page person-types-constructor-person-save-page"><p>true to read the person after updating</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-save-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-save-page"><p>promise of the person id, which is fulfilled after person has been updated,
+and if refresh is true, after the person has been read</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setfacts">$setFacts(values, changeMessage)</h3>
+<div class="$setfacts"><h5 id="methods_$setfacts_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>values</td><td><a href="" class="label type-hint type-hint-fact">Fact[]</a><a href="" class="label type-hint type-hint-object">Object[]</a></td><td><div class="person-types-page person-types-constructor-person-setfacts-page"><p>facts to set; if an array element is not a Fact, it is passed into the Fact constructor</p>
+</div></td></tr><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-setfacts-page"><p>change message to use for deleted facts if any</p>
+</div></td></tr></tbody></table><h5 id="methods_$setfacts_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-person">Person</a></td><td><div class="person-types-page person-types-constructor-person-setfacts-page"><p>this person</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setgender">$setGender(gender, changeMessage)</h3>
+<div class="$setgender"><h5 id="methods_$setgender_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>gender</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-types-page person-types-constructor-person-setgender-page"><p>e.g., <a href="http://gedcomx.org/Female">http://gedcomx.org/Female</a></p>
+</div></td></tr><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-types-page person-types-constructor-person-setgender-page"><p>change message</p>
+</div></td></tr></tbody></table><h5 id="methods_$setgender_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-person">Person</a></td><td><div class="person-types-page person-types-constructor-person-setgender-page"><p>this person</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setnames">$setNames(values, changeMessage)</h3>
+<div class="$setnames"><h5 id="methods_$setnames_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>values</td><td><a href="" class="label type-hint type-hint-name">Name[]</a><a href="" class="label type-hint type-hint-object">Object[]</a><a href="" class="label type-hint type-hint-string">string[]</a></td><td><div class="person-types-page person-types-constructor-person-setnames-page"><p>names to set; if an array element is not a Name, it is passed into the Name constructor</p>
+</div></td></tr><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="person-types-page person-types-constructor-person-setnames-page"><p>change message to use for deleted names if any</p>
+</div></td></tr></tbody></table><h5 id="methods_$setnames_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-person">Person</a></td><td><div class="person-types-page person-types-constructor-person-setnames-page"><p>this person</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_attribution">attribution</h3>
+<div class="attribution"><h5 id="properties_attribution_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-attribution">Attribution</a></td><td><div class="person-types-page person-types-constructor-person-attribution-page"><p><a href="#/api/attribution.types:constructor.Attribution">Attribution</a> object</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="properties_display">display</h3>
+<div class="display"><h5 id="properties_display_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-display-page"><p>includes <code>birthDate</code>, <code>birthPlace</code>, <code>deathDate</code>, <code>deathPlace</code>, <code>gender</code>, <code>lifespan</code>, and <code>name</code> attributes</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="properties_gender">gender</h3>
+<div class="gender"><h5 id="properties_gender_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-gender-page"><p>gender conclusion with id, type (value), and attribution</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="properties_id">id</h3>
+<div class="id"><h5 id="properties_id_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-types-page person-types-constructor-person-id-page"><p>Id of the person</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="properties_identifiers">identifiers</h3>
+<div class="identifiers"><h5 id="properties_identifiers_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-types-page person-types-constructor-person-identifiers-page"><p>map of identifiers to arrays of values</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="properties_living">living</h3>
+<div class="living"><h5 id="properties_living_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="person-types-page person-types-constructor-person-living-page"><p>true or false</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

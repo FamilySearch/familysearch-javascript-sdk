@@ -1,0 +1,150 @@
+<h1><code ng:non-bindable="">Couple</code>
+<div><span class="hint">type in module <code ng:non-bindable="">spouses</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="spouses-types-page spouses-types-constructor-couple-page"><p>Couple relationship</p>
+<p>Two methods to note below are <em>$save</em> and <em>$delete</em>.
+<em>$save</em> persists the changes made to husband, wife, and facts;
+<em>$delete</em> removes the relationship.</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">Couple([data]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-page"><p>an object with optional attributes {$husband, $wife, facts}.
+<em>$husband</em> and <em>$wife</em> are Person objects, URLs, or ids.
+<em>facts</em> is an array of Facts or objects to be passed into the Fact constructor.</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_$addfact">$addFact(value)</h3>
+<div class="$addfact"><h5 id="methods_$addfact_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-fact">Fact</a><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-addfact-page"><p>fact to add; if value is not a Fact, it is passed into the Fact constructor</p>
+</div></td></tr></tbody></table><h5 id="methods_$addfact_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-couple">Couple</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-addfact-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$delete">$delete(changeMessage, opts)</h3>
+<div class="$delete"><div class="spouses-types-page spouses-types-constructor-couple-delete-page"><p>delete this relationship - see <a href="#/api/spouses.functions:deleteCouple">deleteCouple</a></p>
+</div><h5 id="methods_$delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-delete-page"><p>change message</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-delete-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-delete-page"><p>promise for the relationship URL</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$deletefact">$deleteFact(value, changeMessage)</h3>
+<div class="$deletefact"><h5 id="methods_$deletefact_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-fact">Fact</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-deletefact-page"><p>fact or fact id to remove</p>
+</div></td></tr><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-deletefact-page"><p>change message</p>
+</div></td></tr></tbody></table><h5 id="methods_$deletefact_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-couple">Couple</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-deletefact-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getchanges">$getChanges()</h3>
+<div class="$getchanges"><h5 id="methods_$getchanges_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-getchanges-page"><p>promise for the <a href="#/api/sources.functions:getCoupleChanges">getCoupleChanges</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getcoupleurl">$getCoupleUrl()</h3>
+<div class="$getcoupleurl"><h5 id="methods_$getcoupleurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-getcoupleurl-page"><p>Url of this couple relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getfacts">$getFacts()</h3>
+<div class="$getfacts"><h5 id="methods_$getfacts_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact[]</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-getfacts-page"><p>array of <a href="#/api/fact.types:constructor.Fact">Facts</a>; e.g., marriage</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$gethusband">$getHusband()</h3>
+<div class="$gethusband"><h5 id="methods_$gethusband_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-gethusband-page"><p>promise for the <a href="#/api/exports.functions:getPerson">getPerson</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$gethusbandid">$getHusbandId()</h3>
+<div class="$gethusbandid"><h5 id="methods_$gethusbandid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-gethusbandid-page"><p>Id of the husband</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$gethusbandurl">$getHusbandUrl()</h3>
+<div class="$gethusbandurl"><h5 id="methods_$gethusbandurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-gethusbandurl-page"><p>URL of the husband</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getmarriagefact">$getMarriageFact()</h3>
+<div class="$getmarriagefact"><h5 id="methods_$getmarriagefact_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-fact">Fact</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-getmarriagefact-page"><p><a href="#/api/fact.types:constructor.Fact">Fact</a> of type <a href="http://gedcomx.org/Marriage">http://gedcomx.org/Marriage</a> (first one if multiple)</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getnotes">$getNotes()</h3>
+<div class="$getnotes"><h5 id="methods_$getnotes_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-getnotes-page"><p>promise for the <a href="#/api/notes.functions:getCoupleNotes">getCoupleNotes</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getsourcerefs">$getSourceRefs()</h3>
+<div class="$getsourcerefs"><h5 id="methods_$getsourcerefs_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-getsourcerefs-page"><p>promise for the <a href="#/api/sources.functions:getCoupleSourceRefs">getCoupleSourceRefs</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getsources">$getSources()</h3>
+<div class="$getsources"><h5 id="methods_$getsources_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-getsources-page"><p>promise for the <a href="#/api/sources.functions:getCoupleSourcesQuery">getCoupleSourcesQuery</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getspouse">$getSpouse(ID)</h3>
+<div class="$getspouse"><div class="spouses-types-page spouses-types-constructor-couple-getspouse-page"><p>Use this method when you know the ID of one person in the relationship and you want to fetch the other person.</p>
+</div><h5 id="methods_$getspouse_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>ID</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-getspouse-page"><p>of the spouse which you already know</p>
+</div></td></tr></tbody></table><h5 id="methods_$getspouse_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-getspouse-page"><p>promise for the <a href="#/api/exports.functions:getPerson">getPerson</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getspouseid">$getSpouseId(ID)</h3>
+<div class="$getspouseid"><div class="spouses-types-page spouses-types-constructor-couple-getspouseid-page"><p>Use this method when you know the ID of one person in the relationship and you want to fetch the ID of the other person.</p>
+</div><h5 id="methods_$getspouseid_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>ID</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-getspouseid-page"><p>of the spouse which you already know</p>
+</div></td></tr></tbody></table><h5 id="methods_$getspouseid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-getspouseid-page"><p>Id of the other spouse</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getspouseurl">$getSpouseUrl(ID)</h3>
+<div class="$getspouseurl"><div class="spouses-types-page spouses-types-constructor-couple-getspouseurl-page"><p>Use this method when you know the ID of one person in the relationship and you want to fetch the URL of the other person.</p>
+</div><h5 id="methods_$getspouseurl_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>ID</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-getspouseurl-page"><p>of the spouse which you already know</p>
+</div></td></tr></tbody></table><h5 id="methods_$getspouseurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-getspouseurl-page"><p>URL of the other spouse</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getwife">$getWife()</h3>
+<div class="$getwife"><h5 id="methods_$getwife_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-getwife-page"><p>promise for the <a href="#/api/exports.functions:getPerson">getPerson</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getwifeid">$getWifeId()</h3>
+<div class="$getwifeid"><h5 id="methods_$getwifeid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-getwifeid-page"><p>Id of the wife</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getwifeurl">$getWifeUrl()</h3>
+<div class="$getwifeurl"><h5 id="methods_$getwifeurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-getwifeurl-page"><p>URL of the wife</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$restore">$restore(opts)</h3>
+<div class="$restore"><div class="spouses-types-page spouses-types-constructor-couple-restore-page"><p>restore this relationship - see <a href="#/api/spouses.functions:restoreCouple">restoreCouple</a></p>
+</div><h5 id="methods_$restore_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-restore-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$restore_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-restore-page"><p>promise for the relationship URL</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$save">$save(changeMessage, refresh, opts)</h3>
+<div class="$save"><div class="spouses-types-page spouses-types-constructor-couple-save-page"><p>Create a new relationship if this relationship does not have an id, or update the existing relationship</p>
+<p><a href="http://jsfiddle.net/LtphkL51/1/">Editable Example</a></p>
+</div><h5 id="methods_$save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-save-page"><p>default change message to use when fact/deletion-specific changeMessage was not specified</p>
+</div></td></tr><tr><td>refresh <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-save-page"><p>true to read the relationship after updating</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-save-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-save-page"><p>promise of the relationship id, which is fulfilled after the relationship has been updated,
+and if refresh is true, after the relationship has been read</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setfacts">$setFacts(facts, changeMessage)</h3>
+<div class="$setfacts"><h5 id="methods_$setfacts_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>facts</td><td><a href="" class="label type-hint type-hint-fact">Fact[]</a><a href="" class="label type-hint type-hint-object">Object[]</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-setfacts-page"><p>facts to set; if array elements are not Facts, they are passed into the Fact constructor</p>
+</div></td></tr><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-setfacts-page"><p>change message to use for deleted facts if any</p>
+</div></td></tr></tbody></table><h5 id="methods_$setfacts_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-couple">Couple</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-setfacts-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$sethusband">$setHusband(husband)</h3>
+<div class="$sethusband"><div class="spouses-types-page spouses-types-constructor-couple-sethusband-page"><p>NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id</p>
+</div><h5 id="methods_$sethusband_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>husband</td><td><a href="" class="label type-hint type-hint-person">Person</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-sethusband-page"><p>person or URL or id</p>
+</div></td></tr></tbody></table><h5 id="methods_$sethusband_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-couple">Couple</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-sethusband-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setwife">$setWife(wife)</h3>
+<div class="$setwife"><div class="spouses-types-page spouses-types-constructor-couple-setwife-page"><p>NOTE: if you plan call this function within a few seconds of initializing the SDK, pass in a Person or a URL, not an id</p>
+</div><h5 id="methods_$setwife_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>wife</td><td><a href="" class="label type-hint type-hint-person">Person</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-setwife-page"><p>person or URL or id</p>
+</div></td></tr></tbody></table><h5 id="methods_$setwife_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-couple">Couple</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-setwife-page"><p>this relationship</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_id">id</h3>
+<div class="id"><h5 id="properties_id_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="spouses-types-page spouses-types-constructor-couple-id-page"><p>Id of the relationship</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

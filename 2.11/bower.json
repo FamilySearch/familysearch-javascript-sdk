@@ -1,0 +1,17 @@
+{
+  "name": "familysearch-javascript-sdk",
+  "homepage": "https://github.com/rootsdev/familysearch-javascript-sdk",
+  "description": "Javascript SDK for FamilySearch REST API",
+  "main": "./familysearch-javascript-sdk.min.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "test",
+    "css",
+    "font",
+    "js",
+    "partials",
+    "index.html"
+  ]
+}

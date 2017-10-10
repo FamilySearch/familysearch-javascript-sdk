@@ -1,0 +1,25 @@
+<h1><code ng:non-bindable="">getSpouses</code>
+<div><span class="hint">functions in module <code ng:non-bindable="">person</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="person-functions-page person-functions-getspouses-page"><p>Get the relationships to a person&#39;s spouses.
+The response includes the following convenience functions</p>
+<ul>
+<li><code>getCoupleRelationships()</code> - an array of <a href="#/api/spouses.types:constructor.Couple">Couple</a> relationships</li>
+<li><code>getChildAndParentsRelationships()</code> - an array of <a href="#/api/parentsAndChildren.types:constructor.ChildAndParents">ChildAndParents</a>
+relationships for children of the couples</li>
+<li><code>getPerson(pid)</code> - a <a href="#/api/person.types:constructor.Person">Person</a> for any person id in a relationship except children</li>
+</ul>
+<p><a href="https://familysearch.org/developers/docs/api/tree/Spouses_of_a_Person_resource">FamilySearch API Docs</a></p>
+<p><a href="http://jsfiddle.net/1311jcz8/18/">Editable Example</a></p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getSpouses(pid[, params][, opts]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-functions-page person-functions-getspouses-page"><p>id of the person or full URL of the spouses endpoint</p>
+</div></td></tr><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getspouses-page"><p>currently unused</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getspouses-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getspouses-page"><p>promise for the response</p>
+</div></td></tr></table></div>
+</div>

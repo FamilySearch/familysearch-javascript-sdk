@@ -1,0 +1,22 @@
+<h1><code ng:non-bindable="">deleteDiscussion</code>
+<div><span class="hint">functions in module <code ng:non-bindable="">discussions</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="discussions-functions-page discussions-functions-deletediscussion-page"><p>Delete the specified discussion</p>
+<p><strong>NOTE</strong> if you delete a discussion, it&#39;s up to you to delete the corresponding Discussion Refs
+Since there is no way to tell which people a discussion has been linked to, your best best is to
+attach a discussion to a single person and to delete the discussion when you delete the discussion-reference.
+FamilySearch is aware of this issue but hasn&#39;t committed to a fix.</p>
+<p><a href="https://familysearch.org/developers/docs/api/discussions/Discussion_resource">FamilySearch API Docs</a></p>
+<p><a href="http://jsfiddle.net/quj3enjs/1/">Editable Example</a></p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">deleteDiscussion(did[, changeMessage][, opts]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>did</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="discussions-functions-page discussions-functions-deletediscussion-page"><p>id or full URL of the discussion</p>
+</div></td></tr><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="discussions-functions-page discussions-functions-deletediscussion-page"><p>change message (currently ignored)</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-functions-page discussions-functions-deletediscussion-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="discussions-functions-page discussions-functions-deletediscussion-page"><p>promise for the discussion id/URL</p>
+</div></td></tr></table></div>
+</div>

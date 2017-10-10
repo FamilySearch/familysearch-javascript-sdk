@@ -1,0 +1,87 @@
+<h1><code ng:non-bindable="">MemoryPersona</code>
+<div><span class="hint">type in module <code ng:non-bindable="">memories</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="memories-types-page memories-types-constructor-memorypersona-page"><p>Memory Persona (not a true persona; can only contain a name and a media artifact reference)</p>
+<p><a href="https://familysearch.org/developers/docs/api/memories/Memory_Personas_resource">FamilySearch API Docs</a></p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">MemoryPersona([data]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-page"><p>an object with optional attributes {$memoryId, name, memoryArtifactRef}.
+To create a new memory persona, you must set $memoryId and name.
+<em>name</em> can be a <a href="#/api/name.types:constructor.Name">Name</a> object or a fullText string.
+<em>NOTE</em> memory persona names don&#39;t have given or surname parts, only fullText</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_$delete">$delete(changeMessage, opts)</h3>
+<div class="$delete"><div class="memories-types-page memories-types-constructor-memorypersona-delete-page"><p>delete this memory persona - see <a href="#/api/memories.functions:deleteMemoryPersona">deleteMemoryPersona</a></p>
+</div><h5 id="methods_$delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-delete-page"><p>change message (currently ignored)</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-delete-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-delete-page"><p>promise for the memory persona URL</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getdisplayname">$getDisplayName()</h3>
+<div class="$getdisplayname"><h5 id="methods_$getdisplayname_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-getdisplayname-page"><p>display name</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getmemory">$getMemory()</h3>
+<div class="$getmemory"><h5 id="methods_$getmemory_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-getmemory-page"><p>promise for the <a href="#/api/memories.functions:getMemory">getMemory</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getmemoryartifactref">$getMemoryArtifactRef()</h3>
+<div class="$getmemoryartifactref"><h5 id="methods_$getmemoryartifactref_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-memoryartifactref">MemoryArtifactRef</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-getmemoryartifactref-page"><p><a href="#/api/memories.types:constructor.MemoryArtifactRef">MemoryArtifactRef</a></p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getmemorypersonaurl">$getMemoryPersonaUrl()</h3>
+<div class="$getmemorypersonaurl"><h5 id="methods_$getmemorypersonaurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-getmemorypersonaurl-page"><p>memory persona URL</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getmemoryurl">$getMemoryUrl()</h3>
+<div class="$getmemoryurl"><h5 id="methods_$getmemoryurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-getmemoryurl-page"><p>url of the memory</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getnames">$getNames()</h3>
+<div class="$getnames"><h5 id="methods_$getnames_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-name">Name</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-getnames-page"><p>a <a href="#/api/name.types:constructor.Name">Name</a></p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$save">$save(changeMessage, refresh, opts)</h3>
+<div class="$save"><div class="memories-types-page memories-types-constructor-memorypersona-save-page"><p>Create a new memory persona (if this memory persona does not have an id) or update the existing memory persona.
+Only the name can be updated, not the memory id or the memory artifact reference.</p>
+<p><a href="http://jsfiddle.net/eeozaLkL/1/">Editable Example</a></p>
+</div><h5 id="methods_$save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-save-page"><p>change message (currently ignored)</p>
+</div></td></tr><tr><td>refresh <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-save-page"><p>true to read the memory persona after updating</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-save-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-save-page"><p>promise of the memory persona URL, which is fulfilled after the memory persona has been updated,
+and if refresh is true, after the memory persona has been read.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setmemoryartifactref">$setMemoryArtifactRef(value)</h3>
+<div class="$setmemoryartifactref"><h5 id="methods_$setmemoryartifactref_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-memoryartifactref">MemoryArtifactRef</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-setmemoryartifactref-page"><p>memory artifact ref</p>
+</div></td></tr></tbody></table><h5 id="methods_$setmemoryartifactref_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-memorypersona">MemoryPersona</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-setmemoryartifactref-page"><p>this memory persona</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setname">$setName(value)</h3>
+<div class="$setname"><h5 id="methods_$setname_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>value</td><td><a href="" class="label type-hint type-hint-name">Name</a><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-setname-page"><p>name</p>
+</div></td></tr></tbody></table><h5 id="methods_$setname_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-memorypersona">MemoryPersona</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-setname-page"><p>this memory persona</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_$memoryid">$memoryId</h3>
+<div class="$memoryid"><h5 id="properties_$memoryid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-memoryid-page"><p>Id of the memory to which this persona is attached</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="properties_extracted">extracted</h3>
+<div class="extracted"><h5 id="properties_extracted_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-extracted-page"><p>not sure what this means</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="properties_id">id</h3>
+<div class="id"><h5 id="properties_id_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="memories-types-page memories-types-constructor-memorypersona-id-page"><p>Id of the Memory Persona</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

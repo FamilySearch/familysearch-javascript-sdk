@@ -171,6 +171,10 @@ process.off = noop;
 process.removeListener = noop;
 process.removeAllListeners = noop;
 process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
@@ -8221,7 +8225,7 @@ module.exports = {
     'integration': 'https://integration.familysearch.org',
     'staging'    : 'https://stage.familysearch.org',
     'beta'       : 'https://beta.familysearch.org',
-    'production' : 'https://familysearch.org'
+    'production' : 'https://api.familysearch.org'
   },
   oauthServer: {
     'integration': 'https://integration.familysearch.org/cis-web/oauth2/v3',

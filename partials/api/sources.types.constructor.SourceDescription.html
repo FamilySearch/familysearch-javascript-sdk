@@ -1,0 +1,86 @@
+<h1><code ng:non-bindable="">SourceDescription</code>
+<div><span class="hint">type in module <code ng:non-bindable="">sources</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="sources-types-page sources-types-constructor-sourcedescription-page"><p>Description of a source</p>
+<p><a href="https://familysearch.org/developers/docs/api/sources/Source_Descriptions_resource">FamilySearch API Docs</a></p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">SourceDescription([data]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-page"><p>an object with optional attributes {about, $citation, $title, $text}.
+<em>about</em> is a URL (link to the record) it can be a memory URL.</p>
+</div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_$delete">$delete(changeMessage, opts)</h3>
+<div class="$delete"><div class="sources-types-page sources-types-constructor-sourcedescription-delete-page"><p>delete this source description as well as all source references that refer to this source description
+- see <a href="#/api/sources.functions:deleteSourceDescription">deleteSourceDescription</a></p>
+</div><h5 id="methods_$delete_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-delete-page"><p>reason for the deletion</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-delete-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$delete_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-delete-page"><p>promise for the source description id</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getcitation">$getCitation()</h3>
+<div class="$getcitation"><h5 id="methods_$getcitation_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-getcitation-page"><p>source citation</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getsourcedescriptionurl">$getSourceDescriptionUrl()</h3>
+<div class="$getsourcedescriptionurl"><h5 id="methods_$getsourcedescriptionurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-getsourcedescriptionurl-page"><p>Url of the of this source description</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$getsourcerefsquery">$getSourceRefsQuery()</h3>
+<div class="$getsourcerefsquery"><h5 id="methods_$getsourcerefsquery_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-getsourcerefsquery-page"><p>promise for the <a href="#/api/sources.functions:getSourceRefsQuery">getSourceRefsQuery</a> response</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$gettext">$getText()</h3>
+<div class="$gettext"><h5 id="methods_$gettext_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-gettext-page"><p>Text / Description of the source</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$gettitle">$getTitle()</h3>
+<div class="$gettitle"><h5 id="methods_$gettitle_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-gettitle-page"><p>title of the source description</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$save">$save(changeMessage, refresh, opts)</h3>
+<div class="$save"><div class="sources-types-page sources-types-constructor-sourcedescription-save-page"><p>Create a new source description (if this source description does not have an id) or update the existing source description</p>
+<p><a href="http://jsfiddle.net/mtets2sf/1/">Editable Example</a></p>
+</div><h5 id="methods_$save_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>changeMessage <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-save-page"><p>change message</p>
+</div></td></tr><tr><td>refresh <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-save-page"><p>true to read the source description after updating</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-save-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h5 id="methods_$save_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-save-page"><p>promise of the source description id, which is fulfilled after the source description has been updated,
+and if refresh is true, after the source description has been read.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$setcitation">$setCitation(citation)</h3>
+<div class="$setcitation"><h5 id="methods_$setcitation_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>citation</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-setcitation-page"><p>source description citation</p>
+</div></td></tr></tbody></table><h5 id="methods_$setcitation_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-sourcedescription">SourceDescription</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-setcitation-page"><p>this source description</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$settext">$setText(text)</h3>
+<div class="$settext"><h5 id="methods_$settext_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>text</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-settext-page"><p>source description text</p>
+</div></td></tr></tbody></table><h5 id="methods_$settext_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-sourcedescription">SourceDescription</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-settext-page"><p>this source description</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_$settitle">$setTitle(title)</h3>
+<div class="$settitle"><h5 id="methods_$settitle_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>title</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-settitle-page"><p>source description title</p>
+</div></td></tr></tbody></table><h5 id="methods_$settitle_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-sourcedescription">SourceDescription</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-settitle-page"><p>this source description</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_about">about</h3>
+<div class="about"><h5 id="properties_about_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-about-page"><p>URL (link to the record)</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="properties_attribution">attribution</h3>
+<div class="attribution"><h5 id="properties_attribution_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-attribution">Attribution</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-attribution-page"><p><a href="#/api/attribution.types:constructor.Attribution">Attribution</a> object</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="properties_id">id</h3>
+<div class="id"><h5 id="properties_id_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="sources-types-page sources-types-constructor-sourcedescription-id-page"><p>Id of the source description</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

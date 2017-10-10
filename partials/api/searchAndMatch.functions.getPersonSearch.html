@@ -1,0 +1,52 @@
+<h1><code ng:non-bindable="">getPersonSearch</code>
+<div><span class="hint">functions in module <code ng:non-bindable="">searchAndMatch</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="searchandmatch-functions-page searchandmatch-functions-getpersonsearch-page"><p>Search people
+The response includes the following convenience functions</p>
+<ul>
+<li><code>getContext()</code> - get the search context to pass into subsequent requests for additional results</li>
+<li><code>getSearchResults()</code> - get the array of <a href="#/api/searchAndMatch.types:constructor.SearchResult">SearchResults</a> from the response</li>
+<li><code>getResultsCount()</code> - get the total number of search results</li>
+<li><code>getIndex()</code> - get the starting index of the results array</li>
+</ul>
+<h5 id="description_search-parameters">Search parameters</h5>
+<p>In the list below, {relation} can be father, mother, or spouse.
+For non-exact matches, append a tilde (~) to the end of the parameter value.
+(The tilde works for name parameters; does it work for dates and places as well?)</p>
+<ul>
+<li><code>start</code> - index of first result</li>
+<li><code>count</code> - number of results</li>
+<li><code>context</code> - the search context token, which is returned from search requests and allows requests for subsequent pages</li>
+<li><code>name</code> - full name</li>
+<li><code>givenName</code></li>
+<li><code>surname</code></li>
+<li><code>gender</code> - male or female</li>
+<li><code>birthDate</code></li>
+<li><code>birthPlace</code></li>
+<li><code>deathDate</code></li>
+<li><code>deathPlace</code></li>
+<li><code>marriageDate</code></li>
+<li><code>marriagePlace</code></li>
+<li>{relation}<code>Name</code></li>
+<li>{relation}<code>GivenName</code></li>
+<li>{relation}<code>Surname</code></li>
+<li>{relation}<code>BirthDate</code></li>
+<li>{relation}<code>BirthPlace</code></li>
+<li>{relation}<code>DeathDate</code></li>
+<li>{relation}<code>DeathPlace</code></li>
+<li>{relation}<code>MarriageDate</code></li>
+<li>{relation}<code>MarriagePlace</code></li>
+</ul>
+<p><a href="https://familysearch.org/developers/docs/api/tree/Person_Search_resource">FamilySearch API Docs</a></p>
+<p><a href="http://jsfiddle.net/ghsyjzLb/1/">Editable Example</a></p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getPersonSearch(params[, opts]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>params</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="searchandmatch-functions-page searchandmatch-functions-getpersonsearch-page"><p>described above</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="searchandmatch-functions-page searchandmatch-functions-getpersonsearch-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="searchandmatch-functions-page searchandmatch-functions-getpersonsearch-page"><p>promise for the response</p>
+</div></td></tr></table></div>
+</div>

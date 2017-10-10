@@ -1,0 +1,47 @@
+<h1><code ng:non-bindable="">getPersonWithRelationships</code>
+<div><span class="hint">functions in module <code ng:non-bindable="">person</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="person-functions-page person-functions-getpersonwithrelationships-page"><p>Get a person and their children, spouses, and parents.
+The response has the following convenience functions</p>
+<ul>
+<li><code>getPrimaryId()</code> - id of the person returned</li>
+<li><code>getRequestedId()</code> - person id that was requested; may differ from primary id
+when the requested id was deleted due to a merge</li>
+<li><code>getFatherIds()</code> - array of ids</li>
+<li><code>getMotherIds()</code> - array of ids</li>
+<li><code>getSpouseIds()</code> - array of ids</li>
+<li><code>getChildIds()</code> - array of ids of all children</li>
+<li><code>getChildIdsOf(spouseId)</code> - array of ids; if <code>spouseId</code> is null/undefined, return ids of children without the other parent</li>
+<li><code>getParentRelationships()</code> - array of <a href="#/api/parentsAndChildren.types:constructor.ChildAndParents">ChildAndParents</a> relationship objects</li>
+<li><code>getSpouseRelationships()</code> - array of <a href="#/api/spouses.types:constructor.Couple">Couple</a> relationship objects</li>
+<li><code>getSpouseRelationship(spouseId)</code> - <a href="#/api/spouses.types:constructor.Couple">Couple</a> relationship with the specified spouse</li>
+<li><code>getChildRelationships()</code> - array of <a href="#/api/parentsAndChildren.types:constructor.ChildAndParents">ChildAndParents</a> relationship objects</li>
+<li><code>getChildRelationshipsOf(spouseId)</code> - array of <a href="#/api/parentsAndChildren.types:constructor.ChildAndParents">ChildAndParents</a> relationship objects
+if <code>spouseId</code> is null/undefined, return ids of child relationships without the other parent</li>
+<li><code>getPrimaryPerson()</code> - <a href="#/api/person.types:constructor.Person">Person</a> object for the primary person</li>
+</ul>
+<p>In addition, the following functions are available if persons is set to true in params</p>
+<ul>
+<li><code>getPerson(id)</code> - <a href="#/api/person.types:constructor.Person">Person</a> object for the person with <code>id</code></li>
+<li><code>getFathers()</code> - array of father <a href="#/api/person.types:constructor.Person">Persons</a></li>
+<li><code>getMothers()</code> - array of mother <a href="#/api/person.types:constructor.Person">Persons</a></li>
+<li><code>getSpouses()</code> - array of spouse <a href="#/api/person.types:constructor.Person">Persons</a></li>
+<li><code>getChildren()</code> - array of all child <a href="#/api/person.types:constructor.Person">Persons</a>;</li>
+<li><code>getChildrenOf(spouseId)</code> - array of child <a href="#/api/person.types:constructor.Person">Persons</a>;
+if <code>spouseId</code> is null/undefined, return children without the other parent</li>
+<li><code>wasRedirected()</code> - returns true when the primary id is different from the requested id</li>
+</ul>
+<p><a href="https://familysearch.org/developers/docs/api/tree/Person_With_Relationships_resource">FamilySearch API Docs</a></p>
+<p><a href="http://jsfiddle.net/6vpk7asr/51/">Editable Example</a></p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getPersonWithRelationships(pid[, params][, opts]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="person-functions-page person-functions-getpersonwithrelationships-page"><p>id of the person</p>
+</div></td></tr><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getpersonwithrelationships-page"><p>set <code>persons</code> to true to retrieve full person objects for each relative</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getpersonwithrelationships-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="person-functions-page person-functions-getpersonwithrelationships-page"><p>promise for the person with relationships</p>
+</div></td></tr></table></div>
+</div>

@@ -1,0 +1,35 @@
+<h1><code ng:non-bindable="">getAncestry</code>
+<div><span class="hint">functions in module <code ng:non-bindable="">pedigree</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="pedigree-functions-page pedigree-functions-getancestry-page"><p>Get the ancestors of a specified person and optionally a specified spouse with the following convenience functions</p>
+<ul>
+<li><code>getPersons()</code> - return an array of <a href="#/api/person.types:constructor.Person">Persons</a></li>
+<li><code>getPerson(ascendancyNumber)</code> - return a <a href="#/api/person.types:constructor.Person">Person</a></li>
+<li><code>exists(ascendancyNumber)</code> - return true if a person with ascendancy number exists</li>
+<li><code>getDescendant(descendancyNumber)</code> - return a <a href="#/api/person.types:constructor.Person">Person</a> if the descendants parameter is true</li>
+<li><code>existsDescendant(ascendancyNumber)</code> - return true if a person with descendancy number exists if the descendants parameter is true</li>
+</ul>
+<h5 id="description_notes">Notes</h5>
+<ul>
+<li>Each Person object has an additional <code>$getAscendancyNumber()</code> function that returns the person&#39;s ascendancy number,
+and if the descendants parameter is true, a $getDescendancyNumber() function that returns the person&#39;s descendancy number</li>
+<li>Some information on the Person objects is available only if <code>params</code> includes <code>personDetails</code></li>
+<li>If <code>params</code> includes <code>marriageDetails</code>, then <code>person.display</code> includes <code>marriageDate</code> and <code>marriagePlace</code>.</li>
+</ul>
+<p><a href="https://familysearch.org/developers/docs/api/tree/Ancestry_resource">FamilySearch API Docs</a></p>
+<p><a href="http://jsfiddle.net/15z6fzkf/6/">Editable Example</a></p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">getAncestry(pid[, params][, opts]);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="pedigree-functions-page pedigree-functions-getancestry-page"><p>id of the person</p>
+</div></td></tr><tr><td>params <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="pedigree-functions-page pedigree-functions-getancestry-page"><p>includes <code>generations</code> to retrieve (max 8),
+<code>spouse</code> id to get ancestry of person and spouse,
+<code>personDetails</code> set to true to retrieve full person objects for each ancestor,
+<code>descendants</code> set to true to retrieve one generation of descendants</p>
+</div></td></tr><tr><td>opts <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="pedigree-functions-page pedigree-functions-getancestry-page"><p>options to pass to the http function specified during init</p>
+</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="pedigree-functions-page pedigree-functions-getancestry-page"><p>promise for the ancestry</p>
+</div></td></tr></table></div>
+</div>
