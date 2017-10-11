@@ -133,6 +133,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('travis', [
+    'clean',
     'build',
     'run:coveralls',
     'gh-pages-clean',
