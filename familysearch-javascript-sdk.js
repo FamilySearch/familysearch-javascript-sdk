@@ -8221,8 +8221,8 @@ module.exports = {
   maxAccessTokenInactivityTime: 3540000, // 59 minutes to be safe
   maxAccessTokenCreationTime:  86340000, // 23 hours 59 minutes to be safe
   apiServer: {
-    'sandbox'    : 'https://integration.familysearch.org',
-    'integration': 'https://integration.familysearch.org',
+    'sandbox'    : 'https://api-integ.familysearch.org',
+    'integration': 'https://api-integ.familysearch.org',
     'staging'    : 'https://stage.familysearch.org',
     'beta'       : 'https://beta.familysearch.org',
     'production' : 'https://api.familysearch.org'
