@@ -1,3 +1,5 @@
+# This project has been deprecated. Please see [FS-JS-lite](https://github.com/FamilySearch/fs-js-lite)
+
 # GedcomX - JavaScript SDK
 
 [![npm](https://img.shields.io/npm/v/familysearch-javascript-sdk.svg)](https://www.npmjs.com/package/familysearch-javascript-sdk)
