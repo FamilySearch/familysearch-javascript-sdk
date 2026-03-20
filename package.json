@@ -34,7 +34,7 @@
     "istanbul": "0.3.13",
     "jasmine": "2.2.1",
     "jshint": "2.3.0",
-    "lodash": "3.1.0",
+    "lodash": "4.17.23",
     "mitm": "1.1.0"
   },
   "scripts": {
